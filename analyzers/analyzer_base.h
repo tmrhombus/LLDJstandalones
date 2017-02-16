@@ -1,4 +1,3 @@
-
 #ifndef analyzer_base_h
 #define analyzer_base_h
 
@@ -7,13 +6,30 @@
 #include <TFile.h>
 #include <TBranch.h>
 #include <TTree.h>
+#include <TH1F.h>
 
 class analyzer_base {
 public :
    analyzer_base();
-   virtual ~analyzer_base();
+   virtual          ~analyzer_base();
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
+   Double_t         makeEventWeight(Double_t crossSec,
+                                    Double_t lumi,
+                                    Double_t nrEvents,
+                                    Bool_t isMC);
+
+   // initialize histogram varieties
+   TString sysbinname;
+
+   // initialize histograms
+   TH1F h_sig_MET[1];
+
+   // initialize global variables
+   Double_t event_weight;
+
+   // selections
+   Bool_t passPT ;
 
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -96,6 +112,5 @@ public :
    TBranch        *b_vars;   //!
 
 };
-
 
 #endif // #ifdef analyzer_base_cxx
