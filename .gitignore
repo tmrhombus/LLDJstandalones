@@ -1,0 +1,7 @@
+
+*.d
+*.o
+*.log
+*.txt
+*.tex
+*.ignore
