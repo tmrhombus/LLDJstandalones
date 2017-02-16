@@ -12,22 +12,11 @@ class analyzer_base {
 public :
    analyzer_base();
    virtual ~analyzer_base();
-   //virtual void     Init();
-
-   //analyzer_base(TTree *tree=0);
-   //virtual ~analyzer_base();
-   //virtual Int_t    Cut(Long64_t entry);
-   //virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   //virtual void     Loop();
-   //virtual Bool_t   Notify();
-   //virtual void     Show(Long64_t entry = -1);
 
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
    Double_t        vars_ONZ;

@@ -7,29 +7,26 @@
 
 void analyzer_signal::Loop()
 {
-    printf("-- Looping\n"); 
 
-     if (fChain == 0) return;
+ if (fChain == 0) return;
 
-     Long64_t nentries = fChain->GetEntriesFast();
-     nentries = 5000;
+ Long64_t nentries = fChain->GetEntriesFast();
+ nentries = 5000; // for testing purposes
 
-     Long64_t nbytes = 0, nb = 0;
-     for (Long64_t jentry=0; jentry<nentries;jentry++) {
-        Long64_t ientry = LoadTree(jentry);
-        if (ientry < 0) break;
-        nb = fChain->GetEntry(jentry);   nbytes += nb;
-        // if (Cut(ientry) < 0) continue;
+ Long64_t nbytes = 0, nb = 0;
+ for (Long64_t jentry=0; jentry<nentries;jentry++) {
+  Long64_t ientry = LoadTree(jentry);
+  if (ientry < 0) break;
+  nb = fChain->GetEntry(jentry);   nbytes += nb;
 
-      printf("Event: %f\n",vars_EVENT);
-     }
+  printf("Event: %f\n",vars_EVENT);
+
+ } // loop over entries
 
 
 }
 
-
 analyzer_signal::analyzer_signal(){
-printf(" llooadaing\n");
 }
 
 analyzer_signal::~analyzer_signal()

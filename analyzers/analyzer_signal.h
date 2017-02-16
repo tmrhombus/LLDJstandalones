@@ -8,9 +8,9 @@ class analyzer_signal : public analyzer_base {
 
 public :
 
-  analyzer_signal();
-  virtual void     Loop();
-  virtual ~analyzer_signal();
+ analyzer_signal();
+ virtual void     Loop();
+ virtual ~analyzer_signal();
 
 
 };
