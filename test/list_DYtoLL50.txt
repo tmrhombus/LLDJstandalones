@@ -1,0 +1,18 @@
+
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_1.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_10.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_11.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_12.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_13.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_14.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_15.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_16.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_17.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_2.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_3.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_5.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_6.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_7.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_8.root
+ /store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_9.root
