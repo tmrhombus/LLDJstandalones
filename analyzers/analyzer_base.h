@@ -13,17 +13,24 @@ public :
    analyzer_base();
    virtual          ~analyzer_base();
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree);
+   virtual void     Init(TTree *tree, Bool_t domakelog);
    Double_t         makeEventWeight(Double_t crossSec,
                                     Double_t lumi,
                                     Double_t nrEvents,
                                     Bool_t isMC);
 
+   // global variables
+   Bool_t makelog;
+   FILE *logfile;
+
    // initialize histogram varieties
    TString sysbinname;
 
-   // initialize histograms
-   TH1F h_sig_MET[1];
+//   // initialize histograms
+//   TH1F h_sig_MET[1];
+//   TH1F h_sig_PT[1];
+//   TH1F h_sig_HT[1];
+//   TH1F h_sig_NGOODVERTICES[1];
 
    // initialize global variables
    Double_t event_weight;

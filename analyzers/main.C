@@ -24,8 +24,9 @@ int main(){
 
  // MC vs Data
  Bool_t isMC=kTRUE;
+ Bool_t makelog=kTRUE;
 
- TString outfilename=path+"/test.root";
+ TString outfilename=path+"/test";
  TString inputListName=path+"/list_TT.txt";
 
  TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED"); ;
@@ -58,7 +59,8 @@ int main(){
  } //while !inputList.eof()
 
   analyzer_signal a;
-  a.Init(theChain);
+  a.Init(theChain, makelog);
+  a.initSigHistograms();
 
   a.Loop(outfilename, isMC, lumi, nrEvents, crossSec);
 

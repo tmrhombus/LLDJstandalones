@@ -1,24 +1,27 @@
 #include "analyzer_base.h"
 
+//----------------------------analyzer_base
 analyzer_base::analyzer_base() 
 {
 }
 
+//----------------------------~analyzer_base
 analyzer_base::~analyzer_base()
 {
 }
 
+//----------------------------Init
+void analyzer_base::Init(TTree *tree, Bool_t domakelog)
+{
+ if (!tree) return;
+ fChain = tree;
+ fCurrent = -1;
+ fChain->SetMakeClass(1);
+ fChain->SetBranchAddress("vars", &vars_ONZ, &b_vars);
+ makelog = domakelog;
+}
 
-void analyzer_base::Init(TTree *tree)
- {
-  if (!tree) return;
-  fChain = tree;
-  fCurrent = -1;
-  fChain->SetMakeClass(1);
- 
-  fChain->SetBranchAddress("vars", &vars_ONZ, &b_vars);
- }
-
+//----------------------------LoadTree
 Long64_t analyzer_base::LoadTree(Long64_t entry)
 {
  // Set the environment to read one entry
@@ -31,9 +34,6 @@ Long64_t analyzer_base::LoadTree(Long64_t entry)
  return centry;
 }
 
-
-
-
 //----------------------------makeEventWeight
 Double_t analyzer_base::makeEventWeight(Double_t crossSec,
                                         Double_t lumi,
@@ -44,8 +44,8 @@ Double_t analyzer_base::makeEventWeight(Double_t crossSec,
   event_weight=1.0;
   Double_t crossSecScl = crossSec;
   if(isMC){ event_weight=lumi*crossSecScl/nrEvents; }
-  printf("isMC: %i lumi: %0.9f crossSec: %0.9f nrEvents: %0.9f",isMC,lumi,crossSecScl,nrEvents);
-  printf("  event_weight: %0.9f\n",event_weight);
+  //printf("isMC: %i lumi: %0.9f crossSec: %0.9f nrEvents: %0.9f",isMC,lumi,crossSecScl,nrEvents);
+  //printf("  event_weight: %0.9f\n",event_weight);
 
   return event_weight;
 }
