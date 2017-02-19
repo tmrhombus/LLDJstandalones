@@ -8,267 +8,144 @@ eos root://cmseos.fnal.gov ls /store/group/lpchbb/noreplica/stata/AnalysisTrees/
  
 doDY50=true
 doDY5to50=true
+doTTbar=true
+doSTs=true
+doSTtbar=true
+doSTt=true
+doSTtbarW=true
+doSTtW=true
+doWJets=true
+doZHtoLLbb=true
+doWW=true
+doZZ=true
+doWZ=true
+doSignal=true
 
+xcDY50="6025.0"                   
+xcDY5to50="7160.0"                      
+xcTTbar="831.76"                    
+xcSTs="10.11"                   
+xcSTtbar="26.23"                      
+xcSTt="44.09"                   
+xcSTtbarW="38.09"                       
+xcSTtW="38.09"                    
+xcWJets="61467.0"                   
+xcZHtoLLbb="0.051"   #0.8696*0.577*0.102           
+xcWW="10.32"                  
+xcZZ="63.0"                   
+xcWZ="118.7"                  
+xcSignal="1"         
 
 if [ ${doDY50} = true ]
 then
- printf "Making DY\n" 
- grep -i 'DYJetsToLL_M-50' ${outdir}/allfiles.txt  > ${outdir}/DY50.txt
- sed -i -e 's@^@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto/@' ${outdir}/DY50.txt
+ printf "Making DY50\n" 
+ printf "crosssection: %s\n" ${xcDY50} > ${outdir}/DY50.txt
+ grep -i 'DYJetsToLL_M-50' ${outdir}/allfiles.txt  >> ${outdir}/DY50.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/DY50.txt
+fi
+
+if [ ${doDY5to50} = true ]
+then
+ printf "Making DY5to50\n" 
+ printf "crosssection: %s\n" ${xcDY5to50} > ${outdir}/DY5to50.txt
+ grep -i 'DYJetsToLL_M-5to50' ${outdir}/allfiles.txt  >> ${outdir}/DY5to50.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/DY5to50.txt
+fi
+
+if [ ${doTTbar} = true ]
+then
+ printf "Making TTbar\n" 
+ printf "crosssection: %s\n" ${xcTTbar} > ${outdir}/TTbar.txt
+ grep -i 'TT_TuneCUETP8M1' ${outdir}/allfiles.txt  >> ${outdir}/TTbar.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/TTbar.txt
+fi
+
+if [ ${doSTs} = true ]
+then
+ printf "Making STs\n" 
+ printf "crosssection: %s\n" ${xcSTs} > ${outdir}/STs.txt
+ grep -i 'ST_s-channel_4f' ${outdir}/allfiles.txt  >> ${outdir}/STs.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/STs.txt
+fi
+
+if [ ${doSTtbar} = true ]
+then
+ printf "Making STtbar\n" 
+ printf "crosssection: %s\n" ${xcSTtbar} > ${outdir}/STtbar.txt
+ grep -i 'ST_t-channel_antitop_4f' ${outdir}/allfiles.txt  >> ${outdir}/STtbar.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/STtbar.txt
+fi
+
+if [ ${doSTt} = true ]
+then
+ printf "Making STt\n" 
+ printf "crosssection: %s\n" ${xcSTt} > ${outdir}/STt.txt
+ grep -i 'ST_t-channel_top_4f' ${outdir}/allfiles.txt  >> ${outdir}/STt.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/STt.txt
+fi
+
+if [ ${doSTtbarW} = true ]
+then
+ printf "Making STtbarW\n" 
+ printf "crosssection: %s\n" ${xcSTtbarW} > ${outdir}/STtbarW.txt
+ grep -i 'ST_tW_antitop_5f' ${outdir}/allfiles.txt  >> ${outdir}/STtbarW.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/STtbarW.txt
+fi
+
+if [ ${doSTtW} = true ]
+then
+ printf "Making STtW\n" 
+ printf "crosssection: %s\n" ${xcSTtW} > ${outdir}/STtW.txt
+ grep -i 'ST_tW_top_5f' ${outdir}/allfiles.txt  >> ${outdir}/STtW.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/STtW.txt
+fi
+
+if [ ${doWJets} = true ]
+then
+ printf "Making WJets\n" 
+ printf "crosssection: %s\n" ${xcWJets} > ${outdir}/WJets.txt
+ grep -i 'WJetsToLNu' ${outdir}/allfiles.txt  >> ${outdir}/WJets.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/WJets.txt
+fi
+
+if [ ${doZHtoLLbb} = true ]
+then
+ printf "Making ZHtoLLbb\n" 
+ printf "crosssection: %s\n" ${xcZHtoLLbb} > ${outdir}/ZHtoLLbb.txt
+ grep -i 'ZH_HToBB_ZToLL_M125' ${outdir}/allfiles.txt  >> ${outdir}/ZHtoLLbb.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/ZHtoLLbb.txt
+fi
+
+if [ ${doWW} = true ]
+then
+ printf "Making WW\n" 
+ printf "crosssection: %s\n" ${xcWW} > ${outdir}/WW.txt
+ grep -i 'WW_TuneCUETP8M1' ${outdir}/allfiles.txt  >> ${outdir}/WW.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/WW.txt
+fi
+
+if [ ${doZZ} = true ]
+then
+ printf "Making ZZ\n" 
+ printf "crosssection: %s\n" ${xcZZ} > ${outdir}/ZZ.txt
+ grep -i 'ZZ_TuneCUETP8M1' ${outdir}/allfiles.txt  >> ${outdir}/ZZ.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/ZZ.txt
+fi
+
+if [ ${doWZ} = true ]
+then
+ printf "Making WZ\n" 
+ printf "crosssection: %s\n" ${xcWZ} > ${outdir}/WZ.txt
+ grep -i 'WZ_TuneCUETP8M1' ${outdir}/allfiles.txt  >> ${outdir}/WZ.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/WZ.txt
+fi
+
+if [ ${doSignal} = true ]
+then
+ printf "Making Signal\n" 
+ printf "crosssection: %s\n" ${xcSignal} > ${outdir}/Signal.txt
+ grep -i 'ggZH_HToSSTobbbb' ${outdir}/allfiles.txt  >> ${outdir}/Signal.txt
+ sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHisto@' ${outdir}/Signal.txt
 fi
 
 
-# doData=false
-# doGJetsMC=false
-# 
-# 
-# #SinglePhoton
-# #------------
-# if [ ${doSinglePhoton} = true ]
-# then
-#  printf "Making SinglePhoton\n" 
-#  ls  /hdfs/store/user/gomber/SinglePhoton_2016B/SinglePhoton/crab_job_SinglePhoton*12p9*newbh_1/*/*/*root \
-#  > "${outdir}/hdfslist_SinglePhoton.txt"
-# fi
-# 
-# 
-# ## #DoubleElectron
-# ## #------------
-# ## if [ ${doDoubleElectron} = true ]
-# ## then
-# ##  printf "Making DoubleElectron\n" 
-# ## 
-# ##    find /hdfs/store/user/gomber/DoubleElectron_Crab_2015D_v3_226fb/*/crab_job_*_13TeV_v3_226fb/160216_*/0000/*root \
-# ##      >  "${outdir}/hdfslist_DoubleElectron.txt"
-# ##    find /hdfs/store/user/gomber/DoubleElectron_Crab_2015D_v4_226fb/*/crab_job_*_13TeV_v4_226fb/160216_*/000*/*root \
-# ##      >> "${outdir}/hdfslist_DoubleElectron.txt"
-# ## fi
-# 
-# #GJets MC
-# #------------
-# if [ ${doGJetsMC} = true ]
-# then
-#  printf "Making GJets " 
-#  printf "1  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-40To100/160621_133030/0000/*root \
-#   > "${outdir}/hdfslist_GJetsHT40to100.txt"
-# 
-#  printf "2  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-100To200/160621_133042/0000/*root \
-#   > "${outdir}/hdfslist_GJetsHT100to200.txt"
-# 
-#  printf "3  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-200To400/160621_133055/0000/*root \
-#   > "${outdir}/hdfslist_GJetsHT200to400.txt"
-# 
-#  printf "4  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-400To600/160621_133110/0000/*root \
-#   > "${outdir}/hdfslist_GJetsHT400to600.txt"
-# 
-#  printf "5  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_GJets_HT-600ToInf/160621_133123/0000/*root \
-#   > "${outdir}/hdfslist_GJetsHT600toInf.txt"
-# 
-#  printf "\n" 
-# fi
-# 
-# #QCD MC
-# #----------
-# if [ ${doQCDMC} = true ]
-# then
-#  printf "Making QCD " 
-# # printf "1  " 
-# # ls /hdfs/store/user/jjbuch/QCD_Pt-15to20_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_ggNtuplizer_spring15_QCD_Pt-15to20_EMEnriched_try5/151212_075448/0000/*root \
-# #  > "${outdir}/hdfslist_QCDPt15to20.txt"
-# #
-# # printf "2  " 
-# # ls /hdfs/store/user/jjbuch/QCD_Pt-20to30_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_ggNtuplizer_spring15_QCD_Pt-20to30_EMEnriched_try5/151212_075603/0000/*root \
-# #  > "${outdir}/hdfslist_QCDPt20to30.txt"
-# #
-# # printf "3  " 
-# # ls /hdfs/store/user/jjbuch/QCD_Pt-30to50_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_ggNtuplizer_spring15_QCD_Pt-30to50_EMEnriched_try5/151212_075643/0000/*root \
-# #  > "${outdir}/hdfslist_QCDPt30to50.txt"
-# #
-# # printf "4  " 
-# # ls /hdfs/store/user/jjbuch/QCD_Pt-50to80_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_ggNtuplizer_spring15_QCD_Pt-50to80_EMEnriched_try5/151212_075742/0000/*root \
-# #  > "${outdir}/hdfslist_QCDPt50to80.txt"
-# 
-#  printf "5  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/QCD_Pt-80to120_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt-80to120/160621_133148/0000/*root \
-#   > "${outdir}/hdfslist_QCDPt80to120.txt"
-# 
-#  printf "6  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/QCD_Pt-120to170_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt-120to170/160621_133201/0000/*root \
-#   > "${outdir}/hdfslist_QCDPt120to170.txt"
-# 
-#  printf "7  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/QCD_Pt-170to300_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt-170to300/160621_133213/0000/*root \
-#   > "${outdir}/hdfslist_QCDPt170to300.txt"
-# 
-#  printf "8  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/QCD_Pt-300toInf_EMEnriched_TuneCUETP8M1_13TeV_pythia8/crab_QCD_Pt-300toInf/160621_133225/0000/*root \
-# > "${outdir}/hdfslist_QCDPt300toInf.txt"
-# 
-#  printf "\n" 
-# fi
-# 
-# # Z(ll)Jets MC
-# #----------
-# if [ ${doZllJMC} = true ]
-# then
-#  printf "Making Z(ll)Jets MC " 
-#  printf "1  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-100to200/160621_133238/0000/*root \
-#   > "${outdir}/hdfslist_ZllJetsHT100to200.txt"
-# 
-#  printf "2  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-200to400/160621_133251/0000/*root \
-#   > "${outdir}/hdfslist_ZllJetsHT200to400.txt"
-# 
-#  printf "3  "
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-400to600/160621_133304/0000/*root \
-#   > "${outdir}/hdfslist_ZllJetsHT400to600.txt"
-# 
-#  printf "4  " 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/crab_DYJetsToLL_M-50_HT-600toInf/160621_133316/0000/*root \
-#  > "${outdir}/hdfslist_ZllJetsHT600toInf.txt"
-# 
-#  printf "\n" 
-# fi
-# 
-# ###Z(nunu)Jets MC
-# ###------------
-# ##if [ ${doZnnJMC} = true ]
-# ##then
-# ## printf "Making Z(nunu)Jets MC " 
-# ## printf "1  " 
-# ##  ls /hdfs/store/user/jjbuch/ZJetsToNuNu_HT-100To200_13TeV-madgraph/crab_ggNtuplizer_spring15_ZJetsToNuNu_HT-100to200_try5/151212_074908/0000/ggtree_mc_*root \
-# ##  > "${outdir}/hdfslist_ZnnJetsHT100to200.txt"
-# ##
-# ## printf "2  " 
-# ##  ls /hdfs/store/user/jjbuch/ZJetsToNuNu_HT-200To400_13TeV-madgraph/crab_ggNtuplizer_spring15_ZJetsToNuNu_HT-200to400_try5/151212_074940/0000/ggtree_mc_*root \
-# ##  > "${outdir}/hdfslist_ZnnJetsHT200to400.txt"
-# ##
-# ## printf "3  "
-# ##  ls /hdfs/store/user/jjbuch/ZJetsToNuNu_HT-400To600_13TeV-madgraph/crab_ggNtuplizer_spring15_ZJetsToNuNu_HT-400to600_try5/151212_075020/0000/ggtree_mc_*root \
-# ##  > "${outdir}/hdfslist_ZnnJetsHT400to600.txt"
-# ##
-# ## printf "4  " 
-# ##  ls /hdfs/store/user/jjbuch/ZJetsToNuNu_HT-600ToInf_13TeV-madgraph/crab_ggNtuplizer_spring15_ZJetsToNuNu_HT-600toInf_try5/151212_075101/0000/ggtree_mc_*root \
-# ##  > "${outdir}/hdfslist_ZnnJetsHT600toInf.txt"
-# ##
-# ## printf "\n" 
-# ##
-# ##fi
-# 
-# 
-# #Z(ll)Gamma Jets
-# #------------
-# if [ ${doZllGJMC} = true ]
-# then
-#  printf "Making Z(ll)Gamma Jets MC\n" 
-#  ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/ZLLGJets_MonoPhoton_PtG-130_TuneCUETP8M1_13TeV-madgraph/crab_ZLLGJets/160621_132831/0000/*root \
-#   > "${outdir}/hdfslist_ZllGJets.txt"
-# fi
-# 
-# #Z(nn)Gamma Jets
-# #------------
-# if [ ${doZnnGJMC} = true ]
-# then
-#  printf "Making Z(nn)Gamma Jets MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/ZNuNuGJets_MonoPhoton_PtG-130_TuneCUETP8M1_13TeV-madgraph/crab_ZNuNuGJets/160621_132818/0000/*root \
-#   > "${outdir}/hdfslist_ZnnGJets.txt"
-# fi
-# 
-# #W(ln)Gamma Jets
-# #------------
-# if [ ${doWlnGJMC} = true ]
-# then
-#  printf "Making Z(ln)Gamma Jets MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/WGJets_MonoPhoton_PtG-130_TuneCUETP8M1_13TeV-madgraph/crab_WGJets/160621_132844/0000/*root \
-#   > "${outdir}/hdfslist_WlnGJets.txt"
-# fi
-# 
-# ###W(en)
-# ###------------
-# ##if [ ${doWenMC} = true ]
-# ##then
-# ## printf "Making W(en) MC\n" 
-# ##
-# ##  ls /hdfs/store/user/jjbuch/WToENu_M-100_MiniAOD/WToENu_M-100_TuneCUETP8M1_13TeV-pythia8/crab_WToENu_M-100_MiniAOD/160413_214913/0000/ggtree_mc_DiPhoton_MINIAOD_TEST_*root \
-# ##  > "${outdir}/hdfslist_Wen.txt"
-# ##fi
-# 
-# #W(mn)
-# #------------
-# if [ ${doWmnMC} = true ]
-# then
-#  printf "Making W(mn) MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/WToMuNu_M-100_TuneCUETP8M1_13TeV-pythia8/crab_WToMuNu/160621_133001/0000/*root \
-#   > "${outdir}/hdfslist_Wmn.txt"
-# fi
-# 
-# #W(tn)
-# #------------
-# if [ ${doWtnMC} = true ]
-# then
-#  printf "Making W(tn) MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/WToTauNu_M-100_TuneCUETP8M1_13TeV-pythia8-tauola/crab_WToTauNu/160621_133014/0000/*root \
-#   > "${outdir}/hdfslist_Wtn.txt"
-# fi
-# 
-# #TTGJ
-# #------------
-# if [ ${doTTGJMC} = true ]
-# then
-#  printf "Making TTGJets MC\n" 
-# 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/crab_TTGJets/160621_133135/0000/*root \
-#   > "${outdir}/hdfslist_TTGJets.txt"
-# fi
-# 
-# #WWG
-# #------------
-# if [ ${doWWGMC} = true ]
-# then
-#  printf "Making WWG MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/WWG_TuneCUETP8M1_13TeV-amcatnlo-pythia8/crab_WWG/160630_154410/0000/*.root \
-#   > "${outdir}/hdfslist_WWG.txt"
-# fi
-# 
-# #GGJ
-# #------------
-# if [ ${doGGJMC} = true ]
-# then
-#  printf "Making GGJets MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8/crab_DiPhotonJets_MGG-80toInf_amcatnlo/160825_000327/0000/*.root \
-#   > "${outdir}/hdfslist_GGJets.txt"
-# fi
-# 
-# #TGJ
-# #------------
-# if [ ${doTGJMC} = true ]
-# then
-#  printf "Making TGJets MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8/crab_TGJets/160823_154537/0000/*.root \
-#   > "${outdir}/hdfslist_TGJets.txt"
-# fi
-# 
-# #WZ
-# #------------
-# if [ ${doWZMC} = true ]
-# then
-#  printf "Making WZ MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/WZ_TuneCUETP8M1_13TeV-pythia8/crab_WZ/160630_154423/0000/*.root \
-#   > "${outdir}/hdfslist_WZ.txt"
-# fi
-# 
-# #ZZ
-# #------------
-# if [ ${doZZMC} = true ]
-# then
-#  printf "Making ZZ MC\n" 
-#   ls /hdfs/store/user/jjbuch/ntuples80X/MiniAODv2_CustomVariables/ZZ_TuneCUETP8M1_13TeV-pythia8/crab_ZZ/160630_154436/0000/*.root \
-#   > "${outdir}/hdfslist_ZZ.txt"
-# fi
-# 
