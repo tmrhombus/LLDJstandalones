@@ -15,11 +15,8 @@ int main(){
  // start stopwatch
  TStopwatch sw;
  sw.Start();
- 
- Double_t lumi=12900.;
- Double_t nrEvents=22900.;
- Double_t crossSec=1.;
 
+ Double_t lumi=12900.;
  TString path = "../test";
 
  // MC vs Data
@@ -27,7 +24,7 @@ int main(){
  Bool_t makelog=kTRUE;
 
  TString outfilename=path+"/test";
- TString inputListName=path+"/list_TT.txt";
+ TString inputListName=path+"/TTbar.txt";
 
  TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED"); ;
  theChain->Reset();
@@ -35,34 +32,56 @@ int main(){
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
  printf("Output File Name: %s\n", outfilename.Data()  ) ; 
 
- std::vector<TString> infilename_dump;
+ std::vector<TString> inputline_dump;
+
+  // sample-dependent input variables 
+  Double_t nrEvents=22900.;
+  Double_t crosssection=1.;
 
  // open file_name_list.txt
- std::ifstream inputList;
- inputList.open(inputListName);
- if( !inputList.good() ) {
+ std::ifstream inputfile;
+ inputfile.open(inputListName);
+ if( !inputfile.good() ) {
    std::cerr << "Cannot open the file: \"" << inputListName+"\""<<std::endl;
    abort();
  }
+
+ // lines read from file variables
+ std::string inputline = "";
+ TString Tinputline = "";
+ 
  // we have the file open, start reading lines one by one
- TString infilename = "";
- while( !inputList.eof() ) {
-  infilename="";
-  inputList >> infilename;
-  if( inputList.fail() ) continue;
+ //while( !inputfile.eof() ) {
+ while( std::getline(inputfile, inputline) ) {
+  if( inputfile.fail() ) continue;
 
-  std::cout << "Input File Name: "  << infilename <<  std::endl;
+  // TChain needs a TString..
+  Tinputline = inputline;
 
-  theChain->Add( "root://cmsxrootd.fnal.gov/"+infilename );
+  printf("Inputline: %s\n",Tinputline.Data());
+  if( Tinputline.Contains("crosssection: ") ){  
+   Tinputline.ReplaceAll("crosssection: ","");
+   printf("Tinputline: %s %i\n",Tinputline.Data(),Tinputline.IsFloat());
+   crosssection = Tinputline.Atof();
+   //crosssection = TString::Atof(Tinputline);
+   printf(" Cross Section Is:  %f\n",crosssection);
+  }
+  //if(line says nrevents){  }
 
-  infilename_dump.push_back(infilename);
- } //while !inputList.eof()
+  if( Tinputline.Contains("/store/group") ){
+   std::cout << "Input File Name: "  << Tinputline <<  std::endl;
+
+   theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+
+   inputline_dump.push_back(inputline);
+  }
+ } //while !inputfile.eof()
 
   analyzer_signal a;
   a.Init(theChain, makelog);
   a.initSigHistograms();
 
-  a.Loop(outfilename, isMC, lumi, nrEvents, crossSec);
+  a.Loop(outfilename, isMC, lumi, nrEvents, crosssection);
 
  // end stopwatch
  sw.Stop();
