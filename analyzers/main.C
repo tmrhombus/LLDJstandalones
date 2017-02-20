@@ -35,7 +35,7 @@ int main(){
  std::vector<TString> inputline_dump;
 
   // sample-dependent input variables 
-  Double_t nrEvents=22900.;
+  Double_t nrevents=22900.;
   Double_t crosssection=1.;
 
  // open file_name_list.txt
@@ -58,21 +58,28 @@ int main(){
   // TChain needs a TString..
   Tinputline = inputline;
 
-  printf("Inputline: %s\n",Tinputline.Data());
+  //printf("Inputline: %s\n",Tinputline.Data());
+
+  // read crosssection
   if( Tinputline.Contains("crosssection: ") ){  
    Tinputline.ReplaceAll("crosssection: ","");
-   printf("Tinputline: %s %i\n",Tinputline.Data(),Tinputline.IsFloat());
    crosssection = Tinputline.Atof();
-   //crosssection = TString::Atof(Tinputline);
-   printf(" Cross Section Is:  %f\n",crosssection);
+   printf("crosssection: %f\n",crosssection);
   }
-  //if(line says nrevents){  }
 
+  // read nr events
+  if( Tinputline.Contains("nrevents: ") ){  
+   Tinputline.ReplaceAll("nrevents: ","");
+   nrevents = Tinputline.Atof();
+   printf("nrevents: %f\n",nrevents);
+  }
+
+  // read input file names
   if( Tinputline.Contains("/store/group") ){
-   std::cout << "Input File Name: "  << Tinputline <<  std::endl;
-
-   theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-
+   //std::cout << "Input File Name: "  << Tinputline <<  std::endl;
+   theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+   //theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
    inputline_dump.push_back(inputline);
   }
  } //while !inputfile.eof()
@@ -81,7 +88,7 @@ int main(){
   a.Init(theChain, makelog);
   a.initSigHistograms();
 
-  a.Loop(outfilename, isMC, lumi, nrEvents, crosssection);
+  a.Loop(outfilename, isMC, lumi, nrevents, crosssection);
 
  // end stopwatch
  sw.Stop();
