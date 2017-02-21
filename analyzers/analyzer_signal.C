@@ -3,6 +3,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <iostream>
 
 void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
                        Double_t lumi, Double_t nrEvents,
@@ -28,8 +29,25 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   // make event weight
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
 
+  // printf(" vars_hasGoodVertex %f \n vars_hasDoubleElTriggers %f \n vars_hasDoubleMuTriggers %f \n vars_ONZ %f \n vars_NBASICCALOJETS %f \n",
+  //     vars_hasGoodVertex,
+  //     vars_hasDoubleElTriggers,
+  //     vars_hasDoubleMuTriggers,
+  //     vars_ONZ,
+  //     vars_NBASICCALOJETS);
+  doesPassSig    = askPassSig   ();
+  doesPassZH     = askPassZH    ();
+  doesPassDY     = askPassDY    ();
+  doesPassOffZ   = askPassOffZ  ();
+  doesPassNoPair = askPassNoPair();
+
   // fill histogram
-  fillSigHistograms(event_weight);
+                       fillSigHistograms(event_weight,0);  
+  if( doesPassSig   ){ fillSigHistograms(event_weight,1); }
+  if( doesPassZH    ){ fillSigHistograms(event_weight,2); }
+  if( doesPassDY    ){ fillSigHistograms(event_weight,3); }
+  if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); }
+  if( doesPassNoPair){ fillSigHistograms(event_weight,5); }
 
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
@@ -39,12 +57,9 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
  outfile->cd();
- //for(unsigned int i=0; i<ptbinnames.size(); ++i){
- // for(unsigned int j=0; j<sysbinnames.size(); ++j){
- //  WriteHistograms(i,j);
- // }
- //}
- writeSigHistograms();
+ for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
+  writeSigHistograms(i);
+ }
  outfile->Close();
 
 } // end analyzer_signal::Loop()
@@ -53,214 +68,280 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
 Bool_t analyzer_signal::initSigHistograms()
 {
 
- // initialize names (more general - easier for when we incorporate systematics)
- TString hname_sig_PT            = "h_sig_PT"           ;
- TString hname_sig_NGOODVERTICES = "h_sig_NGOODVERTICES";
+ selbinnames.clear();
+ selbinnames.push_back("NoSel");
+ selbinnames.push_back("Sig");
+ selbinnames.push_back("ZH");
+ selbinnames.push_back("DY");
+ selbinnames.push_back("OffZ");
+ selbinnames.push_back("NoPair");
+ 
 
- TString hname_sig_ALPHAMAX              = "h_sig_ALPHAMAX";                                        
- TString hname_sig_ASSOCAPLANARITY       = "h_sig_ASSOCAPLANARITY";                                 
- TString hname_sig_ASSOCIATEDTRACKPT     = "h_sig_ASSOCIATEDTRACKPT";                               
- TString hname_sig_ASSOCSPHERICITY       = "h_sig_ASSOCSPHERICITY";                                 
- TString hname_sig_ASSOCTHRUSTMAJOR      = "h_sig_ASSOCTHRUSTMAJOR";                                
- TString hname_sig_ASSOCTHRUSTMINOR      = "h_sig_ASSOCTHRUSTMINOR ";                               
- TString hname_sig_AVFASSOCSPHERICITY    = "h_sig_AVFASSOCSPHERICITY";                              
- TString hname_sig_AVFASSOCTHRUSTMAJOR   = "h_sig_AVFASSOCTHRUSTMAJOR";                             
- TString hname_sig_AVFASSOCTHRUSTMINOR   = "h_sig_AVFASSOCTHRUSTMINOR";                             
- TString hname_sig_BETA                  = "h_sig_BETA";                                            
- TString hname_sig_MEDIANIPLOG10SIG      = "h_sig_MEDIANIPLOG10SIG";                                
- TString hname_sig_MEDIANLOG10TRACKANGLE = "h_sig_MEDIANLOG10TRACKANGLE";                           
- TString hname_sig_MISSINGINNER          = "h_sig_MISSINGINNER";                                    
- TString hname_sig_SUMIP                 = "h_sig_SUMIP";                                           
- TString hname_sig_SUMIPSIG              = "h_sig_SUMIPSIG";                                        
- TString hname_sig_TOTALTRACKPT          = "h_sig_TOTALTRACKPT";                                    
- TString hname_sig_TOTALTRACKANGLE       = "h_sig_TOTALTRACKANGLE";                                 
+ // initialize names
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+  TString hname_sig_PT                    = "h_"+selbinnames[i]+"_PT"           ;
+  TString hname_sig_NGOODVERTICES         = "h_"+selbinnames[i]+"_NGOODVERTICES";
 
- TString hname_sig_HT                   = "h_sig_HT";                                              
- TString hname_sig_Max_LEPTON_DPHI      = "h_sig_Max_LEPTON_DPHI";                                 
- TString hname_sig_Max_MEDIANIPLOG10SIG = "h_sig_Max_MEDIANIPLOG10SIG";  
- TString hname_sig_Max_SUMIPSIG         = "h_sig_Max_SUMIPSIG";          
- TString hname_sig_Max_TOTALTRACKANGLE  = "h_sig_Max_TOTALTRACKANGLE";   
- TString hname_sig_MET                  = "h_sig_MET";                                             
- TString hname_sig_Min_LEPTON_DPHI      = "h_sig_Min_LEPTON_DPHI";                                 
- TString hname_sig_Alt_MT               = "h_sig_Alt_MT";                                          
- TString hname_sig_PTOSSF               = "h_sig_PTOSSF";                                          
- TString hname_sig_Alt_WPT              = "h_sig_Alt_WPT";                                         
+  TString hname_sig_ALPHAMAX              = "h_"+selbinnames[i]+"_ALPHAMAX";                                        
+  TString hname_sig_ASSOCAPLANARITY       = "h_"+selbinnames[i]+"_ASSOCAPLANARITY";                                 
+  TString hname_sig_ASSOCIATEDTRACKPT     = "h_"+selbinnames[i]+"_ASSOCIATEDTRACKPT";                               
+  TString hname_sig_ASSOCSPHERICITY       = "h_"+selbinnames[i]+"_ASSOCSPHERICITY";                                 
+  TString hname_sig_ASSOCTHRUSTMAJOR      = "h_"+selbinnames[i]+"_ASSOCTHRUSTMAJOR";                                
+  TString hname_sig_ASSOCTHRUSTMINOR      = "h_"+selbinnames[i]+"_ASSOCTHRUSTMINOR ";                               
+  TString hname_sig_AVFASSOCSPHERICITY    = "h_"+selbinnames[i]+"_AVFASSOCSPHERICITY";                              
+  TString hname_sig_AVFASSOCTHRUSTMAJOR   = "h_"+selbinnames[i]+"_AVFASSOCTHRUSTMAJOR";                             
+  TString hname_sig_AVFASSOCTHRUSTMINOR   = "h_"+selbinnames[i]+"_AVFASSOCTHRUSTMINOR";                             
+  TString hname_sig_BETA                  = "h_"+selbinnames[i]+"_BETA";                                            
+  TString hname_sig_MEDIANIPLOG10SIG      = "h_"+selbinnames[i]+"_MEDIANIPLOG10SIG";                                
+  TString hname_sig_MEDIANLOG10TRACKANGLE = "h_"+selbinnames[i]+"_MEDIANLOG10TRACKANGLE";                           
+  TString hname_sig_MISSINGINNER          = "h_"+selbinnames[i]+"_MISSINGINNER";                                    
+  TString hname_sig_SUMIP                 = "h_"+selbinnames[i]+"_SUMIP";                                           
+  TString hname_sig_SUMIPSIG              = "h_"+selbinnames[i]+"_SUMIPSIG";                                        
+  TString hname_sig_TOTALTRACKPT          = "h_"+selbinnames[i]+"_TOTALTRACKPT";                                    
+  TString hname_sig_TOTALTRACKANGLE       = "h_"+selbinnames[i]+"_TOTALTRACKANGLE";                                 
 
- // initalize histograms
+  TString hname_sig_HT                    = "h_"+selbinnames[i]+"_HT";                                              
+  TString hname_sig_Max_LEPTON_DPHI       = "h_"+selbinnames[i]+"_Max_LEPTON_DPHI";                                 
+  TString hname_sig_Max_MEDIANIPLOG10SIG  = "h_"+selbinnames[i]+"_Max_MEDIANIPLOG10SIG";  
+  TString hname_sig_Max_SUMIPSIG          = "h_"+selbinnames[i]+"_Max_SUMIPSIG";          
+  TString hname_sig_Max_TOTALTRACKANGLE   = "h_"+selbinnames[i]+"_Max_TOTALTRACKANGLE";   
+  TString hname_sig_MET                   = "h_"+selbinnames[i]+"_MET";                                             
+  TString hname_sig_Min_LEPTON_DPHI       = "h_"+selbinnames[i]+"_Min_LEPTON_DPHI";                                 
+  TString hname_sig_Alt_MT                = "h_"+selbinnames[i]+"_Alt_MT";                                          
+  TString hname_sig_PTOSSF                = "h_"+selbinnames[i]+"_PTOSSF";                                          
+  TString hname_sig_Alt_WPT               = "h_"+selbinnames[i]+"_Alt_WPT";                                         
 
- // clear
- h_sig_PT[0]                   .Clear();
- h_sig_NGOODVERTICES[0]        .Clear();
- h_sig_ALPHAMAX[0]             .Clear();
- h_sig_ASSOCAPLANARITY[0]      .Clear();
- h_sig_ASSOCIATEDTRACKPT[0]    .Clear();
- h_sig_ASSOCSPHERICITY[0]      .Clear();
- h_sig_ASSOCTHRUSTMAJOR[0]     .Clear();
- h_sig_ASSOCTHRUSTMINOR[0]     .Clear();
- h_sig_AVFASSOCSPHERICITY[0]   .Clear();
- h_sig_AVFASSOCTHRUSTMAJOR[0]  .Clear();
- h_sig_AVFASSOCTHRUSTMINOR[0]  .Clear();
- h_sig_BETA[0]                 .Clear();
- h_sig_MEDIANIPLOG10SIG[0]     .Clear();
- h_sig_MEDIANLOG10TRACKANGLE[0].Clear();
- h_sig_MISSINGINNER[0]         .Clear();
- h_sig_SUMIP[0]                .Clear();
- h_sig_SUMIPSIG[0]             .Clear();
- h_sig_TOTALTRACKPT[0]         .Clear();
- h_sig_TOTALTRACKANGLE[0]      .Clear();
- h_sig_HT[0]                   .Clear();
- h_sig_Max_LEPTON_DPHI[0]      .Clear();
- h_sig_Max_MEDIANIPLOG10SIG[0] .Clear();
- h_sig_Max_SUMIPSIG[0]         .Clear();
- h_sig_Max_TOTALTRACKANGLE[0]  .Clear();
- h_sig_MET[0]                  .Clear();
- h_sig_Min_LEPTON_DPHI[0]      .Clear();
- h_sig_Alt_MT[0]               .Clear();
- h_sig_PTOSSF[0]               .Clear();
- h_sig_Alt_WPT[0]              .Clear();
+  // initalize histograms
 
- // initialize
- h_sig_PT[0]                    = TH1F( hname_sig_PT                   ,"PT"                   , 500,0,500);
- h_sig_NGOODVERTICES[0]         = TH1F( hname_sig_NGOODVERTICES        ,"NGOODVERTICES"        , 60,0,60);
- h_sig_ALPHAMAX[0]              = TH1F( hname_sig_ALPHAMAX             ,"ALPHAMAX"             , 100, 0, 1);
- h_sig_ASSOCAPLANARITY[0]       = TH1F( hname_sig_ASSOCAPLANARITY      ,"ASSOCAPLANARITY"      , 100, 0, 1);
- h_sig_ASSOCIATEDTRACKPT[0]     = TH1F( hname_sig_ASSOCIATEDTRACKPT    ,"ASSOCIATEDTRACKPT"    , 200, 0, 200);
- h_sig_ASSOCSPHERICITY[0]       = TH1F( hname_sig_ASSOCSPHERICITY      ,"ASSOCSPHERICITY"      , 100, 0, 1);
- h_sig_ASSOCTHRUSTMAJOR[0]      = TH1F( hname_sig_ASSOCTHRUSTMAJOR     ,"ASSOCTHRUSTMAJOR"     , 100, 0, 1);
- h_sig_ASSOCTHRUSTMINOR[0]      = TH1F( hname_sig_ASSOCTHRUSTMINOR     ,"ASSOCTHRUSTMINOR"     , 100, 0, 1);
- h_sig_AVFASSOCSPHERICITY[0]    = TH1F( hname_sig_AVFASSOCSPHERICITY   ,"AVFASSOCSPHERICITY"   , 100, 0, 1);
- h_sig_AVFASSOCTHRUSTMAJOR[0]   = TH1F( hname_sig_AVFASSOCTHRUSTMAJOR  ,"AVFASSOCTHRUSTMAJOR"  , 100, 0, 1);
- h_sig_AVFASSOCTHRUSTMINOR[0]   = TH1F( hname_sig_AVFASSOCTHRUSTMINOR  ,"AVFASSOCTHRUSTMINOR"  , 100, 0, 1);
- h_sig_BETA[0]                  = TH1F( hname_sig_BETA                 ,"BETA"                 , 100, 0, 1);
- h_sig_MEDIANIPLOG10SIG[0]      = TH1F( hname_sig_MEDIANIPLOG10SIG     ,"MEDIANIPLOG10SIG"     , 100, -1, 4);
- h_sig_MEDIANLOG10TRACKANGLE[0] = TH1F( hname_sig_MEDIANLOG10TRACKANGLE,"MEDIANLOG10TRACKANGLE", 100, -4, 1);
- h_sig_MISSINGINNER[0]          = TH1F( hname_sig_MISSINGINNER         ,"MISSINGINNER"         , 100, 0, 10);
- h_sig_SUMIP[0]                 = TH1F( hname_sig_SUMIP                ,"SUMIP"                , 100, 0, 750);
- h_sig_SUMIPSIG[0]              = TH1F( hname_sig_SUMIPSIG             ,"SUMIPSIG"             , 100, 0, 750);
- h_sig_TOTALTRACKPT[0]          = TH1F( hname_sig_TOTALTRACKPT         ,"TOTALTRACKPT"         , 100, 0, 200);
- h_sig_TOTALTRACKANGLE[0]       = TH1F( hname_sig_TOTALTRACKANGLE      ,"TOTALTRACKANGLE"      , 100, 0, 3.15);
- h_sig_HT[0]                    = TH1F( hname_sig_HT                   , "HT"                  , 100, 0, 1000);
- h_sig_Max_LEPTON_DPHI[0]       = TH1F( hname_sig_Max_LEPTON_DPHI      , "Max_LEPTON_DPHI"     , 100, 0, 3.15);
- h_sig_Max_MEDIANIPLOG10SIG[0]  = TH1F( hname_sig_Max_MEDIANIPLOG10SIG , "Max_MEDIANIPLOG10SIG", 100, -1, 4);
- h_sig_Max_SUMIPSIG[0]          = TH1F( hname_sig_Max_SUMIPSIG         , "Max_SUMIPSIG"        , 100, 0, 750);
- h_sig_Max_TOTALTRACKANGLE[0]   = TH1F( hname_sig_Max_TOTALTRACKANGLE  , "Max_TOTALTRACKANGLE" , 100, 0, 3.15);
- h_sig_MET[0]                   = TH1F( hname_sig_MET                  , "MET"                 , 100, 0, 300);
- h_sig_Min_LEPTON_DPHI[0]       = TH1F( hname_sig_Min_LEPTON_DPHI      , "Min_LEPTON_DPHI"     , 100, 0, 3.15);
- h_sig_Alt_MT[0]                = TH1F( hname_sig_Alt_MT               , "Alt_MT"              , 100, 0, 500);
- h_sig_PTOSSF[0]                = TH1F( hname_sig_PTOSSF               , "PTOSSF"              , 100, 0, 400);
- h_sig_Alt_WPT[0]               = TH1F( hname_sig_Alt_WPT              , "Alt_WPT"             , 100, 0, 1000);
+  // clear
+  h_sig_PT[i]                   .Clear();
+  h_sig_NGOODVERTICES[i]        .Clear();
+  h_sig_ALPHAMAX[i]             .Clear();
+  h_sig_ASSOCAPLANARITY[i]      .Clear();
+  h_sig_ASSOCIATEDTRACKPT[i]    .Clear();
+  h_sig_ASSOCSPHERICITY[i]      .Clear();
+  h_sig_ASSOCTHRUSTMAJOR[i]     .Clear();
+  h_sig_ASSOCTHRUSTMINOR[i]     .Clear();
+  h_sig_AVFASSOCSPHERICITY[i]   .Clear();
+  h_sig_AVFASSOCTHRUSTMAJOR[i]  .Clear();
+  h_sig_AVFASSOCTHRUSTMINOR[i]  .Clear();
+  h_sig_BETA[i]                 .Clear();
+  h_sig_MEDIANIPLOG10SIG[i]     .Clear();
+  h_sig_MEDIANLOG10TRACKANGLE[i].Clear();
+  h_sig_MISSINGINNER[i]         .Clear();
+  h_sig_SUMIP[i]                .Clear();
+  h_sig_SUMIPSIG[i]             .Clear();
+  h_sig_TOTALTRACKPT[i]         .Clear();
+  h_sig_TOTALTRACKANGLE[i]      .Clear();
+  h_sig_HT[i]                   .Clear();
+  h_sig_Max_LEPTON_DPHI[i]      .Clear();
+  h_sig_Max_MEDIANIPLOG10SIG[i] .Clear();
+  h_sig_Max_SUMIPSIG[i]         .Clear();
+  h_sig_Max_TOTALTRACKANGLE[i]  .Clear();
+  h_sig_MET[i]                  .Clear();
+  h_sig_Min_LEPTON_DPHI[i]      .Clear();
+  h_sig_Alt_MT[i]               .Clear();
+  h_sig_PTOSSF[i]               .Clear();
+  h_sig_Alt_WPT[i]              .Clear();
 
- // initialze weights
- h_sig_PT[0]                   .Sumw2();
- h_sig_NGOODVERTICES[0]        .Sumw2();
- h_sig_ALPHAMAX[0]             .Sumw2();
- h_sig_ASSOCAPLANARITY[0]      .Sumw2();
- h_sig_ASSOCIATEDTRACKPT[0]    .Sumw2();
- h_sig_ASSOCSPHERICITY[0]      .Sumw2();
- h_sig_ASSOCTHRUSTMAJOR[0]     .Sumw2();
- h_sig_ASSOCTHRUSTMINOR[0]     .Sumw2();
- h_sig_AVFASSOCSPHERICITY[0]   .Sumw2();
- h_sig_AVFASSOCTHRUSTMAJOR[0]  .Sumw2();
- h_sig_AVFASSOCTHRUSTMINOR[0]  .Sumw2();
- h_sig_BETA[0]                 .Sumw2();
- h_sig_MEDIANIPLOG10SIG[0]     .Sumw2();
- h_sig_MEDIANLOG10TRACKANGLE[0].Sumw2();
- h_sig_MISSINGINNER[0]         .Sumw2();
- h_sig_SUMIP[0]                .Sumw2();
- h_sig_SUMIPSIG[0]             .Sumw2();
- h_sig_TOTALTRACKPT[0]         .Sumw2();
- h_sig_TOTALTRACKANGLE[0]      .Sumw2();
- h_sig_HT[0]                   .Sumw2();
- h_sig_Max_LEPTON_DPHI[0]      .Sumw2();
- h_sig_Max_MEDIANIPLOG10SIG[0] .Sumw2();
- h_sig_Max_SUMIPSIG[0]         .Sumw2();
- h_sig_Max_TOTALTRACKANGLE[0]  .Sumw2();
- h_sig_MET[0]                  .Sumw2();
- h_sig_Min_LEPTON_DPHI[0]      .Sumw2();
- h_sig_Alt_MT[0]               .Sumw2();
- h_sig_PTOSSF[0]               .Sumw2();
- h_sig_Alt_WPT[0]              .Sumw2();
+  // initialize
+  h_sig_PT[i]                    = TH1F( hname_sig_PT                   ,"PT"                   , 500,0,500);
+  h_sig_NGOODVERTICES[i]         = TH1F( hname_sig_NGOODVERTICES        ,"NGOODVERTICES"        , 60,0,60);
+  h_sig_ALPHAMAX[i]              = TH1F( hname_sig_ALPHAMAX             ,"ALPHAMAX"             , 100, 0, 1);
+  h_sig_ASSOCAPLANARITY[i]       = TH1F( hname_sig_ASSOCAPLANARITY      ,"ASSOCAPLANARITY"      , 100, 0, 1);
+  h_sig_ASSOCIATEDTRACKPT[i]     = TH1F( hname_sig_ASSOCIATEDTRACKPT    ,"ASSOCIATEDTRACKPT"    , 200, 0, 200);
+  h_sig_ASSOCSPHERICITY[i]       = TH1F( hname_sig_ASSOCSPHERICITY      ,"ASSOCSPHERICITY"      , 100, 0, 1);
+  h_sig_ASSOCTHRUSTMAJOR[i]      = TH1F( hname_sig_ASSOCTHRUSTMAJOR     ,"ASSOCTHRUSTMAJOR"     , 100, 0, 1);
+  h_sig_ASSOCTHRUSTMINOR[i]      = TH1F( hname_sig_ASSOCTHRUSTMINOR     ,"ASSOCTHRUSTMINOR"     , 100, 0, 1);
+  h_sig_AVFASSOCSPHERICITY[i]    = TH1F( hname_sig_AVFASSOCSPHERICITY   ,"AVFASSOCSPHERICITY"   , 100, 0, 1);
+  h_sig_AVFASSOCTHRUSTMAJOR[i]   = TH1F( hname_sig_AVFASSOCTHRUSTMAJOR  ,"AVFASSOCTHRUSTMAJOR"  , 100, 0, 1);
+  h_sig_AVFASSOCTHRUSTMINOR[i]   = TH1F( hname_sig_AVFASSOCTHRUSTMINOR  ,"AVFASSOCTHRUSTMINOR"  , 100, 0, 1);
+  h_sig_BETA[i]                  = TH1F( hname_sig_BETA                 ,"BETA"                 , 100, 0, 1);
+  h_sig_MEDIANIPLOG10SIG[i]      = TH1F( hname_sig_MEDIANIPLOG10SIG     ,"MEDIANIPLOG10SIG"     , 100, -1, 4);
+  h_sig_MEDIANLOG10TRACKANGLE[i] = TH1F( hname_sig_MEDIANLOG10TRACKANGLE,"MEDIANLOG10TRACKANGLE", 100, -4, 1);
+  h_sig_MISSINGINNER[i]          = TH1F( hname_sig_MISSINGINNER         ,"MISSINGINNER"         , 100, 0, 10);
+  h_sig_SUMIP[i]                 = TH1F( hname_sig_SUMIP                ,"SUMIP"                , 100, 0, 750);
+  h_sig_SUMIPSIG[i]              = TH1F( hname_sig_SUMIPSIG             ,"SUMIPSIG"             , 100, 0, 750);
+  h_sig_TOTALTRACKPT[i]          = TH1F( hname_sig_TOTALTRACKPT         ,"TOTALTRACKPT"         , 100, 0, 200);
+  h_sig_TOTALTRACKANGLE[i]       = TH1F( hname_sig_TOTALTRACKANGLE      ,"TOTALTRACKANGLE"      , 100, 0, 3.15);
+  h_sig_HT[i]                    = TH1F( hname_sig_HT                   , "HT"                  , 100, 0, 1000);
+  h_sig_Max_LEPTON_DPHI[i]       = TH1F( hname_sig_Max_LEPTON_DPHI      , "Max_LEPTON_DPHI"     , 100, 0, 3.15);
+  h_sig_Max_MEDIANIPLOG10SIG[i]  = TH1F( hname_sig_Max_MEDIANIPLOG10SIG , "Max_MEDIANIPLOG10SIG", 100, -1, 4);
+  h_sig_Max_SUMIPSIG[i]          = TH1F( hname_sig_Max_SUMIPSIG         , "Max_SUMIPSIG"        , 100, 0, 750);
+  h_sig_Max_TOTALTRACKANGLE[i]   = TH1F( hname_sig_Max_TOTALTRACKANGLE  , "Max_TOTALTRACKANGLE" , 100, 0, 3.15);
+  h_sig_MET[i]                   = TH1F( hname_sig_MET                  , "MET"                 , 100, 0, 300);
+  h_sig_Min_LEPTON_DPHI[i]       = TH1F( hname_sig_Min_LEPTON_DPHI      , "Min_LEPTON_DPHI"     , 100, 0, 3.15);
+  h_sig_Alt_MT[i]                = TH1F( hname_sig_Alt_MT               , "Alt_MT"              , 100, 0, 500);
+  h_sig_PTOSSF[i]                = TH1F( hname_sig_PTOSSF               , "PTOSSF"              , 100, 0, 400);
+  h_sig_Alt_WPT[i]               = TH1F( hname_sig_Alt_WPT              , "Alt_WPT"             , 100, 0, 1000);
+
+  // initialze weights
+  h_sig_PT[i]                   .Sumw2();
+  h_sig_NGOODVERTICES[i]        .Sumw2();
+  h_sig_ALPHAMAX[i]             .Sumw2();
+  h_sig_ASSOCAPLANARITY[i]      .Sumw2();
+  h_sig_ASSOCIATEDTRACKPT[i]    .Sumw2();
+  h_sig_ASSOCSPHERICITY[i]      .Sumw2();
+  h_sig_ASSOCTHRUSTMAJOR[i]     .Sumw2();
+  h_sig_ASSOCTHRUSTMINOR[i]     .Sumw2();
+  h_sig_AVFASSOCSPHERICITY[i]   .Sumw2();
+  h_sig_AVFASSOCTHRUSTMAJOR[i]  .Sumw2();
+  h_sig_AVFASSOCTHRUSTMINOR[i]  .Sumw2();
+  h_sig_BETA[i]                 .Sumw2();
+  h_sig_MEDIANIPLOG10SIG[i]     .Sumw2();
+  h_sig_MEDIANLOG10TRACKANGLE[i].Sumw2();
+  h_sig_MISSINGINNER[i]         .Sumw2();
+  h_sig_SUMIP[i]                .Sumw2();
+  h_sig_SUMIPSIG[i]             .Sumw2();
+  h_sig_TOTALTRACKPT[i]         .Sumw2();
+  h_sig_TOTALTRACKANGLE[i]      .Sumw2();
+  h_sig_HT[i]                   .Sumw2();
+  h_sig_Max_LEPTON_DPHI[i]      .Sumw2();
+  h_sig_Max_MEDIANIPLOG10SIG[i] .Sumw2();
+  h_sig_Max_SUMIPSIG[i]         .Sumw2();
+  h_sig_Max_TOTALTRACKANGLE[i]  .Sumw2();
+  h_sig_MET[i]                  .Sumw2();
+  h_sig_Min_LEPTON_DPHI[i]      .Sumw2();
+  h_sig_Alt_MT[i]               .Sumw2();
+  h_sig_PTOSSF[i]               .Sumw2();
+  h_sig_Alt_WPT[i]              .Sumw2();
+ }
 
  return kTRUE;
 }
 
 //----------------------------fillSigHistograms
-Bool_t analyzer_signal::fillSigHistograms(Double_t weight)
+Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin)
 {
 
  //printf("fillSigHistograms\n");
- h_sig_PT[0]                   .Fill(vars_PT_BASICCALOJETS1PT20MATCHED,weight);                                              
- h_sig_NGOODVERTICES[0]        .Fill(vars_NGOODVERTICES,weight);                                   
- h_sig_ALPHAMAX[0]             .Fill(vars_ALPHAMAX_BASICCALOJETS1PT20MATCHED,weight);                                        
- h_sig_ASSOCAPLANARITY[0]      .Fill(vars_ASSOCAPLANARITY_BASICCALOJETS1PT20MATCHED,weight);                                 
- h_sig_ASSOCIATEDTRACKPT[0]    .Fill(vars_ASSOCIATEDTRACKPT_BASICCALOJETS1PT20MATCHED,weight);                               
- h_sig_ASSOCSPHERICITY[0]      .Fill(vars_ASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED,weight);                                 
- h_sig_ASSOCTHRUSTMAJOR[0]     .Fill(vars_ASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED,weight);                                
- h_sig_ASSOCTHRUSTMINOR[0]     .Fill(vars_ASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED,weight);                                
- h_sig_AVFASSOCSPHERICITY[0]   .Fill(vars_AVFASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED,weight);                              
- h_sig_AVFASSOCTHRUSTMAJOR[0]  .Fill(vars_AVFASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED,weight);                             
- h_sig_AVFASSOCTHRUSTMINOR[0]  .Fill(vars_AVFASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED,weight);                             
- h_sig_BETA[0]                 .Fill(vars_BETA_BASICCALOJETS1PT20MATCHED,weight);                                            
- h_sig_MEDIANIPLOG10SIG[0]     .Fill(vars_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED,weight);                                
- h_sig_MEDIANLOG10TRACKANGLE[0].Fill(vars_MEDIANLOG10TRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);                           
- h_sig_MISSINGINNER[0]         .Fill(vars_MISSINGINNER_BASICCALOJETS1PT20MATCHED,weight);                                    
- h_sig_SUMIP[0]                .Fill(vars_SUMIP_BASICCALOJETS1PT20MATCHED,weight);                                           
- h_sig_SUMIPSIG[0]             .Fill(vars_SUMIPSIG_BASICCALOJETS1PT20MATCHED,weight);                                        
- h_sig_TOTALTRACKPT[0]         .Fill(vars_TOTALTRACKPT_BASICCALOJETS1PT20MATCHED,weight);                                    
- h_sig_TOTALTRACKANGLE[0]      .Fill(vars_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);                                 
- h_sig_HT[0]                   .Fill(vars_HT,weight);                                              
- h_sig_Max_LEPTON_DPHI[0]      .Fill(vars_Max_LEPTON_DPHI,weight);                                 
- h_sig_Max_MEDIANIPLOG10SIG[0] .Fill(vars_Max_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED,weight);  
- h_sig_Max_SUMIPSIG[0]         .Fill(vars_Max_SUMIPSIG_BASICCALOJETS1PT20MATCHED,weight);          
- h_sig_Max_TOTALTRACKANGLE[0]  .Fill(vars_Max_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);   
- h_sig_MET[0]                  .Fill(vars_MET,weight);                                             
- h_sig_Min_LEPTON_DPHI[0]      .Fill(vars_Min_LEPTON_DPHI,weight);                                 
- h_sig_Alt_MT[0]               .Fill(vars_Alt_MT,weight);                                          
- h_sig_PTOSSF[0]               .Fill(vars_PTOSSF,weight);                                          
- h_sig_Alt_WPT[0]              .Fill(vars_Alt_WPT,weight);                                         
+ h_sig_PT[selbin]                   .Fill(vars_PT_BASICCALOJETS1PT20MATCHED,weight);                                              
+ h_sig_NGOODVERTICES[selbin]        .Fill(vars_NGOODVERTICES,weight);                                   
+ h_sig_ALPHAMAX[selbin]             .Fill(vars_ALPHAMAX_BASICCALOJETS1PT20MATCHED,weight);                                        
+ h_sig_ASSOCAPLANARITY[selbin]      .Fill(vars_ASSOCAPLANARITY_BASICCALOJETS1PT20MATCHED,weight);                                 
+ h_sig_ASSOCIATEDTRACKPT[selbin]    .Fill(vars_ASSOCIATEDTRACKPT_BASICCALOJETS1PT20MATCHED,weight);                               
+ h_sig_ASSOCSPHERICITY[selbin]      .Fill(vars_ASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED,weight);                                 
+ h_sig_ASSOCTHRUSTMAJOR[selbin]     .Fill(vars_ASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED,weight);                                
+ h_sig_ASSOCTHRUSTMINOR[selbin]     .Fill(vars_ASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED,weight);                                
+ h_sig_AVFASSOCSPHERICITY[selbin]   .Fill(vars_AVFASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED,weight);                              
+ h_sig_AVFASSOCTHRUSTMAJOR[selbin]  .Fill(vars_AVFASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED,weight);                             
+ h_sig_AVFASSOCTHRUSTMINOR[selbin]  .Fill(vars_AVFASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED,weight);                             
+ h_sig_BETA[selbin]                 .Fill(vars_BETA_BASICCALOJETS1PT20MATCHED,weight);                                            
+ h_sig_MEDIANIPLOG10SIG[selbin]     .Fill(vars_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED,weight);                                
+ h_sig_MEDIANLOG10TRACKANGLE[selbin].Fill(vars_MEDIANLOG10TRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);                           
+ h_sig_MISSINGINNER[selbin]         .Fill(vars_MISSINGINNER_BASICCALOJETS1PT20MATCHED,weight);                                    
+ h_sig_SUMIP[selbin]                .Fill(vars_SUMIP_BASICCALOJETS1PT20MATCHED,weight);                                           
+ h_sig_SUMIPSIG[selbin]             .Fill(vars_SUMIPSIG_BASICCALOJETS1PT20MATCHED,weight);                                        
+ h_sig_TOTALTRACKPT[selbin]         .Fill(vars_TOTALTRACKPT_BASICCALOJETS1PT20MATCHED,weight);                                    
+ h_sig_TOTALTRACKANGLE[selbin]      .Fill(vars_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);                                 
+ h_sig_HT[selbin]                   .Fill(vars_HT,weight);                                              
+ h_sig_Max_LEPTON_DPHI[selbin]      .Fill(vars_Max_LEPTON_DPHI,weight);                                 
+ h_sig_Max_MEDIANIPLOG10SIG[selbin] .Fill(vars_Max_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED,weight);  
+ h_sig_Max_SUMIPSIG[selbin]         .Fill(vars_Max_SUMIPSIG_BASICCALOJETS1PT20MATCHED,weight);          
+ h_sig_Max_TOTALTRACKANGLE[selbin]  .Fill(vars_Max_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED,weight);   
+ h_sig_MET[selbin]                  .Fill(vars_MET,weight);                                             
+ h_sig_Min_LEPTON_DPHI[selbin]      .Fill(vars_Min_LEPTON_DPHI,weight);                                 
+ h_sig_Alt_MT[selbin]               .Fill(vars_Alt_MT,weight);                                          
+ h_sig_PTOSSF[selbin]               .Fill(vars_PTOSSF,weight);                                          
+ h_sig_Alt_WPT[selbin]              .Fill(vars_Alt_WPT,weight);                                         
 
  return kTRUE;
 }
 
 //----------------------------writeSigHistograms
 //Bool_t analyzer_signal::writeSigHistograms(int ptbin, int sysbin)
-Bool_t analyzer_signal::writeSigHistograms()
+Bool_t analyzer_signal::writeSigHistograms(int selbin)
 {
  //printf("writeSigHistograms\n");
  //h_sig_MET[ptbin][sysbin].Write();
- h_sig_PT[0].Write();
- h_sig_NGOODVERTICES[0].Write();
+ h_sig_PT[selbin].Write();
+ h_sig_NGOODVERTICES[selbin].Write();
 
- h_sig_ALPHAMAX[0].Write();  // 0 1
- h_sig_ASSOCAPLANARITY[0].Write();  // 0 1
- h_sig_ASSOCIATEDTRACKPT[0].Write();  // 0 200
- h_sig_ASSOCSPHERICITY[0].Write();  // 0 1
- h_sig_ASSOCTHRUSTMAJOR[0].Write();  // 0 1
- h_sig_ASSOCTHRUSTMINOR[0].Write();  //0 1
- h_sig_AVFASSOCSPHERICITY[0].Write();  // 0 1
- h_sig_AVFASSOCTHRUSTMAJOR[0].Write();  // 0 1
- h_sig_AVFASSOCTHRUSTMINOR[0].Write();  // 0 1
- h_sig_BETA[0].Write();  // 0 1
- h_sig_MEDIANIPLOG10SIG[0].Write();  // -1 4
- h_sig_MEDIANLOG10TRACKANGLE[0].Write();  // -4 1
- h_sig_MISSINGINNER[0].Write();  // 0 10
- h_sig_SUMIP[0].Write();  // 0 750
- h_sig_SUMIPSIG[0].Write();  // 0 750
- h_sig_TOTALTRACKPT[0].Write();  // 0 200
- h_sig_TOTALTRACKANGLE[0].Write();  // 0 3.15
+ h_sig_ALPHAMAX[selbin].Write();  // 0 1
+ h_sig_ASSOCAPLANARITY[selbin].Write();  // 0 1
+ h_sig_ASSOCIATEDTRACKPT[selbin].Write();  // 0 200
+ h_sig_ASSOCSPHERICITY[selbin].Write();  // 0 1
+ h_sig_ASSOCTHRUSTMAJOR[selbin].Write();  // 0 1
+ h_sig_ASSOCTHRUSTMINOR[selbin].Write();  //0 1
+ h_sig_AVFASSOCSPHERICITY[selbin].Write();  // 0 1
+ h_sig_AVFASSOCTHRUSTMAJOR[selbin].Write();  // 0 1
+ h_sig_AVFASSOCTHRUSTMINOR[selbin].Write();  // 0 1
+ h_sig_BETA[selbin].Write();  // 0 1
+ h_sig_MEDIANIPLOG10SIG[selbin].Write();  // -1 4
+ h_sig_MEDIANLOG10TRACKANGLE[selbin].Write();  // -4 1
+ h_sig_MISSINGINNER[selbin].Write();  // 0 10
+ h_sig_SUMIP[selbin].Write();  // 0 750
+ h_sig_SUMIPSIG[selbin].Write();  // 0 750
+ h_sig_TOTALTRACKPT[selbin].Write();  // 0 200
+ h_sig_TOTALTRACKANGLE[selbin].Write();  // 0 3.15
 
- h_sig_HT[0].Write();  // 0 1000
- h_sig_Max_LEPTON_DPHI[0].Write();  // 0 3.15
- h_sig_Max_MEDIANIPLOG10SIG[0].Write();  // -1 4
- h_sig_Max_SUMIPSIG[0].Write();  // 0 750
- h_sig_Max_TOTALTRACKANGLE[0].Write();  // 0 3.15
- h_sig_MET[0].Write();  // 0 300
- h_sig_Min_LEPTON_DPHI[0].Write();  // 0 3.15
- h_sig_Alt_MT[0].Write();  // 0 500
- h_sig_PTOSSF[0].Write();  // 0 400
- h_sig_Alt_WPT[0].Write();  // 0 1000
+ h_sig_HT[selbin].Write();  // 0 1000
+ h_sig_Max_LEPTON_DPHI[selbin].Write();  // 0 3.15
+ h_sig_Max_MEDIANIPLOG10SIG[selbin].Write();  // -1 4
+ h_sig_Max_SUMIPSIG[selbin].Write();  // 0 750
+ h_sig_Max_TOTALTRACKANGLE[selbin].Write();  // 0 3.15
+ h_sig_MET[selbin].Write();  // 0 300
+ h_sig_Min_LEPTON_DPHI[selbin].Write();  // 0 3.15
+ h_sig_Alt_MT[selbin].Write();  // 0 500
+ h_sig_PTOSSF[selbin].Write();  // 0 400
+ h_sig_Alt_WPT[selbin].Write();  // 0 1000
  
  return kTRUE;
+}
+
+// cuts
+Bool_t analyzer_signal::askPassSig()
+{
+ Bool_t doespass = kFALSE;
+ return doespass;
+}
+
+Bool_t analyzer_signal::askPassZH()
+{
+ Bool_t doespass = kFALSE;
+ if(vars_hasGoodVertex > 0.5
+    //&& (vars_hasDoubleElTriggers > 0.5 || vars_hasDoubleMuTriggers > 0.5)
+    && vars_ONZ > 0.5 
+    && vars_PTOSSF > 50
+    && vars_NBASICCALOJETS > 0)
+ { doespass = kTRUE; }
+ return doespass;
+}
+
+Bool_t analyzer_signal::askPassDY()
+{
+ Bool_t doespass = kFALSE;
+ if(vars_hasGoodVertex > 0.5
+    //&& (vars_hasDoubleElTriggers > 0.5 || vars_hasDoubleMuTriggers > 0.5)
+    && vars_ONZ > 0.5 
+    && vars_PTOSSF < 50
+    && vars_NBASICCALOJETS > 0)
+ { doespass = kTRUE; }
+ return doespass;
+}
+
+Bool_t analyzer_signal::askPassOffZ()
+{
+ Bool_t doespass = kFALSE;
+ if(vars_hasGoodVertex > 0.5
+    //&& (vars_hasDoubleElTriggers > 0.5 || vars_hasDoubleMuTriggers > 0.5)
+    && vars_ONZ < 0.5 
+    && vars_NOSSF == 1
+    && vars_NBASICCALOJETS > 0)
+ { doespass = kTRUE; }
+ return doespass;
+}
+
+Bool_t analyzer_signal::askPassNoPair()
+{
+ Bool_t doespass = kFALSE;
+ if(vars_hasGoodVertex > 0.5
+    //&& (vars_hasDoubleElTriggers > 0.5 || vars_hasDoubleMuTriggers > 0.5)
+    && vars_ONZ < 0.5 
+    && vars_NOSSF == 0
+    && vars_NBASICCALOJETS > 0)
+ { doespass = kTRUE; }
+ return doespass;
 }
 
 analyzer_signal::analyzer_signal()

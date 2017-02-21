@@ -26,12 +26,6 @@ public :
    // initialize histogram varieties
    TString sysbinname;
 
-//   // initialize histograms
-//   TH1F h_sig_MET[1];
-//   TH1F h_sig_PT[1];
-//   TH1F h_sig_HT[1];
-//   TH1F h_sig_NGOODVERTICES[1];
-
    // initialize global variables
    Double_t event_weight;
 
