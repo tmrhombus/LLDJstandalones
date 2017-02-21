@@ -26,7 +26,7 @@ int main(){
  TString outfilename=path+"/test";
  TString inputListName=path+"/TTbar.txt";
 
- TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED"); ;
+ TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 

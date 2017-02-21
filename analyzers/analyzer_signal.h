@@ -39,15 +39,14 @@ public :
  TH1F h_sig_TOTALTRACKANGLE[1]                               ;
  TH1F h_sig_HT[1]                                            ;
  TH1F h_sig_Max_LEPTON_DPHI[1]                               ;
- TH1F h_sig_Max_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED[1];
- TH1F h_sig_Max_SUMIPSIG_BASICCALOJETS1PT20MATCHED[1]        ;
- TH1F h_sig_Max_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED[1] ;
+ TH1F h_sig_Max_MEDIANIPLOG10SIG[1]                          ;
+ TH1F h_sig_Max_SUMIPSIG[1]                                  ;
+ TH1F h_sig_Max_TOTALTRACKANGLE[1]                           ;
  TH1F h_sig_MET[1]                                           ;
  TH1F h_sig_Min_LEPTON_DPHI[1]                               ;
  TH1F h_sig_Alt_MT[1]                                        ;
  TH1F h_sig_PTOSSF[1]                                        ;
  TH1F h_sig_Alt_WPT[1]                                       ;
-
 
 };
 
