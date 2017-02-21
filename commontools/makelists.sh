@@ -130,6 +130,7 @@ fi
 if [ ${doSignal} = true ]
 then
  printf "Making Signal\n" 
+ grep -i 'HToSSTobbbb' ${outdir}/allfiles.txt  > ${outdir}/Signal.txt
  sed -i -e 's@allHistos@/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos@' ${outdir}/Signal.txt
 fi
 
