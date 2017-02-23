@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <unistd.h>
 
 #include "analyzer_signal.h"
 #include "TROOT.h"
@@ -10,21 +11,57 @@
 #include <vector>
 #include <map>
  
-int main(){
+int main(int argc, char **argv){
 
  // start stopwatch
  TStopwatch sw;
  sw.Start();
 
+ // for getting command line options
+ char *sample = NULL;
+ int index;
+ int s;
+
+ opterr = 0;
+
+ while ((s = getopt (argc, argv, "s:")) != -1)
+  switch (s)
+   {
+   case 's':
+    sample = optarg;
+    break;
+   case '?':
+    if (optopt == 's')
+     fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+    else if (isprint (optopt))
+     fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+    else
+     fprintf (stderr,
+              "Unknown option character `\\x%x'.\n",
+              optopt);
+    return 1;
+   default:
+    abort ();
+   }
+
+ for (index = optind; index < argc; index++)
+   printf ("Non-option argument %s\n", argv[index]);
+
+ printf ("running sample = %s\n", sample);
+
+ // easiest if we convert char to TString
+ TString Tsample = TString(sample);
+
  Double_t lumi=12900.;
- TString path = "../test";
+ TString inpath = "../lists";
+ TString outpath = "../roots";
 
  // MC vs Data
  Bool_t isMC=kTRUE;
  Bool_t makelog=kTRUE;
 
- TString outfilename=path+"/test";
- TString inputListName=path+"/TTbar.txt";
+ TString outfilename=outpath +"/"+Tsample;
+ TString inputListName=inpath+"/"+Tsample+".txt";
 
  TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
  theChain->Reset();
@@ -34,9 +71,9 @@ int main(){
 
  std::vector<TString> inputline_dump;
 
-  // sample-dependent input variables 
-  Double_t nrevents=22900.;
-  Double_t crosssection=1.;
+ // sample-dependent input variables 
+ Double_t nrevents     ;
+ Double_t crosssection ;
 
  // open file_name_list.txt
  std::ifstream inputfile;
@@ -51,7 +88,6 @@ int main(){
  TString Tinputline = "";
  
  // we have the file open, start reading lines one by one
- //while( !inputfile.eof() ) {
  while( std::getline(inputfile, inputline) ) {
   if( inputfile.fail() ) continue;
 
@@ -84,11 +120,11 @@ int main(){
   }
  } //while !inputfile.eof()
 
-  analyzer_signal a;
-  a.Init(theChain, makelog);
-  a.initSigHistograms();
+ analyzer_signal a;
+ a.Init(theChain, makelog);
+ a.initSigHistograms();
 
-  a.Loop(outfilename, isMC, lumi, nrevents, crosssection);
+ a.Loop(outfilename, isMC, lumi, nrevents, crosssection);
 
  // end stopwatch
  sw.Stop();

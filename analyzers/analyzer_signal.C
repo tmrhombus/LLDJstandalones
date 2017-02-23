@@ -292,7 +292,7 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin)
 // cuts
 Bool_t analyzer_signal::askPassSig()
 {
- Bool_t doespass = kFALSE;
+ Bool_t doespass = kTRUE;
  return doespass;
 }
 
