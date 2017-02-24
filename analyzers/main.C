@@ -19,19 +19,24 @@ int main(int argc, char **argv){
 
  // for getting command line options
  char *sample = NULL;
+ char *slumi = (char*)"12900";
  int index;
  int s;
+ int l;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:")) != -1)
   switch (s)
    {
+   case 'l':
+    slumi = optarg;
+    break;
    case 's':
     sample = optarg;
     break;
    case '?':
-    if (optopt == 's')
+    if (optopt == 's' || optopt == 'l')
      fprintf (stderr, "Option -%c requires an argument.\n", optopt);
     else if (isprint (optopt))
      fprintf (stderr, "Unknown option `-%c'.\n", optopt);
@@ -47,12 +52,13 @@ int main(int argc, char **argv){
  for (index = optind; index < argc; index++)
    printf ("Non-option argument %s\n", argv[index]);
 
- printf ("running sample = %s\n", sample);
+ printf ("Running sample:   %s\n", sample);
 
  // easiest if we convert char to TString
  TString Tsample = TString(sample);
+ TString TSlumi  = TString(slumi);
+ Double_t lumi   = TSlumi.Atof();
 
- Double_t lumi=12900.;
  TString inpath = "../lists";
  TString outpath = "../roots";
 
@@ -67,7 +73,7 @@ int main(int argc, char **argv){
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
- printf("Output File Name: %s\n", outfilename.Data()  ) ; 
+ printf("Output File Name: %s.root\n", outfilename.Data()  ) ; 
 
  std::vector<TString> inputline_dump;
 
@@ -96,29 +102,31 @@ int main(int argc, char **argv){
 
   //printf("Inputline: %s\n",Tinputline.Data());
 
-  // read crosssection
-  if( Tinputline.Contains("crosssection: ") ){  
-   Tinputline.ReplaceAll("crosssection: ","");
-   crosssection = Tinputline.Atof();
-   printf("crosssection: %f\n",crosssection);
-  }
-
-  // read nr events
-  if( Tinputline.Contains("nrevents: ") ){  
-   Tinputline.ReplaceAll("nrevents: ","");
-   nrevents = Tinputline.Atof();
-   printf("nrevents: %f\n",nrevents);
-  }
-
   // read input file names
   if( Tinputline.Contains("/store/group") ){
    //std::cout << "Input File Name: "  << Tinputline <<  std::endl;
    theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
    //theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
-   inputline_dump.push_back(inputline);
   }
+
+  // read crosssection
+  if( Tinputline.Contains("crosssection: ") ){  
+   Tinputline.ReplaceAll("crosssection: ","");
+   crosssection = Tinputline.Atof();
+   printf("\n  crosssection: %f\n",crosssection);
+  }
+
+  // read nr events
+  if( Tinputline.Contains("nrevents: ") ){  
+   Tinputline.ReplaceAll("nrevents: ","");
+   nrevents = Tinputline.Atof();
+   printf("  nrevents: %f\n",nrevents);
+  }
+  inputline_dump.push_back(inputline);
  } //while !inputfile.eof()
+
+ printf("  lumi: %f\n\n",lumi);
 
  analyzer_signal a;
  a.Init(theChain, makelog);
@@ -130,7 +138,7 @@ int main(int argc, char **argv){
  sw.Stop();
  printf("Real Time: %0.3f minutes\n",sw.RealTime()/60.0);
  printf("CPU Time: %0.3f minutes\n",sw.CpuTime()/60.0);
- printf("Done\n");
+ printf("Done with %s\n",Tsample.Data());
 
  return 0;
 }

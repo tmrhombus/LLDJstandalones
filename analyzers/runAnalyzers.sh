@@ -1,6 +1,4 @@
 #!/bin/bash
-
-outdir="${CMSSW_BASE}/src/LLDJstandalones/roots"
  
 for sample in \
  'DY50' \
@@ -19,7 +17,7 @@ for sample in \
  'Signal'
 
 do
- ./runanalyzer.exe -s ${sample}
+ ./runanalyzer.exe -s ${sample} -l "20000"
 done #for sample in DY50..
 
 
