@@ -21,6 +21,7 @@ int main(int argc, char **argv){
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";
+ char *sevts = (char*)"-1";
  int index;
  int s;
  int l;
@@ -28,9 +29,12 @@ int main(int argc, char **argv){
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:")) != -1)
   switch (s)
    {
+   case 'e':
+    sevts = optarg;
+    break;
    case 'x':
     sxname = optarg;
     break;
@@ -64,6 +68,8 @@ int main(int argc, char **argv){
  TString Txname  = TString(sxname);
  TString TSlumi  = TString(slumi);
  Double_t lumi   = TSlumi.Atof();
+ TString TSevts  = TString(sevts);
+ Int_t TIevts    = TSevts.Atoi();
 
  TString inpath = "../lists";
  TString outpath = "../roots";
@@ -138,13 +144,13 @@ int main(int argc, char **argv){
  a.Init(theChain, makelog);
  a.initSigHistograms();
 
- a.Loop(outfilename, isMC, lumi, nrevents, crosssection);
+ a.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
 
  // end stopwatch
  sw.Stop();
  printf("Real Time: %0.3f minutes\n",sw.RealTime()/60.0);
  printf("CPU Time: %0.3f minutes\n",sw.CpuTime()/60.0);
- printf("Done with %s\n",Tsample.Data());
+ printf("Done with %s\n\n\n",Tsample.Data());
 
  return 0;
 }

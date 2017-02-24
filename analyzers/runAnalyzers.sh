@@ -17,7 +17,7 @@ for sample in \
  'Signal'
 
 do
- ./runanalyzer.exe -s ${sample} -l "20000" -x ""
+ ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "24000"
 done #for sample in DY50..
 
 

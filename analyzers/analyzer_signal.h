@@ -12,7 +12,7 @@ public :
  virtual       ~analyzer_signal();
  virtual void  Loop(TString outfilename, Bool_t isMC,
                     Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec);
+                    Double_t crossSec, Int_t nevts);
  Bool_t        initSigHistograms();
  Bool_t        fillSigHistograms(Double_t weight,int selbin);
  Bool_t        writeSigHistograms(int selbin);
@@ -34,35 +34,35 @@ public :
 
  // initialize histograms as global
  //  selbins = NoSel, Sig, ZH, DY, OffZ, NoPair
- TH1F h_sig_PT[6]                                            ;
- TH1F h_sig_NGOODVERTICES[6]                                 ;
- TH1F h_sig_ALPHAMAX[6]                                      ;
- TH1F h_sig_ASSOCAPLANARITY[6]                               ;
- TH1F h_sig_ASSOCIATEDTRACKPT[6]                             ;
- TH1F h_sig_ASSOCSPHERICITY[6]                               ;
- TH1F h_sig_ASSOCTHRUSTMAJOR[6]                              ;
- TH1F h_sig_ASSOCTHRUSTMINOR[6]                              ;
- TH1F h_sig_AVFASSOCSPHERICITY[6]                            ;
- TH1F h_sig_AVFASSOCTHRUSTMAJOR[6]                           ;
- TH1F h_sig_AVFASSOCTHRUSTMINOR[6]                           ;
- TH1F h_sig_BETA[6]                                          ;
- TH1F h_sig_MEDIANIPLOG10SIG[6]                              ;
- TH1F h_sig_MEDIANLOG10TRACKANGLE[6]                         ;
- TH1F h_sig_MISSINGINNER[6]                                  ;
- TH1F h_sig_SUMIP[6]                                         ;
- TH1F h_sig_SUMIPSIG[6]                                      ;
- TH1F h_sig_TOTALTRACKPT[6]                                  ;
- TH1F h_sig_TOTALTRACKANGLE[6]                               ;
- TH1F h_sig_HT[6]                                            ;
- TH1F h_sig_Max_LEPTON_DPHI[6]                               ;
- TH1F h_sig_Max_MEDIANIPLOG10SIG[6]                          ;
- TH1F h_sig_Max_SUMIPSIG[6]                                  ;
- TH1F h_sig_Max_TOTALTRACKANGLE[6]                           ;
- TH1F h_sig_MET[6]                                           ;
- TH1F h_sig_Min_LEPTON_DPHI[6]                               ;
- TH1F h_sig_Alt_MT[6]                                        ;
- TH1F h_sig_PTOSSF[6]                                        ;
- TH1F h_sig_Alt_WPT[6]                                       ;
+ TH1F h_PT[6]                                            ;
+ TH1F h_NGOODVERTICES[6]                                 ;
+ TH1F h_ALPHAMAX[6]                                      ;
+ TH1F h_ASSOCAPLANARITY[6]                               ;
+ TH1F h_ASSOCIATEDTRACKPT[6]                             ;
+ TH1F h_ASSOCSPHERICITY[6]                               ;
+ TH1F h_ASSOCTHRUSTMAJOR[6]                              ;
+ TH1F h_ASSOCTHRUSTMINOR[6]                              ;
+ TH1F h_AVFASSOCSPHERICITY[6]                            ;
+ TH1F h_AVFASSOCTHRUSTMAJOR[6]                           ;
+ TH1F h_AVFASSOCTHRUSTMINOR[6]                           ;
+ TH1F h_BETA[6]                                          ;
+ TH1F h_MEDIANIPLOG10SIG[6]                              ;
+ TH1F h_MEDIANLOG10TRACKANGLE[6]                         ;
+ TH1F h_MISSINGINNER[6]                                  ;
+ TH1F h_SUMIP[6]                                         ;
+ TH1F h_SUMIPSIG[6]                                      ;
+ TH1F h_TOTALTRACKPT[6]                                  ;
+ TH1F h_TOTALTRACKANGLE[6]                               ;
+ TH1F h_HT[6]                                            ;
+ TH1F h_Max_LEPTON_DPHI[6]                               ;
+ TH1F h_Max_MEDIANIPLOG10SIG[6]                          ;
+ TH1F h_Max_SUMIPSIG[6]                                  ;
+ TH1F h_Max_TOTALTRACKANGLE[6]                           ;
+ TH1F h_MET[6]                                           ;
+ TH1F h_Min_LEPTON_DPHI[6]                               ;
+ TH1F h_Alt_MT[6]                                        ;
+ TH1F h_PTOSSF[6]                                        ;
+ TH1F h_Alt_WPT[6]                                       ;
 
 };
 
