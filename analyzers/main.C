@@ -20,15 +20,20 @@ int main(int argc, char **argv){
  // for getting command line options
  char *sample = NULL;
  char *slumi = (char*)"12900";
+ char *sxname = (char*)"";
  int index;
  int s;
  int l;
+ int x;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:")) != -1)
   switch (s)
    {
+   case 'x':
+    sxname = optarg;
+    break;
    case 'l':
     slumi = optarg;
     break;
@@ -56,6 +61,7 @@ int main(int argc, char **argv){
 
  // easiest if we convert char to TString
  TString Tsample = TString(sample);
+ TString Txname  = TString(sxname);
  TString TSlumi  = TString(slumi);
  Double_t lumi   = TSlumi.Atof();
 
@@ -66,7 +72,7 @@ int main(int argc, char **argv){
  Bool_t isMC=kTRUE;
  Bool_t makelog=kTRUE;
 
- TString outfilename=outpath +"/"+Tsample;
+ TString outfilename=outpath +"/"+Tsample+Txname;
  TString inputListName=inpath+"/"+Tsample+".txt";
 
  TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
