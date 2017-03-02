@@ -18,6 +18,10 @@ int main(int argc, char **argv){
  sw.Start();
 
  // for getting command line options
+ // s - sample name
+ // l - lumi
+ // x - extra name
+ // e - nr events to run over
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";

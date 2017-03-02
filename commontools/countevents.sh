@@ -2,19 +2,19 @@
 
 outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
  
-doDY50=true
-doDY5to50=true
-doTTbar=true
-doSTs=true
-doSTtbar=true
-doSTt=true
-doSTtbarW=true
-doSTtW=true
-doWJets=true
-doZHtoLLbb=true
-doWW=true
-doZZ=true
-doWZ=true
+doDY50=false
+doDY5to50=false
+doTTbar=false
+doSTs=false
+doSTtbar=false
+doSTt=false
+doSTtbarW=false
+doSTtW=false
+doWJets=false
+doZHtoLLbb=false
+doWW=false
+doZZ=false
+doWZ=false
 doSignal=true
 
 xcDY50="6025.0"                   
@@ -155,6 +155,6 @@ then
  grep -v "crosssection" ${outdir}/Signal.txt > temp && mv temp ${outdir}/Signal.txt 
  grep -v "nrevents" ${outdir}/Signal.txt > temp && mv temp ${outdir}/Signal.txt 
  printf "crosssection: %s\n" ${xcSignal} >> ${outdir}/Signal.txt
- root -l -b -q countevents.cxx\('"Signal.txt"'\)
+ root -l -b -q countevents.cxx\('"Signal.txt",kTRUE'\)
 fi
 
