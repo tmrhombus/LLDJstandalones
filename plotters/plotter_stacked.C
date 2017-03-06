@@ -199,6 +199,7 @@ void plotter_stacked()
    extra->DrawTextNDC(0.23,0.91,"Preliminary");
    lumi->DrawTextNDC(0.9,0.91,"20 /fb (13 TeV)");
    bgstack->GetXaxis()->SetTitle(h_TTbar->GetTitle());
+   bgstack->GetYaxis()->SetTitle("Events / bin");
 
    gPad->Update();
    gPad->RedrawAxis();
