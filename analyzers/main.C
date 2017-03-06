@@ -26,16 +26,21 @@ int main(int argc, char **argv){
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";
  char *sevts = (char*)"-1";
+ char *jettype = (char*)"ALLCALOJETS";
  int index;
  int s;
  int l;
  int x;
+ int j;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:e:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:j:")) != -1)
   switch (s)
    {
+   case 'j':
+    jettype = optarg;
+    break;
    case 'e':
     sevts = optarg;
     break;
@@ -68,12 +73,13 @@ int main(int argc, char **argv){
  printf ("Running sample:   %s\n", sample);
 
  // easiest if we convert char to TString
- TString Tsample = TString(sample);
- TString Txname  = TString(sxname);
- TString TSlumi  = TString(slumi);
- Double_t lumi   = TSlumi.Atof();
- TString TSevts  = TString(sevts);
- Int_t TIevts    = TSevts.Atoi();
+ TString Tsample  = TString(sample);
+ TString Txname   = TString(sxname);
+ TString TSlumi   = TString(slumi);
+ Double_t lumi    = TSlumi.Atof();
+ TString TSevts   = TString(sevts);
+ Int_t TIevts     = TSevts.Atoi();
+ TString Tjettype = TString(jettype);
 
  TString inpath = "../lists";
  TString outpath = "../roots";
@@ -82,10 +88,11 @@ int main(int argc, char **argv){
  Bool_t isMC=kTRUE;
  Bool_t makelog=kTRUE;
 
- TString outfilename=outpath +"/"+Tsample+Txname;
+ TString outfilename=outpath +"/"+Tsample+"_"+Tjettype+Txname;
  TString inputListName=inpath+"/"+Tsample+".txt";
 
- TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
+ TChain *theChain = new TChain("treeR");
+ //TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
@@ -119,9 +126,11 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  if( Tinputline.Contains("/store/group") ){
+  if( Tinputline.Contains("/home/rhombus") ){
+  //if( Tinputline.Contains("/store/group") ){
    //std::cout << "Input File Name: "  << Tinputline <<  std::endl;
-   theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+   theChain->Add( Tinputline );
+   //theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
    //theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
@@ -145,8 +154,9 @@ int main(int argc, char **argv){
  printf("  lumi: %f\n\n",lumi);
 
  analyzer_signal a;
- a.Init(theChain, makelog);
+ a.Init(theChain, makelog, Tjettype);
  a.initSigHistograms();
+ a.initJetHistograms();
 
  a.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
 
