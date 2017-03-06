@@ -49,6 +49,8 @@ void countevents(TString listname, Bool_t doSingle=kFALSE){
    ntotal+=nevents;
    printf("file: %s \n events: %.1f \n",Tinputline.Data(),nevents);
 
+   theFile->Close();
+
    // write each line w/ nrevents to indivdual file
    if(doSingle){
 
