@@ -120,13 +120,13 @@ fi
 if [ ${doZHtoLLbb} = true ]
 then
  printf "Making ZHtoLLbb\n" 
- fullsamplename=$(grep -i 'ZH_HToBB_ZToLL' ${outdir}/allfiles.txt)
+ fullsamplename=$(grep -i '^ZH_HToBB_ZToLL' ${outdir}/allfiles.txt)
  printf "%s/%s\n" ${initpath} ${fullsamplename}
  for sample in ${fullsamplename}
  do
   printf "%s/%s\n" ${initpath} ${sample}
-  eos root://cmseos.fnal.gov ls ${initpath}/${sample} > ${outdir}/${sample}.txt
-  sed -i -e "s@histo_@${initpath}/${sample}/histo_@" ${outdir}/${sample}.txt
+  eos root://cmseos.fnal.gov ls ${initpath}/${sample} > ${outdir}/ZHtoLLbb.txt
+  sed -i -e "s@histo_@${initpath}/${sample}/histo_@" ${outdir}/ZHtoLLbb.txt
  done
 fi
 
