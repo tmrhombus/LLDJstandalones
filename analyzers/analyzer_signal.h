@@ -39,6 +39,7 @@ public :
  Bool_t doesPassOffZ;
  Bool_t doesPassNoPair;
 
+ Int_t ntot;
  Int_t npassSig;
  Int_t npassZH;
  Int_t npassDY;

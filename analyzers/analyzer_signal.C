@@ -21,6 +21,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   nentries = Long64_t(nevts);
  }
 
+ ntot=0;
  npassSig=0;
  npassZH=0;
  npassDY=0;
@@ -42,6 +43,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
 
   // make event weight
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
+  ntot++;
 
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
@@ -63,6 +65,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
 
  } // end loop over entries
 
+ printf(" ntot        %i \n",ntot        ); 
  printf(" npassSig    %i \n",npassSig    ); 
  printf(" npassZH     %i \n",npassZH     ); 
  printf(" npassDY     %i \n",npassDY     ); 
@@ -677,14 +680,14 @@ Bool_t analyzer_signal::askPassZH()
  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
  
- //printf("trying event\n");
- //printf(" safeNGOODVERTICES      %i \n", safeNGOODVERTICES    ) ;
- //printf(" safeNDoubleElTriggers  %i \n", safeNDoubleElTriggers) ;
- //printf(" safeNDoubleMuTriggers  %i \n", safeNDoubleMuTriggers) ;
- //printf(" safeNOSSF              %i \n", safeNOSSF            ) ;
- //printf(" safeMOSSF              %f \n", safeMOSSF            ) ;
- //printf(" safePTOSSF             %f \n", safePTOSSF           ) ;
- //printf(" safeJetNJets           %i \n\n", safeJetNJets         ) ;
+ printf("trying event\n");
+ printf(" safeNGOODVERTICES      %i \n", safeNGOODVERTICES    ) ;
+ printf(" safeNDoubleElTriggers  %i \n", safeNDoubleElTriggers) ;
+ printf(" safeNDoubleMuTriggers  %i \n", safeNDoubleMuTriggers) ;
+ printf(" safeNOSSF              %i \n", safeNOSSF            ) ;
+ printf(" safeMOSSF              %f \n", safeMOSSF            ) ;
+ printf(" safePTOSSF             %f \n", safePTOSSF           ) ;
+ printf(" safeJetNJets           %i \n\n", safeJetNJets         ) ;
 
  if ( safeNGOODVERTICES > 0.5
      && ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )

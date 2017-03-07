@@ -92,7 +92,6 @@ int main(int argc, char **argv){
  TString inputListName=inpath+"/"+Tsample+".txt";
 
  TChain *theChain = new TChain("treeR");
- //TChain *theChain = new TChain("tree_BASICCALOJETS1PT20MATCHED");
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
@@ -126,12 +125,9 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  if( Tinputline.Contains("/home/rhombus") ){
-  //if( Tinputline.Contains("/store/group") ){
-   //std::cout << "Input File Name: "  << Tinputline <<  std::endl;
-   theChain->Add( Tinputline );
-   //theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-   //theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  if( Tinputline.Contains("/store/group") ){
+   std::cout << "Input File Name: "  << Tinputline <<  std::endl;
+   theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
