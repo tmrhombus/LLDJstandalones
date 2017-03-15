@@ -67,10 +67,10 @@ countalist ${doSTt}       "STt"        ${xcSTt}
 countalist ${doSTtbarW}   "STtbarW"    ${xcSTtbarW}  
 countalist ${doSTtW}      "STtW"       ${xcSTtW}     
 countalist ${doWJets}     "WJets"      ${xcWJets}    
-countalist ${doZHtoLLbb}  "ZHtoLLbb"   ${xcZHtoLLbb} 
 countalist ${doWW}        "WW"         ${xcWW}       
 countalist ${doZZ}        "ZZ"         ${xcZZ}       
 countalist ${doWZ}        "WZ"         ${xcWZ}       
 
-countmanylists ${doSignal} "Signal" ${xcSignal}
+countmanylists ${doZHtoLLbb} "ZHtoLLbb" ${xcZHtoLLbb} 
+countmanylists ${doSignal}   "Signal"   ${xcSignal}
 

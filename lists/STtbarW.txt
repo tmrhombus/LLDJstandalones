@@ -1,3 +1,0 @@
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_ST_tW_antitop_5f_NoFullyHadronicDecays_13TeV-powheg_TuneCUETP8M1_0.root
-crosssection: 38.09
-nrevents: 2381771.0 

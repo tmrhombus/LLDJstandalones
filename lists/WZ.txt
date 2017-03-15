@@ -1,3 +1,0 @@
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_WZ_TuneCUETP8M1_13TeV-pythia8_0.root
-crosssection: 118.7
-nrevents: 746920.0 
