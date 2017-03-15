@@ -1,30 +1,27 @@
 #!/bin/bash
 
-# make sure only .root files in in the lists
-outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
-
- #'Signal'
+# delete anything in our "list" that doesn't have .root at the end
 
 for sample in \
- "${outdir}/DY50.txt" \
- "${outdir}/DY5to50.txt" \
- "${outdir}/TTbar.txt" \
- "${outdir}/STs.txt" \
- "${outdir}/STtbar.txt" \
- "${outdir}/STt.txt" \
- "${outdir}/STtbarW.txt" \
- "${outdir}/STtW.txt" \
- "${outdir}/WJets.txt" \
- "${outdir}/ZHtoLLbb.txt" \
- "${outdir}/WW.txt" \
- "${outdir}/ZZ.txt" \
- "${outdir}/WZ.txt" \
- $(ls ${outdir}/Signal*txt)
+ "${listdir}/DY50.list" \
+ "${listdir}/DY5to50.list" \
+ "${listdir}/TTbar.list" \
+ "${listdir}/STs.list" \
+ "${listdir}/STtbar.list" \
+ "${listdir}/STt.list" \
+ "${listdir}/STtbarW.list" \
+ "${listdir}/STtW.list" \
+ "${listdir}/WJets.list" \
+ "${listdir}/ZHtoLLbb.list" \
+ "${listdir}/WW.list" \
+ "${listdir}/ZZ.list" \
+ "${listdir}/WZ.list" \
+ $(ls ${listdir}/Signal*list)
 
 
 do
 
  printf "%s\n" ${sample}
- sed -ne '/root/p' ${sample} > ${outdir}/temp && mv ${outdir}/temp ${sample}
+ sed -ne '/root/p' ${sample} > ${listdir}/temp && mv ${listdir}/temp ${sample}
 
 done # for sample in DY50

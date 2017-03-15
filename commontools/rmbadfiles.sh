@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# make sure only .root files in in the lists
-outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
+# remove bad files by hand
+sed '/161018_170954_1705.root/d' ${listdir}/DY50.list > temp && mv temp ${listdir}/DY50.list
 
-sed '/161018_170954_1705.root/d' ${outdir}/DY50.txt > temp && mv temp ${outdir}/DY50.txt
-
-sed '/161018_171029_1326.root/d' ${outdir}/TTbar.txt > temp && mv temp ${outdir}/TTbar.txt
-#
-#root -l root:://cmseos.fnal.gov://store/group/lpchbb/kreis/AnalysisTrees/TT_TuneCUETP8M1_13TeV-powheg-pythia8/histo_TT_TuneCUETP8M1_13TeV-powheg-pythia8_.root
+sed '/161018_171029_1326.root/d' ${listdir}/TTbar.list > temp && mv temp ${listdir}/TTbar.list

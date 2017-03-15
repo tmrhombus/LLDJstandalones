@@ -1,10 +1,16 @@
 #!/bin/bash
 
+# Makes a list of files in eos
+# then greps through to separate into samples
+# 
+# output files are xxx/lists/<sample>.list
+# formatted as one file per line: /store/group/xxx.root
+
 # don't forget to source setup.sh (from xxx/LLDJstandalones)
 mkdir -p "${listdir}"
 
 initpath="/store/group/lpchbb/kreis/AnalysisTrees"
-eos root://cmseos.fnal.gov ls ${initpath} > ${listdir}/allfiles.txt
+eos root://cmseos.fnal.gov ls ${initpath} > ${listdir}/allfiles.list
  
 doDY50=true
 doDY5to50=true
@@ -25,10 +31,10 @@ makealist () {
  if [ $1 = true ]
  then
   printf "Making %s\n" $2
-  fullsamplename=$(grep -i $3 ${listdir}/allfiles.txt)
+  fullsamplename=$(grep -i $3 ${listdir}/allfiles.list)
   printf "%s/%s\n" ${initpath} ${fullsamplename}
-  eos root://cmseos.fnal.gov ls ${initpath}/${fullsamplename} > ${listdir}/$2.txt
-  sed -i -e "s@histo_@${initpath}/${fullsamplename}/histo_@" ${listdir}/$2.txt
+  eos root://cmseos.fnal.gov ls ${initpath}/${fullsamplename} > ${listdir}/$2.list
+  sed -i -e "s@histo_@${initpath}/${fullsamplename}/histo_@" ${listdir}/$2.list
  fi
 }
 
@@ -36,13 +42,13 @@ makemanylists () {
 if [ $1 = true ]
 then
  printf "Making %s\n" $2
- fullsamplename=$(grep -i $3 ${listdir}/allfiles.txt)
+ fullsamplename=$(grep -i $3 ${listdir}/allfiles.list)
  printf "%s/%s\n" ${initpath} ${fullsamplename}
  for sample in ${fullsamplename}
  do
   printf "%s/%s\n" ${initpath} ${sample}
-  eos root://cmseos.fnal.gov ls ${initpath}/${sample} > ${listdir}/$2_${sample}.txt
-  sed -i -e "s@histo_@${initpath}/${sample}/histo_@" ${listdir}/$2_${sample}.txt
+  eos root://cmseos.fnal.gov ls ${initpath}/${sample} > ${listdir}/$2_${sample}.list
+  sed -i -e "s@histo_@${initpath}/${sample}/histo_@" ${listdir}/$2_${sample}.list
  done
 fi
 }
@@ -59,7 +65,7 @@ makealist ${doWJets}    "WJets"    "WJetsToLNu"
 makealist ${doWW}       "WW"       "WW_TuneCUETP8M1"          
 makealist ${doZZ}       "ZZ"       "ZZ_TuneCUETP8M1"          
 makealist ${doWZ}       "WZ"       "WZ_TuneCUETP8M1"          
-makealist ${doZHtoLLbb} "ZHtoLLbb" "ZH_HToBB_ZToLL" 
 
+makemanylists ${doZHtoLLbb} "ZHtoLLbb" "ZH_HToBB_ZToLL" 
 makemanylists ${doSignal}   "Signal"   "HToSSTobbbb" 
 
