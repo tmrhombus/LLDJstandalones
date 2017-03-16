@@ -1,9 +1,15 @@
 
 *.d
 *.o
+*.a
 *.log
 *.txt
 *.tex
 *.ignore
 *.exe
 *.root
+*~
+*.pyc
+*.out
+*.gz
+**/gitignore

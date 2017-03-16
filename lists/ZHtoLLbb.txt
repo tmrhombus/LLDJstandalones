@@ -1,4 +1,0 @@
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8_0.root
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_ggZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8_0.root
-crosssection: 0.051
-nrevents: 1968600.0 

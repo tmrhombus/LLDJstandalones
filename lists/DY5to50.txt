@@ -1,5 +1,0 @@
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-5to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_0.root
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-5to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_1.root
-/store/group/lpchbb/noreplica/stata/AnalysisTrees/addedHistos/allHistos_DYJetsToLL_M-5to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_2.root
-crosssection: 7160.0
-nrevents: 7559698.0 

@@ -4,114 +4,329 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include <TBranch.h>
-#include <TTree.h>
 #include <TH1F.h>
+
+#include "vector"
 
 class analyzer_base {
 public :
-   analyzer_base();
-   virtual          ~analyzer_base();
-   virtual Long64_t LoadTree(Long64_t entry);
-   virtual void     Init(TTree *tree, Bool_t domakelog);
-   Double_t         makeEventWeight(Double_t crossSec,
-                                    Double_t lumi,
-                                    Double_t nrEvents,
-                                    Bool_t isMC);
-
-   // global variables
-   Bool_t makelog;
-   FILE *logfile;
-
-   // initialize histogram varieties
-   TString sysbinname;
-
-   // initialize global variables
-   Double_t event_weight;
-
-   // selections
-   Bool_t passPT ;
-
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 
+   // global variables
+   Bool_t makelog;
+   FILE * logfile;
+   Double_t event_weight;
+
    // Declaration of leaf types
-   Double_t        vars_ONZ;
-   Double_t        vars_hasGoodVertex;
-   Double_t        vars_hasDoubleElTriggers;
-   Double_t        vars_hasDoubleMuTriggers;
-   Double_t        vars_hasSingleElTriggers;
-   Double_t        vars_hasSingleMuTriggers;
-   Double_t        vars_Max_LEPTON_DPHI;
-   Double_t        vars_Min_LEPTON_DPHI;
-   Double_t        vars_MET;
-   Double_t        vars_PTOSSF;
-   Double_t        vars_NOSSF;
-   Double_t        vars_NGOODVERTICES;
-   Double_t        vars_HT;
-   Double_t        vars_NBASICCALOJETS1PT20MATCHED;
-   Double_t        vars_Alt_MT;
-   Double_t        vars_Alt_WPT;
-   Double_t        vars_EVENT;
-   Double_t        vars_NBASICCALOJETS;
-   Double_t        vars_Min_ALPHAMAX_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_Max_SUMIPSIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_Max_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_Max_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MISSINGINNER_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MISSINGOUTER_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_NMATCHEDTRACKS_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_NTRACKSIPLT0P05_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_NTRACKSIPSIGGT10_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_NTRACKSIPSIGLT5_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ALPHAMAX2_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ALPHAMAXPRIME2_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ALPHAMAXPRIME_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ALPHAMAX_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ASSOCAPLANARITY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ASSOCIATEDTRACKPT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_BETA2_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_BETA_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_ETA_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_IVFSCORE_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_JETAREA_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_LEPDELTAR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_LINEARRADIALMOMENT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MEDIANIPLOG10SIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MEDIANIPLOGSIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MEDIANLOG10TRACKANGLE_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_METANGLE_DANGLE_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_METANGLE_DPHI_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_METDELTAR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_MISSHITSAFTERVERTPERTRACK_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_PHI_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_PT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_STUPAKPT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_STUPAKR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_SUMIPLOGSIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_SUMIPSIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_SUMIP_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_TOTALTRACKANGLEPT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_TOTALTRACKANGLE_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_TOTALTRACKPT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_TRACKENERGY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_TRACKMASS_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFASSOCAPLANARITY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFASSOCSPHERICITY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFASSOCTHRUSTMINOR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFASSOCTHRUSTMAJOR_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFVERTEXDISTANCETOBEAM_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFVERTEXTRACKENERGY_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFBEAMSPOTRECOILPT_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFVERTEXTRANSVERSESIG_BASICCALOJETS1PT20MATCHED;
-   Double_t        vars_AVFVERTEXTRACKMASS_BASICCALOJETS1PT20MATCHED;
+   // general
+   std::vector<unsigned char> *bits;
+   std::vector<int>     *LUMI;
+   std::vector<int>     *NBASICELECTRONS;
+   std::vector<int>     *NBASICMUONS;
+   std::vector<int>     *NDoubleElTriggers;
+   std::vector<int>     *NDoubleMuTriggers;
+   std::vector<int>     *NELECTRONS;
+   std::vector<int>     *NELECTRONS30;
+   std::vector<int>     *NELECTRONSFROMBOSON;
+   std::vector<int>     *NGOODELECTRONS;
+   std::vector<int>     *NGOODISONOISEFILTER;
+   std::vector<int>     *NGOODLEPTONS;
+   std::vector<int>     *NGOODMUONS;
+   std::vector<int>     *NGOODNOISEFILTER;
+   std::vector<int>     *NGOODVERTICES;
+   std::vector<int>     *NHTMETTriggers;
+   std::vector<int>     *NKSHORTS;
+   std::vector<int>     *NMUONS;
+   std::vector<int>     *NMUONS30;
+   std::vector<int>     *NMUONSFROMBOSON;
+   std::vector<int>     *NOSSF;
+   std::vector<int>     *NSingleElTriggers;
+   std::vector<int>     *NSingleMuTriggers;
+   std::vector<int>     *N_bJetsCSVL;
+   std::vector<int>     *N_bJetsCSVM;
+   std::vector<int>     *N_bosons;
+   std::vector<int>     *PU_NumInteractions;
+   std::vector<int>     *RUN;
+   std::vector<int>     *fakeIncarnation;
+   std::vector<double>  *ALLKSHORT_KSIP3DSIG;
+   std::vector<double>  *ALLKSHORT_LXYZSIG;
+   std::vector<double>  *ALLKSHORT_VERTEXNORMALIZEDCHI2;
+   std::vector<double>  *ELECTRON_PT;
+   std::vector<double>  *FLATWEIGHT;
+   std::vector<double>  *HLTHT;
+   std::vector<double>  *HSPH;
+   std::vector<double>  *HT;
+   std::vector<double>  *HTHLTID;
+   std::vector<double>  *HT_All;
+   std::vector<double>  *KSHORT_CTAU;
+   std::vector<double>  *KSHORT_KSIP2D;
+   std::vector<double>  *KSHORT_KSIP3D;
+   std::vector<double>  *KSHORT_LXY;
+   std::vector<double>  *KSHORT_LXYZ;
+   std::vector<double>  *KSHORT_MASS;
+   std::vector<double>  *KSHORT_P;
+   std::vector<double>  *KSHORT_PT;
+   std::vector<double>  *LEPTON_DANGLE;
+   std::vector<double>  *LEPTON_DPHI;
+   std::vector<double>  *LRM;
+   std::vector<double>  *LSPH;
+   std::vector<double>  *MET;
+   std::vector<double>  *MOSSF;
+   std::vector<double>  *MUON_PT;
+   std::vector<double>  *OSSFCLOSEMLL;
+   std::vector<double>  *OSSFMAXMLL;
+   std::vector<double>  *OSSFMINMLL;
+   std::vector<double>  *PTOSSF;
+   std::vector<double>  *SCALAR_PT;
+   std::vector<double>  *SIGNALQUARKS_GENDXY;
+   std::vector<double>  *SIGNALQUARKS_P;
+   std::vector<double>  *SIGNALQUARKS_PT;
+   std::vector<double>  *SSPH;
+   std::vector<double>  *TrueNumInteractions;
+   std::vector<double>  *WEIGHT;
+   std::vector<double>  *rhoAll;
+   std::vector<double>  *rhoNeutral;
+   std::vector<double>  *stupakR;
+   std::vector<double>  *stupakR2;
+   std::vector<long>    *EVENT;
 
-   // List of branches
-   TBranch        *b_vars;   //!
+   // jet
+   std::vector<int>     *JetMISSINGINNER;
+   std::vector<int>     *JetMISSINGOUTER;
+   std::vector<int>     *JetNJets;
+   std::vector<int>     *JetNCLEANMATCHEDTRACKS;
+   std::vector<int>     *JetNMATCHEDTRACKS;
+   std::vector<int>     *JetNTRACKSIPLT0P05;
+   std::vector<int>     *JetNTRACKSIPSIGGT10;
+   std::vector<int>     *JetNTRACKSIPSIGLT5;
+   std::vector<double>  *JetALPHAMAX2;
+   std::vector<double>  *JetALPHAMAXPRIME2;
+   std::vector<double>  *JetALPHAMAXPRIME;
+   std::vector<double>  *JetALPHAMAX;
+   std::vector<double>  *JetASSOCAPLANARITY;
+   std::vector<double>  *JetASSOCIATEDTRACKPT;
+   std::vector<double>  *JetASSOCSPHERICITY;
+   std::vector<double>  *JetASSOCTHRUSTMAJOR;
+   std::vector<double>  *JetASSOCTHRUSTMINOR;
+   std::vector<double>  *JetAVFASSOCAPLANARITY;
+   std::vector<double>  *JetAVFASSOCSPHERICITY;
+   std::vector<double>  *JetAVFASSOCTHRUSTMAJOR;
+   std::vector<double>  *JetAVFASSOCTHRUSTMINOR;
+   std::vector<double>  *JetAVFBEAMSPOTDELTAPHI;
+   std::vector<double>  *JetAVFBEAMSPOTRECOILPT;
+   std::vector<double>  *JetAVFDISTTOPV;
+   std::vector<double>  *JetAVFVERTEXCHI2NDOF;
+   std::vector<double>  *JetAVFVERTEXDEGREESOFFREEDOM;
+   std::vector<double>  *JetAVFVERTEXDISTANCETOBEAM;
+   std::vector<double>  *JetAVFVERTEXTOTALCHISQUARED;
+   std::vector<double>  *JetAVFVERTEXTRACKENERGY;
+   std::vector<double>  *JetAVFVERTEXTRACKMASS;
+   std::vector<double>  *JetAVFVERTEXTRANSVERSESIG;
+   std::vector<double>  *JetAVGMISSINGINNER;
+   std::vector<double>  *JetAVGMISSINGOUTER;
+   std::vector<double>  *JetBASICCALOJETS1ANGLE_DANGLE;
+   std::vector<double>  *JetBASICCALOJETS1ANGLE_DPHI;
+   std::vector<double>  *JetBASICCALOJETS1DELTAR;
+   std::vector<double>  *JetBASICCALOJETS1PT20ANGLE_DANGLE;
+   std::vector<double>  *JetBASICCALOJETS1PT20ANGLE_DPHI;
+   std::vector<double>  *JetBASICCALOJETS1PT20DELTAR;
+   std::vector<double>  *JetBETA2;
+   std::vector<double>  *JetBETA;
+   std::vector<double>  *JetETA;
+   std::vector<double>  *JetHITSINFRONTOFVERTPERTRACK;
+   std::vector<double>  *JetHSPH;
+   std::vector<double>  *JetIVFSCORE;
+   std::vector<double>  *JetJETAREA;
+   std::vector<double>  *JetLEPANGLE_DANGLE;
+   std::vector<double>  *JetLEPANGLE_DPHI;
+   std::vector<double>  *JetLEPDELTAR;
+   std::vector<double>  *JetLINEARRADIALMOMENT;
+   std::vector<double>  *JetLRM;
+   std::vector<double>  *JetLSPH;
+   std::vector<double>  *JetMASSDISPLACED;
+   std::vector<double>  *JetMEDIANIPLOG10SIG;
+   std::vector<double>  *JetMEDIANIPLOGSIG;
+   std::vector<double>  *JetMEDIANLOG10TRACKANGLE;
+   std::vector<double>  *JetMETANGLE_DANGLE;
+   std::vector<double>  *JetMETANGLE_DPHI;
+   std::vector<double>  *JetMETDELTAR;
+   std::vector<double>  *JetMISSHITSAFTERVERTPERTRACK;
+   std::vector<double>  *JetM;
+   std::vector<double>  *JetPHI;
+   std::vector<double>  *JetPT;
+   std::vector<double>  *JetSELFDELTAR;
+   std::vector<double>  *JetSSPH;
+   std::vector<double>  *JetSTUPAKPT;
+   std::vector<double>  *JetSTUPAKR;
+   std::vector<double>  *JetSUMIPLOGSIG;
+   std::vector<double>  *JetSUMIPSIG;
+   std::vector<double>  *JetSUMIP;
+   std::vector<double>  *JetTOTALTRACKANGLEPT;
+   std::vector<double>  *JetTOTALTRACKANGLE;
+   std::vector<double>  *JetTOTALTRACKPT;
+   std::vector<double>  *JetTRACKENERGY;
+   std::vector<double>  *JetTRACKMASS;
 
+   // Declaration of branches
+   // general
+   TBranch *b_bits;
+   TBranch *b_LUMI;
+   TBranch *b_NBASICELECTRONS;
+   TBranch *b_NBASICMUONS;
+   TBranch *b_NDoubleElTriggers;
+   TBranch *b_NDoubleMuTriggers;
+   TBranch *b_NELECTRONS;
+   TBranch *b_NELECTRONS30;
+   TBranch *b_NELECTRONSFROMBOSON;
+   TBranch *b_NGOODELECTRONS;
+   TBranch *b_NGOODISONOISEFILTER;
+   TBranch *b_NGOODLEPTONS;
+   TBranch *b_NGOODMUONS;
+   TBranch *b_NGOODNOISEFILTER;
+   TBranch *b_NGOODVERTICES;
+   TBranch *b_NHTMETTriggers;
+   TBranch *b_NKSHORTS;
+   TBranch *b_NMUONS;
+   TBranch *b_NMUONS30;
+   TBranch *b_NMUONSFROMBOSON;
+   TBranch *b_NOSSF;
+   TBranch *b_NSingleElTriggers;
+   TBranch *b_NSingleMuTriggers;
+   TBranch *b_N_bJetsCSVL;
+   TBranch *b_N_bJetsCSVM;
+   TBranch *b_N_bosons;
+   TBranch *b_PU_NumInteractions;
+   TBranch *b_RUN;
+   TBranch *b_fakeIncarnation;
+   TBranch *b_ALLKSHORT_KSIP3DSIG;
+   TBranch *b_ALLKSHORT_LXYZSIG;
+   TBranch *b_ALLKSHORT_VERTEXNORMALIZEDCHI2;
+   TBranch *b_ELECTRON_PT;
+   TBranch *b_FLATWEIGHT;
+   TBranch *b_HLTHT;
+   TBranch *b_HSPH;
+   TBranch *b_HT;
+   TBranch *b_HTHLTID;
+   TBranch *b_HT_All;
+   TBranch *b_KSHORT_CTAU;
+   TBranch *b_KSHORT_KSIP2D;
+   TBranch *b_KSHORT_KSIP3D;
+   TBranch *b_KSHORT_LXY;
+   TBranch *b_KSHORT_LXYZ;
+   TBranch *b_KSHORT_MASS;
+   TBranch *b_KSHORT_P;
+   TBranch *b_KSHORT_PT;
+   TBranch *b_LEPTON_DANGLE;
+   TBranch *b_LEPTON_DPHI;
+   TBranch *b_LRM;
+   TBranch *b_LSPH;
+   TBranch *b_MET;
+   TBranch *b_MOSSF;
+   TBranch *b_MUON_PT;
+   TBranch *b_OSSFCLOSEMLL;
+   TBranch *b_OSSFMAXMLL;
+   TBranch *b_OSSFMINMLL;
+   TBranch *b_PTOSSF;
+   TBranch *b_SCALAR_PT;
+   TBranch *b_SIGNALQUARKS_GENDXY;
+   TBranch *b_SIGNALQUARKS_P;
+   TBranch *b_SIGNALQUARKS_PT;
+   TBranch *b_SSPH;
+   TBranch *b_TrueNumInteractions;
+   TBranch *b_WEIGHT;
+   TBranch *b_rhoAll;
+   TBranch *b_rhoNeutral;
+   TBranch *b_stupakR;
+   TBranch *b_stupakR2;
+   TBranch *b_EVENT;
+
+   // jet
+   TBranch *b_JetMISSINGINNER;
+   TBranch *b_JetMISSINGOUTER;
+   TBranch *b_JetNJets;
+   TBranch *b_JetNCLEANMATCHEDTRACKS;
+   TBranch *b_JetNMATCHEDTRACKS;
+   TBranch *b_JetNTRACKSIPLT0P05;
+   TBranch *b_JetNTRACKSIPSIGGT10;
+   TBranch *b_JetNTRACKSIPSIGLT5;
+   TBranch *b_JetALPHAMAX2;
+   TBranch *b_JetALPHAMAXPRIME2;
+   TBranch *b_JetALPHAMAXPRIME;
+   TBranch *b_JetALPHAMAX;
+   TBranch *b_JetASSOCAPLANARITY;
+   TBranch *b_JetASSOCIATEDTRACKPT;
+   TBranch *b_JetASSOCSPHERICITY;
+   TBranch *b_JetASSOCTHRUSTMAJOR;
+   TBranch *b_JetASSOCTHRUSTMINOR;
+   TBranch *b_JetAVFASSOCAPLANARITY;
+   TBranch *b_JetAVFASSOCSPHERICITY;
+   TBranch *b_JetAVFASSOCTHRUSTMAJOR;
+   TBranch *b_JetAVFASSOCTHRUSTMINOR;
+   TBranch *b_JetAVFBEAMSPOTDELTAPHI;
+   TBranch *b_JetAVFBEAMSPOTRECOILPT;
+   TBranch *b_JetAVFDISTTOPV;
+   TBranch *b_JetAVFVERTEXCHI2NDOF;
+   TBranch *b_JetAVFVERTEXDEGREESOFFREEDOM;
+   TBranch *b_JetAVFVERTEXDISTANCETOBEAM;
+   TBranch *b_JetAVFVERTEXTOTALCHISQUARED;
+   TBranch *b_JetAVFVERTEXTRACKENERGY;
+   TBranch *b_JetAVFVERTEXTRACKMASS;
+   TBranch *b_JetAVFVERTEXTRANSVERSESIG;
+   TBranch *b_JetAVGMISSINGINNER;
+   TBranch *b_JetAVGMISSINGOUTER;
+   TBranch *b_JetBASICCALOJETS1ANGLE_DANGLE;
+   TBranch *b_JetBASICCALOJETS1ANGLE_DPHI;
+   TBranch *b_JetBASICCALOJETS1DELTAR;
+   TBranch *b_JetBASICCALOJETS1PT20ANGLE_DANGLE;
+   TBranch *b_JetBASICCALOJETS1PT20ANGLE_DPHI;
+   TBranch *b_JetBASICCALOJETS1PT20DELTAR;
+   TBranch *b_JetBETA2;
+   TBranch *b_JetBETA;
+   TBranch *b_JetETA;
+   TBranch *b_JetHITSINFRONTOFVERTPERTRACK;
+   TBranch *b_JetHSPH;
+   TBranch *b_JetIVFSCORE;
+   TBranch *b_JetJETAREA;
+   TBranch *b_JetLEPANGLE_DANGLE;
+   TBranch *b_JetLEPANGLE_DPHI;
+   TBranch *b_JetLEPDELTAR;
+   TBranch *b_JetLINEARRADIALMOMENT;
+   TBranch *b_JetLRM;
+   TBranch *b_JetLSPH;
+   TBranch *b_JetMASSDISPLACED;
+   TBranch *b_JetMEDIANIPLOG10SIG;
+   TBranch *b_JetMEDIANIPLOGSIG;
+   TBranch *b_JetMEDIANLOG10TRACKANGLE;
+   TBranch *b_JetMETANGLE_DANGLE;
+   TBranch *b_JetMETANGLE_DPHI;
+   TBranch *b_JetMETDELTAR;
+   TBranch *b_JetMISSHITSAFTERVERTPERTRACK;
+   TBranch *b_JetM;
+   TBranch *b_JetPHI;
+   TBranch *b_JetPT;
+   TBranch *b_JetSELFDELTAR;
+   TBranch *b_JetSSPH;
+   TBranch *b_JetSTUPAKPT;
+   TBranch *b_JetSTUPAKR;
+   TBranch *b_JetSUMIPLOGSIG;
+   TBranch *b_JetSUMIPSIG;
+   TBranch *b_JetSUMIP;
+   TBranch *b_JetTOTALTRACKANGLEPT;
+   TBranch *b_JetTOTALTRACKANGLE;
+   TBranch *b_JetTOTALTRACKPT;
+   TBranch *b_JetTRACKENERGY;
+   TBranch *b_JetTRACKMASS;
+
+
+   //analyzer_base(TTree *tree=0);
+   analyzer_base();
+   virtual ~analyzer_base();
+   virtual void     Init(TTree *tree, Bool_t domakelog, TString jettype);
+   virtual Long64_t LoadTree(Long64_t entry);
+   Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
+                                    Double_t nrEvents, Bool_t isMC);
 };
 
-#endif // #ifdef analyzer_base_cxx
+#endif
+
