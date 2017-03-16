@@ -2,21 +2,48 @@
 standalone packages for long lived jet analyses
 
 ## Download
-Fermilab uses tcsh, so do I now
+Fermilab uses tcsh by default even though it has bash! 
 
-Download to `CMSSW_8_0_18_patch1/src`
-```tcsh
-setenv SCRAM_ARCH slc6_amd64_gcc530;
-cmsrel CMSSW_8_0_18_patch1;
-cd CMSSW_8_0_18_patch1/src/;
+Starting point is in `LLDJstandalones` 
+```bash
+bash --login
+
+export SCRAM_ARCH=slc6_amd64_gcc530;
+scram pro -n LLDJ_slc6_530_CMSSW_8_0_18_patch1 CMSSW CMSSW_8_0_18_patch1;
+cd LLDJ_slc6_530_CMSSW_8_0_18_patch1/src;
 cmsenv;
+
+git cms-init;
+git clone https://github.com/DisplacedHiggs/LLDJstandalones.git;
+
+scramv1 build -j 9;
+
+cd LLDJstandalones;
+source setup.sh
 ```
 
 ## How to use
-From `commontools` run `bash makelists.sh` to make lists of files from eos in `lists` directory
-Then run `bash countevents.sh` which calls `countevents.cxx` and adds event counts/cross sections to the file lists
-Then from `analyzers` folder, edit `main.C` to point to the list in question
-Run `make` in `analyzers` folder to execute makefile 
-This creates executable `runanalyzer.exe` which can be run as `./runanalyzer.exe`
+### set up
+Make sure to run `source setup.sh` from the `LLDJstandalones` directory first to set up environment variables used in scripts.
 
-The file `main.C` reads in text files of ntuple locations and makes them into a TChain that gets passed into the `Init(chain)` function of the analyzer (presently `analyzer_signal` which inherits from `analyzer_base`). The analyzer then loops through the events in the chain and applies defined cuts and prints histograms.
+### list files
+From `commontools` folder
+1. `bash makelists.sh` makes lists of files and puts them in `lists` folder
+2. `bash rmbadfiles.sh` removes a few specific corrupted files from lists
+3. `bash cleanlists.sh` goes through lists and makes sure only .root files are present
+4. `bash countevents.sh` calls `countevents.cxx` and makes .info files in `lists` folder
+
+### run analyzer
+From `analyzers` folder
+1. `make` compiles `main.C` into executable `runanalyzer.exe` 
+2a. `./runanalyzer.exe --<flags>` call executable analyzer by hand (you must specify flags)
+2b. `bash runAnalyzers.sh` loops through different options for calling `runanalyzer.exe`
+
+### submit condor job
+From `submitters` folder
+1. in `submitjobs.sh` set `doSubmit=false` to be safe while testing
+2. `bash submitjobs.sh` creates tarball CMSSW area and submit area in `gitignore`
+The job that actually runs on the condor nodes is `runsubmitter.sh`
+3. `voms-proxy-init --voms cms --valid 100:00` set up your proxy
+4. set `doSubmit=true` and run 
+
