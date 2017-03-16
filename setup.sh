@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export version="test"
+export version="v2test"
 
 export basedir=$(pwd)
 export listdir="${basedir}/lists"
