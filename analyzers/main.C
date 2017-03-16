@@ -22,6 +22,9 @@ int main(int argc, char **argv){
  // l - lumi
  // x - extra name
  // e - nr events to run over
+ // j - jet type INCLUSIVETAGGEDCALOJETSAMATCHED
+ // i - inpath
+ // o - outpath
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";

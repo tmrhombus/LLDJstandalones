@@ -680,14 +680,14 @@ Bool_t analyzer_signal::askPassZH()
  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
  
- printf("trying event\n");
- printf(" safeNGOODVERTICES      %i \n", safeNGOODVERTICES    ) ;
- printf(" safeNDoubleElTriggers  %i \n", safeNDoubleElTriggers) ;
- printf(" safeNDoubleMuTriggers  %i \n", safeNDoubleMuTriggers) ;
- printf(" safeNOSSF              %i \n", safeNOSSF            ) ;
- printf(" safeMOSSF              %f \n", safeMOSSF            ) ;
- printf(" safePTOSSF             %f \n", safePTOSSF           ) ;
- printf(" safeJetNJets           %i \n\n", safeJetNJets         ) ;
+ // printf("trying event\n");
+ // printf(" safeNGOODVERTICES      %i \n", safeNGOODVERTICES    ) ;
+ // printf(" safeNDoubleElTriggers  %i \n", safeNDoubleElTriggers) ;
+ // printf(" safeNDoubleMuTriggers  %i \n", safeNDoubleMuTriggers) ;
+ // printf(" safeNOSSF              %i \n", safeNOSSF            ) ;
+ // printf(" safeMOSSF              %f \n", safeMOSSF            ) ;
+ // printf(" safePTOSSF             %f \n", safePTOSSF           ) ;
+ // printf(" safeJetNJets           %i \n\n", safeJetNJets         ) ;
 
  if ( safeNGOODVERTICES > 0.5
      && ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )

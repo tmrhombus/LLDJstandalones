@@ -1,27 +1,24 @@
 #!/bin/bash
 
-# 'DY50' \
-# 'DY5to50' \
-# 'TTbar' \
-# 'STs' \
-# 'STtbar' \
-# 'STt' \
-# 'STtbarW' \
-# 'STtW' \
-# 'WJets' \
-# 'ZHtoLLbb' \
-# 'WW' \
-# 'ZZ' \
-# 'WZ' \
+
 # 'Signal'
- #testTT
- 
 for sample in \
- testtwo
+ 'DY50' \
+ 'DY5to50' \
+ 'TTbar' \
+ 'STs' \
+ 'STtbar' \
+ 'STt' \
+ 'STtbarW' \
+ 'STtW' \
+ 'WJets' \
+ 'ZHtoLLbb' \
+ 'WW' \
+ 'ZZ' \
+ 'WZ' 
 
 do
 
-  #"ALLCALOJETS"                      \
   #"ALLCALOJETSMATCHED"               \
   #"BASICCALOJETS"                    \
   #"BASICCALOJETS1"                   \
@@ -34,24 +31,25 @@ do
   #"INCLUSIVETAGGEDCALOJETS20MATCHED" \
   #"INCLUSIVETAGGEDCALOJETS60"        \
   #"INCLUSIVETAGGEDCALOJETS60MATCHED" \
+  #"INCLUSIVETAGGEDCALOJETSA"         \
+  #"INCLUSIVETAGGEDCALOJETSAMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSB"         \
+  #"INCLUSIVETAGGEDCALOJETSBMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSC"         \
+  #"INCLUSIVETAGGEDCALOJETSCMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSD"         \
+  #"INCLUSIVETAGGEDCALOJETSDMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSE"         \
+  #"INCLUSIVETAGGEDCALOJETSEMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSF"         \
+  #"INCLUSIVETAGGEDCALOJETSFMATCHED"  \
+  #"INCLUSIVETAGGEDCALOJETSMATCHED" 
  for jettype in \
-  "INCLUSIVETAGGEDCALOJETSA"         \
-  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSB"         \
-  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSC"         \
-  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSD"         \
-  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSE"         \
-  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSF"         \
-  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSMATCHED" 
+  "ALLCALOJETS"                     
 
  do
 
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "60000" -j ${jettype}
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "20000" -j ${jettype} -i "../lists" -o "../roots"
 
  done #for sample in DY50..
 done #for jettype in ALLCALOJETS
