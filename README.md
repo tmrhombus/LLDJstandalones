@@ -13,12 +13,20 @@ scram pro -n LLDJ_slc6_530_CMSSW_8_0_18_patch1 CMSSW CMSSW_8_0_18_patch1;
 cd LLDJ_slc6_530_CMSSW_8_0_18_patch1/src;
 cmsenv;
 
-git cms-init;
-git clone https://github.com/DisplacedHiggs/LLDJstandalones.git;
-
 scramv1 build -j 9;
 
+git cms-init;
+
+# first fork the repository to make your own workspace
+git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
 cd LLDJstandalones;
+
+# add DisplacedHiggs as upstream
+git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
+# start working on your own branch
+git checkout -b <mybranchname>
+
+# do this every time to set some environment variables
 source setup.sh
 ```
 
@@ -36,8 +44,8 @@ From `commontools` folder
 ### run analyzer
 From `analyzers` folder
 1. `make` compiles `main.C` into executable `runanalyzer.exe` 
-2a. `./runanalyzer.exe --<flags>` call executable analyzer by hand (you must specify flags)
-2b. `bash runAnalyzers.sh` loops through different options for calling `runanalyzer.exe`
+2. `./runanalyzer.exe --<flags>` call executable analyzer by hand (you must specify flags)
+3. or edit and run `bash runAnalyzers.sh` which loops through different options for calling `runanalyzer.exe`
 
 ### submit condor job
 From `submitters` folder
