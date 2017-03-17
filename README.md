@@ -16,6 +16,8 @@ cmsenv;
 scramv1 build -j 9;
 
 git cms-init;
+# you may need to do this first:
+# git config --global user.github <mygithubusername>
 
 # first fork the repository to make your own workspace
 git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
