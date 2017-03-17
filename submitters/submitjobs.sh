@@ -5,16 +5,16 @@
 
 # source xx/LLDJ/setup.sh for ${version}
 
-doSubmit=true
+doSubmit=false
 lumi=20000
-nevents=-1
+nevents=100000
 
 printf "Version: ${version}\n"
 
 # tar up your present CMSSW area
 if [ ! -a ${CMSSW_VERSION}.tar.gz ] 
 then 
- tar --exclude-caches-all --exclude-vcs -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_VERSION} --exclude=src --exclude=tmp
+ tar --exclude-caches-all --exclude-vcs -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_BASE} --exclude=src --exclude=tmp
 fi
 
 makeasubmitdir () {
@@ -28,9 +28,8 @@ makeasubmitdir () {
  mkdir -p logs
  
  # write base for submit file
- printf "universe = vanilla\n" >> submitfile
- printf "Executable = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/runsubmitter.sh\n" >> submitfile
- printf "Requirements = OpSys == "LINUX"&& (Arch != "DUMMY" )\n" >> submitfile
+ printf "universe = vanilla\n" > submitfile
+ printf "Executable = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/runjob.sh\n" >> submitfile
  printf "Should_Transfer_Files = YES \n" >> submitfile
  printf "WhenToTransferOutput = ON_EXIT\n" >> submitfile
  printf "Transfer_Input_Files = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/CMSSW_8_0_18_patch1.tar.gz,\$ENV(CMSSW_BASE)/src/LLDJstandalones/analyzers/runanalyzer.exe,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.list,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.info\n" >> submitfile
@@ -84,21 +83,6 @@ makeasubmitdir () {
  
  popd
 }
-
-doDY50=false
-doDY5to50=false
-doTTbar=false
-doSTs=false
-doSTtbar=false
-doSTt=false
-doSTtbarW=false
-doSTtW=false
-doWJets=false
-doZHtoLLbb=false
-doWW=false
-doZZ=false
-doWZ=false
-doSignal=false
 
 for sample in \
  "DY50"    \

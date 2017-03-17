@@ -4,12 +4,12 @@ export PATH=${PATH}:/cvmfs/cms.cern.ch/common
 export CMS_PATH=/cvmfs/cms.cern.ch
 
 #get the release setup and in place
-tar -xzf $1.tar.gz
-cd $1/
+mkdir CMSSW
+tar -xzf $1.tar.gz -C CMSSW --strip-components 4
+cd CMSSW
 mkdir -p src
 cd src
 scramv1 build ProjectRename
-#scramv1 build
 eval `scramv1 runtime -sh` # cmsenv
 
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PWD}
