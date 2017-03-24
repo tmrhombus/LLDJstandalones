@@ -57,3 +57,5 @@ The job that actually runs on the condor nodes is `runsubmitter.sh`
 3. `voms-proxy-init --voms cms --valid 100:00` set up your proxy
 4. set `doSubmit=true` and run 
 
+### make plots
+Some scripts are available in `plotters` folder, ex. dump all plots in a file using `root -l -b -q dumpplots.C`
