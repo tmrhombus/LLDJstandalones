@@ -5,9 +5,54 @@
 
 # source xx/LLDJ/setup.sh for ${version}
 
-doSubmit=false
+doSubmit=true
 lumi=20000
-nevents=100000
+nevents=-1
+maxfilesperjob=500
+
+samples=(  \
+ "DY50"    \
+# "DY5to50" \
+# "TTbar"   \
+# "STs"     \
+# "STtbar"  \
+# "STt"     \
+# "STtbarW" \
+# "STtW"    \
+# "WJets"   \
+# "WW"      \
+# "ZZ"      \
+# "WZ"      \
+)
+
+jets=( \
+  "ALLCALOJETS"                      \
+  "ALLCALOJETSMATCHED"               \
+#  "BASICCALOJETS"                    \
+#  "BASICCALOJETS1"                   \
+#  "BASICCALOJETS1MATCHED"            \
+#  "BASICCALOJETS1PT20"               \
+#  "BASICCALOJETS1PT20MATCHED"        \
+#  "BASICCALOJETSMATCHED"             \
+#  "INCLUSIVETAGGEDCALOJETS"          \
+#  "INCLUSIVETAGGEDCALOJETS20"        \
+#  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
+#  "INCLUSIVETAGGEDCALOJETS60"        \
+#  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
+#  "INCLUSIVETAGGEDCALOJETSA"         \
+#  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSB"         \
+#  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSC"         \
+#  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSD"         \
+#  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSE"         \
+#  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSF"         \
+#  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSMATCHED"   \
+)
 
 printf "Version: ${version}\n"
 
@@ -22,7 +67,7 @@ makeasubmitdir () {
  
  # go to the directory
  mkdir -p gitignore/${version}/$1
- pushd    gitignore/${version}/$1
+ pushd    gitignore/${version}/$1 > /dev/null
  #printf " The directory is %s\n" $(pwd)
  
  mkdir -p logs
@@ -41,62 +86,44 @@ makeasubmitdir () {
  printf "Log    = logs/runanalyzer_\$(Cluster)_\$(Process).log\n" >> submitfile
  printf "\n" >> submitfile
  
- # choose your favorite jets
- for jettype in \
-  "ALLCALOJETS"                      \
-  "ALLCALOJETSMATCHED"               \
-  "BASICCALOJETS"                    \
-  "BASICCALOJETS1"                   \
-  "BASICCALOJETS1MATCHED"            \
-  "BASICCALOJETS1PT20"               \
-  "BASICCALOJETS1PT20MATCHED"        \
-  "BASICCALOJETSMATCHED"             \
-  "INCLUSIVETAGGEDCALOJETS"          \
-  "INCLUSIVETAGGEDCALOJETS20"        \
-  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
-  "INCLUSIVETAGGEDCALOJETS60"        \
-  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
-  "INCLUSIVETAGGEDCALOJETSA"         \
-  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSB"         \
-  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSC"         \
-  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSD"         \
-  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSE"         \
-  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSF"         \
-  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSMATCHED" 
- 
+ # choose your favorite jet collections to run over
+ for jettype in ${jets[@]}
  do
-  printf "Arguments = \$ENV(CMSSW_VERSION) $1 ${lumi} ${nevents} ${jettype}\n" >> submitfile
-  printf "Queue\n" >> submitfile
-  printf "\n" >> submitfile
- done
+  printf " ${jettype} \n"
+
+  # breaking up input file list
+  nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
+  filenrlow=0
+  filenrhi=$(( ${filenrlow} + ${maxfilesperjob} ))
+  jobfilenr=0
+ 
+  until [ ${filenrlow} -gt ${nfilesinlist} ]
+  do
+
+   printf "Arguments = \$ENV(CMSSW_VERSION) $1 ${lumi} ${nevents} ${jettype} ${maxfilesperjob} ${filenrlow} _${jobfilenr}\n" >> submitfile
+   printf "Queue\n" >> submitfile
+   printf "\n" >> submitfile
+
+   # increment filenumber counters
+   #printf "NFILES: %s %s %s %s\n" $nfilesinlist $filenrlow $filenrhi $jobfilenr
+   filenrlow=$(( ${filenrlow} + ${maxfilesperjob} ))
+   filenrhi=$(( ${filenrhi} + ${maxfilesperjob} ))
+   jobfilenr=$(( ${jobfilenr} + 1 ))
+
+  done # until filenrlow > nfilesinlist
+ done # for jettype in jets
 
  if [ ${doSubmit} = true ]
  then
   condor_submit submitfile
  fi
  
- popd
+ popd > /dev/null
 }
 
-for sample in \
- "DY50"    \
- "DY5to50" \
- "TTbar"   \
- "STs"     \
- "STtbar"  \
- "STt"     \
- "STtbarW" \
- "STtW"    \
- "WJets"   \
- "WW"      \
- "ZZ"      \
- "WZ"      
+
+
+for sample in ${samples[@]} 
 do
  makeasubmitdir ${sample}
 done
