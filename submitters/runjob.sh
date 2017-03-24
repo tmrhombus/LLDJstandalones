@@ -4,6 +4,7 @@ export PATH=${PATH}:/cvmfs/cms.cern.ch/common
 export CMS_PATH=/cvmfs/cms.cern.ch
 
 #get the release setup and in place
+#CMSSW_RELEASE_BASE="/cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw-patch/CMSSW_8_0_26_patch1"
 mkdir CMSSW
 tar -xzf $1.tar.gz -C CMSSW --strip-components 4
 cd CMSSW
@@ -23,7 +24,7 @@ ls -lhrt ../
 printf "ls -lhrt ../../ \n"
 ls -lhrt ../../
 
-../../runanalyzer.exe -s $2 -l $3 -e $4 -j $5 -i "../.." -o "../.." 
+../../runanalyzer.exe -s $2 -l $3 -e $4 -j $5 -i "../.." -o "../.." -n $6 -a $7 -x $8
 
 printf "ls -lhrt \n"
 ls -lhrt

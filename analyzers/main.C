@@ -25,6 +25,8 @@ int main(int argc, char **argv){
  // j - jet type INCLUSIVETAGGEDCALOJETSAMATCHED
  // i - inpath
  // o - outpath
+ // n - nfiles
+ // a - start At file 
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";
@@ -32,6 +34,8 @@ int main(int argc, char **argv){
  char *jettype = (char*)"ALLCALOJETS";
  char *inpath = (char*)"../lists";
  char *outpath = (char*)"../roots";
+ char *nfiles = (char*)"-1";
+ char *atfile = (char*)"0";
  int index;
  int s;
  int l;
@@ -39,12 +43,20 @@ int main(int argc, char **argv){
  int j;
  int i;
  int o;
+ int n;
+ int a;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:")) != -1)
   switch (s)
    {
+   case 'a':
+    atfile = optarg;
+    break;
+   case 'n':
+    nfiles = optarg;
+    break;
    case 'o':
     outpath = optarg;
     break;
@@ -95,12 +107,18 @@ int main(int argc, char **argv){
  TString Tjettype = TString(jettype);
  TString Tinpath   = TString(inpath);  
  TString Toutpath  = TString(outpath); 
+ TString TSatfile  = TString(atfile);  
+ TString TSnfiles  = TString(nfiles);
+ Int_t TIatfile = TSatfile.Atoi();
+ Int_t TInfiles = TSnfiles.Atoi();
 
   printf("Tsample:  %s\n",Tsample.Data());
   printf("Txname:   %s\n",Txname.Data());
   printf("TSlumi:   %s\n",TSlumi.Data());
   printf("TSevts:   %s\n",TSevts.Data());
   printf("Tjettype: %s\n",Tjettype.Data());
+  printf("TIatfile: %i\n",TIatfile);
+  printf("TInfiles: %i\n",TInfiles);
  // MC vs Data
  Bool_t isMC=kTRUE;
  Bool_t makelog=kTRUE;
@@ -129,9 +147,15 @@ int main(int argc, char **argv){
    abort();
  }
  
+ // For dividing up input list
+ Int_t nscanned = 0; // number of files scanned so far
  // we have the file open, start reading lines one by one
  while( std::getline(inputfile, inputline) ) {
   if( inputfile.fail() ) continue;
+
+  nscanned++;
+  if ( nscanned < TIatfile) continue;
+  if ( nscanned >= (TIatfile+TInfiles) ) continue;
 
   // TChain needs a TString..
   Tinputline = inputline;
@@ -189,12 +213,12 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
- analyzer_signal a;
- a.Init(theChain, makelog, Tjettype);
- a.initSigHistograms();
- a.initJetHistograms();
+ analyzer_signal analyzer;
+ analyzer.Init(theChain, makelog, Tjettype);
+ analyzer.initSigHistograms();
+ analyzer.initJetHistograms();
 
- a.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
+ analyzer.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
 
  // end stopwatch
  sw.Stop();

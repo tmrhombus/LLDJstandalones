@@ -3,19 +3,19 @@
 
 # 'Signal'
 for sample in \
- 'DY50' \
- 'DY5to50' \
- 'TTbar' \
- 'STs' \
- 'STtbar' \
- 'STt' \
- 'STtbarW' \
- 'STtW' \
- 'WJets' \
- 'ZHtoLLbb' \
- 'WW' \
- 'ZZ' \
- 'WZ' 
+ 'DY50' 
+# 'DY5to50' \
+# 'TTbar' \
+# 'STs' \
+# 'STtbar' \
+# 'STt' \
+# 'STtbarW' \
+# 'STtW' \
+# 'WJets' \
+# 'ZHtoLLbb' \
+# 'WW' \
+# 'ZZ' \
+# 'WZ' 
 
 do
 
@@ -49,7 +49,7 @@ do
 
  do
 
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "20000" -j ${jettype} -i "../lists" -o "../roots"
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "20000" -j ${jettype} -i "../lists" -o "../roots" -n 10 -a 40
 
  done #for sample in DY50..
 done #for jettype in ALLCALOJETS
