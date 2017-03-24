@@ -13,3 +13,7 @@
 *.out
 *.gz
 **/gitignore
+
+*.png
+*.pdf
+*.ps
