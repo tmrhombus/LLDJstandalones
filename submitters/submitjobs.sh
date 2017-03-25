@@ -115,7 +115,7 @@ makeasubmitdir () {
 
    # add file to hadd
    printf "\\" >> ${haddfile}
-   printf "\n ./$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
+   printf "\n $(pwd)/$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
 
    # increment filenumber counters
    #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
