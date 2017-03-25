@@ -98,12 +98,12 @@ makeasubmitdir () {
  do
   printf " ${jettype} \n"
 
-  printf "hadd ${hadddir}" >> ${haddfile}
+  # start hadd command
+  printf "hadd ${hadddir}/$1_${jettype}.root " >> ${haddfile}
 
   # breaking up input file list
   nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
   filenrlow=0
-  filenrhi=$(( ${filenrlow} + ${maxfilesperjob} ))
   jobfilenr=0
  
   until [ ${filenrlow} -gt ${nfilesinlist} ]
@@ -113,35 +113,17 @@ makeasubmitdir () {
    printf "Queue\n" >> submitfile
    printf "\n" >> submitfile
 
-   # make hadd file for outputs
-
-#gitignore/b4igo/ZZ/ZZ_ALLCALOJETSMATCHED_0.root
-#gitignore/b4igo/ZZ/ZZ_ALLCALOJETS_0.root
-#gitignore/b4igo/ZZ/ZZ_BASICCALOJETS1MATCHED_0.root
-#gitignore/b4igo/ZZ/ZZ_BASICCALOJETS_0.root
-#gitignore/b4igo/ZZ/ZZ_INCLUSIVETAGGEDCALOJETS20MATCHED_0.root
-#gitignore/b4igo/ZZ/ZZ_INCLUSIVETAGGEDCALOJETS20_0.root
-#gitignore/b4igo/ZZ/ZZ_INCLUSIVETAGGEDCALOJETS_0.root
-#
-#
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 ALLCALOJETS 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 ALLCALOJETSMATCHED 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 BASICCALOJETS 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 BASICCALOJETS1MATCHED 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 INCLUSIVETAGGEDCALOJETS 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 INCLUSIVETAGGEDCALOJETS20 500 0 _0
-#Arguments = $ENV(CMSSW_VERSION) ZZ 20000 -1 INCLUSIVETAGGEDCALOJETS20MATCHED 500 0 _0
-#
-#
-
+   # add file to hadd
+   printf "\\" >> ${haddfile}
+   printf "\n ./$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
 
    # increment filenumber counters
-   #printf "NFILES: %s %s %s %s\n" $nfilesinlist $filenrlow $filenrhi $jobfilenr
+   #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
    filenrlow=$(( ${filenrlow} + ${maxfilesperjob} ))
-   filenrhi=$(( ${filenrhi} + ${maxfilesperjob} ))
    jobfilenr=$(( ${jobfilenr} + 1 ))
 
   done # until filenrlow > nfilesinlist
+  printf "\n\n" >> ${haddfile}
  done # for jettype in jets
 
  if [ ${doSubmit} = true ]
