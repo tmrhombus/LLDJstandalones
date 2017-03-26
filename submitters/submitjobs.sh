@@ -5,38 +5,38 @@
 
 # source xx/LLDJ/setup.sh for ${version}
 
-doSubmit=true
+doSubmit=false
 lumi=20000
 nevents=-1
 maxfilesperjob=500
 
 samples=(  \
  "DY50"    \
-# "DY5to50" \
-# "TTbar"   \
-# "STs"     \
-# "STtbar"  \
-# "STt"     \
-# "STtbarW" \
-# "STtW"    \
-# "WJets"   \
-# "WW"      \
-# "ZZ"      \
-# "WZ"      \
+ "DY5to50" \
+ "TTbar"   \
+ "STs"     \
+ "STtbar"  \
+ "STt"     \
+ "STtbarW" \
+ "STtW"    \
+ "WJets"   \
+ "WW"      \
+ "ZZ"      \
+ "WZ"      \
 )
 
 jets=( \
   "ALLCALOJETS"                      \
   "ALLCALOJETSMATCHED"               \
-#  "BASICCALOJETS"                    \
+  "BASICCALOJETS"                    \
 #  "BASICCALOJETS1"                   \
-#  "BASICCALOJETS1MATCHED"            \
+  "BASICCALOJETS1MATCHED"            \
 #  "BASICCALOJETS1PT20"               \
 #  "BASICCALOJETS1PT20MATCHED"        \
 #  "BASICCALOJETSMATCHED"             \
-#  "INCLUSIVETAGGEDCALOJETS"          \
-#  "INCLUSIVETAGGEDCALOJETS20"        \
-#  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
+  "INCLUSIVETAGGEDCALOJETS"          \
+  "INCLUSIVETAGGEDCALOJETS20"        \
+  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
 #  "INCLUSIVETAGGEDCALOJETS60"        \
 #  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
 #  "INCLUSIVETAGGEDCALOJETSA"         \
@@ -57,8 +57,9 @@ jets=( \
 printf "Version: ${version}\n"
 
 # tar up your present CMSSW area
-if [ ! -a ${CMSSW_VERSION}.tar.gz ] 
+if [ ! -f ${CMSSW_VERSION}.tar.gz ] 
 then 
+ printf "I think I need to tar, can't find ${CMSSW_VERSION}.tar.gz \n\n"
  tar --exclude-caches-all --exclude-vcs -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_BASE} --exclude=src --exclude=tmp
 fi
 
@@ -86,15 +87,23 @@ makeasubmitdir () {
  printf "Log    = logs/runanalyzer_\$(Cluster)_\$(Process).log\n" >> submitfile
  printf "\n" >> submitfile
  
+ # make haddfile
+ haddfile="./haddit.sh"
+ hadddir="${rootdir}/${version}"
+ mkdir -p ${hadddir}
+ printf "#!/bin/bash\n\n" > ${haddfile}
+
  # choose your favorite jet collections to run over
  for jettype in ${jets[@]}
  do
   printf " ${jettype} \n"
 
+  # start hadd command
+  printf "hadd ${hadddir}/$1_${jettype}.root " >> ${haddfile}
+
   # breaking up input file list
   nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
   filenrlow=0
-  filenrhi=$(( ${filenrlow} + ${maxfilesperjob} ))
   jobfilenr=0
  
   until [ ${filenrlow} -gt ${nfilesinlist} ]
@@ -104,13 +113,17 @@ makeasubmitdir () {
    printf "Queue\n" >> submitfile
    printf "\n" >> submitfile
 
+   # add file to hadd
+   printf "\\" >> ${haddfile}
+   printf "\n $(pwd)/$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
+
    # increment filenumber counters
-   #printf "NFILES: %s %s %s %s\n" $nfilesinlist $filenrlow $filenrhi $jobfilenr
+   #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
    filenrlow=$(( ${filenrlow} + ${maxfilesperjob} ))
-   filenrhi=$(( ${filenrhi} + ${maxfilesperjob} ))
    jobfilenr=$(( ${jobfilenr} + 1 ))
 
   done # until filenrlow > nfilesinlist
+  printf "\n\n" >> ${haddfile}
  done # for jettype in jets
 
  if [ ${doSubmit} = true ]
