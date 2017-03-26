@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export version="zzztst"
+export version="frere"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
