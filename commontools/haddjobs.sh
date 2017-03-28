@@ -3,21 +3,21 @@
 # just calls the hadd scripts automatically generated
 # submission time in ${basedir}/submitters/gitignore/${version}/${sample}/haddit.sh
 
+ #"DY50"     \
 samples=( \
- "DY50"     \
-# "DY5to50"  \
-# "TTbar"    \
-# "STs"      \
-# "STtbar"   \
-# "STt"      \
-# "STtbarW"  \
-# "STtW"     \
-# "WJets"    \
-# #"ZHtoLLbb" \
-# "WW"       \
-# "ZZ"       \
-# "WZ"       \
-# #"Signal"   \
+ "DY5to50"  \
+ "TTbar"    \
+ "STs"      \
+ "STtbar"   \
+ "STt"      \
+ "STtbarW"  \
+ "STtW"     \
+ "WJets"    \
+ #"ZHtoLLbb" \
+ "WW"       \
+ "ZZ"       \
+ "WZ"       \
+ #"Signal"   \
 )
 
 for sample in ${samples[@]}
