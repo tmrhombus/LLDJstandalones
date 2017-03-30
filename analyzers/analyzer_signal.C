@@ -40,6 +40,35 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
   ntot++;
 
+
+  // variables
+
+ noPair
+
+ int    safeNGOODVERTICES      = 0;
+ int    safeNDoubleElTriggers  = 0;
+ int    safeNDoubleMuTriggers  = 0;
+ int    safeNOSSF              = 0;
+ double safeMOSSF              = 0.;
+ double safePTOSSF             = 0.;
+ int    safeJetNJets           = 0;
+
+ if(NGOODVERTICES    ->size()>0){ safeNGOODVERTICES      = NGOODVERTICES    ->at(0);}
+ if(NDoubleElTriggers->size()>0){ safeNDoubleElTriggers  = NDoubleElTriggers->at(0);}
+ if(NDoubleMuTriggers->size()>0){ safeNDoubleMuTriggers  = NDoubleMuTriggers->at(0);}
+ if(NOSSF            ->size()>0){ safeNOSSF              = NOSSF            ->at(0);}
+ if(MOSSF            ->size()>0){ safeMOSSF              = MOSSF            ->at(0);}
+ if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
+ if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
+
+ printf("  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
+ printf("  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
+ printf("  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
+ printf("  safeMOSSF              %d\n" , safeMOSSF             );
+ printf("  safeNOSSF              %f\n" , safeNOSSF             );
+ printf("  safeJetNJets           %f\n" , safeJetNJets          ); 
+ printf("  safePTOSSF             %d\n\n" , safePTOSSF            );    
+
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
   doesPassZH     = askPassZH    ();
