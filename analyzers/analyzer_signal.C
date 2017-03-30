@@ -135,10 +135,6 @@ Bool_t analyzer_signal::init2DHistograms()
 
    TString hname_nvertnjets = "h_"+selbinnames[i]+"_NGOODVERTICES_v_NJets";
    TString htitle_nvertnjets = "Nr. Good Vertices (x) vs. Nr. Jets (y)" ;
-
-//   printf("name: %s\n",hname_nvertnjets.Data());
-//   printf("title: %s\n",htitle_nvertnjets.Data());
-
    h_nvertnjets[i] = initSingleHistogramTH2F( hname_nvertnjets, htitle_nvertnjets, 50, 0, 50, 50, 0, 50 ); 
 
   for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -156,9 +152,7 @@ Bool_t analyzer_signal::fill2DHistograms(Double_t weight, int selbin)
  //printf("fill2DHistograms\n");
 
   if( NGOODVERTICES->size()>0 && JetNJets->size()>0 ) 
-   {
-  h_nvertnjets [selbin]    .Fill( NGOODVERTICES->at(0), JetNJets->at(0),  weight  ); 
- }
+   { h_nvertnjets[selbin].Fill( NGOODVERTICES->at(0), JetNJets->at(0), weight ); }
 
  return kTRUE;
 }
