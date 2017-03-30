@@ -36,11 +36,6 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
-  //for(unsigned int a=0; a<JetMISSINGINNER->size(); ++a){
-  // printf("%i ",JetMISSINGINNER->at(a));
-  //}
-  //printf("\n");
-
   // make event weight
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
   ntot++;
@@ -53,12 +48,12 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
-                       fillSigHistograms(event_weight,0); fillJetHistograms(event_weight,0);  
-  if( doesPassSig   ){ fillSigHistograms(event_weight,1); fillJetHistograms(event_weight,1); }
-  if( doesPassZH    ){ fillSigHistograms(event_weight,2); fillJetHistograms(event_weight,2); }
-  if( doesPassDY    ){ fillSigHistograms(event_weight,3); fillJetHistograms(event_weight,3); }
-  if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); fillJetHistograms(event_weight,4); }
-  if( doesPassNoPair){ fillSigHistograms(event_weight,5); fillJetHistograms(event_weight,5); }
+                       fillSigHistograms(event_weight,0); fillJetHistograms(event_weight,0); fill2DHistograms(event_weight,0);  
+  if( doesPassSig   ){ fillSigHistograms(event_weight,1); fillJetHistograms(event_weight,1); fill2DHistograms(event_weight,1); }
+  if( doesPassZH    ){ fillSigHistograms(event_weight,2); fillJetHistograms(event_weight,2); fill2DHistograms(event_weight,2); }
+  if( doesPassDY    ){ fillSigHistograms(event_weight,3); fillJetHistograms(event_weight,3); fill2DHistograms(event_weight,3); }
+  if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); fillJetHistograms(event_weight,4); fill2DHistograms(event_weight,4); }
+  if( doesPassNoPair){ fillSigHistograms(event_weight,5); fillJetHistograms(event_weight,5); fill2DHistograms(event_weight,5); }
 
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
@@ -72,13 +67,13 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
  printf(" npassOffZ   %i \n",npassOffZ   ); 
  printf(" npassNoPair %i \n",npassNoPair ); 
 
-
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
  outfile->cd();
  for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
   writeSigHistograms(i);
   writeJetHistograms(i);
+  write2DHistograms(i);
  }
  outfile->Close();
 
@@ -96,17 +91,86 @@ TH1F analyzer_signal::initSingleHistogramTH1F(TString hname, TString htitle, Int
 
 }
 
+
+
+//----------------------------initSingleHistogramTH2F
+TH2F analyzer_signal::initSingleHistogramTH2F(TString hname, TString htitle,
+                                   Int_t nbinsx, Double_t xmin, Double_t xmax,
+                                   Int_t nbinsy, Double_t ymin, Double_t ymax)
+{
+
+ histoTH2F.Clear();
+ histoTH2F = TH2F( hname , htitle , nbinsx , xmin , xmax  , nbinsy , ymin , ymax );
+ histoTH2F.Sumw2();
+
+ return histoTH2F;
+
+}
+
+//----------------------------init2DHistograms
+Bool_t analyzer_signal::init2DHistograms()
+{
+
+ // assumes that selbins and jetmultnames have already been filled (initJetHistograms, initSigHistograms)
+ // loop through jets and selections to initialize histograms in parllel (series)
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+
+   TString hname_nvertnjets = "h_"+selbinnames[i]+"_NGOODVERTICES_v_NJets";
+   TString htitle_nvertnjets = "Nr. Good Vertices vs. Nr. Jets" ;
+
+//   printf("name: %s\n",hname_nvertnjets.Data());
+//   printf("title: %s\n",htitle_nvertnjets.Data());
+
+   h_nvertnjets[i] = initSingleHistogramTH2F( hname_nvertnjets, htitle_nvertnjets, 50, 0, 50, 50, 0, 50 ); 
+
+  for(unsigned int j=0; j<jetmultnames.size(); ++j){
+   // for histograms that are jet specific
+  }
+ }
+
+ return kTRUE;
+}
+
+
+//----------------------------fill2DHistograms
+Bool_t analyzer_signal::fill2DHistograms(Double_t weight, int selbin)
+{
+ //printf("fill2DHistograms\n");
+
+  if( NGOODVERTICES->size()>0 && JetNJets->size()>0 ) 
+   {
+  h_nvertnjets [selbin]    .Fill( NGOODVERTICES->at(0), JetNJets->at(0),  weight  ); 
+ }
+
+ return kTRUE;
+}
+
+
+//----------------------------write2DHistograms
+Bool_t analyzer_signal::write2DHistograms(int selbin)
+{
+ //printf("write2DtHistograms\n");
+ h_nvertnjets[selbin].Write(); 
+ for(unsigned int j=0; j<jetmultnames.size(); ++j){
+   // for histograms that are jet specific
+ }
+
+ return kTRUE;
+}
+
+
 //----------------------------initJetHistograms
 Bool_t analyzer_signal::initJetHistograms()
 {
 
+ // initialize names
  jetmultnames.clear();
  jetmultnames.push_back("LeadingJet");
  jetmultnames.push_back("SubleadingJet");
  jetmultnames.push_back("ThirdJet");
  jetmultnames.push_back("FourthJet");
 
- // initialize names
+ // loop through jets and selections to initialize histograms in parllel (series)
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
@@ -185,78 +249,78 @@ Bool_t analyzer_signal::initJetHistograms()
   TString hname_TRACKMASS                               = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"_TRACKMASS"                                          ; 
 
   // initalize histograms
-  h_JetMISSINGINNER                            [i][j] = initSingleHistogramTH1F( hname_MISSINGINNER                             , "MISSINGINNER                           " , 100, 0, 100 ); 
-  h_JetMISSINGOUTER                            [i][j] = initSingleHistogramTH1F( hname_MISSINGOUTER                             , "MISSINGOUTER                           " , 100, 0, 100 ); 
-  h_JetHSPH                                    [i][j] = initSingleHistogramTH1F( hname_HSPH                                     , "HSPH                                   " , 100, 0, 100 ); 
-  h_JetNJets                                   [i][j] = initSingleHistogramTH1F( hname_NJets                                    , "NJets                                  " , 100, 0, 100 ); 
-  h_JetNCLEANMATCHEDTRACKS                     [i][j] = initSingleHistogramTH1F( hname_NCLEANMATCHEDTRACKS                      , "NCLEANMATCHEDTRACKS                    " , 100, 0, 100 ); 
-  h_JetNMATCHEDTRACKS                          [i][j] = initSingleHistogramTH1F( hname_NMATCHEDTRACKS                           , "NMATCHEDTRACKS                         " , 100, 0, 100 ); 
-  h_JetNTRACKSIPLT0P05                         [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPLT0P05                          , "NTRACKSIPLT0P05                        " , 100, 0, 100 ); 
-  h_JetNTRACKSIPSIGGT10                        [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPSIGGT10                         , "NTRACKSIPSIGGT10                       " , 100, 0, 100 ); 
-  h_JetNTRACKSIPSIGLT5                         [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPSIGLT5                          , "NTRACKSIPSIGLT5                        " , 100, 0, 100 ); 
-  h_JetALPHAMAX2                               [i][j] = initSingleHistogramTH1F( hname_ALPHAMAX2                                , "ALPHAMAX2                              " , 100, 0, 100 ); 
-  h_JetALPHAMAXPRIME2                          [i][j] = initSingleHistogramTH1F( hname_ALPHAMAXPRIME2                           , "ALPHAMAXPRIME2                         " , 100, 0, 100 ); 
-  h_JetALPHAMAXPRIME                           [i][j] = initSingleHistogramTH1F( hname_ALPHAMAXPRIME                            , "ALPHAMAXPRIME                          " , 100, 0, 100 ); 
-  h_JetALPHAMAX                                [i][j] = initSingleHistogramTH1F( hname_ALPHAMAX                                 , "ALPHAMAX                               " , 100, 0, 100 ); 
-  h_JetASSOCAPLANARITY                         [i][j] = initSingleHistogramTH1F( hname_ASSOCAPLANARITY                          , "ASSOCAPLANARITY                        " , 100, 0, 100 ); 
-  h_JetASSOCIATEDTRACKPT                       [i][j] = initSingleHistogramTH1F( hname_ASSOCIATEDTRACKPT                        , "ASSOCIATEDTRACKPT                      " , 100, 0, 100 ); 
-  h_JetASSOCSPHERICITY                         [i][j] = initSingleHistogramTH1F( hname_ASSOCSPHERICITY                          , "ASSOCSPHERICITY                        " , 100, 0, 100 ); 
-  h_JetASSOCTHRUSTMAJOR                        [i][j] = initSingleHistogramTH1F( hname_ASSOCTHRUSTMAJOR                         , "ASSOCTHRUSTMAJOR                       " , 100, 0, 100 ); 
-  h_JetASSOCTHRUSTMINOR                        [i][j] = initSingleHistogramTH1F( hname_ASSOCTHRUSTMINOR                         , "ASSOCTHRUSTMINOR                       " , 100, 0, 100 ); 
-  h_JetAVFASSOCAPLANARITY                      [i][j] = initSingleHistogramTH1F( hname_AVFASSOCAPLANARITY                       , "AVFASSOCAPLANARITY                     " , 100, 0, 100 ); 
-  h_JetAVFASSOCSPHERICITY                      [i][j] = initSingleHistogramTH1F( hname_AVFASSOCSPHERICITY                       , "AVFASSOCSPHERICITY                     " , 100, 0, 100 ); 
-  h_JetAVFASSOCTHRUSTMAJOR                     [i][j] = initSingleHistogramTH1F( hname_AVFASSOCTHRUSTMAJOR                      , "AVFASSOCTHRUSTMAJOR                    " , 100, 0, 100 ); 
-  h_JetAVFASSOCTHRUSTMINOR                     [i][j] = initSingleHistogramTH1F( hname_AVFASSOCTHRUSTMINOR                      , "AVFASSOCTHRUSTMINOR                    " , 100, 0, 100 ); 
-  h_JetAVFBEAMSPOTDELTAPHI                     [i][j] = initSingleHistogramTH1F( hname_AVFBEAMSPOTDELTAPHI                      , "AVFBEAMSPOTDELTAPHI                    " , 100, 0, 100 ); 
+  h_JetMISSINGINNER                            [i][j] = initSingleHistogramTH1F( hname_MISSINGINNER                             , "MISSINGINNER                           " , 50, 0, 50 ); 
+  h_JetMISSINGOUTER                            [i][j] = initSingleHistogramTH1F( hname_MISSINGOUTER                             , "MISSINGOUTER                           " , 50, 0, 50 ); 
+  h_JetHSPH                                    [i][j] = initSingleHistogramTH1F( hname_HSPH                                     , "HSPH                                   " , 50, 0, 50 ); 
+  h_JetNJets                                   [i][j] = initSingleHistogramTH1F( hname_NJets                                    , "NJets                                  " , 50, 0, 50 ); 
+  h_JetNCLEANMATCHEDTRACKS                     [i][j] = initSingleHistogramTH1F( hname_NCLEANMATCHEDTRACKS                      , "NCLEANMATCHEDTRACKS                    " , 50, 0, 50 ); 
+  h_JetNMATCHEDTRACKS                          [i][j] = initSingleHistogramTH1F( hname_NMATCHEDTRACKS                           , "NMATCHEDTRACKS                         " , 50, 0, 50 ); 
+  h_JetNTRACKSIPLT0P05                         [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPLT0P05                          , "NTRACKSIPLT0P05                        " , 50, 0, 50 ); 
+  h_JetNTRACKSIPSIGGT10                        [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPSIGGT10                         , "NTRACKSIPSIGGT10                       " , 50, 0, 50 ); 
+  h_JetNTRACKSIPSIGLT5                         [i][j] = initSingleHistogramTH1F( hname_NTRACKSIPSIGLT5                          , "NTRACKSIPSIGLT5                        " , 50, 0, 50 ); 
+  h_JetALPHAMAX2                               [i][j] = initSingleHistogramTH1F( hname_ALPHAMAX2                                , "ALPHAMAX2                              " , 20, 0, 1 ); 
+  h_JetALPHAMAXPRIME2                          [i][j] = initSingleHistogramTH1F( hname_ALPHAMAXPRIME2                           , "ALPHAMAXPRIME2                         " , 20, 0, 1 ); 
+  h_JetALPHAMAXPRIME                           [i][j] = initSingleHistogramTH1F( hname_ALPHAMAXPRIME                            , "ALPHAMAXPRIME                          " , 20, 0, 1 ); 
+  h_JetALPHAMAX                                [i][j] = initSingleHistogramTH1F( hname_ALPHAMAX                                 , "ALPHAMAX                               " , 20, 0, 1 ); 
+  h_JetASSOCAPLANARITY                         [i][j] = initSingleHistogramTH1F( hname_ASSOCAPLANARITY                          , "ASSOCAPLANARITY                        " , 20, 0, 1 ); 
+  h_JetASSOCIATEDTRACKPT                       [i][j] = initSingleHistogramTH1F( hname_ASSOCIATEDTRACKPT                        , "ASSOCIATEDTRACKPT                      " , 200, 0, 100 ); 
+  h_JetASSOCSPHERICITY                         [i][j] = initSingleHistogramTH1F( hname_ASSOCSPHERICITY                          , "ASSOCSPHERICITY                        " , 20, 0, 1 ); 
+  h_JetASSOCTHRUSTMAJOR                        [i][j] = initSingleHistogramTH1F( hname_ASSOCTHRUSTMAJOR                         , "ASSOCTHRUSTMAJOR                       " , 20, 0, 1 ); 
+  h_JetASSOCTHRUSTMINOR                        [i][j] = initSingleHistogramTH1F( hname_ASSOCTHRUSTMINOR                         , "ASSOCTHRUSTMINOR                       " , 20, 0, 1 ); 
+  h_JetAVFASSOCAPLANARITY                      [i][j] = initSingleHistogramTH1F( hname_AVFASSOCAPLANARITY                       , "AVFASSOCAPLANARITY                     " , 20, 0, 1 ); 
+  h_JetAVFASSOCSPHERICITY                      [i][j] = initSingleHistogramTH1F( hname_AVFASSOCSPHERICITY                       , "AVFASSOCSPHERICITY                     " , 20, 0, 1 ); 
+  h_JetAVFASSOCTHRUSTMAJOR                     [i][j] = initSingleHistogramTH1F( hname_AVFASSOCTHRUSTMAJOR                      , "AVFASSOCTHRUSTMAJOR                    " , 20, 0, 1 ); 
+  h_JetAVFASSOCTHRUSTMINOR                     [i][j] = initSingleHistogramTH1F( hname_AVFASSOCTHRUSTMINOR                      , "AVFASSOCTHRUSTMINOR                    " , 20, 0, 1 ); 
+  h_JetAVFBEAMSPOTDELTAPHI                     [i][j] = initSingleHistogramTH1F( hname_AVFBEAMSPOTDELTAPHI                      , "AVFBEAMSPOTDELTAPHI                    " , 100, -5, 5 ); 
   h_JetAVFBEAMSPOTRECOILPT                     [i][j] = initSingleHistogramTH1F( hname_AVFBEAMSPOTRECOILPT                      , "AVFBEAMSPOTRECOILPT                    " , 100, 0, 100 ); 
   h_JetAVFDISTTOPV                             [i][j] = initSingleHistogramTH1F( hname_AVFDISTTOPV                              , "AVFDISTTOPV                            " , 100, 0, 100 ); 
   h_JetAVFVERTEXCHI2NDOF                       [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXCHI2NDOF                        , "AVFVERTEXCHI2NDOF                      " , 100, 0, 100 ); 
-  h_JetAVFVERTEXDEGREESOFFREEDOM               [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXDEGREESOFFREEDOM                , "AVFVERTEXDEGREESOFFREEDOM              " , 100, 0, 100 ); 
+  h_JetAVFVERTEXDEGREESOFFREEDOM               [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXDEGREESOFFREEDOM                , "AVFVERTEXDEGREESOFFREEDOM              " , 40, 0, 40 ); 
   h_JetAVFVERTEXDISTANCETOBEAM                 [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXDISTANCETOBEAM                  , "AVFVERTEXDISTANCETOBEAM                " , 100, 0, 100 ); 
   h_JetAVFVERTEXTOTALCHISQUARED                [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTOTALCHISQUARED                 , "AVFVERTEXTOTALCHISQUARED               " , 100, 0, 100 ); 
-  h_JetAVFVERTEXTRACKENERGY                    [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRACKENERGY                     , "AVFVERTEXTRACKENERGY                   " , 100, 0, 100 ); 
-  h_JetAVFVERTEXTRACKMASS                      [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRACKMASS                       , "AVFVERTEXTRACKMASS                     " , 100, 0, 100 ); 
-  h_JetAVFVERTEXTRANSVERSESIG                  [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRANSVERSESIG                   , "AVFVERTEXTRANSVERSESIG                 " , 100, 0, 100 ); 
-  h_JetAVGMISSINGINNER                         [i][j] = initSingleHistogramTH1F( hname_AVGMISSINGINNER                          , "AVGMISSINGINNER                        " , 100, 0, 100 ); 
-  h_JetAVGMISSINGOUTER                         [i][j] = initSingleHistogramTH1F( hname_AVGMISSINGOUTER                          , "AVGMISSINGOUTER                        " , 100, 0, 100 ); 
+  h_JetAVFVERTEXTRACKENERGY                    [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRACKENERGY                     , "AVFVERTEXTRACKENERGY                   " , 200, 0, 200 ); 
+  h_JetAVFVERTEXTRACKMASS                      [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRACKMASS                       , "AVFVERTEXTRACKMASS                     " , 200, 0, 200 ); 
+  h_JetAVFVERTEXTRANSVERSESIG                  [i][j] = initSingleHistogramTH1F( hname_AVFVERTEXTRANSVERSESIG                   , "AVFVERTEXTRANSVERSESIG                 " , 200, 0, 200 ); 
+  h_JetAVGMISSINGINNER                         [i][j] = initSingleHistogramTH1F( hname_AVGMISSINGINNER                          , "AVGMISSINGINNER                        " , 50, 0, 5 ); 
+  h_JetAVGMISSINGOUTER                         [i][j] = initSingleHistogramTH1F( hname_AVGMISSINGOUTER                          , "AVGMISSINGOUTER                        " , 40, 0, 20 ); 
   h_JetBASICCALOJETS1ANGLE_DANGLE              [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1ANGLE_DANGLE               , "BASICCALOJETS1ANGLE_DANGLE             " , 100, 0, 100 ); 
   h_JetBASICCALOJETS1ANGLE_DPHI                [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1ANGLE_DPHI                 , "BASICCALOJETS1ANGLE_DPHI               " , 100, 0, 100 ); 
-  h_JetBASICCALOJETS1DELTAR                    [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1DELTAR                     , "BASICCALOJETS1DELTAR                   " , 100, 0, 100 ); 
-  h_JetBASICCALOJETS1PT20DELTAR                [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1PT20DELTAR                 , "BASICCALOJETS1PT20DELTAR               " , 100, 0, 100 ); 
-  h_JetBETA2                                   [i][j] = initSingleHistogramTH1F( hname_BETA2                                    , "BETA2                                  " , 100, 0, 100 ); 
-  h_JetBETA                                    [i][j] = initSingleHistogramTH1F( hname_BETA                                     , "BETA                                   " , 100, 0, 100 ); 
-  h_JetETA                                     [i][j] = initSingleHistogramTH1F( hname_ETA                                      , "ETA                                    " , 100, 0, 100 ); 
+  h_JetBASICCALOJETS1DELTAR                    [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1DELTAR                     , "BASICCALOJETS1DELTAR                   " , 20, 0, 10 ); 
+  h_JetBASICCALOJETS1PT20DELTAR                [i][j] = initSingleHistogramTH1F( hname_BASICCALOJETS1PT20DELTAR                 , "BASICCALOJETS1PT20DELTAR               " , 20, 0, 10 ); 
+  h_JetBETA2                                   [i][j] = initSingleHistogramTH1F( hname_BETA2                                    , "BETA2                                  " , 40, 0, 2 ); 
+  h_JetBETA                                    [i][j] = initSingleHistogramTH1F( hname_BETA                                     , "BETA                                   " , 40, 0, 2 ); 
+  h_JetETA                                     [i][j] = initSingleHistogramTH1F( hname_ETA                                      , "ETA                                    " , 100, -6, 6 ); 
   h_JetHITSINFRONTOFVERTPERTRACK               [i][j] = initSingleHistogramTH1F( hname_HITSINFRONTOFVERTPERTRACK                , "HITSINFRONTOFVERTPERTRACK              " , 100, 0, 100 ); 
   h_JetIVFSCORE                                [i][j] = initSingleHistogramTH1F( hname_IVFSCORE                                 , "IVFSCORE                               " , 100, 0, 100 ); 
-  h_JetJETAREA                                 [i][j] = initSingleHistogramTH1F( hname_JETAREA                                  , "JETAREA                                " , 100, 0, 100 ); 
-  h_JetLEPANGLE_DANGLE                         [i][j] = initSingleHistogramTH1F( hname_LEPANGLE_DANGLE                          , "LEPANGLE_DANGLE                        " , 100, 0, 100 ); 
-  h_JetLEPANGLE_DPHI                           [i][j] = initSingleHistogramTH1F( hname_LEPANGLE_DPHI                            , "LEPANGLE_DPHI                          " , 100, 0, 100 ); 
-  h_JetLEPDELTAR                               [i][j] = initSingleHistogramTH1F( hname_LEPDELTAR                                , "LEPDELTAR                              " , 100, 0, 100 ); 
-  h_JetLINEARRADIALMOMENT                      [i][j] = initSingleHistogramTH1F( hname_LINEARRADIALMOMENT                       , "LINEARRADIALMOMENT                     " , 100, 0, 100 ); 
+  h_JetJETAREA                                 [i][j] = initSingleHistogramTH1F( hname_JETAREA                                  , "JETAREA                                " , 20, 0, 1 ); 
+  h_JetLEPANGLE_DANGLE                         [i][j] = initSingleHistogramTH1F( hname_LEPANGLE_DANGLE                          , "LEPANGLE_DANGLE                        " , 40, 0, 4 ); 
+  h_JetLEPANGLE_DPHI                           [i][j] = initSingleHistogramTH1F( hname_LEPANGLE_DPHI                            , "LEPANGLE_DPHI                          " , 100, -4, 4 ); 
+  h_JetLEPDELTAR                               [i][j] = initSingleHistogramTH1F( hname_LEPDELTAR                                , "LEPDELTAR                              " , 50, 0, 10 ); 
+  h_JetLINEARRADIALMOMENT                      [i][j] = initSingleHistogramTH1F( hname_LINEARRADIALMOMENT                       , "LINEARRADIALMOMENT                     " , 20, 0, 5 ); 
   h_JetLRM                                     [i][j] = initSingleHistogramTH1F( hname_LRM                                      , "LRM                                    " , 100, 0, 100 ); 
   h_JetMASSDISPLACED                           [i][j] = initSingleHistogramTH1F( hname_MASSDISPLACED                            , "MASSDISPLACED                          " , 100, 0, 100 ); 
-  h_JetMEDIANIPLOG10SIG                        [i][j] = initSingleHistogramTH1F( hname_MEDIANIPLOG10SIG                         , "MEDIANIPLOG10SIG                       " , 100, 0, 100 ); 
-  h_JetMEDIANIPLOGSIG                          [i][j] = initSingleHistogramTH1F( hname_MEDIANIPLOGSIG                           , "MEDIANIPLOGSIG                         " , 100, 0, 100 ); 
-  h_JetMEDIANLOG10TRACKANGLE                   [i][j] = initSingleHistogramTH1F( hname_MEDIANLOG10TRACKANGLE                    , "MEDIANLOG10TRACKANGLE                  " , 100, 0, 100 ); 
-  h_JetMETANGLE_DANGLE                         [i][j] = initSingleHistogramTH1F( hname_METANGLE_DANGLE                          , "METANGLE_DANGLE                        " , 100, 0, 100 ); 
-  h_JetMETANGLE_DPHI                           [i][j] = initSingleHistogramTH1F( hname_METANGLE_DPHI                            , "METANGLE_DPHI                          " , 100, 0, 100 ); 
-  h_JetMETDELTAR                               [i][j] = initSingleHistogramTH1F( hname_METDELTAR                                , "METDELTAR                              " , 100, 0, 100 ); 
-  h_JetMISSHITSAFTERVERTPERTRACK               [i][j] = initSingleHistogramTH1F( hname_MISSHITSAFTERVERTPERTRACK                , "MISSHITSAFTERVERTPERTRACK              " , 100, 0, 100 ); 
-  h_JetM                                       [i][j] = initSingleHistogramTH1F( hname_M                                        , "M                                      " , 100, 0, 100 ); 
-  h_JetPHI                                     [i][j] = initSingleHistogramTH1F( hname_PHI                                      , "PHI                                    " , 100, 0, 100 ); 
-  h_JetPT                                      [i][j] = initSingleHistogramTH1F( hname_PT                                       , "PT                                     " , 100, 0, 100 ); 
-  h_JetSELFDELTAR                              [i][j] = initSingleHistogramTH1F( hname_SELFDELTAR                               , "SELFDELTAR                             " , 100, 0, 100 ); 
-  h_JetSSPH                                    [i][j] = initSingleHistogramTH1F( hname_SSPH                                     , "SSPH                                   " , 100, 0, 100 ); 
+  h_JetMEDIANIPLOG10SIG                        [i][j] = initSingleHistogramTH1F( hname_MEDIANIPLOG10SIG                         , "MEDIANIPLOG10SIG                       " , 100, -10, 10 ); 
+  h_JetMEDIANIPLOGSIG                          [i][j] = initSingleHistogramTH1F( hname_MEDIANIPLOGSIG                           , "MEDIANIPLOGSIG                         " , 100,-10, 10 ); 
+  h_JetMEDIANLOG10TRACKANGLE                   [i][j] = initSingleHistogramTH1F( hname_MEDIANLOG10TRACKANGLE                    , "MEDIANLOG10TRACKANGLE                  " , 100, -10, 10 ); 
+  h_JetMETANGLE_DANGLE                         [i][j] = initSingleHistogramTH1F( hname_METANGLE_DANGLE                          , "METANGLE_DANGLE                        " , 50, 0, 5 ); 
+  h_JetMETANGLE_DPHI                           [i][j] = initSingleHistogramTH1F( hname_METANGLE_DPHI                            , "METANGLE_DPHI                          " , 40, -10, 10 ); 
+  h_JetMETDELTAR                               [i][j] = initSingleHistogramTH1F( hname_METDELTAR                                , "METDELTAR                              " , 100, 0, 10 ); 
+  h_JetMISSHITSAFTERVERTPERTRACK               [i][j] = initSingleHistogramTH1F( hname_MISSHITSAFTERVERTPERTRACK                , "MISSHITSAFTERVERTPERTRACK              " , 100, 0, 10 ); 
+  h_JetM                                       [i][j] = initSingleHistogramTH1F( hname_M                                        , "M                                      " , 200, 0, 200 ); 
+  h_JetPHI                                     [i][j] = initSingleHistogramTH1F( hname_PHI                                      , "PHI                                    " , 40, -4, 4 ); 
+  h_JetPT                                      [i][j] = initSingleHistogramTH1F( hname_PT                                       , "PT                                     " , 200, 0, 200 ); 
+  h_JetSELFDELTAR                              [i][j] = initSingleHistogramTH1F( hname_SELFDELTAR                               , "SELFDELTAR                             " , 100, 0, 10 ); 
+  h_JetSSPH                                    [i][j] = initSingleHistogramTH1F( hname_SSPH                                     , "SSPH                                   " , 20, -1, 1 ); 
   h_JetSTUPAKPT                                [i][j] = initSingleHistogramTH1F( hname_STUPAKPT                                 , "STUPAKPT                               " , 100, 0, 100 ); 
-  h_JetSTUPAKR                                 [i][j] = initSingleHistogramTH1F( hname_STUPAKR                                  , "STUPAKR                                " , 100, 0, 100 ); 
-  h_JetSUMIPLOGSIG                             [i][j] = initSingleHistogramTH1F( hname_SUMIPLOGSIG                              , "SUMIPLOGSIG                            " , 100, 0, 100 ); 
+  h_JetSTUPAKR                                 [i][j] = initSingleHistogramTH1F( hname_STUPAKR                                  , "STUPAKR                                " , 3, 0, 10000 ); 
+  h_JetSUMIPLOGSIG                             [i][j] = initSingleHistogramTH1F( hname_SUMIPLOGSIG                              , "SUMIPLOGSIG                            " , 100, -20, 40 ); 
   h_JetSUMIPSIG                                [i][j] = initSingleHistogramTH1F( hname_SUMIPSIG                                 , "SUMIPSIG                               " , 100, 0, 100 ); 
   h_JetSUMIP                                   [i][j] = initSingleHistogramTH1F( hname_SUMIP                                    , "SUMIP                                  " , 100, 0, 100 ); 
-  h_JetTOTALTRACKANGLEPT                       [i][j] = initSingleHistogramTH1F( hname_TOTALTRACKANGLEPT                        , "TOTALTRACKANGLEPT                      " , 100, 0, 100 ); 
-  h_JetTOTALTRACKANGLE                         [i][j] = initSingleHistogramTH1F( hname_TOTALTRACKANGLE                          , "TOTALTRACKANGLE                        " , 100, 0, 100 ); 
+  h_JetTOTALTRACKANGLEPT                       [i][j] = initSingleHistogramTH1F( hname_TOTALTRACKANGLEPT                        , "TOTALTRACKANGLEPT                      " , 100, 0, 10 ); 
+  h_JetTOTALTRACKANGLE                         [i][j] = initSingleHistogramTH1F( hname_TOTALTRACKANGLE                          , "TOTALTRACKANGLE                        " , 100, 0, 10 ); 
   h_JetTOTALTRACKPT                            [i][j] = initSingleHistogramTH1F( hname_TOTALTRACKPT                             , "TOTALTRACKPT                           " , 100, 0, 100 ); 
   h_JetTRACKENERGY                             [i][j] = initSingleHistogramTH1F( hname_TRACKENERGY                              , "TRACKENERGY                            " , 100, 0, 100 ); 
-  h_JetTRACKMASS                               [i][j] = initSingleHistogramTH1F( hname_TRACKMASS                                , "TRACKMASS                              " , 100, 0, 100 ); 
+  h_JetTRACKMASS                               [i][j] = initSingleHistogramTH1F( hname_TRACKMASS                                , "TRACKMASS                              " , 40, -2, 2 ); 
 
   }
  }
@@ -493,51 +557,51 @@ Bool_t analyzer_signal::initSigHistograms()
   TString hname_stupakR2             = "h_"+selbinnames[i]+"_stupakR2";               
 
   // initalize histograms
-  h_NELECTRONS         [i] = initSingleHistogramTH1F( hname_NELECTRONS         , "NELECTRONS         " , 100, 0, 100); 
-  h_NELECTRONS30       [i] = initSingleHistogramTH1F( hname_NELECTRONS30       , "NELECTRONS30       " , 100, 0, 100); 
-  h_NELECTRONSFROMBOSON[i] = initSingleHistogramTH1F( hname_NELECTRONSFROMBOSON, "NELECTRONSFROMBOSON" , 100, 0, 100); 
-  h_NGOODELECTRONS     [i] = initSingleHistogramTH1F( hname_NGOODELECTRONS     , "NGOODELECTRONS     " , 100, 0, 100); 
-  h_NGOODLEPTONS       [i] = initSingleHistogramTH1F( hname_NGOODLEPTONS       , "NGOODLEPTONS       " , 100, 0, 100); 
-  h_NGOODMUONS         [i] = initSingleHistogramTH1F( hname_NGOODMUONS         , "NGOODMUONS         " , 100, 0, 100); 
-  h_NGOODVERTICES      [i] = initSingleHistogramTH1F( hname_NGOODVERTICES      , "NGOODVERTICES      " , 100, 0, 100); 
-  h_NKSHORTS           [i] = initSingleHistogramTH1F( hname_NKSHORTS           , "NKSHORTS           " , 100, 0, 100); 
-  h_NMUONS             [i] = initSingleHistogramTH1F( hname_NMUONS             , "NMUONS             " , 100, 0, 100); 
-  h_NMUONS30           [i] = initSingleHistogramTH1F( hname_NMUONS30           , "NMUONS30           " , 100, 0, 100); 
-  h_NMUONSFROMBOSON    [i] = initSingleHistogramTH1F( hname_NMUONSFROMBOSON    , "NMUONSFROMBOSON    " , 100, 0, 100); 
-  h_NOSSF              [i] = initSingleHistogramTH1F( hname_NOSSF              , "NOSSF              " , 100, 0, 100); 
-  h_N_bJetsCSVL        [i] = initSingleHistogramTH1F( hname_N_bJetsCSVL        , "N_bJetsCSVL        " , 100, 0, 100); 
-  h_N_bJetsCSVM        [i] = initSingleHistogramTH1F( hname_N_bJetsCSVM        , "N_bJetsCSVM        " , 100, 0, 100); 
-  h_N_bosons           [i] = initSingleHistogramTH1F( hname_N_bosons           , "N_bosons           " , 100, 0, 100); 
+  h_NELECTRONS         [i] = initSingleHistogramTH1F( hname_NELECTRONS         , "NELECTRONS         " , 10, 0, 10); 
+  h_NELECTRONS30       [i] = initSingleHistogramTH1F( hname_NELECTRONS30       , "NELECTRONS30       " , 10, 0, 10); 
+  h_NELECTRONSFROMBOSON[i] = initSingleHistogramTH1F( hname_NELECTRONSFROMBOSON, "NELECTRONSFROMBOSON" , 10, 0, 10); 
+  h_NGOODELECTRONS     [i] = initSingleHistogramTH1F( hname_NGOODELECTRONS     , "NGOODELECTRONS     " , 10, 0, 10); 
+  h_NGOODLEPTONS       [i] = initSingleHistogramTH1F( hname_NGOODLEPTONS       , "NGOODLEPTONS       " , 10, 0, 10); 
+  h_NGOODMUONS         [i] = initSingleHistogramTH1F( hname_NGOODMUONS         , "NGOODMUONS         " , 10, 0, 10); 
+  h_NGOODVERTICES      [i] = initSingleHistogramTH1F( hname_NGOODVERTICES      , "NGOODVERTICES      " , 50, 0, 50); 
+  h_NKSHORTS           [i] = initSingleHistogramTH1F( hname_NKSHORTS           , "NKSHORTS           " , 10, 0, 10); 
+  h_NMUONS             [i] = initSingleHistogramTH1F( hname_NMUONS             , "NMUONS             " , 40, 0, 40); 
+  h_NMUONS30           [i] = initSingleHistogramTH1F( hname_NMUONS30           , "NMUONS30           " , 10, 0, 10); 
+  h_NMUONSFROMBOSON    [i] = initSingleHistogramTH1F( hname_NMUONSFROMBOSON    , "NMUONSFROMBOSON    " , 10, 0, 10); 
+  h_NOSSF              [i] = initSingleHistogramTH1F( hname_NOSSF              , "NOSSF              " , 50, 0, 5); 
+  h_N_bJetsCSVL        [i] = initSingleHistogramTH1F( hname_N_bJetsCSVL        , "N_bJetsCSVL        " , 50, 0, 5); 
+  h_N_bJetsCSVM        [i] = initSingleHistogramTH1F( hname_N_bJetsCSVM        , "N_bJetsCSVM        " , 50, 0, 5); 
+  h_N_bosons           [i] = initSingleHistogramTH1F( hname_N_bosons           , "N_bosons           " , 20, 0, 20); 
 
-  h_PU_NumInteractions [i] = initSingleHistogramTH1F( hname_PU_NumInteractions , "PU_NumInteractions " , 100, 0, 100); 
+  h_PU_NumInteractions [i] = initSingleHistogramTH1F( hname_PU_NumInteractions , "PU_NumInteractions " , 100, 0, 60); 
   h_fakeIncarnation    [i] = initSingleHistogramTH1F( hname_fakeIncarnation    , "fakeIncarnation    " , 100, 0, 100); 
   h_ELECTRON_PT        [i] = initSingleHistogramTH1F( hname_ELECTRON_PT        , "ELECTRON_PT        " , 100, 0, 100); 
-  h_FLATWEIGHT         [i] = initSingleHistogramTH1F( hname_FLATWEIGHT         , "FLATWEIGHT         " , 100, 0, 100); 
-  h_HLTHT              [i] = initSingleHistogramTH1F( hname_HLTHT              , "HLTHT              " , 100, 0, 100); 
-  h_HSPH               [i] = initSingleHistogramTH1F( hname_HSPH               , "HSPH               " , 100, 0, 100); 
-  h_HT                 [i] = initSingleHistogramTH1F( hname_HT                 , "HT                 " , 100, 0, 100); 
-  h_HTHLTID            [i] = initSingleHistogramTH1F( hname_HTHLTID            , "HTHLTID            " , 100, 0, 100); 
-  h_HT_All             [i] = initSingleHistogramTH1F( hname_HT_All             , "HT_All             " , 100, 0, 100); 
-  h_LEPTON_DANGLE      [i] = initSingleHistogramTH1F( hname_LEPTON_DANGLE      , "LEPTON_DANGLE      " , 100, 0, 100); 
-  h_LEPTON_DPHI        [i] = initSingleHistogramTH1F( hname_LEPTON_DPHI        , "LEPTON_DPHI        " , 100, 0, 100); 
+  h_FLATWEIGHT         [i] = initSingleHistogramTH1F( hname_FLATWEIGHT         , "FLATWEIGHT         " , 100, 0, 10); 
+  h_HLTHT              [i] = initSingleHistogramTH1F( hname_HLTHT              , "HLTHT              " , 400, 0, 400); 
+  h_HSPH               [i] = initSingleHistogramTH1F( hname_HSPH               , "HSPH               " , 10, 0, 1); 
+  h_HT                 [i] = initSingleHistogramTH1F( hname_HT                 , "HT                 " , 500, 0, 500); 
+  h_HTHLTID            [i] = initSingleHistogramTH1F( hname_HTHLTID            , "HTHLTID            " , 500, 0, 500); 
+  h_HT_All             [i] = initSingleHistogramTH1F( hname_HT_All             , "HT_All             " , 1000, 0, 1000); 
+  h_LEPTON_DANGLE      [i] = initSingleHistogramTH1F( hname_LEPTON_DANGLE      , "LEPTON_DANGLE      " , 40, 0, 4); 
+  h_LEPTON_DPHI        [i] = initSingleHistogramTH1F( hname_LEPTON_DPHI        , "LEPTON_DPHI        " , 80, -4, 4); 
   h_LRM                [i] = initSingleHistogramTH1F( hname_LRM                , "LRM                " , 100, 0, 100); 
-  h_MET                [i] = initSingleHistogramTH1F( hname_MET                , "MET                " , 100, 0, 100); 
-  h_MOSSF              [i] = initSingleHistogramTH1F( hname_MOSSF              , "MOSSF              " , 100, 0, 100); 
-  h_MUON_PT            [i] = initSingleHistogramTH1F( hname_MUON_PT            , "MUON_PT            " , 100, 0, 100); 
-  h_OSSFCLOSEMLL       [i] = initSingleHistogramTH1F( hname_OSSFCLOSEMLL       , "OSSFCLOSEMLL       " , 100, 0, 100); 
-  h_OSSFMAXMLL         [i] = initSingleHistogramTH1F( hname_OSSFMAXMLL         , "OSSFMAXMLL         " , 100, 0, 100); 
-  h_OSSFMINMLL         [i] = initSingleHistogramTH1F( hname_OSSFMINMLL         , "OSSFMINMLL         " , 100, 0, 100); 
-  h_PTOSSF             [i] = initSingleHistogramTH1F( hname_PTOSSF             , "PTOSSF             " , 100, 0, 100); 
-  h_SCALAR_PT          [i] = initSingleHistogramTH1F( hname_SCALAR_PT          , "SCALAR_PT          " , 100, 0, 100); 
-  h_SIGNALQUARKS_GENDXY[i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_GENDXY, "SIGNALQUARKS_GENDXY" , 100, 0, 100); 
-  h_SIGNALQUARKS_P     [i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_P     , "SIGNALQUARKS_P     " , 100, 0, 100); 
-  h_SIGNALQUARKS_PT    [i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_PT    , "SIGNALQUARKS_PT    " , 100, 0, 100); 
-  h_SSPH               [i] = initSingleHistogramTH1F( hname_SSPH               , "SSPH               " , 100, 0, 100); 
-  h_TrueNumInteractions[i] = initSingleHistogramTH1F( hname_TrueNumInteractions, "TrueNumInteractions" , 100, 0, 100); 
-  h_rhoAll             [i] = initSingleHistogramTH1F( hname_rhoAll             , "rhoAll             " , 100, 0, 100); 
-  h_rhoNeutral         [i] = initSingleHistogramTH1F( hname_rhoNeutral         , "rhoNeutral         " , 100, 0, 100); 
-  h_stupakR            [i] = initSingleHistogramTH1F( hname_stupakR            , "stupakR            " , 100, 0, 100); 
-  h_stupakR2           [i] = initSingleHistogramTH1F( hname_stupakR2           , "stupakR2           " , 100, 0, 100); 
+  h_MET                [i] = initSingleHistogramTH1F( hname_MET                , "MET                " , 200, 0, 200); 
+  h_MOSSF              [i] = initSingleHistogramTH1F( hname_MOSSF              , "MOSSF              " , 200, 0, 200); 
+  h_MUON_PT            [i] = initSingleHistogramTH1F( hname_MUON_PT            , "MUON_PT            " , 200, 0, 100); 
+  h_OSSFCLOSEMLL       [i] = initSingleHistogramTH1F( hname_OSSFCLOSEMLL       , "OSSFCLOSEMLL       " , 200, 0, 100); 
+  h_OSSFMAXMLL         [i] = initSingleHistogramTH1F( hname_OSSFMAXMLL         , "OSSFMAXMLL         " , 200, 0, 100); 
+  h_OSSFMINMLL         [i] = initSingleHistogramTH1F( hname_OSSFMINMLL         , "OSSFMINMLL         " , 200, 0, 100); 
+  h_PTOSSF             [i] = initSingleHistogramTH1F( hname_PTOSSF             , "PTOSSF             " , 200, 0, 100); 
+  h_SCALAR_PT          [i] = initSingleHistogramTH1F( hname_SCALAR_PT          , "SCALAR_PT          " , 200, 0, 100); 
+  h_SIGNALQUARKS_GENDXY[i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_GENDXY, "SIGNALQUARKS_GENDXY" , 200, 0, 100); 
+  h_SIGNALQUARKS_P     [i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_P     , "SIGNALQUARKS_P     " , 200, 0, 200); 
+  h_SIGNALQUARKS_PT    [i] = initSingleHistogramTH1F( hname_SIGNALQUARKS_PT    , "SIGNALQUARKS_PT    " , 200, 0, 200); 
+  h_SSPH               [i] = initSingleHistogramTH1F( hname_SSPH               , "SSPH               " , 10, 0, 1); 
+  h_TrueNumInteractions[i] = initSingleHistogramTH1F( hname_TrueNumInteractions, "TrueNumInteractions" , 100, 0, 50); 
+  h_rhoAll             [i] = initSingleHistogramTH1F( hname_rhoAll             , "rhoAll             " , 100, 0, 50); 
+  h_rhoNeutral         [i] = initSingleHistogramTH1F( hname_rhoNeutral         , "rhoNeutral         " , 100, 0, 10); 
+  h_stupakR            [i] = initSingleHistogramTH1F( hname_stupakR            , "stupakR            " , 10, 0, 1); 
+  h_stupakR2           [i] = initSingleHistogramTH1F( hname_stupakR2           , "stupakR2           " , 10, 0, 1); 
 
  }
 

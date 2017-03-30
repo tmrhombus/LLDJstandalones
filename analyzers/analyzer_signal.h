@@ -4,6 +4,7 @@
 
 #include "analyzer_base.h"
 #include <TH1.h>
+#include <TH2.h>
 
 class analyzer_signal : public analyzer_base {
 
@@ -14,9 +15,16 @@ public :
  virtual void  Loop(TString outfilename, Bool_t isMC,
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts);
+ TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
+                                   Int_t nbinsx, Double_t xmin, Double_t xmax,
+                                   Int_t nbinsy, Double_t ymin, Double_t ymax);
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ // 2D Histograms 
+ Bool_t        init2DHistograms();
+ Bool_t        fill2DHistograms(Double_t weight, int selbin);
+ Bool_t        write2DHistograms(int selbin);
  // Jet Variables
  Bool_t        initJetHistograms();
  Bool_t        fillJetHistograms(Double_t weight, int selbin);
@@ -55,6 +63,10 @@ public :
 
  // initialize histograms as global
  TH1F histoTH1F;
+ TH2F histoTH2F;
+
+ // 2D
+ TH2F h_nvertnjets[6];
 
  // General
  TH1F h_NELECTRONS[6];

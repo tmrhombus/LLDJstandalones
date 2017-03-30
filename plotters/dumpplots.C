@@ -1,13 +1,17 @@
 
 void dumpplots(){
 
+ //TString histotype="TH1";
+ TString histotype="TH2";
+
  // path to root files
  inpath  = TString("../roots");
  outpath = TString("../plots");
  TString infilename = "DY50_ALLCALOJETS"; // no .root
 
  // y axis plots as log
- Bool_t dolog = kTRUE;
+ Bool_t dolog = kFALSE;
+ //Bool_t dolog = kTRUE;
  TString extraname = "";
  if(dolog){extraname+="_log";}
 
@@ -44,17 +48,19 @@ void dumpplots(){
  TKey *key;
  while ((key = (TKey*)next())) {
     TClass *cl = gROOT->GetClass(key->GetClassName());
-    if (!cl->InheritsFrom("TH1")) continue;
+    if (!cl->InheritsFrom(histotype)) continue;
     TH1 *h = (TH1*)key->ReadObj();
     TString hname = key->GetName();
-    h->Draw();
+    if(histotype=="TH2"){h->Draw("colz");}
+    else{h->Draw();}
 
    // add titles
    title->DrawTextNDC(0.13,0.91,"CMS");
    extra->DrawTextNDC(0.23,0.91,"Preliminary");
    lumi->DrawTextNDC(0.9,0.91,"20 /fb (13 TeV)");
    h->GetXaxis()->SetTitle(h->GetTitle());
-   h->GetYaxis()->SetTitle("Events / bin");
+   h->GetYaxis()->SetTitle("");
+   //h->GetYaxis()->SetTitle("Events / bin");
 
    gPad->Update();
    gPad->RedrawAxis();
