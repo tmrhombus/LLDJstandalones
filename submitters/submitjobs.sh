@@ -5,10 +5,10 @@
 
 # source xx/LLDJ/setup.sh for ${version}
 
-doSubmit=true
+doSubmit=false
 lumi=20000
 nevents=-1
-maxfilesperjob=200   # 500=6h
+maxfilesperjob=300   # 500=6h
 
 samples=(  \
  "DY50"    \
@@ -23,35 +23,43 @@ samples=(  \
  "WW"      \
  "ZZ"      \
  "WZ"      \
+ "ZHtoLLbb_ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8"   \
+ "ZHtoLLbb_ggZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8" \
+ "Signal_WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"  \
+ "Signal_WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"   \
+ "Signal_ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"        \
+ "Signal_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"      \
 )
+
+
 
 jets=( \
   "ALLCALOJETS"                      \
-  "ALLCALOJETSMATCHED"               \
+#  "ALLCALOJETSMATCHED"               \
   "BASICCALOJETS"                    \
-  "BASICCALOJETS1"                   \
-  "BASICCALOJETS1MATCHED"            \
+#  "BASICCALOJETS1"                   \
+#  "BASICCALOJETS1MATCHED"            \
   "BASICCALOJETS1PT20"               \
-  "BASICCALOJETS1PT20MATCHED"        \
-  "BASICCALOJETSMATCHED"             \
+#  "BASICCALOJETS1PT20MATCHED"        \
+#  "BASICCALOJETSMATCHED"             \
   "INCLUSIVETAGGEDCALOJETS"          \
-  "INCLUSIVETAGGEDCALOJETS20"        \
-  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
-  "INCLUSIVETAGGEDCALOJETS60"        \
-  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
-  "INCLUSIVETAGGEDCALOJETSA"         \
-  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSB"         \
-  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSC"         \
-  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSD"         \
-  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSE"         \
-  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSF"         \
-  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
-  "INCLUSIVETAGGEDCALOJETSMATCHED"   \
+#  "INCLUSIVETAGGEDCALOJETS20"        \
+#  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
+#  "INCLUSIVETAGGEDCALOJETS60"        \
+#  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
+#  "INCLUSIVETAGGEDCALOJETSA"         \
+#  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSB"         \
+#  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSC"         \
+#  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSD"         \
+#  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSE"         \
+#  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSF"         \
+#  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
+#  "INCLUSIVETAGGEDCALOJETSMATCHED"   \
 )
 
 printf "Version: ${version}\n"
@@ -93,6 +101,10 @@ makeasubmitdir () {
  mkdir -p ${hadddir}
  printf "#!/bin/bash\n\n" > ${haddfile}
 
+ # make checker
+ checkfile="./checker.sh"
+ printf "#!/bin/bash\n\n" > ${checkfile}
+
  # choose your favorite jet collections to run over
  for jettype in ${jets[@]}
  do
@@ -117,6 +129,9 @@ makeasubmitdir () {
    printf "\\" >> ${haddfile}
    printf "\n $(pwd)/$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
 
+   # add file to checker
+   printf "\n if [ ! -f $(pwd)/$1_${jettype}_${jobfilenr}.root ]; then printf \"missing $(pwd)/$1_${jettype}_${jobfilenr}.root \\n\"; fi " >> ${checkfile}
+
    # increment filenumber counters
    #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
    filenrlow=$(( ${filenrlow} + ${maxfilesperjob} ))
@@ -135,12 +150,9 @@ makeasubmitdir () {
 }
 
 
-
+# actuall call the function
 for sample in ${samples[@]} 
 do
  makeasubmitdir ${sample}
 done
-
-#makemanylists ${doZHtoLLbb} "ZHtoLLbb" "ZH_HToBB_ZToLL" 
-#makemanylists ${doSignal}   "Signal"   "HToSSTobbbb" 
 
