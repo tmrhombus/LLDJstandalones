@@ -130,7 +130,7 @@ makeasubmitdir () {
    printf "\n $(pwd)/$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
 
    # add file to checker
-   printf "\n if [ ! -f $(pwd)/$1_${jettype}_${jobfilenr}.root ]; then printf \"missing $(pwd)/$1_${jettype}_${jobfilenr}.root \\n\"; fi " >> ${checkfile}
+   printf "\n if [ ! -f $(pwd)/$1_${jettype}_${jobfilenr}.root ]; then printf \" $(pwd)/$1_${jettype}_${jobfilenr}.root \\n\"; fi " >> ${checkfile}
 
    # increment filenumber counters
    #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
