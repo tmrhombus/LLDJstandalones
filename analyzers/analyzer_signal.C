@@ -96,17 +96,87 @@ TH1F analyzer_signal::initSingleHistogramTH1F(TString hname, TString htitle, Int
 
 }
 
+
+
+//----------------------------initSingleHistogramTH2F
+TH2F analyzer_signal::initSingleHistogramTH2F(TString hname, TString htitle,
+                                   Int_t nbinsx, Double_t xmin, Double_t xmax,
+                                   Int_t nbinsy, Double_t ymin, Double_t ymax)
+{
+
+ histoTH2F.Clear();
+ histoTH2F = TH2F( hname , htitle , nbinsx , xmin , xmax  , nbinsy , ymin , ymax );
+ histoTH2F.Sumw2();
+
+ return histoTH2F;
+
+}
+
+//----------------------------init2DHistograms
+Bool_t analyzer_signal::init2DHistograms()
+{
+
+ // assumes that selbins and jetmultnames have already been filled (initJetHistograms, initSigHistograms)
+ // loop through jets and selections to initialize histograms in parllel (series)
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+
+   TString hname_nvertnjets = "h_"+selbinnames[i]+"_NGOODVERTICES_v_NJets";
+   TString htitle_nvertnjets = "Nr. Good Vertices vs. Nr. Jets" ;
+
+   h_nvertnjets[i] = initSingleHistogramTH2F( hname_nvertnjets, htitle_nvertnjets, 50, 0, 50, 50, 0, 50 ); 
+
+  for(unsigned int j=0; j<jetmultnames.size(); ++j){
+
+   // for histograms that need two jets jet specific
+  
+  }
+ }
+
+ return kTRUE;
+}
+
+
+
+//----------------------------fill2DHistograms
+Bool_t analyzer_signal::fill2DHistograms(Double_t weight, int selbin)
+{
+ //printf("fill2DHistograms\n");
+
+  if( NGOODVERTICES->size()>0
+      && JetNJets->size()>0
+    ) 
+   {
+  h_nvertnjets [selbin]    .Fill( NGOODVERTICES->at(0), JetNJets->at(0),  weight  ); 
+ }
+
+ return kTRUE;
+}
+
+
+//----------------------------write2DHistograms
+Bool_t analyzer_signal::write2DHistograms(int selbin)
+{
+ //printf("write2DtHistograms\n");
+ for(unsigned int j=0; j<jetmultnames.size(); ++j){
+
+  h_nvertnjets[selbin][j].Write(); 
+
+ return kTRUE;
+}
+
+
 //----------------------------initJetHistograms
 Bool_t analyzer_signal::initJetHistograms()
 {
 
+ // initialize names
  jetmultnames.clear();
  jetmultnames.push_back("LeadingJet");
  jetmultnames.push_back("SubleadingJet");
  jetmultnames.push_back("ThirdJet");
  jetmultnames.push_back("FourthJet");
 
- // initialize names
+ // loop through jets and selections to initialize histograms in parllel (series)
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
