@@ -60,6 +60,7 @@ void dumpplots(){
    lumi->DrawTextNDC(0.9,0.91,"20 /fb (13 TeV)");
    h->GetXaxis()->SetTitle(h->GetTitle());
    h->GetYaxis()->SetTitle("");
+   h->SetTitle("");
    //h->GetYaxis()->SetTitle("Events / bin");
 
    gPad->Update();
