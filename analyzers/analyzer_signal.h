@@ -47,6 +47,14 @@ public :
  Bool_t doesPassOffZ;
  Bool_t doesPassNoPair;
 
+ int    safeNGOODVERTICES      = 0;
+ int    safeNDoubleElTriggers  = 0;
+ int    safeNDoubleMuTriggers  = 0;
+ int    safeNOSSF              = 0;
+ double safeMOSSF              = 0.; 
+ double safePTOSSF             = 0.; 
+ int    safeJetNJets           = 0;
+
  Int_t ntot;
  Int_t npassSig;
  Int_t npassZH;
