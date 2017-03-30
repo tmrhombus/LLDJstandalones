@@ -217,6 +217,7 @@ int main(int argc, char **argv){
  analyzer.Init(theChain, makelog, Tjettype);
  analyzer.initSigHistograms();
  analyzer.initJetHistograms();
+ analyzer.init2DHistograms();
 
  analyzer.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
 

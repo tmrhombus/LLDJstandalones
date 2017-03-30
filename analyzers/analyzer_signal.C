@@ -36,11 +36,6 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
-  //for(unsigned int a=0; a<JetMISSINGINNER->size(); ++a){
-  // printf("%i ",JetMISSINGINNER->at(a));
-  //}
-  //printf("\n");
-
   // make event weight
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
   ntot++;
@@ -53,12 +48,12 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
-                       fillSigHistograms(event_weight,0); fillJetHistograms(event_weight,0);  
-  if( doesPassSig   ){ fillSigHistograms(event_weight,1); fillJetHistograms(event_weight,1); }
-  if( doesPassZH    ){ fillSigHistograms(event_weight,2); fillJetHistograms(event_weight,2); }
-  if( doesPassDY    ){ fillSigHistograms(event_weight,3); fillJetHistograms(event_weight,3); }
-  if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); fillJetHistograms(event_weight,4); }
-  if( doesPassNoPair){ fillSigHistograms(event_weight,5); fillJetHistograms(event_weight,5); }
+                       fillSigHistograms(event_weight,0); fillJetHistograms(event_weight,0); fill2DHistograms(event_weight,0);  
+  if( doesPassSig   ){ fillSigHistograms(event_weight,1); fillJetHistograms(event_weight,1); fill2DHistograms(event_weight,1); }
+  if( doesPassZH    ){ fillSigHistograms(event_weight,2); fillJetHistograms(event_weight,2); fill2DHistograms(event_weight,2); }
+  if( doesPassDY    ){ fillSigHistograms(event_weight,3); fillJetHistograms(event_weight,3); fill2DHistograms(event_weight,3); }
+  if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); fillJetHistograms(event_weight,4); fill2DHistograms(event_weight,4); }
+  if( doesPassNoPair){ fillSigHistograms(event_weight,5); fillJetHistograms(event_weight,5); fill2DHistograms(event_weight,5); }
 
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
@@ -72,13 +67,13 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
  printf(" npassOffZ   %i \n",npassOffZ   ); 
  printf(" npassNoPair %i \n",npassNoPair ); 
 
-
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
  outfile->cd();
  for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
   writeSigHistograms(i);
   writeJetHistograms(i);
+  write2DHistograms(i);
  }
  outfile->Close();
 
@@ -123,12 +118,13 @@ Bool_t analyzer_signal::init2DHistograms()
    TString hname_nvertnjets = "h_"+selbinnames[i]+"_NGOODVERTICES_v_NJets";
    TString htitle_nvertnjets = "Nr. Good Vertices vs. Nr. Jets" ;
 
+//   printf("name: %s\n",hname_nvertnjets.Data());
+//   printf("title: %s\n",htitle_nvertnjets.Data());
+
    h_nvertnjets[i] = initSingleHistogramTH2F( hname_nvertnjets, htitle_nvertnjets, 50, 0, 50, 50, 0, 50 ); 
 
   for(unsigned int j=0; j<jetmultnames.size(); ++j){
-
-   // for histograms that need two jets jet specific
-  
+   // for histograms that are jet specific
   }
  }
 
@@ -136,15 +132,12 @@ Bool_t analyzer_signal::init2DHistograms()
 }
 
 
-
 //----------------------------fill2DHistograms
 Bool_t analyzer_signal::fill2DHistograms(Double_t weight, int selbin)
 {
  //printf("fill2DHistograms\n");
 
-  if( NGOODVERTICES->size()>0
-      && JetNJets->size()>0
-    ) 
+  if( NGOODVERTICES->size()>0 && JetNJets->size()>0 ) 
    {
   h_nvertnjets [selbin]    .Fill( NGOODVERTICES->at(0), JetNJets->at(0),  weight  ); 
  }
@@ -157,9 +150,10 @@ Bool_t analyzer_signal::fill2DHistograms(Double_t weight, int selbin)
 Bool_t analyzer_signal::write2DHistograms(int selbin)
 {
  //printf("write2DtHistograms\n");
+ h_nvertnjets[selbin].Write(); 
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
-
-  h_nvertnjets[selbin][j].Write(); 
+   // for histograms that are jet specific
+ }
 
  return kTRUE;
 }
