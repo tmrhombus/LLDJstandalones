@@ -27,6 +27,7 @@ int main(int argc, char **argv){
  // o - outpath
  // n - nfiles
  // a - start At file 
+ // d - dolocal
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";
@@ -36,21 +37,17 @@ int main(int argc, char **argv){
  char *outpath = (char*)"../roots";
  char *nfiles = (char*)"-1";
  char *atfile = (char*)"0";
+ bool dolocal = false;
  int index;
  int s;
- int l;
- int x;
- int j;
- int i;
- int o;
- int n;
- int a;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:d")) != -1)
   switch (s)
    {
+   case 'd':
+    dolocal = true;
    case 'a':
     atfile = optarg;
     break;
@@ -112,16 +109,17 @@ int main(int argc, char **argv){
  Int_t TIatfile = TSatfile.Atoi();
  Int_t TInfiles = TSnfiles.Atoi();
 
-  printf("Tsample:  %s\n",Tsample.Data());
-  printf("Txname:   %s\n",Txname.Data());
-  printf("TSlumi:   %s\n",TSlumi.Data());
-  printf("TSevts:   %s\n",TSevts.Data());
-  printf("Tjettype: %s\n",Tjettype.Data());
-  printf("TIatfile: %i\n",TIatfile);
-  printf("TInfiles: %i\n",TInfiles);
+ printf("Tsample:  %s\n",Tsample.Data());
+ printf("Txname:   %s\n",Txname.Data());
+ printf("TSlumi:   %s\n",TSlumi.Data());
+ printf("TSevts:   %s\n",TSevts.Data());
+ printf("Tjettype: %s\n",Tjettype.Data());
+ printf("TIatfile: %i\n",TIatfile);
+ printf("TInfiles: %i\n",TInfiles);
+
  // MC vs Data
  Bool_t isMC=kTRUE;
- Bool_t makelog=kTRUE;
+ Bool_t makelog=kFALSE;
 
  TString outfilename=Toutpath +"/"+Tsample+"_"+Tjettype+Txname;
  TString inputListName=Tinpath+"/"+Tsample+".list";
@@ -163,12 +161,12 @@ int main(int argc, char **argv){
 
   // read input file names
   if( Tinputline.Contains("/store/group") ){
-   //if( dolocal ){
-   // theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-   //}
-   //else{
+   if( dolocal ){
+    theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+   }
+   else{
     theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-   //}
+   }
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 

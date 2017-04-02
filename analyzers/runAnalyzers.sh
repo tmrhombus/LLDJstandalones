@@ -49,7 +49,7 @@ do
 
  do
 
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "20000" -j ${jettype} -i "../lists" -o "../roots" -n 10 -a 40
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "20000" -j ${jettype} -i "../lists" -o "../roots" -n 10 -a 40 -d
 
  done #for sample in DY50..
 done #for jettype in ALLCALOJETS
