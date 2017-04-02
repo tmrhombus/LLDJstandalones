@@ -50,13 +50,13 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
   if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
  
-  printf("  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
-  printf("  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
-  printf("  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
-  printf("  safeMOSSF              %f\n" , safeMOSSF             );
-  printf("  safeNOSSF              %d\n" , safeNOSSF             );
-  printf("  safeJetNJets           %d\n" , safeJetNJets          ); 
-  printf("  safePTOSSF             %f\n\n" , safePTOSSF            );    
+  //fprintf(logfile,"  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
+  //fprintf(logfile,"  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
+  //fprintf(logfile,"  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
+  //fprintf(logfile,"  safeMOSSF              %f\n" , safeMOSSF             );
+  //fprintf(logfile,"  safeNOSSF              %d\n" , safeNOSSF             );
+  //fprintf(logfile,"  safeJetNJets           %d\n" , safeJetNJets          ); 
+  //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
 
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
