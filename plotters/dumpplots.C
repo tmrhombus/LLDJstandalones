@@ -7,6 +7,7 @@ void dumpplots(){
  // path to root files
  inpath  = TString("../roots");
  outpath = TString("../plots");
+ //TString infilename = "TTbar_BASICCALOJETS1PT20"; // no .root
  TString infilename = "DY50_ALLCALOJETS"; // no .root
 
  // y axis plots as log

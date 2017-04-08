@@ -4,6 +4,9 @@
 void plotter_stacked()
 {
 
+ // Draw signal as lines
+ Bool_t drawSignal = kFALSE;
+
  // path to root files
  TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
@@ -15,46 +18,47 @@ void plotter_stacked()
  Bool_t dolog = kTRUE;
  TString extraname = "";
  if(dolog){extraname+="_log";}
+ if(drawSignal){extraname+="_wsig";}
 
  // phase space regions to plot
  std::vector<TString> regions;
  regions.clear();
  regions.push_back("NoSel");
  //regions.push_back("Sig");
- //regions.push_back("ZH");
- //regions.push_back("DY");
- //regions.push_back("OffZ");
- //regions.push_back("NoPair");
+ regions.push_back("ZH");
+ regions.push_back("DY");
+ regions.push_back("OffZ");
+ regions.push_back("NoPair");
 
  // jet types to plot
  std::vector<TString> jettypes;
  jettypes.clear();
  jettypes.push_back("ALLCALOJETS");                          
-  //jettypes.push_back("ALLCALOJETSMATCHED");                   
-  //jettypes.push_back("BASICCALOJETS");                        
-  //jettypes.push_back("BASICCALOJETS1");                       
-  //jettypes.push_back("BASICCALOJETS1MATCHED");                
-  //jettypes.push_back("BASICCALOJETS1PT20");                   
-  //jettypes.push_back("BASICCALOJETS1PT20MATCHED");            
-  //jettypes.push_back("BASICCALOJETSMATCHED");                 
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETS");              
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20");            
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20MATCHED");     
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60");            
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60MATCHED");     
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSA");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSAMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSB");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSBMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSC");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSCMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSD");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSDMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSE");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSEMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSF");             
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSFMATCHED");      
-  //jettypes.push_back("INCLUSIVETAGGEDCALOJETSMATCHED");       
+ //jettypes.push_back("ALLCALOJETSMATCHED");                   
+ jettypes.push_back("BASICCALOJETS");                        
+ //jettypes.push_back("BASICCALOJETS1");                       
+ //jettypes.push_back("BASICCALOJETS1MATCHED");                
+ jettypes.push_back("BASICCALOJETS1PT20");                   
+ //jettypes.push_back("BASICCALOJETS1PT20MATCHED");            
+ //jettypes.push_back("BASICCALOJETSMATCHED");                 
+ jettypes.push_back("INCLUSIVETAGGEDCALOJETS");              
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20");            
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20MATCHED");     
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60");            
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60MATCHED");     
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSA");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSAMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSB");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSBMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSC");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSCMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSD");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSDMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSE");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSEMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSF");             
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSFMATCHED");      
+ //jettypes.push_back("INCLUSIVETAGGEDCALOJETSMATCHED");       
 
  // variables to plot
  std::vector<TString> variables;
@@ -80,19 +84,19 @@ void plotter_stacked()
 // variables.push_back("FLATWEIGHT");                                
 // variables.push_back("HLTHT");                                     
 // variables.push_back("HSPH");                                      
-// variables.push_back("HT");                                        
+ variables.push_back("HT");                                        
 // variables.push_back("HTHLTID");                                   
-// variables.push_back("HT_All");                                    
+ variables.push_back("HT_All");                                    
 // variables.push_back("LEPTON_DANGLE");                             
 // variables.push_back("LEPTON_DPHI");                               
 // variables.push_back("LRM");                                       
-// variables.push_back("MET");                                       
-// variables.push_back("MOSSF");                                     
-// variables.push_back("MUON_PT");                                   
+ variables.push_back("MET");                                       
+ variables.push_back("MOSSF");                                     
+ variables.push_back("MUON_PT");                                   
 // variables.push_back("OSSFCLOSEMLL");                              
 // variables.push_back("OSSFMAXMLL");                                
 // variables.push_back("OSSFMINMLL");                                
-// variables.push_back("PTOSSF");                                    
+ variables.push_back("PTOSSF");                                    
 // //variables.push_back("SCALAR_PT");                                 
 // //variables.push_back("SIGNALQUARKS_GENDXY");                       
 // //variables.push_back("SIGNALQUARKS_P");                            
@@ -142,11 +146,11 @@ void plotter_stacked()
 // //variables.push_back("LeadingJet_BASICCALOJETS1DELTAR");           
 // //variables.push_back("LeadingJet_BASICCALOJETS1PT20DELTAR");       
 // variables.push_back("LeadingJet_BETA2");                          
-// variables.push_back("LeadingJet_BETA");                           
-// variables.push_back("LeadingJet_ETA");                            
+ variables.push_back("LeadingJet_BETA");                           
+ variables.push_back("LeadingJet_ETA");                            
 // variables.push_back("LeadingJet_HITSINFRONTOFVERTPERTRACK");      
 // variables.push_back("LeadingJet_IVFSCORE");                       
-// variables.push_back("LeadingJet_JETAREA");                        
+ variables.push_back("LeadingJet_JETAREA");                        
 // variables.push_back("LeadingJet_LEPANGLE_DANGLE");                
 // variables.push_back("LeadingJet_LEPANGLE_DPHI");                  
 // variables.push_back("LeadingJet_LEPDELTAR");                      
@@ -158,10 +162,10 @@ void plotter_stacked()
 // variables.push_back("LeadingJet_MEDIANLOG10TRACKANGLE");          
 // variables.push_back("LeadingJet_METANGLE_DANGLE");                
 // variables.push_back("LeadingJet_METANGLE_DPHI");                  
-// variables.push_back("LeadingJet_METDELTAR");                      
+ variables.push_back("LeadingJet_METDELTAR");                      
 // variables.push_back("LeadingJet_MISSHITSAFTERVERTPERTRACK");      
-// variables.push_back("LeadingJet_M");                              
-// variables.push_back("LeadingJet_PHI");                            
+ variables.push_back("LeadingJet_M");                              
+ variables.push_back("LeadingJet_PHI");                            
  variables.push_back("LeadingJet_PT");                             
 // variables.push_back("LeadingJet_SELFDELTAR");                     
 // variables.push_back("LeadingJet_SSPH");                           
@@ -604,17 +608,21 @@ void plotter_stacked()
     leg->AddEntry(h_TTbar   , "TTbar", "f"); 
     leg->AddEntry(h_WJets   , "W+Jets", "f"); 
     leg->AddEntry(h_ZH      , "ZH#rightarrowLLbb", "f");
-    leg->AddEntry(h_SignalWm, "Signal W-H","l");
-    leg->AddEntry(h_SignalWp, "Signal W+H","l");
-    leg->AddEntry(h_SignalZH, "Signal ZH","l");
-    leg->AddEntry(h_SignalggZH, "Signal ggZH","l");
+    if(drawSignal){
+     leg->AddEntry(h_SignalWm, "Signal W-H","l");
+     leg->AddEntry(h_SignalWp, "Signal W+H","l");
+     leg->AddEntry(h_SignalZH, "Signal ZH","l");
+     leg->AddEntry(h_SignalggZH, "Signal ggZH","l");
+    }
     
     // and draw
     bgstack->Draw("hist");
-    h_SignalWm->Draw("hist sames");
-    h_SignalWp->Draw("hist sames");
-    h_SignalZH->Draw("hist sames");
-    h_SignalggZH->Draw("hist sames");
+    if(drawSignal){
+     h_SignalWm->Draw("hist sames");
+     h_SignalWp->Draw("hist sames");
+     h_SignalZH->Draw("hist sames");
+     h_SignalggZH->Draw("hist sames");
+    }
     leg->Draw();
 
     // add titles
