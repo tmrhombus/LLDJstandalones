@@ -1,6 +1,6 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "DataFormats/MuonReco/interface/MuonSelectors.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -41,7 +41,7 @@ vector<float>    mutrkKink_;
 vector<float>    muBestTrkPtError_;
 vector<float>    muBestTrkPt_;
 
-void ggNtuplizer::branchesMuons(TTree* tree) {
+void lldjNtuple::branchesMuons(TTree* tree) {
 
   tree->Branch("nMu",           &nMu_);
   tree->Branch("muPt",          &muPt_);
@@ -80,7 +80,7 @@ void ggNtuplizer::branchesMuons(TTree* tree) {
   tree->Branch("muBestTrkPt",            &muBestTrkPt_);
 }
 
-void ggNtuplizer::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex vtx) {
+void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex vtx) {
 
   // cleanup from previous execution
   muPt_         .clear();
@@ -127,7 +127,7 @@ void ggNtuplizer::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Verte
   e.getByToken(pckPFCandidateCollection_, pfcands);
 
   if (!muonHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no pat::Muons in event";
+    edm::LogWarning("lldjNtuple") << "no pat::Muons in event";
     return;
   }
 

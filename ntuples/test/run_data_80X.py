@@ -140,20 +140,20 @@ process.egcorrMET = cms.Sequence(
         process.patPFMetT1MuonEnDownMuEGClean+process.patPFMetT1TauEnDownMuEGClean+
         process.patPFMetT1UnclusteredEnDownMuEGClean+process.slimmedMETsMuEGClean)
 
-process.load("ggAnalysis.ggNtuplizer.ggNtuplizer_miniAOD_cfi")
-process.load("ggAnalysis.ggNtuplizer.ggPhotonIso_CITK_PUPPI_cff")
-process.load("ggAnalysis.ggNtuplizer.ggMETFilters_cff")
-process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
-process.ggNtuplizer.jecAK8PayloadNames=cms.vstring(jecLevels)
-process.ggNtuplizer.runHFElectrons=cms.bool(True)
-process.ggNtuplizer.isAOD=cms.bool(False)
-process.ggNtuplizer.doGenParticles=cms.bool(False)
-process.ggNtuplizer.dumpSubJets=cms.bool(True)
-process.ggNtuplizer.dumpJets=cms.bool(True)
-process.ggNtuplizer.dumpTaus=cms.bool(False)
-process.ggNtuplizer.pfMETLabel=cms.InputTag("slimmedMETsMuEGClean", "", "ggKit")
+process.load("ntuples.lldjNtuple_miniAOD_cfi")
+process.load("ntuples.ggPhotonIso_CITK_PUPPI_cff")
+process.load("ntuples.ggMETFilters_cff")
+process.lldjNtuple.dumpSoftDrop= cms.bool(True)
+process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
+process.lldjNtuple.runHFElectrons=cms.bool(True)
+process.lldjNtuple.isAOD=cms.bool(False)
+process.lldjNtuple.doGenParticles=cms.bool(False)
+process.lldjNtuple.dumpSubJets=cms.bool(True)
+process.lldjNtuple.dumpJets=cms.bool(True)
+process.lldjNtuple.dumpTaus=cms.bool(False)
+process.lldjNtuple.pfMETLabel=cms.InputTag("slimmedMETsMuEGClean", "", "ggKit")
 ## the following line is only needed when you run on Feb 2017 re-miniAOD
-process.ggNtuplizer.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
+process.lldjNtuple.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
 
 #####VID framework####################
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
@@ -198,7 +198,7 @@ for idmod in my_phoid_modules:
         process.calibratedPatPhotons*
         process.egmGsfElectronIDSequence*
         process.egmPhotonIDSequence*
-        process.ggNtuplizer
+        process.lldjNtuple
         )
     
 #print process.dumpPython()

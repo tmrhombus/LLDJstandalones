@@ -1,8 +1,8 @@
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
-Double_t ggNtuplizer::getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands,
+Double_t lldjNtuple::getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands,
 					const reco::Candidate* ptcl,  
 					double r_iso_min, double r_iso_max, double kt_scale,
 					bool charged_only) {

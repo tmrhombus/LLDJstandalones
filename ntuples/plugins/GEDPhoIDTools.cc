@@ -6,7 +6,7 @@
 //
 //
 #include "DataFormats/Math/interface/deltaR.h"
-#include "ggAnalysis/ggNtuplizer/interface/GEDPhoIDTools.h"
+#include "LLDJstandalones/ntuples/interface/GEDPhoIDTools.h"
 
 bool GEDPhoIDTools::CutBasedID(WP wp, bool UsedefaultCuts=true){
     if(UsedefaultCuts)defaultCuts();

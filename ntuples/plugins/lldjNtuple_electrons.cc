@@ -6,7 +6,7 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 using namespace reco;
@@ -118,7 +118,7 @@ vector<float> gsfPt_;
 vector<float> gsfEta_;
 vector<float> gsfPhi_;
 
-void ggNtuplizer::branchesElectrons(TTree* tree) {
+void lldjNtuple::branchesElectrons(TTree* tree) {
 
   tree->Branch("nEle",                    &nEle_);
   tree->Branch("eleCharge",               &eleCharge_);
@@ -228,7 +228,7 @@ void ggNtuplizer::branchesElectrons(TTree* tree) {
   
 }
 
-void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, math::XYZPoint &pv) {
+void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, math::XYZPoint &pv) {
     
   // cleanup from previous execution
   eleCharge_                  .clear();
@@ -341,12 +341,12 @@ void ggNtuplizer::fillElectrons(const edm::Event &e, const edm::EventSetup &es, 
   e.getByToken(pckPFCandidateCollection_, pfcands);
 
   if (!electronHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no pat::Electrons in event";
+    edm::LogWarning("lldjNtuple") << "no pat::Electrons in event";
     return;
   }
 
   if (!calibelectronHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no calibrated pat::Electrons in event";
+    edm::LogWarning("lldjNtuple") << "no calibrated pat::Electrons in event";
     return;
   }
 

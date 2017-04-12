@@ -2,7 +2,7 @@
 // abdollah.mohammadi@cern.ch
 
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -101,7 +101,7 @@ vector<float> taudxy_;
 
 
 
-void ggNtuplizer::branchesTaus(TTree* tree)
+void lldjNtuple::branchesTaus(TTree* tree)
 {
     
     
@@ -195,7 +195,7 @@ void ggNtuplizer::branchesTaus(TTree* tree)
     
 }
 
-void ggNtuplizer::fillTaus(const edm::Event& e)
+void lldjNtuple::fillTaus(const edm::Event& e)
 {
     
     // Tau Id & Isolation
@@ -289,7 +289,7 @@ void ggNtuplizer::fillTaus(const edm::Event& e)
     e.getByToken(tauCollection_, tauHandle);
     
     if (!tauHandle.isValid()) {
-        edm::LogWarning("ggNtuplizer") << "no pat::Tau in event";
+        edm::LogWarning("lldjNtuple") << "no pat::Tau in event";
         return;
     }
     

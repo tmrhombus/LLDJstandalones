@@ -1,6 +1,6 @@
 #include "map"
 #include "FWCore/Common/interface/TriggerNames.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ vector<float> trgMuPt[32],  trgMuEta[32],  trgMuPhi[32];
 vector<float> trgJetPt[32], trgJetEta[32], trgJetPhi[32];
 vector<float> trgL1Eta[32],  trgL1Phi[32];
 
-void ggNtuplizer::initTriggerFilters(const edm::Event &e) {
+void lldjNtuple::initTriggerFilters(const edm::Event &e) {
   // Fills the arrays above.
 
   // cleanup from previous execution
@@ -445,7 +445,7 @@ void ggNtuplizer::initTriggerFilters(const edm::Event &e) {
 
 }
 
-UInt_t ggNtuplizer::matchSingleElectronTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchSingleElectronTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -461,7 +461,7 @@ UInt_t ggNtuplizer::matchSingleElectronTriggerFilters(double pt, double eta, dou
   return result;
 }
 
-UInt_t ggNtuplizer::matchDoubleElectronTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchDoubleElectronTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -477,7 +477,7 @@ UInt_t ggNtuplizer::matchDoubleElectronTriggerFilters(double pt, double eta, dou
   return result;
 }
 
-UInt_t ggNtuplizer::matchSinglePhotonTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchSinglePhotonTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -493,7 +493,7 @@ UInt_t ggNtuplizer::matchSinglePhotonTriggerFilters(double pt, double eta, doubl
   return result;
 }
 
-UInt_t ggNtuplizer::matchDoublePhotonTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchDoublePhotonTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -509,7 +509,7 @@ UInt_t ggNtuplizer::matchDoublePhotonTriggerFilters(double pt, double eta, doubl
   return result;
 }
 
-UInt_t ggNtuplizer::matchMuonTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchMuonTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -525,7 +525,7 @@ UInt_t ggNtuplizer::matchMuonTriggerFilters(double pt, double eta, double phi) {
   return result;
 }
 
-UInt_t ggNtuplizer::matchJetTriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchJetTriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -541,7 +541,7 @@ UInt_t ggNtuplizer::matchJetTriggerFilters(double pt, double eta, double phi) {
   return result;
 }
 
-UInt_t ggNtuplizer::matchL1TriggerFilters(double pt, double eta, double phi) {
+UInt_t lldjNtuple::matchL1TriggerFilters(double pt, double eta, double phi) {
 
   // bits in the return value correspond to decisions from filters defined above
   UInt_t result = 0;
@@ -556,7 +556,7 @@ UInt_t ggNtuplizer::matchL1TriggerFilters(double pt, double eta, double phi) {
   return result;
 }
 
-Double_t ggNtuplizer::deltaPhi(Double_t phi1, Double_t phi2) {
+Double_t lldjNtuple::deltaPhi(Double_t phi1, Double_t phi2) {
 
   Double_t dPhi = phi1 - phi2;
   if (dPhi > TMath::Pi()) dPhi -= 2.*TMath::Pi();
@@ -565,7 +565,7 @@ Double_t ggNtuplizer::deltaPhi(Double_t phi1, Double_t phi2) {
   return dPhi;
 }
 
-Double_t ggNtuplizer::deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2) {
+Double_t lldjNtuple::deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2) {
 
   Double_t dEta, dPhi ;
   dEta = eta1 - eta2;

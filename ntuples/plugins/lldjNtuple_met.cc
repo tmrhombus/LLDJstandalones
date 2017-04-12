@@ -1,6 +1,6 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -33,7 +33,7 @@ float pfMETPhi_T1JESDo_;
 float pfMETPhi_T1UESUp_;
 float pfMETPhi_T1UESDo_;
 
-void ggNtuplizer::branchesMET(TTree* tree) {
+void lldjNtuple::branchesMET(TTree* tree) {
 
   if (doGenParticles_) {
     tree->Branch("genMET",      &genMET_);
@@ -68,7 +68,7 @@ void ggNtuplizer::branchesMET(TTree* tree) {
 
 }
 
-void ggNtuplizer::fillMET(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
 
   metFilters_ = 0;
 

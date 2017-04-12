@@ -1,7 +1,7 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "FWCore/Common/interface/TriggerNames.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ ULong64_t   HLTPhoIsPrescaled_;
 ULong64_t   HLTJetIsPrescaled_;
 vector<int> phoPrescale_;
 
-void ggNtuplizer::branchesGlobalEvent(TTree* tree) {
+void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
   tree->Branch("run",     &run_);
   tree->Branch("event",   &event_);
@@ -51,7 +51,7 @@ void ggNtuplizer::branchesGlobalEvent(TTree* tree) {
   tree->Branch("phoPrescale",          &phoPrescale_); 
 }
 
-void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es) {
 
   phoPrescale_.clear();
 
@@ -95,7 +95,7 @@ void ggNtuplizer::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es
 
     }
   } else
-    edm::LogWarning("ggNtuplizer") << "Primary vertices info not unavailable";
+    edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
 
   // HLT treatment
   HLTEleMuX_            = 0;

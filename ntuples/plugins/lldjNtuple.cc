@@ -1,4 +1,4 @@
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 using namespace edm;
@@ -8,7 +8,7 @@ void setbit(UShort_t& x, UShort_t bit) {
   x |= (a << bit);
 }
 
-ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) {
+lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   development_               = ps.getParameter<bool>("development");
   addFilterInfoAOD_          = ps.getParameter<bool>("addFilterInfoAOD");
@@ -98,13 +98,13 @@ ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
-  phoChargedIsolationToken_CITK_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation_CITK"));
-  phoPhotonIsolationToken_CITK_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation_CITK"));
-  phoNeutralHadronIsolationToken_CITK_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation_CITK"));
-  
-  phoChargedIsolationToken_PUPPI_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation_PUPPI"));
-  phoNeutralHadronIsolationToken_PUPPI_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation_PUPPI"));
-  phoPhotonIsolationToken_PUPPI_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation_PUPPI"));
+  //phoChargedIsolationToken_CITK_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation_CITK"));
+  //phoPhotonIsolationToken_CITK_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation_CITK"));
+  //phoNeutralHadronIsolationToken_CITK_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation_CITK"));
+  //
+  //phoChargedIsolationToken_PUPPI_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation_PUPPI"));
+  //phoNeutralHadronIsolationToken_PUPPI_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation_PUPPI"));
+  //phoPhotonIsolationToken_PUPPI_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation_PUPPI"));
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (tag V08_00_24_00)");
@@ -127,12 +127,12 @@ ggNtuplizer::ggNtuplizer(const edm::ParameterSet& ps) {
   if (dumpJets_) branchesJets(tree_);
 }
 
-ggNtuplizer::~ggNtuplizer() {
+lldjNtuple::~lldjNtuple() {
   cleanupPhotons();
   delete cicPhotonId_;
 }
 
-void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
   hEvents_->Fill(0.5);
 
@@ -187,7 +187,7 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
 }
 
 
-// void ggNtuplizer::fillDescriptions(edm::ConfigurationDescriptions& descriptions)
+// void lldjNtuple::fillDescriptions(edm::ConfigurationDescriptions& descriptions)
 // {
 //   //The following says we do not know what parameters are allowed so do no validation
 //   // Please change this to state exactly what you do use, even if it is no parameters
@@ -196,4 +196,4 @@ void ggNtuplizer::analyze(const edm::Event& e, const edm::EventSetup& es) {
 //   descriptions.addDefault(desc);
 // }
 
-DEFINE_FWK_MODULE(ggNtuplizer);
+DEFINE_FWK_MODULE(lldjNtuple);

@@ -1,6 +1,6 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
-#include "ggAnalysis/ggNtuplizer/interface/GenParticleParentage.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
+#include "LLDJstandalones/ntuples/interface/GenParticleParentage.h"
 using namespace std;
 
 // (local) variables associated with tree branches
@@ -106,7 +106,7 @@ float getGenTrkIso(edm::Handle<reco::GenParticleCollection> handle,
    return ptSum;
 }
 
-void ggNtuplizer::branchesGenInfo(TTree* tree, edm::Service<TFileService> &fs) {
+void lldjNtuple::branchesGenInfo(TTree* tree, edm::Service<TFileService> &fs) {
 
   tree->Branch("pdf",           &pdf_);
   tree->Branch("pthat",         &pthat_);
@@ -129,7 +129,7 @@ void ggNtuplizer::branchesGenInfo(TTree* tree, edm::Service<TFileService> &fs) {
   hGenWeight_ = fs->make<TH1F>("hGenWeight", "Gen weights",           2,    0, 2);
 }
 
-void ggNtuplizer::branchesGenPart(TTree* tree) {
+void lldjNtuple::branchesGenPart(TTree* tree) {
 
   tree->Branch("nMC",          &nMC_);
   tree->Branch("mcPID",        &mcPID);
@@ -158,7 +158,7 @@ void ggNtuplizer::branchesGenPart(TTree* tree) {
   tree->Branch("mcTrkIsoDR04", &mcTrkIsoDR04);
 }
 
-void ggNtuplizer::fillGenInfo(const edm::Event& e) {
+void lldjNtuple::fillGenInfo(const edm::Event& e) {
 
   // cleanup from previous execution
   pthat_     = -99;
@@ -196,7 +196,7 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
     if (genWeight_ >= 0) hGenWeight_->Fill(0.5);    
     else hGenWeight_->Fill(1.5);
   } else
-    edm::LogWarning("ggNtuplizer") << "no GenEventInfoProduct in event";
+    edm::LogWarning("lldjNtuple") << "no GenEventInfoProduct in event";
   
   // access generator level HT  
   edm::Handle<LHEEventProduct> lheEventProduct;
@@ -256,11 +256,11 @@ void ggNtuplizer::fillGenInfo(const edm::Event& e) {
     }
   }
   else
-    edm::LogWarning("ggNtuplizer") << "no PileupSummaryInfo in event";
+    edm::LogWarning("lldjNtuple") << "no PileupSummaryInfo in event";
 
 }
 
-void ggNtuplizer::fillGenPart(const edm::Event& e) {
+void lldjNtuple::fillGenPart(const edm::Event& e) {
 
   // Fills tree branches with generated particle info.
 
@@ -296,7 +296,7 @@ void ggNtuplizer::fillGenPart(const edm::Event& e) {
   e.getByToken(genParticlesCollection_, genParticlesHandle);
 
   if (!genParticlesHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no reco::GenParticles in event";
+    edm::LogWarning("lldjNtuple") << "no reco::GenParticles in event";
     return;
   }
 

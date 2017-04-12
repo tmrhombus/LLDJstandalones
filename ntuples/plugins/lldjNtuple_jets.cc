@@ -1,5 +1,5 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 #include "JetMETCorrections/Objects/interface/JetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
@@ -154,7 +154,7 @@ vector< vector<int > >  AK8puppiSDSJCharge_ ;
 vector< vector<int > >  AK8puppiSDSJFlavour_;
 vector< vector<float> > AK8puppiSDSJCSV_ ;
 
-void ggNtuplizer::branchesJets(TTree* tree) {
+void lldjNtuple::branchesJets(TTree* tree) {
   
   tree->Branch("nJet",            &nJet_);
   tree->Branch("jetPt",           &jetPt_);
@@ -299,7 +299,7 @@ void ggNtuplizer::branchesJets(TTree* tree) {
 }
 
 
-void ggNtuplizer::fillJets(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // cleanup from previous execution
   jetPt_                                  .clear();
@@ -444,7 +444,7 @@ void ggNtuplizer::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken(jetsAK4Label_, jetHandle);
 
   if (!jetHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no pat::Jets (AK4) in event";
+    edm::LogWarning("lldjNtuple") << "no pat::Jets (AK4) in event";
     return;
   }
 
@@ -457,7 +457,7 @@ void ggNtuplizer::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
-  if (!vtxHandle.isValid()) edm::LogWarning("ggNtuplizer") << "Primary vertices info not unavailable";
+  if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
   
   // Accessing the JEC uncertainties 
   //ak4  
@@ -672,7 +672,7 @@ void ggNtuplizer::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     e.getByToken(jetsAK8Label_, jetsAK8);
     
     if (!jetsAK8.isValid()) {
-      edm::LogWarning("ggNtuplizer") << "no pat::Jets (AK8AK8) in event";
+      edm::LogWarning("lldjNtuple") << "no pat::Jets (AK8AK8) in event";
       return;
     }
     

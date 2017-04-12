@@ -1,8 +1,8 @@
 #include <TString.h>
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
-#include "ggAnalysis/ggNtuplizer/interface/GEDPhoIDTools.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/GEDPhoIDTools.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ vector<float>  pfphoEt_;
 vector<float>  pfphoEta_;
 vector<float>  pfphoPhi_;
 
-void ggNtuplizer::branchesPFPhotons(TTree* tree) {
+void lldjNtuple::branchesPFPhotons(TTree* tree) {
   
   tree->Branch("npfPho",                    &npfPho_);
   tree->Branch("pfphoEt",                   &pfphoEt_);
@@ -20,7 +20,7 @@ void ggNtuplizer::branchesPFPhotons(TTree* tree) {
 
 }
 
-void ggNtuplizer::fillPFPhotons(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::fillPFPhotons(const edm::Event& e, const edm::EventSetup& es) {
   
   // cleanup from previous execution
   pfphoEt_                .clear();

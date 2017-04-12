@@ -14,8 +14,8 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_Tra
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -38,7 +38,9 @@ process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
         #'/store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext4-v1/00000/004A0552-3929-E611-BD44-0025905A48F0.root'
-        '/store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/08E155A9-FAB6-E611-92BF-00259073E45E.root'
+        #'/store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/08E155A9-FAB6-E611-92BF-00259073E45E.root'
+        #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/TT_miniAOD_0AB045B5-BB0C-E511-81FD-0025905A60B8.root'
+'/store/mc/RunIISummer16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/08BA365D-40E5-E611-955F-00266CF89498.root'
         ))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -61,7 +63,7 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
     initialSeed = cms.untracked.uint32(12345),
     engineName = cms.untracked.string('TRandom3')
     ),
-                                                   ggNtuplizer  = cms.PSet(
+                                                   lldjNtuple  = cms.PSet(
     initialSeed = cms.untracked.uint32(67890),
     engineName = cms.untracked.string('TRandom3')
     )
@@ -103,18 +105,18 @@ runMetCorAndUncFromMiniAOD(process,
                            isData=False
                            )
 
-process.load("ggAnalysis.ggNtuplizer.ggNtuplizer_miniAOD_cfi")
-process.load("ggAnalysis.ggNtuplizer.ggPhotonIso_CITK_PUPPI_cff")
-process.load("ggAnalysis.ggNtuplizer.ggMETFilters_cff")
-process.ggNtuplizer.dumpSoftDrop= cms.bool(True)
-process.ggNtuplizer.jecAK8PayloadNames=cms.vstring(jecLevels)
-process.ggNtuplizer.runHFElectrons=cms.bool(True)
-process.ggNtuplizer.isAOD=cms.bool(False)
-process.ggNtuplizer.doGenParticles=cms.bool(True)
-process.ggNtuplizer.dumpSubJets=cms.bool(True)
-process.ggNtuplizer.dumpJets=cms.bool(True)
-process.ggNtuplizer.dumpTaus=cms.bool(False)
-process.ggNtuplizer.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
+process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
+#process.load("LLDJstandalones.ntuples.ggPhotonIso_CITK_PUPPI_cff")
+process.load("LLDJstandalones.ntuples.ggMETFilters_cff")
+process.lldjNtuple.dumpSoftDrop= cms.bool(True)
+process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
+process.lldjNtuple.runHFElectrons=cms.bool(True)
+process.lldjNtuple.isAOD=cms.bool(False)
+process.lldjNtuple.doGenParticles=cms.bool(True)
+process.lldjNtuple.dumpSubJets=cms.bool(True)
+process.lldjNtuple.dumpJets=cms.bool(True)
+process.lldjNtuple.dumpTaus=cms.bool(False)
+process.lldjNtuple.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
 
 #####VID framework####################
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
@@ -153,7 +155,7 @@ process.p = cms.Path(
     process.calibratedPatPhotons* 
     process.egmGsfElectronIDSequence*
     process.egmPhotonIDSequence*
-    process.ggNtuplizer
+    process.lldjNtuple
     )
 
-#print process.dumpPython()
+print process.dumpPython()

@@ -1,8 +1,8 @@
 #include <TString.h>
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "RecoEcal/EgammaCoreTools/interface/EcalClusterLazyTools.h"
-#include "ggAnalysis/ggNtuplizer/interface/GEDPhoIDTools.h"
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/GEDPhoIDTools.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
 
@@ -73,9 +73,9 @@ vector<float>  phoPFNeuIsoFrix5_;
 vector<float>  phoPFNeuIsoFrix6_;
 vector<float>  phoPFNeuIsoFrix7_;
 vector<float>  phoPFNeuIsoFrix8_;
-vector<float>  phoCITKChIso_;
-vector<float>  phoCITKPhoIso_;
-vector<float>  phoCITKNeuIso_;
+//vector<float>  phoCITKChIso_;
+//vector<float>  phoCITKPhoIso_;
+//vector<float>  phoCITKNeuIso_;
 //vector<float>  phoPUPPIChIso_;
 //vector<float>  phoPUPPIPhoIso_;
 //vector<float>  phoPUPPINeuIso_;
@@ -116,7 +116,7 @@ bool isInFootprint(const T& thefootprint, const U& theCandidate) {
   return false;
 }
 
-void ggNtuplizer::branchesPhotons(TTree* tree) {
+void lldjNtuple::branchesPhotons(TTree* tree) {
   
   tree->Branch("nPho",                    &nPho_);
   tree->Branch("phoE",                    &phoE_);
@@ -189,9 +189,9 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
   tree->Branch("phoPFNeuIsoFrix7",        &phoPFNeuIsoFrix7_);
   tree->Branch("phoPFNeuIsoFrix8",        &phoPFNeuIsoFrix8_);
   */
-  tree->Branch("phoCITKChIso",            &phoCITKChIso_);
-  tree->Branch("phoCITKPhoIso",           &phoCITKPhoIso_);
-  tree->Branch("phoCITKNeuIso",           &phoCITKNeuIso_);
+  //tree->Branch("phoCITKChIso",            &phoCITKChIso_);
+  //tree->Branch("phoCITKPhoIso",           &phoCITKPhoIso_);
+  //tree->Branch("phoCITKNeuIso",           &phoCITKNeuIso_);
   //tree->Branch("phoPUPPIChIso",           &phoPUPPIChIso_);
   //tree->Branch("phoPUPPIPhoIso",          &phoPUPPIPhoIso_);
   //tree->Branch("phoPUPPINeuIso",          &phoPUPPINeuIso_);
@@ -220,7 +220,7 @@ void ggNtuplizer::branchesPhotons(TTree* tree) {
 
 }
 
-void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
+void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   
   // cleanup from previous execution
   phoE_                 .clear();
@@ -289,9 +289,9 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   phoPFNeuIsoFrix6_     .clear();
   phoPFNeuIsoFrix7_     .clear();
   phoPFNeuIsoFrix8_     .clear();
-  phoCITKChIso_         .clear();
-  phoCITKPhoIso_        .clear();
-  phoCITKNeuIso_        .clear();
+  //phoCITKChIso_         .clear();
+  //phoCITKPhoIso_        .clear();
+  //phoCITKNeuIso_        .clear();
   //phoPUPPIChIso_        .clear();
   //phoPUPPIPhoIso_       .clear();
   //phoPUPPINeuIso_       .clear();
@@ -331,12 +331,12 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken(calibphotonCollection_, calibphotonHandle);
 
   if (!photonHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no pat::Photons in event";
+    edm::LogWarning("lldjNtuple") << "no pat::Photons in event";
     return;
   }
 
   if (!calibphotonHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no calibrated pat::Photons in event";
+    edm::LogWarning("lldjNtuple") << "no calibrated pat::Photons in event";
     return;
   }
 
@@ -368,13 +368,13 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken(phoPhotonIsolationToken_,        phoPhotonIsolationMap);
   e.getByToken(phoWorstChargedIsolationToken_,  phoWorstChargedIsolationMap);
 
-  // Get the isolation maps for CITK
-  edm::Handle<edm::ValueMap<float> > phoChargedIsolationMap_CITK;
-  e.getByToken(phoChargedIsolationToken_CITK_, phoChargedIsolationMap_CITK);
-  edm::Handle<edm::ValueMap<float> > phoPhotonIsolationMap_CITK;
-  e.getByToken(phoPhotonIsolationToken_CITK_, phoPhotonIsolationMap_CITK);
-  edm::Handle<edm::ValueMap<float> > phoNeutralHadronIsolationMap_CITK;
-  e.getByToken(phoNeutralHadronIsolationToken_CITK_, phoNeutralHadronIsolationMap_CITK);
+  //// Get the isolation maps for CITK
+  //edm::Handle<edm::ValueMap<float> > phoChargedIsolationMap_CITK;
+  //e.getByToken(phoChargedIsolationToken_CITK_, phoChargedIsolationMap_CITK);
+  //edm::Handle<edm::ValueMap<float> > phoPhotonIsolationMap_CITK;
+  //e.getByToken(phoPhotonIsolationToken_CITK_, phoPhotonIsolationMap_CITK);
+  //edm::Handle<edm::ValueMap<float> > phoNeutralHadronIsolationMap_CITK;
+  //e.getByToken(phoNeutralHadronIsolationToken_CITK_, phoNeutralHadronIsolationMap_CITK);
 
   // Get the isolation maps for PUPPI
   //edm::Handle<edm::ValueMap<float> > phoChargedIsolationMap_PUPPI;
@@ -699,9 +699,9 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     phoPFNeuIso_             .push_back((*phoNeutralHadronIsolationMap)[pho]);
     phoPFChWorstIso_         .push_back((*phoWorstChargedIsolationMap)[pho]);
     
-    phoCITKChIso_            .push_back((*phoChargedIsolationMap_CITK)[pho]);
-    phoCITKPhoIso_           .push_back((*phoPhotonIsolationMap_CITK)[pho]);
-    phoCITKNeuIso_           .push_back((*phoNeutralHadronIsolationMap_CITK)[pho]);
+    //phoCITKChIso_            .push_back((*phoChargedIsolationMap_CITK)[pho]);
+    //phoCITKPhoIso_           .push_back((*phoPhotonIsolationMap_CITK)[pho]);
+    //phoCITKNeuIso_           .push_back((*phoNeutralHadronIsolationMap_CITK)[pho]);
     //phoPUPPIChIso_           .push_back((*phoChargedIsolationMap_PUPPI)[pho]);
     //phoPUPPIPhoIso_          .push_back((*phoPhotonIsolationMap_PUPPI)[pho]);
     //phoPUPPINeuIso_          .push_back((*phoNeutralHadronIsolationMap_PUPPI)[pho]);
@@ -724,6 +724,6 @@ void ggNtuplizer::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   if (GEDIdTool) delete GEDIdTool;
 }
 
-void ggNtuplizer::cleanupPhotons() {
+void lldjNtuple::cleanupPhotons() {
 
 }

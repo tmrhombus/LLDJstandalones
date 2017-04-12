@@ -1,7 +1,7 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
 
-#include "ggAnalysis/ggNtuplizer/interface/ggNtuplizer.h"
+#include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 #include <algorithm>
 
 using namespace std;
@@ -23,7 +23,7 @@ vector<float> pfHFPhi_;
 vector<float> pfHFEta_;
 vector<float> pfHFIso_;
 
-void ggNtuplizer::branchesHFElectrons(TTree* tree) {
+void lldjNtuple::branchesHFElectrons(TTree* tree) {
 
   tree->Branch("npfHF",      &npfHF_);
   tree->Branch("pfHFEn",     &pfHFEn_);
@@ -35,7 +35,7 @@ void ggNtuplizer::branchesHFElectrons(TTree* tree) {
   tree->Branch("pfHFIso",    &pfHFIso_);
 }
 
-void ggNtuplizer::fillHFElectrons(const edm::Event &e) {
+void lldjNtuple::fillHFElectrons(const edm::Event &e) {
     
   // cleanup from previous execution
   pfHFEn_    .clear();
@@ -51,7 +51,7 @@ void ggNtuplizer::fillHFElectrons(const edm::Event &e) {
   edm::Handle<edm::View<pat::Jet> > jetHandle;
   e.getByToken(jetsAK4Label_, jetHandle);
   if (!jetHandle.isValid()) {
-    edm::LogWarning("ggNtuplizer") << "no pat::Jets (AK4) in event";
+    edm::LogWarning("lldjNtuple") << "no pat::Jets (AK4) in event";
     return;
   }
 

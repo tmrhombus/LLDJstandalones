@@ -1,5 +1,5 @@
-#ifndef ggNtuplizer_h
-#define ggNtuplizer_h
+#ifndef lldjNtuple_h
+#define lldjNtuple_h
 
 #include "TTree.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
@@ -28,15 +28,16 @@
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 //#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
 
+
 using namespace std;
 
 void setbit(UShort_t& x, UShort_t bit);
 
-class ggNtuplizer : public edm::EDAnalyzer {
+class lldjNtuple : public edm::EDAnalyzer {
  public:
 
-  explicit ggNtuplizer(const edm::ParameterSet&);
-  ~ggNtuplizer();
+  explicit lldjNtuple(const edm::ParameterSet&);
+  ~lldjNtuple();
   
   //   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
   
@@ -156,12 +157,12 @@ class ggNtuplizer : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_; 
   edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_; 
   edm::EDGetTokenT<edm::ValueMap<float> > phoWorstChargedIsolationToken_; 
-  edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_CITK_;
-  edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_CITK_;
-  edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_CITK_;
-  edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_PUPPI_;
-  edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_PUPPI_;
-  edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_PUPPI_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_CITK_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_CITK_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_CITK_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_PUPPI_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_PUPPI_;
+  //edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_PUPPI_;
 
   // elecontr ID decisions objects
   edm::EDGetTokenT<edm::ValueMap<bool> >  eleVetoIdMapToken_;
