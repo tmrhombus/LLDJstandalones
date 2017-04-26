@@ -63,20 +63,26 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
   electron_list = electron_passLooseID( 15, 3, "");
   muon_list = muon_passLooseID( 15, 3, ""); 
+  jet_list = jet_passID( 15, 3, "");
 
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
-   printf( " photon %d : pt %f\n ", i, phoEt->at(phoindex));
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n ", i, phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
   }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
-   printf( " electron %d : pt %f\n ", i, elePt->at(eleindex));
+   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n ", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
   }
 
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
-   printf( " muon %d : pt %f\n ", i, muPt->at(muindex));
+   printf( " muon %d : pt %.1f eta %.1f phi %.1f\n ", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+  }
+
+  for(int i=0; i<jet_list.size(); ++i){
+   int jetindex = jet_list[i];
+   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n ", i, jetPt->at(jetindex), jetEta->at(jetindex), jetPhi->at(jetindex));
   }
  
 
@@ -946,8 +952,8 @@ std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double e
   return ele_cands;
 }
 
-//-------------------------jets_passID
-std::vector<int> analyzer_signal::jets_passID(double jetPtCut, double jetEtaCut, TString sysbinname) {
+//-------------------------jet_passID
+std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, TString sysbinname) {
 
   bool jetVeto=true;
   std::vector<int> jetindex;
