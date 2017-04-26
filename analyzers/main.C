@@ -125,7 +125,7 @@ int main(int argc, char **argv){
  TString inputListName=Tinpath+"/"+Tsample+".list";
  TString inputInfoName=Tinpath+"/"+Tsample+".info";
 
- TChain *theChain = new TChain("treeR");
+ TChain *theChain = new TChain("lldjNtuple/EventTree");
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
@@ -160,18 +160,21 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  if( Tinputline.Contains("/store/group") ){
-   if( dolocal ){
-    theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-   }
-   else{
-    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-   }
+  if( Tinputline.Contains("/home/rhombus") ){
+    theChain->Add( Tinputline );
+
+  //if( Tinputline.Contains("/store/group") ){
+  // if( dolocal ){
+  //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+  // }
+  // else{
+  //  theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  // }
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
   inputline_dump.push_back(inputline);
- } //while !inputfile.eof()
+ } // while( std::getline(inputfile, inputline) )
  inputfile.close();
 
  // sample-dependent input variables 
