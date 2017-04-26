@@ -3,9 +3,11 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
+// #include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
 #include <TMath.h>
+#include <TLorentzVector.h>
 
 class analyzer_signal : public analyzer_base {
 
@@ -22,8 +24,8 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
- //virtual void     makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2,
- //                                            TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
+ virtual void     makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2,
+                                             TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
 
  double               dR(double eta1, double phi1, double eta2, double phi2);
  double               DeltaPhi(double phi1, double phi2);
@@ -93,8 +95,16 @@ public :
  // personal variables
  Double_t themet;
  Double_t themephi;
- // for dilepton
 
+ // for dilepton
+ //TLorentzVector fourVec_e1, fourVec_e2; 
+ //TLorentzVector fourVec_m1, fourVec_m2; 
+ TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
+ TLorentzVector fourVec_l1, fourVec_l2;
+ TLorentzVector fourVec_met;
+ TLorentzVector fourVec_leptomet;
+ Double_t dilep_mass;
+ 
 // int    safeNGOODVERTICES      = 0;
 //   Int_t           nVtx;
 // int    safeNDoubleElTriggers  = 0;

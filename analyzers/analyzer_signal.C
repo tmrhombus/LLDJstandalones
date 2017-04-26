@@ -40,24 +40,6 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
   ntot++;
 
-  //  // variables used in cuts
-  //  if(NGOODVERTICES    ->size()>0){ safeNGOODVERTICES      = NGOODVERTICES    ->at(0);}
-  //  if(NDoubleElTriggers->size()>0){ safeNDoubleElTriggers  = NDoubleElTriggers->at(0);}
-  //  if(NDoubleMuTriggers->size()>0){ safeNDoubleMuTriggers  = NDoubleMuTriggers->at(0);}
-  //  if(NOSSF            ->size()>0){ safeNOSSF              = NOSSF            ->at(0);}
-  //  if(MOSSF            ->size()>0){ safeMOSSF              = MOSSF            ->at(0);}
-  //   if(safeMOSSF>100000.){ safeMOSSF = 0.;}
-  //  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
-  //  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
- 
-  //fprintf(logfile,"  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
-  //fprintf(logfile,"  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
-  //fprintf(logfile,"  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
-  //fprintf(logfile,"  safeMOSSF              %f\n" , safeMOSSF             );
-  //fprintf(logfile,"  safeNOSSF              %d\n" , safeNOSSF             );
-  //fprintf(logfile,"  safeJetNJets           %d\n" , safeJetNJets          ); 
-  //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
-
   // get lists of "good" electrons, photons, jets
   printf( " \n ");
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
@@ -105,24 +87,44 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
 
   printf( " met %.1f mephi %.1f\n", themet, themephi);
  
-  // // make dilepton pair
-  // fourVec_l1.SetPtEtaPhiE(0,0,0,0);
-  // fourVec_l2.SetPtEtaPhiE(0,0,0,0);
+  // make dilepton pair
+  fourVec_l1.SetPtEtaPhiE(0,0,0,0);
+  fourVec_l2.SetPtEtaPhiE(0,0,0,0);
 
-  // //  // get electrons and muons and put into 4vectors
-  // //  bool passMM = false;
-  // //  makeDilep(candphotonindex, &fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
-  // //  // make dilepton object and add to met
-  // fourVec_ll = fourVec_l1 + fourVec_l2;
-  // //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
-  // //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
-  // //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
-  // dilep_mass = fourVec_ll.M();
-  // //printf(" dilep mass: %0.1f\n", dilep_mass );
+  // get electrons and muons and put into 4vectors
+  bool passMM = false;
+  makeDilep(candphotonindex, &fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
+  // make dilepton object and add to met
+  fourVec_ll = fourVec_l1 + fourVec_l2;
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
+  dilep_mass = fourVec_ll.M();
+  //printf(" dilep mass: %0.1f\n", dilep_mass );
 
-  // // Dilepton Mass Window
-  // Bool_t passZWindow = (dilep_mass>60. && dilep_mass<120.);
-  // Bool_t passdimass20 = (dilep_mass>20.);
+  // Dilepton Mass Window
+  Bool_t passZWindow = (dilep_mass>60. && dilep_mass<120.);
+  Bool_t passdimass20 = (dilep_mass>20.);
+
+
+
+  //  // variables used in cuts
+  //  if(NGOODVERTICES    ->size()>0){ safeNGOODVERTICES      = NGOODVERTICES    ->at(0);}
+  //  if(NDoubleElTriggers->size()>0){ safeNDoubleElTriggers  = NDoubleElTriggers->at(0);}
+  //  if(NDoubleMuTriggers->size()>0){ safeNDoubleMuTriggers  = NDoubleMuTriggers->at(0);}
+  //  if(NOSSF            ->size()>0){ safeNOSSF              = NOSSF            ->at(0);}
+  //  if(MOSSF            ->size()>0){ safeMOSSF              = MOSSF            ->at(0);}
+  //   if(safeMOSSF>100000.){ safeMOSSF = 0.;}
+  //  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
+  //  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
+ 
+  //fprintf(logfile,"  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
+  //fprintf(logfile,"  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
+  //fprintf(logfile,"  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
+  //fprintf(logfile,"  safeMOSSF              %f\n" , safeMOSSF             );
+  //fprintf(logfile,"  safeNOSSF              %d\n" , safeNOSSF             );
+  //fprintf(logfile,"  safeJetNJets           %d\n" , safeJetNJets          ); 
+  //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
 
 
 
@@ -1090,60 +1092,60 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
 
 
 
-// //-------------------------makeDilep
-// void analyzeZllG::makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
-// {          
-//                                                                     
-//   TLorentzVector e1, e2, ee;                                        
-//   TLorentzVector m1, m2, mm;                                        
-//   e1.SetPtEtaPhiE( 0,0,0,0 );                                       
-//   e2.SetPtEtaPhiE( 0,0,0,0 );                                       
-//   m1.SetPtEtaPhiE( 0,0,0,0 );                                       
-//   m2.SetPtEtaPhiE( 0,0,0,0 );                                       
-//                                                                     
-//   // // no pairs                                                    
-//   // if( elelist.size()<2 && mulist.size()<2 ){return;}             
-//                                                                     
-//   //  // electrons                                                      
-//   //  if( elelist.size()>1 ){                                           
-//   //   for(int i=1; i<elelist.size(); ++i)                              
-//   //   {                                                                
-//   //    if( eleCharge->at(0)*eleCharge->at(i)==-1 )                     
-//   //    {                                                               
-//   //     //printf(" --we have electrons ");                             
-//   //     e1.SetPtEtaPhiE( elePt->at(elelist[0]), eleEta->at(elelist[0]), elePhi->at(elelist[0]), eleEn->at(elelist[0]) );  
-//   //     e2.SetPtEtaPhiE( elePt->at(elelist[i]), eleEta->at(elelist[i]), elePhi->at(elelist[i]), eleEn->at(elelist[i]) );  
-//   //     break;   
-//   //    }         
-//   //   }          
-//   //  }           
-//   //  //printf(": diele mass = %f", ee.M());  
-//   //  ee = e1 + e2;                           
-//   //                                          
-//   //  // muons                                
-//   //  if( mulist.size()>1 ){                  
-//   //   for(int i=1; i<mulist.size(); ++i)     
-//   //   {                                                                                                                       
-//   //     if( muCharge->at(0)*muCharge->at(i)==-1 )                                                                             
-//   //     {                                                                                                                     
-//   //      //printf(" --we have muons ");                                                                                       
-//   //      m1.SetPtEtaPhiE( muPt->at(mulist[0]), muEta->at(mulist[0]), muPhi->at(mulist[0]), muEn->at(mulist[0]) );             
-//   //      //printf(": charge pass ");                                                                                          
-//   //      m2.SetPtEtaPhiE( muPt->at(mulist[i]), muEta->at(mulist[i]), muPhi->at(mulist[i]), muEn->at(mulist[i]) );             
-//   //      break;                                                                                                               
-//   //     }                                                                                                                     
-//   //   }                                                                                                                       
-//   //  }                                                                                                                        
-//   //  //printf(": dimu mass = %f", mm.M());                                                                                    
-//   //  mm = m1 + m2;                                                                                                            
-//   //                                                                                                                           
-//   //  *fv_ee = ee;                                                                                                             
-//   //  *fv_mm = mm;                                                                                                             
-//   //  // take highest mass dilepton pair                                                                                       
-//   //  if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; }                                                           
-//   //  else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }                                                          
-//   return;                                                                                                                  
-//                                                                                                                            
-// } 
+ //-------------------------makeDilep
+ void analyzer_signal::makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
+ {          
+                                                                     
+   TLorentzVector e1, e2, ee;                                        
+   TLorentzVector m1, m2, mm;                                        
+   e1.SetPtEtaPhiE( 0,0,0,0 );                                       
+   e2.SetPtEtaPhiE( 0,0,0,0 );                                       
+   m1.SetPtEtaPhiE( 0,0,0,0 );                                       
+   m2.SetPtEtaPhiE( 0,0,0,0 );                                       
+                                                                     
+    // no pairs                                                    
+    if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
+                                                                   
+     // electrons                                                      
+     if( electron_list.size()>1 ){                                           
+      for(int i=1; i<electron_list.size(); ++i)                              
+      {                                                                
+       if( eleCharge->at(0)*eleCharge->at(i)==-1 )                     
+       {                                                               
+        //printf(" --we have electrons ");                             
+        e1.SetPtEtaPhiE( elePt->at(electron_list[0]), eleEta->at(electron_list[0]), elePhi->at(electron_list[0]), eleEn->at(electron_list[0]) );  
+        e2.SetPtEtaPhiE( elePt->at(electron_list[i]), eleEta->at(electron_list[i]), elePhi->at(electron_list[i]), eleEn->at(electron_list[i]) );  
+        break;   
+       }         
+      }          
+     }           
+     //printf(": diele mass = %f", ee.M());  
+     ee = e1 + e2;                           
+                                             
+     // muons                                
+     if( muon_list.size()>1 ){                  
+      for(int i=1; i<muon_list.size(); ++i)     
+      {                                           
+        if( muCharge->at(0)*muCharge->at(i)==-1 ) 
+        {                                         
+         //printf(" --we have muons ");           
+         m1.SetPtEtaPhiE( muPt->at(muon_list[0]), muEta->at(muon_list[0]), muPhi->at(muon_list[0]), muEn->at(muon_list[0]) );             
+         //printf(": charge pass ");    
+         m2.SetPtEtaPhiE( muPt->at(muon_list[i]), muEta->at(muon_list[i]), muPhi->at(muon_list[i]), muEn->at(muon_list[i]) );             
+         break;                                                                                           
+        } 
+      }   
+     }    
+     //printf(": dimu mass = %f", mm.M());  
+     mm = m1 + m2; 
+                   
+     *fv_ee = ee;  
+     *fv_mm = mm;  
+     // take highest mass dilepton pair 
+     if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
+     else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
+   return;                                                          
+                                                                    
+ } 
 
 
