@@ -59,9 +59,26 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
 
   // get lists of "good" electrons, photons, jets
+  printf( " \n ");
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
   electron_list = electron_passLooseID( 15, 3, "");
   muon_list = muon_passLooseID( 15, 3, ""); 
+
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   printf( " photon %d : pt %f\n ", i, phoEt->at(phoindex));
+  }
+
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   printf( " electron %d : pt %f\n ", i, elePt->at(eleindex));
+  }
+
+  for(int i=0; i<muon_list.size(); ++i){
+   int muindex = muon_list[i];
+   printf( " muon %d : pt %f\n ", i, muPt->at(muindex));
+  }
+ 
 
   // set our met
 
