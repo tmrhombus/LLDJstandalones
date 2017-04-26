@@ -91,6 +91,8 @@ public :
  std::vector<int> jet_list ;
 
  // personal variables
+ Double_t themet;
+ Double_t themephi;
  // for dilepton
 
 // int    safeNGOODVERTICES      = 0;

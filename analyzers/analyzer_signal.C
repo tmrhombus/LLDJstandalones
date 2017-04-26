@@ -65,6 +65,24 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   muon_list = muon_passLooseID( 15, 3, ""); 
   jet_list = jet_passID( 15, 3, "");
 
+  // set our met
+  themet = pfMET;
+  themephi = pfMETPhi;
+  // pfMET_T1JERUp;   //!
+  // pfMET_T1JERDo;   //!
+  // pfMET_T1JESUp;   //!
+  // pfMET_T1JESDo;   //!
+  // pfMET_T1MESUp;   //!
+  // pfMET_T1MESDo;   //!
+  // pfMET_T1EESUp;   //!
+  // pfMET_T1EESDo;   //!
+  // pfMET_T1PESUp;   //!
+  // pfMET_T1PESDo;   //!
+  // pfMET_T1TESUp;   //!
+  // pfMET_T1TESDo;   //!
+  // pfMET_T1UESUp;   //!
+  // pfMET_T1UESDo;   //!
+
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
    printf( " photon %d : pt %.1f eta %.1f phi %.1f\n ", i, phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
@@ -83,15 +101,10 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   for(int i=0; i<jet_list.size(); ++i){
    int jetindex = jet_list[i];
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n ", i, jetPt->at(jetindex), jetEta->at(jetindex), jetPhi->at(jetindex));
-  }
+  } 
+
+  printf( " met %.1f mephi %.1f\n", themet, themephi);
  
-
-  // set our met
-
-  //// get photon, electron, muon vector lists
-  //elelist = electron_passLooseID(pho_index, 10.);  
-  //mulist = muon_passLooseID(pho_index, 10.);       
-
   // // make dilepton pair
   // fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   // fourVec_l2.SetPtEtaPhiE(0,0,0,0);
