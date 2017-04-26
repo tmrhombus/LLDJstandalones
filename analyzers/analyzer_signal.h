@@ -5,6 +5,7 @@
 #include "analyzer_base.h"
 #include <TH1.h>
 #include <TH2.h>
+#include <TMath.h>
 
 class analyzer_signal : public analyzer_base {
 
@@ -21,6 +22,39 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ //virtual void     makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2,
+ //                                            TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
+
+ double               dR(double eta1, double phi1, double eta2, double phi2);
+ double               DeltaPhi(double phi1, double phi2);
+
+ std::vector<int>     photon_passLooseID(double phoPtCut=15., double phoEtaCut=1.4442, TString sysbinname="");
+  Double_t            EAchargedworst(Double_t eta);
+  Double_t            EAcharged(Double_t eta);
+  Double_t            EAneutral(Double_t eta);
+  Double_t            EAphoton(Double_t eta);
+
+ std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
+ std::vector<int>     jets_passID( double jetPtCut, double jetEtaCut, TString sysbinname="");
+
+ Float_t          getPhotonPt(int idnr, TString sysbinname);
+ Float_t          getElectronPt(int i, TString sysbinname);
+ Float_t          getMuonPt(int i, TString sysbinname);
+
+ //Bool_t           askPassTrig(Bool_t isMC);
+ //Bool_t           askPassShape(int candphotonindex, Bool_t isJet, Bool_t isHalo, Bool_t isSpike);
+ //Bool_t           askPassSeed(int candphotonindex, Bool_t isEle);
+ //Bool_t           askPassSpike(int candphotonindex, Bool_t isMC, Bool_t isSpike);
+ //Bool_t           askPassNonColl(int candphotonindex, Bool_t isSpike);
+ //Bool_t           askPassMIP(int candphotonindex, Bool_t isHalo);
+ //Bool_t           askPassLepRej(int candphotonindex);
+ //Bool_t           askPassMET(Float_t theMET, Bool_t isMC);
+ //Bool_t           askPassdPhiJM(int candphotonindex,Float_t theMETPhi);
+ //Bool_t           askPassdPhiPhoMET(int candphotonindex,Float_t theMETPhi);
+
  // 2D Histograms 
  Bool_t        init2DHistograms();
  Bool_t        fill2DHistograms(Double_t weight, int selbin);
@@ -46,6 +80,18 @@ public :
  Bool_t doesPassDY;
  Bool_t doesPassOffZ;
  Bool_t doesPassNoPair;
+
+ // vectors of ints
+ // each int is an entry in vector
+ // associated with object passing
+ // some selection
+ std::vector<int> photon_list;
+ std::vector<int> electron_list;
+ std::vector<int> muon_list ;
+ std::vector<int> jet_list ;
+
+ // personal variables
+ // for dilepton
 
 // int    safeNGOODVERTICES      = 0;
 //   Int_t           nVtx;

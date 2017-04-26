@@ -59,12 +59,15 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
 
   // get lists of "good" electrons, photons, jets
+  photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
+  electron_list = electron_passLooseID( 15, 3, "");
+  muon_list = muon_passLooseID( 15, 3, ""); 
 
   // set our met
 
-  // get photon, electron, muon vector lists
-   // std::vector<int> elelist = electron_passLooseID(pho_index, 10.);  
-   // std::vector<int> mulist = muon_passLooseID(pho_index, 10.);       
+  //// get photon, electron, muon vector lists
+  //elelist = electron_passLooseID(pho_index, 10.);  
+  //mulist = muon_passLooseID(pho_index, 10.);       
 
   // // make dilepton pair
   // fourVec_l1.SetPtEtaPhiE(0,0,0,0);
@@ -559,6 +562,496 @@ analyzer_signal::~analyzer_signal()
 {
 }
 
+//-------------------------dR
+double analyzer_signal::dR(double eta1, double phi1, double eta2, double phi2)
+{
+  double deltaeta = abs(eta1 - eta2);
+  double deltaphi = DeltaPhi(phi1, phi2);
+  double deltar = sqrt(deltaeta*deltaeta + deltaphi*deltaphi);
+  return deltar;
+}
+
+//-------------------------DeltaPhi
+double analyzer_signal::DeltaPhi(double phi1, double phi2)
+//Gives the (minimum) separation in phi between the specified phi values
+//Must return a positive value
+{
+  double pi = TMath::Pi();
+  double dphi = fabs(phi1-phi2);
+  if(dphi>pi) 
+    dphi = 2.0*pi - dphi;
+  return dphi;
+}
+
+//-------------------------getMuonPt
+Float_t analyzer_signal::getMuonPt(int i, TString sysbinname){
+
+      //Muon passes pt cut 
+      Float_t muonPt = muPt->at(i);
+      Float_t muonEnergy = muonPt*TMath::CosH( muEta->at(i) );
+      if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.015); }
+      if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.015); }
+
+      muonPt = muonEnergy/TMath::CosH( muEta->at(i) );
+  return muonPt;
+
+}
+
+//-------------------------getElectronPt
+Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
+
+      //Electron passes pt cut 
+      Float_t electronPt = elePt->at(i);
+      Float_t electronEnergy = electronPt*TMath::CosH( eleEta->at(i) );
+      if(sysbinname=="_EESUp"  ){ electronEnergy*=(1.0 + 0.015); }
+      if(sysbinname=="_EESDown"){ electronEnergy*=(1.0 - 0.015); }
+
+      electronPt = electronEnergy/TMath::CosH( eleEta->at(i) );
+
+  return electronPt;
+
+}
+
+//-------------------------getPhotonPt
+Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
+
+      Float_t photonenergy = phoSCRawE->at(idnr);
+      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
+      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+
+      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
+
+  return phoPt;
+
+}
+
+//-------------------------muon_passLooseID
+std::vector<int> analyzer_signal::muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname)
+{
+  std::vector<int> mulist;
+
+  bool pass_PFMuon = false;
+  bool pass_globalMuon = false;
+  bool pass_trackerMuon = false;
+  bool pass_iso = false;
+  //Explicitly stating types to avoid a TMath::Max conversion issue 
+  Float_t zero = 0.0; 
+  Float_t muPhoPU = 999.9;
+  Float_t tightIso_combinedRelative = 999.9;
+  for(int i = 0; i < nMu; i++) 
+    {    
+
+      pass_PFMuon =            true;  // muIsPFMuon->at(i);
+      pass_globalMuon =        true;  // muIsGlobalMuon->at(i);
+      pass_trackerMuon =       true;  // muIsTrackerMuon->at(i);
+      muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
+      tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
+      pass_iso = tightIso_combinedRelative < 0.25;
+      //Muon passes Loose Muon ID and PF-based combined relative, dBeta-corrected Loose Muon Isolation cuts  
+
+//if( event==767326116 ){
+//      printf(" Event: %lli \n",event);
+//      printf("  muPt              %f \n",  muPt->at(i)                        );
+//      printf("  muIsPFMuon        %f \n",  muIsPFMuon->at(i)                  );
+//      printf("  muIsGlobalMuon    %f \n",  muIsGlobalMuon->at(i)              );
+//      printf("  muIsTrackerMuon   %f \n",  muIsTrackerMuon->at(i)             );
+//      printf("  muPFNeuIso        %f \n",  muPFNeuIso->at(i)                  );
+//      printf("  muPFPhoIso        %f \n",  muPFPhoIso->at(i)                  );
+//      printf("  muPFPUIso         %f \n",  muPFPUIso->at(i)                   );
+//      printf("  muPhoPU           %f \n",  muPhoPU                            );
+//      printf("\n\n");
+//                   std::cout<<muPt->at(i)<<std::endl;
+//                   std::cout<<muEta->at(i)<<std::endl;
+//                   std::cout<<"veto Passed!!!!"<<muEta->at(i)<<" "<<muPhi->at(i)<<" "<<phoSCEta->at(pho_index)<<" "<<phoSCPhi->at(pho_index)<<std::endl;
+//}
+
+      //if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) && pass_iso)
+      if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) )
+        {    
+          //Muon passes pt cut 
+          Float_t muonPt = getMuonPt(i,sysbinname);
+          if(muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) )
+            {    
+              ////Muon does not overlap photon
+              //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+              //  {    
+                 mulist.push_back(i);
+              //  }    
+            }    
+        }    
+    }    
+  return mulist;
+}
+
+//-------------------------muon_passTightID
+std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaCut, TString sysbinname)
+{
+  std::vector<int> mu_cands;
+  mu_cands.clear();
+
+  bool pass_PFMuon = false;
+  bool pass_globalMuon = false;
+  // bool pass_trackerMuon = false;
+  bool pass_chi2ndf = false;
+  bool pass_chamberHit = false;
+  bool pass_matchedStations = false;
+  bool pass_dxy = false;
+  bool pass_dz = false;
+  bool pass_pixelHits = false;
+  bool pass_trackLayers = false;
+  bool pass_iso = false;
+  //Explicitly stating types to avoid a TMath::Max conversion issue
+  Float_t zero = 0.0; 
+  Float_t muPhoPU = 999.9;
+  Float_t tightIso_combinedRelative = 999.9;
+  for(int i = 0; i < nMu; i++) 
+  {
+    pass_globalMuon = true;  //muIsGlobalMuon->at(i);
+    pass_PFMuon =     true;  // muIsPFMuon->at(i);
+    // pass_trackerMuon = muIsTrackerMuon->at(i);
+    pass_chi2ndf = muChi2NDF->at(i) < 10.0;
+    pass_chamberHit = muMuonHits->at(i) > 0; 
+    pass_matchedStations = muStations->at(i) > 1; 
+    pass_dxy = fabs(muInnerD0->at(i)) < 0.2; 
+    pass_dz = fabs(muInnerDz->at(i)) < 0.5; 
+    pass_pixelHits = muPixelHits->at(i) > 0; 
+    pass_trackLayers = muTrkLayers->at(i) > 5; 
+
+    muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
+    tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
+    pass_iso = tightIso_combinedRelative < 0.15;
+    //Muon passes Tight Muon ID
+    if(pass_globalMuon && pass_PFMuon && pass_chi2ndf && pass_chamberHit && pass_matchedStations && pass_dxy && pass_dz && pass_pixelHits && pass_trackLayers)
+    {    
+      //Muon passes pt cut 
+      Float_t muonPt = getMuonPt(i,sysbinname);
+      if(muonPt > muPtCut && ( fabs(muEta->at(i)) > muEtaCut ) )
+      {    
+        ////Muon does not overlap photon
+        //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+        //{    
+          mu_cands.push_back(i);
+        //}    
+      }    
+    }    
+  }
+  return mu_cands;
+}
+
+
+//-------------------------electron_passLooseID
+std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
+{
+  //bool veto_passed = true; //pass veto if no good electron found 
+  std::vector<int> elelist;
+
+  bool pass_SigmaIEtaIEtaFull5x5 = false;
+  bool pass_dEtaIn = false;
+  bool pass_dPhiIn = false;
+  bool pass_HoverE = false;
+  bool pass_iso = false;
+  bool pass_ooEmooP = false;
+  bool pass_d0 = false;
+  bool pass_dz = false;
+  bool pass_missingHits = false;
+  bool pass_convVeto = false;
+  //Explicitly stating types to avoid a TMath::Max conversion issue   
+  Float_t EA = 0.0;
+  Float_t zero = 0.0;
+  Float_t EAcorrIso = 999.9;
+  for(int i = 0; i < nEle; i++)
+    {
+      //Make sure these get reset for every electron  
+      pass_SigmaIEtaIEtaFull5x5 = false;
+      pass_dEtaIn = false;
+      pass_dPhiIn = false;
+      pass_HoverE = false;
+      pass_iso = false;
+      pass_ooEmooP = false;
+      pass_d0 = false;
+      pass_dz = false;
+      pass_missingHits = false;
+      pass_convVeto = false;
+      //Find EA for corrected relative iso.  
+      if(abs(eleSCEta->at(i)) <= 1.0)
+        EA = 0.1752;
+      else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
+        EA = 0.1862;
+      else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
+        EA = 0.1411;
+      else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
+        EA = 0.1534;
+      else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
+        EA = 0.1903;
+      else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
+        EA = 0.2243;
+      else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
+        EA = 0.2687;
+      EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
+
+      if(abs(eleSCEta->at(i)) <= 1.479)
+        {    
+          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0103;
+          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.0105;
+          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.115;
+          pass_HoverE = eleHoverE->at(i) < 0.104;
+          pass_iso = EAcorrIso < 0.0893;
+          pass_ooEmooP = eleEoverPInv->at(i) < 0.102;
+          pass_d0 = abs(eleD0->at(i)) < 0.0261;
+          pass_dz = abs(eleDz->at(i)) < 0.41;
+          pass_missingHits = eleMissHits->at(i) <= 2;
+          pass_convVeto = eleConvVeto->at(i) == 1;
+        }     
+      else if(1.479 < abs(eleSCEta->at(i)) < 2.5) 
+        {    
+          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0301;
+          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00814;
+          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.182;
+          pass_HoverE = eleHoverE->at(i) < 0.0897;
+          pass_iso = EAcorrIso < 0.121;
+          pass_ooEmooP = eleEoverPInv->at(i) < 0.126;
+          pass_d0 = abs(eleD0->at(i)) < 0.118;
+          pass_dz = abs(eleDz->at(i)) < 0.822;
+          pass_missingHits = eleMissHits->at(i) <= 1;
+          pass_convVeto = eleConvVeto->at(i) == 1;
+        }     
+
+      //Electron passes Loose Electron ID cuts 
+      if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)    
+        {    
+            //Electron passes pt cut 
+            Float_t electronPt = getElectronPt(i,sysbinname);
+            if(electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) )
+            {    
+              ////Electron does not overlap photon 
+              //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+              //  {    
+                  elelist.push_back(i);
+              //  }     
+            }     
+        }     
+    }     
+  return elelist;
+}
+
+//-------------------------electron_passTightID
+std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double eleEtaCut, TString sysbinname)
+{
+
+  std::vector<int> ele_cands;
+  ele_cands.clear();
+
+  bool pass_SigmaIEtaIEtaFull5x5 = false;
+  bool pass_dEtaIn = false;
+  bool pass_dPhiIn = false;
+  bool pass_HoverE = false;
+  bool pass_iso = false;
+  bool pass_ooEmooP = false;
+  bool pass_d0 = false;
+  bool pass_dz = false;
+  bool pass_missingHits = false;
+  bool pass_convVeto = false;
+  //Explicitly stating types to avoid a TMath::Max conversion issue
+  Float_t EA = 0.0;
+  Float_t zero = 0.0;
+  Float_t EAcorrIso = 999.9;
+  for(int i = 0; i < nEle; i++)
+  {
+    //Make sure these get reset for every electron
+    pass_SigmaIEtaIEtaFull5x5 = false;
+    pass_dEtaIn = false;
+    pass_dPhiIn = false;
+    pass_HoverE = false;
+    pass_iso = false;
+    pass_ooEmooP = false;
+    pass_d0 = false;
+    pass_dz = false;
+    pass_missingHits = false;
+    pass_convVeto = false;
+    //Find EA for corrected relative iso.
+    if(abs(eleSCEta->at(i)) <= 1.0)
+      EA = 0.1752;
+    else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
+      EA = 0.1862;
+    else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
+      EA = 0.1411;
+    else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
+      EA = 0.1534;
+    else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
+      EA = 0.1903;
+    else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
+      EA = 0.2243;
+    else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
+      EA = 0.2687;
+    EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
+
+    if(abs(eleSCEta->at(i)) <= 1.479)
+    {
+      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0101;
+      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00926;
+      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0336;
+      pass_HoverE = eleHoverE->at(i) < 0.0597;
+      pass_iso = EAcorrIso < 0.0354;
+      pass_ooEmooP = eleEoverPInv->at(i) < 0.012;
+      pass_d0 = abs(eleD0->at(i)) < 0.0111;
+      pass_dz = abs(eleDz->at(i)) < 0.0466;
+      pass_missingHits = eleMissHits->at(i) <= 2;
+      pass_convVeto = eleConvVeto->at(i) == 1;
+    }
+    else if(1.479 < abs(eleSCEta->at(i)) < 2.5)
+    {
+      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0279;
+      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00724;
+      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0918;
+      pass_HoverE = eleHoverE->at(i) < 0.0615;
+      pass_iso = EAcorrIso < 0.0646;
+      pass_ooEmooP = eleEoverPInv->at(i) < 0.00999;
+      pass_d0 = abs(eleD0->at(i)) < 0.0351;
+      pass_dz = abs(eleDz->at(i)) < 0.417;
+      pass_missingHits = eleMissHits->at(i) <= 1;
+      pass_convVeto = eleConvVeto->at(i) == 1;
+    }
+      //Electron passes Loose Electron ID cuts
+    if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)
+    {
+      //Electron passes pt cut 
+      Float_t electronPt = getElectronPt(i,sysbinname);
+      if(electronPt > elePtCut && ( fabs(elePt->at(i)) < eleEtaCut ) )
+      {
+        ////Electron does not overlap photon
+        //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5)
+        //{
+          ele_cands.push_back(i);
+        //}
+      }
+    }
+  }
+  return ele_cands;
+}
+
+//-------------------------jets_passID
+std::vector<int> analyzer_signal::jets_passID(double jetPtCut, double jetEtaCut, TString sysbinname) {
+
+  bool jetVeto=true;
+  std::vector<int> jetindex;
+  float value = 0.0;
+
+  for(int i = 0; i < nJet; i++)
+    {
+      if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {value =-0.8;}
+      if(2.5 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.75) {value =-0.95;}
+      if(2.75 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <3.0) {value =-0.97;}
+      if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {value =-0.99;}
+
+      //double deltar = 0.0 ;
+      //      std::cout<<"Jet size: "<<nJet<<std::endl;
+      //      std::cout<<"Jet no:"<<i<<"coming here pujetid: "<<pfJet_pt[i]<<std::endl;
+      //      if(OverlapWithMuon(jetEta->at(i),jetPhi->at(i)))     continue;
+      //      std::cout<<"Jet no:"<<i<<"coming here OverlapWithMuon: "<<pfJet_pt[i]<<std::endl;
+      //      if(OverlapWithElectron(jetEta->at(i),jetPhi->at(i)))   continue;
+      //if(pho_index>=0){
+      //  deltar= dR(jetEta->at(i),jetPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index));
+      //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
+      //}
+      //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>value)
+      if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>value)
+        {
+          jetindex.push_back(i);
+        }
+    }
+
+  //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
+  //if(jetindex.size()>1)jetVeto = false;
+  return jetindex;
+
+}
+
+
+//-------------------------photon_passLooseID
+std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double phoEtaCut, TString sysbinname){
+
+  std::vector<int> pholist;
+  pholist.clear();
+
+  //Loop over photons                   
+  for(int p=0;p<nPho;p++)
+    {    
+
+      Float_t thephoPt = getPhotonPt(p,sysbinname);
+      //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoEt->at(p); 
+      Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
+
+      //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
+      bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
+
+      bool photonId = (
+                       ((*phoHoverE)[p]                <  0.05   ) && 
+                       ( TMath::Max( ( (*phoPFChIso)[p]       - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
+                       ( TMath::Max( ( (*phoPFNeuIso)[p] - rho*EAneutral((*phoSCEta)[p]) ), 0.0) <
+                        (1.06 + (0.014 * thephoPt) + (0.000019 * pow(thephoPt, 2.0))) )  &&
+                       ( TMath::Max( ( (*phoPFPhoIso)[p] - rho*EAphoton((*phoSCEta)[p])  ), 0.0) < 
+                        (0.28 + (0.0053 * thephoPt)) ) 
+                      );
+
+      if(photonId && kinematic ){
+        pholist.push_back(p);
+      }    
+    }    
+
+  return pholist;
+
+}
+
+// https://indico.cern.ch/event/455258/contribution/0/attachments/1173322/1695132/SP15_253rd.pdf -- slide-5
+// Worst Charged Hadron Isolation EA
+Double_t analyzer_signal::EAchargedworst(Double_t eta){
+  Float_t EffectiveArea = 0.0;
+  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.078;
+  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.089;
+  return EffectiveArea;
+}
+
+// standard EA
+Double_t analyzer_signal::EAcharged(Double_t eta){
+  Float_t EffectiveArea = 0.0;
+  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.0;
+  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.0;
+
+  return EffectiveArea;
+}
+
+Double_t analyzer_signal::EAneutral(Double_t eta){
+  Float_t EffectiveArea = 0.;
+  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.0599;
+  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.0819;
+  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0696;
+  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.0360;
+  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.0360;
+  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.0462;
+  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.0656;
+
+  return EffectiveArea;
+}
+
+Double_t analyzer_signal::EAphoton(Double_t eta){
+  Float_t EffectiveArea = 0.;
+  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.1271;
+  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.1101;
+  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0756;
+  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.1175;
+  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.1498;
+  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.1857;
+  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.2183;
+
+  return EffectiveArea;
+}
+
+
 
 
 // //-------------------------makeDilep
@@ -616,3 +1109,5 @@ analyzer_signal::~analyzer_signal()
 //   return;                                                                                                                  
 //                                                                                                                            
 // } 
+
+
