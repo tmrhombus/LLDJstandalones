@@ -38,16 +38,21 @@ int main(int argc, char **argv){
  char *nfiles = (char*)"-1";
  char *atfile = (char*)"0";
  bool dolocal = false;
+ bool bisMC = false;
+ 
  int index;
  int s;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:d")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:dm")) != -1)
   switch (s)
    {
+   case 'm':
+    bisMC = true;
    case 'd':
     dolocal = true;
+    break;
    case 'a':
     atfile = optarg;
     break;
@@ -108,6 +113,8 @@ int main(int argc, char **argv){
  TString TSnfiles  = TString(nfiles);
  Int_t TIatfile = TSatfile.Atoi();
  Int_t TInfiles = TSnfiles.Atoi();
+ // MC vs Data
+ Bool_t isMC=bisMC;
 
  printf("Tsample:  %s\n",Tsample.Data());
  printf("Txname:   %s\n",Txname.Data());
@@ -117,8 +124,6 @@ int main(int argc, char **argv){
  printf("TIatfile: %i\n",TIatfile);
  printf("TInfiles: %i\n",TInfiles);
 
- // MC vs Data
- Bool_t isMC=kTRUE;
  Bool_t makelog=kFALSE;
 
  TString outfilename=Toutpath +"/"+Tsample+"_"+Tjettype+Txname;
@@ -215,7 +220,7 @@ int main(int argc, char **argv){
  printf("  lumi: %f\n\n",lumi);
 
  analyzer_signal analyzer;
- analyzer.Init(theChain, makelog, Tjettype);
+ analyzer.Init(theChain, isMC, makelog, Tjettype);
  analyzer.initSigHistograms();
  analyzer.initJetHistograms();
  analyzer.init2DHistograms();

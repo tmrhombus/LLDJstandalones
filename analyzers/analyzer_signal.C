@@ -235,18 +235,18 @@ Bool_t analyzer_signal::initJetHistograms()
    TString hname_jetCSV2BJetTags             = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetCSV2BJetTags           " ;             
    TString hname_jetJetProbabilityBJetTags   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetJetProbabilityBJetTags " ;                       
    TString hname_jetpfCombinedMVAV2BJetTags  = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetpfCombinedMVAV2BJetTags" ;                        
-//   TString hname_jetPartonID                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPartonID               " ;         
-//   TString hname_jetHadFlvr                  = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetHadFlvr                " ;        
-//   TString hname_jetGenJetEn                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetEn               " ;         
-//   TString hname_jetGenJetPt                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetPt               " ;         
-//   TString hname_jetGenJetEta                = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetEta              " ;          
-//   TString hname_jetGenJetPhi                = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetPhi              " ;          
-//   TString hname_jetGenPartonID              = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPartonID            " ;            
-//   TString hname_jetGenEn                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenEn                  " ;      
-//   TString hname_jetGenPt                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPt                  " ;      
-//   TString hname_jetGenEta                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenEta                 " ;       
-//   TString hname_jetGenPhi                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPhi                 " ;       
-//   TString hname_jetGenPartonMomID           = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPartonMomID         " ;               
+   TString hname_jetPartonID                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPartonID               " ;         //
+   TString hname_jetHadFlvr                  = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetHadFlvr                " ;         //
+   TString hname_jetGenJetEn                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetEn               " ;         //
+   TString hname_jetGenJetPt                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetPt               " ;         //
+   TString hname_jetGenJetEta                = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetEta              " ;         // 
+   TString hname_jetGenJetPhi                = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenJetPhi              " ;         // 
+   TString hname_jetGenPartonID              = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPartonID            " ;         //   
+   TString hname_jetGenEn                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenEn                  " ;         //
+   TString hname_jetGenPt                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPt                  " ;         //
+   TString hname_jetGenEta                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenEta                 " ;         //
+   TString hname_jetGenPhi                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPhi                 " ;         //
+   TString hname_jetGenPartonMomID           = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetGenPartonMomID         " ;         //      
    TString hname_AK8JetPt                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetPt                  " ;      
    TString hname_AK8JetEn                    = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetEn                  " ;      
    TString hname_AK8JetRawPt                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetRawPt               " ;         
@@ -274,18 +274,18 @@ Bool_t analyzer_signal::initJetHistograms()
    h_jetCSV2BJetTags             [i][j] = initSingleHistogramTH1F(  hname_jetCSV2BJetTags            , "jetCSV2BJetTags           " , 50, 0, 1 );             
    h_jetJetProbabilityBJetTags   [i][j] = initSingleHistogramTH1F(  hname_jetJetProbabilityBJetTags  , "jetJetProbabilityBJetTags " , 50, 0, 1 );                       
    h_jetpfCombinedMVAV2BJetTags  [i][j] = initSingleHistogramTH1F(  hname_jetpfCombinedMVAV2BJetTags , "jetpfCombinedMVAV2BJetTags" , 50, 0, 1 );                        
-//   h_jetPartonID                 [i][j] = initSingleHistogramTH1F(  hname_jetPartonID                , "jetPartonID               " , 25, 0, 25 );         
-//   h_jetHadFlvr                  [i][j] = initSingleHistogramTH1F(  hname_jetHadFlvr                 , "jetHadFlvr                " , 25, 0, 25 );        
-//   h_jetGenJetEn                 [i][j] = initSingleHistogramTH1F(  hname_jetGenJetEn                , "jetGenJetEn               " , 50, 0, 500 );         
-//   h_jetGenJetPt                 [i][j] = initSingleHistogramTH1F(  hname_jetGenJetPt                , "jetGenJetPt               " , 50, 0, 500 );         
-//   h_jetGenJetEta                [i][j] = initSingleHistogramTH1F(  hname_jetGenJetEta               , "jetGenJetEta              " , 50, -5, 5 );          
-//   h_jetGenJetPhi                [i][j] = initSingleHistogramTH1F(  hname_jetGenJetPhi               , "jetGenJetPhi              " , 50, -5, 5 );          
-//   h_jetGenPartonID              [i][j] = initSingleHistogramTH1F(  hname_jetGenPartonID             , "jetGenPartonID            " , 25, 0, 25 );            
-//   h_jetGenEn                    [i][j] = initSingleHistogramTH1F(  hname_jetGenEn                   , "jetGenEn                  " , 50, 0, 500 );      
-//   h_jetGenPt                    [i][j] = initSingleHistogramTH1F(  hname_jetGenPt                   , "jetGenPt                  " , 50, 0, 500 );      
-//   h_jetGenEta                   [i][j] = initSingleHistogramTH1F(  hname_jetGenEta                  , "jetGenEta                 " , 50, -5, 5 );       
-//   h_jetGenPhi                   [i][j] = initSingleHistogramTH1F(  hname_jetGenPhi                  , "jetGenPhi                 " , 50, -5, 5 );       
-//   h_jetGenPartonMomID           [i][j] = initSingleHistogramTH1F(  hname_jetGenPartonMomID          , "jetGenPartonMomID         " , 25, 0, 25 );               
+   h_jetPartonID                 [i][j] = initSingleHistogramTH1F(  hname_jetPartonID                , "jetPartonID               " , 25, 0, 25 );         //
+   h_jetHadFlvr                  [i][j] = initSingleHistogramTH1F(  hname_jetHadFlvr                 , "jetHadFlvr                " , 25, 0, 25 );         //
+   h_jetGenJetEn                 [i][j] = initSingleHistogramTH1F(  hname_jetGenJetEn                , "jetGenJetEn               " , 50, 0, 500 );        // 
+   h_jetGenJetPt                 [i][j] = initSingleHistogramTH1F(  hname_jetGenJetPt                , "jetGenJetPt               " , 50, 0, 500 );        // 
+   h_jetGenJetEta                [i][j] = initSingleHistogramTH1F(  hname_jetGenJetEta               , "jetGenJetEta              " , 50, -5, 5 );         // 
+   h_jetGenJetPhi                [i][j] = initSingleHistogramTH1F(  hname_jetGenJetPhi               , "jetGenJetPhi              " , 50, -5, 5 );         // 
+   h_jetGenPartonID              [i][j] = initSingleHistogramTH1F(  hname_jetGenPartonID             , "jetGenPartonID            " , 25, 0, 25 );         //   
+   h_jetGenEn                    [i][j] = initSingleHistogramTH1F(  hname_jetGenEn                   , "jetGenEn                  " , 50, 0, 500 );        //
+   h_jetGenPt                    [i][j] = initSingleHistogramTH1F(  hname_jetGenPt                   , "jetGenPt                  " , 50, 0, 500 );        //
+   h_jetGenEta                   [i][j] = initSingleHistogramTH1F(  hname_jetGenEta                  , "jetGenEta                 " , 50, -5, 5 );         //
+   h_jetGenPhi                   [i][j] = initSingleHistogramTH1F(  hname_jetGenPhi                  , "jetGenPhi                 " , 50, -5, 5 );         //
+   h_jetGenPartonMomID           [i][j] = initSingleHistogramTH1F(  hname_jetGenPartonMomID          , "jetGenPartonMomID         " , 25, 0, 25 );         //      
    h_AK8JetPt                    [i][j] = initSingleHistogramTH1F(  hname_AK8JetPt                   , "AK8JetPt                  " , 50, 0, 500 );      
    h_AK8JetEn                    [i][j] = initSingleHistogramTH1F(  hname_AK8JetEn                   , "AK8JetEn                  " , 50, 0, 500 );      
    h_AK8JetRawPt                 [i][j] = initSingleHistogramTH1F(  hname_AK8JetRawPt                , "AK8JetRawPt               " , 50, 0, 500 );         
@@ -325,18 +325,20 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin)
   if(jetCSV2BJetTags            ->size()>j){h_jetCSV2BJetTags             [selbin][j].Fill( jetCSV2BJetTags            ->at(j), weight ); } 
   if(jetJetProbabilityBJetTags  ->size()>j){h_jetJetProbabilityBJetTags   [selbin][j].Fill( jetJetProbabilityBJetTags  ->at(j), weight ); } 
   if(jetpfCombinedMVAV2BJetTags ->size()>j){h_jetpfCombinedMVAV2BJetTags  [selbin][j].Fill( jetpfCombinedMVAV2BJetTags ->at(j), weight ); } 
-//  if(jetPartonID                ->size()>j){h_jetPartonID                 [selbin][j].Fill( jetPartonID                ->at(j), weight ); } 
-//  if(jetHadFlvr                 ->size()>j){h_jetHadFlvr                  [selbin][j].Fill( jetHadFlvr                 ->at(j), weight ); } 
-//  if(jetGenJetEn                ->size()>j){h_jetGenJetEn                 [selbin][j].Fill( jetGenJetEn                ->at(j), weight ); } 
-//  if(jetGenJetPt                ->size()>j){h_jetGenJetPt                 [selbin][j].Fill( jetGenJetPt                ->at(j), weight ); } 
-//  if(jetGenJetEta               ->size()>j){h_jetGenJetEta                [selbin][j].Fill( jetGenJetEta               ->at(j), weight ); } 
-//  if(jetGenJetPhi               ->size()>j){h_jetGenJetPhi                [selbin][j].Fill( jetGenJetPhi               ->at(j), weight ); } 
-//  if(jetGenPartonID             ->size()>j){h_jetGenPartonID              [selbin][j].Fill( jetGenPartonID             ->at(j), weight ); } 
-//  if(jetGenEn                   ->size()>j){h_jetGenEn                    [selbin][j].Fill( jetGenEn                   ->at(j), weight ); } 
-//  if(jetGenPt                   ->size()>j){h_jetGenPt                    [selbin][j].Fill( jetGenPt                   ->at(j), weight ); } 
-//  if(jetGenEta                  ->size()>j){h_jetGenEta                   [selbin][j].Fill( jetGenEta                  ->at(j), weight ); } 
-//  if(jetGenPhi                  ->size()>j){h_jetGenPhi                   [selbin][j].Fill( jetGenPhi                  ->at(j), weight ); } 
-//  if(jetGenPartonMomID          ->size()>j){h_jetGenPartonMomID           [selbin][j].Fill( jetGenPartonMomID          ->at(j), weight ); } 
+  if(isMC){
+   if(jetPartonID                ->size()>j){h_jetPartonID                 [selbin][j].Fill( jetPartonID                ->at(j), weight ); } 
+   if(jetHadFlvr                 ->size()>j){h_jetHadFlvr                  [selbin][j].Fill( jetHadFlvr                 ->at(j), weight ); } 
+   if(jetGenJetEn                ->size()>j){h_jetGenJetEn                 [selbin][j].Fill( jetGenJetEn                ->at(j), weight ); } 
+   if(jetGenJetPt                ->size()>j){h_jetGenJetPt                 [selbin][j].Fill( jetGenJetPt                ->at(j), weight ); } 
+   if(jetGenJetEta               ->size()>j){h_jetGenJetEta                [selbin][j].Fill( jetGenJetEta               ->at(j), weight ); } 
+   if(jetGenJetPhi               ->size()>j){h_jetGenJetPhi                [selbin][j].Fill( jetGenJetPhi               ->at(j), weight ); } 
+   if(jetGenPartonID             ->size()>j){h_jetGenPartonID              [selbin][j].Fill( jetGenPartonID             ->at(j), weight ); } 
+   if(jetGenEn                   ->size()>j){h_jetGenEn                    [selbin][j].Fill( jetGenEn                   ->at(j), weight ); } 
+   if(jetGenPt                   ->size()>j){h_jetGenPt                    [selbin][j].Fill( jetGenPt                   ->at(j), weight ); } 
+   if(jetGenEta                  ->size()>j){h_jetGenEta                   [selbin][j].Fill( jetGenEta                  ->at(j), weight ); } 
+   if(jetGenPhi                  ->size()>j){h_jetGenPhi                   [selbin][j].Fill( jetGenPhi                  ->at(j), weight ); } 
+   if(jetGenPartonMomID          ->size()>j){h_jetGenPartonMomID           [selbin][j].Fill( jetGenPartonMomID          ->at(j), weight ); } 
+  }
   if(AK8JetPt                   ->size()>j){h_AK8JetPt                    [selbin][j].Fill( AK8JetPt                   ->at(j), weight ); } 
   if(AK8JetEn                   ->size()>j){h_AK8JetEn                    [selbin][j].Fill( AK8JetEn                   ->at(j), weight ); } 
   if(AK8JetRawPt                ->size()>j){h_AK8JetRawPt                 [selbin][j].Fill( AK8JetRawPt                ->at(j), weight ); } 
@@ -374,18 +376,18 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin)
    h_jetCSV2BJetTags             [selbin][j].Write(); 
    h_jetJetProbabilityBJetTags   [selbin][j].Write(); 
    h_jetpfCombinedMVAV2BJetTags  [selbin][j].Write(); 
-//  h_jetPartonID                 [selbin][j].Wwrite(); 
-//  h_jetHadFlvr                  [selbin][j].Wwrite(); 
-//  h_jetGenJetEn                 [selbin][j].Wwrite(); 
-//  h_jetGenJetPt                 [selbin][j].Wwrite(); 
-//  h_jetGenJetEta                [selbin][j].Wwrite(); 
-//  h_jetGenJetPhi                [selbin][j].Wwrite(); 
-//  h_jetGenPartonID              [selbin][j].Wwrite(); 
-//  h_jetGenEn                    [selbin][j].Wwrite(); 
-//  h_jetGenPt                    [selbin][j].Wwrite(); 
-//  h_jetGenEta                   [selbin][j].Wwrite(); 
-//  h_jetGenPhi                   [selbin][j].Wwrite(); 
-//  h_jetGenPartonMomID           [selbin][j].Wwrite(); 
+   h_jetPartonID                 [selbin][j].Write(); //
+   h_jetHadFlvr                  [selbin][j].Write(); //
+   h_jetGenJetEn                 [selbin][j].Write(); //
+   h_jetGenJetPt                 [selbin][j].Write(); //
+   h_jetGenJetEta                [selbin][j].Write(); //
+   h_jetGenJetPhi                [selbin][j].Write(); //
+   h_jetGenPartonID              [selbin][j].Write(); //
+   h_jetGenEn                    [selbin][j].Write(); //
+   h_jetGenPt                    [selbin][j].Write(); //
+   h_jetGenEta                   [selbin][j].Write(); //
+   h_jetGenPhi                   [selbin][j].Write(); //
+   h_jetGenPartonMomID           [selbin][j].Write(); //
    h_AK8JetPt                    [selbin][j].Write(); 
    h_AK8JetEn                    [selbin][j].Write(); 
    h_AK8JetRawPt                 [selbin][j].Write(); 
@@ -452,7 +454,9 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin)
  //printf("fillSigHistograms\n");
   h_nVtx  [selbin].Fill( nVtx  , weight); 
 
-  //if(nPU   ->size()>0){ h_nPU   [selbin].Fill( nPU   ->at(0), weight); } 
+  if(isMC){
+   if(nPU   ->size()>0){ h_nPU   [selbin].Fill( nPU   ->at(0), weight); } 
+  }
   if(phoEt ->size()>0){ h_phoEt [selbin].Fill( phoEt ->at(0), weight); } 
   if(phoEta->size()>0){ h_phoEta[selbin].Fill( phoEta->at(0), weight); } 
   if(phoPhi->size()>0){ h_phoPhi[selbin].Fill( phoPhi->at(0), weight); } 
