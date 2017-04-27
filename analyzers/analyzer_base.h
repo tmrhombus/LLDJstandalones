@@ -21,7 +21,7 @@ public :
 
 
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
-   // Data
+   // MC and Data
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    Int_t           run;
    Long64_t        event;
@@ -794,7 +794,7 @@ public :
    //analyzer_base(TTree *tree=0);
    analyzer_base();
    virtual ~analyzer_base();
-   virtual void     Init(TTree *tree, Bool_t isitMC, Bool_t domakelog, TString jettype);
+   virtual void     Init(TTree *tree, Bool_t isitMC, Bool_t domakelog);
    virtual Long64_t LoadTree(Long64_t entry);
    Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
                                     Double_t nrEvents, Bool_t isMC);

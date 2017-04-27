@@ -48,17 +48,6 @@ public :
 
  virtual void debug_printobjects();
 
- //Bool_t           askPassTrig(Bool_t isMC);
- //Bool_t           askPassShape(int candphotonindex, Bool_t isJet, Bool_t isHalo, Bool_t isSpike);
- //Bool_t           askPassSeed(int candphotonindex, Bool_t isEle);
- //Bool_t           askPassSpike(int candphotonindex, Bool_t isMC, Bool_t isSpike);
- //Bool_t           askPassNonColl(int candphotonindex, Bool_t isSpike);
- //Bool_t           askPassMIP(int candphotonindex, Bool_t isHalo);
- //Bool_t           askPassLepRej(int candphotonindex);
- //Bool_t           askPassMET(Float_t theMET, Bool_t isMC);
- //Bool_t           askPassdPhiJM(int candphotonindex,Float_t theMETPhi);
- //Bool_t           askPassdPhiPhoMET(int candphotonindex,Float_t theMETPhi);
-
  // 2D Histograms 
  Bool_t        init2DHistograms();
  Bool_t        fill2DHistograms(Double_t weight, int selbin);
@@ -124,7 +113,6 @@ public :
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
-
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
  // jetmultnames = Leading, Subleading, Third, Fourth
 

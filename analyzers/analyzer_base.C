@@ -40,7 +40,7 @@ Double_t analyzer_base::makeEventWeight(Double_t crossSec,
 }
 
 //----------------------------Init
-void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog, TString jettype)
+void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
 {
 
    isMC = isitMC;
@@ -769,10 +769,5 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog, TString j
     fChain->SetBranchAddress("AK8JetP4SmearUp", &AK8JetP4SmearUp, &b_AK8JetP4SmearUp);
     fChain->SetBranchAddress("AK8JetP4SmearDo", &AK8JetP4SmearDo, &b_AK8JetP4SmearDo);
    }
-
-
-
-
-
 
 }
