@@ -65,58 +65,42 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   // pfMET_T1UESUp;   //!
   // pfMET_T1UESDo;   //!
 
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n ", i, phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
-  }
-
-  for(int i=0; i<electron_list.size(); ++i){
-   int eleindex = electron_list[i];
-   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n ", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
-  }
-
-  for(int i=0; i<muon_list.size(); ++i){
-   int muindex = muon_list[i];
-   printf( " muon %d : pt %.1f eta %.1f phi %.1f\n ", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
-  }
-
-  for(int i=0; i<jet_list.size(); ++i){
-   int jetindex = jet_list[i];
-   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n ", i, jetPt->at(jetindex), jetEta->at(jetindex), jetPhi->at(jetindex));
-  } 
-
-  printf( " met %.1f mephi %.1f\n", themet, themephi);
- 
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
 
   // get electrons and muons and put into 4vectors
   bool passMM = false;
-  makeDilep(candphotonindex, &fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
+  makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
   // make dilepton object and add to met
   fourVec_ll = fourVec_l1 + fourVec_l2;
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n", fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
+  //  fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
+  //  fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
+  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
+  //   fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
   dilep_mass = fourVec_ll.M();
+  dilep_pt   = fourVec_ll.Pt();
   //printf(" dilep mass: %0.1f\n", dilep_mass );
 
   // Dilepton Mass Window
-  Bool_t passZWindow = (dilep_mass>60. && dilep_mass<120.);
-  Bool_t passdimass20 = (dilep_mass>20.);
+  passOSSF = (dilep_mass>20.);
+  passZWindow = (dilep_mass>70. && dilep_mass<110.);
+  passPTOSSFg50 = (dilep_pt>50.);
 
-
-
+  // int nVtx
+  passGoodVtx = nVtx>0;
   //  // variables used in cuts
-  //  if(NGOODVERTICES    ->size()>0){ safeNGOODVERTICES      = NGOODVERTICES    ->at(0);}
   //  if(NDoubleElTriggers->size()>0){ safeNDoubleElTriggers  = NDoubleElTriggers->at(0);}
   //  if(NDoubleMuTriggers->size()>0){ safeNDoubleMuTriggers  = NDoubleMuTriggers->at(0);}
-  //  if(NOSSF            ->size()>0){ safeNOSSF              = NOSSF            ->at(0);}
+
   //  if(MOSSF            ->size()>0){ safeMOSSF              = MOSSF            ->at(0);}
   //   if(safeMOSSF>100000.){ safeMOSSF = 0.;}
   //  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
   //  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
+  passOneJet = jet_list.size()>0; 
+
  
   //fprintf(logfile,"  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
   //fprintf(logfile,"  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
@@ -126,6 +110,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   //fprintf(logfile,"  safeJetNJets           %d\n" , safeJetNJets          ); 
   //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
 
+  debug_printobjects();
 
 
   // set booleans if pass various selections
@@ -1093,7 +1078,7 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
 
 
  //-------------------------makeDilep
- void analyzer_signal::makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
+ void analyzer_signal::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
  {          
                                                                      
    TLorentzVector e1, e2, ee;                                        
@@ -1149,3 +1134,32 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
  } 
 
 
+void analyzer_signal::debug_printobjects(){
+
+  printf("Event %lld\n", event);
+  printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
+  if(dilep_mass>0.){printf(" Dilep Found\n");}
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
+  }
+
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+  }
+
+  for(int i=0; i<muon_list.size(); ++i){
+   int muindex = muon_list[i];
+   printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+  }
+
+  for(int i=0; i<jet_list.size(); ++i){
+   int jetindex = jet_list[i];
+   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, jetPt->at(jetindex), jetEta->at(jetindex), jetPhi->at(jetindex));
+  } 
+
+  printf( " mll %.1f ptll %.1f\n", dilep_mass, dilep_pt);
+  printf( " met %.1f mephi %.1f nvtx %d \n", themet, themephi, nVtx);
+
+ }

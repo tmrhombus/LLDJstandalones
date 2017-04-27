@@ -24,7 +24,7 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
- virtual void     makeDilep(int pho_index, TLorentzVector *fv_1, TLorentzVector *fv_2,
+ virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
                                              TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
 
  double               dR(double eta1, double phi1, double eta2, double phi2);
@@ -45,6 +45,8 @@ public :
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
  Float_t          getMuonPt(int i, TString sysbinname);
+
+ virtual void debug_printobjects();
 
  //Bool_t           askPassTrig(Bool_t isMC);
  //Bool_t           askPassShape(int candphotonindex, Bool_t isJet, Bool_t isHalo, Bool_t isSpike);
@@ -69,19 +71,6 @@ public :
  Bool_t        initSigHistograms();
  Bool_t        fillSigHistograms(Double_t weight, int selbin);
  Bool_t        writeSigHistograms(int selbin);
- // Selections
- Bool_t        askPassSig();
- Bool_t        askPassZH();
- Bool_t        askPassDY();
- Bool_t        askPassOffZ();
- Bool_t        askPassNoPair();
-
- // selection variables
- Bool_t doesPassSig;
- Bool_t doesPassZH;
- Bool_t doesPassDY;
- Bool_t doesPassOffZ;
- Bool_t doesPassNoPair;
 
  // vectors of ints
  // each int is an entry in vector
@@ -91,6 +80,27 @@ public :
  std::vector<int> electron_list;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
+
+ // Selection functions
+ Bool_t        askPassSig();
+ Bool_t        askPassZH();
+ Bool_t        askPassDY();
+ Bool_t        askPassOffZ();
+ Bool_t        askPassNoPair();
+
+ // selection booleans
+ Bool_t passOSSF      ;
+ Bool_t passZWindow   ; 
+ Bool_t passGoodVtx   ;
+ Bool_t passPTOSSFg50 ; 
+ Bool_t passOneJet    ;
+
+
+ Bool_t doesPassSig;
+ Bool_t doesPassZH;
+ Bool_t doesPassDY;
+ Bool_t doesPassOffZ;
+ Bool_t doesPassNoPair;
 
  // personal variables
  Double_t themet;
@@ -104,6 +114,7 @@ public :
  TLorentzVector fourVec_met;
  TLorentzVector fourVec_leptomet;
  Double_t dilep_mass;
+ Double_t dilep_pt;
  
 // int    safeNGOODVERTICES      = 0;
 //   Int_t           nVtx;
