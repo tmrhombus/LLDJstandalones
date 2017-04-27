@@ -72,53 +72,27 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   // get electrons and muons and put into 4vectors
   bool passMM = false;
   makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
-  // make dilepton object and add to met
+  // make dilepton object
   fourVec_ll = fourVec_l1 + fourVec_l2;
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
-  //  fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
-  //  fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
-  //printf("  pt: %.4f  eta: %.4f  phi: %.4f  mass: %.4f \n",
-  //   fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
   dilep_mass = fourVec_ll.M();
   dilep_pt   = fourVec_ll.Pt();
-  //printf(" dilep mass: %0.1f\n", dilep_mass );
 
-  // Dilepton Mass Window
+  // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passPTOSSFg50 = (dilep_pt>50.);
 
-  // int nVtx
   passGoodVtx = nVtx>0;
-  //  // variables used in cuts
-  //  if(NDoubleElTriggers->size()>0){ safeNDoubleElTriggers  = NDoubleElTriggers->at(0);}
-  //  if(NDoubleMuTriggers->size()>0){ safeNDoubleMuTriggers  = NDoubleMuTriggers->at(0);}
-
-  //  if(MOSSF            ->size()>0){ safeMOSSF              = MOSSF            ->at(0);}
-  //   if(safeMOSSF>100000.){ safeMOSSF = 0.;}
-  //  if(PTOSSF           ->size()>0){ safePTOSSF             = PTOSSF           ->at(0);}
-  //  if(JetNJets         ->size()>0){ safeJetNJets           = JetNJets         ->at(0);}
   passOneJet = jet_list.size()>0; 
 
- 
-  //fprintf(logfile,"  safeNGOODVERTICES      %d\n" , safeNGOODVERTICES     );    
-  //fprintf(logfile,"  safeNDoubleElTriggers  %d\n" , safeNDoubleElTriggers );
-  //fprintf(logfile,"  safeNDoubleMuTriggers  %d\n" , safeNDoubleMuTriggers );
-  //fprintf(logfile,"  safeMOSSF              %f\n" , safeMOSSF             );
-  //fprintf(logfile,"  safeNOSSF              %d\n" , safeNOSSF             );
-  //fprintf(logfile,"  safeJetNJets           %d\n" , safeJetNJets          ); 
-  //fprintf(logfile,"  safePTOSSF             %f\n\n" , safePTOSSF            );    
-
-  debug_printobjects();
-
+  debug_printobjects(); // helpful printout (turn off when submitting!!!)
 
   // set booleans if pass various selections
-  doesPassSig    = kTRUE;  // askPassSig   ();
-  doesPassZH     = kTRUE;  // askPassZH    ();
-  doesPassDY     = kTRUE;  // askPassDY    ();
-  doesPassOffZ   = kTRUE;  // askPassOffZ  ();
-  doesPassNoPair = kTRUE;  // askPassNoPair();
+  doesPassSig    = askPassSig   ();
+  doesPassZH     = askPassZH    ();
+  doesPassDY     = askPassDY    ();
+  doesPassOffZ   = askPassOffZ  ();
+  doesPassNoPair = askPassNoPair();
 
   // fill histogram
                        fillSigHistograms(event_weight,0); fillJetHistograms(event_weight,0); fill2DHistograms(event_weight,0);  
@@ -133,6 +107,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
 
  } // end loop over entries
 
+ printf("\n\nSummary\n");
  printf(" ntot        %i \n",ntot        ); 
  printf(" npassSig    %i \n",npassSig    ); 
  printf(" npassZH     %i \n",npassZH     ); 
@@ -525,13 +500,13 @@ Bool_t analyzer_signal::askPassZH()
 {
  Bool_t doespass = kFALSE;
 
-// if ( safeNGOODVERTICES > 0
-//     //&& ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )
-//     && ( 70 < safeMOSSF && safeMOSSF < 110 ) 
-//     && safePTOSSF > 50
-//     && safeJetNJets > 0
-//    )
-// { doespass = kTRUE; npassZH++;}
+ if ( passGoodVtx
+     && passZWindow
+     && passPTOSSFg50
+     && passOneJet
+     //&&  triggers..
+    )
+ { doespass = kTRUE; npassZH++;}
  return doespass;
 }
 
@@ -539,13 +514,13 @@ Bool_t analyzer_signal::askPassDY()
 {
  Bool_t doespass = kFALSE;
 
-// if ( safeNGOODVERTICES > 0
-//     //&& ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )
-//     && ( 70 < safeMOSSF && safeMOSSF < 110 ) 
-//     && safePTOSSF < 50
-//     && safeJetNJets > 0
-//    )
-// { doespass = kTRUE; npassDY++; }
+ if ( passGoodVtx
+     && passZWindow
+     && !passPTOSSFg50
+     && passOneJet
+     //&&  triggers..
+    )
+ { doespass = kTRUE; npassDY++; }
  return doespass;
 }
 
@@ -553,13 +528,13 @@ Bool_t analyzer_signal::askPassOffZ()
 {
  Bool_t doespass = kFALSE;
 
-// if ( safeNGOODVERTICES > 0
-//     //&& ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )
-//     && !( 70 < safeMOSSF && safeMOSSF < 110 ) 
-//     && safeNOSSF == 1
-//     && safeJetNJets > 0
-//    )
-// { doespass = kTRUE; npassOffZ++; }
+ if ( passGoodVtx
+     && !passZWindow
+     && passOSSF
+     && passOneJet
+     //&&  triggers..
+    )
+ { doespass = kTRUE; npassOffZ++; }
  return doespass;
 }
 
@@ -567,13 +542,13 @@ Bool_t analyzer_signal::askPassNoPair()
 {
  Bool_t doespass = kFALSE;
 
-// if ( safeNGOODVERTICES > 0
-//     //&& ( safeNDoubleElTriggers > 0.5 || safeNDoubleMuTriggers > 0.5 )
-//     && !( 70 < safeMOSSF && safeMOSSF < 110 ) 
-//     && safeNOSSF == 0
-//     && safeJetNJets > 0
-//    )
-// { doespass = kTRUE; npassNoPair++; }
+ if ( passGoodVtx
+     && !passZWindow
+     && !passOSSF
+     && passOneJet
+     //&&  triggers..
+    )
+ { doespass = kTRUE; npassNoPair++; }
  return doespass;
 }
 
@@ -1159,7 +1134,13 @@ void analyzer_signal::debug_printobjects(){
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, jetPt->at(jetindex), jetEta->at(jetindex), jetPhi->at(jetindex));
   } 
 
-  printf( " mll %.1f ptll %.1f\n", dilep_mass, dilep_pt);
-  printf( " met %.1f mephi %.1f nvtx %d \n", themet, themephi, nVtx);
+  printf("  l1 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+    fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
+  printf("  l2 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+    fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
+  printf("  ll pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+     fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
+  printf( " met %.1f mephi %.1f\n", themet, themephi);
+  printf( " nvtx %d \n", nVtx);
 
  }

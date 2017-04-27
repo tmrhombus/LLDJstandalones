@@ -95,39 +95,25 @@ public :
  Bool_t passPTOSSFg50 ; 
  Bool_t passOneJet    ;
 
-
+ // full cut booleans
  Bool_t doesPassSig;
  Bool_t doesPassZH;
  Bool_t doesPassDY;
  Bool_t doesPassOffZ;
  Bool_t doesPassNoPair;
-
  // personal variables
  Double_t themet;
  Double_t themephi;
 
  // for dilepton
- //TLorentzVector fourVec_e1, fourVec_e2; 
- //TLorentzVector fourVec_m1, fourVec_m2; 
  TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
  TLorentzVector fourVec_l1, fourVec_l2;
  TLorentzVector fourVec_met;
- TLorentzVector fourVec_leptomet;
+ TLorentzVector _leptomet;
  Double_t dilep_mass;
  Double_t dilep_pt;
- 
-// int    safeNGOODVERTICES      = 0;
-//   Int_t           nVtx;
-// int    safeNDoubleElTriggers  = 0;
-//   vector<unsigned int> *eleFiredDoubleTrgs;
-// int    safeNDoubleMuTriggers  = 0;
-//   vector<unsigned int> *muFiredTrgs;
-// int    safeNOSSF              = 0;
-// double safeMOSSF              = 0.; 
-// double safePTOSSF             = 0.; 
-// int    safeJetNJets           = 0;
-//   Int_t           nJet;
 
+ // selection counters (how many events pass)
  Int_t ntot;
  Int_t npassSig;
  Int_t npassZH;
