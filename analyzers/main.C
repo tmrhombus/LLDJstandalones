@@ -219,7 +219,7 @@ int main(int argc, char **argv){
  analyzer.initJetHistograms();
  analyzer.init2DHistograms();
 
- analyzer.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
+ analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
 
  // end stopwatch
  sw.Stop();

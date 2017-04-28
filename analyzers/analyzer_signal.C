@@ -5,7 +5,7 @@
 #include <TCanvas.h>
 #include <iostream>
 
-void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
+void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
                        Double_t crossSec, Int_t nevts)
 {
@@ -37,7 +37,7 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   // make event weight
-  event_weight = makeEventWeight(crossSec,lumi,nrEvents,isMC);
+  event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   ntot++;
 
   // get lists of "good" electrons, photons, jets
@@ -64,6 +64,30 @@ void analyzer_signal::Loop(TString outfilename, Bool_t isMC,
   // pfMET_T1TESDo;   //!
   // pfMET_T1UESUp;   //!
   // pfMET_T1UESDo;   //!
+
+  // calculate ht
+  htall  = 0.;
+  htjets = 0.;
+  //for(int i=0; i<photon_list.size(); ++i){
+  // int phoindex = photon_list[i];
+  // htall += phoEt->at(phoindex);
+  //}
+
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   htall += elePt->at(eleindex);
+  }
+
+  for(int i=0; i<muon_list.size(); ++i){
+   int muindex = muon_list[i];
+   htall += muPt->at(muindex);
+  }
+
+  for(int i=0; i<jet_list.size(); ++i){
+   int jetindex = jet_list[i];
+   htall  += jetPt->at(jetindex);
+   htjets += jetPt->at(jetindex);
+  } 
 
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
@@ -429,6 +453,9 @@ Bool_t analyzer_signal::initSigHistograms()
   TString hname_muEta  = "h_"+selbinnames[i]+"_muEta "; 
   TString hname_muPhi  = "h_"+selbinnames[i]+"_muPhi "; 
 
+  TString hname_htall   = "h_"+selbinnames[i]+"_htall "; 
+  TString hname_htjets  = "h_"+selbinnames[i]+"_htjets "; 
+
   // initalize histograms
   h_nVtx  [i] = initSingleHistogramTH1F( hname_nVtx  , "nVtx  ", 60,0,60) ; 
   h_nPU   [i] = initSingleHistogramTH1F( hname_nPU   , "nPU   ", 60,0,60) ; 
@@ -442,6 +469,8 @@ Bool_t analyzer_signal::initSigHistograms()
   h_muEta [i] = initSingleHistogramTH1F( hname_muEta , "muEta ", 10,-5,5) ; 
   h_muPhi [i] = initSingleHistogramTH1F( hname_muPhi , "muPhi ", 10,-5,5) ; 
 
+  h_htall [i]  = initSingleHistogramTH1F( hname_htall  , "htall ", 50,0,1000) ; 
+  h_htjets [i] = initSingleHistogramTH1F( hname_htjets , "htjets", 50,0,1000) ; 
  }
 
  return kTRUE;
@@ -453,6 +482,9 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin)
 
  //printf("fillSigHistograms\n");
   h_nVtx  [selbin].Fill( nVtx  , weight); 
+
+  h_htall [selbin].Fill( htall , weight);
+  h_htjets[selbin].Fill( htjets, weight);
 
   if(isMC){
    if(nPU   ->size()>0){ h_nPU   [selbin].Fill( nPU   ->at(0), weight); } 
@@ -477,6 +509,8 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin)
 {
  //printf("writeSigHistograms\n");
   h_nVtx  [selbin].Write(); 
+  h_htall [selbin].Write(); 
+  h_htjets[selbin].Write(); 
 
   h_nPU   [selbin].Write(); 
   h_phoEt [selbin].Write(); 
@@ -1149,5 +1183,6 @@ void analyzer_signal::debug_printobjects(){
 
   printf( " met %.1f mephi %.1f\n", themet, themephi);
   printf( " nvtx %d \n", nVtx);
+  printf( " htall %.1f htjets %.1f\n", htall, htjets);
 
  }

@@ -26,8 +26,7 @@ Long64_t analyzer_base::LoadTree(Long64_t entry)
 //----------------------------makeEventWeight
 Double_t analyzer_base::makeEventWeight(Double_t crossSec,
                                         Double_t lumi,
-                                        Double_t nrEvents,
-                                        Bool_t isMC)
+                                        Double_t nrEvents)
 {
   // 1.0 for real data
   event_weight=1.0;

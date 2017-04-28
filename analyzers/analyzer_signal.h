@@ -15,7 +15,7 @@ public :
 
                analyzer_signal();
  virtual       ~analyzer_signal();
- virtual void  Loop(TString outfilename, Bool_t isMC,
+ virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts);
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
@@ -93,6 +93,8 @@ public :
  // personal variables
  Double_t themet;
  Double_t themephi;
+ Double_t htall;
+ Double_t htjets;
 
  // for dilepton
  TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
@@ -135,6 +137,9 @@ public :
  TH1F h_muPt[6];
  TH1F h_muEta[6];
  TH1F h_muPhi[6];
+
+ TH1F h_htall[6];
+ TH1F h_htjets[6];
 
  // Jet
  TH1F h_jetPt[6][4]; 

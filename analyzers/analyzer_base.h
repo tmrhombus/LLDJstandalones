@@ -797,7 +797,7 @@ public :
    virtual void     Init(TTree *tree, Bool_t isitMC, Bool_t domakelog);
    virtual Long64_t LoadTree(Long64_t entry);
    Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
-                                    Double_t nrEvents, Bool_t isMC);
+                                    Double_t nrEvents);
 };
 
 #endif
