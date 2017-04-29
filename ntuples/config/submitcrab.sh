@@ -6,7 +6,7 @@ dosubmit=false
 
 # start the timer
 START=$(date +%s);
-printf "Started at `date`\n\n"
+printf "Started at ${START}\n\n"
 
 # make the directory where we'll submit from
 thesubdir="${subdir}/gitignore/${nversion}"
@@ -16,34 +16,33 @@ printf "Making submit configurations in\n ${thesubdir}\n\n"
 # get the DAS name mapping
 thedasmap="${listdir}/ntuple/dasmap.list"
 
-#lumi=40000. # /pb
-lumi=12900. # /pb
-
 #  MC sample names
-mcsamples=( \
- "ZHHbb_1"       \
- "ZHHbb_2"       \
- "ggZHHbb_1"     \
- "ggZHHbb_2"     \
- "ggZHHbb_3"     \
- "ggZHSSbbbb_01" \
- "ggZHSSbbbb_02" \
- "ggZHSSbbbb_03" \
- "ggZHSSbbbb_04" \
- "ggZHSSbbbb_05" \
- "ggZHSSbbbb_06" \
- "ggZHSSbbbb_07" \
+samples=( \
+ "ZHHbb_1"        \
+ "ZHHbb_2"        \
+ "ggZHHbb_1"      \
+ "ggZHHbb_2"      \
+ "ggZHHbb_3"      \
+ "ggZHSSbbbb_01"  \
+ "ggZHSSbbbb_02"  \
+ "ggZHSSbbbb_03"  \
+ "ggZHSSbbbb_04"  \
+ "ggZHSSbbbb_05"  \
+ "ggZHSSbbbb_06"  \
+ "ggZHSSbbbb_07"  \
+ "Data_SingleMu"  \
+ "Data_SingleEle" \
 )
 
 # print which samples we're running over
 printf "For:\n"
-for samplename in ${mcsamples[@]}
+for samplename in ${samples[@]} 
 do
  printf " ${samplename}\n"
 done
 
 # loop over mc samples
-for samplename in ${mcsamples[@]}
+for samplename in ${samples[@]}
 do
  printf "\n******************************************************\n"
  if [ ${dosubmit} = true ]
@@ -62,11 +61,21 @@ do
  submitfile="${thesubdir}/${submitname}.py"
 
  # set veriables for submitting this specific sample
- WORKAREA="'crab_projects_ntuples'"
- CMSRUNCONFIG="'run_mc_80x.py'" 
- INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
+ WORKAREA="'crabsubmits_${nversion}'"
+ if [ ${samplename} == "Data_SingleMu" ]
+ then
+  CMSRUNCONFIG="'run_data_80x_SingleMu.py'" 
+  INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
+ elif [ ${samplename} == "Data_SingleEle" ]
+ then
+  CMSRUNCONFIG="'run_data_80x_SingleEle.py'" 
+  INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
+ else
+  CMSRUNCONFIG="'run_mc_80x.py'" 
+  INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
+ fi
  NUNITS="'-1'"
- REQUESTNAME="'job_spring_ZZ'"
+ REQUESTNAME="'${nversion}'"
  DATASET="'${datasetname}'"
  OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
 
@@ -97,4 +106,7 @@ do
 done
 
 
-
+# end the timer
+END=$(date +%s);
+printf "\nStarted at ${START}\n"
+printf "Ended at   ${END}\n\n"
