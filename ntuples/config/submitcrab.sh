@@ -12,26 +12,38 @@ thesubdir="${subdir}/gitignore/${nversion}"
 mkdir -p ${thesubdir} 
 printf "Making submit configurations in\n ${thesubdir}\n\n"
 
+# copy necessary files into submit directory
+cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt"   ${thesubdir}
+cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt"   ${thesubdir} 
+cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt" ${thesubdir}  
+cp "${subdir}/Summer16_23Sep2016AllV4_DATA.db"                        ${thesubdir}     
+cp "${subdir}/Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt"        ${thesubdir}
+cp "${subdir}/Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt"        ${thesubdir}
+cp "${subdir}/Summer16_23Sep2016V4_MC.db"                             ${thesubdir}
+cp "${subdir}/run_data_80X_SingleMu.py"   ${thesubdir} 
+cp "${subdir}/run_data_80X_SingleEle.py"  ${thesubdir}
+cp "${subdir}/run_mc_80X.py"              ${thesubdir}
+
 # get the DAS name mapping
 thedasmap="${listdir}/ntuple/dasmap.list"
 
 #  MC sample names
 samples=( \
- "ZHHbb_1"        \
- "ZHHbb_2"        \
- "ggZHHbb_1"      \
- "ggZHHbb_2"      \
- "ggZHHbb_3"      \
- "ggZHSSbbbb_01"  \
- "ggZHSSbbbb_02"  \
- "ggZHSSbbbb_03"  \
- "ggZHSSbbbb_04"  \
- "ggZHSSbbbb_05"  \
- "ggZHSSbbbb_06"  \
- "ggZHSSbbbb_07"  \
- "Data_SingleMu"  \
- "Data_SingleEle" \
-)
+ "ZHHbb_1"        ) #\
+# "ZHHbb_2"        \
+# "ggZHHbb_1"      \
+# "ggZHHbb_2"      \
+# "ggZHHbb_3"      \
+# "ggZHSSbbbb_01"  \
+# "ggZHSSbbbb_02"  \
+# "ggZHSSbbbb_03"  \
+# "ggZHSSbbbb_04"  \
+# "ggZHSSbbbb_05"  \
+# "ggZHSSbbbb_06"  \
+# "ggZHSSbbbb_07"  \
+# "Data_SingleMu"  \
+# "Data_SingleEle" \
+#)
 
 # print which samples we're running over
 printf "For:\n"
@@ -63,18 +75,18 @@ do
  WORKAREA="'crabsubmits_${nversion}'"
  if [ ${samplename} == "Data_SingleMu" ]
  then
-  CMSRUNCONFIG="'run_data_80x_SingleMu.py'" 
+  CMSRUNCONFIG="'run_data_80X_SingleMu.py'" 
   INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  elif [ ${samplename} == "Data_SingleEle" ]
  then
-  CMSRUNCONFIG="'run_data_80x_SingleEle.py'" 
+  CMSRUNCONFIG="'run_data_80X_SingleEle.py'" 
   INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  else
-  CMSRUNCONFIG="'run_mc_80x.py'" 
+  CMSRUNCONFIG="'run_mc_80X.py'" 
   INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  fi
- NUNITS="'-1'"
- UPERJOB="'30'"
+ NUNITS="-1"
+ UPERJOB="30"
  SPLITTING="'FileBased'"
  REQUESTNAME="'${nversion}'"
  DATASET="'${datasetname}'"
@@ -110,7 +122,9 @@ do
  # submit the jobs
  if [ ${dosubmit} = true ]
  then
+  pushd ${thesubdir} 
   python ${submitfile}
+  popd
  fi
 
 done

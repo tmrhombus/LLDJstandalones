@@ -17,7 +17,7 @@ if __name__ == '__main__':
     config.General.transferLogs = False
     config.JobType.pluginName   = 'Analysis' # PrivateMC
     config.JobType.psetName     = CMSRUNCONFIG
-    config.JobType.inputFiles   = ['Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db']
+    config.JobType.inputFiles   = [INPUTFILES]
     config.JobType.sendExternalFolder = True
     config.Data.inputDBS        = 'global'    
     config.Data.splitting       = SPLITTING # 'LumiBased' EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
