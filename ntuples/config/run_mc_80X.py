@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process('ggKit')
+process = cms.Process('LLDJ')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )

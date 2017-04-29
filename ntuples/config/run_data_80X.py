@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process('ggKit')
+process = cms.Process('LLDJ')
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
@@ -151,7 +151,7 @@ process.lldjNtuple.doGenParticles=cms.bool(False)
 process.lldjNtuple.dumpSubJets=cms.bool(True)
 process.lldjNtuple.dumpJets=cms.bool(True)
 process.lldjNtuple.dumpTaus=cms.bool(False)
-process.lldjNtuple.pfMETLabel=cms.InputTag("slimmedMETsMuEGClean", "", "ggKit")
+process.lldjNtuple.pfMETLabel=cms.InputTag("slimmedMETsMuEGClean", "", "LLDJ")
 ## the following line is only needed when you run on Feb 2017 re-miniAOD
 process.lldjNtuple.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
 
