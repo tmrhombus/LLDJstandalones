@@ -1,14 +1,14 @@
 
 void dumpplots(){
 
- //TString histotype="TH1";
- TString histotype="TH2";
+ TString histotype="TH1";
+ //TString histotype="TH2";
 
  // path to root files
  inpath  = TString("../roots");
  outpath = TString("../plots");
- //TString infilename = "TTbar_BASICCALOJETS1PT20"; // no .root
- TString infilename = "DY50_ALLCALOJETS"; // no .root
+ //TString infilename = "DY5to50"; // no .root
+ TString infilename = "DY50"; // no .root
 
  // y axis plots as log
  Bool_t dolog = kFALSE;

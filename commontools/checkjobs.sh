@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # just calls the checker scripts automatically generated
-# submission time in ${basedir}/submitters/gitignore/${version}/${sample}/checker.sh
+# submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh
 
 printf "Files that are not done in condor: \n"
 
@@ -28,6 +28,6 @@ samples=( \
 
 for sample in ${samples[@]}
 do
- #chmod +x "${basedir}/submitters/gitignore/${version}/${sample}/checker.sh"
- bash "${basedir}/submitters/gitignore/${version}/${sample}/checker.sh"
+ #chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
 done

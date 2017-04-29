@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # just calls the hadd scripts automatically generated
-# submission time in ${basedir}/submitters/gitignore/${version}/${sample}/haddit.sh
-mkdir -p "${rootdir}/${version}"
+# submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh
+mkdir -p "${rootdir}/${aversion}"
 
  #"DY50"     \
 samples=( \
@@ -28,6 +28,6 @@ samples=( \
 
 for sample in ${samples[@]}
 do
- #chmod +x "${basedir}/submitters/gitignore/${version}/${sample}/haddit.sh"
- bash "${basedir}/submitters/gitignore/${version}/${sample}/haddit.sh"
+ #chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"
 done

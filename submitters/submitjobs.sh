@@ -3,7 +3,7 @@
 # script to generate submit files
 # and optionally to submit to condor (@FNAL)
 
-# source xx/LLDJ/setup.sh for ${version}
+# source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=false
 lumi=20000
@@ -62,7 +62,7 @@ jets=( \
 #  "INCLUSIVETAGGEDCALOJETSMATCHED"   \
 )
 
-printf "Version: ${version}\n"
+printf "Version: ${aversion}\n"
 
 # tar up your present CMSSW area
 if [ ! -f ${CMSSW_VERSION}.tar.gz ] 
@@ -75,8 +75,8 @@ makeasubmitdir () {
  printf "Making submits for $1\n"
  
  # go to the directory
- mkdir -p gitignore/${version}/$1
- pushd    gitignore/${version}/$1 > /dev/null
+ mkdir -p gitignore/${aversion}/$1
+ pushd    gitignore/${aversion}/$1 > /dev/null
  #printf " The directory is %s\n" $(pwd)
  
  mkdir -p logs
@@ -97,7 +97,7 @@ makeasubmitdir () {
  
  # make haddfile
  haddfile="./haddit.sh"
- hadddir="${rootdir}/${version}"
+ hadddir="${rootdir}/${aversion}"
  mkdir -p ${hadddir}
  printf "#!/bin/bash\n\n" > ${haddfile}
 

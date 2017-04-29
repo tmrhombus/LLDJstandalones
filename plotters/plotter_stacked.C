@@ -10,9 +10,9 @@ void plotter_stacked()
  // path to root files
  TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
- //TString version = TString(getenv("version"));
- //inpath = inpath+version+"/";
- //outpath = outpath+version+"/";
+ //TString aversion = TString(getenv("aversion"));
+ //inpath = inpath+aversion+"/";
+ //outpath = outpath+aversion+"/";
 
  // y axis plots as log
  Bool_t dolog = kTRUE;
