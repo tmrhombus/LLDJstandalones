@@ -23,7 +23,7 @@ if __name__ == '__main__':
     config.Data.splitting       = 'LumiBased' # EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
     config.Data.totalUnits      = NUNITS
     config.Data.publication     = False
-    config.Site.storageSite     = 'T2_US_FNAL'
+    config.Site.storageSite     = STORESITE
 
     def submit(config):
         try:

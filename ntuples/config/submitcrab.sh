@@ -47,10 +47,10 @@ do
  printf "\n******************************************************\n"
  if [ ${dosubmit} = true ]
  then
- printf "** \n"
+  printf "** \n"
   printf "** --- SUBMITTING --- \n"
+  printf "** \n"
  fi
- printf "** \n"
  printf "** Sample: ${samplename} \n"
  printf "******************************************************\n"
  printf "******************************************************\n\n"
@@ -77,6 +77,7 @@ do
  NUNITS="'-1'"
  REQUESTNAME="'${nversion}'"
  DATASET="'${datasetname}'"
+ STORESITE="'T2_US_FNAL'"
  OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
 
  printf "WORKAREA      ${WORKAREA}    \n" 
@@ -85,6 +86,7 @@ do
  printf "NUNITS        ${NUNITS}       \n" 
  printf "REQUESTNAME   ${REQUESTNAME}  \n" 
  printf "DATASET       ${DATASET}      \n" 
+ printf "STORESITE     ${STORESITE}      \n" 
  printf "OUTLFNBASE    ${OUTLFNBASE}   \n" 
 
  # copy and then fill template for crab submits
@@ -95,6 +97,7 @@ do
  sed -i "s@NUNITS@${NUNITS}@g"             "${submitfile}" 
  sed -i "s@REQUESTNAME@${REQUESTNAME}@g"   "${submitfile}" 
  sed -i "s@DATASET@${DATASET}@g"           "${submitfile}" 
+ sed -i "s@STORESITE@${STORESITE}@g"       "${submitfile}" 
  sed -i "s@OUTLFNBASE@${OUTLFNBASE}@g"     "${submitfile}" 
 
  # submit the jobs
