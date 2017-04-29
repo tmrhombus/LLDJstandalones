@@ -1,7 +1,6 @@
 #voms-proxy-init --voms cms --valid 100:00
 
-domc=false
-dodata=false
+# do we submit or just generate submit scripts
 dosubmit=false
 
 # start the timer
@@ -75,18 +74,24 @@ do
   INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  fi
  NUNITS="'-1'"
+ UPERJOB="'30'"
+ SPLITTING="'FileBased'"
  REQUESTNAME="'${nversion}'"
  DATASET="'${datasetname}'"
- STORESITE="'T2_US_FNAL'"
- OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
+ STORESITE="'T2_US_Wisconsin'"
+ OUTLFNBASE="'/store/user/tmperry/${nversion}'"
+ #STORESITE="'T2_US_FNAL'"
+ #OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
 
- printf "WORKAREA      ${WORKAREA}    \n" 
+ printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
  printf "INPUTFILES    ${INPUTFILES}   \n" 
  printf "NUNITS        ${NUNITS}       \n" 
+ printf "UPERJOB       ${UPERJOB}      \n" 
+ printf "SPLITTING     ${SPLITTING}    \n" 
  printf "REQUESTNAME   ${REQUESTNAME}  \n" 
  printf "DATASET       ${DATASET}      \n" 
- printf "STORESITE     ${STORESITE}      \n" 
+ printf "STORESITE     ${STORESITE}    \n" 
  printf "OUTLFNBASE    ${OUTLFNBASE}   \n" 
 
  # copy and then fill template for crab submits
@@ -95,6 +100,8 @@ do
  sed -i "s@CMSRUNCONFIG@${CMSRUNCONFIG}@g" "${submitfile}" 
  sed -i "s@INPUTFILES@${INPUTFILES}@g"     "${submitfile}" 
  sed -i "s@NUNITS@${NUNITS}@g"             "${submitfile}" 
+ sed -i "s@UPERJOB@${UPERJOB}@g"           "${submitfile}" 
+ sed -i "s@SPLITTING@${SPLITTING}@g"       "${submitfile}" 
  sed -i "s@REQUESTNAME@${REQUESTNAME}@g"   "${submitfile}" 
  sed -i "s@DATASET@${DATASET}@g"           "${submitfile}" 
  sed -i "s@STORESITE@${STORESITE}@g"       "${submitfile}" 

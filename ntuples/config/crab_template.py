@@ -20,7 +20,7 @@ if __name__ == '__main__':
     config.JobType.inputFiles   = ['Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db']
     config.JobType.sendExternalFolder = True
     config.Data.inputDBS        = 'global'    
-    config.Data.splitting       = 'LumiBased' # EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
+    config.Data.splitting       = SPLITTING # 'LumiBased' EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
     config.Data.totalUnits      = NUNITS
     config.Data.publication     = False
     config.Site.storageSite     = STORESITE
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # dataset dependent configuration
 
     config.General.requestName = REQUESTNAME
-    config.Data.unitsPerJob    = 40
+    config.Data.unitsPerJob    = UPERJOB
     config.Data.inputDataset   = DATASET
     config.Data.outLFNDirBase  = OUTLFNBASE
     p = Process(target=submit, args=(config,))
