@@ -24,13 +24,21 @@ cp "${subdir}/run_data_80X_SingleMu.py"   ${thesubdir}
 cp "${subdir}/run_data_80X_SingleEle.py"  ${thesubdir}
 cp "${subdir}/run_mc_80X.py"              ${thesubdir}
 
+cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_data_80X_SingleMu.py"  
+cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_data_80X_SingleEle.py" 
+cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_mc_80X.py"             
+
+cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_data_80X_SingleMu.py"   
+cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_data_80X_SingleEle.py"  
+cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_mc_80X.py"              
+
 # get the DAS name mapping
 thedasmap="${listdir}/ntuple/dasmap.list"
 
 #  MC sample names
 samples=( \
- "ZHHbb_1"        ) #\
-# "ZHHbb_2"        \
+ "ZHHbb_1"        \
+ "ZHHbb_2"       ) # \
 # "ggZHHbb_1"      \
 # "ggZHHbb_2"      \
 # "ggZHHbb_3"      \
@@ -88,7 +96,7 @@ do
  NUNITS="-1"
  UPERJOB="30"
  SPLITTING="'FileBased'"
- REQUESTNAME="'${nversion}'"
+ REQUESTNAME="'${samplename}'"
  DATASET="'${datasetname}'"
  STORESITE="'T2_US_Wisconsin'"
  OUTLFNBASE="'/store/user/tmperry/${nversion}'"

@@ -76,7 +76,7 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggtree_mc.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc.root'))
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
@@ -158,4 +158,4 @@ process.p = cms.Path(
     process.lldjNtuple
     )
 
-print process.dumpPython()
+#print process.dumpPython()
