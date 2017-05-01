@@ -24,94 +24,101 @@ cp "${subdir}/run_data_80X_SingleMu.py"   ${thesubdir}
 cp "${subdir}/run_data_80X_SingleEle.py"  ${thesubdir}
 cp "${subdir}/run_mc_80X.py"              ${thesubdir}
 
-cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_data_80X_SingleMu.py"  
-cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_data_80X_SingleEle.py" 
-cat "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )" >> "${thesubdir}/run_mc_80X.py"             
+printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_SingleMu.py"  
+printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_SingleEle.py" 
+printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80X.py"             
 
-cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_data_80X_SingleMu.py"   
-cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_data_80X_SingleEle.py"  
-cat "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000" >> "${thesubdir}/${thesubdir}/run_mc_80X.py"              
+printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_SingleMu.py"   
+printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_SingleEle.py"  
+printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_mc_80X.py"              
 
 # get the DAS name mapping
 thedasmap="${listdir}/ntuple/dasmap.list"
 
 #  MC sample names
 samples=( \
- "DY50_1"                         \                                    
- "DY50_2"                         \                                                  
- "DY5to50_HT70to100"              \                                                  
- "DY5to50_HT100to200_1"           \                                                  
- "DY5to50_HT100to200_2"           \                                                  
- "DY5to50_HT200to400_1"           \                                                  
- "DY5to50_HT200to400_2"           \                                                  
- "DY5to50_HT400to600_1"           \                                                  
- "DY5to50_HT400to600_2"           \                                                  
- "DY5to50_HT600toInf_1"           \                                                  
- "DY5to50_HT600toInf_2"           \                                                  
- "TTJets"                         \                                      
- "STs"                            \                                      
- "STtbar"                         \                                      
- "STt"                            \                                      
- "STtbarW"                        \                                      
- "STtW"                           \                                      
- "WJets"                          \                                      
- "WW_1"                           \                                      
- "WW_2"                           \                                      
- "ZH_Hbb"                         \                                      
- "ZH_Hbb"                         \                                      
- "ggZH_Hbb"                       \                                      
- "ggZH_Hbb"                       \                                      
- "ggZH_Hbb"                       \                                      
- "ggZH_HSSbbbb_MS_15_ctauS_0"     \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_0p05"  \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_10000" \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_1000"  \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_100"   \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_10"    \                                                           
- "ggZH_HSSbbbb_MS_15_ctauS_1"     \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_0"     \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_10000" \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_1000"  \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_100"   \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_10"    \                                                           
- "ggZH_HSSbbbb_MS_40_ctauS_1"     \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_0"     \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_0p05"  \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_10000" \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_1000"  \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_100"   \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_10"    \                                                           
- "ggZH_HSSbbbb_MS_55_ctauS_1"     \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_0"     \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_0p05"  \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_10000" \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_1000"  \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_100"   \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_10"    \                                                           
- "ggZH_HSSdddd_MS_15_ctauS_1"     \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_0"     \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_0p05"  \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_10000" \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_1000"  \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_100"   \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_10"    \                                                           
- "ggZH_HSSdddd_MS_40_ctauS_1"     \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_0"     \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_0p05"  \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_10000" \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_1000"  \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_100"   \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_10"    \                                                           
- "ggZH_HSSdddd_MS_55_ctauS_1"     \                                                           
- "ggZH_HSSdddd_MS_7_ctauS_0"      \                                                              
- "ggZH_HSSdddd_MS_7_ctauS_0p05"   \                                                              
- "ggZH_HSSdddd_MS_7_ctauS_10000"  \                                                               
- "ggZH_HSSdddd_MS_7_ctauS_1000"   \                                                               
- "ggZH_HSSdddd_MS_7_ctauS_100"    \                                                              
- "ggZH_HSSdddd_MS_7_ctauS_10"     \                                                              
- "ggZH_HSSdddd_MS_7_ctauS_1"      \                                                              
+ "DY50_1"               \
+ "DY50_2"               \
+ "DY5to50_HT70to100"    \
+ "DY5to50_HT100to200_1" \
+ "DY5to50_HT100to200_2" \
+ "DY5to50_HT200to400_1" \
+ "DY5to50_HT200to400_2" \
+ "DY5to50_HT400to600_1" \
+ "DY5to50_HT400to600_2" \
+ "DY5to50_HT600toInf_1" \
+ "DY5to50_HT600toInf_2" \
+ "TTJets"               \
+ "STs"                  \
+ "STtbar"               \
+ "STt"                  \
+ "STtbarW"              \
+ "STtW"                 \
+ "WJets_1"              \
+ "WJets_1"              \
+ "WW_1"                 \
+ "WW_2"                 \
+ "WZ_1"                 \
+ "WZ_2"                 \
+ "ZZ_1"                 \
+ "ZZ_2"                 \
+ "ZH_Hbb_1"             \
+ "ZH_Hbb_2"             \
+ "ggZH_Hbb_1"           \
+ "ggZH_Hbb_2"           \
+ "ggZH_Hbb_3"           \
 )
+
+ #  "ggZH_HSSbbbb_MS_15_ctauS_0"     \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_10000" \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_1000"  \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_100"   \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_10"    \                                                           
+ #  "ggZH_HSSbbbb_MS_15_ctauS_1"     \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_0"     \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_10000" \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_1000"  \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_100"   \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_10"    \                                                           
+ #  "ggZH_HSSbbbb_MS_40_ctauS_1"     \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_0"     \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_10000" \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_1000"  \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_100"   \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_10"    \                                                           
+ #  "ggZH_HSSbbbb_MS_55_ctauS_1"     \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_0"     \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_10000" \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_1000"  \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_100"   \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_10"    \                                                           
+ #  "ggZH_HSSdddd_MS_15_ctauS_1"     \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_0"     \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_10000" \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_1000"  \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_100"   \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_10"    \                                                           
+ #  "ggZH_HSSdddd_MS_40_ctauS_1"     \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_0"     \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_0p05"  \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_10000" \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_1000"  \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_100"   \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_10"    \                                                           
+ #  "ggZH_HSSdddd_MS_55_ctauS_1"     \                                                           
+ #  "ggZH_HSSdddd_MS_7_ctauS_0"      \                                                              
+ #  "ggZH_HSSdddd_MS_7_ctauS_0p05"   \                                                              
+ #  "ggZH_HSSdddd_MS_7_ctauS_10000"  \                                                               
+ #  "ggZH_HSSdddd_MS_7_ctauS_1000"   \                                                               
+ #  "ggZH_HSSdddd_MS_7_ctauS_100"    \                                                              
+ #  "ggZH_HSSdddd_MS_7_ctauS_10"     \                                                              
+ #  "ggZH_HSSdddd_MS_7_ctauS_1"      \                                                              
+ # )
                                                            
 # print which samples we're running over
 printf "For:\n"
@@ -154,7 +161,7 @@ do
   INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  fi
  NUNITS="-1"
- UPERJOB="30"
+ UPERJOB="1"
  SPLITTING="'FileBased'"
  REQUESTNAME="'${samplename}'"
  DATASET="'${datasetname}'"
@@ -202,3 +209,4 @@ done
 END=$(date +%s);
 printf "\nStarted at ${START}\n"
 printf "Ended at   ${END}\n\n"
+

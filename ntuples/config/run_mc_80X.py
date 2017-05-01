@@ -106,8 +106,8 @@ runMetCorAndUncFromMiniAOD(process,
                            )
 
 process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
-#process.load("LLDJstandalones.ntuples.ggPhotonIso_CITK_PUPPI_cff")
-process.load("LLDJstandalones.ntuples.ggMETFilters_cff")
+#process.load("LLDJstandalones.ntuples.lldjPhotonIso_CITK_PUPPI_cff")
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 process.lldjNtuple.dumpSoftDrop= cms.bool(True)
 process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
 process.lldjNtuple.runHFElectrons=cms.bool(True)
@@ -150,7 +150,7 @@ for idmod in my_phoid_modules:
 
 process.p = cms.Path(
     process.regressionApplication*
-    process.ggMETFiltersSequence*
+    process.lldjMETFiltersSequence*
     process.calibratedPatElectrons*
     process.calibratedPatPhotons* 
     process.egmGsfElectronIDSequence*

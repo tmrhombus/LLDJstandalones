@@ -140,9 +140,11 @@ process.egcorrMET = cms.Sequence(
         process.patPFMetT1MuonEnDownMuEGClean+process.patPFMetT1TauEnDownMuEGClean+
         process.patPFMetT1UnclusteredEnDownMuEGClean+process.slimmedMETsMuEGClean)
 
-process.load("ntuples.lldjNtuple_miniAOD_cfi")
-process.load("ntuples.ggPhotonIso_CITK_PUPPI_cff")
-process.load("ntuples.ggMETFilters_cff")
+
+
+process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
+process.load("LLDJstandalones.ntuples.lldjPhotonIso_CITK_PUPPI_cff")
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 process.lldjNtuple.dumpSoftDrop= cms.bool(True)
 process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
 process.lldjNtuple.runHFElectrons=cms.bool(True)
@@ -193,21 +195,21 @@ process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
                                           throw = cms.bool(True) # Tolerate if triggers not available
                                           )
 
-    process.p = cms.Path(
-        ###process.reapplyJEC*
-        ###process.pfImpactParameterTagInfosAK8 *
-        ###process.pfInclusiveSecondaryVertexFinderTagInfosAK8 *
-        ###process.pfBoostedDoubleSecondaryVertexAK8BJetTags *        
-        process.singleEleHLTFilter*
-        process.fullPatMetSequence* 
-        process.egcorrMET*
-        process.ggMETFiltersSequence* 
-        process.regressionApplication*
-        process.calibratedPatElectrons*
-        process.calibratedPatPhotons*
-        process.egmGsfElectronIDSequence*
-        process.egmPhotonIDSequence*
-        process.lldjNtuple
-        )
+process.p = cms.Path(
+    ###process.reapplyJEC*
+    ###process.pfImpactParameterTagInfosAK8 *
+    ###process.pfInclusiveSecondaryVertexFinderTagInfosAK8 *
+    ###process.pfBoostedDoubleSecondaryVertexAK8BJetTags *        
+    process.singleEleHLTFilter*
+    process.fullPatMetSequence* 
+    process.egcorrMET*
+    process.lldjMETFiltersSequence* 
+    process.regressionApplication*
+    process.calibratedPatElectrons*
+    process.calibratedPatPhotons*
+    process.egmGsfElectronIDSequence*
+    process.egmPhotonIDSequence*
+    process.lldjNtuple
+    )
     
 #print process.dumpPython()

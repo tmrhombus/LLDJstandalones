@@ -8,7 +8,7 @@ from RecoMET.METFilters.BadChargedCandidateFilter_cfi import *
 BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
 BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 
-ggMETFiltersSequence = cms.Sequence(
+lldjMETFiltersSequence = cms.Sequence(
      BadPFMuonFilter *
      BadChargedCandidateFilter 
 )
