@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export nversion="test1"
+export nversion="moredays"
 export aversion="frere"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
