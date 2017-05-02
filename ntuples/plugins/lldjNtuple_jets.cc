@@ -61,6 +61,10 @@ vector<float>  jetP4Smear_;
 vector<float>  jetP4SmearUp_;
 vector<float>  jetP4SmearDo_;
 vector<UInt_t> jetFiredTrgs_;
+
+///###
+vector<int>  jetTestVariable_;
+
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
 vector<float>  jetGenJetPt_;
@@ -175,6 +179,10 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetCSV2BJetTags", &jetCSV2BJetTags_);
   tree->Branch("jetJetProbabilityBJetTags", &jetJetProbabilityBJetTags_);
   tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_);
+
+  ///###
+  tree->Branch("jetTestVariable",  &jetTestVariable_);
+
   if (doGenParticles_){
     tree->Branch("jetPartonID",       &jetPartonID_);
     tree->Branch("jetHadFlvr",        &jetHadFlvr_);
@@ -348,6 +356,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetHFEME_                               .clear();
     jetNConstituents_                       .clear();
   }
+
+  ///###
+  jetTestVariable_.clear();
+
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
   jetGenJetEta_.clear();
@@ -474,9 +486,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AK8jecUnc = new JetCorrectionUncertainty(AK8JetCorPar);
   
   //start jets Lvdp
+  int nrjet = 0;
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
     
-    if (iJet->pt() < 20) continue;
+    nrjet++;
+    if (iJet->pt() < 15) continue;
     jetPt_.push_back(    iJet->pt());
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
@@ -591,6 +605,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     // PUJet ID from slimmedJets
     jetPUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant"));
     jetPUFullID_.push_back(iJet->userInt("pileupJetId:fullId"));
+
+    ///###
+    jetTestVariable_.push_back(nrjet);
 
     // gen jet and parton
     if (doGenParticles_ && genParticlesHandle.isValid()) {
