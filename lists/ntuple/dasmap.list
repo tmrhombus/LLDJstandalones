@@ -115,3 +115,27 @@ samples in DAS
  ggZH_HSSdddd_MS_7_ctauS_10    /ggZH_HToSSTodddd_ZToLL_MH-125_MS-7_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
  ggZH_HSSdddd_MS_7_ctauS_1    /ggZH_HToSSTodddd_ZToLL_MH-125_MS-7_ctauS-1_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
 
+
+  # Data SingleMuon   dataset=/SingleMuon*/Run2016*Feb2017*/MINIAOD*
+ Data_SingleMu_H_3    /SingleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD
+ Data_SingleMu_H_2    /SingleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD
+ Data_SingleMu_G    /SingleMuon/Run2016G-03Feb2017-v1/MINIAOD
+ Data_SingleMu_F    /SingleMuon/Run2016F-03Feb2017-v1/MINIAOD
+ Data_SingleMu_E    /SingleMuon/Run2016E-03Feb2017-v1/MINIAOD
+ Data_SingleMu_D    /SingleMuon/Run2016D-03Feb2017-v1/MINIAOD
+ Data_SingleMu_C    /SingleMuon/Run2016C-03Feb2017-v1/MINIAOD
+ Data_SingleMu_B_2    /SingleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD
+ Data_SingleMu_B_1    /SingleMuon/Run2016B-03Feb2017_ver1-v1/MINIAOD
+
+
+  # Data SingleElectron   dataset=/SingleElectron*/Run2016*Feb2017*/MINIAOD*
+ Data_SingleEle_H_3    /SingleElectron/Run2016H-03Feb2017_ver3-v1/MINIAOD
+ Data_SingleEle_H_2    /SingleElectron/Run2016H-03Feb2017_ver2-v1/MINIAOD
+ Data_SingleEle_G    /SingleElectron/Run2016G-03Feb2017-v1/MINIAOD
+ Data_SingleEle_F    /SingleElectron/Run2016F-03Feb2017-v1/MINIAOD
+ Data_SingleEle_E    /SingleElectron/Run2016E-03Feb2017-v1/MINIAOD
+ Data_SingleEle_D    /SingleElectron/Run2016D-03Feb2017-v1/MINIAOD
+ Data_SingleEle_C    /SingleElectron/Run2016C-03Feb2017-v1/MINIAOD
+ Data_SingleEle_B_2    /SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD
+ Data_SingleEle_B_1    /SingleElectron/Run2016B-03Feb2017_ver1-v1/MINIAOD
+
