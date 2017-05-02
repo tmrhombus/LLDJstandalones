@@ -13,17 +13,18 @@ if __name__ == '__main__':
 
     # Common configuration
 
-    config.General.workArea     = WORKAREA
-    config.General.transferLogs = False
-    config.JobType.pluginName   = 'Analysis' # PrivateMC
-    config.JobType.psetName     = CMSRUNCONFIG
-    config.JobType.inputFiles   = [INPUTFILES]
+    config.General.workArea           = WORKAREA
+    config.General.transferLogs       = False
+    config.JobType.pluginName         = 'Analysis' # PrivateMC
+    config.JobType.psetName           = CMSRUNCONFIG
+    config.JobType.inputFiles         = [INPUTFILES]
     config.JobType.sendExternalFolder = True
-    config.Data.inputDBS        = 'global'    
-    config.Data.splitting       = SPLITTING # 'LumiBased' EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
-    config.Data.totalUnits      = NUNITS
-    config.Data.publication     = False
-    config.Site.storageSite     = STORESITE
+    config.JobType.maxMemoryMB        = MAXMEM
+    config.Data.inputDBS              = 'global'    
+    config.Data.splitting             = SPLITTING # 'LumiBased' EventBased, FileBased, LumiBased (1 lumi ~= 300 events)
+    config.Data.totalUnits            = NUNITS
+    config.Data.publication           = False
+    config.Site.storageSite           = STORESITE
 
     def submit(config):
         try:

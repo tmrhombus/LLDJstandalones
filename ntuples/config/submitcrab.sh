@@ -37,6 +37,16 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 
 #  MC sample names
 samples=( \
+ "GJets_HT40to100_1"  \
+ "GJets_HT40to100_2"  \
+ "GJets_HT100to200_1" \
+ "GJets_HT100to200_2" \
+ "GJets_HT200to400_1" \
+ "GJets_HT200to400_2" \
+ "GJets_HT400to600_1" \
+ "GJets_HT400to600_2" \
+ "GJets_HT600toInf_1" \
+ "GJets_HT600toInf_2" \
  "DY50_1"               \
  "DY50_2"               \
  "DY5to50_HT70to100"    \
@@ -67,6 +77,8 @@ samples=( \
  "ggZH_Hbb_1"           \
  "ggZH_Hbb_2"           \
  "ggZH_Hbb_3"           \
+ "ggZH_HSSbbbb_MS_40_ctauS_100"   \
+ "ggZH_HSSdddd_MS_40_ctauS_100"   \
 )
 
  #  "ggZH_HSSbbbb_MS_15_ctauS_0"     \                                                           
@@ -167,6 +179,8 @@ do
  DATASET="'${datasetname}'"
  STORESITE="'T2_US_Wisconsin'"
  OUTLFNBASE="'/store/user/tmperry/${nversion}'"
+ MAXMEM="5000"
+
  #STORESITE="'T2_US_FNAL'"
  #OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
 
@@ -180,6 +194,7 @@ do
  printf "DATASET       ${DATASET}      \n" 
  printf "STORESITE     ${STORESITE}    \n" 
  printf "OUTLFNBASE    ${OUTLFNBASE}   \n" 
+ printf "MAXMEM        ${MAXMEM}       \n" 
 
  # copy and then fill template for crab submits
  cp ${subdir}/crab_template.py             "${submitfile}"
@@ -193,6 +208,7 @@ do
  sed -i "s@DATASET@${DATASET}@g"           "${submitfile}" 
  sed -i "s@STORESITE@${STORESITE}@g"       "${submitfile}" 
  sed -i "s@OUTLFNBASE@${OUTLFNBASE}@g"     "${submitfile}" 
+ sed -i "s@MAXMEM@${MAXMEM}@g"             "${submitfile}" 
 
  # submit the jobs
  if [ ${dosubmit} = true ]
