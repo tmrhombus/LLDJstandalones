@@ -27,30 +27,31 @@ int main(int argc, char **argv){
  // o - outpath
  // n - nfiles
  // a - start At file 
+ // d - dolocal
  char *sample = NULL;
  char *slumi = (char*)"12900";
  char *sxname = (char*)"";
  char *sevts = (char*)"-1";
- char *jettype = (char*)"ALLCALOJETS";
  char *inpath = (char*)"../lists";
  char *outpath = (char*)"../roots";
  char *nfiles = (char*)"-1";
  char *atfile = (char*)"0";
+ bool dolocal = false;
+ bool bisMC = false;
+ 
  int index;
  int s;
- int l;
- int x;
- int j;
- int i;
- int o;
- int n;
- int a;
 
  opterr = 0;
 
- while ((s = getopt (argc, argv, "s:l:x:e:j:i:o:a:n:")) != -1)
+ while ((s = getopt (argc, argv, "s:l:x:e:i:o:a:n:dm")) != -1)
   switch (s)
    {
+   case 'm':
+    bisMC = true;
+   case 'd':
+    dolocal = true;
+    break;
    case 'a':
     atfile = optarg;
     break;
@@ -62,9 +63,6 @@ int main(int argc, char **argv){
     break;
    case 'i':
     inpath = optarg;
-    break;
-   case 'j':
-    jettype = optarg;
     break;
    case 'e':
     sevts = optarg;
@@ -104,30 +102,29 @@ int main(int argc, char **argv){
  Double_t lumi    = TSlumi.Atof();
  TString TSevts   = TString(sevts);
  Int_t TIevts     = TSevts.Atoi();
- TString Tjettype = TString(jettype);
  TString Tinpath   = TString(inpath);  
  TString Toutpath  = TString(outpath); 
  TString TSatfile  = TString(atfile);  
  TString TSnfiles  = TString(nfiles);
  Int_t TIatfile = TSatfile.Atoi();
  Int_t TInfiles = TSnfiles.Atoi();
-
-  printf("Tsample:  %s\n",Tsample.Data());
-  printf("Txname:   %s\n",Txname.Data());
-  printf("TSlumi:   %s\n",TSlumi.Data());
-  printf("TSevts:   %s\n",TSevts.Data());
-  printf("Tjettype: %s\n",Tjettype.Data());
-  printf("TIatfile: %i\n",TIatfile);
-  printf("TInfiles: %i\n",TInfiles);
  // MC vs Data
- Bool_t isMC=kTRUE;
- Bool_t makelog=kTRUE;
+ Bool_t isMC=bisMC;
 
- TString outfilename=Toutpath +"/"+Tsample+"_"+Tjettype+Txname;
+ printf("Tsample:  %s\n",Tsample.Data());
+ printf("Txname:   %s\n",Txname.Data());
+ printf("TSlumi:   %s\n",TSlumi.Data());
+ printf("TSevts:   %s\n",TSevts.Data());
+ printf("TIatfile: %i\n",TIatfile);
+ printf("TInfiles: %i\n",TInfiles);
+
+ Bool_t makelog=kFALSE;
+
+ TString outfilename=Toutpath +"/"+Tsample+Txname;
  TString inputListName=Tinpath+"/"+Tsample+".list";
  TString inputInfoName=Tinpath+"/"+Tsample+".info";
 
- TChain *theChain = new TChain("treeR");
+ TChain *theChain = new TChain("lldjNtuple/EventTree");
  theChain->Reset();
 
  printf("Input List Name:  %s\n", inputListName.Data()) ; 
@@ -162,18 +159,21 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  if( Tinputline.Contains("/store/group") ){
-   //if( dolocal ){
-   // theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-   //}
-   //else{
-    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-   //}
+  //if( Tinputline.Contains("/home/rhombus") ){
+  //  theChain->Add( Tinputline );
+
+  if( Tinputline.Contains("/store/user") ){
+  // if( dolocal ){
+  //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+  // }
+  // else{
+    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+  // }
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
   inputline_dump.push_back(inputline);
- } //while !inputfile.eof()
+ } // while( std::getline(inputfile, inputline) )
  inputfile.close();
 
  // sample-dependent input variables 
@@ -214,12 +214,12 @@ int main(int argc, char **argv){
  printf("  lumi: %f\n\n",lumi);
 
  analyzer_signal analyzer;
- analyzer.Init(theChain, makelog, Tjettype);
+ analyzer.Init(theChain, isMC, makelog);
  analyzer.initSigHistograms();
  analyzer.initJetHistograms();
  analyzer.init2DHistograms();
 
- analyzer.Loop(outfilename, isMC, lumi, nrevents, crosssection, TIevts);
+ analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
 
  // end stopwatch
  sw.Stop();

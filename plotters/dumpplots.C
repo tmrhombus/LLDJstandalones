@@ -1,13 +1,14 @@
 
 void dumpplots(){
 
- //TString histotype="TH1";
- TString histotype="TH2";
+ TString histotype="TH1";
+ //TString histotype="TH2";
 
  // path to root files
  inpath  = TString("../roots");
  outpath = TString("../plots");
- TString infilename = "DY50_ALLCALOJETS"; // no .root
+ //TString infilename = "DY5to50"; // no .root
+ TString infilename = "DY50"; // no .root
 
  // y axis plots as log
  Bool_t dolog = kFALSE;
@@ -60,6 +61,7 @@ void dumpplots(){
    lumi->DrawTextNDC(0.9,0.91,"20 /fb (13 TeV)");
    h->GetXaxis()->SetTitle(h->GetTitle());
    h->GetYaxis()->SetTitle("");
+   h->SetTitle("");
    //h->GetYaxis()->SetTitle("Events / bin");
 
    gPad->Update();

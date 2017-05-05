@@ -3,8 +3,11 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
+// #include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
+#include <TMath.h>
+#include <TLorentzVector.h>
 
 class analyzer_signal : public analyzer_base {
 
@@ -12,7 +15,7 @@ public :
 
                analyzer_signal();
  virtual       ~analyzer_signal();
- virtual void  Loop(TString outfilename, Bool_t isMC,
+ virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts);
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
@@ -21,6 +24,30 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
+                                             TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
+
+ double               dR(double eta1, double phi1, double eta2, double phi2);
+ double               DeltaPhi(double phi1, double phi2);
+
+ std::vector<int>     photon_passLooseID(double phoPtCut=15., double phoEtaCut=1.4442, TString sysbinname="");
+  Double_t            EAchargedworst(Double_t eta);
+  Double_t            EAcharged(Double_t eta);
+  Double_t            EAneutral(Double_t eta);
+  Double_t            EAphoton(Double_t eta);
+
+ std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
+ std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString sysbinname="");
+
+ Float_t          getPhotonPt(int idnr, TString sysbinname);
+ Float_t          getElectronPt(int i, TString sysbinname);
+ Float_t          getMuonPt(int i, TString sysbinname);
+
+ virtual void debug_printobjects();
+
  // 2D Histograms 
  Bool_t        init2DHistograms();
  Bool_t        fill2DHistograms(Double_t weight, int selbin);
@@ -33,28 +60,51 @@ public :
  Bool_t        initSigHistograms();
  Bool_t        fillSigHistograms(Double_t weight, int selbin);
  Bool_t        writeSigHistograms(int selbin);
- // Selections
+
+ // vectors of ints
+ // each int is an entry in vector
+ // associated with object passing
+ // some selection
+ std::vector<int> photon_list;
+ std::vector<int> electron_list;
+ std::vector<int> muon_list ;
+ std::vector<int> jet_list ;
+
+ // Selection functions
  Bool_t        askPassSig();
  Bool_t        askPassZH();
  Bool_t        askPassDY();
  Bool_t        askPassOffZ();
  Bool_t        askPassNoPair();
 
- // selection variables
+ // selection booleans
+ Bool_t passOSSF      ;
+ Bool_t passZWindow   ; 
+ Bool_t passGoodVtx   ;
+ Bool_t passPTOSSFg50 ; 
+ Bool_t passOneJet    ;
+
+ // full cut booleans
  Bool_t doesPassSig;
  Bool_t doesPassZH;
  Bool_t doesPassDY;
  Bool_t doesPassOffZ;
  Bool_t doesPassNoPair;
+ // personal variables
+ Double_t themet;
+ Double_t themephi;
+ Double_t htall;
+ Double_t htjets;
 
- int    safeNGOODVERTICES      = 0;
- int    safeNDoubleElTriggers  = 0;
- int    safeNDoubleMuTriggers  = 0;
- int    safeNOSSF              = 0;
- double safeMOSSF              = 0.; 
- double safePTOSSF             = 0.; 
- int    safeJetNJets           = 0;
+ // for dilepton
+ TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
+ TLorentzVector fourVec_l1, fourVec_l2;
+ TLorentzVector fourVec_met;
+ TLorentzVector _leptomet;
+ Double_t dilep_mass;
+ Double_t dilep_pt;
 
+ // selection counters (how many events pass)
  Int_t ntot;
  Int_t npassSig;
  Int_t npassZH;
@@ -65,7 +115,6 @@ public :
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
-
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
  // jetmultnames = Leading, Subleading, Third, Fourth
 
@@ -73,138 +122,65 @@ public :
  TH1F histoTH1F;
  TH2F histoTH2F;
 
- // 2D
- TH2F h_nvertnjets[6];
+ // // 2D
+ // TH2F h_nvertnjets[6];
 
- // General
- TH1F h_NELECTRONS[6];
- TH1F h_NELECTRONS30[6];
- TH1F h_NELECTRONSFROMBOSON[6];
- TH1F h_NGOODELECTRONS[6];
- TH1F h_NGOODLEPTONS[6];
- TH1F h_NGOODMUONS[6];
- TH1F h_NGOODVERTICES[6];
- TH1F h_NKSHORTS[6];
- TH1F h_NMUONS[6];
- TH1F h_NMUONS30[6];
- TH1F h_NMUONSFROMBOSON[6];
- TH1F h_NOSSF[6];
+ // General / leading
+ TH1F h_nVtx[6];
+ TH1F h_nPU[6];
+ TH1F h_phoEt[6];
+ TH1F h_phoEta[6];
+ TH1F h_phoPhi[6];
+ TH1F h_elePt[6];
+ TH1F h_eleEta[6];
+ TH1F h_elePhi[6];
+ TH1F h_muPt[6];
+ TH1F h_muEta[6];
+ TH1F h_muPhi[6];
 
- TH1F h_N_bJetsCSVL[6];
- TH1F h_N_bJetsCSVM[6];
- TH1F h_N_bosons[6];
- TH1F h_PU_NumInteractions[6];
+ TH1F h_htall[6];
+ TH1F h_htjets[6];
 
- TH1F h_fakeIncarnation[6];
- TH1F h_ELECTRON_PT[6];
- TH1F h_FLATWEIGHT[6];
- TH1F h_HLTHT[6];
- TH1F h_HSPH[6];
- TH1F h_HT[6];
- TH1F h_HTHLTID[6];
- TH1F h_HT_All[6];
- TH1F h_LEPTON_DANGLE[6];
- TH1F h_LEPTON_DPHI[6];
- TH1F h_LRM[6];
+ // Jet
+ TH1F h_jetPt[6][4]; 
+ TH1F h_jetEn[6][4]; 
+ TH1F h_jetEta[6][4]; 
+ TH1F h_jetPhi[6][4]; 
+ TH1F h_jetRawPt[6][4]; 
+ TH1F h_jetRawEn[6][4]; 
+ TH1F h_jetMt[6][4]; 
+ TH1F h_jetArea[6][4]; 
+ TH1F h_jetLeadTrackPt[6][4]; 
+ TH1F h_jetLeadTrackEta[6][4]; 
+ TH1F h_jetLeadTrackPhi[6][4]; 
+ TH1F h_jetLepTrackPID[6][4]; 
+ TH1F h_jetLepTrackPt[6][4]; 
+ TH1F h_jetLepTrackEta[6][4]; 
+ TH1F h_jetLepTrackPhi[6][4]; 
+ TH1F h_jetCSV2BJetTags[6][4]; 
+ TH1F h_jetJetProbabilityBJetTags[6][4]; 
+ TH1F h_jetpfCombinedMVAV2BJetTags[6][4]; 
+ TH1F h_jetPartonID[6][4]; 
+ TH1F h_jetHadFlvr[6][4]; 
+ TH1F h_jetGenJetEn[6][4]; 
+ TH1F h_jetGenJetPt[6][4]; 
+ TH1F h_jetGenJetEta[6][4]; 
+ TH1F h_jetGenJetPhi[6][4]; 
+ TH1F h_jetGenPartonID[6][4]; 
+ TH1F h_jetGenEn[6][4]; 
+ TH1F h_jetGenPt[6][4]; 
+ TH1F h_jetGenEta[6][4]; 
+ TH1F h_jetGenPhi[6][4]; 
+ TH1F h_jetGenPartonMomID[6][4]; 
 
- TH1F h_MET[6];
- TH1F h_MOSSF[6];
- TH1F h_MUON_PT[6];
- TH1F h_OSSFCLOSEMLL[6];
- TH1F h_OSSFMAXMLL[6];
- TH1F h_OSSFMINMLL[6];
- TH1F h_PTOSSF[6];
- TH1F h_SCALAR_PT[6];
+ TH1F h_AK8JetPt[6][4]; 
+ TH1F h_AK8JetEn[6][4]; 
+ TH1F h_AK8JetRawPt[6][4]; 
+ TH1F h_AK8JetRawEn[6][4]; 
+ TH1F h_AK8JetEta[6][4]; 
+ TH1F h_AK8JetPhi[6][4]; 
+ TH1F h_AK8JetMass[6][4]; 
 
- TH1F h_SIGNALQUARKS_GENDXY[6];
- TH1F h_SIGNALQUARKS_P[6];
- TH1F h_SIGNALQUARKS_PT[6];
- TH1F h_SSPH[6];
- TH1F h_TrueNumInteractions[6];
- TH1F h_rhoAll[6];
- TH1F h_rhoNeutral[6];
- TH1F h_stupakR[6];
- TH1F h_stupakR2[6];
-
- // JET
- TH1F h_JetMISSINGINNER[6][4];
- TH1F h_JetMISSINGOUTER[6][4];
-
- TH1F h_JetHSPH[6][4];
- TH1F h_JetNJets[6][4];
-
- TH1F h_JetNCLEANMATCHEDTRACKS[6][4];
- TH1F h_JetNMATCHEDTRACKS[6][4];
- TH1F h_JetNTRACKSIPLT0P05[6][4];
- TH1F h_JetNTRACKSIPSIGGT10[6][4];
- TH1F h_JetNTRACKSIPSIGLT5[6][4];
- TH1F h_JetALPHAMAX2[6][4];
- TH1F h_JetALPHAMAXPRIME2[6][4];
- TH1F h_JetALPHAMAXPRIME[6][4];
- TH1F h_JetALPHAMAX[6][4];
- TH1F h_JetASSOCAPLANARITY[6][4];
- TH1F h_JetASSOCIATEDTRACKPT[6][4];
- TH1F h_JetASSOCSPHERICITY[6][4];
- TH1F h_JetASSOCTHRUSTMAJOR[6][4];
- TH1F h_JetASSOCTHRUSTMINOR[6][4];
- TH1F h_JetAVFASSOCAPLANARITY[6][4];
- TH1F h_JetAVFASSOCSPHERICITY[6][4];
- TH1F h_JetAVFASSOCTHRUSTMAJOR[6][4];
- TH1F h_JetAVFASSOCTHRUSTMINOR[6][4];
- TH1F h_JetAVFBEAMSPOTDELTAPHI[6][4];
- TH1F h_JetAVFBEAMSPOTRECOILPT[6][4];
- TH1F h_JetAVFDISTTOPV[6][4];
- TH1F h_JetAVFVERTEXCHI2NDOF[6][4];
- TH1F h_JetAVFVERTEXDEGREESOFFREEDOM[6][4];
- TH1F h_JetAVFVERTEXDISTANCETOBEAM[6][4];
- TH1F h_JetAVFVERTEXTOTALCHISQUARED[6][4];
- TH1F h_JetAVFVERTEXTRACKENERGY[6][4];
- TH1F h_JetAVFVERTEXTRACKMASS[6][4];
- TH1F h_JetAVFVERTEXTRANSVERSESIG[6][4];
- TH1F h_JetAVGMISSINGINNER[6][4];
- TH1F h_JetAVGMISSINGOUTER[6][4];
- TH1F h_JetBASICCALOJETS1ANGLE_DANGLE[6][4];
- TH1F h_JetBASICCALOJETS1ANGLE_DPHI[6][4];
- TH1F h_JetBASICCALOJETS1DELTAR[6][4];
- TH1F h_JetBASICCALOJETS1PT20DELTAR[6][4];
- TH1F h_JetBETA2[6][4];
- TH1F h_JetBETA[6][4];
- TH1F h_JetETA[6][4];
- TH1F h_JetHITSINFRONTOFVERTPERTRACK[6][4];
- TH1F h_JetIVFSCORE[6][4];
- TH1F h_JetJETAREA[6][4];
- TH1F h_JetLEPANGLE_DANGLE[6][4];
- TH1F h_JetLEPANGLE_DPHI[6][4];
- TH1F h_JetLEPDELTAR[6][4];
-
- TH1F h_JetLINEARRADIALMOMENT[6][4];
- TH1F h_JetLRM[6][4];
- TH1F h_JetMASSDISPLACED[6][4];
- TH1F h_JetMEDIANIPLOG10SIG[6][4];
- TH1F h_JetMEDIANIPLOGSIG[6][4];
- TH1F h_JetMEDIANLOG10TRACKANGLE[6][4];
-
- TH1F h_JetMETANGLE_DANGLE[6][4];
- TH1F h_JetMETANGLE_DPHI[6][4];
- TH1F h_JetMETDELTAR[6][4];
- TH1F h_JetMISSHITSAFTERVERTPERTRACK[6][4];
- TH1F h_JetM[6][4];
-
- TH1F h_JetPHI[6][4];
- TH1F h_JetPT[6][4];
-
- TH1F h_JetSELFDELTAR[6][4];
- TH1F h_JetSSPH[6][4];
- TH1F h_JetSTUPAKPT[6][4];
- TH1F h_JetSTUPAKR[6][4];
- TH1F h_JetSUMIPLOGSIG[6][4];
- TH1F h_JetSUMIPSIG[6][4];
- TH1F h_JetSUMIP[6][4];
- TH1F h_JetTOTALTRACKANGLEPT[6][4];
- TH1F h_JetTOTALTRACKANGLE[6][4];
- TH1F h_JetTOTALTRACKPT[6][4];
- TH1F h_JetTRACKENERGY[6][4];
- TH1F h_JetTRACKMASS[6][4];
 
 };
 
