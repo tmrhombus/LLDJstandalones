@@ -235,7 +235,7 @@ process.singleMuHLTFilter = cms.EDFilter("HLTHighLevel",
   "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
 
                                          andOr = cms.bool(True), # True = OR, False = AND
-                                         throw = cms.bool(True)  # Tolerate if triggers not available
+                                         throw = cms.bool(False)  # Tolerate if triggers not available
                                          )
 
 process.p = cms.Path(
