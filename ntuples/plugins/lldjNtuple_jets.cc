@@ -65,6 +65,10 @@ vector<UInt_t> jetFiredTrgs_;
 ///###
 vector<int>  jetTestVariable_;
 
+vector<vector<float>> jetTrackPt_;
+vector<vector<float>> jetTrackEta_;
+vector<vector<float>> jetTrackPhi_;
+
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
 vector<float>  jetGenJetPt_;
@@ -182,6 +186,10 @@ void lldjNtuple::branchesJets(TTree* tree) {
 
   ///###
   tree->Branch("jetTestVariable",  &jetTestVariable_);
+
+  tree->Branch("jetTrackPt"  ,  &jetTrackPt_);
+  tree->Branch("jetTrackEta" ,  &jetTrackEta_);
+  tree->Branch("jetTrackPhi" ,  &jetTrackPhi_);
 
   if (doGenParticles_){
     tree->Branch("jetPartonID",       &jetPartonID_);
@@ -359,6 +367,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   ///###
   jetTestVariable_.clear();
+  jetTrackPt_.clear();
+  jetTrackEta_.clear();
+  jetTrackPhi_.clear();
 
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
@@ -452,6 +463,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   nJet_ = 0;
 
+  //edm::Handle<edm::View<pat::Jet> > jetHandle;
   edm::Handle<edm::View<pat::Jet> > jetHandle;
   e.getByToken(jetsAK4Label_, jetHandle);
 
@@ -608,6 +620,51 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
     ///###
     jetTestVariable_.push_back(nrjet);
+  jetTrackPt_.clear();
+  jetTrackEta_.clear();
+  jetTrackPhi_.clear();
+
+    printf("Jet with pt %6.1f, eta %+4.2f\n",
+            iJet->pt(),iJet->eta());
+    double in = 0, out = 0;
+    printf(" Jet nr %d \n", nrjet);
+    for (unsigned int id = 0, nd = iJet->numberOfDaughters(); id < nd; ++id) {
+        const pat::PackedCandidate &dau = dynamic_cast<const pat::PackedCandidate &>(*iJet->daughter(id));
+        if (dau.charge() == 0) continue;
+        (fabs(dau.dz())<0.1 ? in : out) += dau.pt();
+        //double trackhits = dau.numberOfHits();
+        printf(" track: pt %2.1f  eta %2.1f  hiPurity %d, nrOfHits %d, nrOfPixelHits %d, lostInnerHits %d \n",
+         dau.pt(), dau.eta(), dau.trackHighPurity(), dau.numberOfHits(), dau.numberOfPixelHits(), dau.lostInnerHits() );
+    }
+
+//  std::vector daus(iJet->daughterPtrVector());
+//  std::sort(daus.begin(), daus.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2) { return p1->pt() > p2->pt(); }); // the joys of C++11
+//  for (unsigned int i2 = 0, n = daus.size(); i2 < n && i2 <= 3; ++i2) {
+//      const pat::PackedCandidate &cand = dynamic_cast<const pat::PackedCandidate &>(*daus[i2]);
+//      printf("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d\n", i2,cand.pt(),cand.dz(PV.position()),cand.pdgId());
+//  }
+//
+//  std::vector daus(j.daughterPtrVector());
+//  std::sort(daus.begin(), daus.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2) { return p1->pt() > p2->pt(); }); // the joys of C++11
+//  for (unsigned int i2 = 0, n = daus.size(); i2 < n && i2 <= 3; ++i2) {
+//      const pat::PackedCandidate &cand = dynamic_cast<const pat::PackedCandidate &>(*daus[i2]);
+//      printf("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d\n", i2,cand.pt(),cand.dz(PV.position()),cand.pdgId());
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////
 
     // gen jet and parton
     if (doGenParticles_ && genParticlesHandle.isValid()) {
