@@ -190,10 +190,66 @@ for idmod in my_phoid_modules:
 process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
                                           eventSetupPathsKey = cms.string(''),
                                           TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
-                                          HLTPaths = cms.vstring('HLT_Ele27_WPLoose_Gsf_v*', 'HLT_Ele27_WPTight_Gsf_v*', 'HLT_Ele27_eta2p1_WPLoose_Gsf_v*', 'HLT_Ele27_eta2p1_WPTight_Gsf_v*', 'HLT_Ele32_eta2p1_WPTight_Gsf_v*', 'HLT_Ele35_WPLoose_Gsf_v*', 'HLT_Ele45_WPLoose_Gsf_v*'),
+                                          HLTPaths = cms.vstring(
+                                          #'HLT_Ele27_WPLoose_Gsf_v*',
+                                          #'HLT_Ele27_WPTight_Gsf_v*', 
+                                          #'HLT_Ele27_eta2p1_WPLoose_Gsf_v*', 
+                                          #'HLT_Ele27_eta2p1_WPTight_Gsf_v*',
+                                          #'HLT_Ele32_eta2p1_WPTight_Gsf_v*', 
+                                          #'HLT_Ele35_WPLoose_Gsf_v*', 
+                                          #'HLT_Ele45_WPLoose_Gsf_v*'
+
+                                          "HLT_PFHT350_PFMET100_v1",
+                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v1",
+                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v2",
+                                        
+                                          "HLT_Ele23_WPLoose_Gsf_v1", 
+                                          "HLT_Ele23_WPLoose_Gsf_v2", 
+                                          "HLT_Ele23_WPLoose_Gsf_v3", 
+                                          "HLT_Ele23_WPLoose_Gsf_v4", 
+                                          "HLT_Ele23_WPLoose_Gsf_v5", 
+                                          "HLT_Ele23_WPLoose_Gsf_v6", 
+                                          "HLT_Ele23_WPLoose_Gsf_v7", 
+                                          "HLT_Ele23_WPLoose_Gsf_v8", 
+                                          "HLT_Ele23_WPLoose_Gsf_v9", 
+                                          "HLT_Ele23_WPLoose_Gsf_v10", 
+                                          "HLT_Ele23_WPLoose_Gsf_v11", 
+                                          "HLT_Ele23_WPLoose_Gsf_v12", 
+                                          "HLT_Ele27_WPTight_Gsf_v1", 
+                                          "HLT_Ele27_WPTight_Gsf_v2", 
+                                          "HLT_Ele27_WPTight_Gsf_v3", 
+                                          "HLT_Ele27_WPTight_Gsf_v4", 
+                                          "HLT_Ele27_WPTight_Gsf_v5", 
+                                          "HLT_Ele27_WPTight_Gsf_v6", 
+                                          "HLT_Ele27_WPTight_Gsf_v7", 
+                                          "HLT_Ele27_WPTight_Gsf_v8", 
+                                          "HLT_Ele27_WPTight_Gsf_v9", 
+                                        
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", 
+                                          ),
                                           andOr = cms.bool(True), # True = OR, False = AND
                                           throw = cms.bool(True) # Tolerate if triggers not available
                                           )
+
 
 process.p = cms.Path(
     ###process.reapplyJEC*
