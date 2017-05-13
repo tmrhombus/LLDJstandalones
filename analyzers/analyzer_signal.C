@@ -41,7 +41,6 @@ void analyzer_signal::Loop(TString outfilename,
   ntot++;
 
   // get lists of "good" electrons, photons, jets
-  printf( " \n ");
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
   electron_list = electron_passLooseID( 15, 3, "");
   muon_list = muon_passLooseID( 15, 3, ""); 
@@ -109,7 +108,7 @@ void analyzer_signal::Loop(TString outfilename,
   passGoodVtx = nVtx>0;
   passOneJet = jet_list.size()>0; 
 
-  debug_printobjects(); // helpful printout (turn off when submitting!!!)
+  // debug_printobjects(); // helpful printout (turn off when submitting!!!)
 
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
@@ -242,6 +241,9 @@ Bool_t analyzer_signal::initJetHistograms()
 
    // Jet
    TString hname_jetPt                       = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPt                     " ;   
+
+   TString hname_jetTestVariable             = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
+
    TString hname_jetEn                       = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEn                     " ;   
    TString hname_jetEta                      = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEta                    " ;    
    TString hname_jetPhi                      = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPhi                    " ;    
@@ -281,6 +283,9 @@ Bool_t analyzer_signal::initJetHistograms()
 
    // initalize histograms
    h_jetPt                       [i][j] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
+
+   h_jetTestVariable             [i][j] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
+
    h_jetEn                       [i][j] = initSingleHistogramTH1F(  hname_jetEn                      , "jetEn                     " , 50, 0, 500 );   
    h_jetEta                      [i][j] = initSingleHistogramTH1F(  hname_jetEta                     , "jetEta                    " , 10, -5, 5 );    
    h_jetPhi                      [i][j] = initSingleHistogramTH1F(  hname_jetPhi                     , "jetPhi                    " , 10, -5, 5 );    
@@ -332,6 +337,9 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin)
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j].Fill( jetPt                      ->at(j), weight ); } 
+
+  if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j].Fill( jetTestVariable            ->at(j), weight ); } 
+
   if(jetEn                      ->size()>j){h_jetEn                       [selbin][j].Fill( jetEn                      ->at(j), weight ); } 
   if(jetEta                     ->size()>j){h_jetEta                      [selbin][j].Fill( jetEta                     ->at(j), weight ); } 
   if(jetPhi                     ->size()>j){h_jetPhi                      [selbin][j].Fill( jetPhi                     ->at(j), weight ); } 
@@ -383,6 +391,9 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin)
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
    h_jetPt                       [selbin][j].Write(); 
+
+   h_jetTestVariable             [selbin][j].Write(); 
+
    h_jetEn                       [selbin][j].Write(); 
    h_jetEta                      [selbin][j].Write(); 
    h_jetPhi                      [selbin][j].Write(); 
@@ -1149,7 +1160,7 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
 
 void analyzer_signal::debug_printobjects(){
 
-  printf("Event %lld\n", event);
+  printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
   if(dilep_mass>0.){printf(" Dilep Found\n");}
   for(int i=0; i<photon_list.size(); ++i){

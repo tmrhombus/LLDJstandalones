@@ -240,6 +240,9 @@ public :
    std::vector<float>   *muBestTrkPtError;
    std::vector<float>   *muBestTrkPt;
    Int_t           nJet;
+
+   std::vector<int>     *jetTestVariable;
+
    std::vector<float>   *jetPt;
    std::vector<float>   *jetEn;
    std::vector<float>   *jetEta;
@@ -553,6 +556,9 @@ public :
    TBranch        *b_muBestTrkPtError;   //!
    TBranch        *b_muBestTrkPt;   //!
    TBranch        *b_nJet;   //!
+
+   TBranch        *b_jetTestVariable; //!
+
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEn;   //!
    TBranch        *b_jetEta;   //!
