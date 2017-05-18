@@ -162,10 +162,10 @@ int main(int argc, char **argv){
   //if( Tinputline.Contains("/home/rhombus") ){
   //  theChain->Add( Tinputline );
 
-  //if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
-  // theChain->Add( Tinputline );
-  // printf("Inputfile: %s\n",Tinputline.Data());
-  //}
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
   if( Tinputline.Contains("/store/user") ){
     theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
