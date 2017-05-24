@@ -47,7 +47,7 @@
 
   #WJets
  WJets_1    /WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
- WJets_1    /WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM
+ WJets_2    /WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM
  # more stats HT or PT binned
 
   #WW  
@@ -143,3 +143,34 @@
  Data_SingleEle_B_2    /SingleElectron/Run2016B-03Feb2017_ver2-v2/MINIAOD
  Data_SingleEle_B_1    /SingleElectron/Run2016B-03Feb2017_ver1-v1/MINIAOD
 
+
+ Data_DoubleMuLM_H__3    /DoubleMuonLowMass/Run2016H-03Feb2017_ver3-v1/MINIAOD
+ Data_DoubleMuLM_H__2    /DoubleMuonLowMass/Run2016H-03Feb2017_ver2-v1/MINIAOD
+ Data_DoubleMuLM_G    /DoubleMuonLowMass/Run2016G-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_F    /DoubleMuonLowMass/Run2016F-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_E    /DoubleMuonLowMass/Run2016E-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_D    /DoubleMuonLowMass/Run2016D-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_C    /DoubleMuonLowMass/Run2016C-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_B__2    /DoubleMuonLowMass/Run2016B-03Feb2017_ver2-v2/MINIAOD
+ Data_DoubleMuLM_B__1    /DoubleMuonLowMass/Run2016B-03Feb2017_ver1-v1/MINIAOD
+
+ Data_DoubleMu_H__3    /DoubleMuon/Run2016H-03Feb2017_ver3-v1/MINIAOD
+ Data_DoubleMu_H__2    /DoubleMuon/Run2016H-03Feb2017_ver2-v1/MINIAOD
+ Data_DoubleMu_G    /DoubleMuon/Run2016G-03Feb2017-v1/MINIAOD
+ Data_DoubleMu_F    /DoubleMuon/Run2016F-03Feb2017-v1/MINIAOD
+ Data_DoubleMu_E    /DoubleMuon/Run2016E-03Feb2017-v1/MINIAOD
+ Data_DoubleMu_D    /DoubleMuon/Run2016D-03Feb2017-v1/MINIAOD
+ Data_DoubleMu_C__1    /DoubleMuon/Run2016C-03Feb2017-v1/MINIAOD
+ Data_DoubleMu_C__2    /DoubleMuon/Run2016C-02Feb2017-v2/MINIAOD
+ Data_DoubleMu_B__2    /DoubleMuon/Run2016B-03Feb2017_ver2-v2/MINIAOD
+ Data_DoubleMu_B__1    /DoubleMuon/Run2016B-03Feb2017_ver1-v1/MINIAOD
+
+ Data_DoubleMuLM_H__3    /DoubleEG/Run2016H-03Feb2017_ver3-v1/MINIAOD
+ Data_DoubleMuLM_H__2    /DoubleEG/Run2016H-03Feb2017_ver2-v1/MINIAOD
+ Data_DoubleMuLM_G    /DoubleEG/Run2016G-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_F    /DoubleEG/Run2016F-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_E    /DoubleEG/Run2016E-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_D    /DoubleEG/Run2016D-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_C    /DoubleEG/Run2016C-03Feb2017-v1/MINIAOD
+ Data_DoubleMuLM_B__2    /DoubleEG/Run2016B-03Feb2017_ver2-v2/MINIAOD
+ Data_DoubleMuLM_B__1    /DoubleEG/Run2016B-03Feb2017_ver1-v1/MINIAOD

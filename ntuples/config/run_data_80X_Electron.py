@@ -15,7 +15,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7'
 
 #process.Tracer = cms.Service("Tracer")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 #jec from sqlite
@@ -38,9 +38,10 @@ process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-        '/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
+        #'/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
         #'/store/data/Run2016H/DoubleMuon/MINIAOD/PromptReco-v3/000/284/036/00000/04DC0281-C89F-E611-81C6-02163E0141E6.root'
         #'/store/data/Run2016B/SingleElectron/MINIAOD/23Sep2016-v2/80000/5A4402F5-638C-E611-A471-0025905A60AA.root'
+        'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/Data_SingleEle_2016H_02973E99-69EC-E611-9913-5065F381A2F1.root'
         )
                             )
 
@@ -187,20 +188,76 @@ process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
 for idmod in my_phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
     
-process.singleMuHLTFilter = cms.EDFilter("HLTHighLevel",
-                                         eventSetupPathsKey = cms.string(''),
-                                         TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
-                                         HLTPaths = cms.vstring('HLT_IsoMu24_v*', 'HLT_IsoMu27_v*', 'HLT_IsoTkMu24_v*', 'HLT_IsoTkMu27_v*', 'HLT_Mu45_eta2p1_v*', 'HLT_Mu50_v*', 'HLT_Mu55_v*'),
-                                         andOr = cms.bool(True), # True = OR, False = AND
-                                         throw = cms.bool(True)  # Tolerate if triggers not available
-                                         )
+process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
+                                          eventSetupPathsKey = cms.string(''),
+                                          TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
+                                          HLTPaths = cms.vstring(
+                                          #'HLT_Ele27_WPLoose_Gsf_v*',
+                                          #'HLT_Ele27_WPTight_Gsf_v*', 
+                                          #'HLT_Ele27_eta2p1_WPLoose_Gsf_v*', 
+                                          #'HLT_Ele27_eta2p1_WPTight_Gsf_v*',
+                                          #'HLT_Ele32_eta2p1_WPTight_Gsf_v*', 
+                                          #'HLT_Ele35_WPLoose_Gsf_v*', 
+                                          #'HLT_Ele45_WPLoose_Gsf_v*'
+
+                                          "HLT_PFHT350_PFMET100_v1",
+                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v1",
+                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v2",
+                                        
+                                          "HLT_Ele23_WPLoose_Gsf_v1", 
+                                          "HLT_Ele23_WPLoose_Gsf_v2", 
+                                          "HLT_Ele23_WPLoose_Gsf_v3", 
+                                          "HLT_Ele23_WPLoose_Gsf_v4", 
+                                          "HLT_Ele23_WPLoose_Gsf_v5", 
+                                          "HLT_Ele23_WPLoose_Gsf_v6", 
+                                          "HLT_Ele23_WPLoose_Gsf_v7", 
+                                          "HLT_Ele23_WPLoose_Gsf_v8", 
+                                          "HLT_Ele23_WPLoose_Gsf_v9", 
+                                          "HLT_Ele23_WPLoose_Gsf_v10", 
+                                          "HLT_Ele23_WPLoose_Gsf_v11", 
+                                          "HLT_Ele23_WPLoose_Gsf_v12", 
+                                          "HLT_Ele27_WPTight_Gsf_v1", 
+                                          "HLT_Ele27_WPTight_Gsf_v2", 
+                                          "HLT_Ele27_WPTight_Gsf_v3", 
+                                          "HLT_Ele27_WPTight_Gsf_v4", 
+                                          "HLT_Ele27_WPTight_Gsf_v5", 
+                                          "HLT_Ele27_WPTight_Gsf_v6", 
+                                          "HLT_Ele27_WPTight_Gsf_v7", 
+                                          "HLT_Ele27_WPTight_Gsf_v8", 
+                                          "HLT_Ele27_WPTight_Gsf_v9", 
+                                        
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", 
+                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9", 
+                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10", 
+                                          ),
+                                          andOr = cms.bool(True), # True = OR, False = AND
+                                          throw = cms.bool(False) # Tolerate if triggers not available
+                                          )
+
 
 process.p = cms.Path(
     ###process.reapplyJEC*
     ###process.pfImpactParameterTagInfosAK8 *
     ###process.pfInclusiveSecondaryVertexFinderTagInfosAK8 *
     ###process.pfBoostedDoubleSecondaryVertexAK8BJetTags *        
-    process.singleMuHLTFilter*
+    process.singleEleHLTFilter*
     process.fullPatMetSequence* 
     process.egcorrMET*
     process.lldjMETFiltersSequence* 
