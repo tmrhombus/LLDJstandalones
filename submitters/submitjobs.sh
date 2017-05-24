@@ -5,69 +5,49 @@
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
-doSubmit=false
-lumi=20000
+doSubmit=true
+lumi=35870
 nevents=-1
 maxfilesperjob=300   # 500=6h
 
 samples=(  \
- "DY50"    \
- "DY5to50" \
- "TTbar"   \
- "STs"     \
- "STtbar"  \
- "STt"     \
- "STtbarW" \
- "STtW"    \
- "WJets"   \
- "WW"      \
- "ZZ"      \
- "WZ"      \
- "ZHtoLLbb_ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8"   \
- "ZHtoLLbb_ggZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8" \
- "Signal_WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"  \
- "Signal_WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"   \
- "Signal_ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"        \
- "Signal_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8"      \
+ 'DY50'                              \
+ 'DY5to50_HT100to200'                \
+ 'DY5to50_HT200to400'                \
+ 'DY5to50_HT400to600'                \
+ 'DY5to50_HT600toInf'                \
+ 'DY5to50_HT70to100'                 \
+ 'GJets_HT40To100'                   \
+ 'GJets_HT100To200'                  \
+ 'GJets_HT200To400'                  \
+ 'GJets_HT400To600'                  \
+ 'GJets_HT600ToInf'                  \
+ 'ST_s'                              \
+ 'STbar_t'                           \
+ 'ST_t'                              \
+ 'STbar_tW'                          \
+ 'ST_tW'                             \
+ 'TTJets'                            \
+ 'WW'                                \
+ 'WZ'                                \
+ 'ZZ'                                \
+ 'ZH_HToBB_ZToLL'                    \
+ 'ggZH_HToBB_ZToLL'                  \
+ 'ggZH_HToSSTobbbb_MS40_ctauS100'    \
+ 'ggZH_HToSSTodddd_MS40_ctauS100'    \
+ 'WJetsToLNu'                        \
+ 'SingleElectron'     \
+ 'SingleMuon'
+
 )
 
-
-
-jets=( \
-  "ALLCALOJETS"                      \
-#  "ALLCALOJETSMATCHED"               \
-  "BASICCALOJETS"                    \
-#  "BASICCALOJETS1"                   \
-#  "BASICCALOJETS1MATCHED"            \
-  "BASICCALOJETS1PT20"               \
-#  "BASICCALOJETS1PT20MATCHED"        \
-#  "BASICCALOJETSMATCHED"             \
-  "INCLUSIVETAGGEDCALOJETS"          \
-#  "INCLUSIVETAGGEDCALOJETS20"        \
-#  "INCLUSIVETAGGEDCALOJETS20MATCHED" \
-#  "INCLUSIVETAGGEDCALOJETS60"        \
-#  "INCLUSIVETAGGEDCALOJETS60MATCHED" \
-#  "INCLUSIVETAGGEDCALOJETSA"         \
-#  "INCLUSIVETAGGEDCALOJETSAMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSB"         \
-#  "INCLUSIVETAGGEDCALOJETSBMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSC"         \
-#  "INCLUSIVETAGGEDCALOJETSCMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSD"         \
-#  "INCLUSIVETAGGEDCALOJETSDMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSE"         \
-#  "INCLUSIVETAGGEDCALOJETSEMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSF"         \
-#  "INCLUSIVETAGGEDCALOJETSFMATCHED"  \
-#  "INCLUSIVETAGGEDCALOJETSMATCHED"   \
-)
 
 printf "Version: ${aversion}\n"
 
 # tar up your present CMSSW area
 if [ ! -f ${CMSSW_VERSION}.tar.gz ] 
 then 
- printf "I think I need to tar, can't find ${CMSSW_VERSION}.tar.gz \n\n"
+ printf "I think I need to tar, couldn't find ${CMSSW_VERSION}.tar.gz \n\n"
  tar --exclude-caches-all --exclude-vcs -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_BASE} --exclude=src --exclude=tmp
 fi
 
@@ -86,7 +66,7 @@ makeasubmitdir () {
  printf "Executable = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/runjob.sh\n" >> submitfile
  printf "Should_Transfer_Files = YES \n" >> submitfile
  printf "WhenToTransferOutput = ON_EXIT\n" >> submitfile
- printf "Transfer_Input_Files = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/CMSSW_8_0_18_patch1.tar.gz,\$ENV(CMSSW_BASE)/src/LLDJstandalones/analyzers/runanalyzer.exe,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.list,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.info\n" >> submitfile
+ printf "Transfer_Input_Files = \$ENV(CMSSW_BASE)/src/LLDJstandalones/submitters/${CMSSW_VERSION}.tar.gz,\$ENV(CMSSW_BASE)/src/LLDJstandalones/analyzers/runanalyzer.exe,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.list,\$ENV(CMSSW_BASE)/src/LLDJstandalones/lists/$1.info\n" >> submitfile
  printf "notify_user = $(whoami)@cern.ch\n" >> submitfile
  printf "x509userproxy = \$ENV(X509_USER_PROXY)\n" >> submitfile
  printf "\n" >> submitfile
@@ -95,7 +75,7 @@ makeasubmitdir () {
  printf "Log    = logs/runanalyzer_\$(Cluster)_\$(Process).log\n" >> submitfile
  printf "\n" >> submitfile
  
- # make haddfile
+ # make haddfile (make now for merging expected results)
  haddfile="./haddit.sh"
  hadddir="${rootdir}/${aversion}"
  mkdir -p ${hadddir}
@@ -105,13 +85,9 @@ makeasubmitdir () {
  checkfile="./checker.sh"
  printf "#!/bin/bash\n\n" > ${checkfile}
 
- # choose your favorite jet collections to run over
- for jettype in ${jets[@]}
- do
-  printf " ${jettype} \n"
 
-  # start hadd command
-  printf "hadd ${hadddir}/$1_${jettype}.root " >> ${haddfile}
+  # hadd command to go in haddfile
+  printf "hadd ${hadddir}/$1.root " >> ${haddfile}
 
   # breaking up input file list
   nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
@@ -121,16 +97,16 @@ makeasubmitdir () {
   until [ ${filenrlow} -gt ${nfilesinlist} ]
   do
 
-   printf "Arguments = \$ENV(CMSSW_VERSION) $1 ${lumi} ${nevents} ${jettype} ${maxfilesperjob} ${filenrlow} _${jobfilenr}\n" >> submitfile
+   printf "Arguments = \$ENV(CMSSW_VERSION) $1 ${lumi} ${nevents} ${maxfilesperjob} ${filenrlow} _${jobfilenr} $2 \n" >> submitfile
    printf "Queue\n" >> submitfile
    printf "\n" >> submitfile
 
    # add file to hadd
    printf "\\" >> ${haddfile}
-   printf "\n $(pwd)/$1_${jettype}_${jobfilenr}.root " >> ${haddfile}
+   printf "\n $(pwd)/$1_${jobfilenr}.root " >> ${haddfile}
 
    # add file to checker
-   printf "\n if [ ! -f $(pwd)/$1_${jettype}_${jobfilenr}.root ]; then printf \" $(pwd)/$1_${jettype}_${jobfilenr}.root \\n\"; fi " >> ${checkfile}
+   printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}.root ]; then printf \" $(pwd)/$1_${jobfilenr}.root \\n\"; fi " >> ${checkfile}
 
    # increment filenumber counters
    #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
@@ -139,7 +115,6 @@ makeasubmitdir () {
 
   done # until filenrlow > nfilesinlist
   printf "\n\n" >> ${haddfile}
- done # for jettype in jets
 
  if [ ${doSubmit} = true ]
  then
@@ -153,6 +128,12 @@ makeasubmitdir () {
 # actuall call the function
 for sample in ${samples[@]} 
 do
- makeasubmitdir ${sample}
+ if [[ ${sample} == "Single"* ]]
+ then
+  mc=""
+ else
+  mc="-m"
+ fi
+ makeasubmitdir ${sample} ${mc}
 done
 

@@ -30,6 +30,9 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   trgFilterDeltaPtCut_       = ps.getParameter<double>("trgFilterDeltaPtCut");
   trgFilterDeltaRCut_        = ps.getParameter<double>("trgFilterDeltaRCut");
 
+  //theBeamSpot_(consumes<reco::BeamSpot>(theBeamSpotTag_)),
+  beamspotToken_             = consumes<reco::BeamSpot>(ps.getUntrackedParameter<edm::InputTag> ("beamspot",edm::InputTag("offlineBeamSpot")));
+
   vtxLabel_                  = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxLabel"));
   vtxBSLabel_                = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxBSLabel"));
   rhoLabel_                  = consumes<double>                        (ps.getParameter<InputTag>("rhoLabel"));

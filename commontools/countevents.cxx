@@ -31,15 +31,17 @@ double countevents(TString Tsample){
 
   Tinputline = inputline;
 
-  if( Tinputline.Contains("/store/group") ){  // if filename
+  if( Tinputline.Contains("/store/user") ){  // if filename
 
    // open file
    TFile* theFile;
-   theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
+   theFile = TFile::Open("root://cmsxrootd.hep.wisc.edu/"+Tinputline);
+   //theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
 
    // get histogram
    TH1F* h_nevents;
-   h_nevents = (TH1F*)theFile->Get("noCutSignature_COUNT");
+   h_nevents = (TH1F*)theFile->Get("lldjNtuple/hEvents");
+   //h_nevents = (TH1F*)theFile->Get("noCutSignature_COUNT");
 
    // add bin contents to total count
    nevents=h_nevents->GetBinContent(1);

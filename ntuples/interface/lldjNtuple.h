@@ -26,8 +26,11 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
-//#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
 
+#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+//#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+//#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
+//#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 using namespace std;
 
@@ -59,6 +62,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   Double_t deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2);
   Double_t getMiniIsolation(edm::Handle<pat::PackedCandidateCollection> pfcands, const reco::Candidate* ptcl,  
 			    double r_iso_min, double r_iso_max, double kt_scale, bool charged_only);
+//  double TrackAngle(const edm::Event&, reco::TransientTrack track, TrajectoryStateOnSurface tSOSInnerHit);
 
   void branchesGlobalEvent(TTree*);
   void branchesGenInfo    (TTree*, edm::Service<TFileService>&);
@@ -107,6 +111,8 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   double trgFilterDeltaPtCut_;
   double trgFilterDeltaRCut_;
+
+  edm::EDGetTokenT<reco::BeamSpot>         beamspotToken_;
 
   edm::EDGetTokenT<reco::VertexCollection>         vtxLabel_;
   edm::EDGetTokenT<reco::VertexCollection>         vtxBSLabel_;
