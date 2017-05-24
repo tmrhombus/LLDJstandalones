@@ -49,7 +49,10 @@ void analyzer_signal::Loop(TString outfilename,
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
-  // make event weight
+  // make event weight in analyzerBase.C
+  // colisions happen @LHC at a given rate, use 
+  // event_weight to make the simulation match what is seen in data
+  // =lum/cross-section *nrEvents
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
 
@@ -135,6 +138,7 @@ void analyzer_signal::Loop(TString outfilename,
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
+
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -152,7 +156,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,1); fillJetHistograms(event_weight,4,1); }//fill2DHistograms(event_weight,4); }
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,1); fillJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
   }
-
+   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
@@ -403,6 +407,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    if(jetGenPhi                  ->size()>j){h_jetGenPhi                   [selbin][j][lepbin].Fill( jetGenPhi                  ->at(j), weight ); } 
    if(jetGenPartonMomID          ->size()>j){h_jetGenPartonMomID           [selbin][j][lepbin].Fill( jetGenPartonMomID          ->at(j), weight ); } 
   }
+
   if(AK8JetPt                   ->size()>j){h_AK8JetPt                    [selbin][j][lepbin].Fill( AK8JetPt                   ->at(j), weight ); } 
   if(AK8JetEn                   ->size()>j){h_AK8JetEn                    [selbin][j][lepbin].Fill( AK8JetEn                   ->at(j), weight ); } 
   if(AK8JetRawPt                ->size()>j){h_AK8JetRawPt                 [selbin][j][lepbin].Fill( AK8JetRawPt                ->at(j), weight ); } 
@@ -462,7 +467,6 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
    h_AK8JetEta                   [selbin][j][lepbin].Write(); 
    h_AK8JetPhi                   [selbin][j][lepbin].Write(); 
    h_AK8JetMass                  [selbin][j][lepbin].Write(); 
-
  }
 
  return kTRUE;

@@ -144,6 +144,8 @@ public :
  // TH2F h_nvertnjets[6];
 
  // General / leading
+
+
  TH1F h_nVtx[6][2];
  TH1F h_nPU[6][2];
  TH1F h_phoEt[6][2];
@@ -159,6 +161,7 @@ public :
  TH1F h_htall[6][2];
  TH1F h_htjets[6][2];
 
+ TH1F h_jetTestVariable[6][4];
  // Jet
  TH1F h_jetPt[6][4][2]; 
 
