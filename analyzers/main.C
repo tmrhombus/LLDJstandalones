@@ -163,11 +163,13 @@ int main(int argc, char **argv){
 
   //  theChain->Add( Tinputline );
 
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
+
   if( Tinputline.Contains("/store/user") ){
 
-   // theChain->Add( Tinputline );
-
-//*******edited here********
 // 5/11  if( Tinputline.Contains("/store/group") ){
   if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
   theChain->Add( Tinputline );
@@ -182,6 +184,7 @@ int main(int argc, char **argv){
   // }
   // printf("Inputfile: %s\n",Tinputline.Data());
   }
+
 
   inputline_dump.push_back(inputline);
  } // while( std::getline(inputfile, inputline) )

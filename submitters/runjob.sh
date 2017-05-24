@@ -24,7 +24,7 @@ ls -lhrt ../
 printf "ls -lhrt ../../ \n"
 ls -lhrt ../../
 
-../../runanalyzer.exe -s $2 -l $3 -e $4 -j $5 -i "../.." -o "../.." -n $6 -a $7 -x $8
+../../runanalyzer.exe -s $2 -l $3 -e $4  -i "../.." -o "../.." -n $5 -a $6 -x $7 $8
 
 printf "ls -lhrt \n"
 ls -lhrt

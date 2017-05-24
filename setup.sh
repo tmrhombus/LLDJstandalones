@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export nversion="withtestvar"
-export aversion="frere"
+export nversion="raindaydata"
+export aversion="sipmshape"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
