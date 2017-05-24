@@ -21,12 +21,25 @@ void analyzer_signal::Loop(TString outfilename,
   nentries = Long64_t(nevts);
  }
 
- ntot=0;
- npassSig=0;
- npassZH=0;
- npassDY=0;
- npassOffZ=0;
- npassNoPair=0;
+ n_tot=0;
+
+ n_passSig=0;
+ n_passZH=0;
+ n_passDY=0;
+ n_passOffZ=0;
+ n_passNoPair=0;
+
+ n_ele_passSig=0;
+ n_ele_passZH=0;
+ n_ele_passDY=0;
+ n_ele_passOffZ=0;
+ n_ele_passNoPair=0;
+
+ n_mu_passSig=0;
+ n_mu_passZH=0;
+ n_mu_passDY=0;
+ n_mu_passOffZ=0;
+ n_mu_passNoPair=0;
 
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
@@ -38,13 +51,14 @@ void analyzer_signal::Loop(TString outfilename,
 
   // make event weight
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
-  ntot++;
+  n_tot++;
 
   // get lists of "good" electrons, photons, jets
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
-  electron_list = electron_passLooseID( 15, 3, "");
-  muon_list = muon_passLooseID( 15, 3, ""); 
-  jet_list = jet_passID( 15, 3, "");
+  electron_list = electron_passLooseID( 30, 3, "");
+  muon_list = muon_passTightID( 28, 2.4, ""); 
+  //muon_list = muon_passLooseID( 15, 3, ""); 
+  jet_list = jet_passID( 20, 2.4, "");
 
   // set our met
   themet = pfMET;
@@ -111,7 +125,7 @@ void analyzer_signal::Loop(TString outfilename,
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
 
-  // debug_printobjects(); // helpful printout (turn off when submitting!!!)
+  //debug_printobjects(); // helpful printout (turn off when submitting!!!)
 
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
@@ -145,12 +159,12 @@ void analyzer_signal::Loop(TString outfilename,
  } // end loop over entries
 
  printf("\n\nSummary\n");
- printf(" ntot        %i \n",ntot        ); 
- printf(" npassSig    %i \n",npassSig    ); 
- printf(" npassZH     %i \n",npassZH     ); 
- printf(" npassDY     %i \n",npassDY     ); 
- printf(" npassOffZ   %i \n",npassOffZ   ); 
- printf(" npassNoPair %i \n",npassNoPair ); 
+ printf(" ntot        %i \n",n_tot        ); 
+ printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
+ printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
+ printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
+ printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
+ printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -580,7 +594,7 @@ Bool_t analyzer_signal::askPassSingleMu()
 // muFiredDoubleTrgs = (vector<unsigned int>*)0x3961e80
  Bool_t doespass = kFALSE;
  if(muon_list.size()>0){ 
-   doespass = muPt->at( muon_list.at(0) ) > 30 ;
+   doespass = muPt->at( muon_list.at(0) ) > 28 ;
  } 
 
  return doespass;
@@ -590,7 +604,11 @@ Bool_t analyzer_signal::askPassSingleMu()
 Bool_t analyzer_signal::askPassSig()
 {
  Bool_t doespass = kTRUE;
- npassSig++;
+ if( (passSingleEle || passSingleMu) ){
+  n_passSig++;
+  if( passSingleEle ){ n_ele_passSig++; }
+  if( passSingleMu ) { n_mu_passSig++; }
+ }
  return doespass;
 }
 
@@ -602,9 +620,13 @@ Bool_t analyzer_signal::askPassZH()
      && passZWindow
      && passPTOSSFg50
      && passOneJet
+     && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
- { doespass = kTRUE; npassZH++;}
+ { doespass = kTRUE; n_passZH++;
+  if( passSingleEle ){ n_ele_passZH++; }
+  if( passSingleMu ) { n_mu_passZH++; }
+ }
  return doespass;
 }
 
@@ -616,9 +638,14 @@ Bool_t analyzer_signal::askPassDY()
      && passZWindow
      && !passPTOSSFg50
      && passOneJet
+     && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
- { doespass = kTRUE; npassDY++; }
+ { doespass = kTRUE; n_passDY++; 
+  //printf("\n PASS DY Event %lld\n", event);
+  if( passSingleEle ){ n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
+  if( passSingleMu ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
+ }
  return doespass;
 }
 
@@ -630,9 +657,13 @@ Bool_t analyzer_signal::askPassOffZ()
      && !passZWindow
      && passOSSF
      && passOneJet
+     && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
- { doespass = kTRUE; npassOffZ++; }
+ { doespass = kTRUE; n_passOffZ++;
+  if( passSingleEle ){ n_ele_passOffZ++; }
+  if( passSingleMu ) { n_mu_passOffZ++; }
+ }
  return doespass;
 }
 
@@ -644,9 +675,13 @@ Bool_t analyzer_signal::askPassNoPair()
      && !passZWindow
      && !passOSSF
      && passOneJet
+     && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
- { doespass = kTRUE; npassNoPair++; }
+ { doespass = kTRUE; n_passNoPair++;
+  if( passSingleEle ){ n_ele_passNoPair++; }
+  if( passSingleMu ) { n_mu_passNoPair++; }
+ }
  return doespass;
 }
 
@@ -1030,31 +1065,52 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
 
   bool jetVeto=true;
   std::vector<int> jetindex;
-  float value = 0.0;
+  float PUIDvalue = 0.0;
 
   for(int i = 0; i < nJet; i++)
-    {
-      if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {value =-0.8;}
-      if(2.5 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.75) {value =-0.95;}
-      if(2.75 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <3.0) {value =-0.97;}
-      if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {value =-0.99;}
+   {
+    if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {PUIDvalue =-0.8;}
+    if(2.5 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.75) {PUIDvalue =-0.95;}
+    if(2.75 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <3.0) {PUIDvalue =-0.97;}
+    if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {PUIDvalue =-0.99;}
 
-      //double deltar = 0.0 ;
-      //      std::cout<<"Jet size: "<<nJet<<std::endl;
-      //      std::cout<<"Jet no:"<<i<<"coming here pujetid: "<<pfJet_pt[i]<<std::endl;
-      //      if(OverlapWithMuon(jetEta->at(i),jetPhi->at(i)))     continue;
-      //      std::cout<<"Jet no:"<<i<<"coming here OverlapWithMuon: "<<pfJet_pt[i]<<std::endl;
-      //      if(OverlapWithElectron(jetEta->at(i),jetPhi->at(i)))   continue;
-      //if(pho_index>=0){
-      //  deltar= dR(jetEta->at(i),jetPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index));
-      //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
-      //}
-      //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>value)
-      if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>value)
-        {
-          jetindex.push_back(i);
-        }
+    bool passOverlap=true;
+    // // check overlap with electrons
+    // for(int i=0; i<electron_list.size(); ++i){
+    //  int eleindex = electron_list[i];
+    //  if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
+    //   {
+    //    passOverlap=false;
+    //   }
+    // }
+
+    // check overlap with muons
+    for(int i=0; i<muon_list.size(); ++i){
+     int muindex = muon_list[i];
+     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
+      {
+       passOverlap=false;
+      }
     }
+
+
+    //double deltar = 0.0 ;
+    //      std::cout<<"Jet size: "<<nJet<<std::endl;
+    //      std::cout<<"Jet no:"<<i<<"coming here pujetid: "<<pfJet_pt[i]<<std::endl;
+    //      if(OverlapWithMuon(jetEta->at(i),jetPhi->at(i)))     continue;
+    //      std::cout<<"Jet no:"<<i<<"coming here OverlapWithMuon: "<<pfJet_pt[i]<<std::endl;
+    //      if(OverlapWithElectron(jetEta->at(i),jetPhi->at(i)))   continue;
+    //if(pho_index>=0){
+    //  deltar= dR(jetEta->at(i),jetPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index));
+    //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
+    //}
+    //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
+    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 && passOverlap )
+     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
+     {
+       jetindex.push_back(i);
+     }
+   }
 
   //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
   //if(jetindex.size()>1)jetVeto = false;

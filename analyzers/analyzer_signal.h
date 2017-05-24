@@ -109,12 +109,25 @@ public :
  Double_t dilep_pt;
 
  // selection counters (how many events pass)
- Int_t ntot;
- Int_t npassSig;
- Int_t npassZH;
- Int_t npassDY;
- Int_t npassOffZ;
- Int_t npassNoPair;
+ Int_t n_tot;
+
+ Int_t n_passSig;
+ Int_t n_passZH;
+ Int_t n_passDY;
+ Int_t n_passOffZ;
+ Int_t n_passNoPair;
+
+ Int_t n_ele_passSig;
+ Int_t n_ele_passZH;
+ Int_t n_ele_passDY;
+ Int_t n_ele_passOffZ;
+ Int_t n_ele_passNoPair;
+
+ Int_t n_mu_passSig;
+ Int_t n_mu_passZH;
+ Int_t n_mu_passDY;
+ Int_t n_mu_passOffZ;
+ Int_t n_mu_passNoPair;
 
  // bin names
  std::vector<TString> selbinnames;
