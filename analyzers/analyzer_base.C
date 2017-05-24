@@ -253,6 +253,9 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    mutrkKink = 0;
    muBestTrkPtError = 0;
    muBestTrkPt = 0;
+
+   jetTestVariable = 0;
+
    jetPt = 0;
    jetEn = 0;
    jetEta = 0;
@@ -601,6 +604,9 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muBestTrkPtError", &muBestTrkPtError, &b_muBestTrkPtError);
    fChain->SetBranchAddress("muBestTrkPt", &muBestTrkPt, &b_muBestTrkPt);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
+
+   fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
+
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetEn", &jetEn, &b_jetEn);
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);

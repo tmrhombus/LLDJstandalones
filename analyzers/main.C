@@ -162,15 +162,15 @@ int main(int argc, char **argv){
   //if( Tinputline.Contains("/home/rhombus") ){
   //  theChain->Add( Tinputline );
 
-  if( Tinputline.Contains("/store/user") ){
-  // if( dolocal ){
-  //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-  // }
-  // else{
-    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
-  // }
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+   theChain->Add( Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
+
+  if( Tinputline.Contains("/store/user") ){
+    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+}
 
   inputline_dump.push_back(inputline);
  } // while( std::getline(inputfile, inputline) )
