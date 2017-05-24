@@ -223,14 +223,12 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
  
 
-<<<<<<< HEAD
  //link variable in c++ code to variable in branch
-=======
+/*
   tree->Branch("jetTrackPt"  ,  &jetTrackPt_);
   tree->Branch("jetTrackEta" ,  &jetTrackEta_);
   tree->Branch("jetTrackPhi" ,  &jetTrackPhi_);
-
->>>>>>> 33e3d58850e8e605a6144af19d3c5083bba4164c
+*/
   if (doGenParticles_){
     tree->Branch("jetPartonID",       &jetPartonID_);
     tree->Branch("jetHadFlvr",        &jetHadFlvr_);
@@ -411,16 +409,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetSumIP_.clear();
   jetSumIPSig_.clear();
   jetTestVariable_.clear();
-<<<<<<< HEAD
   jetTrackAngle_.clear();
   jetLogTrackAngle_.clear();
   jetMedianLogTrackAngle_.clear();
   jetTotalTrackAngle_.clear();
-=======
+/*
   jetTrackPt_.clear();
   jetTrackEta_.clear();
-  jetTrackPhi_.clear();
->>>>>>> 33e3d58850e8e605a6144af19d3c5083bba4164c
+  jetTrackPhi_.clear();*/
 
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
@@ -801,9 +797,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetSumIP_.push_back(SumIP);
     jetSumIPSig_.push_back(SumIPSig);
     jetTestVariable_.push_back(nrjet);
-<<<<<<< HEAD
+
     if(TAIsGood ==true)jetTotalTrackAngle_.push_back(TotalTrackAngle);
-=======
+/*
   jetTrackPt_.clear();
   jetTrackEta_.clear();
   jetTrackPhi_.clear();
@@ -835,7 +831,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //      printf("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d\n", i2,cand.pt(),cand.dz(PV.position()),cand.pdgId());
 //  }
 
-
+*/
 
 
 
@@ -849,7 +845,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 
 ////////////////////////////////////////////////////////////
->>>>>>> 33e3d58850e8e605a6144af19d3c5083bba4164c
+
 
     // gen jet and parton
     if (doGenParticles_ && genParticlesHandle.isValid()) {
