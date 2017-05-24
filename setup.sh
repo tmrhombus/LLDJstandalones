@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export nversion="raindaydata"
-export aversion="thursty"
+export aversion="sipmshape"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
