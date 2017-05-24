@@ -36,7 +36,10 @@ void analyzer_signal::Loop(TString outfilename,
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
-  // make event weight
+  // make event weight in analyzerBase.C
+  // colisions happen @LHC at a given rate, use 
+  // event_weight to make the simulation match what is seen in data
+  // =lum/cross-section *nrEvents
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   ntot++;
 
@@ -125,7 +128,7 @@ void analyzer_signal::Loop(TString outfilename,
   if( doesPassDY    ){ fillSigHistograms(event_weight,3); fillJetHistograms(event_weight,3); fill2DHistograms(event_weight,3); }
   if( doesPassOffZ  ){ fillSigHistograms(event_weight,4); fillJetHistograms(event_weight,4); fill2DHistograms(event_weight,4); }
   if( doesPassNoPair){ fillSigHistograms(event_weight,5); fillJetHistograms(event_weight,5); fill2DHistograms(event_weight,5); }
-
+//debugging
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
@@ -278,6 +281,8 @@ Bool_t analyzer_signal::initJetHistograms()
    TString hname_AK8JetEta                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetEta                 " ;       
    TString hname_AK8JetPhi                   = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetPhi                 " ;       
    TString hname_AK8JetMass                  = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"AK8JetMass                " ;        
+   TString hname_jetTestVariable             = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;
+   TString hname_jetSumIPSig                 = "h_"+selbinnames[i]+"_"+jetmultnames[j]}"jetSumIPSig               " ;
 
    // initalize histograms
    h_jetPt                       [i][j] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
@@ -317,7 +322,8 @@ Bool_t analyzer_signal::initJetHistograms()
    h_AK8JetEta                   [i][j] = initSingleHistogramTH1F(  hname_AK8JetEta                  , "AK8JetEta                 " , 50, -5, 5 );       
    h_AK8JetPhi                   [i][j] = initSingleHistogramTH1F(  hname_AK8JetPhi                  , "AK8JetPhi                 " , 50, -5, 5 );       
    h_AK8JetMass                  [i][j] = initSingleHistogramTH1F(  hname_AK8JetMass                 , "AK8JetMass                " , 50, 0, 500 );        
-
+   h_jetTestVariable             [i][j] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 500      );
+   h_jetSumIPSig                 [i][j] = initSingleHistogramTH1F(  hname_jetSumIPSig                , "jetSumIPSig               " , 50, -1000,1000); //not sure about these limits
   }
  }
 
@@ -370,7 +376,8 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin)
   if(AK8JetEta                  ->size()>j){h_AK8JetEta                   [selbin][j].Fill( AK8JetEta                  ->at(j), weight ); } 
   if(AK8JetPhi                  ->size()>j){h_AK8JetPhi                   [selbin][j].Fill( AK8JetPhi                  ->at(j), weight ); } 
   if(AK8JetMass                 ->size()>j){h_AK8JetMass                  [selbin][j].Fill( AK8JetMass                 ->at(j), weight ); } 
-
+  if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j].Fill( jetTestVariable            ->at(j), weight ); }
+  if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j].Fill( jetSumIPSig                ->at(j), weight ); }
  }
 
  return kTRUE;
@@ -419,7 +426,8 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin)
    h_AK8JetEta                   [selbin][j].Write(); 
    h_AK8JetPhi                   [selbin][j].Write(); 
    h_AK8JetMass                  [selbin][j].Write(); 
-
+   h_jetTestVariable             [selbin][j].Write();
+   h_jetSumIPSig                 [selbin][j].Write();
  }
 
  return kTRUE;

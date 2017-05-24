@@ -126,7 +126,7 @@ public :
  // TH2F h_nvertnjets[6];
 
  // General / leading
- TH1F h_nVtx[6];
+ TH1F h_nVtx[6];//6 phase-space selection nopair, offZ...
  TH1F h_nPU[6];
  TH1F h_phoEt[6];
  TH1F h_phoEta[6];
@@ -137,10 +137,11 @@ public :
  TH1F h_muPt[6];
  TH1F h_muEta[6];
  TH1F h_muPhi[6];
-
+ 
  TH1F h_htall[6];
  TH1F h_htjets[6];
 
+ TH1F h_jetTestVariable[6][4];
  // Jet
  TH1F h_jetPt[6][4]; 
  TH1F h_jetEn[6][4]; 
