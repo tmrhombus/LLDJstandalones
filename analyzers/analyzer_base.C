@@ -254,7 +254,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    muBestTrkPtError = 0;
    
    jetTestVariable =0;
-   jetSumIPSig = 0;
+   ////jetSumIPSig = 0;
 
    muBestTrkPt = 0;
 
@@ -610,7 +610,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    
    fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable); 
-   fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
+   //fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
 
    fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
 

@@ -37,10 +37,13 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names
 samples=( \
-  "Data_SingleMu_B_1"    \
-  "Data_SingleEle_B_1"   \
-  "GJets_HT40to100_1"  \
+   "WJets_1"              \
+   "WJets_2"              \
 )
+
+#  "Data_SingleMu_B_1"    \
+#  "Data_SingleEle_B_1"   \
+#  "GJets_HT40to100_1"  \
 
 # # double lepton
 # "Data_DoubleMu_H_3"    \
@@ -111,7 +114,7 @@ samples=( \
 #  "STtbarW"              \
 #  "STtW"                 \
 #  "WJets_1"              \
-#  "WJets_1"              \
+#  "WJets_2"              \
 #  "WW_1"                 \
 #  "WW_2"                 \
 #  "WZ_1"                 \

@@ -8,7 +8,7 @@
 doSubmit=true
 lumi=35870
 nevents=-1
-maxfilesperjob=300   # 500=6h
+maxfilesperjob=200   # 500=6h
 
 samples=(  \
  'DY50'                              \
@@ -36,9 +36,8 @@ samples=(  \
  'ggZH_HToSSTobbbb_MS40_ctauS100'    \
  'ggZH_HToSSTodddd_MS40_ctauS100'    \
  'WJetsToLNu'                        \
- 'SingleElectron'     \
+ 'SingleElectron'                    \
  'SingleMuon'
-
 )
 
 

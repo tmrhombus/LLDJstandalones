@@ -44,23 +44,34 @@ void analyzer_signal::Loop(TString outfilename,
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+
+  printf(" Event %lld\n", event);
+  if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
   Long64_t ientry = LoadTree(jentry);
+  if( event==472257123 ){ printf(" %lli \n",ientry); }
   if (ientry < 0) break;
+  if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
   nb = fChain->GetEntry(jentry);   nbytes += nb;
+  if( event==472257123 ){ printf(" got entry \n"); }
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use 
   // event_weight to make the simulation match what is seen in data
   // =lum/cross-section *nrEvents
+  if( event==472257123 ){ printf("making eventweight\n"); }
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
 
+  if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
+  if( event==472257123 ){ printf("making electronlist\n"); }
   electron_list = electron_passLooseID( 30, 3, "");
+  if( event==472257123 ){ printf("making muonlist\n"); }
   muon_list = muon_passTightID( 28, 2.4, ""); 
   //muon_list = muon_passLooseID( 15, 3, ""); 
+  if( event==472257123 ){ printf("making jetlist\n"); }
   jet_list = jet_passID( 20, 2.4, "");
 
   // set our met
@@ -128,17 +139,26 @@ void analyzer_signal::Loop(TString outfilename,
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
 
-  //debug_printobjects(); // helpful printout (turn off when submitting!!!)
+
+  if( event==472257123 ){ printf("EVENT in question\n"); 
+  debug_printobjects(); // helpful printout (turn off when submitting!!!)
+  }
 
   // set booleans if pass various selections
+  if( event==472257123 ){ printf("askPassSig\n"); }
   doesPassSig    = askPassSig   ();
+  if( event==472257123 ){ printf("askPassZH\n");  }
   doesPassZH     = askPassZH    ();
+  if( event==472257123 ){ printf("askPassDY\n");  }
   doesPassDY     = askPassDY    ();
+  if( event==472257123 ){ printf("askPassOffZ\n");  }
   doesPassOffZ   = askPassOffZ  ();
+  if( event==472257123 ){ printf("askPassSig\n");  }
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
 
+  if( event==472257123 ){ printf("fillEle\n");  }
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -148,6 +168,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,0); fillJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
   }
 
+  if( event==472257123 ){ printf("fillMu\n");  }
   if( passSingleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -157,6 +178,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,1); fillJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
   }
    
+  if( event==472257123 ){ printf("Done Looping\n");  }
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 

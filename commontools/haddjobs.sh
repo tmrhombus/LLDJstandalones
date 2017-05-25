@@ -3,6 +3,7 @@
 # just calls the hadd scripts automatically generated
 # submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh
 mkdir -p "${rootdir}/${aversion}"
+mkdir -p "plots/${aversion}"
 
  #"DY50"     \
 samples=( \

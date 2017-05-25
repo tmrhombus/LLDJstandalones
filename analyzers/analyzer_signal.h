@@ -161,7 +161,6 @@ public :
  TH1F h_htall[6][2];
  TH1F h_htjets[6][2];
 
- TH1F h_jetTestVariable[6][4];
  // Jet
  TH1F h_jetPt[6][4][2]; 
 

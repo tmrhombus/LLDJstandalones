@@ -934,7 +934,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetTrackEta_.clear();
   jetTrackPhi_.clear();
 
-
     //printf("Jet with pt %6.1f, eta %+4.2f\n",
     //        iJet->pt(),iJet->eta());
     double in = 0, out = 0;

@@ -15,7 +15,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7'
 
 #process.Tracer = cms.Service("Tracer")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 #jec from sqlite
@@ -38,9 +38,10 @@ process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-        '/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
+        #'/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
         #'/store/data/Run2016H/DoubleMuon/MINIAOD/PromptReco-v3/000/284/036/00000/04DC0281-C89F-E611-81C6-02163E0141E6.root'
         #'/store/data/Run2016B/SingleElectron/MINIAOD/23Sep2016-v2/80000/5A4402F5-638C-E611-A471-0025905A60AA.root'
+        'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/Data_SingleMu_2016H_0040ECBB-76EA-E611-8FE7-A0000420FE80.root'
         )
                             )
 
@@ -191,48 +192,49 @@ process.singleMuHLTFilter = cms.EDFilter("HLTHighLevel",
                                          eventSetupPathsKey = cms.string(''),
                                          TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
                                          HLTPaths = cms.vstring(
-#  'HLT_IsoMu24_v*', 
-#  'HLT_IsoMu27_v*', 
-#  'HLT_IsoTkMu24_v*', 
-#  'HLT_IsoTkMu27_v*', 
-#  'HLT_Mu45_eta2p1_v*', 
-#  'HLT_Mu50_v*', 
-#  'HLT_Mu55_v*',
-
-  "HLT_PFHT350_PFMET100_v1",
-  "HLT_PFHT350_PFMET100_JetIdCleaned_v1",
-  "HLT_PFHT350_PFMET100_JetIdCleaned_v2",
-
-  "HLT_IsoMu22_v1",
-  "HLT_IsoMu22_v2",
-  "HLT_IsoMu22_v3",
-  "HLT_IsoMu22_v4",
-  "HLT_IsoMu22_v5",
-  "HLT_IsoMu22_v6",
-  "HLT_IsoMu22_v7",
-  "HLT_IsoTkMu22_v1",
-  "HLT_IsoTkMu22_v2",
-  "HLT_IsoTkMu22_v3",
-  "HLT_IsoTkMu22_v4",
-  "HLT_IsoTkMu22_v5",
-  "HLT_IsoTkMu22_v6",
-  "HLT_IsoTkMu22_v7",
-  "HLT_IsoTkMu22_v8",
-  "HLT_IsoTkMu22_v9",
-  "HLT_IsoTkMu22_v10",
-
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1",
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2",
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3",
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4",
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5",
-  "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5",
-  "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
+                                       #  'HLT_IsoMu24_v*', 
+                                       #  'HLT_IsoMu27_v*', 
+                                       #  'HLT_IsoTkMu24_v*', 
+                                       #  'HLT_IsoTkMu27_v*', 
+                                       #  'HLT_Mu45_eta2p1_v*', 
+                                       #  'HLT_Mu50_v*', 
+                                       #  'HLT_Mu55_v*',
+                                       
+                                         "HLT_PFHT350_PFMET100_v1",
+                                         "HLT_PFHT350_PFMET100_JetIdCleaned_v1",
+                                         "HLT_PFHT350_PFMET100_JetIdCleaned_v2",
+                                       
+                                         "HLT_IsoMu22_v1",
+                                         "HLT_IsoMu22_v2",
+                                         "HLT_IsoMu22_v3",
+                                         "HLT_IsoMu22_v4",
+                                         "HLT_IsoMu22_v5",
+                                         "HLT_IsoMu22_v6",
+                                         "HLT_IsoMu22_v7",
+                                         "HLT_IsoTkMu22_v1",
+                                         "HLT_IsoTkMu22_v2",
+                                         "HLT_IsoTkMu22_v3",
+                                         "HLT_IsoTkMu22_v4",
+                                         "HLT_IsoTkMu22_v5",
+                                         "HLT_IsoTkMu22_v6",
+                                         "HLT_IsoTkMu22_v7",
+                                         "HLT_IsoTkMu22_v8",
+                                         "HLT_IsoTkMu22_v9",
+                                         "HLT_IsoTkMu22_v10",
+                                       
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1",
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2",
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3",
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4",
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5",
+                                         "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5",
+                                         "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
+                                         ),
 
                                          andOr = cms.bool(True), # True = OR, False = AND
                                          throw = cms.bool(False)  # Tolerate if triggers not available
