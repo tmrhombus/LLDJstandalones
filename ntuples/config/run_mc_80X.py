@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
-
-process = cms.Process('LLDJ')
+#NTUPLIZER
+process = cms.Process('LLDJ')#what we are looking at
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
@@ -14,8 +14,8 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_Tra
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 50000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )##Number of events
+process.MessageLogger.cerr.FwkReport.reportEvery = 1##how often to report
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -34,13 +34,17 @@ process.jec = cms.ESSource("PoolDBESSource",CondDBSetup,
   label = cms.untracked.string('AK8PFchs')
   )))
 process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
-
+#input files
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
         #'/store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext4-v1/00000/004A0552-3929-E611-BD44-0025905A48F0.root'
         #'/store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/08E155A9-FAB6-E611-92BF-00259073E45E.root'
-        #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/TT_miniAOD_0AB045B5-BB0C-E511-81FD-0025905A60B8.root'
-'/store/mc/RunIISummer16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/08BA365D-40E5-E611-955F-00266CF89498.root'
+
+       #/ggZH_HToSSTodddd_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
+        #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/08BA365D-40E5-E611-955F-00266CF89498.root'
+         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
+
+#'/store/mc/RunIISummer16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/08BA365D-40E5-E611-955F-00266CF89498.root'
         ))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
@@ -76,7 +80,7 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc_MS40_cTauS100_2.root'))
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
@@ -104,10 +108,10 @@ from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMet
 runMetCorAndUncFromMiniAOD(process,
                            isData=False
                            )
-
+#options
 process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
-#process.load("LLDJstandalones.ntuples.ggPhotonIso_CITK_PUPPI_cff")
-process.load("LLDJstandalones.ntuples.ggMETFilters_cff")
+#process.load("LLDJstandalones.ntuples.lldjPhotonIso_CITK_PUPPI_cff")
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 process.lldjNtuple.dumpSoftDrop= cms.bool(True)
 process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
 process.lldjNtuple.runHFElectrons=cms.bool(True)
@@ -147,10 +151,10 @@ process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
 #add them to the VID producer
 for idmod in my_phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-
+#builds Ntuple
 process.p = cms.Path(
     process.regressionApplication*
-    process.ggMETFiltersSequence*
+    process.lldjMETFiltersSequence*
     process.calibratedPatElectrons*
     process.calibratedPatPhotons* 
     process.egmGsfElectronIDSequence*

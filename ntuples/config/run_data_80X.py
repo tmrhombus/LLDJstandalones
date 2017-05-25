@@ -39,6 +39,9 @@ process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
         '/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
+
+ #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/ggZH_HToSSTodddd_MS40_ctauS100.root'
+
         #'/store/data/Run2016H/DoubleMuon/MINIAOD/PromptReco-v3/000/284/036/00000/04DC0281-C89F-E611-81C6-02163E0141E6.root'
         #'/store/data/Run2016B/SingleElectron/MINIAOD/23Sep2016-v2/80000/5A4402F5-638C-E611-A471-0025905A60AA.root'
         )
@@ -140,9 +143,11 @@ process.egcorrMET = cms.Sequence(
         process.patPFMetT1MuonEnDownMuEGClean+process.patPFMetT1TauEnDownMuEGClean+
         process.patPFMetT1UnclusteredEnDownMuEGClean+process.slimmedMETsMuEGClean)
 
-process.load("ntuples.lldjNtuple_miniAOD_cfi")
-process.load("ntuples.ggPhotonIso_CITK_PUPPI_cff")
-process.load("ntuples.ggMETFilters_cff")
+
+
+process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
+process.load("LLDJstandalones.ntuples.lldjPhotonIso_CITK_PUPPI_cff")
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 process.lldjNtuple.dumpSoftDrop= cms.bool(True)
 process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
 process.lldjNtuple.runHFElectrons=cms.bool(True)
@@ -192,7 +197,7 @@ for idmod in my_phoid_modules:
         ###process.pfBoostedDoubleSecondaryVertexAK8BJetTags *        
         process.fullPatMetSequence* 
         process.egcorrMET*
-        process.ggMETFiltersSequence* 
+        process.lldjMETFiltersSequence* 
         process.regressionApplication*
         process.calibratedPatElectrons*
         process.calibratedPatPhotons*

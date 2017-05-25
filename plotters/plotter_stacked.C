@@ -6,13 +6,14 @@ void plotter_stacked()
 
  // Draw signal as lines
  Bool_t drawSignal = kFALSE;
+ Bool_t drawData = kTRUE;
 
  // path to root files
  TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
- //TString aversion = TString(getenv("aversion"));
- //inpath = inpath+aversion+"/";
- //outpath = outpath+aversion+"/";
+ TString aversion = TString(getenv("aversion"));
+ inpath = inpath+aversion+"/";
+ outpath = outpath+aversion+"/";
 
  // y axis plots as log
  Bool_t dolog = kTRUE;
@@ -24,377 +25,189 @@ void plotter_stacked()
  std::vector<TString> regions;
  regions.clear();
  regions.push_back("NoSel");
- //regions.push_back("Sig");
+ regions.push_back("Sig");
  regions.push_back("ZH");
  regions.push_back("DY");
  regions.push_back("OffZ");
- regions.push_back("NoPair");
+ regions.push_back("NoPair"); 
 
- // jet types to plot
- std::vector<TString> jettypes;
- jettypes.clear();
- jettypes.push_back("ALLCALOJETS");                          
- //jettypes.push_back("ALLCALOJETSMATCHED");                   
- jettypes.push_back("BASICCALOJETS");                        
- //jettypes.push_back("BASICCALOJETS1");                       
- //jettypes.push_back("BASICCALOJETS1MATCHED");                
- jettypes.push_back("BASICCALOJETS1PT20");                   
- //jettypes.push_back("BASICCALOJETS1PT20MATCHED");            
- //jettypes.push_back("BASICCALOJETSMATCHED");                 
- jettypes.push_back("INCLUSIVETAGGEDCALOJETS");              
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20");            
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETS20MATCHED");     
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60");            
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETS60MATCHED");     
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSA");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSAMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSB");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSBMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSC");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSCMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSD");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSDMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSE");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSEMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSF");             
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSFMATCHED");      
- //jettypes.push_back("INCLUSIVETAGGEDCALOJETSMATCHED");       
+ // lepton flavor
+ std::vector<TString> leptons;
+ leptons.clear();
+ leptons.push_back("ele"); 
+ leptons.push_back("mu");  
 
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
-// variables.push_back("NELECTRONS");                                
-// variables.push_back("NELECTRONS30");                              
-// variables.push_back("NELECTRONSFROMBOSON");                       
-// variables.push_back("NGOODELECTRONS");                            
-// variables.push_back("NGOODLEPTONS");                              
-// variables.push_back("NGOODMUONS");                                
-// variables.push_back("NGOODVERTICES");                             
-// variables.push_back("NKSHORTS");                                  
-// variables.push_back("NMUONS");                                    
-// variables.push_back("NMUONS30");                                  
-// variables.push_back("NMUONSFROMBOSON");                           
-// variables.push_back("NOSSF");                                     
-// variables.push_back("N_bJetsCSVL");                               
-// variables.push_back("N_bJetsCSVM");                               
-// variables.push_back("N_bosons");                                  
-// variables.push_back("PU_NumInteractions");                        
-// variables.push_back("fakeIncarnation");                           
-// variables.push_back("ELECTRON_PT");                               
-// variables.push_back("FLATWEIGHT");                                
-// variables.push_back("HLTHT");                                     
-// variables.push_back("HSPH");                                      
- variables.push_back("HT");                                        
-// variables.push_back("HTHLTID");                                   
-// variables.push_back("HT_All");                                    
-// variables.push_back("LEPTON_DANGLE");                             
-// variables.push_back("LEPTON_DPHI");                               
-// variables.push_back("LRM");                                       
- variables.push_back("MET");                                       
-//   variables.push_back("MOSSF");                                     
-//   variables.push_back("MUON_PT");                                   
-//  // variables.push_back("OSSFCLOSEMLL");                              
-//  // variables.push_back("OSSFMAXMLL");                                
-//  // variables.push_back("OSSFMINMLL");                                
-//   variables.push_back("PTOSSF");                                    
-//  // //variables.push_back("SCALAR_PT");                                 
-//  // //variables.push_back("SIGNALQUARKS_GENDXY");                       
-//  // //variables.push_back("SIGNALQUARKS_P");                            
-//  // //variables.push_back("SIGNALQUARKS_PT");                           
-//  // variables.push_back("SSPH");                                      
-//  // variables.push_back("TrueNumInteractions");                       
-//  // variables.push_back("rhoAll");                                    
-//  // variables.push_back("rhoNeutral");                                
-//  // variables.push_back("stupakR");                                   
-//  // variables.push_back("stupakR2");                                  
-//  // variables.push_back("LeadingJet_MISSINGINNER");                   
-//  // variables.push_back("LeadingJet_MISSINGOUTER");                   
-//  // variables.push_back("LeadingJet_HSPH");                           
-//  // variables.push_back("LeadingJet_NJets");                          
-//  // variables.push_back("LeadingJet_NCLEANMATCHEDTRACKS");            
-//  // variables.push_back("LeadingJet_NMATCHEDTRACKS");                 
-//  // variables.push_back("LeadingJet_NTRACKSIPLT0P05");                
-//  // variables.push_back("LeadingJet_NTRACKSIPSIGGT10");               
-//  // variables.push_back("LeadingJet_NTRACKSIPSIGLT5");                
-//  // variables.push_back("LeadingJet_ALPHAMAX2");                      
-//  // variables.push_back("LeadingJet_ALPHAMAXPRIME2");                 
-//  // variables.push_back("LeadingJet_ALPHAMAXPRIME");                  
-//  // variables.push_back("LeadingJet_ALPHAMAX");                       
-//  // variables.push_back("LeadingJet_ASSOCAPLANARITY");                
-//  // variables.push_back("LeadingJet_ASSOCIATEDTRACKPT");              
-//  // variables.push_back("LeadingJet_ASSOCSPHERICITY");                
-//  // variables.push_back("LeadingJet_ASSOCTHRUSTMAJOR");               
-//  // variables.push_back("LeadingJet_ASSOCTHRUSTMINOR");               
-//  // variables.push_back("LeadingJet_AVFASSOCAPLANARITY");             
-//  // variables.push_back("LeadingJet_AVFASSOCSPHERICITY");             
-//  // variables.push_back("LeadingJet_AVFASSOCTHRUSTMAJOR");            
-//  // variables.push_back("LeadingJet_AVFASSOCTHRUSTMINOR");            
-//  // variables.push_back("LeadingJet_AVFBEAMSPOTDELTAPHI");            
-//  // variables.push_back("LeadingJet_AVFBEAMSPOTRECOILPT");            
-//  // variables.push_back("LeadingJet_AVFDISTTOPV");                    
-//  // variables.push_back("LeadingJet_AVFVERTEXCHI2NDOF");              
-//  // variables.push_back("LeadingJet_AVFVERTEXDEGREESOFFREEDOM");      
-//  // variables.push_back("LeadingJet_AVFVERTEXDISTANCETOBEAM");        
-//  // variables.push_back("LeadingJet_AVFVERTEXTOTALCHISQUARED");       
-//  // variables.push_back("LeadingJet_AVFVERTEXTRACKENERGY");           
-//  // variables.push_back("LeadingJet_AVFVERTEXTRACKMASS");             
-//  // variables.push_back("LeadingJet_AVFVERTEXTRANSVERSESIG");         
-//  // variables.push_back("LeadingJet_AVGMISSINGINNER");                
-//  // variables.push_back("LeadingJet_AVGMISSINGOUTER");                
-//  // //variables.push_back("LeadingJet_BASICCALOJETS1ANGLE_DANGLE");     
-//  // //variables.push_back("LeadingJet_BASICCALOJETS1ANGLE_DPHI");       
-//  // //variables.push_back("LeadingJet_BASICCALOJETS1DELTAR");           
-//  // //variables.push_back("LeadingJet_BASICCALOJETS1PT20DELTAR");       
-//  // variables.push_back("LeadingJet_BETA2");                          
-//   variables.push_back("LeadingJet_BETA");                           
-//   variables.push_back("LeadingJet_ETA");                            
-//  // variables.push_back("LeadingJet_HITSINFRONTOFVERTPERTRACK");      
-//  // variables.push_back("LeadingJet_IVFSCORE");                       
-//   variables.push_back("LeadingJet_JETAREA");                        
-//  // variables.push_back("LeadingJet_LEPANGLE_DANGLE");                
-//  // variables.push_back("LeadingJet_LEPANGLE_DPHI");                  
-//  // variables.push_back("LeadingJet_LEPDELTAR");                      
-//  // variables.push_back("LeadingJet_LINEARRADIALMOMENT");             
-//  // variables.push_back("LeadingJet_LRM");                            
-//  // variables.push_back("LeadingJet_MASSDISPLACED");                  
-//  // variables.push_back("LeadingJet_MEDIANIPLOG10SIG");               
-//  // variables.push_back("LeadingJet_MEDIANIPLOGSIG");                 
-//  // variables.push_back("LeadingJet_MEDIANLOG10TRACKANGLE");          
-//  // variables.push_back("LeadingJet_METANGLE_DANGLE");                
-//  // variables.push_back("LeadingJet_METANGLE_DPHI");                  
-//   variables.push_back("LeadingJet_METDELTAR");                      
-//  // variables.push_back("LeadingJet_MISSHITSAFTERVERTPERTRACK");      
-//   variables.push_back("LeadingJet_M");                              
-//   variables.push_back("LeadingJet_PHI");                            
-//   variables.push_back("LeadingJet_PT");                             
-//  // variables.push_back("LeadingJet_SELFDELTAR");                     
-//  // variables.push_back("LeadingJet_SSPH");                           
-//  // variables.push_back("LeadingJet_STUPAKPT");                       
-//  // //variables.push_back("LeadingJet_STUPAKR");                        
-//  // variables.push_back("LeadingJet_SUMIPLOGSIG");                    
-//  // variables.push_back("LeadingJet_SUMIPSIG");                       
-//  // variables.push_back("LeadingJet_SUMIP");                          
-//  // variables.push_back("LeadingJet_TOTALTRACKANGLEPT");              
-//  // variables.push_back("LeadingJet_TOTALTRACKANGLE");                
-//  // variables.push_back("LeadingJet_TOTALTRACKPT");                   
-//  // variables.push_back("LeadingJet_TRACKENERGY");                    
-//  // variables.push_back("LeadingJet_TRACKMASS");                      
-//  // variables.push_back("SubleadingJet_MISSINGINNER");                
-//  // variables.push_back("SubleadingJet_MISSINGOUTER");                
-//  // variables.push_back("SubleadingJet_HSPH");                        
-//  // variables.push_back("SubleadingJet_NJets");                       
-//  // variables.push_back("SubleadingJet_NCLEANMATCHEDTRACKS");         
-//  // variables.push_back("SubleadingJet_NMATCHEDTRACKS");              
-//  // variables.push_back("SubleadingJet_NTRACKSIPLT0P05");             
-//  // variables.push_back("SubleadingJet_NTRACKSIPSIGGT10");            
-//  // variables.push_back("SubleadingJet_NTRACKSIPSIGLT5");             
-//  // variables.push_back("SubleadingJet_ALPHAMAX2");                   
-//  // variables.push_back("SubleadingJet_ALPHAMAXPRIME2");              
-//  // variables.push_back("SubleadingJet_ALPHAMAXPRIME");               
-//  // variables.push_back("SubleadingJet_ALPHAMAX");                    
-//  // variables.push_back("SubleadingJet_ASSOCAPLANARITY");             
-//  // variables.push_back("SubleadingJet_ASSOCIATEDTRACKPT");           
-//  // variables.push_back("SubleadingJet_ASSOCSPHERICITY");             
-//  // variables.push_back("SubleadingJet_ASSOCTHRUSTMAJOR");            
-//  // variables.push_back("SubleadingJet_ASSOCTHRUSTMINOR");            
-//  // variables.push_back("SubleadingJet_AVFASSOCAPLANARITY");          
-//  // variables.push_back("SubleadingJet_AVFASSOCSPHERICITY");          
-//  // variables.push_back("SubleadingJet_AVFASSOCTHRUSTMAJOR");         
-//  // variables.push_back("SubleadingJet_AVFASSOCTHRUSTMINOR");         
-//  // variables.push_back("SubleadingJet_AVFBEAMSPOTDELTAPHI");         
-//  // variables.push_back("SubleadingJet_AVFBEAMSPOTRECOILPT");         
-//  // variables.push_back("SubleadingJet_AVFDISTTOPV");                 
-//  // variables.push_back("SubleadingJet_AVFVERTEXCHI2NDOF");           
-//  // variables.push_back("SubleadingJet_AVFVERTEXDEGREESOFFREEDOM");   
-//  // variables.push_back("SubleadingJet_AVFVERTEXDISTANCETOBEAM");     
-//  // variables.push_back("SubleadingJet_AVFVERTEXTOTALCHISQUARED");    
-//  // variables.push_back("SubleadingJet_AVFVERTEXTRACKENERGY");        
-//  // variables.push_back("SubleadingJet_AVFVERTEXTRACKMASS");          
-//  // variables.push_back("SubleadingJet_AVFVERTEXTRANSVERSESIG");      
-//  // variables.push_back("SubleadingJet_AVGMISSINGINNER");             
-//  // variables.push_back("SubleadingJet_AVGMISSINGOUTER");             
-//  // variables.push_back("SubleadingJet_BASICCALOJETS1ANGLE_DANGLE");  
-//  // variables.push_back("SubleadingJet_BASICCALOJETS1ANGLE_DPHI");    
-//  // variables.push_back("SubleadingJet_BASICCALOJETS1DELTAR");        
-//  // variables.push_back("SubleadingJet_BASICCALOJETS1PT20DELTAR");    
-//  // variables.push_back("SubleadingJet_BETA2");                       
-//  // variables.push_back("SubleadingJet_BETA");                        
-//  // variables.push_back("SubleadingJet_ETA");                         
-//  // variables.push_back("SubleadingJet_HITSINFRONTOFVERTPERTRACK");   
-//  // variables.push_back("SubleadingJet_IVFSCORE");                    
-//  // variables.push_back("SubleadingJet_JETAREA");                     
-//  // variables.push_back("SubleadingJet_LEPANGLE_DANGLE");             
-//  // variables.push_back("SubleadingJet_LEPANGLE_DPHI");               
-//  // variables.push_back("SubleadingJet_LEPDELTAR");                   
-//  // variables.push_back("SubleadingJet_LINEARRADIALMOMENT");          
-//  // variables.push_back("SubleadingJet_LRM");                         
-//  // variables.push_back("SubleadingJet_MASSDISPLACED");               
-//  // variables.push_back("SubleadingJet_MEDIANIPLOG10SIG");            
-//  // variables.push_back("SubleadingJet_MEDIANIPLOGSIG");              
-//  // variables.push_back("SubleadingJet_MEDIANLOG10TRACKANGLE");       
-//  // variables.push_back("SubleadingJet_METANGLE_DANGLE");             
-//  // variables.push_back("SubleadingJet_METANGLE_DPHI");               
-//  // variables.push_back("SubleadingJet_METDELTAR");                   
-//  // variables.push_back("SubleadingJet_MISSHITSAFTERVERTPERTRACK");   
-//  // variables.push_back("SubleadingJet_M");                           
-//  // variables.push_back("SubleadingJet_PHI");                         
-//  // variables.push_back("SubleadingJet_PT");                          
-//  // variables.push_back("SubleadingJet_SELFDELTAR");                  
-//  // variables.push_back("SubleadingJet_SSPH");                        
-//  // variables.push_back("SubleadingJet_STUPAKPT");                    
-//  // //variables.push_back("SubleadingJet_STUPAKR");                     
-//  // variables.push_back("SubleadingJet_SUMIPLOGSIG");                 
-//  // variables.push_back("SubleadingJet_SUMIPSIG");                    
-//  // variables.push_back("SubleadingJet_SUMIP");                       
-//  // variables.push_back("SubleadingJet_TOTALTRACKANGLEPT");           
-//  // variables.push_back("SubleadingJet_TOTALTRACKANGLE");             
-//  // variables.push_back("SubleadingJet_TOTALTRACKPT");                
-//  // variables.push_back("SubleadingJet_TRACKENERGY");                 
-//  // variables.push_back("SubleadingJet_TRACKMASS");                   
-//  // variables.push_back("ThirdJet_MISSINGINNER");                     
-//  // variables.push_back("ThirdJet_MISSINGOUTER");                     
-//  // variables.push_back("ThirdJet_HSPH");                             
-//  // variables.push_back("ThirdJet_NJets");                            
-//  // variables.push_back("ThirdJet_NCLEANMATCHEDTRACKS");              
-//  // variables.push_back("ThirdJet_NMATCHEDTRACKS");                   
-//  // variables.push_back("ThirdJet_NTRACKSIPLT0P05");                  
-//  // variables.push_back("ThirdJet_NTRACKSIPSIGGT10");                 
-//  // variables.push_back("ThirdJet_NTRACKSIPSIGLT5");                  
-//  // variables.push_back("ThirdJet_ALPHAMAX2");                        
-//  // variables.push_back("ThirdJet_ALPHAMAXPRIME2");                   
-//  // variables.push_back("ThirdJet_ALPHAMAXPRIME");                    
-//  // variables.push_back("ThirdJet_ALPHAMAX");                         
-//  // variables.push_back("ThirdJet_ASSOCAPLANARITY");                  
-//  // variables.push_back("ThirdJet_ASSOCIATEDTRACKPT");                
-//  // variables.push_back("ThirdJet_ASSOCSPHERICITY");                  
-//  // variables.push_back("ThirdJet_ASSOCTHRUSTMAJOR");                 
-//  // variables.push_back("ThirdJet_ASSOCTHRUSTMINOR");                 
-//  // variables.push_back("ThirdJet_AVFASSOCAPLANARITY");               
-//  // variables.push_back("ThirdJet_AVFASSOCSPHERICITY");               
-//  // variables.push_back("ThirdJet_AVFASSOCTHRUSTMAJOR");              
-//  // variables.push_back("ThirdJet_AVFASSOCTHRUSTMINOR");              
-//  // variables.push_back("ThirdJet_AVFBEAMSPOTDELTAPHI");              
-//  // variables.push_back("ThirdJet_AVFBEAMSPOTRECOILPT");              
-//  // variables.push_back("ThirdJet_AVFDISTTOPV");                      
-//  // variables.push_back("ThirdJet_AVFVERTEXCHI2NDOF");                
-//  // variables.push_back("ThirdJet_AVFVERTEXDEGREESOFFREEDOM");        
-//  // variables.push_back("ThirdJet_AVFVERTEXDISTANCETOBEAM");          
-//  // variables.push_back("ThirdJet_AVFVERTEXTOTALCHISQUARED");         
-//  // variables.push_back("ThirdJet_AVFVERTEXTRACKENERGY");             
-//  // variables.push_back("ThirdJet_AVFVERTEXTRACKMASS");               
-//  // variables.push_back("ThirdJet_AVFVERTEXTRANSVERSESIG");           
-//  // variables.push_back("ThirdJet_AVGMISSINGINNER");                  
-//  // variables.push_back("ThirdJet_AVGMISSINGOUTER");                  
-//  // variables.push_back("ThirdJet_BASICCALOJETS1ANGLE_DANGLE");       
-//  // variables.push_back("ThirdJet_BASICCALOJETS1ANGLE_DPHI");         
-//  // variables.push_back("ThirdJet_BASICCALOJETS1DELTAR");             
-//  // variables.push_back("ThirdJet_BASICCALOJETS1PT20DELTAR");         
-//  // variables.push_back("ThirdJet_BETA2");                            
-//  // variables.push_back("ThirdJet_BETA");                             
-//  // variables.push_back("ThirdJet_ETA");                              
-//  // variables.push_back("ThirdJet_HITSINFRONTOFVERTPERTRACK");        
-//  // variables.push_back("ThirdJet_IVFSCORE");                         
-//  // variables.push_back("ThirdJet_JETAREA");                          
-//  // variables.push_back("ThirdJet_LEPANGLE_DANGLE");                  
-//  // variables.push_back("ThirdJet_LEPANGLE_DPHI");                    
-//  // variables.push_back("ThirdJet_LEPDELTAR");                        
-//  // variables.push_back("ThirdJet_LINEARRADIALMOMENT");               
-//  // variables.push_back("ThirdJet_LRM");                              
-//  // variables.push_back("ThirdJet_MASSDISPLACED");                    
-//  // variables.push_back("ThirdJet_MEDIANIPLOG10SIG");                 
-//  // variables.push_back("ThirdJet_MEDIANIPLOGSIG");                   
-//  // variables.push_back("ThirdJet_MEDIANLOG10TRACKANGLE");            
-//  // variables.push_back("ThirdJet_METANGLE_DANGLE");                  
-//  // variables.push_back("ThirdJet_METANGLE_DPHI");                    
-//  // variables.push_back("ThirdJet_METDELTAR");                        
-//  // variables.push_back("ThirdJet_MISSHITSAFTERVERTPERTRACK");        
-//  // variables.push_back("ThirdJet_M");                                
-//  // variables.push_back("ThirdJet_PHI");                              
-//  // variables.push_back("ThirdJet_PT");                               
-//  // variables.push_back("ThirdJet_SELFDELTAR");                       
-//  // variables.push_back("ThirdJet_SSPH");                             
-//  // variables.push_back("ThirdJet_STUPAKPT");                         
-//  // variables.push_back("ThirdJet_STUPAKR");                          
-//  // variables.push_back("ThirdJet_SUMIPLOGSIG");                      
-//  // variables.push_back("ThirdJet_SUMIPSIG");                         
-//  // variables.push_back("ThirdJet_SUMIP");                            
-//  // variables.push_back("ThirdJet_TOTALTRACKANGLEPT");                
-//  // variables.push_back("ThirdJet_TOTALTRACKANGLE");                  
-//  // variables.push_back("ThirdJet_TOTALTRACKPT");                     
-//  // variables.push_back("ThirdJet_TRACKENERGY");                      
-//  // variables.push_back("ThirdJet_TRACKMASS");                        
-//  // variables.push_back("FourthJet_MISSINGINNER");                    
-//  // variables.push_back("FourthJet_MISSINGOUTER");                    
-//  // variables.push_back("FourthJet_HSPH");                            
-//  // variables.push_back("FourthJet_NJets");                           
-//  // variables.push_back("FourthJet_NCLEANMATCHEDTRACKS");             
-//  // variables.push_back("FourthJet_NMATCHEDTRACKS");                  
-//  // variables.push_back("FourthJet_NTRACKSIPLT0P05");                 
-//  // variables.push_back("FourthJet_NTRACKSIPSIGGT10");                
-//  // variables.push_back("FourthJet_NTRACKSIPSIGLT5");                 
-//  // variables.push_back("FourthJet_ALPHAMAX2");                       
-//  // variables.push_back("FourthJet_ALPHAMAXPRIME2");                  
-//  // variables.push_back("FourthJet_ALPHAMAXPRIME");                   
-//  // variables.push_back("FourthJet_ALPHAMAX");                        
-//  // variables.push_back("FourthJet_ASSOCAPLANARITY");                 
-//  // variables.push_back("FourthJet_ASSOCIATEDTRACKPT");               
-//  // variables.push_back("FourthJet_ASSOCSPHERICITY");                 
-//  // variables.push_back("FourthJet_ASSOCTHRUSTMAJOR");                
-//  // variables.push_back("FourthJet_ASSOCTHRUSTMINOR");                
-//  // variables.push_back("FourthJet_AVFASSOCAPLANARITY");              
-//  // variables.push_back("FourthJet_AVFASSOCSPHERICITY");              
-//  // variables.push_back("FourthJet_AVFASSOCTHRUSTMAJOR");             
-//  // variables.push_back("FourthJet_AVFASSOCTHRUSTMINOR");             
-//  // variables.push_back("FourthJet_AVFBEAMSPOTDELTAPHI");             
-//  // variables.push_back("FourthJet_AVFBEAMSPOTRECOILPT");             
-//  // variables.push_back("FourthJet_AVFDISTTOPV");                     
-//  // variables.push_back("FourthJet_AVFVERTEXCHI2NDOF");               
-//  // variables.push_back("FourthJet_AVFVERTEXDEGREESOFFREEDOM");       
-//  // variables.push_back("FourthJet_AVFVERTEXDISTANCETOBEAM");         
-//  // variables.push_back("FourthJet_AVFVERTEXTOTALCHISQUARED");        
-//  // variables.push_back("FourthJet_AVFVERTEXTRACKENERGY");            
-//  // variables.push_back("FourthJet_AVFVERTEXTRACKMASS");              
-//  // variables.push_back("FourthJet_AVFVERTEXTRANSVERSESIG");          
-//  // variables.push_back("FourthJet_AVGMISSINGINNER");                 
-//  // variables.push_back("FourthJet_AVGMISSINGOUTER");                 
-//  // variables.push_back("FourthJet_BASICCALOJETS1ANGLE_DANGLE");      
-//  // variables.push_back("FourthJet_BASICCALOJETS1ANGLE_DPHI");        
-//  // variables.push_back("FourthJet_BASICCALOJETS1DELTAR");            
-//  // variables.push_back("FourthJet_BASICCALOJETS1PT20DELTAR");        
-//  // variables.push_back("FourthJet_BETA2");                           
-//  // variables.push_back("FourthJet_BETA");                            
-//  // variables.push_back("FourthJet_ETA");                             
-//  // variables.push_back("FourthJet_HITSINFRONTOFVERTPERTRACK");       
-//  // variables.push_back("FourthJet_IVFSCORE");                        
-//  // variables.push_back("FourthJet_JETAREA");                         
-//  // variables.push_back("FourthJet_LEPANGLE_DANGLE");                 
-//  // variables.push_back("FourthJet_LEPANGLE_DPHI");                   
-//  // variables.push_back("FourthJet_LEPDELTAR");                       
-//  // variables.push_back("FourthJet_LINEARRADIALMOMENT");              
-//  // variables.push_back("FourthJet_LRM");                             
-//  // variables.push_back("FourthJet_MASSDISPLACED");                   
-//  // variables.push_back("FourthJet_MEDIANIPLOG10SIG");                
-//  // variables.push_back("FourthJet_MEDIANIPLOGSIG");                  
-//  // variables.push_back("FourthJet_MEDIANLOG10TRACKANGLE");           
-//  // variables.push_back("FourthJet_METANGLE_DANGLE");                 
-//  // variables.push_back("FourthJet_METANGLE_DPHI");                   
-//  // variables.push_back("FourthJet_METDELTAR");                       
-//  // variables.push_back("FourthJet_MISSHITSAFTERVERTPERTRACK");       
-//  // variables.push_back("FourthJet_M");                               
-//  // variables.push_back("FourthJet_PHI");                             
-//  // variables.push_back("FourthJet_PT");                              
-//  // variables.push_back("FourthJet_SELFDELTAR");                      
-//  // variables.push_back("FourthJet_SSPH");                            
-//  // variables.push_back("FourthJet_STUPAKPT");                        
-//  // variables.push_back("FourthJet_STUPAKR");                         
-//  // variables.push_back("FourthJet_SUMIPLOGSIG");                     
-//  // variables.push_back("FourthJet_SUMIPSIG");                        
-//  // variables.push_back("FourthJet_SUMIP");                           
-//  // variables.push_back("FourthJet_TOTALTRACKANGLEPT");               
-//  // variables.push_back("FourthJet_TOTALTRACKANGLE");                 
-//  // variables.push_back("FourthJet_TOTALTRACKPT");                    
-//  // variables.push_back("FourthJet_TRACKENERGY");                     
-//  // variables.push_back("FourthJet_TRACKMASS");                       
+ //variables.push_back("htall");                                
+
+ //variables.push_back("nVtx");                                  
+ // variables.push_back("htall");                                 
+ // variables.push_back("htjets");                                
+ // variables.push_back("nPU");                                   
+ variables.push_back("phoEt");                                 
+ variables.push_back("phoEta");                                
+ variables.push_back("phoPhi");                                
+ variables.push_back("elePt");                                 
+ variables.push_back("eleEta");                                
+ variables.push_back("elePhi");                                
+ variables.push_back("muPt");                                  
+ variables.push_back("muEta");                                 
+ variables.push_back("muPhi");                                 
+// variables.push_back("LeadingJetjetPt");                       
+// variables.push_back("LeadingJetjetTestVariable");             
+// variables.push_back("LeadingJetjetEn");                       
+// variables.push_back("LeadingJetjetEta");                      
+// variables.push_back("LeadingJetjetPhi");                      
+// variables.push_back("LeadingJetjetRawPt");                    
+// variables.push_back("LeadingJetjetRawEn");                    
+// variables.push_back("LeadingJetjetMt");                       
+// variables.push_back("LeadingJetjetArea");                     
+// variables.push_back("LeadingJetjetLeadTrackPt");              
+// variables.push_back("LeadingJetjetLeadTrackEta");             
+// variables.push_back("LeadingJetjetLeadTrackPhi");             
+// variables.push_back("LeadingJetjetLepTrackPID");              
+// variables.push_back("LeadingJetjetLepTrackPt");               
+// variables.push_back("LeadingJetjetLepTrackEta");              
+// variables.push_back("LeadingJetjetLepTrackPhi");              
+// variables.push_back("LeadingJetjetCSV2BJetTags");             
+// variables.push_back("LeadingJetjetJetProbabilityBJetTags");   
+// variables.push_back("LeadingJetjetpfCombinedMVAV2BJetTags");  
+// variables.push_back("LeadingJetjetPartonID");                 
+// variables.push_back("LeadingJetjetHadFlvr");                  
+// variables.push_back("LeadingJetjetGenJetEn");                 
+// variables.push_back("LeadingJetjetGenJetPt");                 
+// variables.push_back("LeadingJetjetGenJetEta");                
+// variables.push_back("LeadingJetjetGenJetPhi");                
+// variables.push_back("LeadingJetjetGenPartonID");              
+// variables.push_back("LeadingJetjetGenEn");                    
+// variables.push_back("LeadingJetjetGenPt");                    
+// variables.push_back("LeadingJetjetGenEta");                   
+// variables.push_back("LeadingJetjetGenPhi");                   
+// variables.push_back("LeadingJetjetGenPartonMomID");           
+// variables.push_back("LeadingJetAK8JetPt");                    
+// variables.push_back("LeadingJetAK8JetEn");                    
+// variables.push_back("LeadingJetAK8JetRawPt");                 
+// variables.push_back("LeadingJetAK8JetRawEn");                 
+// variables.push_back("LeadingJetAK8JetEta");                   
+// variables.push_back("LeadingJetAK8JetPhi");                   
+// variables.push_back("LeadingJetAK8JetMass");                  
+// variables.push_back("SubleadingJetjetPt");                    
+// variables.push_back("SubleadingJetjetTestVariable");          
+// variables.push_back("SubleadingJetjetEn");                    
+// variables.push_back("SubleadingJetjetEta");                   
+// variables.push_back("SubleadingJetjetPhi");                   
+// variables.push_back("SubleadingJetjetRawPt");                 
+// variables.push_back("SubleadingJetjetRawEn");                 
+// variables.push_back("SubleadingJetjetMt");                    
+// variables.push_back("SubleadingJetjetArea");                  
+// variables.push_back("SubleadingJetjetLeadTrackPt");           
+// variables.push_back("SubleadingJetjetLeadTrackEta");          
+// variables.push_back("SubleadingJetjetLeadTrackPhi");          
+// variables.push_back("SubleadingJetjetLepTrackPID");           
+// variables.push_back("SubleadingJetjetLepTrackPt");            
+// variables.push_back("SubleadingJetjetLepTrackEta");           
+// variables.push_back("SubleadingJetjetLepTrackPhi");           
+// variables.push_back("SubleadingJetjetCSV2BJetTags");          
+// variables.push_back("SubleadingJetjetJetProbabilityBJetTags");
+// variables.push_back("SubleadingJetjetpfCombinedMVAV2BJetTags")
+// variables.push_back("SubleadingJetjetPartonID");              
+// variables.push_back("SubleadingJetjetHadFlvr");               
+// variables.push_back("SubleadingJetjetGenJetEn");              
+// variables.push_back("SubleadingJetjetGenJetPt");              
+// variables.push_back("SubleadingJetjetGenJetEta");             
+// variables.push_back("SubleadingJetjetGenJetPhi");             
+// variables.push_back("SubleadingJetjetGenPartonID");           
+// variables.push_back("SubleadingJetjetGenEn");                 
+// variables.push_back("SubleadingJetjetGenPt");                 
+// variables.push_back("SubleadingJetjetGenEta");                
+// variables.push_back("SubleadingJetjetGenPhi");                
+// variables.push_back("SubleadingJetjetGenPartonMomID");        
+// variables.push_back("SubleadingJetAK8JetPt");                 
+// variables.push_back("SubleadingJetAK8JetEn");                 
+// variables.push_back("SubleadingJetAK8JetRawPt");              
+// variables.push_back("SubleadingJetAK8JetRawEn");              
+// variables.push_back("SubleadingJetAK8JetEta");                
+// variables.push_back("SubleadingJetAK8JetPhi");                
+// variables.push_back("SubleadingJetAK8JetMass");               
+// variables.push_back("ThirdJetjetPt");                         
+// variables.push_back("ThirdJetjetTestVariable");               
+// variables.push_back("ThirdJetjetEn");                         
+// variables.push_back("ThirdJetjetEta");                        
+// variables.push_back("ThirdJetjetPhi");                        
+// variables.push_back("ThirdJetjetRawPt");                      
+// variables.push_back("ThirdJetjetRawEn");                      
+// variables.push_back("ThirdJetjetMt");                         
+// variables.push_back("ThirdJetjetArea");                       
+// variables.push_back("ThirdJetjetLeadTrackPt");                
+// variables.push_back("ThirdJetjetLeadTrackEta");               
+// variables.push_back("ThirdJetjetLeadTrackPhi");               
+// variables.push_back("ThirdJetjetLepTrackPID");                
+// variables.push_back("ThirdJetjetLepTrackPt");                 
+// variables.push_back("ThirdJetjetLepTrackEta");                
+// variables.push_back("ThirdJetjetLepTrackPhi");                
+// variables.push_back("ThirdJetjetCSV2BJetTags");               
+// variables.push_back("ThirdJetjetJetProbabilityBJetTags");     
+// variables.push_back("ThirdJetjetpfCombinedMVAV2BJetTags");    
+// variables.push_back("ThirdJetjetPartonID");                   
+// variables.push_back("ThirdJetjetHadFlvr");                    
+// variables.push_back("ThirdJetjetGenJetEn");                   
+// variables.push_back("ThirdJetjetGenJetPt");                   
+// variables.push_back("ThirdJetjetGenJetEta");                  
+// variables.push_back("ThirdJetjetGenJetPhi");                  
+// variables.push_back("ThirdJetjetGenPartonID");                
+// variables.push_back("ThirdJetjetGenEn");                      
+// variables.push_back("ThirdJetjetGenPt");                      
+// variables.push_back("ThirdJetjetGenEta");                     
+// variables.push_back("ThirdJetjetGenPhi");                     
+// variables.push_back("ThirdJetjetGenPartonMomID");             
+// variables.push_back("ThirdJetAK8JetPt");                      
+// variables.push_back("ThirdJetAK8JetEn");                      
+// variables.push_back("ThirdJetAK8JetRawPt");                   
+// variables.push_back("ThirdJetAK8JetRawEn");                   
+// variables.push_back("ThirdJetAK8JetEta");                     
+// variables.push_back("ThirdJetAK8JetPhi");                     
+// variables.push_back("ThirdJetAK8JetMass");                    
+// variables.push_back("FourthJetjetPt");                        
+// variables.push_back("FourthJetjetTestVariable");              
+// variables.push_back("FourthJetjetEn");                        
+// variables.push_back("FourthJetjetEta");                       
+// variables.push_back("FourthJetjetPhi");                       
+// variables.push_back("FourthJetjetRawPt");                     
+// variables.push_back("FourthJetjetRawEn");                     
+// variables.push_back("FourthJetjetMt");                        
+// variables.push_back("FourthJetjetArea");                      
+// variables.push_back("FourthJetjetLeadTrackPt");               
+// variables.push_back("FourthJetjetLeadTrackEta");              
+// variables.push_back("FourthJetjetLeadTrackPhi");              
+// variables.push_back("FourthJetjetLepTrackPID");               
+// variables.push_back("FourthJetjetLepTrackPt");                
+// variables.push_back("FourthJetjetLepTrackEta");               
+// variables.push_back("FourthJetjetLepTrackPhi");               
+// variables.push_back("FourthJetjetCSV2BJetTags");              
+// variables.push_back("FourthJetjetJetProbabilityBJetTags");    
+// variables.push_back("FourthJetjetpfCombinedMVAV2BJetTags");   
+// variables.push_back("FourthJetjetPartonID");                  
+// variables.push_back("FourthJetjetHadFlvr");                   
+// variables.push_back("FourthJetjetGenJetEn");                  
+// variables.push_back("FourthJetjetGenJetPt");                  
+// variables.push_back("FourthJetjetGenJetEta");                 
+// variables.push_back("FourthJetjetGenJetPhi");                 
+// variables.push_back("FourthJetjetGenPartonID");               
+// variables.push_back("FourthJetjetGenEn");                     
+// variables.push_back("FourthJetjetGenPt");                     
+// variables.push_back("FourthJetjetGenEta");                    
+// variables.push_back("FourthJetjetGenPhi");                    
+// variables.push_back("FourthJetjetGenPartonMomID");            
+// variables.push_back("FourthJetAK8JetPt");                     
+// variables.push_back("FourthJetAK8JetEn");                     
+// variables.push_back("FourthJetAK8JetRawPt");                  
+// variables.push_back("FourthJetAK8JetRawEn");                  
+// variables.push_back("FourthJetAK8JetEta");                    
+// variables.push_back("FourthJetAK8JetPhi");                    
+// variables.push_back("FourthJetAK8JetMass");                   
+
 
  // make canvas and text
  TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
@@ -424,193 +237,280 @@ void plotter_stacked()
  lumi->SetTextFont(42);
 
  // initialize histogram files 
- TFile* file_DY50       ; // = new TFile(inpath+"DY50.root"); 
- TFile* file_DY5to50    ; // = new TFile(inpath+"DY5to50.root");   
- TFile* file_STs        ; // = new TFile(inpath+"STs.root");       
- TFile* file_STtbar     ; // = new TFile(inpath+"STtbar.root");    
- TFile* file_STtbarW    ; // = new TFile(inpath+"STtbarW.root");   
- TFile* file_STt        ; // = new TFile(inpath+"STt.root");       
- TFile* file_STtW       ; // = new TFile(inpath+"STtW.root");      
- TFile* file_TTbar      ; // = new TFile(inpath+"TTbar.root");     
- TFile* file_WJets      ; // = new TFile(inpath+"WJets.root");     
- TFile* file_WW         ; // = new TFile(inpath+"WW.root");        
- TFile* file_WZ         ; // = new TFile(inpath+"WZ.root");        
- TFile* file_ZZ         ; // = new TFile(inpath+"ZZ.root");        
- TFile* file_ZHtoLLbb   ; // = new TFile(inpath+"ZHtoLLbb.root");  
- TFile* file_ggZHtoLLbb ; // = new TFile(inpath+"ZHtoLLbb.root");  
- TFile* file_SignalWm   ;
- TFile* file_SignalWp   ;
- TFile* file_SignalZH   ;
- TFile* file_SignalggZH ;
+
+ TFile* file_DY50                            ;                            
+ TFile* file_DY5to50_HT100to200              ;              
+ TFile* file_DY5to50_HT200to400              ;              
+ TFile* file_DY5to50_HT400to600              ;              
+ TFile* file_DY5to50_HT600toInf              ;              
+ TFile* file_DY5to50_HT70to100               ;               
+ TFile* file_GJets_HT40To100                 ;                 
+ TFile* file_GJets_HT100To200                ;                
+ TFile* file_GJets_HT200To400                ;                
+ TFile* file_GJets_HT400To600                ;                
+ TFile* file_GJets_HT600ToInf                ;                
+ TFile* file_ST_s                            ;                            
+ TFile* file_STbar_t                         ;                         
+ TFile* file_ST_t                            ;                            
+ TFile* file_STbar_tW                        ;                        
+ TFile* file_ST_tW                           ;                           
+ TFile* file_TTJets                          ;                          
+ TFile* file_WW                              ;                              
+ TFile* file_WZ                              ;                              
+ TFile* file_ZZ                              ;                              
+ TFile* file_ZH_HToBB_ZToLL                  ;                  
+ TFile* file_ggZH_HToBB_ZToLL                ;                
+ TFile* file_ggZH_HToSSTobbbb_MS40_ctauS100  ;  
+ TFile* file_ggZH_HToSSTodddd_MS40_ctauS100  ;  
+ TFile* file_WJetsToLNu                      ;                      
+ TFile* file_SingleElectron                  ;                  
+ TFile* file_SingleMuon                      ;        
 
  // initialize histos
- TH1F* h_DY50     ; 
- TH1F* h_DY5to50  ; 
- TH1F* h_STs      ; 
- TH1F* h_STtbar   ; 
- TH1F* h_STtbarW  ; 
- TH1F* h_STt      ; 
- TH1F* h_STtW     ; 
- TH1F* h_TTbar    ; 
- TH1F* h_WJets    ; 
- TH1F* h_WW       ; 
- TH1F* h_WZ       ; 
- TH1F* h_ZZ       ; 
- TH1F* h_ZHtoLLbb   ; 
- TH1F* h_ggZHtoLLbb ; 
- TH1F* h_SignalWm   ;
- TH1F* h_SignalWp   ;
- TH1F* h_SignalZH   ;
- TH1F* h_SignalggZH ;
+ TH1F* h_DY50                            ;                            
+ TH1F* h_DY5to50_HT100to200              ;              
+ TH1F* h_DY5to50_HT200to400              ;              
+ TH1F* h_DY5to50_HT400to600              ;              
+ TH1F* h_DY5to50_HT600toInf              ;              
+ TH1F* h_DY5to50_HT70to100               ;               
+ TH1F* h_GJets_HT40To100                 ;                 
+ TH1F* h_GJets_HT100To200                ;                
+ TH1F* h_GJets_HT200To400                ;                
+ TH1F* h_GJets_HT400To600                ;                
+ TH1F* h_GJets_HT600ToInf                ;                
+ TH1F* h_ST_s                            ;                            
+ TH1F* h_STbar_t                         ;                         
+ TH1F* h_ST_t                            ;                            
+ TH1F* h_STbar_tW                        ;                        
+ TH1F* h_ST_tW                           ;                           
+ TH1F* h_TTJets                          ;                          
+ TH1F* h_WW                              ;                              
+ TH1F* h_WZ                              ;                              
+ TH1F* h_ZZ                              ;                              
+ TH1F* h_ZH_HToBB_ZToLL                  ;                  
+ TH1F* h_ggZH_HToBB_ZToLL                ;                
+ TH1F* h_ggZH_HToSSTobbbb_MS40_ctauS100  ;  
+ TH1F* h_ggZH_HToSSTodddd_MS40_ctauS100  ;  
+ TH1F* h_WJets                           ;                      
+ TH1F* h_SingleElectron                  ;                  
+ TH1F* h_SingleMuon                      ;        
 
  // (combined) histos to be made
- TH1F* h_DY ;
- TH1F* h_ST ;
- TH1F* h_VV ;
- TH1F* h_ZH ;
- TH1F* h_totbkg;
+ TH1F* h_DY     ;
+ TH1F* h_GJets  ;
+ TH1F* h_ST     ;
+ TH1F* h_VV     ;
+ TH1F* h_ZH     ;
+ TH1F* h_totbkg ;
 
- for(unsigned int k=0; k<jettypes.size(); ++k){
-  TString jettype = jettypes[k];
+ TH1F* h_Data   ;
 
-  // load histogram files
-  file_DY50     = new TFile(inpath+"DY50_"+jettype+".root"); 
-  file_DY5to50  = new TFile(inpath+"DY5to50_"+jettype+".root");   
-  file_STs      = new TFile(inpath+"STs_"+jettype+".root");       
-  file_STtbar   = new TFile(inpath+"STtbar_"+jettype+".root");    
-  file_STtbarW  = new TFile(inpath+"STtbarW_"+jettype+".root");   
-  file_STt      = new TFile(inpath+"STt_"+jettype+".root");       
-  file_STtW     = new TFile(inpath+"STtW_"+jettype+".root");      
-  file_TTbar    = new TFile(inpath+"TTbar_"+jettype+".root");     
-  file_WJets    = new TFile(inpath+"WJets_"+jettype+".root");     
-  file_WW       = new TFile(inpath+"WW_"+jettype+".root");        
-  file_WZ       = new TFile(inpath+"WZ_"+jettype+".root");        
-  file_ZZ       = new TFile(inpath+"ZZ_"+jettype+".root");        
-  file_ZHtoLLbb   = new TFile(inpath+"ZHtoLLbb_ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8_"+jettype+".root"); 
-  file_ggZHtoLLbb = new TFile(inpath+"ZHtoLLbb_ggZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8_"+jettype+".root");
-  file_SignalWm   = new TFile(inpath+"Signal_WminusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8_"+jettype+".root");
-  file_SignalWp   = new TFile(inpath+"Signal_WplusH_HToSSTobbbb_WToLNu_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8_"+jettype+".root");
-  file_SignalZH   = new TFile(inpath+"Signal_ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8_"+jettype+".root");
-  file_SignalggZH = new TFile(inpath+"Signal_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_TuneCUETP8M1_13TeV-powheg-pythia8_"+jettype+".root");
+ // load histogram files
+ file_DY50                            = new TFile( inpath + "DY50.root"                           ) ;                            
+ file_DY5to50_HT100to200              = new TFile( inpath + "DY5to50_HT100to200.root"             ) ;              
+ file_DY5to50_HT200to400              = new TFile( inpath + "DY5to50_HT200to400.root"             ) ;              
+ file_DY5to50_HT400to600              = new TFile( inpath + "DY5to50_HT400to600.root"             ) ;              
+ file_DY5to50_HT600toInf              = new TFile( inpath + "DY5to50_HT600toInf.root"             ) ;              
+ file_DY5to50_HT70to100               = new TFile( inpath + "DY5to50_HT70to100.root"              ) ;               
+ file_GJets_HT40To100                 = new TFile( inpath + "GJets_HT40To100.root"                ) ;                 
+ file_GJets_HT100To200                = new TFile( inpath + "GJets_HT100To200.root"               ) ;                
+ file_GJets_HT200To400                = new TFile( inpath + "GJets_HT200To400.root"               ) ;                
+ file_GJets_HT400To600                = new TFile( inpath + "GJets_HT400To600.root"               ) ;                
+ file_GJets_HT600ToInf                = new TFile( inpath + "GJets_HT600ToInf.root"               ) ;                
+ file_ST_s                            = new TFile( inpath + "ST_s.root"                           ) ;                            
+ file_STbar_t                         = new TFile( inpath + "STbar_t.root"                        ) ;                         
+ file_ST_t                            = new TFile( inpath + "ST_t.root"                           ) ;                            
+ file_STbar_tW                        = new TFile( inpath + "STbar_tW.root"                       ) ;                        
+ file_ST_tW                           = new TFile( inpath + "ST_tW.root"                          ) ;                           
+ file_TTJets                          = new TFile( inpath + "TTJets.root"                         ) ;                          
+ file_WW                              = new TFile( inpath + "WW.root"                             ) ;                              
+ file_WZ                              = new TFile( inpath + "WZ.root"                             ) ;                              
+ file_ZZ                              = new TFile( inpath + "ZZ.root"                             ) ;                              
+ file_ZH_HToBB_ZToLL                  = new TFile( inpath + "ZH_HToBB_ZToLL.root"                 ) ;                  
+ file_ggZH_HToBB_ZToLL                = new TFile( inpath + "ggZH_HToBB_ZToLL.root"               ) ;                
+ file_ggZH_HToSSTobbbb_MS40_ctauS100  = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS100.root" ) ;  
+ file_ggZH_HToSSTodddd_MS40_ctauS100  = new TFile( inpath + "ggZH_HToSSTodddd_MS40_ctauS100.root" ) ;  
+ file_WJets                           = new TFile( inpath + "WJetsToLNu.root"                     ) ;                      
+ file_SingleElectron                  = new TFile( inpath + "SingleElectron.root"                 ) ;                  
+ file_SingleMuon                      = new TFile( inpath + "SingleMuon.root"                     ) ;        
 
-  for(unsigned int i=0; i<regions.size(); ++i){
-   TString region = regions[i];
+ for(unsigned int i=0; i<regions.size(); ++i){
+  TString region = regions[i];
+  for(unsigned int j=0; j<variables.size(); ++j){
+   TString variable = variables[j];
+   for(unsigned int k=0; k<leptons.size(); ++k){
+    TString lepton = leptons[k];
 
-   for(unsigned int j=0; j<variables.size(); ++j){
-    TString variable = variables[j];
-
-    TString varname = region+"_"+variable;
+    TString varname = lepton+"_"+region+"_"+variable;
 
     printf("plotting  h_%s \n",varname.Data());
-    TString outname = outpath+jettype+"_"+varname+extraname; 
+    TString outname = outpath+varname+extraname; 
 
     // get histograms from files
-    h_DY50     = (TH1F*)file_DY50    ->Get("h_"+varname)->Clone("h_DY50"); 
-    h_DY5to50  = (TH1F*)file_DY5to50 ->Get("h_"+varname)->Clone("h_DY5to50"); 
-    h_STs      = (TH1F*)file_STs     ->Get("h_"+varname)->Clone("h_STs"); 
-    h_STtbar   = (TH1F*)file_STtbar  ->Get("h_"+varname)->Clone("h_STtbar"); 
-    h_STtbarW  = (TH1F*)file_STtbarW ->Get("h_"+varname)->Clone("h_STtbarW"); 
-    h_STt      = (TH1F*)file_STt     ->Get("h_"+varname)->Clone("h_STt"); 
-    h_STtW     = (TH1F*)file_STtW    ->Get("h_"+varname)->Clone("h_STtW"); 
-    h_TTbar    = (TH1F*)file_TTbar   ->Get("h_"+varname)->Clone("h_TTbar"); 
-    h_WJets    = (TH1F*)file_WJets   ->Get("h_"+varname)->Clone("h_WJets"); 
-    h_WW       = (TH1F*)file_WW      ->Get("h_"+varname)->Clone("h_WW"); 
-    h_WZ       = (TH1F*)file_WZ      ->Get("h_"+varname)->Clone("h_WZ"); 
-    h_ZZ       = (TH1F*)file_ZZ      ->Get("h_"+varname)->Clone("h_ZZ"); 
-    h_ZHtoLLbb   = (TH1F*)file_ZHtoLLbb   ->Get("h_"+varname)->Clone("h_ZHtoLLbb"); 
-    h_ggZHtoLLbb = (TH1F*)file_ggZHtoLLbb ->Get("h_"+varname)->Clone("h_ggZHtoLLbb"); 
-    h_SignalWm   = (TH1F*)file_SignalWm   ->Get("h_"+varname)->Clone("h_SignalWm"); 
-    h_SignalWp   = (TH1F*)file_SignalWp   ->Get("h_"+varname)->Clone("h_SignalWp"); 
-    h_SignalZH   = (TH1F*)file_SignalZH   ->Get("h_"+varname)->Clone("h_SignalZH"); 
-    h_SignalggZH = (TH1F*)file_SignalggZH ->Get("h_"+varname)->Clone("h_SignalggZH"); 
+    h_DY50                            =  (TH1F*)file_DY50                           ->Get("h_"+varname)->Clone("DY50"                           ) ;                            
+    h_DY5to50_HT100to200              =  (TH1F*)file_DY5to50_HT100to200             ->Get("h_"+varname)->Clone("DY5to50_HT100to200"             ) ;              
+    h_DY5to50_HT200to400              =  (TH1F*)file_DY5to50_HT200to400             ->Get("h_"+varname)->Clone("DY5to50_HT200to400"             ) ;              
+    h_DY5to50_HT400to600              =  (TH1F*)file_DY5to50_HT400to600             ->Get("h_"+varname)->Clone("DY5to50_HT400to600"             ) ;              
+    h_DY5to50_HT600toInf              =  (TH1F*)file_DY5to50_HT600toInf             ->Get("h_"+varname)->Clone("DY5to50_HT600toInf"             ) ;              
+    h_DY5to50_HT70to100               =  (TH1F*)file_DY5to50_HT70to100              ->Get("h_"+varname)->Clone("DY5to50_HT70to100"              ) ;               
+    h_GJets_HT40To100                 =  (TH1F*)file_GJets_HT40To100                ->Get("h_"+varname)->Clone("GJets_HT40To100"                ) ;                 
+    h_GJets_HT100To200                =  (TH1F*)file_GJets_HT100To200               ->Get("h_"+varname)->Clone("GJets_HT100To200"               ) ;                
+    h_GJets_HT200To400                =  (TH1F*)file_GJets_HT200To400               ->Get("h_"+varname)->Clone("GJets_HT200To400"               ) ;                
+    h_GJets_HT400To600                =  (TH1F*)file_GJets_HT400To600               ->Get("h_"+varname)->Clone("GJets_HT400To600"               ) ;                
+    h_GJets_HT600ToInf                =  (TH1F*)file_GJets_HT600ToInf               ->Get("h_"+varname)->Clone("GJets_HT600ToInf"               ) ;                
+    h_ST_s                            =  (TH1F*)file_ST_s                           ->Get("h_"+varname)->Clone("ST_s"                           ) ;                            
+    h_STbar_t                         =  (TH1F*)file_STbar_t                        ->Get("h_"+varname)->Clone("STbar_t"                        ) ;                         
+    h_ST_t                            =  (TH1F*)file_ST_t                           ->Get("h_"+varname)->Clone("ST_t"                           ) ;                            
+    h_STbar_tW                        =  (TH1F*)file_STbar_tW                       ->Get("h_"+varname)->Clone("STbar_tW"                       ) ;                        
+    h_ST_tW                           =  (TH1F*)file_ST_tW                          ->Get("h_"+varname)->Clone("ST_tW"                          ) ;                           
+    h_TTJets                          =  (TH1F*)file_TTJets                         ->Get("h_"+varname)->Clone("TTJets"                         ) ;                          
+    h_WW                              =  (TH1F*)file_WW                             ->Get("h_"+varname)->Clone("WW"                             ) ;                              
+    h_WZ                              =  (TH1F*)file_WZ                             ->Get("h_"+varname)->Clone("WZ"                             ) ;                              
+    h_ZZ                              =  (TH1F*)file_ZZ                             ->Get("h_"+varname)->Clone("ZZ"                             ) ;                              
+    h_ZH_HToBB_ZToLL                  =  (TH1F*)file_ZH_HToBB_ZToLL                 ->Get("h_"+varname)->Clone("ZH_HToBB_ZToLL"                 ) ;                  
+    h_ggZH_HToBB_ZToLL                =  (TH1F*)file_ggZH_HToBB_ZToLL               ->Get("h_"+varname)->Clone("ggZH_HToBB_ZToLL"               ) ;                
+    h_ggZH_HToSSTobbbb_MS40_ctauS100  =  (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS100 ->Get("h_"+varname)->Clone("ggZH_HToSSTobbbb_MS40_ctauS100" ) ;  
+    h_ggZH_HToSSTodddd_MS40_ctauS100  =  (TH1F*)file_ggZH_HToSSTodddd_MS40_ctauS100 ->Get("h_"+varname)->Clone("ggZH_HToSSTodddd_MS40_ctauS100" ) ;  
+    h_WJets                           =  (TH1F*)file_WJets                          ->Get("h_"+varname)->Clone("WJets"                          ) ;                      
+    h_SingleElectron                  =  (TH1F*)file_SingleElectron                 ->Get("h_"+varname)->Clone("SingleElectron"                 ) ;                  
+    h_SingleMuon                      =  (TH1F*)file_SingleMuon                     ->Get("h_"+varname)->Clone("SingleMuon"                     ) ;        
 
     // integrals of histograms
-    Double_t int_DY50       = h_DY50       ->Integral(-1,-1); 
-    Double_t int_DY5to50    = h_DY5to50    ->Integral(-1,-1); 
-    Double_t int_STs        = h_STs        ->Integral(-1,-1); 
-    Double_t int_STtbar     = h_STtbar     ->Integral(-1,-1); 
-    Double_t int_STtbarW    = h_STtbarW    ->Integral(-1,-1); 
-    Double_t int_STt        = h_STt        ->Integral(-1,-1); 
-    Double_t int_STtW       = h_STtW       ->Integral(-1,-1); 
-    Double_t int_TTbar      = h_TTbar      ->Integral(-1,-1); 
-    Double_t int_WJets      = h_WJets      ->Integral(-1,-1); 
-    Double_t int_WW         = h_WW         ->Integral(-1,-1); 
-    Double_t int_WZ         = h_WZ         ->Integral(-1,-1); 
-    Double_t int_ZZ         = h_ZZ         ->Integral(-1,-1); 
-    Double_t int_ZHtoLLbb   = h_ZHtoLLbb   ->Integral(-1,-1); 
-    Double_t int_ggZHtoLLbb = h_ggZHtoLLbb ->Integral(-1,-1); 
+    Double_t int_DY50                           = h_DY50                           ->Integral(-1,-1);   
+    Double_t int_DY5to50_HT100to200             = h_DY5to50_HT100to200             ->Integral(-1,-1);   
+    Double_t int_DY5to50_HT200to400             = h_DY5to50_HT200to400             ->Integral(-1,-1);   
+    Double_t int_DY5to50_HT400to600             = h_DY5to50_HT400to600             ->Integral(-1,-1);   
+    Double_t int_DY5to50_HT600toInf             = h_DY5to50_HT600toInf             ->Integral(-1,-1);   
+    Double_t int_DY5to50_HT70to100              = h_DY5to50_HT70to100              ->Integral(-1,-1);   
+    Double_t int_GJets_HT40To100                = h_GJets_HT40To100                ->Integral(-1,-1);   
+    Double_t int_GJets_HT100To200               = h_GJets_HT100To200               ->Integral(-1,-1);   
+    Double_t int_GJets_HT200To400               = h_GJets_HT200To400               ->Integral(-1,-1);   
+    Double_t int_GJets_HT400To600               = h_GJets_HT400To600               ->Integral(-1,-1);   
+    Double_t int_GJets_HT600ToInf               = h_GJets_HT600ToInf               ->Integral(-1,-1);   
+    Double_t int_ST_s                           = h_ST_s                           ->Integral(-1,-1);   
+    Double_t int_STbar_t                        = h_STbar_t                        ->Integral(-1,-1);   
+    Double_t int_ST_t                           = h_ST_t                           ->Integral(-1,-1);   
+    Double_t int_STbar_tW                       = h_STbar_tW                       ->Integral(-1,-1);   
+    Double_t int_ST_tW                          = h_ST_tW                          ->Integral(-1,-1);   
+    Double_t int_TTJets                         = h_TTJets                         ->Integral(-1,-1);   
+    Double_t int_WW                             = h_WW                             ->Integral(-1,-1);   
+    Double_t int_WZ                             = h_WZ                             ->Integral(-1,-1);   
+    Double_t int_ZZ                             = h_ZZ                             ->Integral(-1,-1);   
+    Double_t int_ZH_HToBB_ZToLL                 = h_ZH_HToBB_ZToLL                 ->Integral(-1,-1);   
+    Double_t int_ggZH_HToBB_ZToLL               = h_ggZH_HToBB_ZToLL               ->Integral(-1,-1);   
+    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100 = h_ggZH_HToSSTobbbb_MS40_ctauS100 ->Integral(-1,-1);   
+    Double_t int_ggZH_HToSSTodddd_MS40_ctauS100 = h_ggZH_HToSSTodddd_MS40_ctauS100 ->Integral(-1,-1);   
+    Double_t int_WJetsToLNu                     = h_WJets                          ->Integral(-1,-1);   
+    Double_t int_SingleElectron                 = h_SingleElectron                 ->Integral(-1,-1);   
+    Double_t int_SingleMuon                     = h_SingleMuon                     ->Integral(-1,-1);   
 
     FILE * outtable;
  
     outtable = fopen (outname+".txt","w");
-      fprintf (outtable, "           & %s \n", region.Data()); 
-      fprintf (outtable, "DY50       & %3.1f\n", int_DY50       ); 
-      fprintf (outtable, "DY5to50    & %3.1f\n", int_DY5to50    ); 
-      fprintf (outtable, "STs        & %3.1f\n", int_STs        ); 
-      fprintf (outtable, "STtbar     & %3.1f\n", int_STtbar     ); 
-      fprintf (outtable, "STtbarW    & %3.1f\n", int_STtbarW    ); 
-      fprintf (outtable, "STt        & %3.1f\n", int_STt        ); 
-      fprintf (outtable, "STtW       & %3.1f\n", int_STtW       ); 
-      fprintf (outtable, "TTbar      & %3.1f\n", int_TTbar      ); 
-      fprintf (outtable, "WJets      & %3.1f\n", int_WJets      ); 
-      fprintf (outtable, "WW         & %3.1f\n", int_WW         ); 
-      fprintf (outtable, "WZ         & %3.1f\n", int_WZ         ); 
-      fprintf (outtable, "ZZ         & %3.1f\n", int_ZZ         ); 
-      fprintf (outtable, "ZHtoLLbb   & %3.1f\n", int_ZHtoLLbb   ); 
-      fprintf (outtable, "ggZHtoLLbb & %3.1f\n", int_ggZHtoLLbb ); 
+     fprintf (outtable, "           & %s \n", region.Data()); 
+     fprintf (outtable, "DY50                           &%3.1f\n", int_DY50                           );   
+     fprintf (outtable, "DY5to50_HT100to200             &%3.1f\n", int_DY5to50_HT100to200             );   
+     fprintf (outtable, "DY5to50_HT200to400             &%3.1f\n", int_DY5to50_HT200to400             );   
+     fprintf (outtable, "DY5to50_HT400to600             &%3.1f\n", int_DY5to50_HT400to600             );   
+     fprintf (outtable, "DY5to50_HT600toInf             &%3.1f\n", int_DY5to50_HT600toInf             );   
+     fprintf (outtable, "DY5to50_HT70to100              &%3.1f\n", int_DY5to50_HT70to100              );   
+     fprintf (outtable, "GJets_HT40To100                &%3.1f\n", int_GJets_HT40To100                );   
+     fprintf (outtable, "GJets_HT100To200               &%3.1f\n", int_GJets_HT100To200               );   
+     fprintf (outtable, "GJets_HT200To400               &%3.1f\n", int_GJets_HT200To400               );   
+     fprintf (outtable, "GJets_HT400To600               &%3.1f\n", int_GJets_HT400To600               );   
+     fprintf (outtable, "GJets_HT600ToInf               &%3.1f\n", int_GJets_HT600ToInf               );   
+     fprintf (outtable, "ST_s                           &%3.1f\n", int_ST_s                           );   
+     fprintf (outtable, "STbar_t                        &%3.1f\n", int_STbar_t                        );   
+     fprintf (outtable, "ST_t                           &%3.1f\n", int_ST_t                           );   
+     fprintf (outtable, "STbar_tW                       &%3.1f\n", int_STbar_tW                       );   
+     fprintf (outtable, "ST_tW                          &%3.1f\n", int_ST_tW                          );   
+     fprintf (outtable, "TTJets                         &%3.1f\n", int_TTJets                         );   
+     fprintf (outtable, "WW                             &%3.1f\n", int_WW                             );   
+     fprintf (outtable, "WZ                             &%3.1f\n", int_WZ                             );   
+     fprintf (outtable, "ZZ                             &%3.1f\n", int_ZZ                             );   
+     fprintf (outtable, "ZH_HToBB_ZToLL                 &%3.1f\n", int_ZH_HToBB_ZToLL                 );   
+     fprintf (outtable, "ggZH_HToBB_ZToLL               &%3.1f\n", int_ggZH_HToBB_ZToLL               );   
+     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS100 &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS100 );   
+     fprintf (outtable, "ggZH_HToSSTodddd_MS40_ctauS100 &%3.1f\n", int_ggZH_HToSSTodddd_MS40_ctauS100 );   
+     fprintf (outtable, "WJetsToLNu                     &%3.1f\n", int_WJetsToLNu                     );   
+     fprintf (outtable, "SingleElectron                 &%3.1f\n", int_SingleElectron                 );   
+     fprintf (outtable, "SingleMuon                     &%3.1f\n", int_SingleMuon                     );   
     fclose (outtable);
 
     // merge some histograms
     h_DY = (TH1F*)h_DY50->Clone("h_DY");
-    h_DY->Add(h_DY5to50);
+    h_DY->Add(h_DY5to50_HT70to100);
+    h_DY->Add(h_DY5to50_HT100to200);
+    h_DY->Add(h_DY5to50_HT200to400);
+    h_DY->Add(h_DY5to50_HT400to600);
+    h_DY->Add(h_DY5to50_HT600toInf);
 
-    h_ST = (TH1F*)h_STs->Clone("h_ST");
-    h_ST->Add(h_STtbar);
-    h_ST->Add(h_STtbarW);
-    h_ST->Add(h_STt);
-    h_ST->Add(h_STtW);
+    h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
+    h_GJets->Add(h_GJets_HT100To200);
+    h_GJets->Add(h_GJets_HT200To400);
+    h_GJets->Add(h_GJets_HT400To600);
+    h_GJets->Add(h_GJets_HT600ToInf);
+
+    h_ST = (TH1F*)h_ST_s->Clone("h_ST");
+    h_ST->Add(h_STbar_t);
+    h_ST->Add(h_ST_t);
+    h_ST->Add(h_STbar_tW);
+    h_ST->Add(h_ST_tW);
 
     h_VV = (TH1F*)h_WW->Clone("h_WW");
     h_VV->Add(h_WZ);
     h_VV->Add(h_ZZ);
 
-    h_ZH = (TH1F*)h_ZHtoLLbb->Clone("h_ZH");
-    h_ZH->Add(h_ggZHtoLLbb);
+    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
+    h_ZH->Add(h_ggZH_HToBB_ZToLL);
+
+    if( lepton=="ele"){
+     h_Data = (TH1F*)h_SingleElectron->Clone("h_Data");
+    }
+    else if( lepton=="mu"){
+     h_Data = (TH1F*)h_SingleMuon->Clone("h_Data");
+    }
 
     // set attributes
-    h_DY    -> SetFillColor(kRed); 
-    h_ST    -> SetFillColor(kGreen+1); 
-    h_TTbar -> SetFillColor(kGreen-9); 
-    h_WJets -> SetFillColor(kAzure+10); 
-    h_VV    -> SetFillColor(kOrange-3); 
-    h_ZH    -> SetFillColor(kBlue); 
+    h_DY     -> SetFillColor(kRed); 
+    h_GJets  -> SetFillColor(kOrange-3);
+    h_VV     -> SetFillColor(kYellow+1); 
+    h_ST     -> SetFillColor(kGreen+1); 
+    h_TTJets -> SetFillColor(kGreen-9); 
+    h_WJets  -> SetFillColor(kAzure+10); 
+    h_ZH     -> SetFillColor(kBlue); 
 
     h_DY    -> SetLineColor(kBlack); 
+    h_GJets -> SetLineColor(kBlack);
     h_ST    -> SetLineColor(kBlack); 
-    h_TTbar -> SetLineColor(kBlack); 
+    h_TTJets -> SetLineColor(kBlack); 
     h_WJets -> SetLineColor(kBlack); 
     h_VV    -> SetLineColor(kBlack); 
     h_ZH    -> SetLineColor(kBlack); 
 
-    h_SignalWm   ->SetFillStyle(3001); 
-    h_SignalWp   ->SetFillStyle(3001); 
-    h_SignalZH   ->SetFillStyle(3001); 
-    h_SignalggZH ->SetFillStyle(3001); 
-    h_SignalWm   ->SetLineColor(1); 
-    h_SignalWp   ->SetLineColor(2); 
-    h_SignalZH   ->SetLineColor(3); 
-    h_SignalggZH ->SetLineColor(4); 
-    h_SignalWm   ->SetLineWidth(2); 
-    h_SignalWp   ->SetLineWidth(2); 
-    h_SignalZH   ->SetLineWidth(2); 
-    h_SignalggZH ->SetLineWidth(2); 
+    h_Data  -> SetLineColor(kBlack);
+    h_Data  -> SetLineWidth(3);
+
+    //h_SignalWm   ->SetFillStyle(3001); 
+    //h_SignalWm   ->SetFillStyle(3001); 
+    //h_SignalWp   ->SetFillStyle(3001); 
+    //h_SignalZH   ->SetFillStyle(3001); 
+    //h_SignalggZH ->SetFillStyle(3001); 
+    //h_SignalWm   ->SetLineColor(1); 
+    //h_SignalWp   ->SetLineColor(2); 
+    //h_SignalZH   ->SetLineColor(3); 
+    //h_SignalggZH ->SetLineColor(4); 
+    //h_SignalWm   ->SetLineWidth(2); 
+    //h_SignalWp   ->SetLineWidth(2); 
+    //h_SignalZH   ->SetLineWidth(2); 
+    //h_SignalggZH ->SetLineWidth(2); 
 
     // make stack
     THStack *bgstack = new THStack("bgstack","");
     bgstack->Add(h_DY    ); 
     bgstack->Add(h_VV    ); 
     bgstack->Add(h_ST    ); 
-    bgstack->Add(h_TTbar ); 
+    bgstack->Add(h_TTJets ); 
     bgstack->Add(h_WJets ); 
     bgstack->Add(h_ZH    );
 
@@ -618,55 +518,67 @@ void plotter_stacked()
     h_totbkg = (TH1F*)h_DY->Clone("h_totbkg");
     h_totbkg->Add(h_VV    ); 
     h_totbkg->Add(h_ST    ); 
-    h_totbkg->Add(h_TTbar ); 
+    h_totbkg->Add(h_TTJets ); 
     h_totbkg->Add(h_WJets ); 
     h_totbkg->Add(h_ZH    );
     Double_t intbkg = h_totbkg->Integral();
-    if( h_SignalWm->Integral() > 0.1 ){
-     h_SignalWm   ->Scale( intbkg / h_SignalWm->Integral() ); 
-    }
-    if( h_SignalWp->Integral() > 0.1 ){
-     h_SignalWp   ->Scale( intbkg / h_SignalWp->Integral() ); 
-    }
-    if( h_SignalZH->Integral() > 0.1 ){
-     h_SignalZH   ->Scale( intbkg / h_SignalZH->Integral() ); 
-    }
-    if( h_SignalggZH->Integral() > 0.1 ){
-     h_SignalggZH   ->Scale( intbkg / h_SignalggZH->Integral() ); 
-    }
+    //if( h_SignalWm->Integral() > 0.1 ){
+    // h_SignalWm   ->Scale( intbkg / h_SignalWm->Integral() ); 
+    //}
+    //if( h_SignalWp->Integral() > 0.1 ){
+    // h_SignalWp   ->Scale( intbkg / h_SignalWp->Integral() ); 
+    //}
+    //if( h_SignalZH->Integral() > 0.1 ){
+    // h_SignalZH   ->Scale( intbkg / h_SignalZH->Integral() ); 
+    //}
+    //if( h_SignalggZH->Integral() > 0.1 ){
+    // h_SignalggZH   ->Scale( intbkg / h_SignalggZH->Integral() ); 
+    //}
 
     // make legend
     TLegend *leg = new TLegend(0.6,0.6,0.85,0.85);
     leg->SetBorderSize(0);
     leg->SetFillColor(kWhite);
+    if(drawData){
+     if( lepton=="ele"){
+      leg->AddEntry(h_Data      , "Data SingleEle", "lpe"); 
+     }
+     else if( lepton=="mu"){
+      leg->AddEntry(h_Data      , "Data SingleMu", "lpe"); 
+     }
+    }
     leg->AddEntry(h_DY      , "Drell-Yan", "f"); 
+    leg->AddEntry(h_GJets   , "#gamma+Jets", "f"); 
     leg->AddEntry(h_VV      , "Diboson", "f"); 
     leg->AddEntry(h_ST      , "Single Top", "f"); 
-    leg->AddEntry(h_TTbar   , "TTbar", "f"); 
+    leg->AddEntry(h_TTJets  , "t#bar{t}+Jets", "f"); 
     leg->AddEntry(h_WJets   , "W+Jets", "f"); 
     leg->AddEntry(h_ZH      , "ZH#rightarrowLLbb", "f");
-    if(drawSignal){
-     leg->AddEntry(h_SignalWm, "Signal W-H","l");
-     leg->AddEntry(h_SignalWp, "Signal W+H","l");
-     leg->AddEntry(h_SignalZH, "Signal ZH","l");
-     leg->AddEntry(h_SignalggZH, "Signal ggZH","l");
-    }
+    //if(drawSignal){
+    // leg->AddEntry(h_SignalWm, "Signal W-H","l");
+    // leg->AddEntry(h_SignalWp, "Signal W+H","l");
+    // leg->AddEntry(h_SignalZH, "Signal ZH","l");
+    // leg->AddEntry(h_SignalggZH, "Signal ggZH","l");
+    //}
     
     // and draw
     bgstack->Draw("hist");
-    if(drawSignal){
-     h_SignalWm->Draw("hist sames");
-     h_SignalWp->Draw("hist sames");
-     h_SignalZH->Draw("hist sames");
-     h_SignalggZH->Draw("hist sames");
+    if(drawData){
+     h_Data->Draw("sames, E");
     }
+    //if(drawSignal){
+    // h_SignalWm->Draw("hist sames");
+    // h_SignalWp->Draw("hist sames");
+    // h_SignalZH->Draw("hist sames");
+    // h_SignalggZH->Draw("hist sames");
+    //}
     leg->Draw();
 
     // add titles
     title->DrawTextNDC(0.13,0.91,"CMS");
     extra->DrawTextNDC(0.23,0.91,"Preliminary");
-    lumi->DrawTextNDC(0.9,0.91,"20 /fb (13 TeV)");
-    bgstack->GetXaxis()->SetTitle(h_TTbar->GetTitle());
+    lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
+    bgstack->GetXaxis()->SetTitle(h_TTJets->GetTitle());
     bgstack->GetYaxis()->SetTitle("Events / bin");
 
     gPad->Update();
@@ -675,8 +587,8 @@ void plotter_stacked()
     // save canvas
     canvas->SaveAs(outname+".pdf");
     //canvas->SaveAs(outpath+jettype+"_"+varname+extraname+".pdf");
-  
-   }
+
+   } 
   }
  }
 }

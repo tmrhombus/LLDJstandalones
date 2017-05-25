@@ -159,18 +159,26 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  if( Tinputline.Contains("/home/rhombus") ){
-    theChain->Add( Tinputline );
+  //if( Tinputline.Contains("/home/rhombus") ){
 
-  //if( Tinputline.Contains("/store/group") ){
-  // if( dolocal ){
-  //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
-  // }
-  // else{
-  //  theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  //  theChain->Add( Tinputline );
+
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
+
+  if( Tinputline.Contains("/store/user") ){
+    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
   // }
    printf("Inputfile: %s\n",Tinputline.Data());
   }
+
+  // if( dolocal ){
+  //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+  // }
+
 
   inputline_dump.push_back(inputline);
  } // while( std::getline(inputfile, inputline) )
@@ -212,7 +220,7 @@ int main(int argc, char **argv){
  } //while !inputfile.eof()
 
  printf("  lumi: %f\n\n",lumi);
-
+//****important
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
  analyzer.initSigHistograms();

@@ -12,8 +12,27 @@
 #include "CLHEP/Random/RandomEngine.h"
 #include "CLHEP/Random/RandGauss.h"
 
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
+//#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+//#include <GetTrackTrajInfo.h>
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
+
+/*                                                                       tt not needed?
+double lldjNtuple::TrackAngle(const edm::Event& e, reco:: TransientTrack tt , TrajectoryStateOnSurface tSOSInnerHit)
+{
+ // edm::Handle<reco::BeamSpot> bsHandle;
+ // e.getByLabel("offlineBeamSpot", bsHandle);
+ // const reco::BeamSpot &beamspot = (*bsHandle);
+  TVector2 pat_beamspot(beamspot.x0(),beamspot.y0());
+  GlobalPoint   InnerPos  = tSOSInnerHit.globalPosition();
+  GlobalVector InnerMom = tSOSInnerHit.globalMomentum();
+  TVector2 SV(InnerPos.x(),InnerPos.y());
+  TVector2 Diff = (SV-pat_beamspot);
+  TVector2 Momentum(InnerMom.x(),InnerMom.y());
+  return Diff.DeltaPhi(Momentum); //of Lorentz Vec:Double_t  DeltaPhi (const TLorentzVector &) const
+}*/
+
 
 // ak4 jets
 Int_t          nJet_;
@@ -61,6 +80,35 @@ vector<float>  jetP4Smear_;
 vector<float>  jetP4SmearUp_;
 vector<float>  jetP4SmearDo_;
 vector<UInt_t> jetFiredTrgs_;
+
+///###
+vector<float>  jetSumIP_;
+vector<float>  jetSumIPSig_;
+vector<float>  jetLog10IPSig_;
+vector<float>  jetMedianLog10IPSig_;
+vector<int>    jetTestVariable_;
+vector<float>  jetTrackAngle_;
+vector<float>  jetLogTrackAngle_;
+vector<float>  jetMedianLogTrackAngle_;
+vector<float>  jetTotalTrackAngle_;
+
+vector<float>jetAlphaMax_;
+vector<float>jetAlphaMax2_;
+vector<float>jetAlphaMaxP_;
+vector<float>jetAlphaMaxP2_;
+
+//vector<float> alphas[][];
+//vector<float> alphas2[][];
+
+vector<vector<float>> jetTrackPt_;
+vector<vector<float>> jetTrackEta_;
+vector<vector<float>> jetTrackPhi_;
+
+
+
+
+
+
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
 vector<float>  jetGenJetPt_;
@@ -175,6 +223,34 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetCSV2BJetTags", &jetCSV2BJetTags_);
   tree->Branch("jetJetProbabilityBJetTags", &jetJetProbabilityBJetTags_);
   tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_);
+
+  ///###
+//     <<<<<<< master commented out is aaron
+//  tree->Branch("jetTestVariable",  &jetTestVariable_);
+  
+//  tree->Branch("jetAlphaMax", &jetAlphaMax_);
+//  tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
+//  tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
+//  tree->Branch("jetAlphaMaxP2", &jetAlphaMaxP2_);
+
+  tree->Branch("jetLog10IPSig",           &jetLog10IPSig_);
+  tree->Branch("jetMedianLog10IPSig",     &jetMedianLog10IPSig_);
+  tree->Branch("jetSumIP",                &jetSumIP_);
+  tree->Branch("jetSumIPSig",             &jetSumIPSig_);
+  tree->Branch("jetTestVariable",         &jetTestVariable_);
+  tree->Branch("jetTrackAngle",           &jetTrackAngle_);
+  tree->Branch("jetLogTrackAngle",        &jetLogTrackAngle_);
+  tree->Branch("jetMedianLogTrackAngle",  &jetMedianLogTrackAngle_); 
+  tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
+ 
+
+ //link variable in c++ code to variable in branch
+/*
+
+  tree->Branch("jetTrackPt"  ,  &jetTrackPt_);
+  tree->Branch("jetTrackEta" ,  &jetTrackEta_);
+  tree->Branch("jetTrackPhi" ,  &jetTrackPhi_);
+*/
   if (doGenParticles_){
     tree->Branch("jetPartonID",       &jetPartonID_);
     tree->Branch("jetHadFlvr",        &jetHadFlvr_);
@@ -298,7 +374,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   }
 }
 
-
+//fills jets .clear() to empty vector of old data
 void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // cleanup from previous execution
@@ -348,6 +424,32 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetHFEME_                               .clear();
     jetNConstituents_                       .clear();
   }
+
+  ///###NEW_VARS
+  jetLog10IPSig_.clear();
+  jetMedianLog10IPSig_.clear();
+  jetSumIP_.clear();
+  jetSumIPSig_.clear();
+  jetTestVariable_.clear();
+  
+  
+  //     <<<<<<< master commented out is aaron
+
+  //jetAlphaMax_.clear();
+  //jetAlphaMax2_.clear();
+  //jetAlphaMaxP_.clear();
+  //jetAlphaMaxP2_.clear();
+
+  jetTrackAngle_.clear();
+  jetLogTrackAngle_.clear();
+  jetMedianLogTrackAngle_.clear();
+  jetTotalTrackAngle_.clear();
+/*
+
+  jetTrackPt_.clear();
+  jetTrackEta_.clear();
+  jetTrackPhi_.clear();*/
+
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
   jetGenJetEta_.clear();
@@ -360,86 +462,90 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetGenPartonMomID_.clear();
   
   // SubJet
-  AK8JetPt_           .clear();
-  AK8JetEn_           .clear();
-  AK8JetRawPt_        .clear();
-  AK8JetRawEn_        .clear();
-  AK8JetEta_          .clear();
-  AK8JetPhi_          .clear();
-  AK8JetMass_         .clear();
-  AK8Jet_tau1_        .clear();
-  AK8Jet_tau2_        .clear();
-  AK8Jet_tau3_        .clear();
-  AK8JetCHF_          .clear();
-  AK8JetNHF_          .clear();
-  AK8JetCEF_          .clear();
-  AK8JetNEF_          .clear();
-  AK8JetNCH_            .clear();
-  AK8JetNNP_            .clear();
+  AK8JetPt_                .clear();
+  AK8JetEn_                .clear();
+  AK8JetRawPt_             .clear();
+  AK8JetRawEn_             .clear();
+  AK8JetEta_               .clear();
+  AK8JetPhi_               .clear();
+  AK8JetMass_              .clear();
+  AK8Jet_tau1_             .clear();
+  AK8Jet_tau2_             .clear();
+  AK8Jet_tau3_             .clear();
+  AK8JetCHF_               .clear();
+  AK8JetNHF_               .clear();
+  AK8JetCEF_               .clear();
+  AK8JetNEF_               .clear();
+  AK8JetNCH_               .clear();
+  AK8JetNNP_               .clear();
   AK8Jetnconstituents_     .clear();
-  AK8JetMUF_          .clear();
+  AK8JetMUF_               .clear();
   AK8JetPFLooseId_         .clear();
   AK8JetPFTightLepVetoId_  .clear();
-  AK8JetSoftDropMass_   .clear();
-  AK8JetSoftDropMassCorr_   .clear();
-  AK8JetPrunedMass_   .clear();
-  AK8JetPrunedMassCorr_   .clear();
+  AK8JetSoftDropMass_      .clear();
+  AK8JetSoftDropMassCorr_  .clear();
+  AK8JetPrunedMass_        .clear();
+  AK8JetPrunedMassCorr_    .clear();
   AK8JetpfBoostedDSVBTag_  .clear();
-  AK8JetDSVnewV4_  .clear();
-  AK8JetCSV_   .clear();
+  AK8JetDSVnewV4_          .clear();
+  AK8JetCSV_               .clear();
   AK8JetJECUnc_            .clear();
-  AK8JetL2L3corr_            .clear();
+  AK8JetL2L3corr_          .clear();
 
-  AK8puppiPt_                .clear();
-  AK8puppiMass_                .clear();
-  AK8puppiEta_                .clear();
-  AK8puppiPhi_                .clear();
-  AK8puppiTau1_                .clear();
-  AK8puppiTau2_                .clear();
-  AK8puppiTau3_                .clear();
-  AK8puppiSDL2L3corr_                .clear();
-  AK8puppiSDMass_                .clear();
-  AK8puppiSDMassL2L3Corr_                .clear();
+  AK8puppiPt_              .clear();
+  AK8puppiMass_            .clear();
+  AK8puppiEta_             .clear();
+  AK8puppiPhi_             .clear();
+  AK8puppiTau1_            .clear();
+  AK8puppiTau2_            .clear();
+  AK8puppiTau3_            .clear();
+  AK8puppiSDL2L3corr_      .clear();
+  AK8puppiSDMass_          .clear();
+  AK8puppiSDMassL2L3Corr_  .clear();
 
-  AK8JetPartonID_ .clear();
-  AK8JetHadFlvr_ .clear();
-  AK8JetGenJetIndex_.clear();
-  AK8JetGenJetEn_.clear();
-  AK8JetGenJetPt_.clear();
-  AK8JetGenJetEta_.clear();
-  AK8JetGenJetPhi_.clear();
-  AK8JetGenPartonID_.clear();
-  AK8JetGenEn_.clear();
-  AK8JetGenPt_.clear();
-  AK8JetGenEta_.clear();
-  AK8JetGenPhi_.clear();
-  AK8JetGenPartonMomID_.clear();
-  AK8JetP4Smear_.clear();
-  AK8JetP4SmearUp_.clear();
-  AK8JetP4SmearDo_.clear();
+  AK8JetPartonID_          .clear();
+  AK8JetHadFlvr_           .clear();
+  AK8JetGenJetIndex_       .clear();
+  AK8JetGenJetEn_          .clear();
+  AK8JetGenJetPt_          .clear();
+  AK8JetGenJetEta_         .clear();
+  AK8JetGenJetPhi_         .clear();
+  AK8JetGenPartonID_       .clear();
+  AK8JetGenEn_             .clear();
+  AK8JetGenPt_             .clear();
+  AK8JetGenEta_            .clear();
+  AK8JetGenPhi_            .clear();
+  AK8JetGenPartonMomID_    .clear();
+  AK8JetP4Smear_           .clear();
+  AK8JetP4SmearUp_         .clear();
+  AK8JetP4SmearDo_         .clear();
 
-  nAK8SDSJ_ .clear();
-  AK8SDSJPt_ .clear();
-  AK8SDSJEta_ .clear();
-  AK8SDSJPhi_ .clear();
-  AK8SDSJMass_ .clear();
-  AK8SDSJCharge_ .clear();
-  AK8SDSJE_ .clear();
-  AK8SDSJFlavour_ .clear();
-  AK8SDSJCSV_ .clear();
+  nAK8SDSJ_                .clear();
+  AK8SDSJPt_               .clear();
+  AK8SDSJEta_              .clear();
+  AK8SDSJPhi_              .clear();
+  AK8SDSJMass_             .clear();
+  AK8SDSJCharge_           .clear();
+  AK8SDSJE_                .clear();
+  AK8SDSJFlavour_          .clear();
+  AK8SDSJCSV_              .clear();
 
-  nAK8puppiSDSJ_ .clear();
-  AK8puppiSDSJPt_ .clear();
-  AK8puppiSDSJEta_ .clear();
-  AK8puppiSDSJPhi_ .clear();
-  AK8puppiSDSJMass_ .clear();
-  AK8puppiSDSJCharge_ .clear();
-  AK8puppiSDSJE_ .clear();
-  AK8puppiSDSJFlavour_ .clear();
-  AK8puppiSDSJCSV_ .clear();
+  nAK8puppiSDSJ_           .clear();
+  AK8puppiSDSJPt_          .clear();
+  AK8puppiSDSJEta_         .clear();
+  AK8puppiSDSJPhi_         .clear();
+  AK8puppiSDSJMass_        .clear();
+  AK8puppiSDSJCharge_      .clear();
+  AK8puppiSDSJE_           .clear();
+  AK8puppiSDSJFlavour_     .clear();
+  AK8puppiSDSJCSV_         .clear();
 
   nJet_ = 0;
+  
+  edm::Handle<reco::TrackCollection> trackHandle;
+  e.getByToken(tracklabel_,trackHandle);
 
+  //edm::Handle<edm::View<pat::Jet> > jetHandle;
   edm::Handle<edm::View<pat::Jet> > jetHandle;
   e.getByToken(jetsAK4Label_, jetHandle);
 
@@ -447,6 +553,21 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     edm::LogWarning("lldjNtuple") << "no pat::Jets (AK4) in event";
     return;
   }
+  //access beamspot
+  edm::Handle<reco::BeamSpot> bsHandle;
+  e.getByLabel("offlineBeamSpot", bsHandle);
+  reco::BeamSpot beamSpot;
+  //test if good
+  if ( bsHandle.isValid() )
+  {
+    beamSpot = *bsHandle;
+   } else
+  {
+    edm::LogWarning("lldjNtuple")
+      << "No beam spot available from EventSetup \n";
+   }
+   //make beampsot point
+   math::XYZPoint bsPoint(beamSpot.x0(),beamSpot.y0(), beamSpot.z0());
 
   edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
   if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
@@ -459,6 +580,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken(vtxLabel_, vtxHandle);
   if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
   
+  //  edm::Handle<reco::TrackCollection> trackHandle;
+  //e.getByToken(tracklabel_, trackHandle);
+
   // Accessing the JEC uncertainties 
   //ak4  
   edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
@@ -474,9 +598,27 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AK8jecUnc = new JetCorrectionUncertainty(AK8JetCorPar);
   
   //start jets Lvdp
+  int nrjet = 0;
+  int IP0Sum = 0;
+  int TA0Sum = 0;
+//******Jets Loop****
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
+  //const pat::Jet jjet = jetHandle
+  //cout<<"JET: "<<jetHandle->p4()<<endl;//***How to get Jet Axis iJet->p4()?
+    cout <<iJet->p4()<<endl;
+ 
+    //declare new vars    
+    float dxy;
+    float dxyerr;
+    float SumIP = 0.0;
+    float SumIPSig = 0.0;
+    float MedianLog10IPSig = 0.0;
+    float TotalTrackAngle = 0.0;
+    float MedianLogTrackAngle = 0.0;
+    bool TAIsGood = false;
     
-    if (iJet->pt() < 20) continue;
+    nrjet++;
+    if (iJet->pt() < 15) continue;//reason for pt<15?, eta<5.2?
     jetPt_.push_back(    iJet->pt());
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
@@ -517,10 +659,41 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
 
+//     <<<<<<< master commented out is aaron
+    // vector<int>whichVertex_(iJet->getJetConstituents().size(), -1);
+    // vector<double> alphas(vtxHandle->size(),10);
+    // vector<double> alphas2(vtxHandle->size(),10);
+
+//***looping over tracks***
+
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
-
+      
+//***IP test1 begin *****
+      
+      //make a reference to the track
+      //reco::TrackBaseRef tref(trackHandle, (int)id);
+      //reco::TrackRef tref(trackHandle, id); 
+/*    //get longitudinal IP wrt beamspot
+      float dxy = fabs(tref->dxy(*bsHandle));
+      //get dxySig and dxyerr
+      float dxySig = 0.0;
+      float dxyerr = tref->dxyError();
+      //don't divide by 0
+      if(dxyerr>0) dxySig = dxy/dxyerr;
+      //IP sums
+      SumIP += dxy;
+      SumIPSig +=dxySig;
+*/
+//***IPtest1 end    *****
+//***IPtest2 begin  *****
+      float dxySig = 0.0;
       const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
-
+      //cast as Packed Candidate to access member functions
+      const pat::PackedCandidate &daughter2 = dynamic_cast<const pat::PackedCandidate &>(*iJet->getJetConstituents().at(id));
+      //const reco::Track &daughter3 = dynamic_cast<const reco::Track &>(*iJet->getJetConstituents().at(id));
+      //const edm::Ptr<pat::PackedCandidate> daughter2 = iJet->getJetConstituents().at(id);
+      //static GetTrackTrajInfo getTrackTrajInfo;<-does not compile
+ 
       if (daughter.isNonnull() && daughter.isAvailable()) {
 	if (daughter->charge() != 0 && daughter->pt() > leadTrkPt) {
 	  leadTrkPt  = daughter->pt();
@@ -536,8 +709,117 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	    lepTrkPhi = daughter->phi();
 	  }
 	}
-      }
-    }
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+	//for(int i = 0; i < (int)trackHandle->size(); i++){
+	  
+	  // const edm::Ptr<reco::Candidate> tref = iJet->trackHandle().at(i);
+	
+//	  double maxWeight = 0;
+//	  int jj = -1;
+//	  //reco::TrackBaseRef tref(trackHandle,i);
+//	  for(int j = 0; j < (int)vtxHandle->size();j++){
+//	    /* if(vtxHandle->at(j).trackWeight(tref) > maxWeight){
+//	    maxWeight = vtxHandle->at(j).trackWeight(tref);*/
+//	    if(vtxHandle->at(j).trackWeight(daughter) > maxWeight){
+//	      maxWeight = vtxHandle->at(j).trackWeight(daughter);
+//	      jj = j;
+//	    }
+//	  }
+//	  whichVertex_[id] =jj;
+//	  //}
+       
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+  //    }
+ //   }
+//
+
+//    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//    vector<double> total = 0;
+//    vector<double> total2 = 0;
+//    vector<double> promptTotal = 0;
+//    vector<double> promptTotal2 = 0;
+//    //vector<double> alphas(vtxHandle->size(),0);
+//    //vector<double> alphas2(vtxHandle->size(),0);
+//    vector<int>rowSizeParam;
+//    for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
+//      
+//      const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
+//      rowSizeParam[(int)id] = daughter.size();
+//      if (daughter.isNonnull() && daughter.isAvailable()) {
+//	
+//	//for(int i = 0; i < (int)tracks.size(); i++){
+//	  double ptSUB = daughter->pt();
+//	  total += ptSUB;
+//	  total2 += ptSUB*ptSUB;
+//	  // if(whichVertex_[(int)id] < 0)continue;
+//	  promptTotal += ptSUB;
+//	  promptTotal2 += ptSUB*ptSUB;
+//	  //alphas[whichVertex_[(int)id]] += ptSUB;
+//	  //alphas2[whichVertex_[(int)id]] += ptSUB*ptSUB;
+//	  alphas[(int)iJet][(int)id] = ptSUB;
+//	  alphas2[(int)iJet][(int)id] = ptSUB*ptSUB;
+//					       }
+//    }
+//	
+//      double alphaMax = 0;
+//      double alphaMax2 = 0;
+//      double apMax =0;
+//      double apMax2 = 0;
+//      double beta = 1.0 - promptTotal/total;
+//      double beta2 = 1.0 - promptTotal2 / total2;
+//      for(int i = 0; i < (int)alphas.size(); i++){
+//	if(alphas[i] > alphaMax) alphaMax = alphas[i];
+//	if(alphas2[i] > alphaMax2) alphaMax2 = alphas2[i];
+//	double ap = alphas[i] / (alphas[i] + beta);
+//	double ap2 = alphas2[i] / (alphas2[i] + beta2);
+//	if(ap > apMax) apMax = ap;
+//	if(ap2 > apMax2) apMax2 = ap2;
+//      }
+//    
+//    jetAlphaMax_.push_back(alphaMax / total);
+//    jetAlphaMax2_.push_back(alphaMax2 / total2);
+//    jetAlphaMaxP_.push_back(apMax);
+//    jetAlphaMaxP2_.push_back(apMax2);	
+//   //}
+//    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+        //IP/Track Angle stuff
+        if (daughter->charge() != 0){
+        dxy = fabs(daughter2.dxy(bsPoint));//*****why this at beamspot and dxyerr at PV?
+        dxyerr = daughter2.dxyError();
+        if(dxyerr>0) dxySig = dxy/dxyerr;//*******WHY WOULD DXYERR BE LESS THAN 0
+        SumIP += dxy;
+        SumIPSig +=dxySig;
+        //cout <<"************dxySig: " <<dxySig<< " dxyerr: "<<dxyerr<< " dxy: "<<dxy<<" log10dxySig: "<< log10(dxySig) <<endl;
+    
+        //fill log10IPSig 
+        jetLog10IPSig_.push_back( log10(dxySig) );
+
+        //track angle stuff
+        //cout<< "p4: "<<daughter2.p4()<<endl;
+        //const reco::Track &daughter3 =dynamic_cast<const reco::Track &>(iJet->getJetConstituents().at(id));
+        //reco::TrackRef tref(daughter2, id); 
+        //GetTrackTrajInfo getTrackTrajInfo; //<-might work if I include  <GetTrackTrajInfo.h>
+        //vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es,daughter3);
+        
+        //Seems to work
+        jetTrackAngle_.push_back(daughter2.phiAtVtx());
+        jetLogTrackAngle_.push_back( log(fabs(daughter2.phiAtVtx())) );//not sure if log or log10
+        TotalTrackAngle += daughter2.phiAtVtx();
+        cout << " TA: " << daughter2.phiAtVtx() << " TotalTA: " << TotalTrackAngle<<" LOG "<< log(fabs(daughter2.phiAtVtx()))<<endl;
+        TAIsGood = true;
+ }      
+        }
+    }///******End Tracks Loop******
+//****IPtest2 end    *****
 
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
@@ -592,6 +874,109 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetPUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant"));
     jetPUFullID_.push_back(iJet->userInt("pileupJetId:fullId"));
 
+    ///###
+    sort(jetLog10IPSig_.begin(), jetLog10IPSig_.end());
+    sort(jetLogTrackAngle_.begin(), jetLogTrackAngle_.end());
+    
+    //Now find median
+    //Note .at() threw error
+    if(jetLog10IPSig_.size() == 0){IP0Sum+=1;}//if(fabs(MedianLog10IPSig)>10000.0){cout<<"IF "<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}}
+    else if(jetLog10IPSig_.size()%2 ==0)
+    {
+    MedianLog10IPSig = 0.5*( jetLog10IPSig_[(jetLog10IPSig_.size()/2) -1] 
+                           + jetLog10IPSig_[ jetLog10IPSig_.size()      ]);
+    jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
+    //if(fabs(MedianLog10IPSig)>10000.0){cout<<"elseif"<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
+    }
+    else
+    {
+    MedianLog10IPSig =       jetLog10IPSig_[(jetLog10IPSig_.size()-1)/2];
+    jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
+    //if(fabs(MedianLog10IPSig)>10000.0){cout<<"ELSE"<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
+    }
+    
+
+    //cout <<" TotalTA: " << TotalTrackAngle<<endl;
+    //TrackAngle_Median
+    if(jetLogTrackAngle_.size() == 0){
+    TA0Sum+=1;
+    //cout<<" IF_TA "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    }
+    else if(jetLogTrackAngle_.size()%2 ==0)
+    {
+    MedianLogTrackAngle = 0.5*( jetLogTrackAngle_[(jetLogTrackAngle_.size()/2) -1]
+                              + jetLogTrackAngle_[ jetLogTrackAngle_.size()      ]);
+    if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout <<"**************"<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    //cout<<" elseif_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    }
+    else
+    {
+    MedianLogTrackAngle =       jetLogTrackAngle_[(jetLogTrackAngle_.size()-1)/2];
+    if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout<<"**************" <<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    //cout<<" ELSE_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    }    
+
+    //jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
+    jetSumIP_.push_back(SumIP);
+    jetSumIPSig_.push_back(SumIPSig);
+    jetTestVariable_.push_back(nrjet);
+//    <<<<<<< master AARONS
+  //  jetTrackPt_.clear();
+  //  jetTrackEta_.clear();
+  //  jetTrackPhi_.clear();
+
+
+    if(TAIsGood ==true)jetTotalTrackAngle_.push_back(TotalTrackAngle);
+/*
+  jetTrackPt_.clear();
+  jetTrackEta_.clear();
+  jetTrackPhi_.clear();
+
+    //printf("Jet with pt %6.1f, eta %+4.2f\n",
+    //        iJet->pt(),iJet->eta());
+    double in = 0, out = 0;
+    //printf(" Jet nr %d \n", nrjet);
+    for (unsigned int id = 0, nd = iJet->numberOfDaughters(); id < nd; ++id) {
+        const pat::PackedCandidate &dau = dynamic_cast<const pat::PackedCandidate &>(*iJet->daughter(id));
+        if (dau.charge() == 0) continue;
+        (fabs(dau.dz())<0.1 ? in : out) += dau.pt();
+        //double trackhits = dau.numberOfHits();
+        //printf(" track: pt %2.1f  eta %2.1f  hiPurity %d, nrOfHits %d, nrOfPixelHits %d, lostInnerHits %d \n",
+        // dau.pt(), dau.eta(), dau.trackHighPurity(), dau.numberOfHits(), dau.numberOfPixelHits(), dau.lostInnerHits() );
+    }
+
+//  std::vector daus(iJet->daughterPtrVector());
+//  std::sort(daus.begin(), daus.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2) { return p1->pt() > p2->pt(); }); // the joys of C++11
+//  for (unsigned int i2 = 0, n = daus.size(); i2 < n && i2 <= 3; ++i2) {
+//      const pat::PackedCandidate &cand = dynamic_cast<const pat::PackedCandidate &>(*daus[i2]);
+//      printf("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d\n", i2,cand.pt(),cand.dz(PV.position()),cand.pdgId());
+//  }
+//
+//  std::vector daus(j.daughterPtrVector());
+//  std::sort(daus.begin(), daus.end(), [](const reco::CandidatePtr &p1, const reco::CandidatePtr &p2) { return p1->pt() > p2->pt(); }); // the joys of C++11
+//  for (unsigned int i2 = 0, n = daus.size(); i2 < n && i2 <= 3; ++i2) {
+//      const pat::PackedCandidate &cand = dynamic_cast<const pat::PackedCandidate &>(*daus[i2]);
+//      printf("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d\n", i2,cand.pt(),cand.dz(PV.position()),cand.pdgId());
+//  }
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////
+
+
     // gen jet and parton
     if (doGenParticles_ && genParticlesHandle.isValid()) {
       int jetGenPartonID    = -99;
@@ -602,8 +987,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       float jetGenPhi       = -999.;      
       if ((*iJet).genParton()) {
 	jetGenPartonID = (*iJet).genParton()->pdgId();
-	jetGenEn = (*iJet).genParton()->energy();
-	jetGenPt = (*iJet).genParton()->pt();
+	jetGenEn = (*iJet).genParton()->energy(); 	jetGenPt = (*iJet).genParton()->pt();
 	jetGenEta = (*iJet).genParton()->eta();
 	jetGenPhi = (*iJet).genParton()->phi();
 	if ((*iJet).genParton()->mother()) {
@@ -665,8 +1049,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     }
     
     nJet_++;
-  }
-  
+  }///******End Jets Loop******
+  cout <<"********Empties: IP: "<<IP0Sum<<"     TA: "<<TA0Sum<<endl;    
   if (dumpSubJets_) {
     edm::Handle<edm::View<pat::Jet> > jetsAK8;
     e.getByToken(jetsAK8Label_, jetsAK8);

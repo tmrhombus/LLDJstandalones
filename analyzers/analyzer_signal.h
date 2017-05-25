@@ -54,12 +54,12 @@ public :
  Bool_t        write2DHistograms(int selbin);
  // Jet Variables
  Bool_t        initJetHistograms();
- Bool_t        fillJetHistograms(Double_t weight, int selbin);
- Bool_t        writeJetHistograms(int selbin);
+ Bool_t        fillJetHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeJetHistograms(int selbin, int lepbin);
  // Event Variables
  Bool_t        initSigHistograms();
- Bool_t        fillSigHistograms(Double_t weight, int selbin);
- Bool_t        writeSigHistograms(int selbin);
+ Bool_t        fillSigHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeSigHistograms(int selbin, int lepbin);
 
  // vectors of ints
  // each int is an entry in vector
@@ -71,6 +71,8 @@ public :
  std::vector<int> jet_list ;
 
  // Selection functions
+ Bool_t        askPassSingleEle();
+ Bool_t        askPassSingleMu();
  Bool_t        askPassSig();
  Bool_t        askPassZH();
  Bool_t        askPassDY();
@@ -78,6 +80,8 @@ public :
  Bool_t        askPassNoPair();
 
  // selection booleans
+ Bool_t passSingleEle ;
+ Bool_t passSingleMu  ;
  Bool_t passOSSF      ;
  Bool_t passZWindow   ; 
  Bool_t passGoodVtx   ;
@@ -105,16 +109,30 @@ public :
  Double_t dilep_pt;
 
  // selection counters (how many events pass)
- Int_t ntot;
- Int_t npassSig;
- Int_t npassZH;
- Int_t npassDY;
- Int_t npassOffZ;
- Int_t npassNoPair;
+ Int_t n_tot;
+
+ Int_t n_passSig;
+ Int_t n_passZH;
+ Int_t n_passDY;
+ Int_t n_passOffZ;
+ Int_t n_passNoPair;
+
+ Int_t n_ele_passSig;
+ Int_t n_ele_passZH;
+ Int_t n_ele_passDY;
+ Int_t n_ele_passOffZ;
+ Int_t n_ele_passNoPair;
+
+ Int_t n_mu_passSig;
+ Int_t n_mu_passZH;
+ Int_t n_mu_passDY;
+ Int_t n_mu_passOffZ;
+ Int_t n_mu_passNoPair;
 
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
+ std::vector<TString> lepnames;
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
  // jetmultnames = Leading, Subleading, Third, Fourth
 
@@ -126,60 +144,65 @@ public :
  // TH2F h_nvertnjets[6];
 
  // General / leading
- TH1F h_nVtx[6];
- TH1F h_nPU[6];
- TH1F h_phoEt[6];
- TH1F h_phoEta[6];
- TH1F h_phoPhi[6];
- TH1F h_elePt[6];
- TH1F h_eleEta[6];
- TH1F h_elePhi[6];
- TH1F h_muPt[6];
- TH1F h_muEta[6];
- TH1F h_muPhi[6];
 
- TH1F h_htall[6];
- TH1F h_htjets[6];
+
+ TH1F h_nVtx[6][2];
+ TH1F h_nPU[6][2];
+ TH1F h_phoEt[6][2];
+ TH1F h_phoEta[6][2];
+ TH1F h_phoPhi[6][2];
+ TH1F h_elePt[6][2];
+ TH1F h_eleEta[6][2];
+ TH1F h_elePhi[6][2];
+ TH1F h_muPt[6][2];
+ TH1F h_muEta[6][2];
+ TH1F h_muPhi[6][2];
+
+ TH1F h_htall[6][2];
+ TH1F h_htjets[6][2];
 
  // Jet
- TH1F h_jetPt[6][4]; 
- TH1F h_jetEn[6][4]; 
- TH1F h_jetEta[6][4]; 
- TH1F h_jetPhi[6][4]; 
- TH1F h_jetRawPt[6][4]; 
- TH1F h_jetRawEn[6][4]; 
- TH1F h_jetMt[6][4]; 
- TH1F h_jetArea[6][4]; 
- TH1F h_jetLeadTrackPt[6][4]; 
- TH1F h_jetLeadTrackEta[6][4]; 
- TH1F h_jetLeadTrackPhi[6][4]; 
- TH1F h_jetLepTrackPID[6][4]; 
- TH1F h_jetLepTrackPt[6][4]; 
- TH1F h_jetLepTrackEta[6][4]; 
- TH1F h_jetLepTrackPhi[6][4]; 
- TH1F h_jetCSV2BJetTags[6][4]; 
- TH1F h_jetJetProbabilityBJetTags[6][4]; 
- TH1F h_jetpfCombinedMVAV2BJetTags[6][4]; 
- TH1F h_jetPartonID[6][4]; 
- TH1F h_jetHadFlvr[6][4]; 
- TH1F h_jetGenJetEn[6][4]; 
- TH1F h_jetGenJetPt[6][4]; 
- TH1F h_jetGenJetEta[6][4]; 
- TH1F h_jetGenJetPhi[6][4]; 
- TH1F h_jetGenPartonID[6][4]; 
- TH1F h_jetGenEn[6][4]; 
- TH1F h_jetGenPt[6][4]; 
- TH1F h_jetGenEta[6][4]; 
- TH1F h_jetGenPhi[6][4]; 
- TH1F h_jetGenPartonMomID[6][4]; 
+ TH1F h_jetPt[6][4][2]; 
 
- TH1F h_AK8JetPt[6][4]; 
- TH1F h_AK8JetEn[6][4]; 
- TH1F h_AK8JetRawPt[6][4]; 
- TH1F h_AK8JetRawEn[6][4]; 
- TH1F h_AK8JetEta[6][4]; 
- TH1F h_AK8JetPhi[6][4]; 
- TH1F h_AK8JetMass[6][4]; 
+ TH1F h_jetTestVariable[6][4][2]; 
+
+ TH1F h_jetEn[6][4][2]; 
+ TH1F h_jetEta[6][4][2]; 
+ TH1F h_jetPhi[6][4][2]; 
+ TH1F h_jetRawPt[6][4][2]; 
+ TH1F h_jetRawEn[6][4][2]; 
+ TH1F h_jetMt[6][4][2]; 
+ TH1F h_jetArea[6][4][2]; 
+ TH1F h_jetLeadTrackPt[6][4][2]; 
+ TH1F h_jetLeadTrackEta[6][4][2]; 
+ TH1F h_jetLeadTrackPhi[6][4][2]; 
+ TH1F h_jetLepTrackPID[6][4][2]; 
+ TH1F h_jetLepTrackPt[6][4][2]; 
+ TH1F h_jetLepTrackEta[6][4][2]; 
+ TH1F h_jetLepTrackPhi[6][4][2]; 
+ TH1F h_jetCSV2BJetTags[6][4][2]; 
+ TH1F h_jetJetProbabilityBJetTags[6][4][2]; 
+ TH1F h_jetpfCombinedMVAV2BJetTags[6][4][2]; 
+ TH1F h_jetPartonID[6][4][2]; 
+ TH1F h_jetHadFlvr[6][4][2]; 
+ TH1F h_jetGenJetEn[6][4][2]; 
+ TH1F h_jetGenJetPt[6][4][2]; 
+ TH1F h_jetGenJetEta[6][4][2]; 
+ TH1F h_jetGenJetPhi[6][4][2]; 
+ TH1F h_jetGenPartonID[6][4][2]; 
+ TH1F h_jetGenEn[6][4][2]; 
+ TH1F h_jetGenPt[6][4][2]; 
+ TH1F h_jetGenEta[6][4][2]; 
+ TH1F h_jetGenPhi[6][4][2]; 
+ TH1F h_jetGenPartonMomID[6][4][2]; 
+
+ TH1F h_AK8JetPt[6][4][2]; 
+ TH1F h_AK8JetEn[6][4][2]; 
+ TH1F h_AK8JetRawPt[6][4][2]; 
+ TH1F h_AK8JetRawEn[6][4][2]; 
+ TH1F h_AK8JetEta[6][4][2]; 
+ TH1F h_AK8JetPhi[6][4][2]; 
+ TH1F h_AK8JetMass[6][4][2]; 
 
 
 };
