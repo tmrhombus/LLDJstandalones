@@ -86,7 +86,8 @@ vector<float>  jetSumIP_;
 vector<float>  jetSumIPSig_;
 vector<float>  jetLog10IPSig_;
 vector<float>  jetMedianLog10IPSig_;
-vector<float>  jetTestVariable_;
+vector<int>    jetTestVariable_;
+vector<float>  jetTrackPhi2_;
 vector<float>  jetTrackAngle_;
 vector<float>  jetLogTrackAngle_;
 vector<float>  jetMedianLogTrackAngle_;
@@ -238,6 +239,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetSumIP",                &jetSumIP_);
   tree->Branch("jetSumIPSig",             &jetSumIPSig_);
   tree->Branch("jetTestVariable",         &jetTestVariable_);
+  tree->Branch("jetTrackPhi2",            &jetTrackPhi2_);
   tree->Branch("jetTrackAngle",           &jetTrackAngle_);
   tree->Branch("jetLogTrackAngle",        &jetLogTrackAngle_);
   tree->Branch("jetMedianLogTrackAngle",  &jetMedianLogTrackAngle_); 
@@ -431,6 +433,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetSumIP_.clear();
   jetSumIPSig_.clear();
   jetTestVariable_.clear();
+  jetTrackPhi2_.clear();
   
   
   //     <<<<<<< master commented out is aaron
@@ -607,7 +610,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   //cout<<"JET: "<<jetHandle->p4()<<endl;//***How to get Jet Axis iJet->p4()?
   // cout <<iJet->p4()<<endl;
     TVector3 JetAxis(iJet->px(),iJet->py(),iJet->pz());
-    float MagJetAxis =JetAxis.Mag();
+    //float MagJetAxis =JetAxis.Mag();
     //JetAxis.Print();
  
     //declare new vars    
@@ -618,8 +621,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float MedianLog10IPSig = 0.0;
     float TotalTrackAngle = 0.0;
     float MedianLogTrackAngle = 0.0;
-    bool TAIsGood = false;
-    float MagTang=-99.9;
+    vector <bool> TAIsGood;
+    bool TACheck;
+    //float MagTang=-99.9;
 
     nrjet++;
     if (iJet->pt() < 15) continue;//reason for pt<15?, eta<5.2?
@@ -761,7 +765,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //	  total2 += ptSUB*ptSUB;
 //	  // if(whichVertex_[(int)id] < 0)continue;
 //	  promptTotal += ptSUB;
-//	  promptTotal2 += ptSUB*ptSUB;
+// 	  promptTotal2 += ptSUB*ptSUB;
 //	  //alphas[whichVertex_[(int)id]] += ptSUB;
 //	  //alphas2[whichVertex_[(int)id]] += ptSUB*ptSUB;
 //	  alphas[(int)iJet][(int)id] = ptSUB;
@@ -797,7 +801,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
         //IP/Track Angle stuff
         if (daughter->charge() != 0){
-        dxy = fabs(daughter2.dxy(bsPoint));//*****why this at beamspot and dxyerr at PV?
+        dxy = fabs(daughter2.dxy());//bsPoint));//*****why this at beamspot and dxyerr at PV?
         dxyerr = daughter2.dxyError();
         if(dxyerr>0) dxySig = dxy/dxyerr;//*******WHY WOULD DXYERR BE LESS THAN 0
         SumIP += dxy;
@@ -819,16 +823,18 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
         //get point of closest approach
         math::XYZPoint CA = daughter2.vertex();
         TVector3 Tang(CA.x(),CA.y(),CA.z());
-        MagTang = Tang.Mag();   
+        // MagTang = Tang.Mag();   
         //TVector3 Tang2(daughter2.px(CA),daughter2.py(CA),daughter2.pz(CA));
         // cout <<"CA: "<<CA <<endl;
         // cout <<"TV3: ";Tang.Print();cout<<endl;
-        jetTestVariable_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
-        jetTrackAngle_.push_back(daughter2.phiAtVtx());
-        jetLogTrackAngle_.push_back( log(fabs(daughter2.phiAtVtx())) );//not sure if log or log10
-        TotalTrackAngle += daughter2.phiAtVtx();
+        jetTrackPhi2_.push_back(daughter2.phiAtVtx());
+
+        jetTrackAngle_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
+        jetLogTrackAngle_.push_back( log(fabs(Tang.Angle(JetAxis))) );//not sure if log or log10
+        TotalTrackAngle += Tang.Angle(JetAxis);
         //cout << " TA: " << daughter2.phiAtVtx() << " TotalTA: " << TotalTrackAngle<<" LOG "<< log(fabs(daughter2.phiAtVtx()))<<endl;
-        TAIsGood = true;
+        TACheck = true;
+        TAIsGood.push_back(TACheck);
  }      
         }
     }///******End Tracks Loop******
@@ -919,14 +925,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     {
     MedianLogTrackAngle = 0.5*( jetLogTrackAngle_[(jetLogTrackAngle_.size()/2) -1]
                               + jetLogTrackAngle_[ jetLogTrackAngle_.size()      ]);
-    if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout <<"**************"<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    //if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout <<"**************"<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
     jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
     //cout<<" elseif_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
     }
     else
     {
     MedianLogTrackAngle =       jetLogTrackAngle_[(jetLogTrackAngle_.size()-1)/2];
-    if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout<<"**************" <<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+    //if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout<<"**************" <<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
     jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
     //cout<<" ELSE_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
     }    
@@ -934,14 +940,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
     jetSumIP_.push_back(SumIP);
     jetSumIPSig_.push_back(SumIPSig);
-   // jetTestVariable_.push_back(nrjet);
+    jetTestVariable_.push_back(nrjet);
 //    <<<<<<< master AARONS
   //  jetTrackPt_.clear();
   //  jetTrackEta_.clear();
   //  jetTrackPhi_.clear();
 
 
-    if(TAIsGood ==true)jetTotalTrackAngle_.push_back(TotalTrackAngle);
+    if(TAIsGood.size() >0)jetTotalTrackAngle_.push_back(TotalTrackAngle);
 /*
   jetTrackPt_.clear();
   jetTrackEta_.clear();
@@ -1064,7 +1070,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     
     nJet_++;
   }///******End Jets Loop******
-  cout <<"********Empties: IP: "<<IP0Sum<<"     TA: "<<TA0Sum<<endl;    
+  //cout <<"********Empties: IP: "<<IP0Sum<<"     TA: "<<TA0Sum<<endl;    
   if (dumpSubJets_) {
     edm::Handle<edm::View<pat::Jet> > jetsAK8;
     e.getByToken(jetsAK8Label_, jetsAK8);
