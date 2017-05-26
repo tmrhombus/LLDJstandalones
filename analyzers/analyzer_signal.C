@@ -278,6 +278,8 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_jetPt                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPt                     " ;   
 
     TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
+    TString hname_jetSumIPSig                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetSumIPSig               " ;
+    TString hname_jetMedianLog10IPSig         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetMedianLog10IPSig       " ;
 
     TString hname_jetEn                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEn                     " ;   
     TString hname_jetEta                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEta                    " ;    
@@ -320,6 +322,8 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetPt                       [i][j][k] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
 
     h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
+    h_jetSumIPSig                 [i][j][k] = initSingleHistogramTH1F(  hname_jetSumIPSig                , "jetSumIPSig               " , 50, 0,1000);
+    h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 50, -5, 5 );
 
     h_jetEn                       [i][j][k] = initSingleHistogramTH1F(  hname_jetEn                      , "jetEn                     " , 50, 0, 500 );   
     h_jetEta                      [i][j][k] = initSingleHistogramTH1F(  hname_jetEta                     , "jetEta                    " , 10, -5, 5 );    
@@ -375,6 +379,8 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
 
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
+  if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(j), weight ); }
+  if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
 
   if(jetEn                      ->size()>j){h_jetEn                       [selbin][j][lepbin].Fill( jetEn                      ->at(j), weight ); } 
   if(jetEta                     ->size()>j){h_jetEta                      [selbin][j][lepbin].Fill( jetEta                     ->at(j), weight ); } 
@@ -430,6 +436,8 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
    h_jetPt                       [selbin][j][lepbin].Write(); 
 
    h_jetTestVariable             [selbin][j][lepbin].Write(); 
+   h_jetSumIPSig                 [selbin][j][lepbin].Write();
+   h_jetMedianLog10IPSig         [selbin][j][lepbin].Write();
 
    h_jetEn                       [selbin][j][lepbin].Write(); 
    h_jetEta                      [selbin][j][lepbin].Write(); 
