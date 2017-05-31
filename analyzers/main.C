@@ -169,21 +169,15 @@ int main(int argc, char **argv){
   }
 
   if( Tinputline.Contains("/store/user") ){
-
-// 5/11  if( Tinputline.Contains("/store/group") ){
-  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
-  theChain->Add( Tinputline );
-  printf("Inputfile: %s\n",Tinputline.Data());
+    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  // }
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
   // if( dolocal ){
   //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
   // }
-  // else{
-    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
-  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-  // }
-  // printf("Inputfile: %s\n",Tinputline.Data());
-  }
 
 
   inputline_dump.push_back(inputline);

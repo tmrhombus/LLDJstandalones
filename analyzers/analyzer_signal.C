@@ -322,8 +322,8 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetPt                       [i][j][k] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
 
     h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
-    h_jetSumIPSig                 [i][j][k] = initSingleHistogramTH1F(  hname_jetSumIPSig                , "jetSumIPSig               " , 50, 0,1000);
-    h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 50, -5, 5 );
+    h_jetSumIPSig                 [i][j][k] = initSingleHistogramTH1F(  hname_jetSumIPSig                , "jetSumIPSig               " , 30, -2, 3 );
+    h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 30, -2, 3 );
 
     h_jetEn                       [i][j][k] = initSingleHistogramTH1F(  hname_jetEn                      , "jetEn                     " , 50, 0, 500 );   
     h_jetEta                      [i][j][k] = initSingleHistogramTH1F(  hname_jetEta                     , "jetEta                    " , 10, -5, 5 );    
