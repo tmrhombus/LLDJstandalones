@@ -161,11 +161,13 @@ public :
  TH1F h_htall[6][2];
  TH1F h_htjets[6][2];
 
- TH1F h_jetTestVariable[6][4];
+ //TH1F h_jetTestVariable[6][4];
  // Jet
  TH1F h_jetPt[6][4][2]; 
 
  TH1F h_jetTestVariable[6][4][2]; 
+ TH1F h_jetSumIPSig[6][4][2];
+ TH1F h_jetMedianLog10IPSig[6][4][2]; 
 
  TH1F h_jetEn[6][4][2]; 
  TH1F h_jetEta[6][4][2]; 
