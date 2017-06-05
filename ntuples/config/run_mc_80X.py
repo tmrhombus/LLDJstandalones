@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 
 #process.Tracer = cms.Service("Tracer")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )##Number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1##how often to report use higher report number if using all events
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000##how often to report use higher report number if using all events
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -82,7 +82,7 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_pt20_MS40_cTauS0.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_pt20_MS40_cTauS100.root'));
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',

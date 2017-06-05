@@ -163,7 +163,7 @@ int main(int argc, char **argv){
 
   //  theChain->Add( Tinputline );
 
-  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+  if( Tinputline.Contains("/uscms/home/ddiaz/") ){
    theChain->Add( Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
