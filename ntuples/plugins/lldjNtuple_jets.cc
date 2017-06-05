@@ -18,22 +18,6 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-/*                                                                       tt not needed?
-double lldjNtuple::TrackAngle(const edm::Event& e, reco:: TransientTrack tt , TrajectoryStateOnSurface tSOSInnerHit)
-{
- // edm::Handle<reco::BeamSpot> bsHandle;
- // e.getByLabel("offlineBeamSpot", bsHandle);
- // const reco::BeamSpot &beamspot = (*bsHandle);
-  TVector2 pat_beamspot(beamspot.x0(),beamspot.y0());
-  GlobalPoint   InnerPos  = tSOSInnerHit.globalPosition();
-  GlobalVector InnerMom = tSOSInnerHit.globalMomentum();
-  TVector2 SV(InnerPos.x(),InnerPos.y());
-  TVector2 Diff = (SV-pat_beamspot);
-  TVector2 Momentum(InnerMom.x(),InnerMom.y());
-  return Diff.DeltaPhi(Momentum); //of Lorentz Vec:Double_t  DeltaPhi (const TLorentzVector &) const
-}*/
-
-
 // ak4 jets
 Int_t          nJet_;
 vector<float>  jetPt_;
@@ -225,14 +209,6 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetJetProbabilityBJetTags", &jetJetProbabilityBJetTags_);
   tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_);
 
-  ///###
-//     <<<<<<< master commented out is aaron
-//  tree->Branch("jetTestVariable",  &jetTestVariable_);
-  
-//  tree->Branch("jetAlphaMax", &jetAlphaMax_);
-//  tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
-//  tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
-//  tree->Branch("jetAlphaMaxP2", &jetAlphaMaxP2_);
 
   tree->Branch("jetLog10IPSig",           &jetLog10IPSig_);
   tree->Branch("jetMedianLog10IPSig",     &jetMedianLog10IPSig_);
@@ -439,13 +415,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetMedianLogTrackAngle_                 .clear();
   jetTotalTrackAngle_                     .clear(); 
   
-  //     <<<<<<< master commented out is aaron
-
-  //jetAlphaMax_.clear();
-  //jetAlphaMax2_.clear();
-  //jetAlphaMaxP_.clear();
-  //jetAlphaMaxP2_.clear();
-
 /*jetTrackPt_.clear();
   jetTrackEta_.clear();
   jetTrackPhi_.clear();*/
@@ -600,11 +569,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   int TA0Sum = 0;
 //******Jets Loop****
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
-  //const pat::Jet jjet = jetHandle
-  //cout<<"JET: "<<jetHandle->p4()<<endl;//***How to get Jet Axis iJet->p4()?
-  // cout <<iJet->p4()<<endl;
+  //get jet axis for track angle
     TVector3 JetAxis(iJet->px(),iJet->py(),iJet->pz());
-    //float MagJetAxis =JetAxis.Mag();
     //JetAxis.Print();
  
     //declare new vars    
@@ -615,14 +581,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float MedianLog10IPSig = 0.0;
     float TotalTrackAngle = 0.0;
     float MedianLogTrackAngle = 0.0;
-    //vector <bool> TAIsGood;
-    //bool TACheck;
-   // bool IPtest = false;
-    //float MagTang=-99.9;
-
+    
+    float emEnergyFrac       = iJet->chargedEmEnergyFraction() + iJet->neutralEmEnergyFraction(); //cout << "EM: "<<emEnergyFrac<<endl;
+    float hadronicEnergyFrac = iJet->chargedHadronEnergyFraction() + iJet->neutralHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
+    //if(iJet.isNonnull() == false){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
     nrjet++;
-    if (iJet->pt() < 15) continue;//reason for pt<15?, eta<5.2?
-    jetPt_.push_back(    iJet->pt());
+    if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || emEnergyFrac>.9 || hadronicEnergyFrac>.9) continue;//reason for pt<15?, eta<5.2?
+    jetPt_.push_back(    iJet->pt());cout << endl<< iJet->pt()<<" *****jet #: "<<nJet_ <<endl;//if(iJet->pt()<20 ||iJet->pt()>10000) cout<<"JetPT: "<<iJet->pt() <<"Event "/*<<e*/ <<endl;
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
     jetPhi_.push_back(   iJet->phi());
@@ -662,24 +627,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
 
-//     <<<<<<< master commented out is aaron
-    // vector<int>whichVertex_(iJet->getJetConstituents().size(), -1);
-    // vector<double> alphas(vtxHandle->size(),10);
-    // vector<double> alphas2(vtxHandle->size(),10);
-
 //***looping over tracks***
-
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
       
-//***IPtest2 begin  *****
+      //IP stuff
       bool IPtest = false;
       float dxySig = 0.0;
       const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
       //cast as Packed Candidate to access member functions
       const pat::PackedCandidate &daughter2 = dynamic_cast<const pat::PackedCandidate &>(*iJet->getJetConstituents().at(id));
-      //const reco::Track &daughter3 = dynamic_cast<const reco::Track &>(*iJet->getJetConstituents().at(id));
-      //const edm::Ptr<pat::PackedCandidate> daughter2 = iJet->getJetConstituents().at(id);
-      //static GetTrackTrajInfo getTrackTrajInfo;<-does not compile
  
       if (daughter.isNonnull() && daughter.isAvailable()) {
 	if (daughter->charge() != 0 && daughter->pt() > leadTrkPt) {
@@ -786,7 +742,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
         if (IPtest ==true){
         SumIP += dxy;
         SumIPSig +=dxySig;
-        cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl;
+        //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl;
     
         //fill log10IPSig 
         jetLog10IPSig_.push_back( log10(dxySig) );
@@ -816,11 +772,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
         //cout << " TA: " << daughter2.phiAtVtx() << " TotalTA: " << TotalTrackAngle<<" LOG "<< log(fabs(daughter2.phiAtVtx()))<<endl;
         //TACheck = true;
         //TAIsGood.push_back(TACheck);
- }      
+        }      
         }
     }///******End Tracks Loop******
-//****IPtest2 end    *****
-
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
     jetLeadTrackPhi_.push_back(leadTrkPhi);

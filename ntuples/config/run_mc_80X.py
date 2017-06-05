@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 
 #process.Tracer = cms.Service("Tracer")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )##Number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000##how often to report use higher report number if using all events
+process.MessageLogger.cerr.FwkReport.reportEvery = 1##how often to report use higher report number if using all events
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -43,9 +43,9 @@ process.source = cms.Source("PoolSource",
        #/ggZH_HToSSTodddd_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM
         #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/08BA365D-40E5-E611-955F-00266CF89498.root'
          #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-0p05_52134309-19CF-E611-AD86-0CC47A4D7604.root',
-         #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root',
-         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_2CA15029-73CB-E611-8315-02163E019C53.root',
-         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_62211E56-2EC9-E611-95F3-02163E019C8F.root'
+         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root',
+         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_70576F21-CDC9-E611-BC72-001E675047A5.root',
+         'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_EA59D0D0-5CCB-E611-B501-002590207C28.root'
 #'/store/mc/RunIISummer16MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/110000/08BA365D-40E5-E611-955F-00266CF89498.root'
         ))
 
@@ -82,7 +82,7 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_MS40_cTauS1.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_pt20_MS40_cTauS0.root'));
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
