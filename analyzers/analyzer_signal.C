@@ -47,15 +47,15 @@ void analyzer_signal::Loop(TString outfilename,
   Long64_t ientry = LoadTree(jentry);
   if (ientry < 0) break;
   nb = fChain->GetEntry(jentry);   nbytes += nb;
-  if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
-
+  //if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
+  
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use 
   // event_weight to make the simulation match what is seen in data
   // =lum/cross-section *nrEvents
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
-
+  
   // get lists of "good" electrons, photons, jets
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
   electron_list = electron_passLooseID( 30, 3, "");
@@ -88,27 +88,27 @@ void analyzer_signal::Loop(TString outfilename,
   // int phoindex = photon_list[i];
   // htall += phoEt->at(phoindex);
   //}
-
+  
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
    htall += elePt->at(eleindex);
   }
-
+  
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
    htall += muPt->at(muindex);
   }
-
+  
   for(int i=0; i<jet_list.size(); ++i){
    int jetindex = jet_list[i];
    htall  += jetPt->at(jetindex);
    htjets += jetPt->at(jetindex);
   } 
-
+  
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
-
+  
   // get electrons and muons and put into 4vectors
   bool passMM = false;
   makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
@@ -116,29 +116,29 @@ void analyzer_signal::Loop(TString outfilename,
   fourVec_ll = fourVec_l1 + fourVec_l2;
   dilep_mass = fourVec_ll.M();
   dilep_pt   = fourVec_ll.Pt();
-
+  
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passPTOSSFg50 = (dilep_pt>50.);
-
+  
   passGoodVtx = nVtx>0;
   passOneJet = jet_list.size()>0; 
-
+  
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
-
+  
   //debug_printobjects(); // helpful printout (turn off when submitting!!!)
-
+  
   // set booleans if pass various selections
   doesPassSig    = askPassSig   ();
   doesPassZH     = askPassZH    ();
   doesPassDY     = askPassDY    ();
   doesPassOffZ   = askPassOffZ  ();
   doesPassNoPair = askPassNoPair();
-
+  
   // fill histogram
-
+  
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -147,7 +147,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,0); fillJetHistograms(event_weight,4,0); }//fill2DHistograms(event_weight,4); }
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,0); fillJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
   }
-
+  
   if( passSingleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -278,6 +278,11 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_jetPt                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPt                     " ;   
 
     TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
+    
+    TString hname_jetAlphaMax                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax               " ;
+    TString hname_jetAlphaMax2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax2              " ;
+    TString hname_jetAlphaMaxP                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP              " ;
+    TString hname_jetAlphaMaxP2               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP2             " ;
 
     TString hname_jetEn                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEn                     " ;   
     TString hname_jetEta                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEta                    " ;    
@@ -320,7 +325,15 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetPt                       [i][j][k] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
 
     h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
+    
+    h_jetAlphaMax                 [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax                 , "jetAlphaMax               " , 30, 0, 1) ;
+    h_jetAlphaMax2                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax2                , "jetAlphaMax2              " , 30, 0, 1) ;
+    h_jetAlphaMaxP                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP                , "jetAlphaMaxP              " , 30, 0, 1) ;
+    h_jetAlphaMaxP2               [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP2               , "jetAlphaMaxP2             " , 30, 0, 1) ;
 
+    
+    
+    
     h_jetEn                       [i][j][k] = initSingleHistogramTH1F(  hname_jetEn                      , "jetEn                     " , 50, 0, 500 );   
     h_jetEta                      [i][j][k] = initSingleHistogramTH1F(  hname_jetEta                     , "jetEta                    " , 10, -5, 5 );    
     h_jetPhi                      [i][j][k] = initSingleHistogramTH1F(  hname_jetPhi                     , "jetPhi                    " , 10, -5, 5 );    
@@ -375,7 +388,15 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
 
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
+  if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight );}
+  if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight );}
+  if(jetAlphaMaxP               ->size()>j){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(j), weight );}
+  if(jetAlphaMaxP2              ->size()>j){h_jetAlphaMaxP2               [selbin][j][lepbin].Fill(jetAlphaMaxP2               ->at(j), weight );}
 
+  
+  
+  
+  
   if(jetEn                      ->size()>j){h_jetEn                       [selbin][j][lepbin].Fill( jetEn                      ->at(j), weight ); } 
   if(jetEta                     ->size()>j){h_jetEta                      [selbin][j][lepbin].Fill( jetEta                     ->at(j), weight ); } 
   if(jetPhi                     ->size()>j){h_jetPhi                      [selbin][j][lepbin].Fill( jetPhi                     ->at(j), weight ); } 
@@ -429,8 +450,14 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
 
    h_jetPt                       [selbin][j][lepbin].Write(); 
 
-   h_jetTestVariable             [selbin][j][lepbin].Write(); 
+   h_jetTestVariable             [selbin][j][lepbin].Write();
+ 
+   h_jetAlphaMax                 [selbin][j][lepbin].Write();
+   h_jetAlphaMax2                [selbin][j][lepbin].Write();
+   h_jetAlphaMaxP                [selbin][j][lepbin].Write();
+   h_jetAlphaMaxP2               [selbin][j][lepbin].Write();
 
+   
    h_jetEn                       [selbin][j][lepbin].Write(); 
    h_jetEta                      [selbin][j][lepbin].Write(); 
    h_jetPhi                      [selbin][j][lepbin].Write(); 
@@ -1142,7 +1169,7 @@ std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double pho
 
       bool photonId = (
                        ((*phoHoverE)[p]                <  0.05   ) && 
-                       ( TMath::Max( ( (*phoPFChIso)[p]       - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
+                       ( TMath::Max( ( (*phoPFChIso)[p]  - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
                        ( TMath::Max( ( (*phoPFNeuIso)[p] - rho*EAneutral((*phoSCEta)[p]) ), 0.0) <
                         (1.06 + (0.014 * thephoPt) + (0.000019 * pow(thephoPt, 2.0))) )  &&
                        ( TMath::Max( ( (*phoPFPhoIso)[p] - rho*EAphoton((*phoSCEta)[p])  ), 0.0) < 
