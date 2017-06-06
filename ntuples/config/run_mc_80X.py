@@ -82,7 +82,7 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_pt20_MS40_cTauS100.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_pt20_MS40_cTauS100_testing.root'));
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',

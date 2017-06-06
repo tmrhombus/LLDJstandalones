@@ -82,13 +82,9 @@ vector<float>jetAlphaMax2_;
 vector<float>jetAlphaMaxP_;
 vector<float>jetAlphaMaxP2_;
 
-//vector<float> alphas[][];
-//vector<float> alphas2[][];
-
 vector<vector<float>> jetTrackPt_;
 vector<vector<float>> jetTrackEta_;
 vector<vector<float>> jetTrackPhi_;
-
 
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
@@ -224,13 +220,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
  
 
- //link variable in c++ code to variable in branch
-/*
-
-  tree->Branch("jetTrackPt"  ,  &jetTrackPt_);
-  tree->Branch("jetTrackEta" ,  &jetTrackEta_);
-  tree->Branch("jetTrackPhi" ,  &jetTrackPhi_);
-*/
+  //link the variable in c++ code to variable in branch
   if (doGenParticles_){
     tree->Branch("jetPartonID",       &jetPartonID_);
     tree->Branch("jetHadFlvr",        &jetHadFlvr_);
@@ -422,10 +412,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetAlphaMaxP_.clear();
   jetAlphaMaxP2_.clear();
 
-/*jetTrackPt_.clear();
-  jetTrackEta_.clear();
-  jetTrackPhi_.clear();*/
-
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
   jetGenJetEta_.clear();
@@ -578,7 +564,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   //******Jets Loop****
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
 
-  //get jet axis for track angle
+    //get jet axis for track angle
     TVector3 JetAxis(iJet->px(),iJet->py(),iJet->pz());
     //JetAxis.Print();
  
@@ -593,10 +579,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     
     float emEnergyFrac       = iJet->chargedEmEnergyFraction() + iJet->neutralEmEnergyFraction(); //cout << "EM: "<<emEnergyFrac<<endl;
     float hadronicEnergyFrac = iJet->chargedHadronEnergyFraction() + iJet->neutralHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
-    //if(iJet.isNonnull() == false){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
+    
+    //const edm::Ptr<pat::Jet> JetPTr = jetHandle;  
+
+    //if(iJet->pt() == ){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
     nrjet++;
     if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || emEnergyFrac>.9 || hadronicEnergyFrac>.9) continue;//reason for pt<15?, eta<5.2?
-    jetPt_.push_back(    iJet->pt());//cout << endl<< iJet->pt()<<" *****jet #: "<<nJet_ <<endl;//if(iJet->pt()<20 ||iJet->pt()>10000) cout<<"JetPT: "<<iJet->pt() <<"Event "/*<<e*/ <<endl;
+    jetPt_.push_back(    iJet->pt());//cout << endl<< iJet->pt()<<" *****jet constituents: "<<iJet->getJetConstituents().size() <<endl;
+    //if(iJet->pt()<20 ||iJet->pt()>10000) cout<<endl<<"JetPT: "<<iJet->pt() <<"Event "/*<<e*/ <<endl;
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
     jetPhi_.push_back(   iJet->phi());
@@ -676,8 +666,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
               if (IPtest ==true){
                  SumIP += dxy;
                  SumIPSig +=dxySig;
-                 //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl;
-                 //fill log10IPSig 
+                 //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl; 
                  jetLog10IPSig_.push_back( log10(dxySig) );
                }     
                  //track angle stuff
@@ -730,57 +719,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetAlphaMaxP2_.push_back(apMax2);
     }
    //old end tracks loop
-
-
-/*
-    double total = 0;
-    double total2 = 0;
-    double promptTotal = 0;
-    double promptTotal2 = 0;
-    vector<double> alphas(vtxHandle->size(),0);
-    vector<double> alphas2(vtxHandle->size(),0);
-    //vector<int>rowSizeParam;
-    for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
-      
-      const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
-      //rowSizeParam[(int)id] = daughter.size();
-      if (daughter.isNonnull() && daughter.isAvailable()) {
-	
-	//for(int i = 0; i < (int)tracks.size(); i++){
-	  double ptSUB = daughter->pt();
-	  total += ptSUB;
-	  total2 += ptSUB*ptSUB;
-	  if(whichVertex_[(int)id] < 0)continue;
-	  promptTotal += ptSUB;
-	  promptTotal2 += ptSUB*ptSUB;
-	  alphas[whichVertex_[(int)id]] += ptSUB;
-	  alphas2[whichVertex_[(int)id]] += ptSUB*ptSUB;
-	  				       }
-    }
-	
-      double alphaMax = 0;
-      double alphaMax2 = 0;
-      double apMax =0;
-      double apMax2 = 0;
-      double beta = 1.0 - promptTotal/total;
-      double beta2 = 1.0 - promptTotal2 / total2;
-      for(int i = 0; i < (int)alphas.size(); i++){
-	if(alphas[i] > alphaMax) alphaMax = alphas[i];
-	if(alphas2[i] > alphaMax2) alphaMax2 = alphas2[i];
-	double ap = alphas[i] / (alphas[i] + beta);
-	double ap2 = alphas2[i] / (alphas2[i] + beta2);
-	if(ap > apMax) apMax = ap;
-	if(ap2 > apMax2) apMax2 = ap2;
-	}*/
-      //cout<<"apMax =";cout<<apMax<<endl;
-  // jetAlphaMax_.push_back(alphaMax / total);
-  // jetAlphaMax2_.push_back(alphaMax2 / total2);
-  // jetAlphaMaxP_.push_back(apMax);
-  // jetAlphaMaxP2_.push_back(apMax2);	
-   //}
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-
+	 
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
     jetLeadTrackPhi_.push_back(leadTrkPhi);
@@ -887,10 +826,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetSumIP_.push_back(SumIP);
     jetSumIPSig_.push_back(SumIPSig);
     jetTestVariable_.push_back(nrjet);
-
-  //  jetTrackPt_.clear();
-  //  jetTrackEta_.clear();
-  //  jetTrackPhi_.clear();
 
     if(jetLogTrackAngle_.size()>0/*TAIsGood.size() >0*/)jetTotalTrackAngle_.push_back(TotalTrackAngle);
 /*
