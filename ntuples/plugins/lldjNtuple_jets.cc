@@ -12,7 +12,11 @@
 #include "CLHEP/Random/RandomEngine.h"
 #include "CLHEP/Random/RandGauss.h"
 
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"         
+
 //#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //#include <GetTrackTrajInfo.h>
 using namespace std;
@@ -103,11 +107,6 @@ vector<float>jetAlphaMaxP2_;
 vector<vector<float>> jetTrackPt_;
 vector<vector<float>> jetTrackEta_;
 vector<vector<float>> jetTrackPhi_;
-
-
-
-
-
 
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
@@ -224,10 +223,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetJetProbabilityBJetTags", &jetJetProbabilityBJetTags_);
   tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_);
 
-  ///###
-//     <<<<<<< master commented out is aaron
-//  tree->Branch("jetTestVariable",  &jetTestVariable_);
-  
+ 
   tree->Branch("jetAlphaMax", &jetAlphaMax_);
   tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
   tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
@@ -242,7 +238,6 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetLogTrackAngle",        &jetLogTrackAngle_);
   tree->Branch("jetMedianLogTrackAngle",  &jetMedianLogTrackAngle_); 
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
- 
 
  //link variable in c++ code to variable in branch
 /*
@@ -433,7 +428,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetTestVariable_.clear();
   
   
-  //     <<<<<<< master commented out is aaron
+
 
   jetAlphaMax_.clear();
   jetAlphaMax2_.clear();
@@ -602,6 +597,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   int IP0Sum = 0;
   int TA0Sum = 0;
 //******Jets Loop****
+
+ 
+
+
+
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
   //const pat::Jet jjet = jetHandle
   //cout<<"JET: "<<jetHandle->p4()<<endl;//***How to get Jet Axis iJet->p4()?
@@ -617,8 +617,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float MedianLogTrackAngle = 0.0;
     bool TAIsGood = false;
     
+    float emEnergyFrac       = iJet->chargedEmEnergyFraction() + iJet->neutralEmEnergyFraction(); 
+    //cout << "EM: "<<emEnergyFrac<<endl;
+    float hadronicEnergyFrac = iJet->chargedHadronEnergyFraction() + iJet->neutralHadronEnergyFraction(); 
+    //cout << "had: "<<hadronicEnergyFrac<<endl;    
+    
     nrjet++;
-    if (iJet->pt() < 15) continue;//reason for pt<15?, eta<5.2?
+    cout<<"************************ jetnumber ="<<nrjet<<endl;
+    if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || emEnergyFrac>.9 || hadronicEnergyFrac>.9) continue;//reason for pt<15?, eta<5.2?
     jetPt_.push_back(    iJet->pt());
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
@@ -659,10 +665,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
 
-//     <<<<<<< master commented out is aaron
-//     vector<int>whichVertex_(iJet->getJetConstituents().size(), -1);
-    // vector<double> alphas(vtxHandle->size(),10);
-    // vector<double> alphas2(vtxHandle->size(),10);
     vector<double> numerator(iJet->getJetConstituents().size(), 0);
     vector<double> numerator2(iJet->getJetConstituents().size(), 0);
     double denominator = 0;
@@ -745,10 +747,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	//}
 	// }
 	///****Calulate Alphas
-		if (daughter2.charge() != 0){
+		if(daughter2.charge() != 0){
 		  dummyPT = daughter->pt();
 	  	  if(daughter2.fromPV() > 1){
-	  	    numerator[(int)id] += dummyPT;
+	  	    //cout<<dummyPT<<endl;
+		    numerator[(int)id] += dummyPT;
 		    numerator2[(int)id] += dummyPT*dummyPT;
 		    promptTotal += dummyPT;
 		    promptTotal2 += dummyPT*dummyPT;
@@ -756,14 +759,19 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	  	  }
 	  	  denominator += dummyPT;
 	  	  denominator2 += dummyPT*dummyPT;
-	  	}
-	      }
+		  
+		}
+      }
+      cout<<"alpha ="<<numerator[id]<<"     Total ="<<denominator<<endl;
     }
-      //cout<<daughter2.fromPV()<<endl;
-	// }
-	// }    
-
-    //}
+    
+    
+    
+    
+    
+      ///******End Tracks Loop******
+    
+    //******************Find MAX Alpha for each jet**********************
     double alphaMax = 0;
     double alphaMax2 = 0;
     double apMax =0;
@@ -780,96 +788,16 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       if(ap2 > apMax2) apMax2 = ap2;
     }
     //cout<<"apMax =";cout<<apMax<<endl;
-    double test = alphaMax / denominator;
-    if(test != 0){
-      cout<<"test = "<<test<<enl;  
+    ;
+    //if(test != 0){
+      //  cout<<"test = "<<test<<enl;  
     //cout<< test <<endl;
     jetAlphaMax_.push_back(alphaMax / denominator);
     jetAlphaMax2_.push_back(alphaMax2 / denominator2);
     jetAlphaMaxP_.push_back(apMax);
     jetAlphaMaxP2_.push_back(apMax2);
-    }
-	/*	double maxWeight = 0;
-	int jj = -1;
-	//reco::TrackBaseRef tref(trackHandle,i);
-	for(int j = 0; j < (int)vtxHandle->size();j++){
-	   if(vtxHandle->at(j).trackWeight(tref) > maxWeight){
-	     maxWeight = vtxHandle->at(j).trackWeight(tref);
-	  if(vtxHandle->at(j).trackWeight(daughter) > maxWeight){
-	    maxWeight = vtxHandle->at(j).trackWeight(daughter);
-	    jj = j;
-	    
-	    // for(unsigned i = 0; i < whichVertex_.size();i++){
-	      cout<<vtxHandle->at(j).trackWeight(daughter)<<endl;
-	      // }
-	  }
-	}
-	whichVertex_[id] =jj;      
-      */
-  //   } ///******End Tracks Loop******
-  //  }//****IPtest2 end    *****
-  //}
-    
-
-	
-  //    }
- //   }
-//
-
-
-/*
-    double total = 0;
-    double total2 = 0;
-    double promptTotal = 0;
-    double promptTotal2 = 0;
-    vector<double> alphas(vtxHandle->size(),0);
-    vector<double> alphas2(vtxHandle->size(),0);
-    //vector<int>rowSizeParam;
-    for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
-      
-      const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
-      //rowSizeParam[(int)id] = daughter.size();
-      if (daughter.isNonnull() && daughter.isAvailable()) {
-	
-	//for(int i = 0; i < (int)tracks.size(); i++){
-	  double ptSUB = daughter->pt();
-	  total += ptSUB;
-	  total2 += ptSUB*ptSUB;
-	  if(whichVertex_[(int)id] < 0)continue;
-	  promptTotal += ptSUB;
-	  promptTotal2 += ptSUB*ptSUB;
-	  alphas[whichVertex_[(int)id]] += ptSUB;
-	  alphas2[whichVertex_[(int)id]] += ptSUB*ptSUB;
-	  				       }
-    }
-	
-      double alphaMax = 0;
-      double alphaMax2 = 0;
-      double apMax =0;
-      double apMax2 = 0;
-      double beta = 1.0 - promptTotal/total;
-      double beta2 = 1.0 - promptTotal2 / total2;
-      for(int i = 0; i < (int)alphas.size(); i++){
-	if(alphas[i] > alphaMax) alphaMax = alphas[i];
-	if(alphas2[i] > alphaMax2) alphaMax2 = alphas2[i];
-	double ap = alphas[i] / (alphas[i] + beta);
-	double ap2 = alphas2[i] / (alphas2[i] + beta2);
-	if(ap > apMax) apMax = ap;
-	if(ap2 > apMax2) apMax2 = ap2;
-	}*/
-      //cout<<"apMax =";cout<<apMax<<endl;
-  // jetAlphaMax_.push_back(alphaMax / total);
-  // jetAlphaMax2_.push_back(alphaMax2 / total2);
-  // jetAlphaMaxP_.push_back(apMax);
-  // jetAlphaMaxP2_.push_back(apMax2);	
-   //}
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-        
+    //******End Alpha MAX calculation**********************8
+     
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
     jetLeadTrackPhi_.push_back(leadTrkPhi);
