@@ -908,6 +908,33 @@ std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaC
 std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
 {
   //bool veto_passed = true; //pass veto if no good electron found 
+   ///    //  eleIDbit
+   /// 
+   /// 689     bool isPassVeto  = (*veto_id_decisions)[el];
+   /// 690     if (isPassVeto) setbit(tmpeleIDbit, 0);
+   /// 691 
+   /// 692     bool isPassLoose  = (*loose_id_decisions)[el];
+   /// 693     if (isPassLoose) setbit(tmpeleIDbit, 1);
+   /// 694 
+   /// 695     bool isPassMedium = (*medium_id_decisions)[el];
+   /// 696     if (isPassMedium) setbit(tmpeleIDbit, 2);
+   /// 697 
+   /// 698     bool isPassTight  = (*tight_id_decisions)[el];
+   /// 699     if (isPassTight) setbit(tmpeleIDbit, 3);
+   /// 700 
+   /// 701     bool isPassHEEP = (*heep_id_decisions)[el];
+   /// 702     if (isPassHEEP) setbit(tmpeleIDbit, 4);
+   /// 703 
+   /// 704     bool isPassHLT = (*hlt_id_decisions)[el];
+   /// 705     if (isPassHLT) setbit(tmpeleIDbit, 5);
+   /// 
+   /// 
+   /// 
+   ///  root [7] std::bitset<6>(63).to_string()
+   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
+   ///  root [8] std::bitset<6>(47).to_string()
+   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
+
   std::vector<int> elelist;
 
   bool pass_SigmaIEtaIEtaFull5x5 = false;
