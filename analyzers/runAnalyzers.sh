@@ -1,7 +1,10 @@
 #!/bin/bash
 
 for sample in \
-'DY50'                               
+ 'DY50'
+ #'lldjntuple_mc'
+ #'DY50'
+ #'DY50'                               
  #'DY5to50_HT100to200'                \
  #'DY5to50_HT200to400'                \
  #'DY5to50_HT400to600'                \
