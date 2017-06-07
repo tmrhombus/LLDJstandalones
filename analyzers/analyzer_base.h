@@ -241,9 +241,9 @@ public :
    std::vector<float>   *muBestTrkPt;
    Int_t           nJet;
 
-   std::vector<int>     *jetTestVariable;
-   std::vector<float>   *jetSumIPSig;
-   std::vector<float>   *jetMedianLog10IPSig;
+   //std::vector<int>     *jetTestVariable;
+   //std::vector<float>   *jetSumIPSig;
+   //std::vector<float>   *jetMedianLog10IPSig;
 
    std::vector<float>   *jetPt;
    std::vector<float>   *jetEn;
@@ -559,9 +559,9 @@ public :
    TBranch        *b_muBestTrkPt;   //!
    TBranch        *b_nJet;   //!
   
-   TBranch        *b_jetTestVariable;//!
-   TBranch        *b_jetSumIPSig;//!
-   TBranch        *b_jetMedianLog10IPSig;//!
+   //TBranch        *b_jetTestVariable;//!
+   //TBranch        *b_jetSumIPSig;//!
+   //TBranch        *b_jetMedianLog10IPSig;//!
 
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEn;   //!

@@ -45,34 +45,46 @@ void analyzer_signal::Loop(TString outfilename,
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
-  printf(" Event %lld\n", event);
-  if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
+  //printf(" Event %lld\n", event);
+  //if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
   Long64_t ientry = LoadTree(jentry);
-  if( event==472257123 ){ printf(" %lli \n",ientry); }
+  //if( event==472257123 ){ printf(" %lli \n",ientry); }
   if (ientry < 0) break;
-  if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
+  //if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
   nb = fChain->GetEntry(jentry);   nbytes += nb;
-  if( event==472257123 ){ printf(" got entry \n"); }
+  //if( event==472257123 ){ printf(" got entry \n"); }
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use 
   // event_weight to make the simulation match what is seen in data
   // =lum/cross-section *nrEvents
-  if( event==472257123 ){ printf("making eventweight\n"); }
+  //if( event==472257123 ){ printf("making eventweight\n"); }
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
 
-  if( event==472257123 ){ printf("making photonlist\n"); }
+  //if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
-  if( event==472257123 ){ printf("making electronlist\n"); }
-  electron_list = electron_passLooseID( 30, 3, "");
-  if( event==472257123 ){ printf("making muonlist\n"); }
-  muon_list = muon_passTightID( 28, 2.4, ""); 
+
+  //if( event==472257123 ){ printf("making electronlist\n"); }
+  // veto loose medium tight heep hlt
+  electron_list_l = electron_passID( 1, 30, 3, "");
+  electron_list_m = electron_passID( 2, 30, 3, "");
+  electron_list_t = electron_passID( 3, 30, 3, "");
+
+  //if( event==472257123 ){ printf("making muonlist\n"); }
+  //muon_list = muon_passTightID( 28, 2.4, ""); 
+  muon_list_l = muon_passID( 0, 15, 3, ""); 
+  muon_list_m = muon_passID( 1, 15, 3, ""); 
+  muon_list_t = muon_passID( 2, 15, 3, ""); 
   //muon_list = muon_passLooseID( 15, 3, ""); 
-  if( event==472257123 ){ printf("making jetlist\n"); }
+
+  //if( event==472257123 ){ printf("making jetlist\n"); }
   jet_list = jet_passID( 20, 2.4, "");
+
+  muon_list = muon_list_t;
+  electron_list = electron_list_t;
 
   // set our met
   themet = pfMET;
@@ -140,25 +152,33 @@ void analyzer_signal::Loop(TString outfilename,
   passSingleMu  = askPassSingleMu();
 
 
-  if( event==472257123 ){ printf("EVENT in question\n"); 
-  debug_printobjects(); // helpful printout (turn off when submitting!!!)
+  if( event==98956859 ){
+   debug_printobjects();   // helpful printout (turn off when submitting!!!)
+   debug_printmuons();     // helpful printout (turn off when submitting!!!)
+   debug_printelectrons(); // helpful printout (turn off when submitting!!!)
+
   }
 
+   
+  //}
+  //if( event==472257123 ){ printf("EVENT in question\n"); 
+  //}
+
   // set booleans if pass various selections
-  if( event==472257123 ){ printf("askPassSig\n"); }
+  //if( event==472257123 ){ printf("askPassSig\n"); }
   doesPassSig    = askPassSig   ();
-  if( event==472257123 ){ printf("askPassZH\n");  }
+  //if( event==472257123 ){ printf("askPassZH\n");  }
   doesPassZH     = askPassZH    ();
-  if( event==472257123 ){ printf("askPassDY\n");  }
+  //if( event==472257123 ){ printf("askPassDY\n");  }
   doesPassDY     = askPassDY    ();
-  if( event==472257123 ){ printf("askPassOffZ\n");  }
+  //if( event==472257123 ){ printf("askPassOffZ\n");  }
   doesPassOffZ   = askPassOffZ  ();
-  if( event==472257123 ){ printf("askPassSig\n");  }
+  //if( event==472257123 ){ printf("askPassSig\n");  }
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
 
-  if( event==472257123 ){ printf("fillEle\n");  }
+  //if( event==472257123 ){ printf("fillEle\n");  }
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -168,7 +188,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,0); fillJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
   }
 
-  if( event==472257123 ){ printf("fillMu\n");  }
+  //if( event==472257123 ){ printf("fillMu\n");  }
   if( passSingleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -178,7 +198,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,1); fillJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
   }
    
-  if( event==472257123 ){ printf("Done Looping\n");  }
+  //if( event==472257123 ){ printf("Done Looping\n");  }
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
@@ -400,9 +420,9 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
 
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
 
-  if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
-  if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(j), weight ); }
-  if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
+  //if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
+  //if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(j), weight ); }
+  //if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
 
   if(jetEn                      ->size()>j){h_jetEn                       [selbin][j][lepbin].Fill( jetEn                      ->at(j), weight ); } 
   if(jetEta                     ->size()>j){h_jetEta                      [selbin][j][lepbin].Fill( jetEta                     ->at(j), weight ); } 
@@ -790,336 +810,456 @@ Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
 
 }
 
-//-------------------------muon_passLooseID
-std::vector<int> analyzer_signal::muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname)
+
+//-------------------------muon_passID
+std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
 {
-  std::vector<int> mulist;
+ std::vector<int> mulist;
 
-  bool pass_PFMuon = false;
-  bool pass_globalMuon = false;
-  bool pass_trackerMuon = false;
-  bool pass_iso = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue 
-  Float_t zero = 0.0; 
-  Float_t muPhoPU = 999.9;
-  Float_t tightIso_combinedRelative = 999.9;
-  for(int i = 0; i < nMu; i++) 
-    {    
+ // bool pass_loose  ;
+ // bool pass_medium ;
+ // bool pass_tight  ;
+ // bool pass_soft   ;
+ // bool pass_hipt   ;
+ //
+ // pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
+ // pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
+ // pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
+ // pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
+ // pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
+ //
+ //  printf(" Muon %i    %i %i %i %i %i \n\n",i
+ //        , pass_loose  
+ //        , pass_medium  
+ //        , pass_tight
+ //        , pass_soft
+ //        , pass_hipt
+ //        );       
 
-      pass_PFMuon =            true;  // muIsPFMuon->at(i);
-      pass_globalMuon =        true;  // muIsGlobalMuon->at(i);
-      pass_trackerMuon =       true;  // muIsTrackerMuon->at(i);
-      muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-      tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-      pass_iso = tightIso_combinedRelative < 0.25;
-      //Muon passes Loose Muon ID and PF-based combined relative, dBeta-corrected Loose Muon Isolation cuts  
+ for(int i = 0; i < nMu; i++) 
+ {    
+  //  printf(" Muon %i    %i %i %i %i %i \n",i
+  //        ,muIDbit->at(i) >> 0 & 0x1 
+  //        ,muIDbit->at(i) >> 1 & 0x1 
+  //        ,muIDbit->at(i) >> 2 & 0x1 
+  //        ,muIDbit->at(i) >> 3 & 0x1 
+  //        ,muIDbit->at(i) >> 4 & 0x1 
+  //        );       
 
-//if( event==767326116 ){
-//      printf(" Event: %lli \n",event);
-//      printf("  muPt              %f \n",  muPt->at(i)                        );
-//      printf("  muIsPFMuon        %f \n",  muIsPFMuon->at(i)                  );
-//      printf("  muIsGlobalMuon    %f \n",  muIsGlobalMuon->at(i)              );
-//      printf("  muIsTrackerMuon   %f \n",  muIsTrackerMuon->at(i)             );
-//      printf("  muPFNeuIso        %f \n",  muPFNeuIso->at(i)                  );
-//      printf("  muPFPhoIso        %f \n",  muPFPhoIso->at(i)                  );
-//      printf("  muPFPUIso         %f \n",  muPFPUIso->at(i)                   );
-//      printf("  muPhoPU           %f \n",  muPhoPU                            );
-//      printf("\n\n");
-//                   std::cout<<muPt->at(i)<<std::endl;
-//                   std::cout<<muEta->at(i)<<std::endl;
-//                   std::cout<<"veto Passed!!!!"<<muEta->at(i)<<" "<<muPhi->at(i)<<" "<<phoSCEta->at(pho_index)<<" "<<phoSCPhi->at(pho_index)<<std::endl;
+  Float_t muonPt = getMuonPt(i,sysbinname);
+  bool pass_kin = muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) ;
+
+  bool pass_bit = muIDbit->at(i) >> bitnr & 0x1 == 1;      
+
+  if( pass_bit && pass_kin )
+  {
+   // check overlaps
+   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+   //  {    
+   //  }
+   mulist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over muons
+ return mulist;
+}
+
+////-------------------------muon_passLooseID
+//std::vector<int> analyzer_signal::muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname)
+//{
+//  std::vector<int> mulist;
+//   //  151     if (iMu->isLooseMuon())     setbit(tmpmuIDbit, 0);
+//   //  152     if (iMu->isMediumMuon())    setbit(tmpmuIDbit, 1);
+//   //  153     if (iMu->isTightMuon(vtx))  setbit(tmpmuIDbit, 2);
+//   //  154     if (iMu->isSoftMuon(vtx))   setbit(tmpmuIDbit, 3);
+//   //  155     if (iMu->isHighPtMuon(vtx)) setbit(tmpmuIDbit, 4);
+//   ///  root [7] std::bitset<6>(63).to_string()
+//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
+//   ///  root [8] std::bitset<6>(47).to_string()
+//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
+//
+// bool pass_loose  ;
+// bool pass_medium ;
+// bool pass_tight  ;
+// bool pass_soft   ;
+// bool pass_hipt   ;
+//
+//  bool pass_PFMuon = false;
+//  bool pass_globalMuon = false;
+//  bool pass_trackerMuon = false;
+//  bool pass_iso = false;
+//  //Explicitly stating types to avoid a TMath::Max conversion issue 
+//  Float_t zero = 0.0; 
+//  Float_t muPhoPU = 999.9;
+//  Float_t tightIso_combinedRelative = 999.9;
+//  for(int i = 0; i < nMu; i++) 
+//    {    
+//    //  printf(" Muon %i    %i %i %i %i %i \n",i
+//    //        ,muIDbit->at(i) >> 0 & 0x1 
+//    //        ,muIDbit->at(i) >> 1 & 0x1 
+//    //        ,muIDbit->at(i) >> 2 & 0x1 
+//    //        ,muIDbit->at(i) >> 3 & 0x1 
+//    //        ,muIDbit->at(i) >> 4 & 0x1 
+//    //        );       
+//
+//    //  pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
+//    //  pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
+//    //  pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
+//    //  pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
+//    //  pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
+//
+//    //  printf(" Muon %i    %i %i %i %i %i \n\n",i
+//    //        , pass_loose  
+//    //        , pass_medium  
+//    //        , pass_tight
+//    //        , pass_soft
+//    //        , pass_hipt
+//    //        );       
+//
+//      pass_PFMuon =            true;  // muIsPFMuon->at(i);
+//      pass_globalMuon =        true;  // muIsGlobalMuon->at(i);
+//      pass_trackerMuon =       true;  // muIsTrackerMuon->at(i);
+//      muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
+//      tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
+//      pass_iso = tightIso_combinedRelative < 0.25;
+//      //Muon passes Loose Muon ID and PF-based combined relative, dBeta-corrected Loose Muon Isolation cuts  
+//
+////if( event==767326116 ){
+////      printf(" Event: %lli \n",event);
+////      printf("  muPt              %f \n",  muPt->at(i)                        );
+////      printf("  muIsPFMuon        %f \n",  muIsPFMuon->at(i)                  );
+////      printf("  muIsGlobalMuon    %f \n",  muIsGlobalMuon->at(i)              );
+////      printf("  muIsTrackerMuon   %f \n",  muIsTrackerMuon->at(i)             );
+////      printf("  muPFNeuIso        %f \n",  muPFNeuIso->at(i)                  );
+////      printf("  muPFPhoIso        %f \n",  muPFPhoIso->at(i)                  );
+////      printf("  muPFPUIso         %f \n",  muPFPUIso->at(i)                   );
+////      printf("  muPhoPU           %f \n",  muPhoPU                            );
+////      printf("\n\n");
+////                   std::cout<<muPt->at(i)<<std::endl;
+////                   std::cout<<muEta->at(i)<<std::endl;
+////                   std::cout<<"veto Passed!!!!"<<muEta->at(i)<<" "<<muPhi->at(i)<<" "<<phoSCEta->at(pho_index)<<" "<<phoSCPhi->at(pho_index)<<std::endl;
+////}
+//
+//      //if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) && pass_iso)
+//      if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) )
+//        {    
+//          //Muon passes pt cut 
+//          Float_t muonPt = getMuonPt(i,sysbinname);
+//          if(muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) )
+//            {    
+//              ////Muon does not overlap photon
+//              //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+//              //  {    
+//                 mulist.push_back(i);
+//              //  }    
+//            }    
+//        }    
+//    }    
+//  return mulist;
+//}
+//
+////-------------------------muon_passTightID
+//std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaCut, TString sysbinname)
+//{
+//  std::vector<int> mu_cands;
+//  mu_cands.clear();
+//
+//  bool pass_PFMuon = false;
+//  bool pass_globalMuon = false;
+//  // bool pass_trackerMuon = false;
+//  bool pass_chi2ndf = false;
+//  bool pass_chamberHit = false;
+//  bool pass_matchedStations = false;
+//  bool pass_dxy = false;
+//  bool pass_dz = false;
+//  bool pass_pixelHits = false;
+//  bool pass_trackLayers = false;
+//  bool pass_iso = false;
+//  //Explicitly stating types to avoid a TMath::Max conversion issue
+//  Float_t zero = 0.0; 
+//  Float_t muPhoPU = 999.9;
+//  Float_t tightIso_combinedRelative = 999.9;
+//  for(int i = 0; i < nMu; i++) 
+//  {
+//    pass_globalMuon = true;  //muIsGlobalMuon->at(i);
+//    pass_PFMuon =     true;  // muIsPFMuon->at(i);
+//    // pass_trackerMuon = muIsTrackerMuon->at(i);
+//    pass_chi2ndf = muChi2NDF->at(i) < 10.0;
+//    pass_chamberHit = muMuonHits->at(i) > 0; 
+//    pass_matchedStations = muStations->at(i) > 1; 
+//    pass_dxy = fabs(muInnerD0->at(i)) < 0.2; 
+//    pass_dz = fabs(muInnerDz->at(i)) < 0.5; 
+//    pass_pixelHits = muPixelHits->at(i) > 0; 
+//    pass_trackLayers = muTrkLayers->at(i) > 5; 
+//
+//    muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
+//    tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
+//    pass_iso = tightIso_combinedRelative < 0.15;
+//    //Muon passes Tight Muon ID
+//    if(pass_globalMuon && pass_PFMuon && pass_chi2ndf && pass_chamberHit && pass_matchedStations && pass_dxy && pass_dz && pass_pixelHits && pass_trackLayers)
+//    {    
+//      //Muon passes pt cut 
+//      Float_t muonPt = getMuonPt(i,sysbinname);
+//      if(muonPt > muPtCut && ( fabs(muEta->at(i)) > muEtaCut ) )
+//      {    
+//        ////Muon does not overlap photon
+//        //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+//        //{    
+//          mu_cands.push_back(i);
+//        //}    
+//      }    
+//    }    
+//  }
+//  return mu_cands;
 //}
 
-      //if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) && pass_iso)
-      if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) )
-        {    
-          //Muon passes pt cut 
-          Float_t muonPt = getMuonPt(i,sysbinname);
-          if(muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) )
-            {    
-              ////Muon does not overlap photon
-              //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-              //  {    
-                 mulist.push_back(i);
-              //  }    
-            }    
-        }    
-    }    
-  return mulist;
-}
 
-//-------------------------muon_passTightID
-std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaCut, TString sysbinname)
+//-------------------------electron_passID
+std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname)
 {
-  std::vector<int> mu_cands;
-  mu_cands.clear();
 
-  bool pass_PFMuon = false;
-  bool pass_globalMuon = false;
-  // bool pass_trackerMuon = false;
-  bool pass_chi2ndf = false;
-  bool pass_chamberHit = false;
-  bool pass_matchedStations = false;
-  bool pass_dxy = false;
-  bool pass_dz = false;
-  bool pass_pixelHits = false;
-  bool pass_trackLayers = false;
-  bool pass_iso = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue
-  Float_t zero = 0.0; 
-  Float_t muPhoPU = 999.9;
-  Float_t tightIso_combinedRelative = 999.9;
-  for(int i = 0; i < nMu; i++) 
+ std::vector<int> elelist;
+ // veto loose medium tight heep hlt
+
+ for(int i = 0; i < nEle; i++) 
+ {    
+
+  Float_t electronPt = getElectronPt(i,sysbinname);
+  bool pass_kin = electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) ;
+
+  bool pass_bit = eleIDbit->at(i) >> bitnr & 0x1 == 1;      
+
+  if( pass_bit && pass_kin )
   {
-    pass_globalMuon = true;  //muIsGlobalMuon->at(i);
-    pass_PFMuon =     true;  // muIsPFMuon->at(i);
-    // pass_trackerMuon = muIsTrackerMuon->at(i);
-    pass_chi2ndf = muChi2NDF->at(i) < 10.0;
-    pass_chamberHit = muMuonHits->at(i) > 0; 
-    pass_matchedStations = muStations->at(i) > 1; 
-    pass_dxy = fabs(muInnerD0->at(i)) < 0.2; 
-    pass_dz = fabs(muInnerDz->at(i)) < 0.5; 
-    pass_pixelHits = muPixelHits->at(i) > 0; 
-    pass_trackLayers = muTrkLayers->at(i) > 5; 
-
-    muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-    tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-    pass_iso = tightIso_combinedRelative < 0.15;
-    //Muon passes Tight Muon ID
-    if(pass_globalMuon && pass_PFMuon && pass_chi2ndf && pass_chamberHit && pass_matchedStations && pass_dxy && pass_dz && pass_pixelHits && pass_trackLayers)
-    {    
-      //Muon passes pt cut 
-      Float_t muonPt = getMuonPt(i,sysbinname);
-      if(muonPt > muPtCut && ( fabs(muEta->at(i)) > muEtaCut ) )
-      {    
-        ////Muon does not overlap photon
-        //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-        //{    
-          mu_cands.push_back(i);
-        //}    
-      }    
-    }    
-  }
-  return mu_cands;
+   // check overlaps
+   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+   //  {    
+   //  }
+   elelist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over muons
+ return elelist;
 }
 
 
-//-------------------------electron_passLooseID
-std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
-{
-  //bool veto_passed = true; //pass veto if no good electron found 
-   ///    //  eleIDbit
-   /// 
-   /// 689     bool isPassVeto  = (*veto_id_decisions)[el];
-   /// 690     if (isPassVeto) setbit(tmpeleIDbit, 0);
-   /// 691 
-   /// 692     bool isPassLoose  = (*loose_id_decisions)[el];
-   /// 693     if (isPassLoose) setbit(tmpeleIDbit, 1);
-   /// 694 
-   /// 695     bool isPassMedium = (*medium_id_decisions)[el];
-   /// 696     if (isPassMedium) setbit(tmpeleIDbit, 2);
-   /// 697 
-   /// 698     bool isPassTight  = (*tight_id_decisions)[el];
-   /// 699     if (isPassTight) setbit(tmpeleIDbit, 3);
-   /// 700 
-   /// 701     bool isPassHEEP = (*heep_id_decisions)[el];
-   /// 702     if (isPassHEEP) setbit(tmpeleIDbit, 4);
-   /// 703 
-   /// 704     bool isPassHLT = (*hlt_id_decisions)[el];
-   /// 705     if (isPassHLT) setbit(tmpeleIDbit, 5);
-   /// 
-   /// 
-   /// 
-   ///  root [7] std::bitset<6>(63).to_string()
-   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
-   ///  root [8] std::bitset<6>(47).to_string()
-   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
-
-  std::vector<int> elelist;
-
-  bool pass_SigmaIEtaIEtaFull5x5 = false;
-  bool pass_dEtaIn = false;
-  bool pass_dPhiIn = false;
-  bool pass_HoverE = false;
-  bool pass_iso = false;
-  bool pass_ooEmooP = false;
-  bool pass_d0 = false;
-  bool pass_dz = false;
-  bool pass_missingHits = false;
-  bool pass_convVeto = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue   
-  Float_t EA = 0.0;
-  Float_t zero = 0.0;
-  Float_t EAcorrIso = 999.9;
-  for(int i = 0; i < nEle; i++)
-    {
-      //Make sure these get reset for every electron  
-      pass_SigmaIEtaIEtaFull5x5 = false;
-      pass_dEtaIn = false;
-      pass_dPhiIn = false;
-      pass_HoverE = false;
-      pass_iso = false;
-      pass_ooEmooP = false;
-      pass_d0 = false;
-      pass_dz = false;
-      pass_missingHits = false;
-      pass_convVeto = false;
-      //Find EA for corrected relative iso.  
-      if(abs(eleSCEta->at(i)) <= 1.0)
-        EA = 0.1752;
-      else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-        EA = 0.1862;
-      else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-        EA = 0.1411;
-      else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-        EA = 0.1534;
-      else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-        EA = 0.1903;
-      else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-        EA = 0.2243;
-      else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-        EA = 0.2687;
-      EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-
-      if(abs(eleSCEta->at(i)) <= 1.479)
-        {    
-          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0103;
-          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.0105;
-          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.115;
-          pass_HoverE = eleHoverE->at(i) < 0.104;
-          pass_iso = EAcorrIso < 0.0893;
-          pass_ooEmooP = eleEoverPInv->at(i) < 0.102;
-          pass_d0 = abs(eleD0->at(i)) < 0.0261;
-          pass_dz = abs(eleDz->at(i)) < 0.41;
-          pass_missingHits = eleMissHits->at(i) <= 2;
-          pass_convVeto = eleConvVeto->at(i) == 1;
-        }     
-      else if(1.479 < abs(eleSCEta->at(i)) < 2.5) 
-        {    
-          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0301;
-          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00814;
-          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.182;
-          pass_HoverE = eleHoverE->at(i) < 0.0897;
-          pass_iso = EAcorrIso < 0.121;
-          pass_ooEmooP = eleEoverPInv->at(i) < 0.126;
-          pass_d0 = abs(eleD0->at(i)) < 0.118;
-          pass_dz = abs(eleDz->at(i)) < 0.822;
-          pass_missingHits = eleMissHits->at(i) <= 1;
-          pass_convVeto = eleConvVeto->at(i) == 1;
-        }     
-
-      //Electron passes Loose Electron ID cuts 
-      if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)    
-        {    
-            //Electron passes pt cut 
-            Float_t electronPt = getElectronPt(i,sysbinname);
-            if(electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) )
-            {    
-              ////Electron does not overlap photon 
-              //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-              //  {    
-                  elelist.push_back(i);
-              //  }     
-            }     
-        }     
-    }     
-  return elelist;
-}
-
-//-------------------------electron_passTightID
-std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double eleEtaCut, TString sysbinname)
-{
-
-  std::vector<int> ele_cands;
-  ele_cands.clear();
-
-  bool pass_SigmaIEtaIEtaFull5x5 = false;
-  bool pass_dEtaIn = false;
-  bool pass_dPhiIn = false;
-  bool pass_HoverE = false;
-  bool pass_iso = false;
-  bool pass_ooEmooP = false;
-  bool pass_d0 = false;
-  bool pass_dz = false;
-  bool pass_missingHits = false;
-  bool pass_convVeto = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue
-  Float_t EA = 0.0;
-  Float_t zero = 0.0;
-  Float_t EAcorrIso = 999.9;
-  for(int i = 0; i < nEle; i++)
-  {
-    //Make sure these get reset for every electron
-    pass_SigmaIEtaIEtaFull5x5 = false;
-    pass_dEtaIn = false;
-    pass_dPhiIn = false;
-    pass_HoverE = false;
-    pass_iso = false;
-    pass_ooEmooP = false;
-    pass_d0 = false;
-    pass_dz = false;
-    pass_missingHits = false;
-    pass_convVeto = false;
-    //Find EA for corrected relative iso.
-    if(abs(eleSCEta->at(i)) <= 1.0)
-      EA = 0.1752;
-    else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-      EA = 0.1862;
-    else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-      EA = 0.1411;
-    else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-      EA = 0.1534;
-    else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-      EA = 0.1903;
-    else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-      EA = 0.2243;
-    else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-      EA = 0.2687;
-    EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-
-    if(abs(eleSCEta->at(i)) <= 1.479)
-    {
-      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0101;
-      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00926;
-      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0336;
-      pass_HoverE = eleHoverE->at(i) < 0.0597;
-      pass_iso = EAcorrIso < 0.0354;
-      pass_ooEmooP = eleEoverPInv->at(i) < 0.012;
-      pass_d0 = abs(eleD0->at(i)) < 0.0111;
-      pass_dz = abs(eleDz->at(i)) < 0.0466;
-      pass_missingHits = eleMissHits->at(i) <= 2;
-      pass_convVeto = eleConvVeto->at(i) == 1;
-    }
-    else if(1.479 < abs(eleSCEta->at(i)) < 2.5)
-    {
-      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0279;
-      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00724;
-      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0918;
-      pass_HoverE = eleHoverE->at(i) < 0.0615;
-      pass_iso = EAcorrIso < 0.0646;
-      pass_ooEmooP = eleEoverPInv->at(i) < 0.00999;
-      pass_d0 = abs(eleD0->at(i)) < 0.0351;
-      pass_dz = abs(eleDz->at(i)) < 0.417;
-      pass_missingHits = eleMissHits->at(i) <= 1;
-      pass_convVeto = eleConvVeto->at(i) == 1;
-    }
-      //Electron passes Loose Electron ID cuts
-    if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)
-    {
-      //Electron passes pt cut 
-      Float_t electronPt = getElectronPt(i,sysbinname);
-      if(electronPt > elePtCut && ( fabs(elePt->at(i)) < eleEtaCut ) )
-      {
-        ////Electron does not overlap photon
-        //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5)
-        //{
-          ele_cands.push_back(i);
-        //}
-      }
-    }
-  }
-  return ele_cands;
-}
+////-------------------------electron_passLooseID
+//std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
+//{
+//  //bool veto_passed = true; //pass veto if no good electron found 
+//   ///    //  eleIDbit
+//   /// 
+//   /// 689     bool isPassVeto  = (*veto_id_decisions)[el];
+//   /// 690     if (isPassVeto) setbit(tmpeleIDbit, 0);
+//   /// 691 
+//   /// 692     bool isPassLoose  = (*loose_id_decisions)[el];
+//   /// 693     if (isPassLoose) setbit(tmpeleIDbit, 1);
+//   /// 694 
+//   /// 695     bool isPassMedium = (*medium_id_decisions)[el];
+//   /// 696     if (isPassMedium) setbit(tmpeleIDbit, 2);
+//   /// 697 
+//   /// 698     bool isPassTight  = (*tight_id_decisions)[el];
+//   /// 699     if (isPassTight) setbit(tmpeleIDbit, 3);
+//   /// 700 
+//   /// 701     bool isPassHEEP = (*heep_id_decisions)[el];
+//   /// 702     if (isPassHEEP) setbit(tmpeleIDbit, 4);
+//   /// 703 
+//   /// 704     bool isPassHLT = (*hlt_id_decisions)[el];
+//   /// 705     if (isPassHLT) setbit(tmpeleIDbit, 5);
+//   /// 
+//   /// 
+//   /// 
+//   ///  root [7] std::bitset<6>(63).to_string()
+//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
+//   ///  root [8] std::bitset<6>(47).to_string()
+//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
+//
+//
+//
+//  std::vector<int> elelist;
+//
+//
+//  bool pass_SigmaIEtaIEtaFull5x5 = false;
+//  bool pass_dEtaIn = false;
+//  bool pass_dPhiIn = false;
+//  bool pass_HoverE = false;
+//  bool pass_iso = false;
+//  bool pass_ooEmooP = false;
+//  bool pass_d0 = false;
+//  bool pass_dz = false;
+//  bool pass_missingHits = false;
+//  bool pass_convVeto = false;
+//  //Explicitly stating types to avoid a TMath::Max conversion issue   
+//  Float_t EA = 0.0;
+//  Float_t zero = 0.0;
+//  Float_t EAcorrIso = 999.9;
+//  for(int i = 0; i < nEle; i++)
+//    {
+//      //Make sure these get reset for every electron  
+//      pass_SigmaIEtaIEtaFull5x5 = false;
+//      pass_dEtaIn = false;
+//      pass_dPhiIn = false;
+//      pass_HoverE = false;
+//      pass_iso = false;
+//      pass_ooEmooP = false;
+//      pass_d0 = false;
+//      pass_dz = false;
+//      pass_missingHits = false;
+//      pass_convVeto = false;
+//      //Find EA for corrected relative iso.  
+//      if(abs(eleSCEta->at(i)) <= 1.0)
+//        EA = 0.1752;
+//      else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
+//        EA = 0.1862;
+//      else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
+//        EA = 0.1411;
+//      else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
+//        EA = 0.1534;
+//      else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
+//        EA = 0.1903;
+//      else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
+//        EA = 0.2243;
+//      else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
+//        EA = 0.2687;
+//      EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
+//
+//      if(abs(eleSCEta->at(i)) <= 1.479)
+//        {    
+//          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0103;
+//          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.0105;
+//          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.115;
+//          pass_HoverE = eleHoverE->at(i) < 0.104;
+//          pass_iso = EAcorrIso < 0.0893;
+//          pass_ooEmooP = eleEoverPInv->at(i) < 0.102;
+//          pass_d0 = abs(eleD0->at(i)) < 0.0261;
+//          pass_dz = abs(eleDz->at(i)) < 0.41;
+//          pass_missingHits = eleMissHits->at(i) <= 2;
+//          pass_convVeto = eleConvVeto->at(i) == 1;
+//        }     
+//      else if(1.479 < abs(eleSCEta->at(i)) < 2.5) 
+//        {    
+//          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0301;
+//          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00814;
+//          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.182;
+//          pass_HoverE = eleHoverE->at(i) < 0.0897;
+//          pass_iso = EAcorrIso < 0.121;
+//          pass_ooEmooP = eleEoverPInv->at(i) < 0.126;
+//          pass_d0 = abs(eleD0->at(i)) < 0.118;
+//          pass_dz = abs(eleDz->at(i)) < 0.822;
+//          pass_missingHits = eleMissHits->at(i) <= 1;
+//          pass_convVeto = eleConvVeto->at(i) == 1;
+//        }     
+//
+//      //Electron passes Loose Electron ID cuts 
+//      if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)    
+//        {    
+//            //Electron passes pt cut 
+//            Float_t electronPt = getElectronPt(i,sysbinname);
+//            if(electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) )
+//            {    
+//              ////Electron does not overlap photon 
+//              //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+//              //  {    
+//                  elelist.push_back(i);
+//              //  }     
+//            }     
+//        }     
+//    }     
+//  return elelist;
+//}
+//
+////-------------------------electron_passTightID
+//std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double eleEtaCut, TString sysbinname)
+//{
+//
+//  std::vector<int> ele_cands;
+//  ele_cands.clear();
+//
+//  bool pass_SigmaIEtaIEtaFull5x5 = false;
+//  bool pass_dEtaIn = false;
+//  bool pass_dPhiIn = false;
+//  bool pass_HoverE = false;
+//  bool pass_iso = false;
+//  bool pass_ooEmooP = false;
+//  bool pass_d0 = false;
+//  bool pass_dz = false;
+//  bool pass_missingHits = false;
+//  bool pass_convVeto = false;
+//  //Explicitly stating types to avoid a TMath::Max conversion issue
+//  Float_t EA = 0.0;
+//  Float_t zero = 0.0;
+//  Float_t EAcorrIso = 999.9;
+//  for(int i = 0; i < nEle; i++)
+//  {
+//    //Make sure these get reset for every electron
+//    pass_SigmaIEtaIEtaFull5x5 = false;
+//    pass_dEtaIn = false;
+//    pass_dPhiIn = false;
+//    pass_HoverE = false;
+//    pass_iso = false;
+//    pass_ooEmooP = false;
+//    pass_d0 = false;
+//    pass_dz = false;
+//    pass_missingHits = false;
+//    pass_convVeto = false;
+//    //Find EA for corrected relative iso.
+//    if(abs(eleSCEta->at(i)) <= 1.0)
+//      EA = 0.1752;
+//    else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
+//      EA = 0.1862;
+//    else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
+//      EA = 0.1411;
+//    else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
+//      EA = 0.1534;
+//    else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
+//      EA = 0.1903;
+//    else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
+//      EA = 0.2243;
+//    else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
+//      EA = 0.2687;
+//    EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
+//
+//    if(abs(eleSCEta->at(i)) <= 1.479)
+//    {
+//      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0101;
+//      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00926;
+//      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0336;
+//      pass_HoverE = eleHoverE->at(i) < 0.0597;
+//      pass_iso = EAcorrIso < 0.0354;
+//      pass_ooEmooP = eleEoverPInv->at(i) < 0.012;
+//      pass_d0 = abs(eleD0->at(i)) < 0.0111;
+//      pass_dz = abs(eleDz->at(i)) < 0.0466;
+//      pass_missingHits = eleMissHits->at(i) <= 2;
+//      pass_convVeto = eleConvVeto->at(i) == 1;
+//    }
+//    else if(1.479 < abs(eleSCEta->at(i)) < 2.5)
+//    {
+//      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0279;
+//      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00724;
+//      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0918;
+//      pass_HoverE = eleHoverE->at(i) < 0.0615;
+//      pass_iso = EAcorrIso < 0.0646;
+//      pass_ooEmooP = eleEoverPInv->at(i) < 0.00999;
+//      pass_d0 = abs(eleD0->at(i)) < 0.0351;
+//      pass_dz = abs(eleDz->at(i)) < 0.417;
+//      pass_missingHits = eleMissHits->at(i) <= 1;
+//      pass_convVeto = eleConvVeto->at(i) == 1;
+//    }
+//      //Electron passes Loose Electron ID cuts
+//    if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)
+//    {
+//      //Electron passes pt cut 
+//      Float_t electronPt = getElectronPt(i,sysbinname);
+//      if(electronPt > elePtCut && ( fabs(elePt->at(i)) < eleEtaCut ) )
+//      {
+//        ////Electron does not overlap photon
+//        //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5)
+//        //{
+//          ele_cands.push_back(i);
+//        //}
+//      }
+//    }
+//  }
+//  return ele_cands;
+//}
 
 //-------------------------jet_passID
 std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, TString sysbinname) {
@@ -1145,14 +1285,14 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
     //   }
     // }
 
-    // check overlap with muons
-    for(int i=0; i<muon_list.size(); ++i){
-     int muindex = muon_list[i];
-     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
-      {
-       passOverlap=false;
-      }
-    }
+    //// check overlap with muons
+    //for(int i=0; i<muon_list.size(); ++i){
+    // int muindex = muon_list[i];
+    // if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
+    //  {
+    //   passOverlap=false;
+    //  }
+    //}
 
 
     //double deltar = 0.0 ;
@@ -1342,7 +1482,17 @@ void analyzer_signal::debug_printobjects(){
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
    printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+
+   printf(" muonid %d    %d %d %d %d %d \n",i
+         ,muIDbit->at(i) >> 0 & 0x1 
+         ,muIDbit->at(i) >> 1 & 0x1 
+         ,muIDbit->at(i) >> 2 & 0x1 
+         ,muIDbit->at(i) >> 3 & 0x1 
+         ,muIDbit->at(i) >> 4 & 0x1 
+         );       
   }
+
+
 
   printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
 
@@ -1365,3 +1515,50 @@ void analyzer_signal::debug_printobjects(){
   printf( " htall %.1f htjets %.1f\n", htall, htjets);
 
  }
+
+void analyzer_signal::debug_printmuons()
+{
+
+ printf( " Loose Mu\n" );
+ for(int i=0; i<muon_list_l.size(); ++i){
+  int muindex = muon_list_l[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+ printf( " Med Mu\n" );
+ for(int i=0; i<muon_list_m.size(); ++i){
+  int muindex = muon_list_m[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+ printf( " Tight Mu\n" );
+ for(int i=0; i<muon_list_t.size(); ++i){
+  int muindex = muon_list_t[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+}
+
+
+void analyzer_signal::debug_printelectrons()
+{
+
+ printf( " Loose Ele\n" );
+ for(int i=0; i<electron_list_l.size(); ++i){
+  int eleindex = electron_list_l[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+ printf( " Med Ele\n" );
+ for(int i=0; i<electron_list_m.size(); ++i){
+  int eleindex = electron_list_m[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+ printf( " Tight Ele\n" );
+ for(int i=0; i<electron_list_t.size(); ++i){
+  int eleindex = electron_list_t[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+}
