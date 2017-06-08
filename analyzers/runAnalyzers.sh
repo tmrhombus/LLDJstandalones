@@ -2,8 +2,8 @@
 
  #'DY50_5'                            
 for sample in \
- 'Test_mc'
- #'DY50'                              \
+ 'DY50'                              
+ #'Test_mc'                           \
  #'DY5to50_HT100to200'                \
  #'DY5to50_HT200to400'                \
  #'DY5to50_HT400to600'                \
@@ -32,14 +32,14 @@ for sample in \
 do
 
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d -m
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "../roots" -n 10 -a 1 -d -m
   #./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "../roots" -n 10 -a 1 -d -m
 
 done #for sample in DY50..
 
-#for sample in \
-# 'SingleElectron'  \
-# 'SingleMuon'      
-#do
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "../roots" -n 10 -a 1 -d
-#done # for datasample               
+for sample in \
+ 'SingleElectron'  \
+ 'SingleMuon'      
+do
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "../roots" -n 10 -a 1 -d
+done # for datasample               

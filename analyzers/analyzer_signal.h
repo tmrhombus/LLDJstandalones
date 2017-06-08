@@ -36,10 +36,12 @@ public :
   Double_t            EAneutral(Double_t eta);
   Double_t            EAphoton(Double_t eta);
 
- std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
- std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ //std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
  std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString sysbinname="");
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
@@ -47,6 +49,8 @@ public :
  Float_t          getMuonPt(int i, TString sysbinname);
 
  virtual void debug_printobjects();
+ virtual void debug_printmuons();
+ virtual void debug_printelectrons();
 
  // 2D Histograms 
  Bool_t        init2DHistograms();
@@ -66,7 +70,13 @@ public :
  // associated with object passing
  // some selection
  std::vector<int> photon_list;
+ std::vector<int> electron_list_l;
+ std::vector<int> electron_list_m;
+ std::vector<int> electron_list_t;
  std::vector<int> electron_list;
+ std::vector<int> muon_list_l ;
+ std::vector<int> muon_list_m ;
+ std::vector<int> muon_list_t ;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
 
