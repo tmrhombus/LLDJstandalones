@@ -27,6 +27,30 @@ ULong64_t   HLTPhoIsPrescaled_;
 ULong64_t   HLTJetIsPrescaled_;
 vector<int> phoPrescale_;
 
+ULong64_t   HLT_PFHT350PFMET100_;
+
+ULong64_t   HLT_Ele23Loose_;
+ULong64_t   HLT_Ele27Tight_;
+ULong64_t   HLT_Ele17Ele12_;
+ULong64_t   HLT_Ele23Ele12_;
+
+ULong64_t   HLT_IsoMu22_;
+ULong64_t   HLT_IsoTkMu22_;
+ULong64_t   HLT_Mu17Mu8_;
+ULong64_t   HLT_Mu17TkMu8_;
+
+ULong64_t   HLT_PFHT350PFMET100_isPS_;
+
+ULong64_t   HLT_Ele23Loose_isPS_;
+ULong64_t   HLT_Ele27Tight_isPS_;
+ULong64_t   HLT_Ele17Ele12_isPS_;
+ULong64_t   HLT_Ele23Ele12_isPS_;
+
+ULong64_t   HLT_IsoMu22_isPS_;
+ULong64_t   HLT_IsoTkMu22_isPS_;
+ULong64_t   HLT_Mu17Mu8_isPS_;
+ULong64_t   HLT_Mu17TkMu8_isPS_;
+
 void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
   tree->Branch("run",     &run_);
@@ -37,9 +61,9 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("nGoodVtx",             &nGoodVtx_);
   tree->Branch("nTrksPV",              &nTrksPV_);
   tree->Branch("isPVGood",             &isPVGood_);
-  tree->Branch("vtx",                  &vtx_); 
-  tree->Branch("vty",                  &vty_); 
-  tree->Branch("vtz",                  &vtz_); 
+  tree->Branch("vtx",                  &vtx_);
+  tree->Branch("vty",                  &vty_);
+  tree->Branch("vtz",                  &vtz_);
   tree->Branch("rho",                  &rho_);
   tree->Branch("rhoCentral",           &rhoCentral_);
   tree->Branch("HLTEleMuX",            &HLTEleMuX_);
@@ -48,7 +72,20 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLTEleMuXIsPrescaled", &HLTEleMuXIsPrescaled_);
   tree->Branch("HLTPhoIsPrescaled",    &HLTPhoIsPrescaled_);
   tree->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled_);
-  tree->Branch("phoPrescale",          &phoPrescale_); 
+  tree->Branch("phoPrescale",          &phoPrescale_);
+
+  tree->Branch("HLT_PFHT350PFMET100", &HLT_PFHT350PFMET100_);
+
+  tree->Branch("HLT_Ele23Loose", &HLT_Ele23Loose_) ;
+  tree->Branch("HLT_Ele27Tight", &HLT_Ele27Tight_) ;
+  tree->Branch("HLT_Ele17Ele12", &HLT_Ele17Ele12_) ;
+  tree->Branch("HLT_Ele23Ele12", &HLT_Ele23Ele12_) ;
+
+  tree->Branch("HLT_IsoMu22"  , &HLT_IsoMu22_)   ;
+  tree->Branch("HLT_IsoTkMu22", &HLT_IsoTkMu22_) ;
+  tree->Branch("HLT_Mu17Mu8"  , &HLT_Mu17Mu8_)   ;
+  tree->Branch("HLT_Mu17TkMu8", &HLT_Mu17TkMu8_) ;
+
 }
 
 void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es) {
@@ -71,31 +108,32 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
-  
+
   nVtx_     = -1;
   nGoodVtx_ = -1;
-  if (vtxHandle.isValid()) {
-    nVtx_     = 0;
-    nGoodVtx_ = 0;    
+  if (vtxHandle.isValid())
+  {
+   nVtx_     = 0;
+   nGoodVtx_ = 0;
 
-    for (vector<reco::Vertex>::const_iterator v = vtxHandle->begin(); v != vtxHandle->end(); ++v) {
+   for (vector<reco::Vertex>::const_iterator v = vtxHandle->begin(); v != vtxHandle->end(); ++v)
+   {
+    if (nVtx_ == 0)
+    {
+     nTrksPV_ = v->nTracks();
+     vtx_     = v->x();
+     vty_     = v->y();
+     vtz_     = v->z();
 
-      if (nVtx_ == 0) {
-	nTrksPV_ = v->nTracks();
-	vtx_     = v->x();
-	vty_     = v->y();
-	vtz_     = v->z();
-
-	isPVGood_ = false;
-	if (!v->isFake() && v->ndof() > 4. && fabs(v->z()) <= 24. && fabs(v->position().rho()) <= 2.) isPVGood_ = true;
-      }
-
-      if (!v->isFake() && v->ndof() > 4. && fabs(v->z()) <= 24. && fabs(v->position().rho()) <= 2.) nGoodVtx_++;
-      nVtx_++;
-
+     isPVGood_ = false;
+     if (!v->isFake() && v->ndof() > 4. && fabs(v->z()) <= 24. && fabs(v->position().rho()) <= 2.) isPVGood_ = true;
     }
-  } else
-    edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
+
+    if (!v->isFake() && v->ndof() > 4. && fabs(v->z()) <= 24. && fabs(v->position().rho()) <= 2.) nGoodVtx_++;
+    nVtx_++;
+   }
+  }
+  else {edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";}
 
   // HLT treatment
   HLTEleMuX_            = 0;
@@ -104,6 +142,18 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   HLTEleMuXIsPrescaled_ = 0;
   HLTPhoIsPrescaled_    = 0;
   HLTJetIsPrescaled_    = 0;
+
+  HLT_PFHT350PFMET100_  = 0;
+
+  HLTEle23Loose_        = 0;
+  HLTEle27Tight_        = 0;
+  HLTEle17Ele12_        = 0;
+  HLTEle23Ele12_        = 0;
+
+  HLTIsoMu22_           = 0;
+  HLTIsoTkMu22_         = 0;
+  HLTMu17Mu8_           = 0;
+  HLTMu17TkMu8_         = 0;
 
   edm::Handle<edm::TriggerResults> trgResultsHandle;
   e.getByToken(trgResultsLabel_, trgResultsHandle);
@@ -118,18 +168,105 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     const string &name = trgNames.triggerName(i);
 
     // HLT name => bit correspondence
-    // Electron or Muon or Cross triggers
-    int bitEleMuX = -1;
-    if      (name.find("HLT_Ele25_eta2p1_WPTight_Gsf_v")                      != string::npos) bitEleMuX =  0;
-    else if (name.find("HLT_Ele27_eta2p1_WPTight_Gsf_v")                      != string::npos) bitEleMuX =  1; 
-    else if (name.find("HLT_Ele27_eta2p1_WPLoose_Gsf_v")                      != string::npos) bitEleMuX =  2;
-    else if (name.find("HLT_Ele32_eta2p1_WPTight_Gsf_v")                      != string::npos) bitEleMuX =  3; 
-    else if (name.find("HLT_Ele27_WPTight_Gsf_v")                             != string::npos) bitEleMuX =  4; 
-    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")         != string::npos) bitEleMuX =  5; 
-    else if (name.find("HLT_Ele16_Ele12_Ele8_CaloIdL_TrackIdL_v")             != string::npos) bitEleMuX =  6; 
-    else if (name.find("HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v")           != string::npos) bitEleMuX =  7; 
-    else if (name.find("HLT_Mu17_Photon30_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  8; 
-    else if (name.find("HLT_Mu17_Photon35_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  9; 
+    // PF HT 350 MET 100
+    int bitPFHT350PFMET100 = -1;
+    if      (name.find("HLT_PFHT350_PFMET100_v1")              != string::npos) bitPFHT350PFMET100 = 0 ;
+    else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v1") != string::npos) bitPFHT350PFMET100 = 1 ;
+    else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v2") != string::npos) bitPFHT350PFMET100 = 2 ;
+
+    // Single Electron
+    int bitEle23Loose = -1;
+    if      (name.find("HLT_Ele23_WPLoose_Gsf_v1")  != string::npos) bitEle23Loose = 0  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v2")  != string::npos) bitEle23Loose = 1  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v3")  != string::npos) bitEle23Loose = 2  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v4")  != string::npos) bitEle23Loose = 3  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v5")  != string::npos) bitEle23Loose = 4  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v6")  != string::npos) bitEle23Loose = 5  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v7")  != string::npos) bitEle23Loose = 6  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v8")  != string::npos) bitEle23Loose = 7  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v9")  != string::npos) bitEle23Loose = 8  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v10") != string::npos) bitEle23Loose = 9  ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v11") != string::npos) bitEle23Loose = 10 ;
+    else if (name.find("HLT_Ele23_WPLoose_Gsf_v12") != string::npos) bitEle23Loose = 11 ;
+
+    int bitEle27Tight = -1;
+    if      (name.find("HLT_Ele27_WPTight_Gsf_v1")  != string::npos) bitEle27Tight = 0 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v2")  != string::npos) bitEle27Tight = 1 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v3")  != string::npos) bitEle27Tight = 2 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v4")  != string::npos) bitEle27Tight = 3 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v5")  != string::npos) bitEle27Tight = 4 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v6")  != string::npos) bitEle27Tight = 5 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v7")  != string::npos) bitEle27Tight = 6 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v8")  != string::npos) bitEle27Tight = 7 ;
+    else if (name.find("HLT_Ele27_WPTight_Gsf_v9")  != string::npos) bitEle27Tight = 8 ;
+
+    // Double Electron
+    int bitEle17Ele12 = -1;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle17Ele12 = 0 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2")  != string::npos) bitEle17Ele12 = 1 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3")  != string::npos) bitEle17Ele12 = 2 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4")  != string::npos) bitEle17Ele12 = 3 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5")  != string::npos) bitEle17Ele12 = 4 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6")  != string::npos) bitEle17Ele12 = 5 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7")  != string::npos) bitEle17Ele12 = 6 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8")  != string::npos) bitEle17Ele12 = 7 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9")  != string::npos) bitEle17Ele12 = 8 ;
+    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10") != string::npos) bitEle17Ele12 = 9 ;
+
+    int bitEle23Ele12 = -1;
+    if      (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle23Ele12 = 0 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2")  != string::npos) bitEle23Ele12 = 1 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3")  != string::npos) bitEle23Ele12 = 2 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4")  != string::npos) bitEle23Ele12 = 3 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5")  != string::npos) bitEle23Ele12 = 4 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6")  != string::npos) bitEle23Ele12 = 5 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7")  != string::npos) bitEle23Ele12 = 6 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8")  != string::npos) bitEle23Ele12 = 7 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9")  != string::npos) bitEle23Ele12 = 8 ;
+    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10") != string::npos) bitEle23Ele12 = 9 ;
+
+    // Single Iso Mu
+    int bitIsoMu22   = -1;
+    if      (name.find("HLT_IsoMu22_v1") != string::npos) bitIsoMu22 = 0 ;
+    else if (name.find("HLT_IsoMu22_v2") != string::npos) bitIsoMu22 = 1 ;
+    else if (name.find("HLT_IsoMu22_v3") != string::npos) bitIsoMu22 = 2 ;
+    else if (name.find("HLT_IsoMu22_v4") != string::npos) bitIsoMu22 = 3 ;
+    else if (name.find("HLT_IsoMu22_v5") != string::npos) bitIsoMu22 = 4 ;
+    else if (name.find("HLT_IsoMu22_v6") != string::npos) bitIsoMu22 = 5 ;
+    else if (name.find("HLT_IsoMu22_v7") != string::npos) bitIsoMu22 = 6 ;
+
+    int bitIsoTkMu22 = -1;
+    if      (name.find("HLT_IsoTkMu22_v1")  != string::npos) bitIsoMu22 = 0 ;
+    else if (name.find("HLT_IsoTkMu22_v2")  != string::npos) bitIsoMu22 = 1 ;
+    else if (name.find("HLT_IsoTkMu22_v3")  != string::npos) bitIsoMu22 = 2 ;
+    else if (name.find("HLT_IsoTkMu22_v4")  != string::npos) bitIsoMu22 = 3 ;
+    else if (name.find("HLT_IsoTkMu22_v5")  != string::npos) bitIsoMu22 = 4 ;
+    else if (name.find("HLT_IsoTkMu22_v6")  != string::npos) bitIsoMu22 = 5 ;
+    else if (name.find("HLT_IsoTkMu22_v7")  != string::npos) bitIsoMu22 = 6 ;
+    else if (name.find("HLT_IsoTkMu22_v8")  != string::npos) bitIsoMu22 = 7 ;
+    else if (name.find("HLT_IsoTkMu22_v9")  != string::npos) bitIsoMu22 = 8 ;
+    else if (name.find("HLT_IsoTkMu22_v10") != string::npos) bitIsoMu22 = 9 ;
+
+    // Double Iso Mu
+    int bitMu17Mu8   = -1;
+    if      (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1") != string:npos) bitMu17Mu8 = 0 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2") != string:npos) bitMu17Mu8 = 1 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3") != string:npos) bitMu17Mu8 = 2 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4") != string:npos) bitMu17Mu8 = 3 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5") != string:npos) bitMu17Mu8 = 4 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6") != string:npos) bitMu17Mu8 = 5 ;
+
+    int bitMu17TkMu8 = -1;
+    if      (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1") != string:npos) bitMu17Mu8 = 0 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2") != string:npos) bitMu17Mu8 = 1 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3") != string:npos) bitMu17Mu8 = 2 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4") != string:npos) bitMu17Mu8 = 3 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5") != string:npos) bitMu17Mu8 = 4 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6") != string:npos) bitMu17Mu8 = 5 ;                   
+
+
+    // Old stuff
+    else if (name.find("HLT_Mu17_Photon35_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  9;
     else if (name.find("HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_v")             != string::npos) bitEleMuX = 10;
     else if (name.find("HLT_DoubleEle33_CaloIdL_MW_v")                        != string::npos) bitEleMuX = 11;
     else if (name.find("HLT_DoubleEle37_Ele27_CaloIdL_GsfTrkIdVL_v")          != string::npos) bitEleMuX = 12;
@@ -155,9 +292,9 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v")                != string::npos) bitEleMuX = 32;
     else if (name.find("HLT_Ele17_Ele12_CaloId_TrackId_Iso_DZ_v")             != string::npos) bitEleMuX = 33;
     else if (name.find("HLT_DoubleEle33_CaloId_GsfTrackIdVL_v")               != string::npos) bitEleMuX = 34;
-    else if (name.find("HLT_Ele27_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 35; 
-    else if (name.find("HLT_Ele30_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 36; 
-    else if (name.find("HLT_Ele32_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 37; 
+    else if (name.find("HLT_Ele27_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 35;
+    else if (name.find("HLT_Ele30_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 36;
+    else if (name.find("HLT_Ele32_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 37;
     else if (name.find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v")                     != string::npos) bitEleMuX = 38;
     else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_L1JetTauSeeded_v") != string::npos) bitEleMuX = 39;
     else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v")            != string::npos) bitEleMuX = 40;
@@ -165,24 +302,19 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     // Photon triggers
     int bitPho    = -1;
     if      (name.find("HLT_Photon22_v")                    != string::npos) bitPho =  0; //bit0(lowest)
-    else if (name.find("HLT_Photon30_v")                    != string::npos) bitPho =  1; 
-    else if (name.find("HLT_Photon36_v")                    != string::npos) bitPho =  2; 
-    else if (name.find("HLT_Photon50_v")                    != string::npos) bitPho =  3; 
-    else if (name.find("HLT_Photon75_v")                    != string::npos) bitPho =  4; 
-    else if (name.find("HLT_Photon90_v")                    != string::npos) bitPho =  5; 
-    else if (name.find("HLT_Photon120_v")                   != string::npos) bitPho =  6; 
-    else if (name.find("HLT_Photon175_v")                   != string::npos) bitPho =  7; 
-    else if (name.find("HLT_Photon250_NoHE_v")              != string::npos) bitPho =  8; 
-    else if (name.find("HLT_Photon300_NoHE_v")              != string::npos) bitPho =  9; 
-    else if (name.find("HLT_Photon500_v")                   != string::npos) bitPho = 10; 
-    else if (name.find("HLT_Photon600_v")                   != string::npos) bitPho = 11; 
-    else if (name.find("HLT_Photon165_HE10_v")              != string::npos) bitPho = 12; 
-    else if (name.find("HLT_Photon42_R9Id85_OR_CaloId24b40e_Iso50T80L_Photon25_AND_HE10_R9Id65_Eta2_Mass15_v") != string::npos) bitPho = 13; // exist
-    else if (name.find("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90_v")                             != string::npos) bitPho = 14; // used
-    else if (name.find("HLT_Diphoton30_18_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelSeedMatch_Mass70_v")        != string::npos) bitPho = 15; // exist
-    else if (name.find("HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v")        != string::npos) bitPho = 16; // used
-    else if (name.find("HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_DoublePixelVeto_Mass55_v")         != string::npos) bitPho = 17; // used
-    else if (name.find("HLT_Photon135_PFMET100_v")                          != string::npos) bitPho = 18; 
+    else if (name.find("HLT_Photon30_v")                    != string::npos) bitPho =  1;
+    else if (name.find("HLT_Photon36_v")                    != string::npos) bitPho =  2;
+    else if (name.find("HLT_Photon50_v")                    != string::npos) bitPho =  3;
+    else if (name.find("HLT_Photon75_v")                    != string::npos) bitPho =  4;
+    else if (name.find("HLT_Photon90_v")                    != string::npos) bitPho =  5;
+    else if (name.find("HLT_Photon120_v")                   != string::npos) bitPho =  6;
+    else if (name.find("HLT_Photon175_v")                   != string::npos) bitPho =  7;
+    else if (name.find("HLT_Photon250_NoHE_v")              != string::npos) bitPho =  8;
+    else if (name.find("HLT_Photon300_NoHE_v")              != string::npos) bitPho =  9;
+    else if (name.find("HLT_Photon500_v")                   != string::npos) bitPho = 10;
+    else if (name.find("HLT_Photon600_v")                   != string::npos) bitPho = 11;
+    else if (name.find("HLT_Photon165_HE10_v")              != string::npos) bitPho = 12;
+    else if (name.find("HLT_Photon135_PFMET100_v")                          != string::npos) bitPho = 18;
     else if (name.find("HLT_Photon120_R9Id90_HE10_Iso40_EBOnly_PFMET40_v")  != string::npos) bitPho = 19;
     else if (name.find("HLT_Photon22_R9Id90_HE10_Iso40_EBOnly_VBF_v")       != string::npos) bitPho = 20;
     else if (name.find("HLT_Photon90_CaloIdL_PFHT600_v")                    != string::npos) bitPho = 21;
@@ -210,7 +342,7 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_PFJet260_v")                                             != string::npos) bitJet = 15; 
     else if (name.find("HLT_PFJet320_v")                                             != string::npos) bitJet = 16; 
     else if (name.find("HLT_PFJet400_v")                                             != string::npos) bitJet = 17; 
-    else if (name.find("HLT_PFJet450_v")                                             != string::npos) bitJet = 18;     
+    else if (name.find("HLT_PFJet450_v")                                             != string::npos) bitJet = 18;    
     else if (name.find("HLT_PFJet500_v")                                             != string::npos) bitJet = 19; 
     else if (name.find("HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v")                       != string::npos) bitJet = 20; 
     else if (name.find("HLT_AK8PFJet360_TrimMass30_v")                               != string::npos) bitJet = 21;
@@ -229,21 +361,61 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_PFHT750_4JetPt50_v")                                     != string::npos) bitJet = 34;
     else if (name.find("HLT_PFHT750_4JetPt70_v")                                     != string::npos) bitJet = 35;
     else if (name.find("HLT_PFHT800_4JetPt50_v")                                     != string::npos) bitJet = 36;
-    
+
     // indicates prescaling and whether trigger was fired or not
     ULong64_t isPrescaled = (hltCfg.prescaleValue(0, name)!=1) ? 1 : 0;
     ULong64_t isFired     = (trgResultsHandle->accept(i)) ? 1 : 0;
+
+    if ( bitPFHT350PFMET100 >= 0 ){
+     HLT_PFHT350PFMET100_       |= (isFired     << bitPFHT350PFMET100 );
+     HLT_PFHT350PFMET100_isPS_  |= (isPrescaled << bitPFHT350PFMET100 );
+    }
+
+    if ( bitEle23Loose      >= 0 ){
+     HLT_Ele23Loose_            |= (isFired     << bitEle23Loose      );
+     HLT_Ele23Loose_isPS_       |= (isPrescaled << bitEle23Loose      );
+    }
+    if ( bitEle27Tight      >= 0 ){     
+     HLT_Ele27Tight_            |= (isFired     << bitEle27Tight      );
+     HLT_Ele27Tight_isPS_       |= (isPrescaled << bitEle27Tight      );
+    }
+    if ( bitEle17Ele12      >= 0 ){     
+     HLT_Ele17Ele12_            |= (isFired     << bitEle17Ele12      );
+     HLT_Ele17Ele12_isPS_       |= (isPrescaled << bitEle17Ele12      );
+    }
+    if ( bitEle23Ele12      >= 0 ){     
+     HLT_Ele23Ele12_            |= (isFired     << bitEle23Ele12      );
+     HLT_Ele23Ele12_isPS_       |= (isPrescaled << bitEle23Ele12      );
+    }
+
+    if ( bitIsoMu22         >= 0 ){   
+     HLT_IsoMu22_               |= (isFired     << bitIsoMu22         );
+     HLT_IsoMu22_isPS_          |= (isPrescaled << bitIsoMu22         );
+    }
+    if ( bitIsoTkMu22       >= 0 ){     
+     HLT_IsoTkMu22_             |= (isFired     << bitIsoTkMu22       );
+     HLT_IsoTkMu22_isPS_        |= (isPrescaled << bitIsoTkMu22       );
+    }
+    if ( bitMu17Mu8         >= 0 ){   
+     HLT_Mu17Mu8_               |= (isFired     << bitMu17Mu8         );
+     HLT_Mu17Mu8_isPS_          |= (isPrescaled << bitMu17Mu8         );
+    }
+    if ( bitMu17TkMu8       >= 0 ){     
+     HLT_Mu17TkMu8_             |= (isFired     << bitMu17TkMu8       );
+     HLT_Mu17TkMu8_isPS_        |= (isPrescaled << bitMu17TkMu8       );
+    }
+
 
     if (bitEleMuX >= 0) {
       HLTEleMuX_            |= (isFired << bitEleMuX);
       HLTEleMuXIsPrescaled_ |= (isPrescaled << bitEleMuX);
     }
-
+    
     if (bitPho >= 0) {
       HLTPho_            |= (isFired << bitPho);
       HLTPhoIsPrescaled_ |= (isPrescaled << bitPho);
     }
-
+    
     if (bitJet >= 0) {
       HLTJet_            |= (isFired << bitJet);
       HLTJetIsPrescaled_ |= (isPrescaled << bitJet);
