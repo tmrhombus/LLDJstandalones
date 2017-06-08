@@ -145,15 +145,15 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
   HLT_PFHT350PFMET100_  = 0;
 
-  HLTEle23Loose_        = 0;
-  HLTEle27Tight_        = 0;
-  HLTEle17Ele12_        = 0;
-  HLTEle23Ele12_        = 0;
+  HLT_Ele23Loose_        = 0;
+  HLT_Ele27Tight_        = 0;
+  HLT_Ele17Ele12_        = 0;
+  HLT_Ele23Ele12_        = 0;
 
-  HLTIsoMu22_           = 0;
-  HLTIsoTkMu22_         = 0;
-  HLTMu17Mu8_           = 0;
-  HLTMu17TkMu8_         = 0;
+  HLT_IsoMu22_           = 0;
+  HLT_IsoTkMu22_         = 0;
+  HLT_Mu17Mu8_           = 0;
+  HLT_Mu17TkMu8_         = 0;
 
   edm::Handle<edm::TriggerResults> trgResultsHandle;
   e.getByToken(trgResultsLabel_, trgResultsHandle);
@@ -202,7 +202,7 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
     // Double Electron
     int bitEle17Ele12 = -1;
-    else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle17Ele12 = 0 ;
+    if      (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle17Ele12 = 0 ;
     else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2")  != string::npos) bitEle17Ele12 = 1 ;
     else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3")  != string::npos) bitEle17Ele12 = 2 ;
     else if (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4")  != string::npos) bitEle17Ele12 = 3 ;
@@ -249,55 +249,55 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
     // Double Iso Mu
     int bitMu17Mu8   = -1;
-    if      (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1") != string:npos) bitMu17Mu8 = 0 ;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2") != string:npos) bitMu17Mu8 = 1 ;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3") != string:npos) bitMu17Mu8 = 2 ;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4") != string:npos) bitMu17Mu8 = 3 ;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5") != string:npos) bitMu17Mu8 = 4 ;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6") != string:npos) bitMu17Mu8 = 5 ;
+    if      (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1") != string::npos) bitMu17Mu8 = 0 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2") != string::npos) bitMu17Mu8 = 1 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3") != string::npos) bitMu17Mu8 = 2 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4") != string::npos) bitMu17Mu8 = 3 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5") != string::npos) bitMu17Mu8 = 4 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6") != string::npos) bitMu17Mu8 = 5 ;
 
     int bitMu17TkMu8 = -1;
-    if      (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1") != string:npos) bitMu17Mu8 = 0 ;                   
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2") != string:npos) bitMu17Mu8 = 1 ;                   
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3") != string:npos) bitMu17Mu8 = 2 ;                   
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4") != string:npos) bitMu17Mu8 = 3 ;                   
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5") != string:npos) bitMu17Mu8 = 4 ;                   
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6") != string:npos) bitMu17Mu8 = 5 ;                   
+    if      (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1") != string::npos) bitMu17Mu8 = 0 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2") != string::npos) bitMu17Mu8 = 1 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3") != string::npos) bitMu17Mu8 = 2 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4") != string::npos) bitMu17Mu8 = 3 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5") != string::npos) bitMu17Mu8 = 4 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6") != string::npos) bitMu17Mu8 = 5 ;                   
 
 
-    // Old stuff
-    else if (name.find("HLT_Mu17_Photon35_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  9;
-    else if (name.find("HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_v")             != string::npos) bitEleMuX = 10;
-    else if (name.find("HLT_DoubleEle33_CaloIdL_MW_v")                        != string::npos) bitEleMuX = 11;
-    else if (name.find("HLT_DoubleEle37_Ele27_CaloIdL_GsfTrkIdVL_v")          != string::npos) bitEleMuX = 12;
-    else if (name.find("HLT_DoubleEle24_22_eta2p1_WPLoose_Gsf_v")             != string::npos) bitEleMuX = 13;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")               != string::npos) bitEleMuX = 14;
-    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")             != string::npos) bitEleMuX = 15;
-    else if (name.find("HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")           != string::npos) bitEleMuX = 16;
-    else if (name.find("HLT_Mu30_TkMu11_v")                                   != string::npos) bitEleMuX = 17;
-    else if (name.find("HLT_DoubleIsoMu17_eta2p1_noDzCut_v")                  != string::npos) bitEleMuX = 18;
-    else if (name.find("HLT_IsoMu24_v")                                       != string::npos) bitEleMuX = 19;
-    else if (name.find("HLT_IsoTkMu24_v")                                     != string::npos) bitEleMuX = 20;
-    else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
-    else if (name.find("HLT_TripleMu_12_10_5_v")                              != string::npos) bitEleMuX = 22;
-    else if (name.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v")    != string::npos) bitEleMuX = 23;
-    else if (name.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") != string::npos) bitEleMuX = 24;
-    else if (name.find("HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v")    != string::npos) bitEleMuX = 25;
-    else if (name.find("HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v") != string::npos) bitEleMuX = 26;
-    else if (name.find("HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v")                  != string::npos) bitEleMuX = 27;
-    else if (name.find("HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v")                   != string::npos) bitEleMuX = 28;
-    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v")      != string::npos) bitEleMuX = 29;
-    else if (name.find("HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_v")      != string::npos) bitEleMuX = 30;
-    else if (name.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v")                != string::npos) bitEleMuX = 31;
-    else if (name.find("HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v")                != string::npos) bitEleMuX = 32;
-    else if (name.find("HLT_Ele17_Ele12_CaloId_TrackId_Iso_DZ_v")             != string::npos) bitEleMuX = 33;
-    else if (name.find("HLT_DoubleEle33_CaloId_GsfTrackIdVL_v")               != string::npos) bitEleMuX = 34;
-    else if (name.find("HLT_Ele27_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 35;
-    else if (name.find("HLT_Ele30_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 36;
-    else if (name.find("HLT_Ele32_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 37;
-    else if (name.find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v")                     != string::npos) bitEleMuX = 38;
-    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_L1JetTauSeeded_v") != string::npos) bitEleMuX = 39;
-    else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v")            != string::npos) bitEleMuX = 40;
+    //// Old stuff
+    //else if (name.find("HLT_Mu17_Photon35_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  9;
+    //else if (name.find("HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_v")             != string::npos) bitEleMuX = 10;
+    //else if (name.find("HLT_DoubleEle33_CaloIdL_MW_v")                        != string::npos) bitEleMuX = 11;
+    //else if (name.find("HLT_DoubleEle37_Ele27_CaloIdL_GsfTrkIdVL_v")          != string::npos) bitEleMuX = 12;
+    //else if (name.find("HLT_DoubleEle24_22_eta2p1_WPLoose_Gsf_v")             != string::npos) bitEleMuX = 13;
+    //else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")               != string::npos) bitEleMuX = 14;
+    //else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")             != string::npos) bitEleMuX = 15;
+    //else if (name.find("HLT_TkMu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")           != string::npos) bitEleMuX = 16;
+    //else if (name.find("HLT_Mu30_TkMu11_v")                                   != string::npos) bitEleMuX = 17;
+    //else if (name.find("HLT_DoubleIsoMu17_eta2p1_noDzCut_v")                  != string::npos) bitEleMuX = 18;
+    //else if (name.find("HLT_IsoMu24_v")                                       != string::npos) bitEleMuX = 19;
+    //else if (name.find("HLT_IsoTkMu24_v")                                     != string::npos) bitEleMuX = 20;
+    //else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
+    //else if (name.find("HLT_TripleMu_12_10_5_v")                              != string::npos) bitEleMuX = 22;
+    //else if (name.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v")    != string::npos) bitEleMuX = 23;
+    //else if (name.find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") != string::npos) bitEleMuX = 24;
+    //else if (name.find("HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_v")    != string::npos) bitEleMuX = 25;
+    //else if (name.find("HLT_Mu23_TrkIsoVVL_Ele8_CaloIdL_TrackIdL_IsoVL_DZ_v") != string::npos) bitEleMuX = 26;
+    //else if (name.find("HLT_Mu8_DiEle12_CaloIdL_TrackIdL_v")                  != string::npos) bitEleMuX = 27;
+    //else if (name.find("HLT_DiMu9_Ele9_CaloIdL_TrackIdL_v")                   != string::npos) bitEleMuX = 28;
+    //else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_v")      != string::npos) bitEleMuX = 29;
+    //else if (name.find("HLT_Ele24_eta2p1_WPLoose_Gsf_LooseIsoPFTau30_v")      != string::npos) bitEleMuX = 30;
+    //else if (name.find("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v")                != string::npos) bitEleMuX = 31;
+    //else if (name.find("HLT_IsoMu19_eta2p1_LooseIsoPFTau20_v")                != string::npos) bitEleMuX = 32;
+    //else if (name.find("HLT_Ele17_Ele12_CaloId_TrackId_Iso_DZ_v")             != string::npos) bitEleMuX = 33;
+    //else if (name.find("HLT_DoubleEle33_CaloId_GsfTrackIdVL_v")               != string::npos) bitEleMuX = 34;
+    //else if (name.find("HLT_Ele27_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 35;
+    //else if (name.find("HLT_Ele30_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 36;
+    //else if (name.find("HLT_Ele32_WPTight_Gsf_L1JetTauSeeded_v")              != string::npos) bitEleMuX = 37;
+    //else if (name.find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v")                     != string::npos) bitEleMuX = 38;
+    //else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_L1JetTauSeeded_v") != string::npos) bitEleMuX = 39;
+    //else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v")            != string::npos) bitEleMuX = 40;
 
     // Photon triggers
     int bitPho    = -1;
@@ -406,10 +406,10 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     }
 
 
-    if (bitEleMuX >= 0) {
-      HLTEleMuX_            |= (isFired << bitEleMuX);
-      HLTEleMuXIsPrescaled_ |= (isPrescaled << bitEleMuX);
-    }
+    // if (bitEleMuX >= 0) {
+    //   HLTEleMuX_            |= (isFired << bitEleMuX);
+    //   HLTEleMuXIsPrescaled_ |= (isPrescaled << bitEleMuX);
+    // }
     
     if (bitPho >= 0) {
       HLTPho_            |= (isFired << bitPho);
