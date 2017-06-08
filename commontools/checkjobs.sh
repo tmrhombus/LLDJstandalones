@@ -39,5 +39,8 @@ samples=( \
 for sample in ${samples[@]}
 do
  #chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
- bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
+ var=$(bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ lc=$( cat "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ echo "${lc}  ${var}"
+ 
 done
