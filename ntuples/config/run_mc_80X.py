@@ -14,8 +14,10 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_mcRun2_asymptotic_2016_Tra
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 #process.Tracer = cms.Service("Tracer")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )##Number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000##how often to report use higher report number if using all events
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(3) )##Number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1##how often to report use higher report number if using all events
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )##Number of events -1 does all
+#process.MessageLogger.cerr.FwkReport.reportEvery = 1000##how often to report use higher report number if using all events
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -82,7 +84,9 @@ process.calibratedPatPhotons.isMC = cms.bool(True)
 
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_MS40_cTauS1.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc.root'));
+#process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc_MS40_cTauS1.root'));
+#process.TFileService = cms.Service("TFileService", fileName = cms.string('ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40/lldjntuple_mc_MS40_cTauS1.root'));
 
 jecLevels = [
   'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
@@ -153,6 +157,7 @@ process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
 #add them to the VID producer
 for idmod in my_phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
+
 #builds Ntuple
 process.p = cms.Path(
     process.regressionApplication*
