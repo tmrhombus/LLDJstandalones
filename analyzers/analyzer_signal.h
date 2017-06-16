@@ -146,67 +146,74 @@ public :
  // General / leading
 
 
- TH1F h_nVtx[6][2];
- TH1F h_nPU[6][2];
- TH1F h_phoEt[6][2];
- TH1F h_phoEta[6][2];
- TH1F h_phoPhi[6][2];
- TH1F h_elePt[6][2];
- TH1F h_eleEta[6][2];
- TH1F h_elePhi[6][2];
- TH1F h_muPt[6][2];
- TH1F h_muEta[6][2];
- TH1F h_muPhi[6][2];
+ TH1F h_nVtx                          [6][2];
+ TH1F h_nPU                           [6][2];
+ TH1F h_phoEt                         [6][2];
+ TH1F h_phoEta                        [6][2];
+ TH1F h_phoPhi                        [6][2];
+ TH1F h_elePt                         [6][2];
+ TH1F h_eleEta                        [6][2];
+ TH1F h_elePhi                        [6][2];
+ TH1F h_muPt                          [6][2];
+ TH1F h_muEta                         [6][2];
+ TH1F h_muPhi                         [6][2];
 
- TH1F h_htall[6][2];
- TH1F h_htjets[6][2];
+ TH1F h_htall                         [6][2];
+ TH1F h_htjets                        [6][2];
 
- //TH1F h_jetTestVariable[6][4];
- // Jet
- TH1F h_jetPt[6][4][2]; 
+// TH1F h_jetTestVariable[6][4];
+ 
 
- TH1F h_jetTestVariable[6][4][2]; 
- TH1F h_jetSumIPSig[6][4][2];
- TH1F h_jetMedianLog10IPSig[6][4][2]; 
 
- TH1F h_jetEn[6][4][2]; 
- TH1F h_jetEta[6][4][2]; 
- TH1F h_jetPhi[6][4][2]; 
- TH1F h_jetRawPt[6][4][2]; 
- TH1F h_jetRawEn[6][4][2]; 
- TH1F h_jetMt[6][4][2]; 
- TH1F h_jetArea[6][4][2]; 
- TH1F h_jetLeadTrackPt[6][4][2]; 
- TH1F h_jetLeadTrackEta[6][4][2]; 
- TH1F h_jetLeadTrackPhi[6][4][2]; 
- TH1F h_jetLepTrackPID[6][4][2]; 
- TH1F h_jetLepTrackPt[6][4][2]; 
- TH1F h_jetLepTrackEta[6][4][2]; 
- TH1F h_jetLepTrackPhi[6][4][2]; 
- TH1F h_jetCSV2BJetTags[6][4][2]; 
- TH1F h_jetJetProbabilityBJetTags[6][4][2]; 
- TH1F h_jetpfCombinedMVAV2BJetTags[6][4][2]; 
- TH1F h_jetPartonID[6][4][2]; 
- TH1F h_jetHadFlvr[6][4][2]; 
- TH1F h_jetGenJetEn[6][4][2]; 
- TH1F h_jetGenJetPt[6][4][2]; 
- TH1F h_jetGenJetEta[6][4][2]; 
- TH1F h_jetGenJetPhi[6][4][2]; 
- TH1F h_jetGenPartonID[6][4][2]; 
- TH1F h_jetGenEn[6][4][2]; 
- TH1F h_jetGenPt[6][4][2]; 
- TH1F h_jetGenEta[6][4][2]; 
- TH1F h_jetGenPhi[6][4][2]; 
- TH1F h_jetGenPartonMomID[6][4][2]; 
+// Jet
+ TH1F h_jetPt                         [6][4][2]; 
 
- TH1F h_AK8JetPt[6][4][2]; 
- TH1F h_AK8JetEn[6][4][2]; 
- TH1F h_AK8JetRawPt[6][4][2]; 
- TH1F h_AK8JetRawEn[6][4][2]; 
- TH1F h_AK8JetEta[6][4][2]; 
- TH1F h_AK8JetPhi[6][4][2]; 
- TH1F h_AK8JetMass[6][4][2]; 
+ TH1F h_jetTestVariable               [6][4][2]; 
 
+ TH1F h_jetAlphaMax                   [6][4][2];
+ TH1F h_jetAlphaMax2                  [6][4][2];
+ TH1F h_jetAlphaMaxP                  [6][4][2];
+ TH1F h_jetAlphaMaxP2                 [6][4][2];
+
+ 
+ 
+ TH1F h_jetEn                         [6][4][2]; 
+ TH1F h_jetEta                        [6][4][2]; 
+ TH1F h_jetPhi                        [6][4][2]; 
+ TH1F h_jetRawPt                      [6][4][2]; 
+ TH1F h_jetRawEn                      [6][4][2]; 
+ TH1F h_jetMt                         [6][4][2]; 
+ TH1F h_jetArea                       [6][4][2]; 
+ TH1F h_jetLeadTrackPt                [6][4][2]; 
+ TH1F h_jetLeadTrackEta               [6][4][2]; 
+ TH1F h_jetLeadTrackPhi               [6][4][2]; 
+ TH1F h_jetLepTrackPID                [6][4][2]; 
+ TH1F h_jetLepTrackPt                 [6][4][2]; 
+ TH1F h_jetLepTrackEta                [6][4][2]; 
+ TH1F h_jetLepTrackPhi                [6][4][2]; 
+ TH1F h_jetCSV2BJetTags               [6][4][2]; 
+ TH1F h_jetJetProbabilityBJetTags     [6][4][2]; 
+ TH1F h_jetpfCombinedMVAV2BJetTags    [6][4][2]; 
+ TH1F h_jetPartonID                   [6][4][2]; 
+ TH1F h_jetHadFlvr                    [6][4][2]; 
+ TH1F h_jetGenJetEn                   [6][4][2]; 
+ TH1F h_jetGenJetPt                   [6][4][2]; 
+ TH1F h_jetGenJetEta                  [6][4][2]; 
+ TH1F h_jetGenJetPhi                  [6][4][2]; 
+ TH1F h_jetGenPartonID                [6][4][2]; 
+ TH1F h_jetGenEn                      [6][4][2]; 
+ TH1F h_jetGenPt                      [6][4][2]; 
+ TH1F h_jetGenEta                     [6][4][2]; 
+ TH1F h_jetGenPhi                     [6][4][2]; 
+ TH1F h_jetGenPartonMomID             [6][4][2]; 
+
+ TH1F h_AK8JetPt                      [6][4][2]; 
+ TH1F h_AK8JetEn                      [6][4][2]; 
+ TH1F h_AK8JetRawPt                   [6][4][2]; 
+ TH1F h_AK8JetRawEn                   [6][4][2]; 
+ TH1F h_AK8JetEta                     [6][4][2]; 
+ TH1F h_AK8JetPhi                     [6][4][2]; 
+ TH1F h_AK8JetMass                    [6][4][2]; 
 
 
 };
