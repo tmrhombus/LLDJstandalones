@@ -242,11 +242,10 @@ public :
    Int_t           nJet;
 
    std::vector<int>     *jetTestVariable;
-   
-   std::vector<float> *jetAlphaMax;
-   std::vector<float> *jetAlphaMax2;
-   std::vector<float> *jetAlphaMaxP;
-   std::vector<float> *jetAlphaMaxP2;
+
+   std::vector<float>   *jetSumIPSig;
+   std::vector<float>   *jetMedianLog10IPSig;
+
 
    
    std::vector<float>   *jetPt;
@@ -564,13 +563,10 @@ public :
    TBranch        *b_nJet;   //!
   
    TBranch        *b_jetTestVariable;//!
-   
-   TBranch        *b_jetAlphaMax;
-   TBranch        *b_jetAlphaMax2;
-   TBranch        *b_jetAlphaMaxP;
-   TBranch        *b_jetAlphaMaxP2;
 
-   
+   TBranch        *b_jetSumIPSig;//!
+   TBranch        *b_jetMedianLog10IPSig;//!
+
 
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEn;   //!
