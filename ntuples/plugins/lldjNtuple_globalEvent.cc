@@ -29,10 +29,10 @@ vector<int> phoPrescale_;
 
 void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
-  tree->Branch("run",     &run_);
-  tree->Branch("event",   &event_);
-  tree->Branch("lumis",   &lumis_);
-  tree->Branch("isData",  &isData_);
+  tree->Branch("run",                  &run_);
+  tree->Branch("event",                &event_);
+  tree->Branch("lumis",                &lumis_);
+  tree->Branch("isData",               &isData_);
   tree->Branch("nVtx",                 &nVtx_);
   tree->Branch("nGoodVtx",             &nGoodVtx_);
   tree->Branch("nTrksPV",              &nTrksPV_);
@@ -96,7 +96,7 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     }
   } else
     edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
-
+  
   // HLT treatment
   HLTEleMuX_            = 0;
   HLTPho_               = 0;
@@ -104,19 +104,19 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   HLTEleMuXIsPrescaled_ = 0;
   HLTPhoIsPrescaled_    = 0;
   HLTJetIsPrescaled_    = 0;
-
+  
   edm::Handle<edm::TriggerResults> trgResultsHandle;
   e.getByToken(trgResultsLabel_, trgResultsHandle);
-
+  
   bool cfg_changed = true;
   HLTConfigProvider hltCfg;
   hltCfg.init(e.getRun(), es, trgResultsProcess_, cfg_changed);
-
+  
   const edm::TriggerNames &trgNames = e.triggerNames(*trgResultsHandle);
-
+  
   for (size_t i = 0; i < trgNames.size(); ++i) {
     const string &name = trgNames.triggerName(i);
-
+    
     // HLT name => bit correspondence
     // Electron or Muon or Cross triggers
     int bitEleMuX = -1;
