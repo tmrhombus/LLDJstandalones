@@ -38,12 +38,33 @@ process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-        '/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
+        #'/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
 
  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/ggZH_HToSSTodddd_MS40_ctauS100.root'
 
         #'/store/data/Run2016H/DoubleMuon/MINIAOD/PromptReco-v3/000/284/036/00000/04DC0281-C89F-E611-81C6-02163E0141E6.root'
         #'/store/data/Run2016B/SingleElectron/MINIAOD/23Sep2016-v2/80000/5A4402F5-638C-E611-A471-0025905A60AA.root'
+#DoubleMuon   
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/36C4C2FB-4AEB-E611-ADD7-008CFA580778.root' #H3
+        '/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver2-v1/110000/08ADA6AA-D3EC-E611-AF17-B083FED42488.root' #H2
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/44C1C1FB-4AEB-E611-9597-008CFA1113F4.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/4A77EC75-71EB-E611-B641-008CFA1C93FC.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/54F4D641-52EB-E611-961C-008CFA110C64.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/5AADF63A-52EB-E611-9284-008CFA197DC4.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/5C5B070D-38EB-E611-ACAB-008CFA197B54.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/5EE4090B-52EB-E611-8ADE-008CFA111314.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/7C7F3DB8-21EB-E611-8B16-008CFA1111AC.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/8643C759-9BEB-E611-A7CA-008CFA111270.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/986EAC7B-0CEB-E611-9AA7-008CFA111334.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/B0B880FC-4AEB-E611-9CC5-008CFA1112BC.root',
+        #'/store/data/Run2016H/DoubleMuon/MINIAOD/03Feb2017_ver3-v1/50000/B6BAD9A4-41EB-E611-B850-008CFA197B74.root'
+
+#DoubleMuLMB_1
+        #'/store/data/Run2016B/DoubleMuonLowMass/MINIAOD/03Feb2017_ver1-v1/80000/88703E9B-C8EA-E611-A3DC-001E67443EB7.root',
+        #'/store/data/Run2016B/DoubleMuonLowMass/MINIAOD/03Feb2017_ver1-v1/80000/F6B43BBE-EBEA-E611-8735-0CC47A537688.root'
+
+        
+
         )
                             )
 
@@ -77,7 +98,7 @@ runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outpu
 #process.load("RecoBTag.SecondaryVertex.pfInclusiveSecondaryVertexFinderTagInfosAK8_cfi")
 #process.pfInclusiveSecondaryVertexFinderTagInfosAK8.extSVCollection = cms.InputTag("slimmedSecondaryVertices")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('ggtree_data.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('DbleMu_H2.root'))
 
 jecLevels = [
   'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt',

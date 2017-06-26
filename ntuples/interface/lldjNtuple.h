@@ -185,6 +185,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   //check
   edm::EDGetToken gsfEle_;
 
+  const MagneticField* magneticField_;
+  
   TTree   *tree_;
   TH1F    *hEvents_;
   TH1F    *hPU_;
