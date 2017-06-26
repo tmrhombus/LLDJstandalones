@@ -254,11 +254,15 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    muBestTrkPtError = 0;
    
    jetTestVariable =0;
-   jetSumIPSig = 0;
-   jetMedianLog10IPSig = 0;
+//   jetSumIPSig = 0;
 
    muBestTrkPt = 0;
 
+   jetTestVariable = 0;
+
+   
+   
+   
    jetPt = 0;
    jetEn = 0;
    jetEta = 0;
@@ -608,9 +612,20 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muBestTrkPt", &muBestTrkPt, &b_muBestTrkPt);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    
-   fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable); 
-   fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
-   fChain->SetBranchAddress("jetMedianLog10IPSig",&jetMedianLog10IPSig, &b_jetMedianLog10IPSig);
+   // fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable); 
+  // fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
+
+   fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
+   
+   fChain->SetBranchAddress("jetAlphaMax", &jetAlphaMax, &b_jetAlphaMax);
+   fChain->SetBranchAddress("jetAlphaMax2", &jetAlphaMax2, &b_jetAlphaMax2);
+   fChain->SetBranchAddress("jetAlphaMaxP", &jetAlphaMaxP, &b_jetAlphaMaxP);
+   fChain->SetBranchAddress("jetAlphaMaxP2", &jetAlphaMaxP2, &b_jetAlphaMaxP2);
+   //   fChain->SetBranchAddress("CA2_x",&CA2_x,&b_CA2_x);
+   //   fChain->SetBranchAddress("CA2_y",&CA2_x,&b_CA2_y);
+   //   fChain->SetBranchAddress("CA2_z",&CA2_x,&b_CA2_z);
+
+
 
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetEn", &jetEn, &b_jetEn);

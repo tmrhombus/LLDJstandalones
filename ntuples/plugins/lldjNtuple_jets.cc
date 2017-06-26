@@ -12,6 +12,7 @@
 #include "CLHEP/Random/RandomEngine.h"
 #include "CLHEP/Random/RandGauss.h"
 
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
@@ -22,7 +23,10 @@
 //#include <CandidateBoostedDoubleSecondaryVertexComputer.h>
 #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //////#include <GetTrackTrajInfo.h>
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"         
 
+//#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+//#include <GetTrackTrajInfo.h>
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
@@ -160,6 +164,8 @@ vector<int>   AK8JetGenPartonMomID_;
 vector<float> AK8JetP4Smear_;
 vector<float> AK8JetP4SmearUp_;
 vector<float> AK8JetP4SmearDo_;
+
+
 //soft drop subjets
 vector<int>             nAK8SDSJ_ ;
 vector< vector<float> > AK8SDSJPt_ ;
@@ -170,6 +176,7 @@ vector< vector<float> > AK8SDSJE_ ;
 vector< vector<int > >  AK8SDSJCharge_ ;
 vector< vector<int > >  AK8SDSJFlavour_;
 vector< vector<float> > AK8SDSJCSV_ ;
+
 //puppi
 vector<float> AK8puppiPt_;
 vector<float> AK8puppiMass_;
@@ -216,6 +223,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_);
 
   ///###  
+
   tree->Branch("jetAlphaMax", &jetAlphaMax_);
   tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
   tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
@@ -235,7 +243,6 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetLogTrackAngle",        &jetLogTrackAngle_);
   tree->Branch("jetMedianLogTrackAngle",  &jetMedianLogTrackAngle_); 
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
- 
 
   //link the variable in c++ code to variable in branch
   if (doGenParticles_){
@@ -424,6 +431,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetMedianLogTrackAngle_                 .clear();
   jetTotalTrackAngle_                     .clear(); 
   
+
   jetAlphaMax_.clear();
   jetAlphaMax2_.clear();
   jetAlphaMaxP_.clear();
@@ -573,7 +581,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
   if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
-  
+
+  //cout<<vtxHandle->size()<<endl;
+
   // Accessing the JEC uncertainties 
   //ak4  
   edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
@@ -608,12 +618,17 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float MedianLog10IPSig = 0.0;
     float TotalTrackAngle = 0.0;
     float MedianLogTrackAngle = 0.0;
-   
+
     //float emEnergyFrac       = iJet->chargedEmEnergyFraction() + iJet->neutralEmEnergyFraction(); //cout << "EM: "<<emEnergyFrac<<endl; 
     //float hadronicEnergyFrac = iJet->chargedHadronEnergyFraction() + iJet->neutralHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
-    
-    //const edm::Ptr<pat::Jet> JetPTr = jetHandle;  
+        
+    //float emChargedEnergyFrac       = iJet->chargedEmEnergyFraction();  //cout << "EM: "<<emEnergyFrac<<endl;
+    //float hadronicChargedEnergyFrac = iJet->chargedHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
+    //float emNeutralEnergyFrac       = iJet->neutralEmEnergyFraction();
+    //float hadronicNeutralEnergyFrac = iJet->neutralHadronEnergyFraction();
 
+    //const edm::Ptr<pat::Jet> JetPTr = jetHandle;  
+    
     //if(iJet->pt() == ){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
     nrjet++;
     if (iJet->pt() <= 20 || fabs(iJet->eta()) >= 2.4 || iJet->chargedEmEnergyFraction()>=.9||iJet->neutralEmEnergyFraction()>=.9 || iJet->neutralHadronEnergyFraction()>=.9||iJet->chargedHadronEnergyFraction()>=.9) continue;
@@ -657,7 +672,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkPt   = -99;
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
-
     vector<double> numerator(vtxHandle->size(), 0);
     vector<double> numerator2(vtxHandle->size(), 0);
     double denominator = 0;
@@ -665,8 +679,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     double dummyPT = 0;
     double promptTotal = 0;
     double promptTotal2 = 0;
-    vector<double> numerator_alt(iJet->getJetConstituents().size(), 0);
 //***looping over tracks***
+
+    // void DisplacedAODReader::makeCaloJets(const edm::EventSetup& iSetup)
+    // {
+
+    //vertexBeam_->setBeamSpot(*beamspotHandle_);
+    //trackToCaloJetMap_.clear();
+    //trackToCaloJetMap_ = vector<int>(trackHandle_->size(),-1);
+   
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
       
       //IP stuff
@@ -724,12 +745,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	   TotalTrackAngle += Tang.Angle(JetAxis);
 	   // reco::TransientTrack tt(trackHandle->at(id),magneticField_); 
 	}//charge IP/Track
-	 ///****Calulate Alphas
+	///****Calulate Alphas
+	
 	if (daughter2.charge() != 0){
 	  dummyPT = daughter->pt();
-	  //if(daughter2.fromPV() > 1){
-	  
-	  //cout<<"x ="<<CA2.x()<<"   y ="<<CA2.y()<<"   z ="<<CA2.z()<<endl;
 	  
 	  for(int k = 0; k < vtxHandle->size(); ++k){
 	    if(daughter2.fromPV(k) >1){
@@ -737,39 +756,27 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	      numerator2[k] += dummyPT*dummyPT;
 	      promptTotal   += dummyPT;
 	      promptTotal2  += dummyPT*dummyPT;
-	      //numerator2[(int)id] += daughter->pt() * daughter->pt();
 	      CA2_x_.push_back(CA2.x());
 	      CA2_y_.push_back(CA2.y());
 	      CA2_z_.push_back(CA2.z());
 	      transDist_.push_back(r);
 	    }
 	  }
-
-	  if(r<0.21 && r > 0.19){
-	    numerator_alt[(int)id] += dummyPT;
-	    //numerator2_alt[(int)id] += dummyPT*dummyPT;
-	    //promptTotal_alt += dummyPT;
-	    //promptTotal2_alt += dummyPT*dummyPT;
-	    //numerator2[(int)id] += daughter->pt() * daughter->pt();
-	    
-	  }
-  
-          denominator += dummyPT;
+	  denominator += dummyPT;
 	  denominator2 += dummyPT*dummyPT;
-	  //cout<<daughter2.pvAssociationQuality()<<endl;
-	  //cout<<daughter2.dxy()<<"    "<<daughter2.dz()<<endl;
-	  //const reco::VertexRef v_ref = daughter2.vertexRef();
 	}
       }//nonnull
     } ///******End Tracks Loop******
+    
     double alphaMax = 0;
     double alphaMax2 = 0;
     double apMax =0;
     double apMax2 = 0;
     double beta = 1.0 - promptTotal/denominator;
     double beta2 = 1.0 - promptTotal2/denominator2;
+    
     for(int i = 0; i < (int)numerator.size(); i++){
-      //if(numerator[i] = 0)continue;
+      
       if(numerator[i] > alphaMax) alphaMax = numerator[i];
       if(numerator2[i] > alphaMax2) alphaMax2 = numerator2[i];
       double ap = numerator[i] / (numerator[i] + beta);
@@ -777,35 +784,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       if(ap > apMax) apMax = ap;
       if(ap2 > apMax2) apMax2 = ap2;
     }
-    
-    
-    double alphaMax_alt = 0;
-    
-    for(int i = 0; i < (int)numerator_alt.size(); i++){
-      //if(numerator[i] = 0)continue;
-      if(numerator_alt[i] > alphaMax_alt) alphaMax_alt = numerator_alt[i];
-      //if(numerator2_alt[i] > alphaMax2_alt) alphaMax2 = numerator2_alt[i];
-      //double ap = numerator_alt[i] / (numerator_alt[i] + beta_alt);
-      //double ap2 = numerator2_alt[i] / (numerator2_alt[i] + beta2_alt);
-      //if(ap > apMax) apMax = ap;
-      //if(ap2 > apMax2) apMax2 = ap2;
-    }
-    //cout<<"apMax =";cout<<apMax<<endl;
-    //double test = alphaMax / denominator;
-    //if(test != 0){
-      //cout<<"test = "<<test<<enl;  
-    //cout<< test <<endl;
     jetAlphaMax_.push_back(alphaMax / denominator);
     jetAlphaMax2_.push_back(alphaMax2 / denominator2);
     jetAlphaMaxP_.push_back(apMax);
     jetAlphaMaxP2_.push_back(apMax2);
-    alphaMax_transDist_.push_back(alphaMax_alt / denominator);
-    //CA2_y_.push_back(CA2.y());
-	    
-    
-    //}
-   //old end tracks loop
-	 
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
     jetLeadTrackPhi_.push_back(leadTrkPhi);

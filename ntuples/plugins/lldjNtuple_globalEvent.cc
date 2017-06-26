@@ -2,8 +2,7 @@
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
-//#include <ofstream>
-//#include <stdio.h>
+
 using namespace std;
 
 // (local) variables associated with tree branches
@@ -27,7 +26,7 @@ ULong64_t   HLTEleMuXIsPrescaled_;
 ULong64_t   HLTPhoIsPrescaled_;
 ULong64_t   HLTJetIsPrescaled_;
 vector<int> phoPrescale_;
-//vector<string> trigNames_;
+
 ULong64_t   HLT_PFHT350PFMET100_;
 
 ULong64_t   HLT_Ele23Loose_;
@@ -51,12 +50,7 @@ ULong64_t   HLT_IsoMu22_isPS_;
 ULong64_t   HLT_IsoTkMu22_isPS_;
 ULong64_t   HLT_Mu17Mu8_isPS_;
 ULong64_t   HLT_Mu17TkMu8_isPS_;
-//ofstream trigFile;
-//trigFile.open("triggers.txt");
 
-//FILE *trigFile;
-//trigFile = fopen("triggers.txt", "w+");
-//FILE *fp=fopen("triggers.txt", "w+");
 void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
   tree->Branch("run",     &run_);
@@ -169,19 +163,10 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   e.getByToken(trgResultsLabel_, trgResultsHandle);
 
   const edm::TriggerNames &trgNames = e.triggerNames(*trgResultsHandle);
-  for (size_t i = 0; i < trgNames.size(); ++i) {
-    const string &name = trgNames.triggerName(i);
-    printf(" Reading trigger: %s\n" , name.c_str()  );
-   // bool unique  = false;
-    //for(int j=0; j<trigNames_.size(); j++)
-    //{
-    //if (name.c_str() != trigNames_[j]) unique=true;
-    //}
-    //if(unique) trigNames_.push_back(name.c_str());
-    
-    //fprintf(fp, trigNames_[i].c_str());
-    //fprintf(fp, " \n");
- }
+//  for (size_t i = 0; i < trgNames.size(); ++i) {
+//    const string &name = trgNames.triggerName(i);
+//    printf(" Reading trigger: %s\n" , name.c_str()  );
+//  }
 
 
   for (size_t i = 0; i < trgNames.size(); ++i) {
@@ -395,11 +380,9 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
 
     // indicates prescaling and whether trigger was fired or not
-    // lookup 0th prescale value for name, is it not equal to 1? if statement true then set bit as 1 else set bit as 0
-    ULong64_t isPrescaled = (hltCfg.prescaleValue(0, name)!=1) ? 1 : 0; //lookup 0th prescale value for name
+    ULong64_t isPrescaled = (hltCfg.prescaleValue(0, name)!=1) ? 1 : 0;
     ULong64_t isFired     = (trgResultsHandle->accept(i)) ? 1 : 0;
 
-    //read the c++ thing
     if ( bitPFHT350PFMET100 >= 0 ){
      HLT_PFHT350PFMET100_       |= (isFired     << bitPFHT350PFMET100 );
      HLT_PFHT350PFMET100_isPS_  |= (isPrescaled << bitPFHT350PFMET100 );
@@ -470,11 +453,4 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
 
   }
 
-}//fclose(fp);
-//for(int j=0; j<trigNames_.size(); j++)
-///{
-//fprintf(fp, trigNames_[j]+'\n');
-//trigFile << trigNames_[j];
-//}
-//fclose(fp);
-//trigFile.close();
+}
