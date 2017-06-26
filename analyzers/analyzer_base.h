@@ -247,7 +247,9 @@ public :
    std::vector<float> *jetAlphaMax2;
    std::vector<float> *jetAlphaMaxP;
    std::vector<float> *jetAlphaMaxP2;
-
+   //   std::vector<float> *CA2_x;
+   //   std::vector<float> *CA2_y;
+   //   std::vector<float> *CA2_z;
    
    std::vector<float>   *jetPt;
    std::vector<float>   *jetEn;
@@ -569,6 +571,9 @@ public :
    TBranch        *b_jetAlphaMax2;
    TBranch        *b_jetAlphaMaxP;
    TBranch        *b_jetAlphaMaxP2;
+   //   TBranch *b_CA2_x;
+   //   TBranch *b_CA2_y;
+   //   TBranch *b_CA2_z;
 
    
 

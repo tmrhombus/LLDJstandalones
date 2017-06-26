@@ -621,7 +621,9 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("jetAlphaMax2", &jetAlphaMax2, &b_jetAlphaMax2);
    fChain->SetBranchAddress("jetAlphaMaxP", &jetAlphaMaxP, &b_jetAlphaMaxP);
    fChain->SetBranchAddress("jetAlphaMaxP2", &jetAlphaMaxP2, &b_jetAlphaMaxP2);
-
+   //   fChain->SetBranchAddress("CA2_x",&CA2_x,&b_CA2_x);
+   //   fChain->SetBranchAddress("CA2_y",&CA2_x,&b_CA2_y);
+   //   fChain->SetBranchAddress("CA2_z",&CA2_x,&b_CA2_z);
 
 
 

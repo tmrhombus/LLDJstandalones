@@ -174,9 +174,9 @@ public :
  TH1F h_jetAlphaMax2                  [6][4][2];
  TH1F h_jetAlphaMaxP                  [6][4][2];
  TH1F h_jetAlphaMaxP2                 [6][4][2];
-
- 
- 
+ // TH1F h_CA2_x [6][4][2];
+ // TH1F h_CA2_y [6][4][2];
+ // TH1F h_CA2_z [6][4][2];
  TH1F h_jetEn                         [6][4][2]; 
  TH1F h_jetEta                        [6][4][2]; 
  TH1F h_jetPhi                        [6][4][2]; 

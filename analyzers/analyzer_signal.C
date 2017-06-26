@@ -283,7 +283,9 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_jetAlphaMax2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax2              " ;
     TString hname_jetAlphaMaxP                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP              " ;
     TString hname_jetAlphaMaxP2               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP2             " ;
-
+    //    TString hname_CA2_x   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_x" ;
+    //    TString hname_CA2_y   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_y" ;
+    //    TString hname_CA2_z   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_z" ;
     TString hname_jetEn                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEn                     " ;   
     TString hname_jetEta                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEta                    " ;    
     TString hname_jetPhi                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPhi                    " ;    
@@ -330,7 +332,10 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetAlphaMax2                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax2                , "jetAlphaMax2              " , 30, 0, 1) ;
     h_jetAlphaMaxP                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP                , "jetAlphaMaxP              " , 30, 0, 1) ;
     h_jetAlphaMaxP2               [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP2               , "jetAlphaMaxP2             " , 30, 0, 1) ;
-
+    //    h_CA2_x  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_x,"CA2_x", 100,-1,1) ;
+    //    h_CA2_y  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_y,"CA2_y", 100,-1,1) ;
+    //    h_CA2_z  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_z,"CA2_z", 100,-1,1) ;
+    
     
     
     
@@ -388,11 +393,13 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
 
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
-  if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight );}
-  if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight );}
-  if(jetAlphaMaxP               ->size()>j){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(j), weight );}
-  if(jetAlphaMaxP2              ->size()>j){h_jetAlphaMaxP2               [selbin][j][lepbin].Fill(jetAlphaMaxP2               ->at(j), weight );}
-
+  if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight ); }
+  if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight ); }
+  if(jetAlphaMaxP               ->size()>j){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(j), weight ); }
+  if(jetAlphaMaxP2              ->size()>j){h_jetAlphaMaxP2               [selbin][j][lepbin].Fill(jetAlphaMaxP2               ->at(j), weight ); }
+  //  if(CA2_x                      ->size()>j){h_CA2_x                       [selbin][j][lepbin].Fill(CA2_x                       ->at(j), weight ); }
+  //  if(CA2_y                      ->size()>j){h_CA2_y                       [selbin][j][lepbin].Fill(CA2_y                       ->at(j), weight ); }
+  //  if(CA2_z                      ->size()>j){h_CA2_z                       [selbin][j][lepbin].Fill(CA2_z                       ->at(j), weight ); }
   
   
   
@@ -456,7 +463,9 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
    h_jetAlphaMax2                [selbin][j][lepbin].Write();
    h_jetAlphaMaxP                [selbin][j][lepbin].Write();
    h_jetAlphaMaxP2               [selbin][j][lepbin].Write();
-
+   //   h_CA2_x                       [selbin][j][lepbin].Write(); 
+   //   h_CA2_y                       [selbin][j][lepbin].Write(); 
+   //   h_CA2_z                       [selbin][j][lepbin].Write(); 
    
    h_jetEn                       [selbin][j][lepbin].Write(); 
    h_jetEta                      [selbin][j][lepbin].Write(); 

@@ -85,6 +85,12 @@ vector<float>jetAlphaMax_;
 vector<float>jetAlphaMax2_;
 vector<float>jetAlphaMaxP_;
 vector<float>jetAlphaMaxP2_;
+vector<float>CA2_x_;
+vector<float>CA2_y_;
+vector<float>CA2_z_;
+vector<float>transDist_;
+vector<float>alphaMax_transDist_;
+
 
 vector<vector<float>> jetTrackPt_;
 vector<vector<float>> jetTrackEta_;
@@ -150,6 +156,8 @@ vector<int>   AK8JetGenPartonMomID_;
 vector<float> AK8JetP4Smear_;
 vector<float> AK8JetP4SmearUp_;
 vector<float> AK8JetP4SmearDo_;
+
+
 //soft drop subjets
 vector<int>             nAK8SDSJ_ ;
 vector< vector<float> > AK8SDSJPt_ ;
@@ -160,6 +168,7 @@ vector< vector<float> > AK8SDSJE_ ;
 vector< vector<int > >  AK8SDSJCharge_ ;
 vector< vector<int > >  AK8SDSJFlavour_;
 vector< vector<float> > AK8SDSJCSV_ ;
+
 //puppi
 vector<float> AK8puppiPt_;
 vector<float> AK8puppiMass_;
@@ -211,8 +220,12 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
   tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
   tree->Branch("jetAlphaMaxP2", &jetAlphaMaxP2_);
-
-
+  tree->Branch("CA2_x", &CA2_x_);
+  tree->Branch("CA2_y", &CA2_y_);
+  tree->Branch("CA2_z", &CA2_z_);
+  tree->Branch("transDist", &transDist_);
+  tree->Branch("alphaMax_transDist", &alphaMax_transDist_);  
+  
   tree->Branch("jetLog10IPSig",           &jetLog10IPSig_);
   tree->Branch("jetMedianLog10IPSig",     &jetMedianLog10IPSig_);
   tree->Branch("jetSumIP",                &jetSumIP_);
@@ -416,7 +429,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetAlphaMax2_.clear();
   jetAlphaMaxP_.clear();
   jetAlphaMaxP2_.clear();
-
+  CA2_x_.clear();
+  CA2_y_.clear();
+  CA2_z_.clear();
+  transDist_.clear();
+  alphaMax_transDist_.clear();
+    
   jetGenJetEn_.clear();
   jetGenJetPt_.clear();
   jetGenJetEta_.clear();
@@ -546,7 +564,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
   if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
-  
+
+  //cout<<vtxHandle->size()<<endl;
+
   // Accessing the JEC uncertainties 
   //ak4  
   edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
@@ -582,17 +602,24 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float TotalTrackAngle = 0.0;
     float MedianLogTrackAngle = 0.0;
     
-    float emEnergyFrac       = iJet->chargedEmEnergyFraction() + iJet->neutralEmEnergyFraction(); //cout << "EM: "<<emEnergyFrac<<endl;
-    float hadronicEnergyFrac = iJet->chargedHadronEnergyFraction() + iJet->neutralHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
-    
+    float emChargedEnergyFrac       = iJet->chargedEmEnergyFraction();  //cout << "EM: "<<emEnergyFrac<<endl;
+    float hadronicChargedEnergyFrac = iJet->chargedHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
+    float emNeutralEnergyFrac       = iJet->neutralEmEnergyFraction();
+    float hadronicNeutralEnergyFrac = iJet->neutralHadronEnergyFraction();
     //const edm::Ptr<pat::Jet> JetPTr = jetHandle;  
-
+    
     //if(iJet->pt() == ){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
     nrjet++;
-    if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || emEnergyFrac>.9 || hadronicEnergyFrac>.9) continue;//reason for pt<15?, eta<5.2?
+    if (iJet->pt() < 20 || 
+	fabs(iJet->eta()) > 2.4 || 
+	emChargedEnergyFrac < .9 ||  //cout << "EM: "<<emEnergyFrac<<endl;
+	hadronicChargedEnergyFrac < .9 ||  //cout << "had: "<<hadronicEnergyFrac<<endl;
+	emNeutralEnergyFrac < .9 ||
+	hadronicNeutralEnergyFrac < .9) continue;//reason for pt<15?, eta<5.2?
+    
+
     jetPt_.push_back(    iJet->pt());//cout << endl<< iJet->pt()<<" *****jet constituents: "<<iJet->getJetConstituents().size() <<endl;
     //if(iJet->pt()<20 ||iJet->pt()>10000) cout<<endl<<"JetPT: "<<iJet->pt() <<"Event "/*<<e*/ <<endl;
-
     jetEn_.push_back(    iJet->energy());
     jetEta_.push_back(   iJet->eta());
     jetPhi_.push_back(   iJet->phi());
@@ -631,15 +658,24 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkPt   = -99;
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
-
-    vector<double> numerator(iJet->getJetConstituents().size(), 0);
-    vector<double> numerator2(iJet->getJetConstituents().size(), 0);
+    
+    vector<double> numerator(vtxHandle->size(), 0);
+    vector<double> numerator2(vtxHandle->size(), 0);
     double denominator = 0;
     double denominator2 = 0;
     double dummyPT = 0;
     double promptTotal = 0;
     double promptTotal2 = 0;
+       
 //***looping over tracks***
+
+    // void DisplacedAODReader::makeCaloJets(const edm::EventSetup& iSetup)
+    // {
+
+    //vertexBeam_->setBeamSpot(*beamspotHandle_);
+    //trackToCaloJetMap_.clear();
+    //trackToCaloJetMap_ = vector<int>(trackHandle_->size(),-1);
+   
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
       
       //IP stuff
@@ -648,7 +684,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
       //cast as Packed Candidate to access member functions
       const pat::PackedCandidate &daughter2 = dynamic_cast<const pat::PackedCandidate &>(*iJet->getJetConstituents().at(id));
- 
+      math::XYZPoint CA2 = daughter2.vertex();
+      float r = sqrt(pow(CA2.x(),2)+pow(CA2.y(),2));
+      
       if (daughter.isNonnull() && daughter.isAvailable()) {
 	if (daughter->charge() != 0 && daughter->pt() > leadTrkPt) {
 	  leadTrkPt  = daughter->pt();
@@ -669,46 +707,54 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
            dxy = fabs(daughter2.dxy());//bsPoint));//*****why this at beamspot and dxyerr at PV?
            dxyerr = daughter2.dxyError();
            if(dxyerr>0){ dxySig = dxy/dxyerr;IPtest = true; }//*******WHY WOULD DXYERR BE LESS THAN 0
-              if (IPtest ==true){
-                 SumIP += dxy;
-                 SumIPSig +=dxySig;
-                 //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl; 
-                 jetLog10IPSig_.push_back( log10(dxySig) );
-               }     
-                 //track angle stuff
-                 //get point of closest approach
-                 math::XYZPoint CA = daughter2.vertex();
-                 TVector3 Tang(CA.x(),CA.y(),CA.z());
-                 jetTrackPhi2_.push_back(daughter2.phiAtVtx());
-                 jetTrackAngle_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
-                 jetLogTrackAngle_.push_back( log(fabs(Tang.Angle(JetAxis))) );//not sure if log or log10
-                 TotalTrackAngle += Tang.Angle(JetAxis);
-         }//charge IP/Track
-	    ///****Calulate Alphas
-            if (daughter2.charge() != 0){
-                dummyPT = daughter->pt();
-	        if(daughter2.fromPV() > 1){
-	  	    numerator[(int)id] += dummyPT;
-
-		    numerator2[(int)id] += dummyPT*dummyPT;
-		    promptTotal += dummyPT;
-		    promptTotal2 += dummyPT*dummyPT;
-	  	    //numerator2[(int)id] += daughter->pt() * daughter->pt();
-	  	  }
-	  	  denominator += dummyPT;
-	  	  denominator2 += dummyPT*dummyPT;
-	  	}
-	      }//nonnull
+	   if (IPtest ==true){
+	     SumIP += dxy;
+	     SumIPSig +=dxySig;
+	     //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl; 
+	     jetLog10IPSig_.push_back( log10(dxySig) );
+	   }     
+	   //track angle stuff
+	   //get point of closest approach
+	   math::XYZPoint CA = daughter2.vertex();
+	   TVector3 Tang(CA.x(),CA.y(),CA.z());
+	   jetTrackPhi2_.push_back(daughter2.phiAtVtx());
+	   jetTrackAngle_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
+	   jetLogTrackAngle_.push_back( log(fabs(Tang.Angle(JetAxis))) );//not sure if log or log10
+	   TotalTrackAngle += Tang.Angle(JetAxis);
+	}//charge IP/Track
+	///****Calulate Alphas
+	
+	if (daughter2.charge() != 0){
+	  dummyPT = daughter->pt();
+	  
+	  for(int k = 0; k < vtxHandle->size(); ++k){
+	    if(daughter2.fromPV(k) >1){
+	      numerator[k]  += dummyPT;
+	      numerator2[k] += dummyPT*dummyPT;
+	      promptTotal   += dummyPT;
+	      promptTotal2  += dummyPT*dummyPT;
+	      
+	      CA2_x_.push_back(CA2.x());
+	      CA2_y_.push_back(CA2.y());
+	      CA2_z_.push_back(CA2.z());
+	      transDist_.push_back(r);
+	    }
+	  }
+	  denominator += dummyPT;
+	  denominator2 += dummyPT*dummyPT;
+	}
+      }//nonnull
     } ///******End Tracks Loop******
-
+    
     double alphaMax = 0;
     double alphaMax2 = 0;
     double apMax =0;
     double apMax2 = 0;
     double beta = 1.0 - promptTotal/denominator;
     double beta2 = 1.0 - promptTotal2/denominator2;
+    
     for(int i = 0; i < (int)numerator.size(); i++){
-      //if(numerator[i] = 0)continue;
+      
       if(numerator[i] > alphaMax) alphaMax = numerator[i];
       if(numerator2[i] > alphaMax2) alphaMax2 = numerator2[i];
       double ap = numerator[i] / (numerator[i] + beta);
@@ -716,20 +762,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       if(ap > apMax) apMax = ap;
       if(ap2 > apMax2) apMax2 = ap2;
     }
-    //cout<<"apMax =";cout<<apMax<<endl;
-    double test = alphaMax / denominator;
-    if(test != 0){
-      //cout<<"test = "<<test<<enl;  
-
-    //cout<< test <<endl;
+        
     jetAlphaMax_.push_back(alphaMax / denominator);
     jetAlphaMax2_.push_back(alphaMax2 / denominator2);
     jetAlphaMaxP_.push_back(apMax);
     jetAlphaMaxP2_.push_back(apMax2);
-    }
-   //old end tracks loop
-	 
-
+    
+    
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
     jetLeadTrackPhi_.push_back(leadTrkPhi);
