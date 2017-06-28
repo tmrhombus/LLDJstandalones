@@ -87,11 +87,24 @@ vector<float>  jetAlphaMax_;
 vector<float>  jetAlphaMax2_;
 vector<float>  jetAlphaMaxP_;
 vector<float>  jetAlphaMaxP2_;
-vector<float>  CA2_x_;
-vector<float>  CA2_y_;
-vector<float>  CA2_z_;
-vector<float>  transDist_;
-vector<float>  alphaMax_transDist_;
+vector<float>  jetDauVertex_x_;
+vector<float>  jetDauVertex_y_;
+vector<float>  jetDauVertex_z_;
+vector<float>  jetDauVertex_r_;
+vector<float>  alphaMax_jetDauVertex_r_;
+
+// Alpha Maxs
+vector<float>  jetAlphaMax_PV3onPV2_ ; 
+vector<float>  jetAlphaMax_PV3onNeu_ ; 
+vector<float>  jetAlphaMax_PV3onAll_ ; 
+vector<float>  jetAlphaMax_PV2onNeu_ ; 
+vector<float>  jetAlphaMax_PV2onAll_ ; 
+
+vector<float>  jetAlpha2Max_PV3onPV2_ ; 
+vector<float>  jetAlpha2Max_PV3onNeu_ ; 
+vector<float>  jetAlpha2Max_PV3onAll_ ; 
+vector<float>  jetAlpha2Max_PV2onNeu_ ; 
+vector<float>  jetAlpha2Max_PV2onAll_ ; 
 
 //gen-info for ak4
 vector<float>  jetGenJetEn_;
@@ -213,11 +226,25 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetAlphaMax2", &jetAlphaMax2_);
   tree->Branch("jetAlphaMaxP", &jetAlphaMaxP_);
   tree->Branch("jetAlphaMaxP2", &jetAlphaMaxP2_);
-  tree->Branch("CA2_x", &CA2_x_);
-  tree->Branch("CA2_y", &CA2_y_);
-  tree->Branch("CA2_z", &CA2_z_);
-  tree->Branch("transDist", &transDist_);
-  tree->Branch("alphaMax_transDist", &alphaMax_transDist_);  
+  tree->Branch("jetDauVertex_x", &jetDauVertex_x_);
+  tree->Branch("jetDauVertex_y", &jetDauVertex_y_);
+  tree->Branch("jetDauVertex_z", &jetDauVertex_z_);
+  tree->Branch("jetDauVertex_r", &jetDauVertex_r_);
+  tree->Branch("alphaMax_jetDauVertex_r", &alphaMax_jetDauVertex_r_);  
+
+  // Alpha Maxs
+  tree->Branch("jetAlphaMax_PV3onPV2", &jetAlphaMax_PV3onPV2_ ); 
+  tree->Branch("jetAlphaMax_PV3onNeu", &jetAlphaMax_PV3onNeu_ ); 
+  tree->Branch("jetAlphaMax_PV3onAll", &jetAlphaMax_PV3onAll_ ); 
+  tree->Branch("jetAlphaMax_PV2onNeu", &jetAlphaMax_PV2onNeu_ ); 
+  tree->Branch("jetAlphaMax_PV2onAll", &jetAlphaMax_PV2onAll_ ); 
+
+  tree->Branch("jetAlpha2Max_PV3onPV2", &jetAlpha2Max_PV3onPV2_ ); 
+  tree->Branch("jetAlpha2Max_PV3onNeu", &jetAlpha2Max_PV3onNeu_ ); 
+  tree->Branch("jetAlpha2Max_PV3onAll", &jetAlpha2Max_PV3onAll_ ); 
+  tree->Branch("jetAlpha2Max_PV2onNeu", &jetAlpha2Max_PV2onNeu_ ); 
+  tree->Branch("jetAlpha2Max_PV2onAll", &jetAlpha2Max_PV2onAll_ ); 
+
 
   tree->Branch("jetLog10IPSig",           &jetLog10IPSig_);
   tree->Branch("jetMedianLog10IPSig",     &jetMedianLog10IPSig_);
@@ -356,6 +383,8 @@ void lldjNtuple::branchesJets(TTree* tree) {
 //fills jets .clear() to empty vector of old data
 void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
+  bool dodebug = false;
+
   // cleanup from previous execution
   jetPt_                                  .clear();
   jetEn_                                  .clear();
@@ -419,11 +448,25 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetAlphaMax2_      .clear();
   jetAlphaMaxP_      .clear();
   jetAlphaMaxP2_     .clear();
-  CA2_x_             .clear();
-  CA2_y_             .clear();
-  CA2_z_             .clear();
-  transDist_         .clear();
-  alphaMax_transDist_.clear();
+  jetDauVertex_x_             .clear();
+  jetDauVertex_y_             .clear();
+  jetDauVertex_z_             .clear();
+  jetDauVertex_r_         .clear();
+  alphaMax_jetDauVertex_r_.clear();
+
+  // Alpha Maxs
+  jetAlphaMax_PV3onPV2_ .clear(); 
+  jetAlphaMax_PV3onNeu_ .clear(); 
+  jetAlphaMax_PV3onAll_ .clear(); 
+  jetAlphaMax_PV2onNeu_ .clear(); 
+  jetAlphaMax_PV2onAll_ .clear(); 
+
+  jetAlpha2Max_PV3onPV2_ .clear(); 
+  jetAlpha2Max_PV3onNeu_ .clear(); 
+  jetAlpha2Max_PV3onAll_ .clear(); 
+  jetAlpha2Max_PV2onNeu_ .clear(); 
+  jetAlpha2Max_PV2onAll_ .clear(); 
+
 
   jetGenJetEn_      .clear();
   jetGenJetPt_      .clear();
@@ -574,8 +617,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   int IP0Sum = 0;
   int TA0Sum = 0;
 
+  if(dodebug){ printf("\n\n Looping over Jets\n"); }
+  unsigned int tmp_jetnr = 0; 
   //******Jets Loop****
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
+    tmp_jetnr++;
+    if(dodebug){ printf("  Jet Nr: %u \n",tmp_jetnr); }
 
     //get jet axis for track angle
     TVector3 JetAxis(iJet->px(),iJet->py(),iJet->pz());
@@ -597,6 +644,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     
     nrjet++;
     if (iJet->pt() <= 20 || fabs(iJet->eta()) >= 2.4 || iJet->chargedEmEnergyFraction()>=.9||iJet->neutralEmEnergyFraction()>=.9 || iJet->neutralHadronEnergyFraction()>=.9||iJet->chargedHadronEnergyFraction()>=.9) continue;
+    if(dodebug){printf("   pt: %f\n",iJet->pt()); }
     jetPt_.push_back(    iJet->pt());
     //cout << endl<< iJet->pt()<<" *****jet constituents: "<<iJet->getJetConstituents().size() <<endl;
     //cout<<endl<<"JetPT: "<<iJet->pt() <<"Event "<<e.id().event()<<endl;
@@ -639,23 +687,29 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float lepTrkEta  = -99;
     float lepTrkPhi  = -99;
 
-    vector<double> sumtracksfromPV(vtxHandle->size(), 0);
-    vector<double> sumtracksfromPV2(vtxHandle->size(), 0);
-    double sumalltracks = 0;
-    double sumalltracks2 = 0;
-    double daughterPt = 0;
-    double daughterEta = 0;
-    double daughterPhi = 0;
-    double promptTotal = 0;
-    double promptTotal2 = 0;
-    vector<double> sumtracksfromPV_alt(iJet->getJetConstituents().size(), 0);
+    vector<float> sumtracksfPV2(vtxHandle->size(), 0);
+    vector<float> sum2tracksfPV2(vtxHandle->size(), 0);
+    vector<float> sumtracksfPV3(vtxHandle->size(), 0);
+    vector<float> sum2tracksfPV3(vtxHandle->size(), 0);
+    float sumalltracks = 0;
+    float sum2alltracks = 0;
+    float sumneutraltracks = 0;
+    float sum2neutraltracks = 0;
 
+    //IP stuff
+    bool IPtest = false;
+    float dxySig = 0.0;
+
+    float daughterPt = 0;
+    float daughterEta = 0;
+    float daughterPhi = 0;
+    float promptTotal = 0;
+    float promptTotal2 = 0;
+
+    if(dodebug){ printf("\n\n Looping over Tracks\n"); }
+    unsigned int tmp_tracknr = 0; 
     //***looping over tracks***
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
-      
-      //IP stuff
-      bool IPtest = false;
-      float dxySig = 0.0;
 
       // daughter of iJet is reco::Candidate
       const edm::Ptr<reco::Candidate> daughter = iJet->getJetConstituents().at(id);
@@ -665,15 +719,18 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
       if (daughter.isNonnull() && daughter.isAvailable()) 
       {
+        tmp_tracknr++;
+        if(dodebug){ printf("   Track Nr: %u \n",tmp_tracknr); }
 
         // set common variables
         daughterPt = daughter->pt(); 
         daughterEta = daughter->eta();
         daughterPhi = daughter->phi();
+        if(dodebug){ printf("    pt %f\n", daughterPt); }
 
         // r = transverse vertex distance
-        math::XYZPoint CA2 = daughter2.vertex();
-        float r = sqrt(pow(CA2.x(),2)+pow(CA2.y(),2));
+        math::XYZPoint jetDauVertex = daughter2.vertex();
+        float jetDauVertex_r = sqrt(pow(jetDauVertex.x(),2)+pow(jetDauVertex.y(),2));
 
         // set lead soft lepton (track) variables
 	if (abs(daughter->pdgId()) == 11 || abs(daughter->pdgId()) == 13) {
@@ -713,31 +770,42 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
           // loop over vertices (already looping over tracks and jets)
 	  for(unsigned int k = 0; k < vtxHandle->size(); ++k){
 	    if(daughter2.fromPV(k) >1){
-	      sumtracksfromPV[k]  += daughterPt;
-	      sumtracksfromPV2[k] += daughterPt*daughterPt;
+              if(dodebug){ printf("      (2+) associated with vtx %u\n",k); }
+
+	      sumtracksfPV2[k]  += daughterPt;
+	      sum2tracksfPV2[k] += daughterPt*daughterPt;
+
+              // what is this about?
 	      promptTotal   += daughterPt;
 	      promptTotal2  += daughterPt*daughterPt;
-	      //sumtracksfromPV2[(int)id] += daughterPt * daughterPt;
-	      CA2_x_.push_back(CA2.x());
-	      CA2_y_.push_back(CA2.y());
-	      CA2_z_.push_back(CA2.z());
-	      transDist_.push_back(r);
+
+	      //sum2tracksfPV2[(int)id] += daughterPt * daughterPt;
+	      jetDauVertex_x_.push_back(jetDauVertex.x());
+	      jetDauVertex_y_.push_back(jetDauVertex.y());
+	      jetDauVertex_z_.push_back(jetDauVertex.z());
+	      jetDauVertex_r_.push_back(jetDauVertex_r);
+	    }
+	    if(daughter2.fromPV(k) >2){
+              if(dodebug){ printf("      -(3+) associated with vtx %u\n",k); }
+
+	      sumtracksfPV3[k]  += daughterPt;
+	      sum2tracksfPV3[k] += daughterPt*daughterPt;
+
+
+	      //sum2tracksfPV2[(int)id] += daughterPt * daughterPt;
+	      jetDauVertex_x_.push_back(jetDauVertex.x());
+	      jetDauVertex_y_.push_back(jetDauVertex.y());
+	      jetDauVertex_z_.push_back(jetDauVertex.z());
+	      jetDauVertex_r_.push_back(jetDauVertex_r);
 	    }
 	  }
 
-	  if(r<0.21 && r > 0.19){
-	    sumtracksfromPV_alt[(int)id] += daughterPt;
-	    //sumtracksfromPV2_alt[(int)id] += daughterPt*daughterPt;
-	    //promptTotal_alt += daughterPt;
-	    //promptTotal2_alt += daughterPt*daughterPt;
-	    //sumtracksfromPV2[(int)id] += daughterPt * daughterPt;
-	  }
-  
-          sumalltracks += daughterPt;
-	  sumalltracks2 += daughterPt*daughterPt;
 	  //cout<<daughter2.pvAssociationQuality()<<endl;
 	  //cout<<daughter2.dxy()<<"    "<<daughter2.dz()<<endl;
 	  //const reco::VertexRef v_ref = daughter2.vertexRef();
+
+          sumneutraltracks += daughterPt;
+          sum2neutraltracks += daughterPt*daughterPt;
 
 	  //track angle stuff  ----- FIXME
 	  //get point of closest approach
@@ -751,42 +819,124 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 	} // if (daughter->charge!=0)
 
+        sumalltracks += daughterPt;
+        sum2alltracks += daughterPt*daughterPt;
+
       } // if daughter exists, nonnull
     } // loop over tracks
 
-    double alphaMax = 0;
-    double alphaMax2 = 0;
-    double apMax =0;
-    double apMax2 = 0;
-    double beta = 1.0 - promptTotal/sumalltracks;
-    double beta2 = 1.0 - promptTotal2/sumalltracks2;
-    for(int i = 0; i < (int)sumtracksfromPV.size(); i++){
-      //if(sumtracksfromPV[i] = 0)continue;
-      if(sumtracksfromPV[i] > alphaMax) alphaMax = sumtracksfromPV[i];
-      if(sumtracksfromPV2[i] > alphaMax2) alphaMax2 = sumtracksfromPV2[i];
-      double ap = sumtracksfromPV[i] / (sumtracksfromPV[i] + beta);
-      double ap2 = sumtracksfromPV2[i] / (sumtracksfromPV2[i] + beta2);
+    if(dodebug){ 
+     printf("   Done Loopong over tracks\n"); 
+     //for(unsigned int k = 0; k < sumtracksfPV2->size(); ++k){
+     for(unsigned int k = 0; k < sumtracksfPV2.size(); ++k){
+        printf("    sum trackpt vtx %u  pt %f / %f \n", k,  sumtracksfPV2[k], sumalltracks );
+      }
+     }
+
+
+    float alphaMax = -1;
+    float alphaMax2 = -1;
+    float apMax =-1;
+    float apMax2 = -1;
+    float beta = 1.0 - promptTotal/sumalltracks;
+    float beta2 = 1.0 - promptTotal2/sum2alltracks;
+    for(int i = 0; i < (int)sumtracksfPV2.size(); i++){
+      //if(sumtracksfPV2[i] = 0)continue;
+      if(sumtracksfPV2[i] > alphaMax) alphaMax = sumtracksfPV2[i];
+      if(sum2tracksfPV2[i] > alphaMax2) alphaMax2 = sum2tracksfPV2[i];
+      float ap = sumtracksfPV2[i] / (sumtracksfPV2[i] + beta);
+      float ap2 = sum2tracksfPV2[i] / (sum2tracksfPV2[i] + beta2);
       if(ap > apMax) apMax = ap;
       if(ap2 > apMax2) apMax2 = ap2;
     }
-    
-    
-    double alphaMax_alt = 0;
-    
-    for(int i = 0; i < (int)sumtracksfromPV_alt.size(); i++){
-      //if(sumtracksfromPV[i] = 0)continue;
-      if(sumtracksfromPV_alt[i] > alphaMax_alt) alphaMax_alt = sumtracksfromPV_alt[i];
-      //if(sumtracksfromPV2_alt[i] > alphaMax2_alt) alphaMax2 = sumtracksfromPV2_alt[i];
-      //double ap = sumtracksfromPV_alt[i] / (sumtracksfromPV_alt[i] + beta_alt);
-      //double ap2 = sumtracksfromPV2_alt[i] / (sumtracksfromPV2_alt[i] + beta2_alt);
-      //if(ap > apMax) apMax = ap;
-      //if(ap2 > apMax2) apMax2 = ap2;
+
+    float jetAlphaMax_PV3onPV2 = -1;
+    float jetAlphaMax_PV3onNeu = -1;
+    float jetAlphaMax_PV3onAll = -1;
+    float jetAlphaMax_PV2onNeu = -1;
+    float jetAlphaMax_PV2onAll = -1;
+
+    float jetAlpha_PV3onPV2 = -1;
+    float jetAlpha_PV3onNeu = -1;
+    float jetAlpha_PV3onAll = -1;
+    float jetAlpha_PV2onNeu = -1;
+    float jetAlpha_PV2onAll = -1;
+
+    float jetAlpha2Max_PV3onPV2 = -1;
+    float jetAlpha2Max_PV3onNeu = -1;
+    float jetAlpha2Max_PV3onAll = -1;
+    float jetAlpha2Max_PV2onNeu = -1;
+    float jetAlpha2Max_PV2onAll = -1;
+
+    float jetAlpha2_PV3onPV2 = -1;
+    float jetAlpha2_PV3onNeu = -1;
+    float jetAlpha2_PV3onAll = -1;
+    float jetAlpha2_PV2onNeu = -1;
+    float jetAlpha2_PV2onAll = -1;
+
+    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
+      jetAlpha_PV3onPV2  = sumtracksfPV3[q]  / sumtracksfPV2[q] ;
+      jetAlpha2_PV3onPV2 = sum2tracksfPV3[q] / sum2tracksfPV2[q];
+      if(jetAlpha_PV3onPV2  > jetAlphaMax_PV3onPV2 ){ jetAlphaMax_PV3onPV2  = jetAlpha_PV3onPV2; }
+      if(jetAlpha2_PV3onPV2 > jetAlpha2Max_PV3onPV2){ jetAlpha2Max_PV3onPV2 = jetAlpha2_PV3onPV2; }
     }
+
+    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
+      jetAlpha_PV3onNeu  = sumtracksfPV3[q]  / sumneutraltracks ;
+      jetAlpha2_PV3onNeu = sum2tracksfPV3[q] / sum2neutraltracks;
+      if(jetAlpha_PV3onNeu  > jetAlphaMax_PV3onNeu ){ jetAlphaMax_PV3onNeu  = jetAlpha_PV3onNeu; }
+      if(jetAlpha2_PV3onNeu > jetAlpha2Max_PV3onNeu){ jetAlpha2Max_PV3onNeu = jetAlpha2_PV3onNeu; }
+    }
+
+    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
+      jetAlpha_PV3onAll  = sumtracksfPV3[q]  / sumalltracks ;
+      jetAlpha2_PV3onAll = sum2tracksfPV3[q] / sum2alltracks;
+      if(jetAlpha_PV3onAll  > jetAlphaMax_PV3onAll ){ jetAlphaMax_PV3onAll  = jetAlpha_PV3onAll; }
+      if(jetAlpha2_PV3onAll > jetAlpha2Max_PV3onAll){ jetAlpha2Max_PV3onAll = jetAlpha2_PV3onAll; }
+    }
+
+    for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
+      jetAlpha_PV2onNeu  = sumtracksfPV2[q]  / sumneutraltracks ;
+      jetAlpha2_PV2onNeu = sum2tracksfPV2[q] / sum2neutraltracks;
+      if(jetAlpha_PV2onNeu  > jetAlphaMax_PV2onNeu ){ jetAlphaMax_PV2onNeu  = jetAlpha_PV2onNeu; }
+      if(jetAlpha2_PV2onNeu > jetAlpha2Max_PV2onNeu){ jetAlpha2Max_PV2onNeu = jetAlpha2_PV2onNeu; }
+    }
+
+    for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
+      jetAlpha_PV2onAll  = sumtracksfPV2[q]  / sumalltracks ;
+      jetAlpha2_PV2onAll = sum2tracksfPV2[q] / sum2alltracks;
+      if(jetAlpha_PV2onAll  > jetAlphaMax_PV2onAll ){ jetAlphaMax_PV2onAll  = jetAlpha_PV2onAll; }
+      if(jetAlpha2_PV2onAll > jetAlpha2Max_PV2onAll){ jetAlpha2Max_PV2onAll = jetAlpha2_PV2onAll; }
+    }
+
+
+//        sumalltracks += daughterPt;
+//        sum2alltracks += daughterPt*daughterPt;
+//        sumneutraltracks += daughterPt;
+//        sum2neutraltracks += daughterPt*daughterPt;
+//	sumtracksfPV2[k]  += daughterPt;
+//	sum2tracksfPV2[k] += daughterPt*daughterPt;
+//	sumtracksfPV3[k]  += daughterPt;
+//	sum2tracksfPV3[k] += daughterPt*daughterPt;
+
+
+    jetAlphaMax_PV3onPV2_ .push_back(jetAlphaMax_PV3onPV2); 
+    jetAlphaMax_PV3onNeu_ .push_back(jetAlphaMax_PV3onNeu); 
+    jetAlphaMax_PV3onAll_ .push_back(jetAlphaMax_PV3onAll); 
+    jetAlphaMax_PV2onNeu_ .push_back(jetAlphaMax_PV2onNeu); 
+    jetAlphaMax_PV2onAll_ .push_back(jetAlphaMax_PV2onAll); 
+
+    jetAlpha2Max_PV3onPV2_ .push_back(jetAlpha2Max_PV3onPV2);
+    jetAlpha2Max_PV3onNeu_ .push_back(jetAlpha2Max_PV3onNeu);
+    jetAlpha2Max_PV3onAll_ .push_back(jetAlpha2Max_PV3onAll);
+    jetAlpha2Max_PV2onNeu_ .push_back(jetAlpha2Max_PV2onNeu);
+    jetAlpha2Max_PV2onAll_ .push_back(jetAlpha2Max_PV2onAll);
+
+
     jetAlphaMax_.push_back(alphaMax / sumalltracks);
-    jetAlphaMax2_.push_back(alphaMax2 / sumalltracks2);
+    jetAlphaMax2_.push_back(alphaMax2 / sum2alltracks);
     jetAlphaMaxP_.push_back(apMax);
     jetAlphaMaxP2_.push_back(apMax2);
-    alphaMax_transDist_.push_back(alphaMax_alt / sumalltracks);
 	 
     jetLeadTrackPt_ .push_back(leadTrkPt);
     jetLeadTrackEta_.push_back(leadTrkEta);
@@ -811,13 +961,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetHadFlvr_.push_back(iJet->hadronFlavour());
 
     //jet PF Loose ID
-    double NHF      = iJet->neutralHadronEnergyFraction();
-    double NEMF     = iJet->neutralEmEnergyFraction();
-    double NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
-    double CHF      = iJet->chargedHadronEnergyFraction();
-    double CHM      = iJet->chargedMultiplicity();
-    double CEMF     = iJet->chargedEmEnergyFraction();
-    double NNP      = iJet->neutralMultiplicity();
+    float NHF      = iJet->neutralHadronEnergyFraction();
+    float NEMF     = iJet->neutralEmEnergyFraction();
+    float NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+    float CHF      = iJet->chargedHadronEnergyFraction();
+    float CHM      = iJet->chargedMultiplicity();
+    float CEMF     = iJet->chargedEmEnergyFraction();
+    float NNP      = iJet->neutralMultiplicity();
 
     bool looseJetID = false;    
     bool tightJetID = false;
