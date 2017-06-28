@@ -163,10 +163,10 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   e.getByToken(trgResultsLabel_, trgResultsHandle);
 
   const edm::TriggerNames &trgNames = e.triggerNames(*trgResultsHandle);
-//  for (size_t i = 0; i < trgNames.size(); ++i) {
-//    const string &name = trgNames.triggerName(i);
-//    printf(" Reading trigger: %s\n" , name.c_str()  );
-//  }
+  for (size_t i = 0; i < trgNames.size(); ++i) {
+    const string &name = trgNames.triggerName(i);
+    printf(" Reading trigger: %s\n" , name.c_str()  );
+  }
 
 
   for (size_t i = 0; i < trgNames.size(); ++i) {
@@ -180,6 +180,22 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v2") != string::npos) bitPFHT350PFMET100 = 2 ;
 
     // Single Electron
+/*
+    int bitEle22Eta2p1Loose =-1;
+    if      (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v3") != string::npos) bitEle22Eta2p1Loose = 0;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v4") != string::npos) bitEle22Eta2p1Loose = 1;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v6") != string::npos) bitEle22Eta2p1Loose = 2;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v7") != string::npos) bitEle22Eta2p1Loose = 3; 
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v8") != string::npos) bitEle22Eta2p1Loose = 4;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v9") != string::npos) bitEle22Eta2p1Loose = 5;
+
+    int bit bitEle22Eta2p1LoosePFTau20SingleL1 = -1;
+    if      (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v2") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 0;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v3") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 1;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v5") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 2;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v6") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 3;
+*/
+
     int bitEle23Loose = -1;
     if      (name.find("HLT_Ele23_WPLoose_Gsf_v1")  != string::npos) bitEle23Loose = 0  ;
     else if (name.find("HLT_Ele23_WPLoose_Gsf_v2")  != string::npos) bitEle23Loose = 1  ;
@@ -204,7 +220,18 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_Ele27_WPTight_Gsf_v7")  != string::npos) bitEle27Tight = 6 ;
     else if (name.find("HLT_Ele27_WPTight_Gsf_v8")  != string::npos) bitEle27Tight = 7 ;
     else if (name.find("HLT_Ele27_WPTight_Gsf_v9")  != string::npos) bitEle27Tight = 8 ;
-
+/*
+    int bitEle27LooseWHbb = -1
+    if      (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v1")  != string::npos) bitEle27LooseWHbb = 0 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v2")  != string::npos) bitEle27LooseWHbb = 1 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v3")  != string::npos) bitEle27LooseWHbb = 2 ; 
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v4")  != string::npos) bitEle27LooseWHbb = 3 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v5")  != string::npos) bitEle27LooseWHbb = 4 ; 
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v6")  != string::npos) bitEle27LooseWHbb = 5 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v7")  != string::npos) bitEle27LooseWHbb = 6 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v8")  != string::npos) bitEle27LooseWHbb = 7 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v9")  != string::npos) bitEle27LooseWHbb = 8 ;
+*/
     // Double Electron
     int bitEle17Ele12 = -1;
     if      (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle17Ele12 = 0 ;
