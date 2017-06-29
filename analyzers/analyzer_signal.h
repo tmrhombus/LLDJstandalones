@@ -168,6 +168,11 @@ public :
 // Jet
  TH1F h_jetPt                         [6][4][2]; 
 
+ TH1F h_jetSumIP                      [6][4][2];
+ TH1F h_jetSumIPSig                   [6][4][2];
+ TH1F h_jetLog10IPSig                 [6][4][2];
+ TH1F h_jetMedianLog10IPSig           [6][4][2];
+ TH1F h_jetTrackPhi2                  [6][4][2];
  TH1F h_jetTestVariable               [6][4][2]; 
 
  TH1F h_jetAlphaMax                   [6][4][2];

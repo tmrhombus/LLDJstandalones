@@ -58,7 +58,7 @@ process.source = cms.Source("PoolSource",
 #LowMassDoubleMuon
         #'/store/data/Run2016H/DoubleMuonLowMass/MINIAOD/03Feb2017_ver3-v1/110000/0A414F65-86EB-E611-8D91-0025905A60AA.root' #H3
         #'/store/data/Run2016H/DoubleMuonLowMass/MINIAOD/03Feb2017_ver2-v1/110000/026089AB-88ED-E611-B6C0-0025905B856C.root' #H2
-        #'/store/data/Run2016G/DoubleMuonLowMass/MINIAOD/03Feb2017-v1/50000/00048884-B2EA-E611-A6C0-0090FAA57430.root'       #G
+        '/store/data/Run2016G/DoubleMuonLowMass/MINIAOD/03Feb2017-v1/50000/00048884-B2EA-E611-A6C0-0090FAA57430.root'       #G
         #'/store/data/Run2016F/DoubleMuonLowMass/MINIAOD/03Feb2017-v1/100000/00F4545C-C3EA-E611-AF0C-A0000420FE80.root'      #F
         #'/store/data/Run2016E/DoubleMuonLowMass/MINIAOD/03Feb2017-v1/110000/0AF5A623-8BEA-E611-99EB-0090FAA58224.root'      #E
         #'/store/data/Run2016D/DoubleMuonLowMass/MINIAOD/03Feb2017-v1/110000/0282D7E6-B5EC-E611-8C53-24BE05CE2EE1.root'      #D
@@ -69,7 +69,7 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016B/DoubleMuonLowMass/MINIAOD/03Feb2017_ver1-v1/80000/88703E9B-C8EA-E611-A3DC-001E67443EB7.root',
         #'/store/data/Run2016B/DoubleMuonLowMass/MINIAOD/03Feb2017_ver1-v1/80000/F6B43BBE-EBEA-E611-8735-0CC47A537688.root'
 #SingleMuon
-	'/store/data/Run2016G/SingleMuon/MINIAOD/03Feb2017-v1/100000/00E6DF50-70EA-E611-ACC4-0CC47A1E089C.root'
+	#'/store/data/Run2016G/SingleMuon/MINIAOD/03Feb2017-v1/100000/00E6DF50-70EA-E611-ACC4-0CC47A1E089C.root'
         
 
         )
@@ -105,7 +105,7 @@ runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outpu
 #process.load("RecoBTag.SecondaryVertex.pfInclusiveSecondaryVertexFinderTagInfosAK8_cfi")
 #process.pfInclusiveSecondaryVertexFinderTagInfosAK8.extSVCollection = cms.InputTag("slimmedSecondaryVertices")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('trigger_roots/SMu_G.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('trigger_roots/LMDbleMu_G.root'))
 
 jecLevels = [
   'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt',

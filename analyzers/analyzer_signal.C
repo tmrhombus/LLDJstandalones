@@ -61,7 +61,7 @@ void analyzer_signal::Loop(TString outfilename,
   electron_list = electron_passLooseID( 30, 3, "");
   muon_list = muon_passTightID( 28, 2.4, ""); 
   //muon_list = muon_passLooseID( 15, 3, ""); 
-  jet_list = jet_passID( 20, 2.4, "");
+  jet_list = jet_passID( 20, 2.4, "");  ///////////place our cuts here
 
   // set our met
   themet = pfMET;
@@ -277,6 +277,12 @@ Bool_t analyzer_signal::initJetHistograms()
     // Jet
     TString hname_jetPt                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPt                     " ;   
 
+    TString hname_jetSumIP                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetSumIP                  " ;
+    TString hname_jetSumIPSig                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetSumIPSig               " ;
+    TString hname_jetLog10IPSig               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetLog10IPSig             " ;
+    TString hname_jetMedianLog10IPSig         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetMedianLog10IPSig       " ;
+    TString hname_jetTrackPhi2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPhi2              " ;
+
     TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
     
     TString hname_jetAlphaMax                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax               " ;
@@ -325,6 +331,12 @@ Bool_t analyzer_signal::initJetHistograms()
 
     // initalize histograms
     h_jetPt                       [i][j][k] = initSingleHistogramTH1F(  hname_jetPt                      , "jetPt                     " , 50, 0, 500 );   
+
+    h_jetSumIP                    [i][j][k] = initSingleHistogramTH1F(  hname_jetSumIP                   , "jetSumIP                  " , 30, -2, 3 );
+    h_jetSumIPSig                 [i][j][k] = initSingleHistogramTH1F(  hname_jetSumIPSig                , "jetSumIPSig               " , 30, -2, 3 );
+    h_jetLog10IPSig               [i][j][k] = initSingleHistogramTH1F(  hname_jetLog10IPSig              , "jetLog10IPSig             " , 30, -2, 3 );
+    h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 30, -2, 3 );
+    h_jetTrackPhi2                [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPhi2               , "jetTrackPhi2              " , 50, -3.5, 3.5 );
 
     h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
     
@@ -392,6 +404,12 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
 
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
 
+  if(jetSumIP                   ->size()>j){h_jetSumIP                    [selbin][j][lepbin].Fill( jetSumIP                   ->at(j), weight ); }
+  if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(j), weight ); }
+  if(jetLog10IPSig              ->size()>j){h_jetLog10IPSig               [selbin][j][lepbin].Fill( jetLog10IPSig              ->at(j), weight ); }
+  if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
+  if(jetTrackPhi2               ->size()>j){h_jetTrackPhi2                [selbin][j][lepbin].Fill( jetTrackPhi2               ->at(j), weight ); }
+
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
   if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight ); }
   if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight ); }
@@ -456,6 +474,12 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
    h_jetPt                       [selbin][j][lepbin].Write(); 
+   
+   h_jetSumIP                    [selbin][j][lepbin].Write();
+   h_jetSumIPSig                 [selbin][j][lepbin].Write();
+   h_jetLog10IPSig               [selbin][j][lepbin].Write();
+   h_jetMedianLog10IPSig         [selbin][j][lepbin].Write();
+   h_jetTrackPhi2                [selbin][j][lepbin].Write();
 
    h_jetTestVariable             [selbin][j][lepbin].Write();
  
