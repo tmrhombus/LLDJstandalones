@@ -91,16 +91,19 @@ void analyzer_signal::Loop(TString outfilename,
   
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
+   //std::cout << "elePtSize "<< elePt->size() <<" eleindex: "<<eleindex<<std::endl;//looks fine
    htall += elePt->at(eleindex);
   }
   
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
-   htall += muPt->at(muindex);
+  //std::cout << "muPtSize "<< muPt->size() <<" muindex: "<<muindex<<std::endl;//crashed before output
+  htall += muPt->at(muindex);
   }
   
   for(int i=0; i<jet_list.size(); ++i){
    int jetindex = jet_list[i];
+   //std::cout << "jetPtSize "<< jetPt->size() <<" jetindex: "<<jetindex<<std::endl;//seems fine
    htall  += jetPt->at(jetindex);
    htjets += jetPt->at(jetindex);
   } 
@@ -1131,6 +1134,12 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
   std::vector<int> jetindex;
   float PUIDvalue = 0.0;
 
+  //set selection rule
+  bool Loose = false;
+  bool Tight = false;
+  bool TightLepVeto = false;
+  bool custom = true;
+
   for(int i = 0; i < nJet; i++)
    {
     if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {PUIDvalue =-0.8;}
@@ -1139,23 +1148,19 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
     if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {PUIDvalue =-0.99;}
 
     bool passOverlap=true;
-    // // check overlap with electrons
-    // for(int i=0; i<electron_list.size(); ++i){
-    //  int eleindex = electron_list[i];
-    //  if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
-    //   {
-    //    passOverlap=false;
-    //   }
-    // }
-
+    // check overlap with electrons
+//if(electron_list.size()>0){
+//    for(int i=0; i<electron_list.size(); ++i){
+//      int eleindex = electron_list[i];
+//      std::cout << "eleSCEtaSize "<< eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
+//      if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
+//    }//end electrons
+//}
     // check overlap with muons
-    for(int i=0; i<muon_list.size(); ++i){
-     int muindex = muon_list[i];
-     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.5 ) 
-      {
-       passOverlap=false;
-      }
-    }
+//    for(int i=0; i<muon_list.size(); ++i){
+//     int muindex = muon_list[i];
+//     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+//    }//end muons
 
 
     //double deltar = 0.0 ;
@@ -1169,12 +1174,47 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
     //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
     //}
     //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 && passOverlap )
-     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-     {
-       jetindex.push_back(i);
-     }
-   }
+    //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
+     
+     if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 && passOverlap ){
+     	if(Loose){
+	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
+		jetindex.push_back(i);
+	   }
+           if( abs(jetEta->at(i))<=2.4 ){    
+              if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
+                jetindex.push_back(i);
+           }  	
+	}//Loose
+	if(Tight){
+           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1)
+                jetindex.push_back(i);
+           }    
+           if( abs(jetEta->at(i))<=2.4 ){
+              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
+                jetindex.push_back(i);
+           }
+        }//Tight    
+	if(TightLepVeto){
+           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8)
+                jetindex.push_back(i);
+           }    
+           if( abs(jetEta->at(i))<=2.4 ){
+              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.90)
+                jetindex.push_back(i);
+           }
+        }//TightLepVeto
+	if(custom){
+           if( abs(jetEta->at(i))<=2.4 ){
+              if(jetNConstituents->at(i)>1 && jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
+                jetindex.push_back(i);
+           }
+        }//custom
+     }//outer cut pt,eta,passOverlap
+   }//end jets
 
   //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
   //if(jetindex.size()>1)jetVeto = false;

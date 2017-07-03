@@ -53,10 +53,10 @@ ULong64_t   HLT_Mu17TkMu8_isPS_;
 
 void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
-  tree->Branch("run",     &run_);
-  tree->Branch("event",   &event_);
-  tree->Branch("lumis",   &lumis_);
-  tree->Branch("isData",  &isData_);
+  tree->Branch("run",     	       &run_);
+  tree->Branch("event",    	       &event_);
+  tree->Branch("lumis",   	       &lumis_);
+  tree->Branch("isData",  	       &isData_);
   tree->Branch("nVtx",                 &nVtx_);
   tree->Branch("nGoodVtx",             &nGoodVtx_);
   tree->Branch("nTrksPV",              &nTrksPV_);
@@ -74,17 +74,17 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled_);
   tree->Branch("phoPrescale",          &phoPrescale_);
 
-  tree->Branch("HLT_PFHT350PFMET100", &HLT_PFHT350PFMET100_);
+  tree->Branch("HLT_PFHT350PFMET100",  &HLT_PFHT350PFMET100_);
 
-  tree->Branch("HLT_Ele23Loose", &HLT_Ele23Loose_) ;
-  tree->Branch("HLT_Ele27Tight", &HLT_Ele27Tight_) ;
-  tree->Branch("HLT_Ele17Ele12", &HLT_Ele17Ele12_) ;
-  tree->Branch("HLT_Ele23Ele12", &HLT_Ele23Ele12_) ;
+  tree->Branch("HLT_Ele23Loose",       &HLT_Ele23Loose_) ;
+  tree->Branch("HLT_Ele27Tight",       &HLT_Ele27Tight_) ;
+  tree->Branch("HLT_Ele17Ele12",       &HLT_Ele17Ele12_) ;
+  tree->Branch("HLT_Ele23Ele12",       &HLT_Ele23Ele12_) ;
 
-  tree->Branch("HLT_IsoMu22"  , &HLT_IsoMu22_)   ;
-  tree->Branch("HLT_IsoTkMu22", &HLT_IsoTkMu22_) ;
-  tree->Branch("HLT_Mu17Mu8"  , &HLT_Mu17Mu8_)   ;
-  tree->Branch("HLT_Mu17TkMu8", &HLT_Mu17TkMu8_) ;
+  tree->Branch("HLT_IsoMu22"  ,        &HLT_IsoMu22_)   ;
+  tree->Branch("HLT_IsoTkMu22",        &HLT_IsoTkMu22_) ;
+  tree->Branch("HLT_Mu17Mu8"  ,        &HLT_Mu17Mu8_)   ;
+  tree->Branch("HLT_Mu17TkMu8",        &HLT_Mu17TkMu8_) ;
 
 }
 

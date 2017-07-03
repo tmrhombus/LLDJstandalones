@@ -725,7 +725,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	  }
 	}     
         // IP/Track Angle stuff
-        if (  daughter->charge() != 0 /*&& daughter2.fromPV() > 1*/){
+        if (  daughter->charge() != 0 && iJet->numberOfDaughters()>0 /*&& daughter2.fromPV() ==2*/){
            dxy = fabs(daughter2.dxy());//bsPoint));//*****why this at beamspot and dxyerr at PV?
            dxyerr = daughter2.dxyError();
            if(dxyerr>0){ dxySig = dxy/dxyerr;IPtest = true; }//*******WHY WOULD DXYERR BE LESS THAN 0
@@ -750,7 +750,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	if (daughter2.charge() != 0){
 	  dummyPT = daughter->pt();
 	  
-	  for(int k = 0; k < vtxHandle->size(); ++k){
+	  for(unsigned k = 0; k < vtxHandle->size(); ++k){
 	    if(daughter2.fromPV(k) >1){
 	      numerator[k]  += dummyPT;
 	      numerator2[k] += dummyPT*dummyPT;

@@ -287,6 +287,7 @@ public :
    std::vector<int>     *jetNCH;
    std::vector<int>     *jetNNP;
    std::vector<float>   *jetMUF;
+   std::vector<int>     *jetNConstituents;
    std::vector<float>   *jetVtxPt;
    std::vector<float>   *jetVtxMass;
    std::vector<float>   *jetVtxNtrks;
@@ -619,6 +620,7 @@ public :
    TBranch        *b_jetNCH;   //!
    TBranch        *b_jetNNP;   //!
    TBranch        *b_jetMUF;   //!
+   TBranch	  *b_jetNConstituents; //!
    TBranch        *b_jetVtxPt;   //!
    TBranch        *b_jetVtxMass;   //!
    TBranch        *b_jetVtxNtrks;   //!
