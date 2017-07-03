@@ -61,7 +61,7 @@ void analyzer_signal::Loop(TString outfilename,
   electron_list = electron_passLooseID( 30, 3, "");
   muon_list = muon_passTightID( 28, 2.4, ""); 
   //muon_list = muon_passLooseID( 15, 3, ""); 
-  jet_list = jet_passID( 20, 2.4, "");  ///////////place our cuts here
+  jet_list = jet_passID( 20, 2.4,"custom", "");  ///////////place our cuts here
 
   // set our met
   themet = pfMET;
@@ -1128,7 +1128,7 @@ std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double e
 }
 
 //-------------------------jet_passID
-std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, TString sysbinname) {
+std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,TString PFJetID, TString sysbinname) {
 
   bool jetVeto=true;
   std::vector<int> jetindex;
@@ -1138,7 +1138,11 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
   bool Loose = false;
   bool Tight = false;
   bool TightLepVeto = false;
-  bool custom = true;
+  bool custom = false;
+  if(PFJetID == "Loose") Loose = true;
+  else if(PFJetID =="Tight") Tight = true;
+  else if(PFJetID == "TightLepVeto") TightLepVeto = true;
+  else custom = true;
 
   for(int i = 0; i < nJet; i++)
    {
@@ -1175,9 +1179,10 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
     //}
     //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-     
+ 
+     //JetID definitions 
      if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 && passOverlap ){
-     	if(Loose){
+     	if(Loose){ //std::cout<<"Loose";
 	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
 	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
 		jetindex.push_back(i);
@@ -1187,7 +1192,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
                 jetindex.push_back(i);
            }  	
 	}//Loose
-	if(Tight){
+	if(Tight){//std::cout<<"Tight";
            if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1)
                 jetindex.push_back(i);
@@ -1197,7 +1202,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
                 jetindex.push_back(i);
            }
         }//Tight    
-	if(TightLepVeto){
+	if(TightLepVeto){//std::cout<<"TightLepVeto";
            if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8)
                 jetindex.push_back(i);
@@ -1207,7 +1212,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
                 jetindex.push_back(i);
            }
         }//TightLepVeto
-	if(custom){
+	if(custom){//std::cout<<"custom";
            if( abs(jetEta->at(i))<=2.4 ){
               if(jetNConstituents->at(i)>1 && jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
                 jetindex.push_back(i);
@@ -1323,7 +1328,7 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
                                                                      
     // no pairs                                                    
     if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
-                                                                   
+    if( eleEta->size()==0) std::cout <<"no electrons event: " << event<<std::endl;                                                               
      // electrons                                                      
      if( electron_list.size()>1 ){                                           
       for(int i=1; i<electron_list.size(); ++i)                              

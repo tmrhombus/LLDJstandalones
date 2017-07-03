@@ -40,7 +40,7 @@ public :
  std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
  std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
  std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
- std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString sysbinname="");
+ std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname="");
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
