@@ -173,6 +173,8 @@ public :
  TH1F h_jetLog10IPSig                 [6][4][2];
  TH1F h_jetMedianLog10IPSig           [6][4][2];
  TH1F h_jetTrackPhi2                  [6][4][2];
+ //TH1F h_jetTrackPDGID		      [6][4][2];
+ // TH1F h_jetTrackMom		      [6][4][2];
  TH1F h_jetTestVariable               [6][4][2]; 
 
  TH1F h_jetAlphaMax                   [6][4][2];

@@ -731,7 +731,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
         // IP/Track Angle stuff
         if ( daughter->charge() != 0 && iJet->numberOfDaughters()>0 ){
            const reco::Candidate *mom = daughter2.mother(0);
+           //const edm::Ptr<reco::Candidate> momPtr = mom;
+           if(daughter2.numberOfMothers()>0){
            jetTrackMom_.push_back(mom->pdgId());
+           //jetTrackPDGID_.push_back(daughter2.pdgId());
+           }
            jetTrackPDGID_.push_back(daughter2.pdgId());
            dxy = fabs(daughter2.dxy());
            dxyerr = daughter2.dxyError();
