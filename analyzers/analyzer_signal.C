@@ -285,8 +285,9 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_jetLog10IPSig               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetLog10IPSig             " ;
     TString hname_jetMedianLog10IPSig         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetMedianLog10IPSig       " ;
     TString hname_jetTrackPhi2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPhi2              " ;
-    //TString hname_jetTrackPDGID 	      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPDGID             " ;
-    //TString hname_jetTrackMom		      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackMom		   " ;
+    TString hname_jetTrackPDGID 	      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPDGID             " ;
+    TString hname_jetTrackMom		      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackMom		   " ;
+    TString hname_jetNConstituents	      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetNConstituents	   " ;
  
     TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
     
@@ -342,8 +343,10 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetLog10IPSig               [i][j][k] = initSingleHistogramTH1F(  hname_jetLog10IPSig              , "jetLog10IPSig             " , 30, -2, 3 );
     h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 30, -2, 3 );
     h_jetTrackPhi2                [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPhi2               , "jetTrackPhi2              " , 50, -3.5, 3.5 );
-    //h_jetTrackPDGID	 	  [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPDGID		 , "jetTrackPDGID	      " , 40, 0 , 40);
-    //h_jetTrackMom                 [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackMom                , "jetTrackMom               " , 40, 0 , 40);
+    h_jetTrackPDGID	 	  [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPDGID		 , "jetTrackPDGID	      " , 40, 0 , 40);
+    h_jetTrackMom                 [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackMom                , "jetTrackMom               " , 40, 0 , 40);
+    h_jetNConstituents		  [i][j][k] = initSingleHistogramTH1F(  hname_jetNConstituents		 , "jetNConstituents	      " , 50, 0 , 50);
+
     h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
     
     h_jetAlphaMax                 [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax                 , "jetAlphaMax               " , 30, 0, 1) ;
@@ -415,8 +418,9 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetLog10IPSig              ->size()>j){h_jetLog10IPSig               [selbin][j][lepbin].Fill( jetLog10IPSig              ->at(j), weight ); }
   if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
   if(jetTrackPhi2               ->size()>j){h_jetTrackPhi2                [selbin][j][lepbin].Fill( jetTrackPhi2               ->at(j), weight ); }
-  //if(jetTrackPDGID		->size()>j){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(j), weight ); }
-  //if(jetTrackMom                ->size()>j){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(j), weight ); }
+  if(jetTrackPDGID		->size()>j){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(j), weight ); }
+  if(jetTrackMom                ->size()>j){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(j), weight ); }
+  if(jetNConstituents		->size()>j){h_jetNConstituents		  [selbin][j][lepbin].Fill( jetNConstituents	       ->at(j), weight ); }
 
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
   if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight ); }
@@ -488,8 +492,9 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
    h_jetLog10IPSig               [selbin][j][lepbin].Write();
    h_jetMedianLog10IPSig         [selbin][j][lepbin].Write();
    h_jetTrackPhi2                [selbin][j][lepbin].Write();
-   //h_jetTrackPDGID		 [selbin][j][lepbin].Write();
-   //h_jetTrackMom	 	 [selbin][j][lepbin].Write();
+   h_jetTrackPDGID		 [selbin][j][lepbin].Write();
+   h_jetTrackMom	 	 [selbin][j][lepbin].Write();
+   h_jetNConstituents		 [selbin][j][lepbin].Write();
 
    h_jetTestVariable             [selbin][j][lepbin].Write();
  
@@ -1186,10 +1191,10 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
     //}
     //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-/* 
+ 
      //JetID definitions 
-     if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 && passOverlap ){
-     	if(Loose){ //std::cout<<"Loose";
+     if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap ){std::cout<<"outerif"<<std::endl;
+     	if(Loose){ std::cout<<"Loose";
 	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
 	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
 		jetindex.push_back(i);
@@ -1199,7 +1204,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
                 jetindex.push_back(i);
            }  	
 	}//Loose
-	if(Tight){//std::cout<<"Tight";
+	if(Tight){std::cout<<"Tight"<<std::endl;
            if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1)
                 jetindex.push_back(i);
@@ -1209,7 +1214,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
                 jetindex.push_back(i);
            }
         }//Tight    
-	if(TightLepVeto){//std::cout<<"TightLepVeto";
+	if(TightLepVeto){std::cout<<"TightLepVeto"<<std::endl;
            if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8)
                 jetindex.push_back(i);
@@ -1219,14 +1224,24 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
                 jetindex.push_back(i);
            }
         }//TightLepVeto
-	if(custom){//std::cout<<"custom";
+	if(custom){std::cout<<"custom"<<std::endl;
            if( abs(jetEta->at(i))<=2.4 ){
+ 	      std::cout<<"NHF: "<<jetNHF->at(i)<<std::endl;
+	      std::cout<<"CHF: "<<jetCHF->at(i)<<std::endl;
+ 	      std::cout<<"NCH: "<<jetNCH->at(i)<<std::endl;
+	      std::cout<<"NEF: "<<jetNEF->at(i)<<std::endl;
+	      std::cout<<"CEF: "<<jetCEF->at(i)<<std::endl;
+	      std::cout<<"Pt: "<<jetPt->at(i)<<std::endl;
+ 	      std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
+	      std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
+	      std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
               if(jetNConstituents->at(i)>1 && jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
+                std::cout<<"cut if"<<std::endl;
                 jetindex.push_back(i);
            }
         }//custom
      }//outer cut pt,eta,passOverlap
-*/   }//end jets
+   }//end jets
 
   //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
   //if(jetindex.size()>1)jetVeto = false;

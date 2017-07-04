@@ -259,8 +259,9 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    jetLog10IPSig = 0;
    jetMedianLog10IPSig =0;
    jetTrackPhi2 = 0;  
-   //jetTrackPDGID = 0;
-   //jetTrackMom = 0;
+   jetTrackPDGID = 0;
+   jetTrackMom = 0;
+   jetNConstituents =0;
 
    jetTestVariable =0;
    jetPt = 0;
@@ -617,8 +618,9 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("jetLog10IPSig", &jetLog10IPSig, &b_jetLog10IPSig);
    fChain->SetBranchAddress("jetMedianLog10IPSig", &jetMedianLog10IPSig, &b_jetMedianLog10IPSig);   
    fChain->SetBranchAddress("jetTrackPhi2", &jetTrackPhi2, &b_jetTrackPhi2);
-   //fChain->SetBranchAddress("jetTrackPDGID", &jetTrackPDGID, &b_jetTrackPDGID);
-   //fChain->SetBranchAddress("jetTrackMom", &jetTrackMom, &b_jetTrackMom);
+   fChain->SetBranchAddress("jetTrackPDGID", &jetTrackPDGID, &b_jetTrackPDGID);
+   fChain->SetBranchAddress("jetTrackMom", &jetTrackMom, &b_jetTrackMom);
+   fChain->SetBranchAddress("jetNConstituents", &jetNConstituents, &b_jetNConstituents);
 
    fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
    

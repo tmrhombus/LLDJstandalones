@@ -247,6 +247,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
   tree->Branch("jetTrackPDGID",           &jetTrackPDGID_);
   tree->Branch("jetTrackMom",             &jetTrackMom_);
+  tree->Branch("jetNConstituents", &jetNConstituents_);
 
   //link the variable in c++ code to variable in branch
   if (doGenParticles_){
@@ -287,7 +288,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   if (development_) {
     tree->Branch("jetHFHAE",         &jetHFHAE_);
     tree->Branch("jetHFEME",         &jetHFEME_);
-    tree->Branch("jetNConstituents", &jetNConstituents_);
+    //tree->Branch("jetNConstituents", &jetNConstituents_);
   }
 
   // SubJet
@@ -420,7 +421,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   if (development_) {
     jetHFHAE_                               .clear();
     jetHFEME_                               .clear();
-    jetNConstituents_                       .clear();
+   // jetNConstituents_                       .clear();
   }
 
   /// NEW VARS
@@ -436,6 +437,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetTotalTrackAngle_                     .clear(); 
   jetTrackPDGID_			  .clear();
   jetTrackMom_ 				  .clear();
+  jetNConstituents_                       .clear();
 
   jetAlphaMax_.clear();
   jetAlphaMax2_.clear();
@@ -652,10 +654,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetNCH_.push_back(   iJet->chargedMultiplicity());
     jetNNP_.push_back(   iJet->neutralMultiplicity());
     jetMUF_.push_back(   iJet->muonEnergyFraction());
+    jetNConstituents_.push_back(iJet->getJetConstituents().size());
     if (development_) {
       jetHFHAE_.push_back( iJet->HFHadronEnergy());
       jetHFEME_.push_back( iJet->HFEMEnergy());
-      jetNConstituents_.push_back(iJet->numberOfDaughters());
     }
 
     if (fabs(iJet->eta()) < 5.2) {

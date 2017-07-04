@@ -246,8 +246,9 @@ public :
    std::vector<float>     *jetLog10IPSig;
    std::vector<float>     *jetMedianLog10IPSig;
    std::vector<float>     *jetTrackPhi2;
-   //std::vector<int>	  *jetTrackPDGID;
-   //std::vector<int> 	  *jetTrackMom;
+   std::vector<int>	  *jetTrackPDGID;
+   std::vector<int> 	  *jetTrackMom;
+   std::vector<int> 	  *jetNConstituents;
 
    std::vector<float>     *jetTestVariable;
    
@@ -290,7 +291,7 @@ public :
    std::vector<int>     *jetNCH;
    std::vector<int>     *jetNNP;
    std::vector<float>   *jetMUF;
-   std::vector<int>     *jetNConstituents;
+   //std::vector<int>     *jetNConstituents;
    std::vector<float>   *jetVtxPt;
    std::vector<float>   *jetVtxMass;
    std::vector<float>   *jetVtxNtrks;
@@ -579,8 +580,9 @@ public :
    TBranch        *b_jetLog10IPSig;//!
    TBranch        *b_jetMedianLog10IPSig;//!
    TBranch        *b_jetTrackPhi2;//!
-   //TBranch	  *b_jetTrackPDGID;//!
-   //TBranch 	  *b_jetTrackMom;//!
+   TBranch	  *b_jetTrackPDGID;//!
+   TBranch 	  *b_jetTrackMom;//!
+   TBranch	  *b_jetNConstituents;//!
 
    TBranch        *b_jetTestVariable;//!
    
@@ -625,7 +627,7 @@ public :
    TBranch        *b_jetNCH;   //!
    TBranch        *b_jetNNP;   //!
    TBranch        *b_jetMUF;   //!
-   TBranch	  *b_jetNConstituents; //!
+   //TBranch	  *b_jetNConstituents; //!
    TBranch        *b_jetVtxPt;   //!
    TBranch        *b_jetVtxMass;   //!
    TBranch        *b_jetVtxNtrks;   //!
