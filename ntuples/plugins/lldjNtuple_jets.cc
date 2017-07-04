@@ -88,6 +88,8 @@ vector<float>  jetTrackAngle_;
 vector<float>  jetLogTrackAngle_;
 vector<float>  jetMedianLogTrackAngle_;
 vector<float>  jetTotalTrackAngle_;
+vector<int>    jetTrackPDGID_;
+vector<int>    jetTrackMom_;
 
 vector<float>jetAlphaMax_;
 vector<float>jetAlphaMax2_;
@@ -243,6 +245,8 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetLogTrackAngle",        &jetLogTrackAngle_);
   tree->Branch("jetMedianLogTrackAngle",  &jetMedianLogTrackAngle_); 
   tree->Branch("jetTotalTrackAngle",      &jetTotalTrackAngle_);
+  tree->Branch("jetTrackPDGID",           &jetTrackPDGID_);
+  tree->Branch("jetTrackMom",             &jetTrackMom_);
 
   //link the variable in c++ code to variable in branch
   if (doGenParticles_){
@@ -430,7 +434,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetLogTrackAngle_                       .clear();
   jetMedianLogTrackAngle_                 .clear();
   jetTotalTrackAngle_                     .clear(); 
-  
+  jetTrackPDGID_			  .clear();
+  jetTrackMom_ 				  .clear();
 
   jetAlphaMax_.clear();
   jetAlphaMax2_.clear();
@@ -626,8 +631,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //float hadronicChargedEnergyFrac = iJet->chargedHadronEnergyFraction(); //cout << "had: "<<hadronicEnergyFrac<<endl;
     //float emNeutralEnergyFrac       = iJet->neutralEmEnergyFraction();
     //float hadronicNeutralEnergyFrac = iJet->neutralHadronEnergyFraction();
-
-    //const edm::Ptr<pat::Jet> JetPTr = jetHandle;  
+ 
     
     //if(iJet->pt() == ){ cout<< "Event: " <</* e*/ <<" jet pt:  "<<iJet->pt()<<endl;}
     nrjet++;
@@ -725,8 +729,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	  }
 	}     
         // IP/Track Angle stuff
-        if (  daughter->charge() != 0 && iJet->numberOfDaughters()>0 /*&& daughter2.fromPV() ==2*/){
-           dxy = fabs(daughter2.dxy());//bsPoint));//*****why this at beamspot and dxyerr at PV?
+        if ( daughter->charge() != 0 && iJet->numberOfDaughters()>0 ){
+           const reco::Candidate *mom = daughter2.mother(0);
+           jetTrackMom_.push_back(mom->pdgId());
+           jetTrackPDGID_.push_back(daughter2.pdgId());
+           dxy = fabs(daughter2.dxy());
            dxyerr = daughter2.dxyError();
            if(dxyerr>0){ dxySig = dxy/dxyerr;IPtest = true; }//*******WHY WOULD DXYERR BE LESS THAN 0
 	   if (IPtest ==true){
@@ -873,6 +880,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //Note .at() threw error
     if(jetLog10IPSig_.size() == 0){
       IP0Sum+=1;
+      jetMedianLog10IPSig_.push_back(-99.9); 
      // if(fabs(MedianLog10IPSig)>99.0){cout<<"IF "<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
     }
     else if(jetLog10IPSig_.size()%2 ==0){

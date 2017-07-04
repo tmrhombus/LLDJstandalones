@@ -1153,18 +1153,18 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
 
     bool passOverlap=true;
     // check overlap with electrons
-//if(electron_list.size()>0){
-//    for(int i=0; i<electron_list.size(); ++i){
-//      int eleindex = electron_list[i];
+if(electron_list.size()>1 &&eleSCEta->size()>1&&eleSCPhi->size()>1/*&& jetEta->size()>1&&jetPhi->size()>1*/){
+    for(int i=0; i<electron_list.size(); ++i){
+      int eleindex = electron_list[i];
 //      std::cout << "eleSCEtaSize "<< eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
-//      if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
-//    }//end electrons
-//}
+      if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
+    }//end electrons
+}
     // check overlap with muons
-//    for(int i=0; i<muon_list.size(); ++i){
-//     int muindex = muon_list[i];
-//     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
-//    }//end muons
+    for(int i=0; i<muon_list.size(); ++i){
+     int muindex = muon_list[i];
+     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+    }//end muons
 
 
     //double deltar = 0.0 ;
