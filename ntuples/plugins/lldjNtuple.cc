@@ -184,7 +184,8 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   if (dumpTaus_) fillTaus(e);
   if (dumpJets_) fillJets(e,es);
 
-  hEvents_->Fill(1.5);
+  hEvents_->Fill(1.);
+  //hEvents_->Fill(1.5);
   tree_->Fill();
 
 }

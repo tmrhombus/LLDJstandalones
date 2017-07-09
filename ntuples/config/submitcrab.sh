@@ -20,16 +20,19 @@ cp "${subdir}/Summer16_23Sep2016AllV4_DATA.db"                        ${thesubdi
 cp "${subdir}/Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt"        ${thesubdir}
 cp "${subdir}/Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt"        ${thesubdir}
 cp "${subdir}/Summer16_23Sep2016V4_MC.db"                             ${thesubdir}
-cp "${subdir}/run_data_80X_Muon.py"   ${thesubdir} 
-cp "${subdir}/run_data_80X_Electron.py"  ${thesubdir}
+# cp "${subdir}/run_data_80X_Muon.py"   ${thesubdir} 
+# cp "${subdir}/run_data_80X_Electron.py"  ${thesubdir}
+cp "${subdir}/run_data_80X.py"  ${thesubdir}
 cp "${subdir}/run_mc_80X.py"              ${thesubdir}
 
-printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_Muon.py"  
-printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_Electron.py" 
+#printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_Muon.py"  
+#printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X_Electron.py" 
+printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X.py" 
 printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80X.py"             
 
-printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_Muon.py"   
-printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_Electron.py"  
+#printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_Muon.py"   
+#printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X_Electron.py"  
+printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X.py"  
 printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_mc_80X.py"              
 
 # get the DAS name mapping
@@ -39,11 +42,12 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 samples=( \
    "WJets_1"              \
    "WJets_2"              \
+   "GJets_HT40to100_1"  \
+   "Data_SingleMu_B_1"    \
+   "Data_SingleEle_B_1"   
 )
 
-#  "Data_SingleMu_B_1"    \
-#  "Data_SingleEle_B_1"   \
-#  "GJets_HT40to100_1"  \
+
 
 # # double lepton
 # "Data_DoubleMu_H_3"    \
@@ -213,11 +217,13 @@ do
  INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  if [[ "${samplename:0:13}" == "Data_SingleMu" ]]
  then
-  CMSRUNCONFIG="'run_data_80X_Muon.py'" 
+  CMSRUNCONFIG="'run_data_80X.py'" 
+  #CMSRUNCONFIG="'run_data_80X_Muon.py'" 
   INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  elif [[ "${samplename:0:14}" == "Data_SingleEle" ]]
  then
-  CMSRUNCONFIG="'run_data_80X_Electron.py'" 
+  CMSRUNCONFIG="'run_data_80X.py'" 
+  #CMSRUNCONFIG="'run_data_80X_Electron.py'" 
   INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  fi
 
@@ -226,9 +232,12 @@ do
  SPLITTING="'FileBased'"
  REQUESTNAME="'${samplename}'"
  DATASET="'${datasetname}'"
- STORESITE="'T2_US_Wisconsin'"
- OUTLFNBASE="'/store/user/tmperry/${nversion}'"
+ #STORESITE="'T2_US_Wisconsin'"
+ #OUTLFNBASE="'/store/user/tmperry/${nversion}'"
+ STORESITE="'T3_US_FNALLPC'"
+ OUTLFNBASE="'/store/user/${USER}/${nversion}'"
  MAXMEM="4000"
+ #MAXMEM="2500"
 
  #STORESITE="'T2_US_FNAL'"
  #OUTLFNBASE="'/eos/store/tmperry/${nversion}'"

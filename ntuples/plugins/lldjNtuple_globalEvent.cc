@@ -2,7 +2,8 @@
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
-
+#include <iomanip>
+#include <bitset>
 using namespace std;
 
 // (local) variables associated with tree branches
@@ -27,7 +28,7 @@ ULong64_t   HLTPhoIsPrescaled_;
 ULong64_t   HLTJetIsPrescaled_;
 vector<int> phoPrescale_;
 
-ULong64_t   HLT_PFHT350PFMET100_;
+ULong64_t   HLT_PFHT350PFMET100_;//everyone seemed to be against this at the meeting?
 
 ULong64_t   HLT_Ele23Loose_;
 ULong64_t   HLT_Ele27Tight_;
@@ -38,6 +39,15 @@ ULong64_t   HLT_IsoMu22_;
 ULong64_t   HLT_IsoTkMu22_;
 ULong64_t   HLT_Mu17Mu8_;
 ULong64_t   HLT_Mu17TkMu8_;
+const int bitsize=8;
+/* 
+
+ULong64_t   HLT_PFHT300PFMET110_;
+ULong64_t   HLT_Ele27_WPLoose_Gsf_WHbbBoost_;
+
+ULong64_t  HLT_Ele27_WPLoose_Gsf_WHbbBoost_isPS_;
+ULong64_t   HLT_PFHT300PFMET110_isPS_;
+*/
 
 ULong64_t   HLT_PFHT350PFMET100_isPS_;
 
@@ -53,10 +63,10 @@ ULong64_t   HLT_Mu17TkMu8_isPS_;
 
 void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
-  tree->Branch("run",     &run_);
-  tree->Branch("event",   &event_);
-  tree->Branch("lumis",   &lumis_);
-  tree->Branch("isData",  &isData_);
+  tree->Branch("run",     	       &run_);
+  tree->Branch("event",    	       &event_);
+  tree->Branch("lumis",   	       &lumis_);
+  tree->Branch("isData",  	       &isData_);
   tree->Branch("nVtx",                 &nVtx_);
   tree->Branch("nGoodVtx",             &nGoodVtx_);
   tree->Branch("nTrksPV",              &nTrksPV_);
@@ -74,17 +84,22 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLTJetIsPrescaled",    &HLTJetIsPrescaled_);
   tree->Branch("phoPrescale",          &phoPrescale_);
 
-  tree->Branch("HLT_PFHT350PFMET100", &HLT_PFHT350PFMET100_);
+  tree->Branch("HLT_PFHT350PFMET100",  &HLT_PFHT350PFMET100_);
+  
+  /*
+  tree->Branch("HLT_PFHT300PFMET110",  &HLT_PFHT300PFMET110_);
+  tree->Branch("HLT_Ele27_WPLoose_Gsf_WHbbBoost", &HLT_Ele27_WPLoose_Gsf_WHbbBoost_);
+  */  
 
-  tree->Branch("HLT_Ele23Loose", &HLT_Ele23Loose_) ;
-  tree->Branch("HLT_Ele27Tight", &HLT_Ele27Tight_) ;
-  tree->Branch("HLT_Ele17Ele12", &HLT_Ele17Ele12_) ;
-  tree->Branch("HLT_Ele23Ele12", &HLT_Ele23Ele12_) ;
+  tree->Branch("HLT_Ele23Loose",       &HLT_Ele23Loose_) ;
+  tree->Branch("HLT_Ele27Tight",       &HLT_Ele27Tight_) ;
+  tree->Branch("HLT_Ele17Ele12",       &HLT_Ele17Ele12_) ;
+  tree->Branch("HLT_Ele23Ele12",       &HLT_Ele23Ele12_) ;
 
-  tree->Branch("HLT_IsoMu22"  , &HLT_IsoMu22_)   ;
-  tree->Branch("HLT_IsoTkMu22", &HLT_IsoTkMu22_) ;
-  tree->Branch("HLT_Mu17Mu8"  , &HLT_Mu17Mu8_)   ;
-  tree->Branch("HLT_Mu17TkMu8", &HLT_Mu17TkMu8_) ;
+  tree->Branch("HLT_IsoMu22"  ,        &HLT_IsoMu22_)   ;
+  tree->Branch("HLT_IsoTkMu22",        &HLT_IsoTkMu22_) ;
+  tree->Branch("HLT_Mu17Mu8"  ,        &HLT_Mu17Mu8_)   ;
+  tree->Branch("HLT_Mu17TkMu8",        &HLT_Mu17TkMu8_) ;
 
 }
 
@@ -144,25 +159,34 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   HLTJetIsPrescaled_    = 0;
 
   HLT_PFHT350PFMET100_  = 0;
+  
+  /*
+  HLT_PFHT350PFMET100_  = 0;
+  HLT_Ele27_WPLoose_Gsf_WHbbBoost_ =0;
+  */
+  HLT_Ele23Loose_       = 0;
+  HLT_Ele27Tight_       = 0;
+  HLT_Ele17Ele12_       = 0;
+  HLT_Ele23Ele12_       = 0;
 
-  HLT_Ele23Loose_        = 0;
-  HLT_Ele27Tight_        = 0;
-  HLT_Ele17Ele12_        = 0;
-  HLT_Ele23Ele12_        = 0;
-
-  HLT_IsoMu22_           = 0;
-  HLT_IsoTkMu22_         = 0;
-  HLT_Mu17Mu8_           = 0;
-  HLT_Mu17TkMu8_         = 0;
-
-  edm::Handle<edm::TriggerResults> trgResultsHandle;
-  e.getByToken(trgResultsLabel_, trgResultsHandle);
+  HLT_IsoMu22_          = 0;
+  HLT_IsoTkMu22_        = 0;
+  HLT_Mu17Mu8_          = 0;
+  HLT_Mu17TkMu8_        = 0;
 
   bool cfg_changed = true;
   HLTConfigProvider hltCfg;
   hltCfg.init(e.getRun(), es, trgResultsProcess_, cfg_changed);
 
+  edm::Handle<edm::TriggerResults> trgResultsHandle;
+  e.getByToken(trgResultsLabel_, trgResultsHandle);
+
   const edm::TriggerNames &trgNames = e.triggerNames(*trgResultsHandle);
+  for (size_t i = 0; i < trgNames.size(); ++i) {
+    const string &name = trgNames.triggerName(i);
+    //printf(" Reading trigger: %s\n" , name.c_str()  );
+  }
+
 
   for (size_t i = 0; i < trgNames.size(); ++i) {
     const string &name = trgNames.triggerName(i);
@@ -173,8 +197,32 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     if      (name.find("HLT_PFHT350_PFMET100_v1")              != string::npos) bitPFHT350PFMET100 = 0 ;
     else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v1") != string::npos) bitPFHT350PFMET100 = 1 ;
     else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v2") != string::npos) bitPFHT350PFMET100 = 2 ;
-
+/*
+    int bitPFHT300PFMET110 = -1;
+    if      (name.find("HLT_PFHT300_PFMET110_v1")              != string::npos) bitPFHT300PFMET110 = 0 ;
+    else if (name.find("HLT_PFHT300_PFMET110_v2") 	       != string::npos) bitPFHT300PFMET110 = 1 ;	
+    else if (name.find("HLT_PFHT300_PFMET110_v3")              != string::npos) bitPFHT300PFMET110 = 2 ;
+    else if (name.find("HLT_PFHT300_PFMET110_v4")              != string::npos) bitPFHT300PFMET110 = 3 ;
+    else if (name.find("HLT_PFHT300_PFMET110_v5")              != string::npos) bitPFHT300PFMET110 = 4 ;
+    else if (name.find("HLT_PFHT300_PFMET110_v6")              != string::npos) bitPFHT300PFMET110 = 5 ;
+*/
     // Single Electron
+/*
+    int bitEle22Eta2p1Loose =-1;
+    if      (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v3") != string::npos) bitEle22Eta2p1Loose = 0;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v4") != string::npos) bitEle22Eta2p1Loose = 1;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v6") != string::npos) bitEle22Eta2p1Loose = 2;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v7") != string::npos) bitEle22Eta2p1Loose = 3; 
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v8") != string::npos) bitEle22Eta2p1Loose = 4;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v9") != string::npos) bitEle22Eta2p1Loose = 5;
+
+    int bit bitEle22Eta2p1LoosePFTau20SingleL1 = -1;
+    if      (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v2") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 0;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v3") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 1;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v5") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 2;
+    else if (name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1_v6") != string::npos) bitEle22Eta2p1LoosePFTau20SingleL1 = 3;
+*/
+
     int bitEle23Loose = -1;
     if      (name.find("HLT_Ele23_WPLoose_Gsf_v1")  != string::npos) bitEle23Loose = 0  ;
     else if (name.find("HLT_Ele23_WPLoose_Gsf_v2")  != string::npos) bitEle23Loose = 1  ;
@@ -199,7 +247,18 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_Ele27_WPTight_Gsf_v7")  != string::npos) bitEle27Tight = 6 ;
     else if (name.find("HLT_Ele27_WPTight_Gsf_v8")  != string::npos) bitEle27Tight = 7 ;
     else if (name.find("HLT_Ele27_WPTight_Gsf_v9")  != string::npos) bitEle27Tight = 8 ;
-
+/*
+    int bitEle27LooseWHbb = -1
+    if      (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v1")  != string::npos) bitEle27LooseWHbb = 0 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v2")  != string::npos) bitEle27LooseWHbb = 1 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v3")  != string::npos) bitEle27LooseWHbb = 2 ; 
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v4")  != string::npos) bitEle27LooseWHbb = 3 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v5")  != string::npos) bitEle27LooseWHbb = 4 ; 
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v6")  != string::npos) bitEle27LooseWHbb = 5 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v7")  != string::npos) bitEle27LooseWHbb = 6 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v8")  != string::npos) bitEle27LooseWHbb = 7 ;
+    else if (name.find("HLT_Ele27_WPLoose_Gsf_WHbbBoost_v9")  != string::npos) bitEle27LooseWHbb = 8 ;
+*/
     // Double Electron
     int bitEle17Ele12 = -1;
     if      (name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1")  != string::npos) bitEle17Ele12 = 0 ;
@@ -263,7 +322,6 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4") != string::npos) bitMu17Mu8 = 3 ;                   
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5") != string::npos) bitMu17Mu8 = 4 ;                   
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6") != string::npos) bitMu17Mu8 = 5 ;                   
-
 
     //// Old stuff
     //else if (name.find("HLT_Mu17_Photon35_CaloIdL_L1ISO_v")                   != string::npos) bitEleMuX =  9;
@@ -362,6 +420,18 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_PFHT750_4JetPt70_v")                                     != string::npos) bitJet = 35;
     else if (name.find("HLT_PFHT800_4JetPt50_v")                                     != string::npos) bitJet = 36;
 
+    //printf(" Reading trigger: %s\n" , name.c_str()  );
+    //printf(" bitPFHT350PFMET100 %d \n", bitPFHT350PFMET100 ); 
+    //printf(" bitEle23Loose      %d \n", bitEle23Loose      ); 
+    //printf(" bitEle27Tight      %d \n", bitEle27Tight      ); 
+    //printf(" bitEle17Ele12      %d \n", bitEle17Ele12      ); 
+    //printf(" bitEle23Ele12      %d \n", bitEle23Ele12      ); 
+    //printf(" bitIsoMu22         %d \n", bitIsoMu22         ); 
+    //printf(" bitIsoTkMu22       %d \n", bitIsoTkMu22       ); 
+    //printf(" bitMu17Mu8         %d \n", bitMu17Mu8         ); 
+    //printf(" bitMu17TkMu8       %d \n", bitMu17TkMu8       ); 
+
+
     // indicates prescaling and whether trigger was fired or not
     ULong64_t isPrescaled = (hltCfg.prescaleValue(0, name)!=1) ? 1 : 0;
     ULong64_t isFired     = (trgResultsHandle->accept(i)) ? 1 : 0;
@@ -420,6 +490,42 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
       HLTJet_            |= (isFired << bitJet);
       HLTJetIsPrescaled_ |= (isPrescaled << bitJet);
     }
+
+    /*
+    if (bitEle27LooseWHbb  >= 0) {
+      HLT_Ele27_WPLoose_Gsf_WHbbBoost_ |= (isFired <<  bitEle27LooseWHbb);
+      HLT_Ele27_WPLoose_Gsf_WHbbBoost_ |= (isPrescaled <<  bitEle27LooseWHbb);
+     }
+    if ( bitPFHT300PFMET110 >= 0 ){
+      HLT_PFHT300PFMET110_       |= (isFired     << bitPFHT300PFMET110 );
+      HLT_PFHT300PFMET110_isPS_  |= (isPrescaled << bitPFHT300PFMET110 );
+    }
+    */
+
+    std::bitset<bitsize> HLT_PFHT350PFMET100_b(bitPFHT350PFMET100);
+    std::bitset<bitsize> HLT_Ele23Loose_b(bitEle23Loose);
+    std::bitset<bitsize> HLT_Ele27Tight_b(bitEle27Tight);
+    std::bitset<bitsize> HLT_Ele17Ele12_b(bitEle17Ele12);
+    std::bitset<bitsize> HLT_Ele23Ele12_b(bitEle23Ele12);
+    std::bitset<bitsize> HLT_IsoMu22_b(bitIsoMu22);
+    std::bitset<bitsize> HLT_IsoTkMu22_b(bitIsoTkMu22);
+    std::bitset<bitsize> HLT_Mu17Mu8_b(bitMu17Mu8);
+    std::bitset<bitsize> HLT_Mu17TkMu8_b(HLT_Mu17TkMu8_b);
+
+    if     (name.find("HLT_PFHT350_PFMET100_v")                     != string::npos){cout<<name<<" "<<HLT_PFHT350PFMET100_b<<" "<<bitPFHT350PFMET100<<" "<<HLT_PFHT350PFMET100_<<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_Ele23_WPLoose_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele23Loose_b     <<" "<<bitEle23Loose     <<" "<<HLT_Ele23Loose_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_Ele27_WPTight_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele27Tight_b     <<" "<<bitEle27Tight     <<" "<<HLT_Ele27Tight_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele17Ele12_b     <<" "<<bitEle17Ele12     <<" "<<HLT_Ele17Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele23Ele12_b     <<" "<<bitEle23Ele12     <<" "<<HLT_Ele23Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_IsoMu22_v")                              != string::npos){cout<<name<<" "<<HLT_IsoMu22_b        <<" "<<bitIsoMu22        <<" "<<HLT_IsoMu22_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_IsoTkMu22_v")                            != string::npos){cout<<name<<" "<<HLT_IsoTkMu22_b      <<" "<<bitIsoTkMu22      <<" "<<HLT_IsoTkMu22_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;} 
+    else if(name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")      != string::npos){cout<<name<<" "<<HLT_Mu17Mu8_b        <<" "<<bitMu17Mu8        <<" "<<HLT_Mu17Mu8_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    else if(name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")    != string::npos){cout<<name<<" "<<HLT_Mu17TkMu8_b      <<" "<<bitMu17TkMu8      <<" "<<HLT_Mu17TkMu8_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+
+
+
+    // cout <<setw(45)<< name <<setw(14)<<"bitPFHT350PFMET100"<<setw(14)<<"bitEle23Loose"<<setw(14)<<"bitEle27Tight"<<setw(14)<<"bitEle17Ele12"<<setw(14)<<"bitEle23Ele12"<<setw(14)<<"bitIsoMu22"<<setw(14)<<"bitIsoTkMu22"<<setw(14)<<"bitMu17Mu8"<<setw(14)<<"bitMu17TkMu8"<<endl;
+    // cout <<setw(45)<< name <<setw(14)<< HLT_PFHT350PFMET100_  <<setw(14)<< HLT_Ele23Loose_ <<setw(14)<< HLT_Ele27Tight_ <<setw(14)<< HLT_Ele17Ele12_ <<setw(14)<<HLT_Ele23Ele12_ <<setw(14)<<HLT_IsoMu22_ <<setw(14)<<HLT_IsoTkMu22_ <<setw(14)<<HLT_Mu17Mu8_ <<setw(14)<<HLT_Mu17TkMu8_<<endl; 
 
     //if (name.find("HLT_PFJet450_v") == string::npos) 
     //cout<<"HLT : "<<i<<" "<<name<<" "<<isPrescaled<<" "<<isFired<<endl;
