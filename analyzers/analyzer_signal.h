@@ -138,9 +138,10 @@ public :
  std::vector<TString> lepnames;
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
  // jetmultnames = Leading, Subleading, Third, Fourth,allPFJets
+ // lepbinname   = ele, mu, NoSel
  static const int SELBINNAMESIZE  = 6;
  static const int JETMULTNAMESIZE = 5; 
- static const int LEPBINNAMESIZE  = 2;
+ static const int LEPBINNAMESIZE  = 3;
 
  // initialize histograms as global
  TH1F histoTH1F;

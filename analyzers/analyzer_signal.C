@@ -169,7 +169,16 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,1); fillJetHistograms(event_weight,4,1); }//fill2DHistograms(event_weight,4); }
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,1); fillJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
   }
-   
+  
+  //No Lep selection
+                          fillSigHistograms(event_weight,0,2); fillJetHistograms(event_weight,0,2);  //fill2DHistograms(event_weight,0);  
+     if( doesPassSig   ){ fillSigHistograms(event_weight,1,2); fillJetHistograms(event_weight,1,2); }//fill2DHistograms(event_weight,1); }
+     if( doesPassZH    ){ fillSigHistograms(event_weight,2,2); fillJetHistograms(event_weight,2,2); }//fill2DHistograms(event_weight,2); }
+     if( doesPassDY    ){ fillSigHistograms(event_weight,3,2); fillJetHistograms(event_weight,3,2); }//fill2DHistograms(event_weight,3); }
+     if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,2); fillJetHistograms(event_weight,4,2); }//fill2DHistograms(event_weight,4); }
+     if( doesPassNoPair){ fillSigHistograms(event_weight,5,2); fillJetHistograms(event_weight,5,2); }//fill2DHistograms(event_weight,5); }
+  
+ 
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
@@ -481,7 +490,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(AK8JetMass                 ->size()>j){h_AK8JetMass                  [selbin][j][lepbin].Fill( AK8JetMass                 ->at(j), weight ); } 
  }//if <4
  else{//n_entries += jet_list.size(); std::cout<<jet_list.size()<<" "<<n_entries<<std::endl;
- for(unsigned int i =0; i<jet_list.size(); i++){ n_test2 +=jet_list.size();std::cout<<i<<" **********jet_list2 "<< n_test2/*<<" "<<selbin<<" "<<lepbin*/<<std::endl;
+ for(unsigned int i =0; i<jet_list.size(); i++){ //n_test2 +=jet_list.size();std::cout<<i<<" **********jet_list2 "<< n_test2/*<<" "<<selbin<<" "<<lepbin*/<<std::endl;
   if(jetPt                      ->size()>i){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(i), weight ); }
   if(jetSumIP                   ->size()>i){h_jetSumIP                    [selbin][j][lepbin].Fill( jetSumIP                   ->at(i), weight ); }
   if(jetSumIPSig                ->size()>i){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(i), weight ); }
@@ -618,6 +627,7 @@ Bool_t analyzer_signal::initSigHistograms()
  lepnames.clear();
  lepnames.push_back("ele");
  lepnames.push_back("mu");
+ lepnames.push_back("NoLepSel");
 
  selbinnames.clear();
  selbinnames.push_back("NoSel");
@@ -1239,10 +1249,10 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
 //    }//end electrons
 //}
     // check overlap with muons
-    for(int i=0; i<muon_list.size(); ++i){
-     int muindex = muon_list[i];
-     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
-    }//end muons
+//    for(int i=0; i<muon_list.size(); ++i){
+//     int muindex = muon_list[i];
+//     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+//    }//end muons
 
 
     //double deltar = 0.0 ;
@@ -1259,7 +1269,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
  
      //JetID definitions 
-    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap ){//std::cout<<"outerif"<<std::endl;
+    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut /*&& jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap*/ ){std::cout<<"outerif"<<std::endl;
      	if(Loose){ std::cout<<"Loose";
 	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
 	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
@@ -1301,8 +1311,8 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
  	      //std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
 	      //std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
 	      //std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
-              if(jetNConstituents->at(i)>1 && jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
-               // std::cout<<"cut if"<<std::endl;
+              if(/*jetNConstituents->at(i)>1 &&*/ jetNHF->at(i)<0.9 && jetNEF->at(i)<0.9 && jetCHF->at(i)<0.9 /*&& jetNCH->at(i)>0.0*/ && jetCEF->at(i)<0.9)
+               std::cout<<"cut if"<<std::endl;
                jetindex.push_back(i);
            }
         }//custom
