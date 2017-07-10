@@ -2,7 +2,8 @@
 
 outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
  
-xcDY50="71310"              # +-70 # LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z
+xcDY10to50="18610.0"
+xcDY50="5765.4"
 xcDY5to50_HT70to100="301.2"  # +-0.8  # LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
 xcDY5to50_HT100to200="224.2" # +- 5.7
 xcDY5to50_HT200to400="37.2"  # +- 1.1
@@ -14,14 +15,33 @@ xcGJets_HT200To400="2305"    # +-0.7
 xcGJets_HT400To600="274.4"   # +-0.2               
 xcGJets_HT600ToInf="93.46"   # +-0.06            
 xcST_s="3.36"       #+0.13 -0.12 NLO                          
-xcSTbar_t="81.2"    # 26.3+1.32-1.18  = (LEPTON DECAY = 26.3) / ( 3 x 10.80% [PDG])
-xcST_t="136.8"      # 44.33+1.76-1.49 = (LEPTON DECAY = 44.3) / ( 3 x 10.80% [PDG]) 
-xcSTbar_tW="35.85"  # +-0.9, +-1.7 NNLO
-xcST_tW="35.85"     # +-0.9, +-1.7 NNLO                     
+xcSTbar_t="26.38"   # +1.32-1.18
+xcST_t="44.33"      # +1.76-1.49
+xcSTbar_tW="19.56"  # from OSU - how? 35.85 +-0.9, +-1.7 NNLO
+xcST_tW="19.56"     # from OSU - how? 35.85 +-0.9, +-1.7 NNLO                     
 xcTTJets="831.76"   #NNLO
+xcTTtoLL="87.31"          
+xcTTtoLfromT="182.7"      
+xcTTtoLfromTbar="182.7"   
 xcWW="10.32"      # not sure VV.. https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeVInclusive
 xcZZ="63.0"                   
 xcWZ="118.7"                  
+
+xcWWToLNuQQ="49.997"
+xcWWToLNuLNu="12.178"
+
+xcWZToLNuNuNu="3.03"
+xcWZToLLLNu="4.42965"
+xcWZToLNu2QorQQ2L="9.82423165827" # ???
+
+xcZZToNuNuQQ="94.04"
+xcZZToLLQQ="93.22"
+xcZZToLLNuNu="90.5644"
+xcZZToLLLL="91.256"
+
+xcWG="9405.271"
+xcZG="9117.864"
+
 xcZH_HToBB_ZToLL="1"                 
 xcggZH_HToBB_ZToLL="1"               
 xcggZH_HToSSTobbbb_MS40_ctauS100="1" 
