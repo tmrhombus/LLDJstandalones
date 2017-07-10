@@ -10,18 +10,16 @@ void analyzer_signal::Loop(TString outfilename,
                        Double_t crossSec, Int_t nevts)
 {
 
- if(makelog){
-  logfile = fopen( outfilename+".txt", "w"); 
- }
+ if(makelog){ logfile = fopen( outfilename+".txt", "w"); }
 
  if (fChain == 0) return;
 
  Long64_t nentries = fChain->GetEntriesFast();
- if(nevts>0){ 
-  nentries = Long64_t(nevts);
- }
+ if(nevts>0){ nentries = Long64_t(nevts); }
 
  n_tot=0;
+ n_test =0;
+ n_test2 = 0; 
 
  n_passSig=0;
  n_passZH=0;
@@ -44,20 +42,31 @@ void analyzer_signal::Loop(TString outfilename,
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+
+  //printf(" Event %lld\n", event);
+  //if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
   Long64_t ientry = LoadTree(jentry);
+  //if( event==472257123 ){ printf(" %lli \n",ientry); }
   if (ientry < 0) break;
+  //if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
   nb = fChain->GetEntry(jentry);   nbytes += nb;
+  //if( event==472257123 ){ printf(" got entry \n"); }
   //if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
-  
+
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use 
   // event_weight to make the simulation match what is seen in data
   // =lum/cross-section *nrEvents
+  //if( event==472257123 ){ printf("making eventweight\n"); }
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
-  
+
+  //if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
   photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
+
+  //if( event==472257123 ){ printf("making electronlist\n"); }
+  // veto loose medium tight heep hlt
   electron_list = electron_passLooseID( 30, 3, "");
   muon_list = muon_passTightID( 28, 2.4, ""); 
   //muon_list = muon_passLooseID( 15, 3, ""); 
@@ -88,30 +97,31 @@ void analyzer_signal::Loop(TString outfilename,
   // int phoindex = photon_list[i];
   // htall += phoEt->at(phoindex);
   //}
-  
+
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
    //std::cout << "elePtSize "<< elePt->size() <<" eleindex: "<<eleindex<<std::endl;//looks fine
    htall += elePt->at(eleindex);
   }
-  
+
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
   //std::cout << "muPtSize "<< muPt->size() <<" muindex: "<<muindex<<std::endl;//crashed before output
   htall += muPt->at(muindex);
   }
-  
+  n_test+=jet_list.size();
+  //std::cout<< "****jetListSize**** "<<jet_list.size()<<"total: "<< n_test<<std::endl;
   for(int i=0; i<jet_list.size(); ++i){
    int jetindex = jet_list[i];
    //std::cout << "jetPtSize "<< jetPt->size() <<" jetindex: "<<jetindex<<std::endl;//seems fine
    htall  += jetPt->at(jetindex);
    htjets += jetPt->at(jetindex);
   } 
-  
+
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
-  
+
   // get electrons and muons and put into 4vectors
   bool passMM = false;
   makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
@@ -119,18 +129,18 @@ void analyzer_signal::Loop(TString outfilename,
   fourVec_ll = fourVec_l1 + fourVec_l2;
   dilep_mass = fourVec_ll.M();
   dilep_pt   = fourVec_ll.Pt();
-  
+
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passPTOSSFg50 = (dilep_pt>50.);
-  
+
   passGoodVtx = nVtx>0;
   passOneJet = jet_list.size()>0; 
-  
+
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
-  
+
   //debug_printobjects(); // helpful printout (turn off when submitting!!!)
   
   // set booleans if pass various selections
@@ -139,9 +149,9 @@ void analyzer_signal::Loop(TString outfilename,
   doesPassDY     = askPassDY    ();
   doesPassOffZ   = askPassOffZ  ();
   doesPassNoPair = askPassNoPair();
-  
+
   // fill histogram
-  
+
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -150,7 +160,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,0); fillJetHistograms(event_weight,4,0); }//fill2DHistograms(event_weight,4); }
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,0); fillJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
   }
-  
+
   if( passSingleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -271,7 +281,7 @@ Bool_t analyzer_signal::initJetHistograms()
  jetmultnames.push_back("SubleadingJet");
  jetmultnames.push_back("ThirdJet");
  jetmultnames.push_back("FourthJet");
-
+ jetmultnames.push_back("AllPFJets");
  // loop through jets and selections to initialize histograms in parllel (series)
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -401,18 +411,22 @@ Bool_t analyzer_signal::initJetHistograms()
   }
  }
 
+//  // loop through ALL jets and selections to initialize histograms in parllel (series)
+//    for(unsigned int i=0; i<selbinnames.size(); ++i){
+//      for(unsigned int j=0; j<jet_list.size(); ++j){
+//         for(unsigned int k=0; k<lepnames.size(); ++k){
+ 
  return kTRUE;
 }
 
 //----------------------------fillJetHistograms
 Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbin)
 {
-
+ 
  //printf("fillJetHistograms\n");
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
-
+ if(j<(jetmultnames.size()-1)){
   if(jetPt                      ->size()>j){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(j), weight ); } 
-
   if(jetSumIP                   ->size()>j){h_jetSumIP                    [selbin][j][lepbin].Fill( jetSumIP                   ->at(j), weight ); }
   if(jetSumIPSig                ->size()>j){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(j), weight ); }
   if(jetLog10IPSig              ->size()>j){h_jetLog10IPSig               [selbin][j][lepbin].Fill( jetLog10IPSig              ->at(j), weight ); }
@@ -421,19 +435,11 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetTrackPDGID		->size()>j){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(j), weight ); }
   if(jetTrackMom                ->size()>j){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(j), weight ); }
   if(jetNConstituents		->size()>j){h_jetNConstituents		  [selbin][j][lepbin].Fill( jetNConstituents	       ->at(j), weight ); }
-
   if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
   if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight ); }
   if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight ); }
   if(jetAlphaMaxP               ->size()>j){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(j), weight ); }
   if(jetAlphaMaxP2              ->size()>j){h_jetAlphaMaxP2               [selbin][j][lepbin].Fill(jetAlphaMaxP2               ->at(j), weight ); }
-  //  if(CA2_x                      ->size()>j){h_CA2_x                       [selbin][j][lepbin].Fill(CA2_x                       ->at(j), weight ); }
-  //  if(CA2_y                      ->size()>j){h_CA2_y                       [selbin][j][lepbin].Fill(CA2_y                       ->at(j), weight ); }
-  //  if(CA2_z                      ->size()>j){h_CA2_z                       [selbin][j][lepbin].Fill(CA2_z                       ->at(j), weight ); }
-  
-  
-  
-  
   if(jetEn                      ->size()>j){h_jetEn                       [selbin][j][lepbin].Fill( jetEn                      ->at(j), weight ); } 
   if(jetEta                     ->size()>j){h_jetEta                      [selbin][j][lepbin].Fill( jetEta                     ->at(j), weight ); } 
   if(jetPhi                     ->size()>j){h_jetPhi                      [selbin][j][lepbin].Fill( jetPhi                     ->at(j), weight ); } 
@@ -473,11 +479,68 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(AK8JetEta                  ->size()>j){h_AK8JetEta                   [selbin][j][lepbin].Fill( AK8JetEta                  ->at(j), weight ); } 
   if(AK8JetPhi                  ->size()>j){h_AK8JetPhi                   [selbin][j][lepbin].Fill( AK8JetPhi                  ->at(j), weight ); } 
   if(AK8JetMass                 ->size()>j){h_AK8JetMass                  [selbin][j][lepbin].Fill( AK8JetMass                 ->at(j), weight ); } 
+ }//if <4
+ else{//n_entries += jet_list.size(); std::cout<<jet_list.size()<<" "<<n_entries<<std::endl;
+ for(unsigned int i =0; i<jet_list.size(); i++){ n_test2 +=jet_list.size();std::cout<<i<<" **********jet_list2 "<< n_test2/*<<" "<<selbin<<" "<<lepbin*/<<std::endl;
+  if(jetPt                      ->size()>i){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(i), weight ); }
+  if(jetSumIP                   ->size()>i){h_jetSumIP                    [selbin][j][lepbin].Fill( jetSumIP                   ->at(i), weight ); }
+  if(jetSumIPSig                ->size()>i){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(i), weight ); }
+  if(jetLog10IPSig              ->size()>i){h_jetLog10IPSig               [selbin][j][lepbin].Fill( jetLog10IPSig              ->at(i), weight ); }
+  if(jetMedianLog10IPSig        ->size()>i){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(i), weight ); }
+  if(jetTrackPhi2               ->size()>i){h_jetTrackPhi2                [selbin][j][lepbin].Fill( jetTrackPhi2               ->at(i), weight ); }
+  if(jetTrackPDGID              ->size()>i){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(i), weight ); }
+  if(jetTrackMom                ->size()>i){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(i), weight ); }
+  if(jetNConstituents           ->size()>i){h_jetNConstituents            [selbin][j][lepbin].Fill( jetNConstituents           ->at(i), weight ); }
+  if(jetTestVariable            ->size()>i){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(i), weight ); }
+  if(jetAlphaMax                ->size()>i){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(i), weight ); }
+  if(jetAlphaMax2               ->size()>i){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(i), weight ); }
+  if(jetAlphaMaxP               ->size()>i){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(i), weight ); }
+  if(jetAlphaMaxP2              ->size()>i){h_jetAlphaMaxP2               [selbin][j][lepbin].Fill(jetAlphaMaxP2               ->at(i), weight ); }
+  if(jetEn                      ->size()>i){h_jetEn                       [selbin][j][lepbin].Fill( jetEn                      ->at(i), weight ); }
+  if(jetEta                     ->size()>i){h_jetEta                      [selbin][j][lepbin].Fill( jetEta                     ->at(i), weight ); }
+  if(jetPhi                     ->size()>i){h_jetPhi                      [selbin][j][lepbin].Fill( jetPhi                     ->at(i), weight ); }
+  if(jetRawPt                   ->size()>i){h_jetRawPt                    [selbin][j][lepbin].Fill( jetRawPt                   ->at(i), weight ); }
+  if(jetRawEn                   ->size()>i){h_jetRawEn                    [selbin][j][lepbin].Fill( jetRawEn                   ->at(i), weight ); }
+  if(jetMt                      ->size()>i){h_jetMt                       [selbin][j][lepbin].Fill( jetMt                      ->at(i), weight ); }
+  if(jetArea                    ->size()>i){h_jetArea                     [selbin][j][lepbin].Fill( jetArea                    ->at(i), weight ); }
+  if(jetLeadTrackPt             ->size()>i){h_jetLeadTrackPt              [selbin][j][lepbin].Fill( jetLeadTrackPt             ->at(i), weight ); }
+  if(jetLeadTrackEta            ->size()>i){h_jetLeadTrackEta             [selbin][j][lepbin].Fill( jetLeadTrackEta            ->at(i), weight ); }
+  if(jetLeadTrackPhi            ->size()>i){h_jetLeadTrackPhi             [selbin][j][lepbin].Fill( jetLeadTrackPhi            ->at(i), weight ); }
+  if(jetLepTrackPID             ->size()>i){h_jetLepTrackPID              [selbin][j][lepbin].Fill( jetLepTrackPID             ->at(i), weight ); }
+  if(jetLepTrackPt              ->size()>i){h_jetLepTrackPt               [selbin][j][lepbin].Fill( jetLepTrackPt              ->at(i), weight ); }
+  if(jetLepTrackEta             ->size()>i){h_jetLepTrackEta              [selbin][j][lepbin].Fill( jetLepTrackEta             ->at(i), weight ); }
+  if(jetLepTrackPhi             ->size()>i){h_jetLepTrackPhi              [selbin][j][lepbin].Fill( jetLepTrackPhi             ->at(i), weight ); }
+  if(jetCSV2BJetTags            ->size()>i){h_jetCSV2BJetTags             [selbin][j][lepbin].Fill( jetCSV2BJetTags            ->at(i), weight ); }
+  if(jetJetProbabilityBJetTags  ->size()>i){h_jetJetProbabilityBJetTags   [selbin][j][lepbin].Fill( jetJetProbabilityBJetTags  ->at(i), weight ); }
+  if(jetpfCombinedMVAV2BJetTags ->size()>i){h_jetpfCombinedMVAV2BJetTags  [selbin][j][lepbin].Fill( jetpfCombinedMVAV2BJetTags ->at(i), weight ); }
+  if(isMC){
+   if(jetPartonID                ->size()>i){h_jetPartonID                 [selbin][j][lepbin].Fill( jetPartonID                ->at(i), weight ); }
+   if(jetHadFlvr                 ->size()>i){h_jetHadFlvr                  [selbin][j][lepbin].Fill( jetHadFlvr                 ->at(i), weight ); }
+   if(jetGenJetEn                ->size()>i){h_jetGenJetEn                 [selbin][j][lepbin].Fill( jetGenJetEn                ->at(i), weight ); }
+   if(jetGenJetPt                ->size()>i){h_jetGenJetPt                 [selbin][j][lepbin].Fill( jetGenJetPt                ->at(i), weight ); }
+   if(jetGenJetEta               ->size()>i){h_jetGenJetEta                [selbin][j][lepbin].Fill( jetGenJetEta               ->at(i), weight ); }
+   if(jetGenJetPhi               ->size()>i){h_jetGenJetPhi                [selbin][j][lepbin].Fill( jetGenJetPhi               ->at(i), weight ); }
+   if(jetGenPartonID             ->size()>i){h_jetGenPartonID              [selbin][j][lepbin].Fill( jetGenPartonID             ->at(i), weight ); }
+   if(jetGenEn                   ->size()>i){h_jetGenEn                    [selbin][j][lepbin].Fill( jetGenEn                   ->at(i), weight ); }
+   if(jetGenPt                   ->size()>i){h_jetGenPt                    [selbin][j][lepbin].Fill( jetGenPt                   ->at(i), weight ); }
+   if(jetGenEta                  ->size()>i){h_jetGenEta                   [selbin][j][lepbin].Fill( jetGenEta                  ->at(i), weight ); }
+   if(jetGenPhi                  ->size()>i){h_jetGenPhi                   [selbin][j][lepbin].Fill( jetGenPhi                  ->at(i), weight ); }
+   if(jetGenPartonMomID          ->size()>i){h_jetGenPartonMomID           [selbin][j][lepbin].Fill( jetGenPartonMomID          ->at(i), weight ); }
+  }
 
- }
-
+  if(AK8JetPt                   ->size()>i){h_AK8JetPt                    [selbin][j][lepbin].Fill( AK8JetPt                   ->at(i), weight ); }
+  if(AK8JetEn                   ->size()>i){h_AK8JetEn                    [selbin][j][lepbin].Fill( AK8JetEn                   ->at(i), weight ); }
+  if(AK8JetRawPt                ->size()>i){h_AK8JetRawPt                 [selbin][j][lepbin].Fill( AK8JetRawPt                ->at(i), weight ); }
+  if(AK8JetRawEn                ->size()>i){h_AK8JetRawEn                 [selbin][j][lepbin].Fill( AK8JetRawEn                ->at(i), weight ); }
+  if(AK8JetEta                  ->size()>i){h_AK8JetEta                   [selbin][j][lepbin].Fill( AK8JetEta                  ->at(i), weight ); }
+  if(AK8JetPhi                  ->size()>i){h_AK8JetPhi                   [selbin][j][lepbin].Fill( AK8JetPhi                  ->at(i), weight ); }
+  if(AK8JetMass                 ->size()>i){h_AK8JetMass                  [selbin][j][lepbin].Fill( AK8JetMass                 ->at(i), weight ); }
+ 
+ }//for ALL jets
+ }//else
+}//old for loop
  return kTRUE;
-}
+}//end fill histograms
 
 //----------------------------writeJetHistograms
 Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
@@ -486,7 +549,7 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
    h_jetPt                       [selbin][j][lepbin].Write(); 
-   
+
    h_jetSumIP                    [selbin][j][lepbin].Write();
    h_jetSumIPSig                 [selbin][j][lepbin].Write();
    h_jetLog10IPSig               [selbin][j][lepbin].Write();
@@ -1165,18 +1228,21 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
 
     bool passOverlap=true;
     // check overlap with electrons
-//if(electron_list.size()>1 &&eleSCEta->size()>1&&eleSCPhi->size()>1/*&& jetEta->size()>1&&jetPhi->size()>1*/){
+    
+  //  if(/*electron_list.size()!=0 ||eleSCEta->size()==0||eleSCPhi->size()==0||*/jetEta->size()==0||jetPhi->size()==0)
+//std::cout/*<<"Elist:  "<<electron_list.size()<<" eleSCEtaSize "<<eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()*/<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
+//if(electron_list.size()>1 &&eleSCEta->size()>1 &&eleSCPhi->size()>1&& jetEta->size()>1 &&jetPhi->size()>1){
 //    for(int i=0; i<electron_list.size(); ++i){
 //      int eleindex = electron_list[i];
-//      std::cout << "eleSCEtaSize "<< eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
+//      //std::cout << "eleSCEtaSize "<< eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
 //      if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
 //    }//end electrons
 //}
     // check overlap with muons
-//    for(int i=0; i<muon_list.size(); ++i){
-//     int muindex = muon_list[i];
-//     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
-//    }//end muons
+    for(int i=0; i<muon_list.size(); ++i){
+     int muindex = muon_list[i];
+     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+    }//end muons
 
 
     //double deltar = 0.0 ;
@@ -1193,7 +1259,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
     //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
  
      //JetID definitions 
-     if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap ){std::cout<<"outerif"<<std::endl;
+    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap ){//std::cout<<"outerif"<<std::endl;
      	if(Loose){ std::cout<<"Loose";
 	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
 	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
@@ -1224,20 +1290,20 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
                 jetindex.push_back(i);
            }
         }//TightLepVeto
-	if(custom){std::cout<<"custom"<<std::endl;
+	if(custom){//std::cout<<"custom"<<std::endl;
            if( abs(jetEta->at(i))<=2.4 ){
- 	      std::cout<<"NHF: "<<jetNHF->at(i)<<std::endl;
-	      std::cout<<"CHF: "<<jetCHF->at(i)<<std::endl;
- 	      std::cout<<"NCH: "<<jetNCH->at(i)<<std::endl;
-	      std::cout<<"NEF: "<<jetNEF->at(i)<<std::endl;
-	      std::cout<<"CEF: "<<jetCEF->at(i)<<std::endl;
-	      std::cout<<"Pt: "<<jetPt->at(i)<<std::endl;
- 	      std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
-	      std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
-	      std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
+ 	      //std::cout<<"NHF: "<<jetNHF->at(i)<<std::endl;
+	      //std::cout<<"CHF: "<<jetCHF->at(i)<<std::endl;
+ 	      //std::cout<<"NCH: "<<jetNCH->at(i)<<std::endl;
+	      //std::cout<<"NEF: "<<jetNEF->at(i)<<std::endl;
+	      //std::cout<<"CEF: "<<jetCEF->at(i)<<std::endl;
+	      //std::cout<<"Pt: "<<jetPt->at(i)<<std::endl;
+ 	      //std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
+	      //std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
+	      //std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
               if(jetNConstituents->at(i)>1 && jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
-                std::cout<<"cut if"<<std::endl;
-                jetindex.push_back(i);
+               // std::cout<<"cut if"<<std::endl;
+               jetindex.push_back(i);
            }
         }//custom
      }//outer cut pt,eta,passOverlap
