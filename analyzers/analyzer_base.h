@@ -241,9 +241,18 @@ public :
    std::vector<float>   *muBestTrkPt;
    Int_t           nJet;
 
-   //std::vector<int>     *jetTestVariable;
-   //std::vector<float>   *jetSumIPSig;
-   //std::vector<float>   *jetMedianLog10IPSig;
+   std::vector<float>     *jetSumIP;
+   std::vector<float>     *jetSumIPSig;
+   std::vector<float>     *jetLog10IPSig;
+   std::vector<float>     *jetMedianLog10IPSig;
+   std::vector<int>	  *jetTrackPDGID;
+   std::vector<int> 	  *jetTrackMomPDGID;
+   std::vector<int> 	  *jetNConstituents;
+
+   std::vector<float> *jetAlphaMax;
+   std::vector<float> *jetAlphaMax2;
+   std::vector<float> *jetAlphaMaxP;
+   std::vector<float> *jetAlphaMaxP2;
 
    std::vector<float>   *jetPt;
    std::vector<float>   *jetEn;
@@ -559,9 +568,18 @@ public :
    TBranch        *b_muBestTrkPt;   //!
    TBranch        *b_nJet;   //!
   
-   //TBranch        *b_jetTestVariable;//!
-   //TBranch        *b_jetSumIPSig;//!
-   //TBranch        *b_jetMedianLog10IPSig;//!
+   TBranch        *b_jetSumIP;//!
+   TBranch        *b_jetSumIPSig;//!
+   TBranch        *b_jetLog10IPSig;//!
+   TBranch        *b_jetMedianLog10IPSig;//!
+   TBranch	  *b_jetTrackPDGID;//!
+   TBranch 	  *b_jetTrackMomPDGID;//!
+   TBranch	  *b_jetNConstituents;//!
+   
+   TBranch        *b_jetAlphaMax;
+   TBranch        *b_jetAlphaMax2;
+   TBranch        *b_jetAlphaMaxP;
+   TBranch        *b_jetAlphaMaxP2;
 
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEn;   //!

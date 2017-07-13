@@ -42,7 +42,7 @@ public :
  std::vector<int>     muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname="");
  //std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
  //std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
- std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString sysbinname="");
+ std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname="");
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -120,6 +120,8 @@ public :
 
  // selection counters (how many events pass)
  Int_t n_tot;
+ Int_t n_test;
+ Int_t n_test2;
 
  Int_t n_passSig;
  Int_t n_passZH;
@@ -144,77 +146,97 @@ public :
  std::vector<TString> jetmultnames;
  std::vector<TString> lepnames;
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
- // jetmultnames = Leading, Subleading, Third, Fourth
+ // jetmultnames = Leading, Subleading, Third, Fourth,allPFJets
+ // lepbinname   = ele, mu, NoSel
+ static const int SELBINNAMESIZE  = 6;
+ static const int JETMULTNAMESIZE = 5; 
+ static const int LEPBINNAMESIZE  = 3;
 
  // initialize histograms as global
  TH1F histoTH1F;
  TH2F histoTH2F;
 
  // // 2D
- // TH2F h_nvertnjets[6];
+ // TH2F h_nvertnjets[SELBINNAMESIZE];
 
  // General / leading
+ TH1F h_nVtx                          [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_nPU                           [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_phoEt                         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_phoEta                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_phoPhi                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_elePt                         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_eleEta                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_elePhi                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_muPt                          [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_muEta                         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_muPhi                         [SELBINNAMESIZE][LEPBINNAMESIZE];
+
+ TH1F h_htall                         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_htjets                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+
+// TH1F h_jetTestVariable[SELBINNAMESIZE][4];
+ 
 
 
- TH1F h_nVtx[6][2];
- TH1F h_nPU[6][2];
- TH1F h_phoEt[6][2];
- TH1F h_phoEta[6][2];
- TH1F h_phoPhi[6][2];
- TH1F h_elePt[6][2];
- TH1F h_eleEta[6][2];
- TH1F h_elePhi[6][2];
- TH1F h_muPt[6][2];
- TH1F h_muEta[6][2];
- TH1F h_muPhi[6][2];
+// Jet
+ TH1F h_jetPt                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
- TH1F h_htall[6][2];
- TH1F h_htjets[6][2];
+ TH1F h_jetSumIP                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetSumIPSig                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetLog10IPSig                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetMedianLog10IPSig           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetTrackPhi2                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetTrackPDGID		      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetTrackMomPDGID              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetNConstituents	      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
- // Jet
- TH1F h_jetPt[6][4][2]; 
+ //TH1F h_jetTestVariable             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
- TH1F h_jetTestVariable[6][4][2]; 
- TH1F h_jetSumIPSig[6][4][2];
- TH1F h_jetMedianLog10IPSig[6][4][2]; 
+ TH1F h_jetAlphaMax                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetAlphaMax2                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetAlphaMaxP                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetAlphaMaxP2                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ // TH1F h_CA2_x [SELBINNAMESIZE][4][LEPBINNAMESIZE];
+ // TH1F h_CA2_y [SELBINNAMESIZE][4][LEPBINNAMESIZE];
+ // TH1F h_CA2_z [SELBINNAMESIZE][4][LEPBINNAMESIZE];
+ TH1F h_jetEn                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetEta                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetPhi                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetRawPt                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetRawEn                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetMt                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetArea                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLeadTrackPt                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLeadTrackEta               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLeadTrackPhi               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLepTrackPID                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLepTrackPt                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLepTrackEta                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetLepTrackPhi                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetCSV2BJetTags               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetJetProbabilityBJetTags     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetpfCombinedMVAV2BJetTags    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetPartonID                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetHadFlvr                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenJetEn                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenJetPt                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenJetEta                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenJetPhi                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenPartonID                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenEn                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenPt                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenEta                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenPhi                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_jetGenPartonMomID             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
- TH1F h_jetEn[6][4][2]; 
- TH1F h_jetEta[6][4][2]; 
- TH1F h_jetPhi[6][4][2]; 
- TH1F h_jetRawPt[6][4][2]; 
- TH1F h_jetRawEn[6][4][2]; 
- TH1F h_jetMt[6][4][2]; 
- TH1F h_jetArea[6][4][2]; 
- TH1F h_jetLeadTrackPt[6][4][2]; 
- TH1F h_jetLeadTrackEta[6][4][2]; 
- TH1F h_jetLeadTrackPhi[6][4][2]; 
- TH1F h_jetLepTrackPID[6][4][2]; 
- TH1F h_jetLepTrackPt[6][4][2]; 
- TH1F h_jetLepTrackEta[6][4][2]; 
- TH1F h_jetLepTrackPhi[6][4][2]; 
- TH1F h_jetCSV2BJetTags[6][4][2]; 
- TH1F h_jetJetProbabilityBJetTags[6][4][2]; 
- TH1F h_jetpfCombinedMVAV2BJetTags[6][4][2]; 
- TH1F h_jetPartonID[6][4][2]; 
- TH1F h_jetHadFlvr[6][4][2]; 
- TH1F h_jetGenJetEn[6][4][2]; 
- TH1F h_jetGenJetPt[6][4][2]; 
- TH1F h_jetGenJetEta[6][4][2]; 
- TH1F h_jetGenJetPhi[6][4][2]; 
- TH1F h_jetGenPartonID[6][4][2]; 
- TH1F h_jetGenEn[6][4][2]; 
- TH1F h_jetGenPt[6][4][2]; 
- TH1F h_jetGenEta[6][4][2]; 
- TH1F h_jetGenPhi[6][4][2]; 
- TH1F h_jetGenPartonMomID[6][4][2]; 
-
- TH1F h_AK8JetPt[6][4][2]; 
- TH1F h_AK8JetEn[6][4][2]; 
- TH1F h_AK8JetRawPt[6][4][2]; 
- TH1F h_AK8JetRawEn[6][4][2]; 
- TH1F h_AK8JetEta[6][4][2]; 
- TH1F h_AK8JetPhi[6][4][2]; 
- TH1F h_AK8JetMass[6][4][2]; 
+ TH1F h_AK8JetPt                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetEn                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetRawPt                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetRawEn                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetEta                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetPhi                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F h_AK8JetMass                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
 
 };

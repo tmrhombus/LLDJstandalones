@@ -252,12 +252,15 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    muchi2LocalPosition = 0;
    mutrkKink = 0;
    muBestTrkPtError = 0;
-   
-   //jetTestVariable =0;
-   //jetSumIPSig = 0;
-   //jetMedianLog10IPSig = 0;
-
    muBestTrkPt = 0;
+
+   jetSumIP = 0;
+   jetSumIPSig = 0;
+   jetLog10IPSig = 0;
+   jetMedianLog10IPSig =0;
+   jetTrackPDGID = 0;
+   jetTrackMomPDGID = 0;
+   jetNConstituents =0;
 
    jetPt = 0;
    jetEn = 0;
@@ -608,9 +611,19 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muBestTrkPt", &muBestTrkPt, &b_muBestTrkPt);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    
-   //fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable); 
-   //fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
-   //fChain->SetBranchAddress("MedianLog10IPSig",&jetMedianLog10IPSig, &b_jetMedianLog10IPSig);
+   fChain->SetBranchAddress("jetSumIP", &jetSumIP, &b_jetSumIP); 
+   fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
+   fChain->SetBranchAddress("jetLog10IPSig", &jetLog10IPSig, &b_jetLog10IPSig);
+   fChain->SetBranchAddress("jetMedianLog10IPSig", &jetMedianLog10IPSig, &b_jetMedianLog10IPSig);   
+   fChain->SetBranchAddress("jetTrackPDGID", &jetTrackPDGID, &b_jetTrackPDGID);
+   fChain->SetBranchAddress("jetTrackMomPDGID", &jetTrackMomPDGID, &b_jetTrackMomPDGID);
+   fChain->SetBranchAddress("jetNConstituents", &jetNConstituents, &b_jetNConstituents);
+
+   fChain->SetBranchAddress("jetAlphaMax", &jetAlphaMax, &b_jetAlphaMax);
+   fChain->SetBranchAddress("jetAlphaMax2", &jetAlphaMax2, &b_jetAlphaMax2);
+   fChain->SetBranchAddress("jetAlphaMaxP", &jetAlphaMaxP, &b_jetAlphaMaxP);
+   fChain->SetBranchAddress("jetAlphaMaxP2", &jetAlphaMaxP2, &b_jetAlphaMaxP2);
+   
 
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetEn", &jetEn, &b_jetEn);
