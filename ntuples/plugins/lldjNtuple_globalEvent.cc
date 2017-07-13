@@ -512,15 +512,15 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     std::bitset<bitsize> HLT_Mu17Mu8_b(bitMu17Mu8);
     std::bitset<bitsize> HLT_Mu17TkMu8_b(HLT_Mu17TkMu8_b);
 
-    if     (name.find("HLT_PFHT350_PFMET100_v")                     != string::npos){cout<<name<<" "<<HLT_PFHT350PFMET100_b<<" "<<bitPFHT350PFMET100<<" "<<HLT_PFHT350PFMET100_<<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_Ele23_WPLoose_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele23Loose_b     <<" "<<bitEle23Loose     <<" "<<HLT_Ele23Loose_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_Ele27_WPTight_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele27Tight_b     <<" "<<bitEle27Tight     <<" "<<HLT_Ele27Tight_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele17Ele12_b     <<" "<<bitEle17Ele12     <<" "<<HLT_Ele17Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele23Ele12_b     <<" "<<bitEle23Ele12     <<" "<<HLT_Ele23Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_IsoMu22_v")                              != string::npos){cout<<name<<" "<<HLT_IsoMu22_b        <<" "<<bitIsoMu22        <<" "<<HLT_IsoMu22_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_IsoTkMu22_v")                            != string::npos){cout<<name<<" "<<HLT_IsoTkMu22_b      <<" "<<bitIsoTkMu22      <<" "<<HLT_IsoTkMu22_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;} 
-    else if(name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")      != string::npos){cout<<name<<" "<<HLT_Mu17Mu8_b        <<" "<<bitMu17Mu8        <<" "<<HLT_Mu17Mu8_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-    else if(name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")    != string::npos){cout<<name<<" "<<HLT_Mu17TkMu8_b      <<" "<<bitMu17TkMu8      <<" "<<HLT_Mu17TkMu8_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // if     (name.find("HLT_PFHT350_PFMET100_v")                     != string::npos){cout<<name<<" "<<HLT_PFHT350PFMET100_b<<" "<<bitPFHT350PFMET100<<" "<<HLT_PFHT350PFMET100_<<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_Ele23_WPLoose_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele23Loose_b     <<" "<<bitEle23Loose     <<" "<<HLT_Ele23Loose_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_Ele27_WPTight_Gsf_v")                    != string::npos){cout<<name<<" "<<HLT_Ele27Tight_b     <<" "<<bitEle27Tight     <<" "<<HLT_Ele27Tight_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele17Ele12_b     <<" "<<bitEle17Ele12     <<" "<<HLT_Ele17Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" "<<HLT_Ele23Ele12_b     <<" "<<bitEle23Ele12     <<" "<<HLT_Ele23Ele12_     <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_IsoMu22_v")                              != string::npos){cout<<name<<" "<<HLT_IsoMu22_b        <<" "<<bitIsoMu22        <<" "<<HLT_IsoMu22_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_IsoTkMu22_v")                            != string::npos){cout<<name<<" "<<HLT_IsoTkMu22_b      <<" "<<bitIsoTkMu22      <<" "<<HLT_IsoTkMu22_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;} 
+    // else if(name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")      != string::npos){cout<<name<<" "<<HLT_Mu17Mu8_b        <<" "<<bitMu17Mu8        <<" "<<HLT_Mu17Mu8_        <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+    // else if(name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")    != string::npos){cout<<name<<" "<<HLT_Mu17TkMu8_b      <<" "<<bitMu17TkMu8      <<" "<<HLT_Mu17TkMu8_      <<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
 
 
 

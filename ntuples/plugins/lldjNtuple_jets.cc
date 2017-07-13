@@ -397,7 +397,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
 //fills jets .clear() to empty vector of old data
 void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
-  bool dodebug = true;
+  bool dodebug = false;
 
   // cleanup from previous execution
   jetPt_                                  .clear();
