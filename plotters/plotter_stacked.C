@@ -25,188 +25,34 @@ void plotter_stacked()
  std::vector<TString> regions;
  regions.clear();
  regions.push_back("NoSel");
- regions.push_back("Sig");
- regions.push_back("VG");
+ //regions.push_back("Sig");
+ //regions.push_back("ZH");
  regions.push_back("DY");
  regions.push_back("OffZ");
- regions.push_back("NoPair"); 
+ //regions.push_back("NoPair"); 
 
  // lepton flavor
  std::vector<TString> leptons;
  leptons.clear();
  leptons.push_back("ele"); 
  leptons.push_back("mu");  
+ leptons.push_back("NoLepSel");
 
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
- //variables.push_back("htall");                                
-
- //variables.push_back("nVtx");                                  
- // variables.push_back("htall");                                 
- // variables.push_back("htjets");                                
- // variables.push_back("nPU");                                   
+ variables.push_back("nVtx");                                  
  variables.push_back("phoEt");                                 
- variables.push_back("phoEta");                                
- variables.push_back("phoPhi");                                
+ //variables.push_back("phoEta");                                
+ //variables.push_back("phoPhi");                                
  variables.push_back("elePt");                                 
- variables.push_back("eleEta");                                
- variables.push_back("elePhi");                                
+ //variables.push_back("eleEta");                                
+ //variables.push_back("elePhi");                                
  variables.push_back("muPt");                                  
- variables.push_back("muEta");                                 
- variables.push_back("muPhi");                                 
-// variables.push_back("LeadingJetjetPt");                       
-// variables.push_back("LeadingJetjetTestVariable");             
-// variables.push_back("LeadingJetjetEn");                       
-// variables.push_back("LeadingJetjetEta");                      
-// variables.push_back("LeadingJetjetPhi");                      
-// variables.push_back("LeadingJetjetRawPt");                    
-// variables.push_back("LeadingJetjetRawEn");                    
-// variables.push_back("LeadingJetjetMt");                       
-// variables.push_back("LeadingJetjetArea");                     
-// variables.push_back("LeadingJetjetLeadTrackPt");              
-// variables.push_back("LeadingJetjetLeadTrackEta");             
-// variables.push_back("LeadingJetjetLeadTrackPhi");             
-// variables.push_back("LeadingJetjetLepTrackPID");              
-// variables.push_back("LeadingJetjetLepTrackPt");               
-// variables.push_back("LeadingJetjetLepTrackEta");              
-// variables.push_back("LeadingJetjetLepTrackPhi");              
-// variables.push_back("LeadingJetjetCSV2BJetTags");             
-// variables.push_back("LeadingJetjetJetProbabilityBJetTags");   
-// variables.push_back("LeadingJetjetpfCombinedMVAV2BJetTags");  
-// variables.push_back("LeadingJetjetPartonID");                 
-// variables.push_back("LeadingJetjetHadFlvr");                  
-// variables.push_back("LeadingJetjetGenJetEn");                 
-// variables.push_back("LeadingJetjetGenJetPt");                 
-// variables.push_back("LeadingJetjetGenJetEta");                
-// variables.push_back("LeadingJetjetGenJetPhi");                
-// variables.push_back("LeadingJetjetGenPartonID");              
-// variables.push_back("LeadingJetjetGenEn");                    
-// variables.push_back("LeadingJetjetGenPt");                    
-// variables.push_back("LeadingJetjetGenEta");                   
-// variables.push_back("LeadingJetjetGenPhi");                   
-// variables.push_back("LeadingJetjetGenPartonMomID");           
-// variables.push_back("LeadingJetAK8JetPt");                    
-// variables.push_back("LeadingJetAK8JetEn");                    
-// variables.push_back("LeadingJetAK8JetRawPt");                 
-// variables.push_back("LeadingJetAK8JetRawEn");                 
-// variables.push_back("LeadingJetAK8JetEta");                   
-// variables.push_back("LeadingJetAK8JetPhi");                   
-// variables.push_back("LeadingJetAK8JetMass");                  
-// variables.push_back("SubleadingJetjetPt");                    
-// variables.push_back("SubleadingJetjetTestVariable");          
-// variables.push_back("SubleadingJetjetEn");                    
-// variables.push_back("SubleadingJetjetEta");                   
-// variables.push_back("SubleadingJetjetPhi");                   
-// variables.push_back("SubleadingJetjetRawPt");                 
-// variables.push_back("SubleadingJetjetRawEn");                 
-// variables.push_back("SubleadingJetjetMt");                    
-// variables.push_back("SubleadingJetjetArea");                  
-// variables.push_back("SubleadingJetjetLeadTrackPt");           
-// variables.push_back("SubleadingJetjetLeadTrackEta");          
-// variables.push_back("SubleadingJetjetLeadTrackPhi");          
-// variables.push_back("SubleadingJetjetLepTrackPID");           
-// variables.push_back("SubleadingJetjetLepTrackPt");            
-// variables.push_back("SubleadingJetjetLepTrackEta");           
-// variables.push_back("SubleadingJetjetLepTrackPhi");           
-// variables.push_back("SubleadingJetjetCSV2BJetTags");          
-// variables.push_back("SubleadingJetjetJetProbabilityBJetTags");
-// variables.push_back("SubleadingJetjetpfCombinedMVAV2BJetTags")
-// variables.push_back("SubleadingJetjetPartonID");              
-// variables.push_back("SubleadingJetjetHadFlvr");               
-// variables.push_back("SubleadingJetjetGenJetEn");              
-// variables.push_back("SubleadingJetjetGenJetPt");              
-// variables.push_back("SubleadingJetjetGenJetEta");             
-// variables.push_back("SubleadingJetjetGenJetPhi");             
-// variables.push_back("SubleadingJetjetGenPartonID");           
-// variables.push_back("SubleadingJetjetGenEn");                 
-// variables.push_back("SubleadingJetjetGenPt");                 
-// variables.push_back("SubleadingJetjetGenEta");                
-// variables.push_back("SubleadingJetjetGenPhi");                
-// variables.push_back("SubleadingJetjetGenPartonMomID");        
-// variables.push_back("SubleadingJetAK8JetPt");                 
-// variables.push_back("SubleadingJetAK8JetEn");                 
-// variables.push_back("SubleadingJetAK8JetRawPt");              
-// variables.push_back("SubleadingJetAK8JetRawEn");              
-// variables.push_back("SubleadingJetAK8JetEta");                
-// variables.push_back("SubleadingJetAK8JetPhi");                
-// variables.push_back("SubleadingJetAK8JetMass");               
-// variables.push_back("ThirdJetjetPt");                         
-// variables.push_back("ThirdJetjetTestVariable");               
-// variables.push_back("ThirdJetjetEn");                         
-// variables.push_back("ThirdJetjetEta");                        
-// variables.push_back("ThirdJetjetPhi");                        
-// variables.push_back("ThirdJetjetRawPt");                      
-// variables.push_back("ThirdJetjetRawEn");                      
-// variables.push_back("ThirdJetjetMt");                         
-// variables.push_back("ThirdJetjetArea");                       
-// variables.push_back("ThirdJetjetLeadTrackPt");                
-// variables.push_back("ThirdJetjetLeadTrackEta");               
-// variables.push_back("ThirdJetjetLeadTrackPhi");               
-// variables.push_back("ThirdJetjetLepTrackPID");                
-// variables.push_back("ThirdJetjetLepTrackPt");                 
-// variables.push_back("ThirdJetjetLepTrackEta");                
-// variables.push_back("ThirdJetjetLepTrackPhi");                
-// variables.push_back("ThirdJetjetCSV2BJetTags");               
-// variables.push_back("ThirdJetjetJetProbabilityBJetTags");     
-// variables.push_back("ThirdJetjetpfCombinedMVAV2BJetTags");    
-// variables.push_back("ThirdJetjetPartonID");                   
-// variables.push_back("ThirdJetjetHadFlvr");                    
-// variables.push_back("ThirdJetjetGenJetEn");                   
-// variables.push_back("ThirdJetjetGenJetPt");                   
-// variables.push_back("ThirdJetjetGenJetEta");                  
-// variables.push_back("ThirdJetjetGenJetPhi");                  
-// variables.push_back("ThirdJetjetGenPartonID");                
-// variables.push_back("ThirdJetjetGenEn");                      
-// variables.push_back("ThirdJetjetGenPt");                      
-// variables.push_back("ThirdJetjetGenEta");                     
-// variables.push_back("ThirdJetjetGenPhi");                     
-// variables.push_back("ThirdJetjetGenPartonMomID");             
-// variables.push_back("ThirdJetAK8JetPt");                      
-// variables.push_back("ThirdJetAK8JetEn");                      
-// variables.push_back("ThirdJetAK8JetRawPt");                   
-// variables.push_back("ThirdJetAK8JetRawEn");                   
-// variables.push_back("ThirdJetAK8JetEta");                     
-// variables.push_back("ThirdJetAK8JetPhi");                     
-// variables.push_back("ThirdJetAK8JetMass");                    
-// variables.push_back("FourthJetjetPt");                        
-// variables.push_back("FourthJetjetTestVariable");              
-// variables.push_back("FourthJetjetEn");                        
-// variables.push_back("FourthJetjetEta");                       
-// variables.push_back("FourthJetjetPhi");                       
-// variables.push_back("FourthJetjetRawPt");                     
-// variables.push_back("FourthJetjetRawEn");                     
-// variables.push_back("FourthJetjetMt");                        
-// variables.push_back("FourthJetjetArea");                      
-// variables.push_back("FourthJetjetLeadTrackPt");               
-// variables.push_back("FourthJetjetLeadTrackEta");              
-// variables.push_back("FourthJetjetLeadTrackPhi");              
-// variables.push_back("FourthJetjetLepTrackPID");               
-// variables.push_back("FourthJetjetLepTrackPt");                
-// variables.push_back("FourthJetjetLepTrackEta");               
-// variables.push_back("FourthJetjetLepTrackPhi");               
-// variables.push_back("FourthJetjetCSV2BJetTags");              
-// variables.push_back("FourthJetjetJetProbabilityBJetTags");    
-// variables.push_back("FourthJetjetpfCombinedMVAV2BJetTags");   
-// variables.push_back("FourthJetjetPartonID");                  
-// variables.push_back("FourthJetjetHadFlvr");                   
-// variables.push_back("FourthJetjetGenJetEn");                  
-// variables.push_back("FourthJetjetGenJetPt");                  
-// variables.push_back("FourthJetjetGenJetEta");                 
-// variables.push_back("FourthJetjetGenJetPhi");                 
-// variables.push_back("FourthJetjetGenPartonID");               
-// variables.push_back("FourthJetjetGenEn");                     
-// variables.push_back("FourthJetjetGenPt");                     
-// variables.push_back("FourthJetjetGenEta");                    
-// variables.push_back("FourthJetjetGenPhi");                    
-// variables.push_back("FourthJetjetGenPartonMomID");            
-// variables.push_back("FourthJetAK8JetPt");                     
-// variables.push_back("FourthJetAK8JetEn");                     
-// variables.push_back("FourthJetAK8JetRawPt");                  
-// variables.push_back("FourthJetAK8JetRawEn");                  
-// variables.push_back("FourthJetAK8JetEta");                    
-// variables.push_back("FourthJetAK8JetPhi");                    
-// variables.push_back("FourthJetAK8JetMass");                   
+ //variables.push_back("muEta");                                 
+ //variables.push_back("muPhi");                                 
+ variables.push_back("LeadingJetjetPt");                       
+ //variables.push_back("LeadingJetjetEta");                      
 
 
  // make canvas and text
@@ -216,6 +62,7 @@ void plotter_stacked()
  gPad->SetTickx();
  gPad->SetTicky();
  gStyle->SetLineWidth(3);
+ gStyle->SetPalette(kCMYK);
 
  TText* title = new TText(1,1,"") ;
  title->SetTextSize(0.04);
@@ -603,23 +450,32 @@ void plotter_stacked()
     Double_t intdata = h_Data->Integral(0,-1);
 
     // set attributes
-    h_DY          -> SetFillColor(kRed); 
-    h_GJets       -> SetFillColor(kOrange-3);
-    h_VV          -> SetFillColor(kYellow+1); 
-    h_ST          -> SetFillColor(kGreen+1); 
-    h_TT          -> SetFillColor(kGreen-9); 
-    h_WJetsToLNu  -> SetFillColor(kAzure+10); 
-    h_VG          -> SetFillColor(kBlue); 
-    h_VG          -> SetFillColor(kGreen);
+    //h_DY          -> SetFillColor(kRed); 
+    //h_GJets       -> SetFillColor(kOrange-3);
+    //h_VV          -> SetFillColor(kYellow+1); 
+    //h_ST          -> SetFillColor(kGreen+1); 
+    //h_TT          -> SetFillColor(kGreen-9); 
+    //h_WJetsToLNu  -> SetFillColor(kAzure+10); 
+    //h_VG          -> SetFillColor(kBlue); 
+    //h_VG          -> SetFillColor(kGreen);
 
-    h_DY         -> SetLineColor(kBlack); 
-    h_GJets      -> SetLineColor(kBlack);
-    h_ST         -> SetLineColor(kBlack); 
-    h_TT         -> SetLineColor(kBlack); 
-    h_WJetsToLNu -> SetLineColor(kBlack); 
-    h_VV         -> SetLineColor(kBlack); 
-    h_VG         -> SetLineColor(kBlack); 
-    h_VG         -> SetLineColor(kBlack);
+    //h_DY         -> SetLineColor(kBlack); 
+    //h_GJets      -> SetLineColor(kBlack);
+    //h_ST         -> SetLineColor(kBlack); 
+    //h_TT         -> SetLineColor(kBlack); 
+    //h_WJetsToLNu -> SetLineColor(kBlack); 
+    //h_VV         -> SetLineColor(kBlack); 
+    //h_VG         -> SetLineColor(kBlack); 
+    //h_VG         -> SetLineColor(kBlack);
+
+    // h_DY         -> SetFillStyle(3001); 
+    // h_GJets      -> SetFillStyle(3001);
+    // h_ST         -> SetFillStyle(3001); 
+    // h_TT         -> SetFillStyle(3001); 
+    // h_WJetsToLNu -> SetFillStyle(3001); 
+    // h_VV         -> SetFillStyle(3001); 
+    // h_VG         -> SetFillStyle(3001); 
+    // h_VG         -> SetFillStyle(3001);
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetLineWidth(3);
@@ -705,7 +561,17 @@ void plotter_stacked()
     //}
     
     // and draw
-    bgstack->Draw("hist");
+    //bgstack->Draw("hist PFC ");
+
+    //h_DY          -> Draw("hist SAMES PFC");
+    h_DY          -> Draw("hist SAMES PFC");
+    h_GJets       -> Draw("hist PFC");
+    h_VV          -> Draw("hist SAMES PFC"); 
+    h_ST          -> Draw("hist SAMES PFC");
+    h_TT          -> Draw("hist SAMES PFC");
+    h_WJetsToLNu  -> Draw("hist SAMES PFC"); 
+    h_VG          -> Draw("hist SAMES PFC");
+    h_VG          -> Draw("hist SAMES PFC");
     if(drawData){
      h_Data->Draw("sames, E");
     }
@@ -736,6 +602,7 @@ void plotter_stacked()
 
     // save canvas
     canvas->SaveAs(outname+".pdf");
+    canvas->SaveAs(outname+".png");
     //canvas->SaveAs(outpath+jettype+"_"+varname+extraname+".pdf");
 
    } 
