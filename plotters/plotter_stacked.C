@@ -17,6 +17,7 @@ void plotter_stacked()
 
  // y axis plots as log
  Bool_t dolog = kTRUE;
+ //Bool_t dolog = kFALSE;
  TString extraname = "";
  if(dolog){extraname+="_log";}
  if(drawSignal){extraname+="_wsig";}
@@ -62,7 +63,9 @@ void plotter_stacked()
  gPad->SetTickx();
  gPad->SetTicky();
  gStyle->SetLineWidth(3);
- gStyle->SetPalette(kCMYK);
+ //gStyle->SetPalette(kCMYK);
+ //gStyle->SetPalette(kBird);
+ gStyle->SetPalette(kPastel);
 
  TText* title = new TText(1,1,"") ;
  title->SetTextSize(0.04);
@@ -176,6 +179,7 @@ void plotter_stacked()
  TH1F* h_ST     ;
  TH1F* h_VV     ;
  TH1F* h_VG     ;
+ TH1F* h_ZH     ;
  TH1F* h_TT     ;
  TH1F* h_totbkg ;
 
@@ -278,6 +282,10 @@ void plotter_stacked()
     h_DoubleEG                          = (TH1F*)file_DoubleEG                         ->Get("h_"+varname)->Clone( "DoubleEG"                         ) ;
     h_DoubleMuon                        = (TH1F*)file_DoubleMuon                       ->Get("h_"+varname)->Clone( "DoubleMuon"                       ) ;
     h_MuonEG                            = (TH1F*)file_MuonEG                           ->Get("h_"+varname)->Clone( "MuonEG"                           ) ;
+
+    // tmp remove next run !!! screwed up XCs for VG
+    h_WG->Scale(405.271/9405.271);
+    h_ZG->Scale(117.864/9117.864);
 
     // integrals of histograms
     Double_t int_DY10to50                          = h_DY10to50                         ->Integral(0,-1) ;
@@ -385,8 +393,8 @@ void plotter_stacked()
      h_ST->Add(h_STbar_tW);
      h_ST->Add(h_ST_tW);
 
-    h_VG = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
-     h_VG->Add(h_ggZH_HToBB_ZToLL);
+    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
+     h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
     h_VV = (TH1F*)h_WWToLNuLNu->Clone("h_VV");
      h_VV->Add(h_WWToLNuQQ      ) ;
@@ -459,14 +467,14 @@ void plotter_stacked()
     //h_VG          -> SetFillColor(kBlue); 
     //h_VG          -> SetFillColor(kGreen);
 
-    //h_DY         -> SetLineColor(kBlack); 
-    //h_GJets      -> SetLineColor(kBlack);
-    //h_ST         -> SetLineColor(kBlack); 
-    //h_TT         -> SetLineColor(kBlack); 
-    //h_WJetsToLNu -> SetLineColor(kBlack); 
-    //h_VV         -> SetLineColor(kBlack); 
-    //h_VG         -> SetLineColor(kBlack); 
-    //h_VG         -> SetLineColor(kBlack);
+    h_DY         -> SetLineColor(kBlack); 
+    h_GJets      -> SetLineColor(kBlack);
+    h_ST         -> SetLineColor(kBlack); 
+    h_TT         -> SetLineColor(kBlack); 
+    h_WJetsToLNu -> SetLineColor(kBlack); 
+    h_VV         -> SetLineColor(kBlack); 
+    h_VG         -> SetLineColor(kBlack); 
+    h_ZH         -> SetLineColor(kBlack);
 
     // h_DY         -> SetFillStyle(3001); 
     // h_GJets      -> SetFillStyle(3001);
@@ -475,34 +483,21 @@ void plotter_stacked()
     // h_WJetsToLNu -> SetFillStyle(3001); 
     // h_VV         -> SetFillStyle(3001); 
     // h_VG         -> SetFillStyle(3001); 
-    // h_VG         -> SetFillStyle(3001);
+    // h_ZH         -> SetFillStyle(3001);
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetLineWidth(3);
 
-    //h_SignalWm   ->SetFillStyle(3001); 
-    //h_SignalWm   ->SetFillStyle(3001); 
-    //h_SignalWp   ->SetFillStyle(3001); 
-    //h_SignalVG   ->SetFillStyle(3001); 
-    //h_SignalggZH ->SetFillStyle(3001); 
-    //h_SignalWm   ->SetLineColor(1); 
-    //h_SignalWp   ->SetLineColor(2); 
-    //h_SignalVG   ->SetLineColor(3); 
-    //h_SignalggZH ->SetLineColor(4); 
-    //h_SignalWm   ->SetLineWidth(2); 
-    //h_SignalWp   ->SetLineWidth(2); 
-    //h_SignalVG   ->SetLineWidth(2); 
-    //h_SignalggZH ->SetLineWidth(2); 
-
     // make stack
     THStack *bgstack = new THStack("bgstack","");
     bgstack->Add(h_DY         ); 
+    bgstack->Add(h_GJets      );
     bgstack->Add(h_VV         ); 
     bgstack->Add(h_ST         ); 
     bgstack->Add(h_TT         ); 
     bgstack->Add(h_WJetsToLNu ); 
     bgstack->Add(h_VG         );
-    bgstack->Add(h_VG         );
+    bgstack->Add(h_ZH         );
 
     //  if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
     //     h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
@@ -544,13 +539,9 @@ void plotter_stacked()
     leg->AddEntry(h_ST           , "Single Top", "f"); 
     leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
     leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
-    leg->AddEntry(h_VG           , "ZH#rightarrowLLbb", "f");
     leg->AddEntry(h_VG           , "V#gamma", "f");
+    leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
     //if(drawSignal){
-    // leg->AddEntry(h_SignalWm, "Signal W-H","l");
-    // leg->AddEntry(h_SignalWp, "Signal W+H","l");
-    // leg->AddEntry(h_SignalVG, "Signal ZH","l");
-    // leg->AddEntry(h_SignalggZH, "Signal ggZH","l");
        //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}0     )", "l" ) ;
        //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}0p05  )", "l" ) ;
        //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}1     )", "l" ) ;
@@ -561,17 +552,8 @@ void plotter_stacked()
     //}
     
     // and draw
-    //bgstack->Draw("hist PFC ");
+    bgstack->Draw("hist PFC ");
 
-    //h_DY          -> Draw("hist SAMES PFC");
-    h_DY          -> Draw("hist SAMES PFC");
-    h_GJets       -> Draw("hist PFC");
-    h_VV          -> Draw("hist SAMES PFC"); 
-    h_ST          -> Draw("hist SAMES PFC");
-    h_TT          -> Draw("hist SAMES PFC");
-    h_WJetsToLNu  -> Draw("hist SAMES PFC"); 
-    h_VG          -> Draw("hist SAMES PFC");
-    h_VG          -> Draw("hist SAMES PFC");
     if(drawData){
      h_Data->Draw("sames, E");
     }
@@ -601,7 +583,7 @@ void plotter_stacked()
     gPad->RedrawAxis();
 
     // save canvas
-    canvas->SaveAs(outname+".pdf");
+    //canvas->SaveAs(outname+".pdf");
     canvas->SaveAs(outname+".png");
     //canvas->SaveAs(outpath+jettype+"_"+varname+extraname+".pdf");
 
