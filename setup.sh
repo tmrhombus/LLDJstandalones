@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export nversion="raindaydata"
-export aversion="june7"
+export nversion="EleventhJuly"
+export aversion="firsttry"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`

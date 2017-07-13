@@ -10,34 +10,48 @@ lumi=35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
+# "DY10to50"                            \
+# "MuonEG"                              \
 samples=(  \
- 'DY50'                              \
- 'DY5to50_HT100to200'                \
- 'DY5to50_HT200to400'                \
- 'DY5to50_HT400to600'                \
- 'DY5to50_HT600toInf'                \
- 'DY5to50_HT70to100'                 \
- 'GJets_HT40To100'                   \
- 'GJets_HT100To200'                  \
- 'GJets_HT200To400'                  \
- 'GJets_HT400To600'                  \
- 'GJets_HT600ToInf'                  \
- 'ST_s'                              \
- 'STbar_t'                           \
- 'ST_t'                              \
- 'STbar_tW'                          \
- 'ST_tW'                             \
- 'TTJets'                            \
- 'WW'                                \
- 'WZ'                                \
- 'ZZ'                                \
- 'ZH_HToBB_ZToLL'                    \
- 'ggZH_HToBB_ZToLL'                  \
- 'ggZH_HToSSTobbbb_MS40_ctauS100'    \
- 'ggZH_HToSSTodddd_MS40_ctauS100'    \
- 'WJetsToLNu'                        \
- 'SingleElectron'                    \
- 'SingleMuon'
+ "DY50"                                \
+ "ggZH_HToBB_ZToLL"                    \
+ "ggZH_HToSSTobbbb_MS40_ctauS0"        \
+ "ggZH_HToSSTobbbb_MS40_ctauS0p05"     \
+ "ggZH_HToSSTobbbb_MS40_ctauS1"        \
+ "ggZH_HToSSTobbbb_MS40_ctauS10"       \
+ "ggZH_HToSSTobbbb_MS40_ctauS100"      \
+ "ggZH_HToSSTobbbb_MS40_ctauS1000"     \
+ "ggZH_HToSSTobbbb_MS40_ctauS10000"    \
+ "GJets_HT40To100"                     \
+ "GJets_HT100To200"                    \
+ "GJets_HT200To400"                    \
+ "GJets_HT400To600"                    \
+ "GJets_HT600ToInf"                    \
+ "ST_s"                                \
+ "STbar_t"                             \
+ "ST_t"                                \
+ "STbar_tW"                            \
+ "ST_tW"                               \
+ "TTtoLL"                              \
+ "TTtoLfromTbar"                       \
+ "TTtoLfromT"                          \
+ "WG"                                  \
+ "WJetsToLNu"                          \
+ "WWToLNuLNu"                          \
+ "WWToLNuQQ"                           \
+ "WZToL3Nu"                            \
+ "WZTo3LNu"                            \
+ "WZToLNu2QorQQ2L"                     \
+ "ZG"                                  \
+ "ZH_HToBB_ZToLL"                      \
+ "ZZToLLNuNu"                          \
+ "ZZToLLQQ"                            \
+ "ZZToNuNuQQ"                          \
+ "ZZToLLLL"                            \
+ "SingleElectron"                      \
+ "SingleMuon"                          \
+ "DoubleEG"                            \
+ "DoubleMuon"                          \
 )
 
 
@@ -128,6 +142,12 @@ makeasubmitdir () {
 for sample in ${samples[@]} 
 do
  if [[ ${sample} == "Single"* ]]
+ then
+  mc=""
+ elif [[ ${sample} == "Double"* ]]
+ then
+  mc=""
+ elif [[ ${sample} == "MuonEG"* ]]
  then
   mc=""
  else
