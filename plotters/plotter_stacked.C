@@ -7,6 +7,9 @@ void plotter_stacked()
  // Draw signal as lines
  Bool_t drawSignal = kFALSE;
  Bool_t drawData = kTRUE;
+ Bool_t drawRatio = kTRUE;
+ // y axis plots as log
+ Bool_t dolog = kTRUE;
 
  // path to root files
  TString inpath  = TString("../roots/");
@@ -15,9 +18,6 @@ void plotter_stacked()
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
- // y axis plots as log
- Bool_t dolog = kTRUE;
- //Bool_t dolog = kFALSE;
  TString extraname = "";
  if(dolog){extraname+="_log";}
  if(drawSignal){extraname+="_wsig";}
@@ -27,10 +27,10 @@ void plotter_stacked()
  regions.clear();
  regions.push_back("NoSel");
  //regions.push_back("Sig");
- //regions.push_back("ZH");
+ regions.push_back("ZH");
  regions.push_back("DY");
  regions.push_back("OffZ");
- //regions.push_back("NoPair"); 
+ regions.push_back("NoPair"); 
 
  // lepton flavor
  std::vector<TString> leptons;
@@ -64,8 +64,10 @@ void plotter_stacked()
  gPad->SetTicky();
  gStyle->SetLineWidth(3);
  //gStyle->SetPalette(kCMYK);
- //gStyle->SetPalette(kBird);
- gStyle->SetPalette(kPastel);
+ gStyle->SetPalette(kBird);
+ //gStyle->SetPalette(kPastel);
+ //gStyle->InvertPalette();
+ //TColor::InvertPalette();
 
  TText* title = new TText(1,1,"") ;
  title->SetTextSize(0.04);
@@ -239,6 +241,7 @@ void plotter_stacked()
 
     printf("plotting  h_%s \n",varname.Data());
     TString outname = outpath+varname+extraname; 
+    TString logname = outpath+"logs/"+varname+extraname; 
 
     // get histograms from files
     h_DY10to50                          = (TH1F*)file_DY10to50                         ->Get("h_"+varname)->Clone( "DY10to50"                         ) ;
@@ -331,50 +334,63 @@ void plotter_stacked()
     Double_t int_MuonEG                            = h_MuonEG                           ->Integral(0,-1) ;
 
     FILE * outtable;
- 
-    outtable = fopen (outname+".txt","w");
-     fprintf (outtable, "           & %s \n", region.Data()); 
-     fprintf (outtable, "DY10to50                          &%3.1f\n", int_DY10to50                         ) ;
-     fprintf (outtable, "DY50                              &%3.1f\n", int_DY50                             ) ;
-     fprintf (outtable, "ggZH_HToBB_ZToLL                  &%3.1f\n", int_ggZH_HToBB_ZToLL                 ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS0      &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS0p05   &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS1      &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS10     &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS100    &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS1000   &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
-     fprintf (outtable, "ggZH_HToSSTobbbb_MS40_ctauS10000  &%3.1f\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
-     fprintf (outtable, "GJets_HT40To100                   &%3.1f\n", int_GJets_HT40To100                  ) ;
-     fprintf (outtable, "GJets_HT100To200                  &%3.1f\n", int_GJets_HT100To200                 ) ;
-     fprintf (outtable, "GJets_HT200To400                  &%3.1f\n", int_GJets_HT200To400                 ) ;
-     fprintf (outtable, "GJets_HT400To600                  &%3.1f\n", int_GJets_HT400To600                 ) ;
-     fprintf (outtable, "GJets_HT600ToInf                  &%3.1f\n", int_GJets_HT600ToInf                 ) ;
-     fprintf (outtable, "ST_s                              &%3.1f\n", int_ST_s                             ) ;
-     fprintf (outtable, "STbar_t                           &%3.1f\n", int_STbar_t                          ) ;
-     fprintf (outtable, "ST_t                              &%3.1f\n", int_ST_t                             ) ;
-     fprintf (outtable, "STbar_tW                          &%3.1f\n", int_STbar_tW                         ) ;
-     fprintf (outtable, "ST_tW                             &%3.1f\n", int_ST_tW                            ) ;
-     fprintf (outtable, "TTtoLL                            &%3.1f\n", int_TTtoLL                           ) ;
-     fprintf (outtable, "TTtoLfromTbar                     &%3.1f\n", int_TTtoLfromTbar                    ) ;
-     fprintf (outtable, "TTtoLfromT                        &%3.1f\n", int_TTtoLfromT                       ) ;
-     fprintf (outtable, "WG                                &%3.1f\n", int_WG                               ) ;
-     fprintf (outtable, "WJetsToLNu                        &%3.1f\n", int_WJetsToLNu                       ) ;
-     fprintf (outtable, "WWToLNuLNu                        &%3.1f\n", int_WWToLNuLNu                       ) ;
-     fprintf (outtable, "WWToLNuQQ                         &%3.1f\n", int_WWToLNuQQ                        ) ;
-     fprintf (outtable, "WZToL3Nu                          &%3.1f\n", int_WZToL3Nu                         ) ;
-     fprintf (outtable, "WZTo3LNu                          &%3.1f\n", int_WZTo3LNu                         ) ;
-     fprintf (outtable, "WZToLNu2QorQQ2L                   &%3.1f\n", int_WZToLNu2QorQQ2L                  ) ;
-     fprintf (outtable, "ZG                                &%3.1f\n", int_ZG                               ) ;
-     fprintf (outtable, "ZH_HToBB_ZToLL                    &%3.1f\n", int_ZH_HToBB_ZToLL                   ) ;
-     fprintf (outtable, "ZZToLLNuNu                        &%3.1f\n", int_ZZToLLNuNu                       ) ;
-     fprintf (outtable, "ZZToLLQQ                          &%3.1f\n", int_ZZToLLQQ                         ) ;
-     fprintf (outtable, "ZZToNuNuQQ                        &%3.1f\n", int_ZZToNuNuQQ                       ) ;
-     fprintf (outtable, "ZZToLLLL                          &%3.1f\n", int_ZZToLLLL                         ) ;
-     fprintf (outtable, "SingleElectron                    &%3.1f\n", int_SingleElectron                   ) ;
-     fprintf (outtable, "SingleMuon                        &%3.1f\n", int_SingleMuon                       ) ;
-     fprintf (outtable, "DoubleEG                          &%3.1f\n", int_DoubleEG                         ) ;
-     fprintf (outtable, "DoubleMuon                        &%3.1f\n", int_DoubleMuon                       ) ;
-     fprintf (outtable, "MuonEG                            &%3.1f\n", int_MuonEG                           ) ;
+    outtable = fopen (logname+".tex","w");
+     fprintf (outtable, "\\documentclass{standalone}\n\n");
+     fprintf (outtable, "\\begin{document}\n\n");
+     fprintf (outtable, "\\begin{tabular}{rl}\n\n");
+     fprintf (outtable, "           & \\Huge %s   \\\\\n", region.Data()); 
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, "\\Large  Backgrounds \\\\\n");
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, "DY10to50                          & %3.1f  \\\\\n", int_DY10to50                         ) ;
+     fprintf (outtable, "DY50                              & %3.1f  \\\\\n", int_DY50                             ) ;
+     fprintf (outtable, "ggZH\\_HToBB\\_ZToLL                  & %3.1f  \\\\\n", int_ggZH_HToBB_ZToLL                 ) ;
+     fprintf (outtable, "GJets\\_HT40To100                   & %3.1f  \\\\\n", int_GJets_HT40To100                  ) ;
+     fprintf (outtable, "GJets\\_HT100To200                  & %3.1f  \\\\\n", int_GJets_HT100To200                 ) ;
+     fprintf (outtable, "GJets\\_HT200To400                  & %3.1f  \\\\\n", int_GJets_HT200To400                 ) ;
+     fprintf (outtable, "GJets\\_HT400To600                  & %3.1f  \\\\\n", int_GJets_HT400To600                 ) ;
+     fprintf (outtable, "GJets\\_HT600ToInf                  & %3.1f  \\\\\n", int_GJets_HT600ToInf                 ) ;
+     fprintf (outtable, "ST\\_s                              & %3.1f  \\\\\n", int_ST_s                             ) ;
+     fprintf (outtable, "STbar\\_t                           & %3.1f  \\\\\n", int_STbar_t                          ) ;
+     fprintf (outtable, "ST\\_t                              & %3.1f  \\\\\n", int_ST_t                             ) ;
+     fprintf (outtable, "STbar\\_tW                          & %3.1f  \\\\\n", int_STbar_tW                         ) ;
+     fprintf (outtable, "ST\\_tW                             & %3.1f  \\\\\n", int_ST_tW                            ) ;
+     fprintf (outtable, "TTtoLL                            & %3.1f  \\\\\n", int_TTtoLL                           ) ;
+     fprintf (outtable, "TTtoLfromTbar                     & %3.1f  \\\\\n", int_TTtoLfromTbar                    ) ;
+     fprintf (outtable, "TTtoLfromT                        & %3.1f  \\\\\n", int_TTtoLfromT                       ) ;
+     fprintf (outtable, "WG                                & %3.1f  \\\\\n", int_WG                               ) ;
+     fprintf (outtable, "WJetsToLNu                        & %3.1f  \\\\\n", int_WJetsToLNu                       ) ;
+     fprintf (outtable, "WWToLNuLNu                        & %3.1f  \\\\\n", int_WWToLNuLNu                       ) ;
+     fprintf (outtable, "WWToLNuQQ                         & %3.1f  \\\\\n", int_WWToLNuQQ                        ) ;
+     fprintf (outtable, "WZToL3Nu                          & %3.1f  \\\\\n", int_WZToL3Nu                         ) ;
+     fprintf (outtable, "WZTo3LNu                          & %3.1f  \\\\\n", int_WZTo3LNu                         ) ;
+     fprintf (outtable, "WZToLNu2QorQQ2L                   & %3.1f  \\\\\n", int_WZToLNu2QorQQ2L                  ) ;
+     fprintf (outtable, "ZG                                & %3.1f  \\\\\n", int_ZG                               ) ;
+     fprintf (outtable, "ZH\\_HToBB\\_ZToLL                    & %3.1f  \\\\\n", int_ZH_HToBB_ZToLL                   ) ;
+     fprintf (outtable, "ZZToLLNuNu                        & %3.1f  \\\\\n", int_ZZToLLNuNu                       ) ;
+     fprintf (outtable, "ZZToLLQQ                          & %3.1f  \\\\\n", int_ZZToLLQQ                         ) ;
+     fprintf (outtable, "ZZToNuNuQQ                        & %3.1f  \\\\\n", int_ZZToNuNuQQ                       ) ;
+     fprintf (outtable, "ZZToLLLL                          & %3.1f  \\\\\n", int_ZZToLLLL                         ) ;
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, " \\Large Data \\\\\n");
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, "SingleElectron                    & %3.1f  \\\\\n", int_SingleElectron                   ) ;
+     fprintf (outtable, "SingleMuon                        & %3.1f  \\\\\n", int_SingleMuon                       ) ;
+     fprintf (outtable, "DoubleEG                          & %3.1f  \\\\\n", int_DoubleEG                         ) ;
+     fprintf (outtable, "DoubleMuon                        & %3.1f  \\\\\n", int_DoubleMuon                       ) ;
+     fprintf (outtable, "MuonEG                            & %3.1f  \\\\\n", int_MuonEG                           ) ;
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, "Signel (only relative matters (xc = 1 ) \\\\\n");
+     fprintf (outtable, " \\hline \n");
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
+     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
+     fprintf (outtable, "\\end{tabular}\n\n");
+     fprintf (outtable, "\\end{document}\n\n");
     fclose (outtable);
 
     // merge some histograms
@@ -486,18 +502,29 @@ void plotter_stacked()
     // h_ZH         -> SetFillStyle(3001);
 
     h_Data  -> SetLineColor(kBlack);
+    h_Data  -> SetMarkerStyle(8);
+    h_Data  -> SetMarkerSize(1);
     h_Data  -> SetLineWidth(3);
 
     // make stack
     THStack *bgstack = new THStack("bgstack","");
-    bgstack->Add(h_DY         ); 
-    bgstack->Add(h_GJets      );
-    bgstack->Add(h_VV         ); 
-    bgstack->Add(h_ST         ); 
-    bgstack->Add(h_TT         ); 
-    bgstack->Add(h_WJetsToLNu ); 
-    bgstack->Add(h_VG         );
     bgstack->Add(h_ZH         );
+    bgstack->Add(h_VG         );
+    bgstack->Add(h_WJetsToLNu ); 
+    bgstack->Add(h_TT         ); 
+    bgstack->Add(h_ST         ); 
+    bgstack->Add(h_VV         ); 
+    bgstack->Add(h_GJets      );
+    bgstack->Add(h_DY         ); 
+
+    //bgstack->Add(h_DY         ); 
+    //bgstack->Add(h_GJets      );
+    //bgstack->Add(h_VV         ); 
+    //bgstack->Add(h_ST         ); 
+    //bgstack->Add(h_TT         ); 
+    //bgstack->Add(h_WJetsToLNu ); 
+    //bgstack->Add(h_VG         );
+    //bgstack->Add(h_ZH         );
 
     //  if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
     //     h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
