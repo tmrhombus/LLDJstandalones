@@ -5,8 +5,7 @@ void plotter_stacked()
 {
 
  // Draw signal as lines
- Bool_t drawSignal = kFALSE;
- Bool_t drawData = kTRUE;
+ Bool_t drawSignal = kTRUE;
  Bool_t drawRatio = kTRUE;
  // y axis plots as log
  Bool_t dolog = kTRUE;
@@ -44,16 +43,16 @@ void plotter_stacked()
  variables.clear();
  variables.push_back("nVtx");                                  
  variables.push_back("phoEt");                                 
- //variables.push_back("phoEta");                                
- //variables.push_back("phoPhi");                                
+ variables.push_back("phoEta");                                
+ variables.push_back("phoPhi");                                
  variables.push_back("elePt");                                 
- //variables.push_back("eleEta");                                
- //variables.push_back("elePhi");                                
+ variables.push_back("eleEta");                                
+ variables.push_back("elePhi");                                
  variables.push_back("muPt");                                  
- //variables.push_back("muEta");                                 
- //variables.push_back("muPhi");                                 
+ variables.push_back("muEta");                                 
+ variables.push_back("muPhi");                                 
  variables.push_back("LeadingJetjetPt");                       
- //variables.push_back("LeadingJetjetEta");                      
+ variables.push_back("LeadingJetjetEta");                      
 
 
  // make canvas and text
@@ -63,9 +62,7 @@ void plotter_stacked()
  gPad->SetTickx();
  gPad->SetTicky();
  gStyle->SetLineWidth(3);
- //gStyle->SetPalette(kCMYK);
  gStyle->SetPalette(kBird);
- //gStyle->SetPalette(kPastel);
  //gStyle->InvertPalette();
  //TColor::InvertPalette();
 
@@ -183,7 +180,7 @@ void plotter_stacked()
  TH1F* h_VG     ;
  TH1F* h_ZH     ;
  TH1F* h_TT     ;
- TH1F* h_totbkg ;
+ TH1F* h_Totbkg ;
 
  TH1F* h_Data   ;
 
@@ -338,7 +335,7 @@ void plotter_stacked()
      fprintf (outtable, "\\documentclass{standalone}\n\n");
      fprintf (outtable, "\\begin{document}\n\n");
      fprintf (outtable, "\\begin{tabular}{rl}\n\n");
-     fprintf (outtable, "           & \\Huge %s   \\\\\n", region.Data()); 
+     fprintf (outtable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
      fprintf (outtable, " \\hline \n");
      fprintf (outtable, "\\Large  Backgrounds \\\\\n");
      fprintf (outtable, " \\hline \n");
@@ -429,36 +426,35 @@ void plotter_stacked()
     h_VG = (TH1F*)h_WG->Clone("h_VG");
      h_VG->Add(h_ZG);
 
-    h_totbkg= (TH1F*)h_DY10to50->Clone("h_totbkg");
-     h_totbkg->Add(h_DY50            ) ;
-     h_totbkg->Add(h_ggZH_HToBB_ZToLL) ;
-     h_totbkg->Add(h_GJets_HT40To100 ) ;
-     h_totbkg->Add(h_GJets_HT100To200) ;
-     h_totbkg->Add(h_GJets_HT200To400) ;
-     h_totbkg->Add(h_GJets_HT400To600) ;
-     h_totbkg->Add(h_GJets_HT600ToInf) ;
-     h_totbkg->Add(h_ST_s            ) ;
-     h_totbkg->Add(h_STbar_t         ) ;
-     h_totbkg->Add(h_ST_t            ) ;
-     h_totbkg->Add(h_STbar_tW        ) ;
-     h_totbkg->Add(h_ST_tW           ) ;
-     h_totbkg->Add(h_TTtoLL          ) ;
-     h_totbkg->Add(h_TTtoLfromTbar   ) ;
-     h_totbkg->Add(h_TTtoLfromT      ) ;
-     h_totbkg->Add(h_WG              ) ;
-     h_totbkg->Add(h_WJetsToLNu      ) ;
-     h_totbkg->Add(h_WWToLNuLNu      ) ;
-     h_totbkg->Add(h_WWToLNuQQ       ) ;
-     h_totbkg->Add(h_WZToL3Nu        ) ;
-     h_totbkg->Add(h_WZTo3LNu        ) ;
-     h_totbkg->Add(h_WZToLNu2QorQQ2L ) ;
-     h_totbkg->Add(h_ZG              ) ;
-     h_totbkg->Add(h_ZH_HToBB_ZToLL  ) ;
-     h_totbkg->Add(h_ZZToLLNuNu      ) ;
-     h_totbkg->Add(h_ZZToLLQQ        ) ;
-     h_totbkg->Add(h_ZZToNuNuQQ      ) ;
-     h_totbkg->Add(h_ZZToLLLL        ) ;
-    Double_t intbkg = h_totbkg->Integral(0,-1);
+    h_Totbkg= (TH1F*)h_DY10to50->Clone("h_Totbkg");
+     h_Totbkg->Add(h_DY50            ) ;
+     h_Totbkg->Add(h_ggZH_HToBB_ZToLL) ;
+     h_Totbkg->Add(h_GJets_HT40To100 ) ;
+     h_Totbkg->Add(h_GJets_HT100To200) ;
+     h_Totbkg->Add(h_GJets_HT200To400) ;
+     h_Totbkg->Add(h_GJets_HT400To600) ;
+     h_Totbkg->Add(h_GJets_HT600ToInf) ;
+     h_Totbkg->Add(h_ST_s            ) ;
+     h_Totbkg->Add(h_STbar_t         ) ;
+     h_Totbkg->Add(h_ST_t            ) ;
+     h_Totbkg->Add(h_STbar_tW        ) ;
+     h_Totbkg->Add(h_ST_tW           ) ;
+     h_Totbkg->Add(h_TTtoLL          ) ;
+     h_Totbkg->Add(h_TTtoLfromTbar   ) ;
+     h_Totbkg->Add(h_TTtoLfromT      ) ;
+     h_Totbkg->Add(h_WG              ) ;
+     h_Totbkg->Add(h_WJetsToLNu      ) ;
+     h_Totbkg->Add(h_WWToLNuLNu      ) ;
+     h_Totbkg->Add(h_WWToLNuQQ       ) ;
+     h_Totbkg->Add(h_WZToL3Nu        ) ;
+     h_Totbkg->Add(h_WZTo3LNu        ) ;
+     h_Totbkg->Add(h_WZToLNu2QorQQ2L ) ;
+     h_Totbkg->Add(h_ZG              ) ;
+     h_Totbkg->Add(h_ZH_HToBB_ZToLL  ) ;
+     h_Totbkg->Add(h_ZZToLLNuNu      ) ;
+     h_Totbkg->Add(h_ZZToLLQQ        ) ;
+     h_Totbkg->Add(h_ZZToNuNuQQ      ) ;
+     h_Totbkg->Add(h_ZZToLLLL        ) ;
 
     // set data set(s) to use
     if( lepton=="ele"){
@@ -471,17 +467,56 @@ void plotter_stacked()
      h_Data = (TH1F*)h_SingleElectron->Clone("h_Data");
       h_Data->Add(h_SingleMuon);
     }
-    Double_t intdata = h_Data->Integral(0,-1);
+
+    // count + ratio
+    Double_t int_DY     = h_DY     ->Integral(0,-1) ; 
+    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; 
+    Double_t int_ST     = h_ST     ->Integral(0,-1) ; 
+    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; 
+    Double_t int_VV     = h_VV     ->Integral(0,-1) ; 
+    Double_t int_TT     = h_TT     ->Integral(0,-1) ; 
+    Double_t int_VG     = h_VG     ->Integral(0,-1) ; 
+    Double_t int_Totbkg = h_Totbkg ->Integral(0,-1) ; 
+    Double_t int_Data   = h_Data   ->Integral(0,-1);
+
+    Double_t int_bkgOnData = int_Totbkg/int_Data;
+
+    FILE * summarytable;
+    summarytable = fopen (logname+"_summary.tex","w");
+     fprintf (summarytable, "\\documentclass{standalone}\n\n");
+     fprintf (summarytable, "\\begin{document}\n\n");
+     fprintf (summarytable, "\\begin{tabular}{rl}\n\n");
+     fprintf (summarytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "\\Large  Backgrounds \\\\\n");
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "DY      & %3.1f \\\\\n", int_DY     ) ; 
+     fprintf (summarytable, "GJets   & %3.1f \\\\\n", int_GJets  ) ; 
+     fprintf (summarytable, "ST      & %3.1f \\\\\n", int_ST     ) ; 
+     fprintf (summarytable, "ZH      & %3.1f \\\\\n", int_ZH     ) ; 
+     fprintf (summarytable, "VV      & %3.1f \\\\\n", int_VV     ) ; 
+     fprintf (summarytable, "TT      & %3.1f \\\\\n", int_TT     ) ; 
+     fprintf (summarytable, "VG      & %3.1f \\\\\n", int_VG     ) ; 
+     fprintf (summarytable, "WJetsToLNu                        & %3.1f  \\\\\n", int_WJetsToLNu                       ) ;
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Total Backgrouns     & %3.1f \\\\\n", int_Totbkg ) ; 
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Data                 & %3.1f  \\\\\n", int_Data   ) ;
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Backgrounds / Data   & %3.1f  \\\\\n", int_bkgOnData   ) ;
+     fprintf (summarytable, "\\end{tabular}\n\n");
+     fprintf (summarytable, "\\end{document}\n\n");
+    fclose (summarytable);
 
     // set attributes
-    //h_DY          -> SetFillColor(kRed); 
-    //h_GJets       -> SetFillColor(kOrange-3);
-    //h_VV          -> SetFillColor(kYellow+1); 
-    //h_ST          -> SetFillColor(kGreen+1); 
-    //h_TT          -> SetFillColor(kGreen-9); 
-    //h_WJetsToLNu  -> SetFillColor(kAzure+10); 
-    //h_VG          -> SetFillColor(kBlue); 
-    //h_VG          -> SetFillColor(kGreen);
+    //h_DY         -> Draw("hist PFC"); 
+    //h_GJets      -> Draw("sames hist PFC");
+    //h_ST         -> Draw("sames hist PFC"); 
+    //h_TT         -> Draw("sames hist PFC"); 
+    //h_WJetsToLNu -> Draw("sames hist PFC"); 
+    //h_VV         -> Draw("sames hist PFC"); 
+    //h_VG         -> Draw("sames hist PFC"); 
+    //h_ZH         -> Draw("sames hist PFC");
 
     h_DY         -> SetLineColor(kBlack); 
     h_GJets      -> SetLineColor(kBlack);
@@ -492,14 +527,13 @@ void plotter_stacked()
     h_VG         -> SetLineColor(kBlack); 
     h_ZH         -> SetLineColor(kBlack);
 
-    // h_DY         -> SetFillStyle(3001); 
-    // h_GJets      -> SetFillStyle(3001);
-    // h_ST         -> SetFillStyle(3001); 
-    // h_TT         -> SetFillStyle(3001); 
-    // h_WJetsToLNu -> SetFillStyle(3001); 
-    // h_VV         -> SetFillStyle(3001); 
-    // h_VG         -> SetFillStyle(3001); 
-    // h_ZH         -> SetFillStyle(3001);
+    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(kRed) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(kOrange) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(kYellow) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(kGreen) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(kBlue) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(kCyan) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(kViolet) ;
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetMarkerStyle(8);
@@ -517,48 +551,40 @@ void plotter_stacked()
     bgstack->Add(h_GJets      );
     bgstack->Add(h_DY         ); 
 
-    //bgstack->Add(h_DY         ); 
-    //bgstack->Add(h_GJets      );
-    //bgstack->Add(h_VV         ); 
-    //bgstack->Add(h_ST         ); 
-    //bgstack->Add(h_TT         ); 
-    //bgstack->Add(h_WJetsToLNu ); 
-    //bgstack->Add(h_VG         );
-    //bgstack->Add(h_ZH         );
-
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS0p05   ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS1      ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1)); 
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS10     ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1)); 
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS100    ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1));   
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS1000   ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1));  
-    //  }                                     
-    //  if( h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) > 0.1){ ;
-    //     h_ggZH_HToSSTobbbb_MS40_ctauS10000  ->Scale( intbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ); 
-    //  }
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS0p05   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS1      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1)); 
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS10     ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1)); 
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS100    ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1));   
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS1000   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1));  
+    }                                     
+    if( h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) > 0.1){ ;
+       h_ggZH_HToSSTobbbb_MS40_ctauS10000  ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ); 
+    }
 
     // make legend
     TLegend *leg = new TLegend(0.6,0.6,0.85,0.85);
     leg->SetBorderSize(0);
     leg->SetFillColor(kWhite);
-    if(drawData){
-     if( lepton=="ele"){
-      leg->AddEntry(h_Data      , "Data SingleEle", "lpe"); 
-     }
-     else if( lepton=="mu"){
-      leg->AddEntry(h_Data      , "Data SingleMu", "lpe"); 
-     }
+    if( lepton=="ele"){
+     leg->AddEntry(h_Data      , "Data SingleEle", "lpe"); 
+    }
+    else if( lepton=="mu"){
+     leg->AddEntry(h_Data      , "Data SingleMu", "lpe"); 
+    }
+    else{
+     leg->AddEntry(h_Data      , "Data Single Ele+Mu", "lpe");
     }
     leg->AddEntry(h_DY           , "Drell-Yan", "f"); 
     leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
@@ -568,43 +594,53 @@ void plotter_stacked()
     leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
     leg->AddEntry(h_VG           , "V#gamma", "f");
     leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
-    //if(drawSignal){
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}0     )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}0p05  )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}1     )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}10    )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}100   )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}1000  )", "l" ) ;
-       //  leg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "ZH#rightarrow SS#rightarrow bbbb (M_{S}40 c#tau_{S}10000 )", "l" ) ;
-    //}
-    
-    // and draw
-    bgstack->Draw("hist PFC ");
 
-    if(drawData){
-     h_Data->Draw("sames, E");
+     TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
+    if(drawSignal){
+     sigleg->SetBorderSize(0);
+     sigleg->SetFillColor(kWhite);
+     sigleg->AddEntry("Z(H#rightarrow SS#rightarrow bbbb)","[Z(H]#rightarrow SS#rightarrow bbbb)","");
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
+     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
     }
-    //if(drawSignal){
-    // h_SignalWm->Draw("hist sames");
-    // h_SignalWp->Draw("hist sames");
-    // h_SignalVG->Draw("hist sames");
-    // h_SignalggZH->Draw("hist sames");
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
-       //  Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
-    //}
+
+    // set max and draw
+    Double_t ymax = h_Data->GetMaximum();
+    if(dolog){
+     h_Data->SetMaximum(50000*ymax);
+    } else {
+     h_Data->SetMaximum(5*ymax);
+    }
+    h_Data->Draw("E");
+
+    bgstack->Draw("sames hist PFC ");
+    h_Data->Draw("sames E");
+
+    if(drawSignal){
+     h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Draw("hist sames") ;
+     h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Draw("hist sames") ;
+     sigleg->Draw();
+    }
     leg->Draw();
 
     // add titles
     title->DrawTextNDC(0.13,0.91,"CMS");
     extra->DrawTextNDC(0.23,0.91,"Preliminary");
     lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
-    bgstack->GetXaxis()->SetTitle(h_TT->GetTitle());
-    bgstack->GetYaxis()->SetTitle("Events / bin");
+    h_Data->GetXaxis()->SetTitle(h_Data->GetTitle());
+    h_Data->GetYaxis()->SetTitle("Events / bin");
+    h_Data->GetYaxis()->SetTitleOffset(1.5);
+    h_Data->SetTitle("");
 
     gPad->Update();
     gPad->RedrawAxis();
@@ -618,4 +654,3 @@ void plotter_stacked()
   }
  }
 }
-
