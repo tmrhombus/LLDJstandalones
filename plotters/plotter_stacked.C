@@ -599,7 +599,7 @@ void plotter_stacked()
     if(drawSignal){
      sigleg->SetBorderSize(0);
      sigleg->SetFillColor(kWhite);
-     sigleg->AddEntry("Z(H#rightarrow SS#rightarrow bbbb)","[Z(H]#rightarrow SS#rightarrow bbbb)","");
+     sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
      sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
      sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
      sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
