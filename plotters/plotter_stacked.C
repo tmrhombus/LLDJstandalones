@@ -509,15 +509,6 @@ void plotter_stacked()
     fclose (summarytable);
 
     // set attributes
-    //h_DY         -> Draw("hist PFC"); 
-    //h_GJets      -> Draw("sames hist PFC");
-    //h_ST         -> Draw("sames hist PFC"); 
-    //h_TT         -> Draw("sames hist PFC"); 
-    //h_WJetsToLNu -> Draw("sames hist PFC"); 
-    //h_VV         -> Draw("sames hist PFC"); 
-    //h_VG         -> Draw("sames hist PFC"); 
-    //h_ZH         -> Draw("sames hist PFC");
-
     h_DY         -> SetLineColor(kBlack); 
     h_GJets      -> SetLineColor(kBlack);
     h_ST         -> SetLineColor(kBlack); 
@@ -527,13 +518,21 @@ void plotter_stacked()
     h_VG         -> SetLineColor(kBlack); 
     h_ZH         -> SetLineColor(kBlack);
 
-    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(kRed) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(kOrange) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(kYellow) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(kGreen) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(kBlue) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(kCyan) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(kViolet) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
+
+    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
+    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetMarkerStyle(8);
