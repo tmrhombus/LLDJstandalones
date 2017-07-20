@@ -8,10 +8,10 @@
 #include <TH2.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
+#include <fstream>
 
 class analyzer_signal : public analyzer_base {
-//private:
-//constexpr int JETMULTNAMESIZE = 5;
+
 public :
 
                analyzer_signal();
@@ -37,10 +37,12 @@ public :
   Double_t            EAneutral(Double_t eta);
   Double_t            EAphoton(Double_t eta);
 
- std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
- std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ //std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
+ //std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
  std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname="");
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
@@ -48,6 +50,8 @@ public :
  Float_t          getMuonPt(int i, TString sysbinname);
 
  virtual void debug_printobjects();
+ virtual void debug_printmuons();
+ virtual void debug_printelectrons();
 
  // 2D Histograms 
  Bool_t        init2DHistograms();
@@ -67,7 +71,13 @@ public :
  // associated with object passing
  // some selection
  std::vector<int> photon_list;
+ std::vector<int> electron_list_l;
+ std::vector<int> electron_list_m;
+ std::vector<int> electron_list_t;
  std::vector<int> electron_list;
+ std::vector<int> muon_list_l ;
+ std::vector<int> muon_list_m ;
+ std::vector<int> muon_list_t ;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
 
@@ -143,6 +153,10 @@ public :
  static const int JETMULTNAMESIZE = 5; 
  static const int LEPBINNAMESIZE  = 3;
 
+ //output debugFile
+ //fstream debugFile;
+ //debugFile.open("debug.txt");
+
  // initialize histograms as global
  TH1F histoTH1F;
  TH2F histoTH2F;
@@ -181,10 +195,10 @@ public :
  TH1F h_jetMedianLog10IPSig           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F h_jetTrackPhi2                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F h_jetTrackPDGID		      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F h_jetTrackMom		      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_jetTrackMomPDGID              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F h_jetNConstituents	      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
- TH1F h_jetTestVariable               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ //TH1F h_jetTestVariable             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
  TH1F h_jetAlphaMax                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F h_jetAlphaMax2                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];

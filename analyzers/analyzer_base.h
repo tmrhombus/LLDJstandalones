@@ -247,10 +247,10 @@ public :
    std::vector<float>     *jetMedianLog10IPSig;
    std::vector<float>     *jetTrackPhi2;
    std::vector<int>	  *jetTrackPDGID;
-   std::vector<int> 	  *jetTrackMom;
+   std::vector<int> 	  *jetTrackMomPDGID;
    std::vector<int> 	  *jetNConstituents;
 
-   std::vector<float>     *jetTestVariable;
+   //std::vector<float>     *jetTestVariable;
    
    std::vector<float> *jetAlphaMax;
    std::vector<float> *jetAlphaMax2;
@@ -581,10 +581,10 @@ public :
    TBranch        *b_jetMedianLog10IPSig;//!
    TBranch        *b_jetTrackPhi2;//!
    TBranch	  *b_jetTrackPDGID;//!
-   TBranch 	  *b_jetTrackMom;//!
+   TBranch 	  *b_jetTrackMomPDGID;//!
    TBranch	  *b_jetNConstituents;//!
 
-   TBranch        *b_jetTestVariable;//!
+   //TBranch        *b_jetTestVariable;//!
    
    TBranch        *b_jetAlphaMax;
    TBranch        *b_jetAlphaMax2;

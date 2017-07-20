@@ -4,18 +4,22 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
-
+//#include <fstream>
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
                        Double_t crossSec, Int_t nevts)
 {
 
- if(makelog){ logfile = fopen( outfilename+".txt", "w"); }
+ if(makelog){
+  logfile = fopen( outfilename+".txt", "w"); 
+ }
 
  if (fChain == 0) return;
 
  Long64_t nentries = fChain->GetEntriesFast();
- if(nevts>0){ nentries = Long64_t(nevts); }
+ if(nevts>0){ 
+  nentries = Long64_t(nevts);
+ }
 
  n_tot=0;
  n_test =0;
@@ -51,7 +55,7 @@ void analyzer_signal::Loop(TString outfilename,
   //if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   //if( event==472257123 ){ printf(" got entry \n"); }
-  //if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
+  if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use 
@@ -67,10 +71,22 @@ void analyzer_signal::Loop(TString outfilename,
 
   //if( event==472257123 ){ printf("making electronlist\n"); }
   // veto loose medium tight heep hlt
-  electron_list = electron_passLooseID( 30, 3, "");
-  muon_list = muon_passTightID( 28, 2.4, ""); 
-  //muon_list = muon_passLooseID( 15, 3, ""); 
-  jet_list = jet_passID( 20, 2.4,"custom", "");  ///////////place our cuts here
+  electron_list_l = electron_passID( 1, 30, 3, "");
+  electron_list_m = electron_passID( 2, 30, 3, "");
+  electron_list_t = electron_passID( 3, 30, 3, "");
+
+  //if( event==472257123 ){ printf("making muonlist\n"); }; 
+  muon_list_l = muon_passID( 0, 15, 3, ""); 
+  muon_list_m = muon_passID( 1, 15, 3, ""); 
+  muon_list_t = muon_passID( 2, 15, 3, ""); 
+
+  electron_list.clear();
+  muon_list.clear();
+  muon_list = muon_list_t;
+  electron_list = electron_list_t;  
+
+  //if( event==472257123 ){ printf("making jetlist\n"); }
+  jet_list = jet_passID( 20, 2.4,"custom", "");  //options Loose,Tight,TightLepVeto,custom
 
   // set our met
   themet = pfMET;
@@ -100,20 +116,20 @@ void analyzer_signal::Loop(TString outfilename,
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
-   //std::cout << "elePtSize "<< elePt->size() <<" eleindex: "<<eleindex<<std::endl;//looks fine
+ 
    htall += elePt->at(eleindex);
   }
 
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
-  //std::cout << "muPtSize "<< muPt->size() <<" muindex: "<<muindex<<std::endl;//crashed before output
+
   htall += muPt->at(muindex);
   }
   n_test+=jet_list.size();
-  //std::cout<< "****jetListSize**** "<<jet_list.size()<<"total: "<< n_test<<std::endl;
+  
   for(int i=0; i<jet_list.size(); ++i){
    int jetindex = jet_list[i];
-   //std::cout << "jetPtSize "<< jetPt->size() <<" jetindex: "<<jetindex<<std::endl;//seems fine
+   //std::cout << "Event# "<< event <<std::endl;
    htall  += jetPt->at(jetindex);
    htjets += jetPt->at(jetindex);
   } 
@@ -141,17 +157,33 @@ void analyzer_signal::Loop(TString outfilename,
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
 
-  //debug_printobjects(); // helpful printout (turn off when submitting!!!)
-  
+
+  //if( event==16638517 ){
+  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  // debug_printmuons();     // helpful printout (turn off when submitting!!!)
+  // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
+  //}
+
+   
+  //}
+  //if( event==472257123 ){ printf("EVENT in question\n"); 
+  //}
+
   // set booleans if pass various selections
+  //if( event==472257123 ){ printf("askPassSig\n"); }
   doesPassSig    = askPassSig   ();
+  //if( event==472257123 ){ printf("askPassZH\n");  }
   doesPassZH     = askPassZH    ();
+  //if( event==472257123 ){ printf("askPassDY\n");  }
   doesPassDY     = askPassDY    ();
+  //if( event==472257123 ){ printf("askPassOffZ\n");  }
   doesPassOffZ   = askPassOffZ  ();
+  //if( event==472257123 ){ printf("askPassSig\n");  }
   doesPassNoPair = askPassNoPair();
 
   // fill histogram
 
+  //if( event==472257123 ){ printf("fillEle\n");  }
   if( passSingleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -161,6 +193,7 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,0); fillJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
   }
 
+  //if( event==472257123 ){ printf("fillMu\n");  }
   if( passSingleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -169,6 +202,8 @@ void analyzer_signal::Loop(TString outfilename,
    if( doesPassOffZ  ){ fillSigHistograms(event_weight,4,1); fillJetHistograms(event_weight,4,1); }//fill2DHistograms(event_weight,4); }
    if( doesPassNoPair){ fillSigHistograms(event_weight,5,1); fillJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
   }
+   
+  //if( event==472257123 ){ printf("Done Looping\n");  }
   
   //No Lep selection
                           fillSigHistograms(event_weight,0,2); fillJetHistograms(event_weight,0,2);  //fill2DHistograms(event_weight,0);  
@@ -305,18 +340,16 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_jetMedianLog10IPSig         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetMedianLog10IPSig       " ;
     TString hname_jetTrackPhi2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPhi2              " ;
     TString hname_jetTrackPDGID 	      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackPDGID             " ;
-    TString hname_jetTrackMom		      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackMom		   " ;
+    TString hname_jetTrackMomPDGID            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTrackMomPDGID	   " ;
     TString hname_jetNConstituents	      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetNConstituents	   " ;
  
-    TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
+    //TString hname_jetTestVariable             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetTestVariable           " ;   
     
     TString hname_jetAlphaMax                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax               " ;
     TString hname_jetAlphaMax2                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMax2              " ;
     TString hname_jetAlphaMaxP                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP              " ;
     TString hname_jetAlphaMaxP2               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetAlphaMaxP2             " ;
-    //    TString hname_CA2_x   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_x" ;
-    //    TString hname_CA2_y   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_y" ;
-    //    TString hname_CA2_z   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"CA2_z" ;
+
     TString hname_jetEn                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEn                     " ;   
     TString hname_jetEta                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetEta                    " ;    
     TString hname_jetPhi                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"jetPhi                    " ;    
@@ -363,22 +396,16 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetMedianLog10IPSig         [i][j][k] = initSingleHistogramTH1F(  hname_jetMedianLog10IPSig        , "jetMedianLog10IPSig       " , 30, -2, 3 );
     h_jetTrackPhi2                [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPhi2               , "jetTrackPhi2              " , 50, -3.5, 3.5 );
     h_jetTrackPDGID	 	  [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackPDGID		 , "jetTrackPDGID	      " , 40, 0 , 40);
-    h_jetTrackMom                 [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackMom                , "jetTrackMom               " , 40, 0 , 40);
+    h_jetTrackMomPDGID            [i][j][k] = initSingleHistogramTH1F(  hname_jetTrackMomPDGID           , "jetTrackMomPDGID          " , 40, 0 , 40);
     h_jetNConstituents		  [i][j][k] = initSingleHistogramTH1F(  hname_jetNConstituents		 , "jetNConstituents	      " , 50, 0 , 50);
 
-    h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
+    //h_jetTestVariable             [i][j][k] = initSingleHistogramTH1F(  hname_jetTestVariable            , "jetTestVariable           " , 50, 0, 50 );   
     
     h_jetAlphaMax                 [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax                 , "jetAlphaMax               " , 30, 0, 1) ;
     h_jetAlphaMax2                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMax2                , "jetAlphaMax2              " , 30, 0, 1) ;
     h_jetAlphaMaxP                [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP                , "jetAlphaMaxP              " , 30, 0, 1) ;
     h_jetAlphaMaxP2               [i][j][k] = initSingleHistogramTH1F( hname_jetAlphaMaxP2               , "jetAlphaMaxP2             " , 30, 0, 1) ;
-    //    h_CA2_x  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_x,"CA2_x", 100,-1,1) ;
-    //    h_CA2_y  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_y,"CA2_y", 100,-1,1) ;
-    //    h_CA2_z  [i][j][k]  = initSingleHistogramTH1F( hname_CA2_z,"CA2_z", 100,-1,1) ;
-    
-    
-    
-    
+
     h_jetEn                       [i][j][k] = initSingleHistogramTH1F(  hname_jetEn                      , "jetEn                     " , 50, 0, 500 );   
     h_jetEta                      [i][j][k] = initSingleHistogramTH1F(  hname_jetEta                     , "jetEta                    " , 10, -5, 5 );    
     h_jetPhi                      [i][j][k] = initSingleHistogramTH1F(  hname_jetPhi                     , "jetPhi                    " , 10, -5, 5 );    
@@ -431,7 +458,7 @@ Bool_t analyzer_signal::initJetHistograms()
 //----------------------------fillJetHistograms
 Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbin)
 {
- 
+
  //printf("fillJetHistograms\n");
  for(unsigned int j=0; j<jetmultnames.size(); ++j){
  if(j<(jetmultnames.size()-1)){
@@ -442,9 +469,9 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetMedianLog10IPSig        ->size()>j){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(j), weight ); }
   if(jetTrackPhi2               ->size()>j){h_jetTrackPhi2                [selbin][j][lepbin].Fill( jetTrackPhi2               ->at(j), weight ); }
   if(jetTrackPDGID		->size()>j){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(j), weight ); }
-  if(jetTrackMom                ->size()>j){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(j), weight ); }
+  if(jetTrackMomPDGID           ->size()>j){h_jetTrackMomPDGID            [selbin][j][lepbin].Fill( jetTrackMomPDGID           ->at(j), weight ); }
   if(jetNConstituents		->size()>j){h_jetNConstituents		  [selbin][j][lepbin].Fill( jetNConstituents	       ->at(j), weight ); }
-  if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
+  //if(jetTestVariable            ->size()>j){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(j), weight ); } 
   if(jetAlphaMax                ->size()>j){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(j), weight ); }
   if(jetAlphaMax2               ->size()>j){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(j), weight ); }
   if(jetAlphaMaxP               ->size()>j){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(j), weight ); }
@@ -489,8 +516,8 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(AK8JetPhi                  ->size()>j){h_AK8JetPhi                   [selbin][j][lepbin].Fill( AK8JetPhi                  ->at(j), weight ); } 
   if(AK8JetMass                 ->size()>j){h_AK8JetMass                  [selbin][j][lepbin].Fill( AK8JetMass                 ->at(j), weight ); } 
  }//if <4
- else{//n_entries += jet_list.size(); std::cout<<jet_list.size()<<" "<<n_entries<<std::endl;
- for(unsigned int i =0; i<jet_list.size(); i++){ //n_test2 +=jet_list.size();std::cout<<i<<" **********jet_list2 "<< n_test2/*<<" "<<selbin<<" "<<lepbin*/<<std::endl;
+ else{
+ for(unsigned int i =0; i<jet_list.size(); i++){ 
   if(jetPt                      ->size()>i){h_jetPt                       [selbin][j][lepbin].Fill( jetPt                      ->at(i), weight ); }
   if(jetSumIP                   ->size()>i){h_jetSumIP                    [selbin][j][lepbin].Fill( jetSumIP                   ->at(i), weight ); }
   if(jetSumIPSig                ->size()>i){h_jetSumIPSig                 [selbin][j][lepbin].Fill( jetSumIPSig                ->at(i), weight ); }
@@ -498,9 +525,9 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   if(jetMedianLog10IPSig        ->size()>i){h_jetMedianLog10IPSig         [selbin][j][lepbin].Fill( jetMedianLog10IPSig        ->at(i), weight ); }
   if(jetTrackPhi2               ->size()>i){h_jetTrackPhi2                [selbin][j][lepbin].Fill( jetTrackPhi2               ->at(i), weight ); }
   if(jetTrackPDGID              ->size()>i){h_jetTrackPDGID               [selbin][j][lepbin].Fill( jetTrackPDGID              ->at(i), weight ); }
-  if(jetTrackMom                ->size()>i){h_jetTrackMom                 [selbin][j][lepbin].Fill( jetTrackMom                ->at(i), weight ); }
+  if(jetTrackMomPDGID           ->size()>i){h_jetTrackMomPDGID            [selbin][j][lepbin].Fill( jetTrackMomPDGID           ->at(i), weight ); }
   if(jetNConstituents           ->size()>i){h_jetNConstituents            [selbin][j][lepbin].Fill( jetNConstituents           ->at(i), weight ); }
-  if(jetTestVariable            ->size()>i){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(i), weight ); }
+  //if(jetTestVariable            ->size()>i){h_jetTestVariable             [selbin][j][lepbin].Fill( jetTestVariable            ->at(i), weight ); }
   if(jetAlphaMax                ->size()>i){h_jetAlphaMax                 [selbin][j][lepbin].Fill(jetAlphaMax                 ->at(i), weight ); }
   if(jetAlphaMax2               ->size()>i){h_jetAlphaMax2                [selbin][j][lepbin].Fill(jetAlphaMax2                ->at(i), weight ); }
   if(jetAlphaMaxP               ->size()>i){h_jetAlphaMaxP                [selbin][j][lepbin].Fill(jetAlphaMaxP                ->at(i), weight ); }
@@ -565,19 +592,16 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
    h_jetMedianLog10IPSig         [selbin][j][lepbin].Write();
    h_jetTrackPhi2                [selbin][j][lepbin].Write();
    h_jetTrackPDGID		 [selbin][j][lepbin].Write();
-   h_jetTrackMom	 	 [selbin][j][lepbin].Write();
+   h_jetTrackMomPDGID	 	 [selbin][j][lepbin].Write();
    h_jetNConstituents		 [selbin][j][lepbin].Write();
 
-   h_jetTestVariable             [selbin][j][lepbin].Write();
+   //h_jetTestVariable             [selbin][j][lepbin].Write();
  
    h_jetAlphaMax                 [selbin][j][lepbin].Write();
    h_jetAlphaMax2                [selbin][j][lepbin].Write();
    h_jetAlphaMaxP                [selbin][j][lepbin].Write();
    h_jetAlphaMaxP2               [selbin][j][lepbin].Write();
-   //   h_CA2_x                       [selbin][j][lepbin].Write(); 
-   //   h_CA2_y                       [selbin][j][lepbin].Write(); 
-   //   h_CA2_z                       [selbin][j][lepbin].Write(); 
-   
+
    h_jetEn                       [selbin][j][lepbin].Write(); 
    h_jetEta                      [selbin][j][lepbin].Write(); 
    h_jetPhi                      [selbin][j][lepbin].Write(); 
@@ -848,7 +872,7 @@ analyzer_signal::~analyzer_signal()
 //-------------------------dR
 double analyzer_signal::dR(double eta1, double phi1, double eta2, double phi2)
 {
-  double deltaeta = abs(eta1 - eta2);
+  double deltaeta = fabs(eta1 - eta2);
   double deltaphi = DeltaPhi(phi1, phi2);
   double deltar = sqrt(deltaeta*deltaeta + deltaphi*deltaphi);
   return deltar;
@@ -908,308 +932,84 @@ Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
 
 }
 
-//-------------------------muon_passLooseID
-std::vector<int> analyzer_signal::muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname)
+
+//-------------------------muon_passID
+std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
 {
-  std::vector<int> mulist;
+ std::vector<int> mulist;
 
-  bool pass_PFMuon = false;
-  bool pass_globalMuon = false;
-  bool pass_trackerMuon = false;
-  bool pass_iso = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue 
-  Float_t zero = 0.0; 
-  Float_t muPhoPU = 999.9;
-  Float_t tightIso_combinedRelative = 999.9;
-  for(int i = 0; i < nMu; i++) 
-    {    
+ // bool pass_loose  ;
+ // bool pass_medium ;
+ // bool pass_tight  ;
+ // bool pass_soft   ;
+ // bool pass_hipt   ;
+ //
+ // pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
+ // pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
+ // pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
+ // pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
+ // pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
+ //
+ //  printf(" Muon %i    %i %i %i %i %i \n\n",i
+ //        , pass_loose  
+ //        , pass_medium  
+ //        , pass_tight
+ //        , pass_soft
+ //        , pass_hipt
+ //        );       
 
-      pass_PFMuon =            true;  // muIsPFMuon->at(i);
-      pass_globalMuon =        true;  // muIsGlobalMuon->at(i);
-      pass_trackerMuon =       true;  // muIsTrackerMuon->at(i);
-      muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-      tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-      pass_iso = tightIso_combinedRelative < 0.25;
-      //Muon passes Loose Muon ID and PF-based combined relative, dBeta-corrected Loose Muon Isolation cuts  
+ for(int i = 0; i < nMu; i++) 
+ {    
+  //  printf(" Muon %i    %i %i %i %i %i \n",i
+  //        ,muIDbit->at(i) >> 0 & 0x1 
+  //        ,muIDbit->at(i) >> 1 & 0x1 
+  //        ,muIDbit->at(i) >> 2 & 0x1 
+  //        ,muIDbit->at(i) >> 3 & 0x1 
+  //        ,muIDbit->at(i) >> 4 & 0x1 
+  //        );       
 
-//if( event==767326116 ){
-//      printf(" Event: %lli \n",event);
-//      printf("  muPt              %f \n",  muPt->at(i)                        );
-//      printf("  muIsPFMuon        %f \n",  muIsPFMuon->at(i)                  );
-//      printf("  muIsGlobalMuon    %f \n",  muIsGlobalMuon->at(i)              );
-//      printf("  muIsTrackerMuon   %f \n",  muIsTrackerMuon->at(i)             );
-//      printf("  muPFNeuIso        %f \n",  muPFNeuIso->at(i)                  );
-//      printf("  muPFPhoIso        %f \n",  muPFPhoIso->at(i)                  );
-//      printf("  muPFPUIso         %f \n",  muPFPUIso->at(i)                   );
-//      printf("  muPhoPU           %f \n",  muPhoPU                            );
-//      printf("\n\n");
-//                   std::cout<<muPt->at(i)<<std::endl;
-//                   std::cout<<muEta->at(i)<<std::endl;
-//                   std::cout<<"veto Passed!!!!"<<muEta->at(i)<<" "<<muPhi->at(i)<<" "<<phoSCEta->at(pho_index)<<" "<<phoSCPhi->at(pho_index)<<std::endl;
-//}
+  Float_t muonPt = getMuonPt(i,sysbinname);
+  bool pass_kin = muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) ;
 
-      //if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) && pass_iso)
-      if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) )
-        {    
-          //Muon passes pt cut 
-          Float_t muonPt = getMuonPt(i,sysbinname);
-          if(muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) )
-            {    
-              ////Muon does not overlap photon
-              //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-              //  {    
-                 mulist.push_back(i);
-              //  }    
-            }    
-        }    
-    }    
-  return mulist;
-}
+  bool pass_bit = muIDbit->at(i) >> bitnr & 0x1 == 1;      
 
-//-------------------------muon_passTightID
-std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaCut, TString sysbinname)
-{
-  std::vector<int> mu_cands;
-  mu_cands.clear();
-
-  bool pass_PFMuon = false;
-  bool pass_globalMuon = false;
-  // bool pass_trackerMuon = false;
-  bool pass_chi2ndf = false;
-  bool pass_chamberHit = false;
-  bool pass_matchedStations = false;
-  bool pass_dxy = false;
-  bool pass_dz = false;
-  bool pass_pixelHits = false;
-  bool pass_trackLayers = false;
-  bool pass_iso = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue
-  Float_t zero = 0.0; 
-  Float_t muPhoPU = 999.9;
-  Float_t tightIso_combinedRelative = 999.9;
-  for(int i = 0; i < nMu; i++) 
+  if( pass_bit && pass_kin )
   {
-    pass_globalMuon = true;  //muIsGlobalMuon->at(i);
-    pass_PFMuon =     true;  // muIsPFMuon->at(i);
-    // pass_trackerMuon = muIsTrackerMuon->at(i);
-    pass_chi2ndf = muChi2NDF->at(i) < 10.0;
-    pass_chamberHit = muMuonHits->at(i) > 0; 
-    pass_matchedStations = muStations->at(i) > 1; 
-    pass_dxy = fabs(muInnerD0->at(i)) < 0.2; 
-    pass_dz = fabs(muInnerDz->at(i)) < 0.5; 
-    pass_pixelHits = muPixelHits->at(i) > 0; 
-    pass_trackLayers = muTrkLayers->at(i) > 5; 
-
-    muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-    tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-    pass_iso = tightIso_combinedRelative < 0.15;
-    //Muon passes Tight Muon ID
-    if(pass_globalMuon && pass_PFMuon && pass_chi2ndf && pass_chamberHit && pass_matchedStations && pass_dxy && pass_dz && pass_pixelHits && pass_trackLayers)
-    {    
-      //Muon passes pt cut 
-      Float_t muonPt = getMuonPt(i,sysbinname);
-      if(muonPt > muPtCut && ( fabs(muEta->at(i)) > muEtaCut ) )
-      {    
-        ////Muon does not overlap photon
-        //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-        //{    
-          mu_cands.push_back(i);
-        //}    
-      }    
-    }    
-  }
-  return mu_cands;
+   // check overlaps
+   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+   //  {    
+   //  }
+   mulist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over muons
+ return mulist;
 }
 
-
-//-------------------------electron_passLooseID
-std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
-{
-  //bool veto_passed = true; //pass veto if no good electron found 
-  std::vector<int> elelist;
-
-  bool pass_SigmaIEtaIEtaFull5x5 = false;
-  bool pass_dEtaIn = false;
-  bool pass_dPhiIn = false;
-  bool pass_HoverE = false;
-  bool pass_iso = false;
-  bool pass_ooEmooP = false;
-  bool pass_d0 = false;
-  bool pass_dz = false;
-  bool pass_missingHits = false;
-  bool pass_convVeto = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue   
-  Float_t EA = 0.0;
-  Float_t zero = 0.0;
-  Float_t EAcorrIso = 999.9;
-  for(int i = 0; i < nEle; i++)
-    {
-      //Make sure these get reset for every electron  
-      pass_SigmaIEtaIEtaFull5x5 = false;
-      pass_dEtaIn = false;
-      pass_dPhiIn = false;
-      pass_HoverE = false;
-      pass_iso = false;
-      pass_ooEmooP = false;
-      pass_d0 = false;
-      pass_dz = false;
-      pass_missingHits = false;
-      pass_convVeto = false;
-      //Find EA for corrected relative iso.  
-      if(abs(eleSCEta->at(i)) <= 1.0)
-        EA = 0.1752;
-      else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-        EA = 0.1862;
-      else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-        EA = 0.1411;
-      else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-        EA = 0.1534;
-      else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-        EA = 0.1903;
-      else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-        EA = 0.2243;
-      else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-        EA = 0.2687;
-      EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-
-      if(abs(eleSCEta->at(i)) <= 1.479)
-        {    
-          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0103;
-          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.0105;
-          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.115;
-          pass_HoverE = eleHoverE->at(i) < 0.104;
-          pass_iso = EAcorrIso < 0.0893;
-          pass_ooEmooP = eleEoverPInv->at(i) < 0.102;
-          pass_d0 = abs(eleD0->at(i)) < 0.0261;
-          pass_dz = abs(eleDz->at(i)) < 0.41;
-          pass_missingHits = eleMissHits->at(i) <= 2;
-          pass_convVeto = eleConvVeto->at(i) == 1;
-        }     
-      else if(1.479 < abs(eleSCEta->at(i)) < 2.5) 
-        {    
-          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0301;
-          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00814;
-          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.182;
-          pass_HoverE = eleHoverE->at(i) < 0.0897;
-          pass_iso = EAcorrIso < 0.121;
-          pass_ooEmooP = eleEoverPInv->at(i) < 0.126;
-          pass_d0 = abs(eleD0->at(i)) < 0.118;
-          pass_dz = abs(eleDz->at(i)) < 0.822;
-          pass_missingHits = eleMissHits->at(i) <= 1;
-          pass_convVeto = eleConvVeto->at(i) == 1;
-        }     
-
-      //Electron passes Loose Electron ID cuts 
-      if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)    
-        {    
-            //Electron passes pt cut 
-            Float_t electronPt = getElectronPt(i,sysbinname);
-            if(electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) )
-            {    
-              ////Electron does not overlap photon 
-              //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-              //  {    
-                  elelist.push_back(i);
-              //  }     
-            }     
-        }     
-    }     
-  return elelist;
-}
-
-//-------------------------electron_passTightID
-std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double eleEtaCut, TString sysbinname)
+//-------------------------electron_passID
+std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname)
 {
 
-  std::vector<int> ele_cands;
-  ele_cands.clear();
+ std::vector<int> elelist;
+ // veto loose medium tight heep hlt
 
-  bool pass_SigmaIEtaIEtaFull5x5 = false;
-  bool pass_dEtaIn = false;
-  bool pass_dPhiIn = false;
-  bool pass_HoverE = false;
-  bool pass_iso = false;
-  bool pass_ooEmooP = false;
-  bool pass_d0 = false;
-  bool pass_dz = false;
-  bool pass_missingHits = false;
-  bool pass_convVeto = false;
-  //Explicitly stating types to avoid a TMath::Max conversion issue
-  Float_t EA = 0.0;
-  Float_t zero = 0.0;
-  Float_t EAcorrIso = 999.9;
-  for(int i = 0; i < nEle; i++)
+ for(int i = 0; i < nEle; i++) 
+ {    
+
+  Float_t electronPt = getElectronPt(i,sysbinname);
+  bool pass_kin = electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) ;
+
+  bool pass_bit = eleIDbit->at(i) >> bitnr & 0x1 == 1;      
+
+  if( pass_bit && pass_kin )
   {
-    //Make sure these get reset for every electron
-    pass_SigmaIEtaIEtaFull5x5 = false;
-    pass_dEtaIn = false;
-    pass_dPhiIn = false;
-    pass_HoverE = false;
-    pass_iso = false;
-    pass_ooEmooP = false;
-    pass_d0 = false;
-    pass_dz = false;
-    pass_missingHits = false;
-    pass_convVeto = false;
-    //Find EA for corrected relative iso.
-    if(abs(eleSCEta->at(i)) <= 1.0)
-      EA = 0.1752;
-    else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-      EA = 0.1862;
-    else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-      EA = 0.1411;
-    else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-      EA = 0.1534;
-    else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-      EA = 0.1903;
-    else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-      EA = 0.2243;
-    else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-      EA = 0.2687;
-    EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-
-    if(abs(eleSCEta->at(i)) <= 1.479)
-    {
-      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0101;
-      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00926;
-      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0336;
-      pass_HoverE = eleHoverE->at(i) < 0.0597;
-      pass_iso = EAcorrIso < 0.0354;
-      pass_ooEmooP = eleEoverPInv->at(i) < 0.012;
-      pass_d0 = abs(eleD0->at(i)) < 0.0111;
-      pass_dz = abs(eleDz->at(i)) < 0.0466;
-      pass_missingHits = eleMissHits->at(i) <= 2;
-      pass_convVeto = eleConvVeto->at(i) == 1;
-    }
-    else if(1.479 < abs(eleSCEta->at(i)) < 2.5)
-    {
-      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0279;
-      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00724;
-      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0918;
-      pass_HoverE = eleHoverE->at(i) < 0.0615;
-      pass_iso = EAcorrIso < 0.0646;
-      pass_ooEmooP = eleEoverPInv->at(i) < 0.00999;
-      pass_d0 = abs(eleD0->at(i)) < 0.0351;
-      pass_dz = abs(eleDz->at(i)) < 0.417;
-      pass_missingHits = eleMissHits->at(i) <= 1;
-      pass_convVeto = eleConvVeto->at(i) == 1;
-    }
-      //Electron passes Loose Electron ID cuts
-    if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)
-    {
-      //Electron passes pt cut 
-      Float_t electronPt = getElectronPt(i,sysbinname);
-      if(electronPt > elePtCut && ( fabs(elePt->at(i)) < eleEtaCut ) )
-      {
-        ////Electron does not overlap photon
-        //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5)
-        //{
-          ele_cands.push_back(i);
-        //}
-      }
-    }
-  }
-  return ele_cands;
+   // check overlaps
+   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
+   //  {    
+   //  }
+   elelist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over muons
+ return elelist;
 }
 
 //-------------------------jet_passID
@@ -1219,6 +1019,8 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
   std::vector<int> jetindex;
   float PUIDvalue = 0.0;
 
+  //debugFile.open("test.txt", fstream::in | fstream::out | fstream::app);
+  //debugFile<<PFJetID<<std::endl;
   //set selection rule
   bool Loose = false;
   bool Tight = false;
@@ -1231,77 +1033,63 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
 
   for(int i = 0; i < nJet; i++)
    {
-    if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {PUIDvalue =-0.8;}
-    if(2.5 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.75) {PUIDvalue =-0.95;}
-    if(2.75 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <3.0) {PUIDvalue =-0.97;}
-    if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {PUIDvalue =-0.99;}
+    if(0.0 <  fabs(jetEta->at(i)) && fabs(jetEta->at(i)) <2.5)   {PUIDvalue =-0.8;}
+    if(2.5 <= fabs(jetEta->at(i)) && fabs(jetEta->at(i)) <2.75) {PUIDvalue =-0.95;}
+    if(2.75 <=fabs(jetEta->at(i)) && fabs(jetEta->at(i)) <3.0) {PUIDvalue =-0.97;}
+    if(3.00 <=fabs(jetEta->at(i)) && fabs(jetEta->at(i)) <5.0) {PUIDvalue =-0.99;}
 
     bool passOverlap=true;
     // check overlap with electrons
-    
-  //  if(/*electron_list.size()!=0 ||eleSCEta->size()==0||eleSCPhi->size()==0||*/jetEta->size()==0||jetPhi->size()==0)
-//std::cout/*<<"Elist:  "<<electron_list.size()<<" eleSCEtaSize "<<eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()*/<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
-//if(electron_list.size()>1 &&eleSCEta->size()>1 &&eleSCPhi->size()>1&& jetEta->size()>1 &&jetPhi->size()>1){
-//    for(int i=0; i<electron_list.size(); ++i){
-//      int eleindex = electron_list[i];
-//      //std::cout << "eleSCEtaSize "<< eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
-//      if( dR( eleSCEta->at(eleindex),eleSCPhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
-//    }//end electrons
-//}
-    // check overlap with muons
-//    for(int i=0; i<muon_list.size(); ++i){
-//     int muindex = muon_list[i];
-//     if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
-//    }//end muons
+    if(electron_list.size()>0){
+      for(int d=0; d<electron_list.size(); ++d)
+       {         
+        int eleindex = electron_list[d];
+        if( dR( eleEta->at(eleindex),elePhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
+       }
+     }//end electrons
+   // check overlap with muons
+     if(muon_list.size()>0){
+       for(int d=0; d<muon_list.size(); ++d)
+        {
+         int muindex = muon_list[d];
+         if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+        }
+    }//end muons
 
-
-    //double deltar = 0.0 ;
-    //      std::cout<<"Jet size: "<<nJet<<std::endl;
-    //      std::cout<<"Jet no:"<<i<<"coming here pujetid: "<<pfJet_pt[i]<<std::endl;
-    //      if(OverlapWithMuon(jetEta->at(i),jetPhi->at(i)))     continue;
-    //      std::cout<<"Jet no:"<<i<<"coming here OverlapWithMuon: "<<pfJet_pt[i]<<std::endl;
-    //      if(OverlapWithElectron(jetEta->at(i),jetPhi->at(i)))   continue;
-    //if(pho_index>=0){
-    //  deltar= dR(jetEta->at(i),jetPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index));
-    //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
-    //}
-    //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-    //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
- 
      //JetID definitions 
-    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut /*&& jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap*/ ){std::cout<<"outerif"<<std::endl;
-     	if(Loose){ std::cout<<"Loose";
-	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+    if( jetPt->at(i) >jetPtCut && fabs(jetEta->at(i))<jetEtaCut && jetNConstituents->size()>0 && passOverlap ){
+     	if(Loose){
+	   if( fabs(jetEta->at(i))<=2.7 && fabs(jetEta->at(i))>2.4 ){
 	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
 		jetindex.push_back(i);
 	   }
-           if( abs(jetEta->at(i))<=2.4 ){    
+           if( fabs(jetEta->at(i))<=2.4 ){    
               if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
                 jetindex.push_back(i);
            }  	
 	}//Loose
-	if(Tight){std::cout<<"Tight"<<std::endl;
-           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+	if(Tight){
+           if( fabs(jetEta->at(i))<=2.7 && fabs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1)
                 jetindex.push_back(i);
            }    
-           if( abs(jetEta->at(i))<=2.4 ){
+           if( fabs(jetEta->at(i))<=2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
                 jetindex.push_back(i);
            }
         }//Tight    
-	if(TightLepVeto){std::cout<<"TightLepVeto"<<std::endl;
-           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
+	if(TightLepVeto){
+           if( fabs(jetEta->at(i))<=2.7 && fabs(jetEta->at(i))>2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8)
                 jetindex.push_back(i);
            }    
-           if( abs(jetEta->at(i))<=2.4 ){
+           if( fabs(jetEta->at(i))<=2.4 ){
               if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.90)
                 jetindex.push_back(i);
            }
         }//TightLepVeto
-	if(custom){//std::cout<<"custom"<<std::endl;
-           if( abs(jetEta->at(i))<=2.4 ){
+	if(custom){
+           if( fabs(jetEta->at(i))<2.4 ){
  	      //std::cout<<"NHF: "<<jetNHF->at(i)<<std::endl;
 	      //std::cout<<"CHF: "<<jetCHF->at(i)<<std::endl;
  	      //std::cout<<"NCH: "<<jetNCH->at(i)<<std::endl;
@@ -1311,15 +1099,14 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,T
  	      //std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
 	      //std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
 	      //std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
-              if(/*jetNConstituents->at(i)>1 &&*/ jetNHF->at(i)<0.9 && jetNEF->at(i)<0.9 && jetCHF->at(i)<0.9 /*&& jetNCH->at(i)>0.0*/ && jetCEF->at(i)<0.9)
-               std::cout<<"cut if"<<std::endl;
+              if( jetNHF->at(i)<0.9 && jetNEF->at(i)<0.9 && jetCHF->at(i)<0.9 && jetCEF->at(i)<0.9){
                jetindex.push_back(i);
-           }
+              }//custom cuts
+           }//eta custom
         }//custom
      }//outer cut pt,eta,passOverlap
    }//end jets
 
-  //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
   //if(jetindex.size()>1)jetVeto = false;
   return jetindex;
 
@@ -1345,7 +1132,7 @@ std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double pho
 
       bool photonId = (
                        ((*phoHoverE)[p]                <  0.05   ) && 
-                       ( TMath::Max( ( (*phoPFChIso)[p]  - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
+                       ( TMath::Max( ( (*phoPFChIso)[p]       - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
                        ( TMath::Max( ( (*phoPFNeuIso)[p] - rho*EAneutral((*phoSCEta)[p]) ), 0.0) <
                         (1.06 + (0.014 * thephoPt) + (0.000019 * pow(thephoPt, 2.0))) )  &&
                        ( TMath::Max( ( (*phoPFPhoIso)[p] - rho*EAphoton((*phoSCEta)[p])  ), 0.0) < 
@@ -1426,7 +1213,7 @@ Double_t analyzer_signal::EAphoton(Double_t eta){
                                                                      
     // no pairs                                                    
     if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
-    if( eleEta->size()==0) std::cout <<"no electrons event: " << event<<std::endl;                                                               
+                                                                   
      // electrons                                                      
      if( electron_list.size()>1 ){                                           
       for(int i=1; i<electron_list.size(); ++i)                              
@@ -1488,7 +1275,17 @@ void analyzer_signal::debug_printobjects(){
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
    printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+
+   printf(" muonid %d    %d %d %d %d %d \n",i
+         ,muIDbit->at(i) >> 0 & 0x1 
+         ,muIDbit->at(i) >> 1 & 0x1 
+         ,muIDbit->at(i) >> 2 & 0x1 
+         ,muIDbit->at(i) >> 3 & 0x1 
+         ,muIDbit->at(i) >> 4 & 0x1 
+         );       
   }
+
+
 
   printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
 
@@ -1511,3 +1308,50 @@ void analyzer_signal::debug_printobjects(){
   printf( " htall %.1f htjets %.1f\n", htall, htjets);
 
  }
+
+void analyzer_signal::debug_printmuons()
+{
+
+ printf( " Loose Mu\n" );
+ for(int i=0; i<muon_list_l.size(); ++i){
+  int muindex = muon_list_l[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+ printf( " Med Mu\n" );
+ for(int i=0; i<muon_list_m.size(); ++i){
+  int muindex = muon_list_m[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+ printf( " Tight Mu\n" );
+ for(int i=0; i<muon_list_t.size(); ++i){
+  int muindex = muon_list_t[i];
+  printf( "  muon %d : pt %.1f eta %.1f phi %.1f\n", i, muPt->at(muindex), muEta->at(muindex), muPhi->at(muindex));
+ }
+
+}
+
+
+void analyzer_signal::debug_printelectrons()
+{
+
+ printf( " Loose Ele\n" );
+ for(int i=0; i<electron_list_l.size(); ++i){
+  int eleindex = electron_list_l[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+ printf( " Med Ele\n" );
+ for(int i=0; i<electron_list_m.size(); ++i){
+  int eleindex = electron_list_m[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+ printf( " Tight Ele\n" );
+ for(int i=0; i<electron_list_t.size(); ++i){
+  int eleindex = electron_list_t[i];
+  printf( "  electron %d : pt %.1f eta %.1f phi %.1f\n", i, elePt->at(eleindex), eleEta->at(eleindex), elePhi->at(eleindex));
+ }
+
+}
