@@ -16,6 +16,7 @@ Int_t       nVtx_;
 Int_t       nGoodVtx_;
 Int_t       nTrksPV_;
 Bool_t      isPVGood_;
+Bool_t      dodebug = false;
 float       vtx_;
 float       vty_;
 float       vtz_;
@@ -38,6 +39,8 @@ ULong64_t   HLT_Ele27Tight_;
 ULong64_t   HLT_Ele17Ele12_;
 ULong64_t   HLT_Ele23Ele12_;
 
+ULong64_t   HLT_IsoMu22_;
+ULong64_t   HLT_IsoTkMu22_;
 ULong64_t   HLT_IsoMu24_;
 ULong64_t   HLT_IsoTkMu24_;
 ULong64_t   HLT_Mu17Mu8_;
@@ -56,6 +59,8 @@ ULong64_t   HLT_Ele27Tight_isPS_;
 ULong64_t   HLT_Ele17Ele12_isPS_;
 ULong64_t   HLT_Ele23Ele12_isPS_;
 
+ULong64_t   HLT_IsoMu22_isPS_;
+ULong64_t   HLT_IsoTkMu22_isPS_;
 ULong64_t   HLT_IsoMu24_isPS_;
 ULong64_t   HLT_IsoTkMu24_isPS_;
 ULong64_t   HLT_Mu17Mu8_isPS_;
@@ -95,6 +100,8 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLT_Ele17Ele12",        &HLT_Ele17Ele12_) ;
   tree->Branch("HLT_Ele23Ele12",        &HLT_Ele23Ele12_) ;
 
+  tree->Branch("HLT_IsoMu22"  ,         &HLT_IsoMu22_)   ;
+  tree->Branch("HLT_IsoTkMu22",         &HLT_IsoTkMu22_) ;
   tree->Branch("HLT_IsoMu24"  ,         &HLT_IsoMu24_)   ;
   tree->Branch("HLT_IsoTkMu24",         &HLT_IsoTkMu24_) ;
   tree->Branch("HLT_Mu17Mu8"  ,         &HLT_Mu17Mu8_)   ;
@@ -105,6 +112,8 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("HLT_Ele17Ele12_isPS_",        &HLT_Ele17Ele12_isPS_) ;
   tree->Branch("HLT_Ele23Ele12_isPS_",        &HLT_Ele23Ele12_isPS_) ;
 
+  tree->Branch("HLT_IsoMu22_isPS_"  ,         &HLT_IsoMu22_isPS_)   ;
+  tree->Branch("HLT_IsoTkMu22_isPS_",         &HLT_IsoTkMu22_isPS_) ;
   tree->Branch("HLT_IsoMu24_isPS_"  ,         &HLT_IsoMu24_isPS_)   ;
   tree->Branch("HLT_IsoTkMu24_isPS_",         &HLT_IsoTkMu24_isPS_) ;
   tree->Branch("HLT_Mu17Mu8_isPS_"  ,         &HLT_Mu17Mu8_isPS_)   ;
@@ -178,10 +187,24 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   HLT_Ele17Ele12_       = 0;
   HLT_Ele23Ele12_       = 0;
 
+  HLT_IsoMu22_          = 0;
+  HLT_IsoTkMu22_        = 0;
   HLT_IsoMu24_          = 0;
   HLT_IsoTkMu24_        = 0;
   HLT_Mu17Mu8_          = 0;
   HLT_Mu17TkMu8_        = 0;
+
+  HLT_Ele22eta2p1Loose_isPS_ = 0;
+  HLT_Ele27Tight_isPS_       = 0;
+  HLT_Ele17Ele12_isPS_       = 0;
+  HLT_Ele23Ele12_isPS_       = 0;
+
+  HLT_IsoMu22_isPS_          = 0;
+  HLT_IsoTkMu22_isPS_        = 0;
+  HLT_IsoMu24_isPS_          = 0;
+  HLT_IsoTkMu24_isPS_        = 0;
+  HLT_Mu17Mu8_isPS_          = 0;
+  HLT_Mu17TkMu8_isPS_        = 0;
 
   bool cfg_changed = true;
   HLTConfigProvider hltCfg;
@@ -294,6 +317,20 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     else if (name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9")  != string::npos) bitEle23Ele12 = 8 ;
 
     // Single Iso Mu
+    int bitIsoMu22   = -1; //runs v2,v3,v5
+    if      (name.find("HLT_IsoMu22_v1") != string::npos) bitIsoMu22 = 0 ;
+    else if (name.find("HLT_IsoMu22_v2") != string::npos) bitIsoMu22 = 1 ;
+    else if (name.find("HLT_IsoMu22_v3") != string::npos) bitIsoMu22 = 2 ;
+    else if (name.find("HLT_IsoMu22_v4") != string::npos) bitIsoMu22 = 3 ;
+    else if (name.find("HLT_IsoMu22_v5") != string::npos) bitIsoMu22 = 4 ;
+
+    int bitIsoTkMu22 = -1; //runs v2-v5
+    if      (name.find("HLT_IsoTkMu22_v1")  != string::npos) bitIsoTkMu22 = 0 ;
+    else if (name.find("HLT_IsoTkMu22_v2")  != string::npos) bitIsoTkMu22 = 1 ;
+    else if (name.find("HLT_IsoTkMu22_v3")  != string::npos) bitIsoTkMu22 = 2 ;
+    else if (name.find("HLT_IsoTkMu22_v4")  != string::npos) bitIsoTkMu22 = 3 ;
+    else if (name.find("HLT_IsoTkMu22_v5")  != string::npos) bitIsoTkMu22 = 4 ;
+    
     int bitIsoMu24   = -1; //runs v1-v4
     if      (name.find("HLT_IsoMu24_v1") != string::npos) bitIsoMu24 = 0 ;
     else if (name.find("HLT_IsoMu24_v2") != string::npos) bitIsoMu24 = 1 ;
@@ -428,7 +465,14 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
      HLT_Ele23Ele12_                  |= (isFired     << bitEle23Ele12        );
      HLT_Ele23Ele12_isPS_             |= (isPrescaled << bitEle23Ele12        );
     }
-
+    if ( bitIsoMu22              >= 0 ){   
+     HLT_IsoMu22_                     |= (isFired     << bitIsoMu22           );
+     HLT_IsoMu22_isPS_                |= (isPrescaled << bitIsoMu22           );
+    }
+    if ( bitIsoTkMu22            >= 0 ){     
+     HLT_IsoTkMu22_                   |= (isFired     << bitIsoTkMu22         );
+     HLT_IsoTkMu22_isPS_              |= (isPrescaled << bitIsoTkMu22         );
+    }
     if ( bitIsoMu24              >= 0 ){   
      HLT_IsoMu24_                     |= (isFired     << bitIsoMu24           );
      HLT_IsoMu24_isPS_                |= (isPrescaled << bitIsoMu24           );
@@ -473,57 +517,68 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
     }
     */
 //printouts to see if everything is ok
-/*    
-    //int prescaleSet(const edm::Event& e, const edm::EventSetup& es); //const;
-    unsigned preScaleV = hltCfg.prescaleValue(0, name);
-    //std::bitset<bitsize> HLT_PFHT300PFMET110_b(bitPFHT300PFMET110);
-    // intb
-    std::bitset<bitsize> HLT_Ele22eta2p1Loose_b(bitEle22eta2p1Loose);
-    std::bitset<bitsize> HLT_Ele27Tight_b(bitEle27Tight);
-    std::bitset<bitsize> HLT_Ele17Ele12_b(bitEle17Ele12);
-    std::bitset<bitsize> HLT_Ele23Ele12_b(bitEle23Ele12);
-    std::bitset<bitsize> HLT_IsoMu24_b(bitIsoMu24);
-    std::bitset<bitsize> HLT_IsoTkMu24_b(bitIsoTkMu24);
-    std::bitset<bitsize> HLT_Mu17Mu8_b(bitMu17Mu8);
-    std::bitset<bitsize> HLT_Mu17TkMu8_b(bitMu17TkMu8);
-    // Ub
-    std::bitset<bitsize> HLT_Ele22eta2p1Loose_b2(HLT_Ele22eta2p1Loose_);
-    std::bitset<bitsize> HLT_Ele27Tight_b2(HLT_Ele27Tight_);
-    std::bitset<bitsize> HLT_Ele17Ele12_b2(HLT_Ele17Ele12_);
-    std::bitset<bitsize> HLT_Ele23Ele12_b2(HLT_Ele23Ele12_);
-    std::bitset<bitsize> HLT_IsoMu24_b2(HLT_IsoMu24_);
-    std::bitset<bitsize> HLT_IsoTkMu24_b2(HLT_IsoTkMu24_);
-    std::bitset<bitsize> HLT_Mu17Mu8_b2(HLT_Mu17Mu8_);
-    std::bitset<bitsize> HLT_Mu17TkMu8_b2(HLT_Mu17TkMu8_);
-    // PSb
-    std::bitset<bitsize> HLT_Ele22eta2p1Loose_b3(HLT_Ele22eta2p1Loose_isPS_);
-    std::bitset<bitsize> HLT_Ele27Tight_b3(HLT_Ele27Tight_isPS_);
-    std::bitset<bitsize> HLT_Ele17Ele12_b3(HLT_Ele17Ele12_isPS_);
-    std::bitset<bitsize> HLT_Ele23Ele12_b3(HLT_Ele23Ele12_isPS_);
-    std::bitset<bitsize> HLT_IsoMu24_b3(HLT_IsoMu24_isPS_);
-    std::bitset<bitsize> HLT_IsoTkMu24_b3(HLT_IsoTkMu24_isPS_);
-    std::bitset<bitsize> HLT_Mu17Mu8_b3(HLT_Mu17Mu8_isPS_);
-    std::bitset<bitsize> HLT_Mu17TkMu8_b3(HLT_Mu17TkMu8_isPS_);
+
+    if(dodebug){
+      //int prescaleSet(const edm::Event& e, const edm::EventSetup& es); //const;
+      unsigned preScaleV = hltCfg.prescaleValue(0, name);
+      //std::bitset<bitsize> HLT_PFHT300PFMET110_b(bitPFHT300PFMET110);
+      // intb
+      std::bitset<bitsize> HLT_Ele22eta2p1Loose_b(bitEle22eta2p1Loose);
+      std::bitset<bitsize> HLT_Ele27Tight_b(bitEle27Tight);
+      std::bitset<bitsize> HLT_Ele17Ele12_b(bitEle17Ele12);
+      std::bitset<bitsize> HLT_Ele23Ele12_b(bitEle23Ele12);
+      std::bitset<bitsize> HLT_IsoMu22_b(bitIsoMu22);
+      std::bitset<bitsize> HLT_IsoTkMu22_b(bitIsoTkMu22);
+      std::bitset<bitsize> HLT_IsoMu24_b(bitIsoMu24);
+      std::bitset<bitsize> HLT_IsoTkMu24_b(bitIsoTkMu24);
+      std::bitset<bitsize> HLT_Mu17Mu8_b(bitMu17Mu8);
+      std::bitset<bitsize> HLT_Mu17TkMu8_b(bitMu17TkMu8);
+      // Ub
+      std::bitset<bitsize> HLT_Ele22eta2p1Loose_b2(HLT_Ele22eta2p1Loose_);
+      std::bitset<bitsize> HLT_Ele27Tight_b2(HLT_Ele27Tight_);
+      std::bitset<bitsize> HLT_Ele17Ele12_b2(HLT_Ele17Ele12_);
+      std::bitset<bitsize> HLT_Ele23Ele12_b2(HLT_Ele23Ele12_);
+      std::bitset<bitsize> HLT_IsoMu22_b2(HLT_IsoMu22_);
+      std::bitset<bitsize> HLT_IsoTkMu22_b2(HLT_IsoTkMu22_);
+      std::bitset<bitsize> HLT_IsoMu24_b2(HLT_IsoMu24_);
+      std::bitset<bitsize> HLT_IsoTkMu24_b2(HLT_IsoTkMu24_);
+      std::bitset<bitsize> HLT_Mu17Mu8_b2(HLT_Mu17Mu8_);
+      std::bitset<bitsize> HLT_Mu17TkMu8_b2(HLT_Mu17TkMu8_);
+      // PSb
+      std::bitset<bitsize> HLT_Ele22eta2p1Loose_b3(HLT_Ele22eta2p1Loose_isPS_);
+      std::bitset<bitsize> HLT_Ele27Tight_b3(HLT_Ele27Tight_isPS_);
+      std::bitset<bitsize> HLT_Ele17Ele12_b3(HLT_Ele17Ele12_isPS_);
+      std::bitset<bitsize> HLT_Ele23Ele12_b3(HLT_Ele23Ele12_isPS_);
+      std::bitset<bitsize> HLT_IsoMu22_b3(HLT_IsoMu22_isPS_);
+      std::bitset<bitsize> HLT_IsoTkMu22_b3(HLT_IsoTkMu22_isPS_);
+      std::bitset<bitsize> HLT_IsoMu24_b3(HLT_IsoMu24_isPS_);
+      std::bitset<bitsize> HLT_IsoTkMu24_b3(HLT_IsoTkMu24_isPS_);
+      std::bitset<bitsize> HLT_Mu17Mu8_b3(HLT_Mu17Mu8_isPS_);
+      std::bitset<bitsize> HLT_Mu17TkMu8_b3(HLT_Mu17TkMu8_isPS_);
  
-    //if     (name.find("HLT_PFHT300_PFMET110_v")                     != string::npos){cout<<name<<" "<<HLT_PFHT300PFMET110_b<<" "
-    //<<bitPFHT300PFMET110<<" "<<HLT_PFHT300PFMET110_<<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
-         if(name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v")             != string::npos){cout<<name<<" intb: "<<HLT_Ele22eta2p1Loose_b <<" int: " <<bitEle22eta2p1Loose 
-    <<" U: "<<HLT_Ele22eta2p1Loose_<<" Ub: "<<HLT_Ele22eta2p1Loose_b2<<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele22eta2p1Loose_b3<<endl;}
-    else if(name.find("HLT_Ele27_WPTight_Gsf_v")                    != string::npos){cout<<name<<" intb: "<<HLT_Ele27Tight_b       <<" int: " <<bitEle27Tight       
-    <<" U: "<<HLT_Ele27Tight_      <<" Ub: "<<HLT_Ele27Tight_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele27Tight_b3      <<endl;}
-    else if(name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" intb: "<<HLT_Ele17Ele12_b       <<" int: " <<bitEle17Ele12       
-    <<" U: "<<HLT_Ele17Ele12_      <<" Ub: "<<HLT_Ele17Ele12_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele17Ele12_b3      <<endl;}
-    else if(name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" intb: "<<HLT_Ele23Ele12_b       <<" int: " <<bitEle23Ele12       
-    <<" U: "<<HLT_Ele23Ele12_      <<" Ub: "<<HLT_Ele23Ele12_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele23Ele12_b3      <<endl;}
-    else if(name.find("HLT_IsoMu24_v")                              != string::npos){cout<<name<<" intb: "<<HLT_IsoMu24_b          <<" int: " <<bitIsoMu24          
-    <<" U: "<<HLT_IsoMu24_         <<" Ub: "<<HLT_IsoMu24_b2         <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoMu24_b3          <<endl;}
-    else if(name.find("HLT_IsoTkMu24_v")                            != string::npos){cout<<name<<" intb: "<<HLT_IsoTkMu24_b        <<" int: "<<bitIsoTkMu24        
-    <<" U: "<<HLT_IsoTkMu24_       <<" Ub: "<<HLT_IsoTkMu24_b2       <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoTkMu24_b3        <<endl;}
-    else if(name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")      != string::npos){cout<<name<<" intb: "<<HLT_Mu17Mu8_b          <<" int: "<<bitMu17Mu8          
-    <<" U: "<<HLT_Mu17Mu8_         <<" Ub: "<<HLT_Mu17Mu8_b2         <<" prescale: "<<preScaleV<<" PSb: "<<HLT_Mu17Mu8_b3          <<endl;}
-    else if(name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")    != string::npos){cout<<name<<" intb: "<<HLT_Mu17TkMu8_b        <<" int: "<<bitMu17TkMu8        
-    <<" U:  "<<HLT_Mu17TkMu8_      <<" Ub: "<<HLT_Mu17TkMu8_b2       <<" prescale: "<<preScaleV<<" PSb: "<<HLT_Mu17TkMu8_b3        <<endl;}
- */   
+      //if     (name.find("HLT_PFHT300_PFMET110_v")                     != string::npos){cout<<name<<" "<<HLT_PFHT300PFMET110_b<<" "
+      //<<bitPFHT300PFMET110<<" "<<HLT_PFHT300PFMET110_<<" prescale: "<<(hltCfg.prescaleValue(0, name))<<endl;}
+           if(name.find("HLT_Ele22_eta2p1_WPLoose_Gsf_v")             != string::npos){cout<<name<<" intb: "<<HLT_Ele22eta2p1Loose_b <<" int: " <<bitEle22eta2p1Loose 
+      <<" U: "<<HLT_Ele22eta2p1Loose_<<" Ub: "<<HLT_Ele22eta2p1Loose_b2<<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele22eta2p1Loose_b3<<endl;}
+      else if(name.find("HLT_Ele27_WPTight_Gsf_v")                    != string::npos){cout<<name<<" intb: "<<HLT_Ele27Tight_b       <<" int: " <<bitEle27Tight       
+      <<" U: "<<HLT_Ele27Tight_      <<" Ub: "<<HLT_Ele27Tight_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele27Tight_b3      <<endl;}
+      else if(name.find("HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" intb: "<<HLT_Ele17Ele12_b       <<" int: " <<bitEle17Ele12       
+      <<" U: "<<HLT_Ele17Ele12_      <<" Ub: "<<HLT_Ele17Ele12_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele17Ele12_b3      <<endl;}
+      else if(name.find("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v")!= string::npos){cout<<name<<" intb: "<<HLT_Ele23Ele12_b       <<" int: " <<bitEle23Ele12       
+      <<" U: "<<HLT_Ele23Ele12_      <<" Ub: "<<HLT_Ele23Ele12_b2      <<" prescale: "<<preScaleV <<" PSb: "<<HLT_Ele23Ele12_b3      <<endl;}
+      else if(name.find("HLT_IsoMu22_v")                              != string::npos){cout<<name<<" intb: "<<HLT_IsoMu22_b          <<" int: " <<bitIsoMu22          
+      <<" U: "<<HLT_IsoMu22_         <<" Ub: "<<HLT_IsoMu22_b2         <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoMu22_b3          <<endl;}
+      else if(name.find("HLT_IsoTkMu22_v")                            != string::npos){cout<<name<<" intb: "<<HLT_IsoTkMu22_b        <<" int: "<<bitIsoTkMu22        
+      <<" U: "<<HLT_IsoTkMu22_       <<" Ub: "<<HLT_IsoTkMu22_b2       <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoTkMu22_b3        <<endl;}
+      else if(name.find("HLT_IsoMu24_v")                              != string::npos){cout<<name<<" intb: "<<HLT_IsoMu24_b          <<" int: " <<bitIsoMu24          
+      <<" U: "<<HLT_IsoMu24_         <<" Ub: "<<HLT_IsoMu24_b2         <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoMu24_b3          <<endl;}
+      else if(name.find("HLT_IsoTkMu24_v")                            != string::npos){cout<<name<<" intb: "<<HLT_IsoTkMu24_b        <<" int: "<<bitIsoTkMu24        
+      <<" U: "<<HLT_IsoTkMu24_       <<" Ub: "<<HLT_IsoTkMu24_b2       <<" prescale: "<<preScaleV<<" PSb: "<<HLT_IsoTkMu24_b3        <<endl;}
+      else if(name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v")      != string::npos){cout<<name<<" intb: "<<HLT_Mu17Mu8_b          <<" int: "<<bitMu17Mu8          
+      <<" U: "<<HLT_Mu17Mu8_         <<" Ub: "<<HLT_Mu17Mu8_b2         <<" prescale: "<<preScaleV<<" PSb: "<<HLT_Mu17Mu8_b3          <<endl;}
+      else if(name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v")    != string::npos){cout<<name<<" intb: "<<HLT_Mu17TkMu8_b        <<" int: "<<bitMu17TkMu8        
+      <<" U:  "<<HLT_Mu17TkMu8_      <<" Ub: "<<HLT_Mu17TkMu8_b2       <<" prescale: "<<preScaleV<<" PSb: "<<HLT_Mu17TkMu8_b3        <<endl;}
+    } 
 
     if      (name.find("HLT_Photon22_v")       != string::npos) phoPrescale_.push_back(hltCfg.prescaleValue(0, name));
     else if (name.find("HLT_Photon30_v")       != string::npos) phoPrescale_.push_back(hltCfg.prescaleValue(0, name));
