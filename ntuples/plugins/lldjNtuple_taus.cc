@@ -64,37 +64,37 @@ vector<float> tauPt_;
 vector<float> tauEt_;
 vector<float> tauCharge_;
 vector<int>   tauDecayMode_;
-// vector<float> tauP_;
-// vector<float> tauPx_;
-// vector<float> tauPy_;
-// vector<float> tauPz_;
-// vector<float> tauVz_;
-// vector<float> tauEnergy_;
-// vector<float> tauMass_;
-// vector<float> tauDxy_;
-// vector<float> tauZImpact_;
+vector<float> tauP_;
+vector<float> tauPx_;
+vector<float> tauPy_;
+vector<float> tauPz_;
+vector<float> tauVz_;
+vector<float> tauEnergy_;
+vector<float> tauMass_;
+vector<float> tauDxy_;
+vector<float> tauZImpact_;
 
-  //  //Tau Ingredients
-  //  vector<float> tauChargedIsoPtSum_;
-  //  vector<float> tauNeutralIsoPtSum_;
-  //  vector<float> tauPuCorrPtSum_;
-  //  vector<int> tauNumSignalPFChargedHadrCands_;
-  //  vector<int> tauNumSignalPFNeutrHadrCands_;
-  //  vector<int> tauNumSignalPFGammaCands_;
-  //  vector<int> tauNumSignalPFCands_;
-  //  vector<int> tauNumIsolationPFChargedHadrCands_;
-  //  vector<int> tauNumIsolationPFNeutrHadrCands_;
-  //  vector<int> tauNumIsolationPFGammaCands_;
-  //  vector<int> tauNumIsolationPFCands_;
-  //  vector<bool>  tauLeadChargedHadronExists_;
-  //  vector<float> tauLeadChargedHadronEta_;
-  //  vector<float> tauLeadChargedHadronPhi_;
-  //  vector<float> tauLeadChargedHadronPt_;
-  //  vector<float> tauneutralIsoPtSumWeight_;
-  //  vector<float> taufootprintCorrection_;
-  //  vector<float> tauphotonPtSumOutsideSignalCone_;
-  //  vector<float> taudz_;
-  //  vector<float> taudxy_;
+//Tau Ingredients
+vector<float> tauChargedIsoPtSum_;
+vector<float> tauNeutralIsoPtSum_;
+vector<float> tauPuCorrPtSum_;
+vector<int> tauNumSignalPFChargedHadrCands_;
+vector<int> tauNumSignalPFNeutrHadrCands_;
+vector<int> tauNumSignalPFGammaCands_;
+vector<int> tauNumSignalPFCands_;
+vector<int> tauNumIsolationPFChargedHadrCands_;
+vector<int> tauNumIsolationPFNeutrHadrCands_;
+vector<int> tauNumIsolationPFGammaCands_;
+vector<int> tauNumIsolationPFCands_;
+vector<bool>  tauLeadChargedHadronExists_;
+vector<float> tauLeadChargedHadronEta_;
+vector<float> tauLeadChargedHadronPhi_;
+vector<float> tauLeadChargedHadronPt_;
+vector<float> tauneutralIsoPtSumWeight_;
+vector<float> taufootprintCorrection_;
+vector<float> tauphotonPtSumOutsideSignalCone_;
+vector<float> taudz_;
+vector<float> taudxy_;
 
 
 
@@ -158,39 +158,39 @@ void lldjNtuple::branchesTaus(TTree* tree)
     tree->Branch("tauPt"  ,&tauPt_);
     tree->Branch("tauEt"  ,&tauEt_);
     tree->Branch("tauCharge"  ,&tauCharge_);
-    // tree->Branch("tauP"  ,&tauP_);
-    // tree->Branch("tauPx"  ,&tauPx_);
-    // tree->Branch("tauPy"  ,&tauPy_);
-    // tree->Branch("tauPz"  ,&tauPz_);
-    // tree->Branch("tauVz"  ,&tauVz_);
-    // tree->Branch("tauEnergy"  ,&tauEnergy_);
-    // tree->Branch("tauMass"  ,&tauMass_);
-    // tree->Branch("tauDxy"  ,&tauDxy_);
-    // tree->Branch("tauZImpact"  ,&tauZImpact_);
-    // 
-    // // Tau Ingredients
+    tree->Branch("tauP"  ,&tauP_);
+    tree->Branch("tauPx"  ,&tauPx_);
+    tree->Branch("tauPy"  ,&tauPy_);
+    tree->Branch("tauPz"  ,&tauPz_);
+    tree->Branch("tauVz"  ,&tauVz_);
+    tree->Branch("tauEnergy"  ,&tauEnergy_);
+    tree->Branch("tauMass"  ,&tauMass_);
+    tree->Branch("tauDxy"  ,&tauDxy_);
+    tree->Branch("tauZImpact"  ,&tauZImpact_);
+    
+    // Tau Ingredients
     tree->Branch("tauDecayMode"  ,&tauDecayMode_);
-    // tree->Branch("tauLeadChargedHadronExists"  ,&tauLeadChargedHadronExists_);
-    // tree->Branch("tauLeadChargedHadronEta"  ,&tauLeadChargedHadronEta_);
-    // tree->Branch("tauLeadChargedHadronPhi"  ,&tauLeadChargedHadronPhi_);
-    // tree->Branch("tauLeadChargedHadronPt"  ,&tauLeadChargedHadronPt_);
-    // tree->Branch("tauChargedIsoPtSum"  ,&tauChargedIsoPtSum_);
-    // tree->Branch("tauNeutralIsoPtSum"  ,&tauNeutralIsoPtSum_);
-    // tree->Branch("tauPuCorrPtSum"  ,&tauPuCorrPtSum_);
-    // tree->Branch("tauNumSignalPFChargedHadrCands"  ,&tauNumSignalPFChargedHadrCands_);
-    // tree->Branch("tauNumSignalPFNeutrHadrCands"  ,&tauNumSignalPFNeutrHadrCands_);
-    // tree->Branch("tauNumSignalPFGammaCands"  ,&tauNumSignalPFGammaCands_);
-    // tree->Branch("tauNumSignalPFCands"  ,&tauNumSignalPFCands_);
-    // tree->Branch("tauNumIsolationPFChargedHadrCands"  ,&tauNumIsolationPFChargedHadrCands_);
-    // tree->Branch("tauNumIsolationPFNeutrHadrCands"  ,&tauNumIsolationPFNeutrHadrCands_);
-    // tree->Branch("tauNumIsolationPFGammaCands"  ,&tauNumIsolationPFGammaCands_);
-    // tree->Branch("tauNumIsolationPFCands"  ,&tauNumIsolationPFCands_);
+    tree->Branch("tauLeadChargedHadronExists"  ,&tauLeadChargedHadronExists_);
+    tree->Branch("tauLeadChargedHadronEta"  ,&tauLeadChargedHadronEta_);
+    tree->Branch("tauLeadChargedHadronPhi"  ,&tauLeadChargedHadronPhi_);
+    tree->Branch("tauLeadChargedHadronPt"  ,&tauLeadChargedHadronPt_);
+    tree->Branch("tauChargedIsoPtSum"  ,&tauChargedIsoPtSum_);
+    tree->Branch("tauNeutralIsoPtSum"  ,&tauNeutralIsoPtSum_);
+    tree->Branch("tauPuCorrPtSum"  ,&tauPuCorrPtSum_);
+    tree->Branch("tauNumSignalPFChargedHadrCands"  ,&tauNumSignalPFChargedHadrCands_);
+    tree->Branch("tauNumSignalPFNeutrHadrCands"  ,&tauNumSignalPFNeutrHadrCands_);
+    tree->Branch("tauNumSignalPFGammaCands"  ,&tauNumSignalPFGammaCands_);
+    tree->Branch("tauNumSignalPFCands"  ,&tauNumSignalPFCands_);
+    tree->Branch("tauNumIsolationPFChargedHadrCands"  ,&tauNumIsolationPFChargedHadrCands_);
+    tree->Branch("tauNumIsolationPFNeutrHadrCands"  ,&tauNumIsolationPFNeutrHadrCands_);
+    tree->Branch("tauNumIsolationPFGammaCands"  ,&tauNumIsolationPFGammaCands_);
+    tree->Branch("tauNumIsolationPFCands"  ,&tauNumIsolationPFCands_);
     
     
-    //  tree->Branch("taufootprintCorrection"  ,&taufootprintCorrection_);
-    //  tree->Branch("tauphotonPtSumOutsideSignalCone"  ,&tauphotonPtSumOutsideSignalCone_);
-    //  tree->Branch("taudz"  ,&taudz_);
-    //  tree->Branch("taudxy"  ,&taudxy_);
+    tree->Branch("taufootprintCorrection"  ,&taufootprintCorrection_);
+    tree->Branch("tauphotonPtSumOutsideSignalCone"  ,&tauphotonPtSumOutsideSignalCone_);
+    tree->Branch("taudz"  ,&taudz_);
+    tree->Branch("taudxy"  ,&taudxy_);
     
     
 }
@@ -248,39 +248,39 @@ void lldjNtuple::fillTaus(const edm::Event& e)
     tauPt_.clear();
     tauEt_.clear();
     tauCharge_.clear();
-    // tauP_.clear();
-    // tauPx_.clear();
-    // tauPy_.clear();
-    // tauPz_.clear();
-    // tauVz_.clear();
-    // tauEnergy_.clear();
-    // tauMass_.clear();
-    // tauDxy_.clear();
-    // tauZImpact_.clear();
+    tauP_.clear();
+    tauPx_.clear();
+    tauPy_.clear();
+    tauPz_.clear();
+    tauVz_.clear();
+    tauEnergy_.clear();
+    tauMass_.clear();
+    tauDxy_.clear();
+    tauZImpact_.clear();
     
     // Tau Ingredients
     tauDecayMode_.clear();
-    //tauLeadChargedHadronExists_.clear();
-    //tauLeadChargedHadronEta_.clear();
-    //tauLeadChargedHadronPhi_.clear();
-    //tauLeadChargedHadronPt_.clear();
-    //tauChargedIsoPtSum_.clear();
-    //tauNeutralIsoPtSum_.clear();
-    //tauPuCorrPtSum_.clear();
-    //tauNumSignalPFChargedHadrCands_.clear();
-    //tauNumSignalPFNeutrHadrCands_.clear();
-    //tauNumSignalPFGammaCands_.clear();
-    //tauNumSignalPFCands_.clear();
-    //tauNumIsolationPFChargedHadrCands_.clear();
-    //tauNumIsolationPFNeutrHadrCands_.clear();
-    //tauNumIsolationPFGammaCands_.clear();
-    //tauNumIsolationPFCands_.clear();
-    //
-    //tauneutralIsoPtSumWeight_.clear();
-    //taufootprintCorrection_.clear();
-    //tauphotonPtSumOutsideSignalCone_.clear();
-    //taudz_.clear();
-    //taudxy_.clear();
+    tauLeadChargedHadronExists_.clear();
+    tauLeadChargedHadronEta_.clear();
+    tauLeadChargedHadronPhi_.clear();
+    tauLeadChargedHadronPt_.clear();
+    tauChargedIsoPtSum_.clear();
+    tauNeutralIsoPtSum_.clear();
+    tauPuCorrPtSum_.clear();
+    tauNumSignalPFChargedHadrCands_.clear();
+    tauNumSignalPFNeutrHadrCands_.clear();
+    tauNumSignalPFGammaCands_.clear();
+    tauNumSignalPFCands_.clear();
+    tauNumIsolationPFChargedHadrCands_.clear();
+    tauNumIsolationPFNeutrHadrCands_.clear();
+    tauNumIsolationPFGammaCands_.clear();
+    tauNumIsolationPFCands_.clear();
+    
+    tauneutralIsoPtSumWeight_.clear();
+    taufootprintCorrection_.clear();
+    tauphotonPtSumOutsideSignalCone_.clear();
+    taudz_.clear();
+    taudxy_.clear();
     
     
     nTau_ = 0;
@@ -346,48 +346,48 @@ void lldjNtuple::fillTaus(const edm::Event& e)
         tauPt_.push_back(itau->pt());
         tauEt_.push_back(itau->et());
         tauCharge_.push_back(itau->charge());
-        //tauP_.push_back(itau->p() );
-        //tauPx_.push_back(itau->px() );
-        //tauPy_.push_back(itau->py() );
-        //tauPz_.push_back(itau->pz() );
-        //tauVz_.push_back(itau->vz() );
-        //tauEnergy_.push_back(itau->energy() );
-        //tauMass_.push_back(itau->mass());
-        //tauDxy_.push_back(itau->dxy() );
-        //tauZImpact_.push_back(itau->vertex().z() + 130./tan(itau->theta()));
+        tauP_.push_back(itau->p() );
+        tauPx_.push_back(itau->px() );
+        tauPy_.push_back(itau->py() );
+        tauPz_.push_back(itau->pz() );
+        tauVz_.push_back(itau->vz() );
+        tauEnergy_.push_back(itau->energy() );
+        tauMass_.push_back(itau->mass());
+        tauDxy_.push_back(itau->dxy() );
+        tauZImpact_.push_back(itau->vertex().z() + 130./tan(itau->theta()));
         
         
         // Tau Ingredients
         tauDecayMode_.push_back(itau->decayMode());
-        // tauChargedIsoPtSum_.push_back(itau->tauID("chargedIsoPtSum") );
-        // tauNeutralIsoPtSum_.push_back(itau->tauID("neutralIsoPtSum")  );
-        // tauPuCorrPtSum_.push_back(itau->tauID("puCorrPtSum")  );
-        // tauneutralIsoPtSumWeight_.push_back(itau->tauID("neutralIsoPtSumWeight"));
-        // taufootprintCorrection_.push_back(itau->tauID("footprintCorrection"));
-        // tauphotonPtSumOutsideSignalCone_.push_back(itau->tauID("photonPtSumOutsideSignalCone"));
-        // 
-        // tauNumSignalPFChargedHadrCands_.push_back(itau->signalChargedHadrCands().size());
-        // tauNumSignalPFNeutrHadrCands_.push_back(itau->signalNeutrHadrCands().size());
-        // tauNumSignalPFGammaCands_.push_back(itau->signalGammaCands().size());
-        // tauNumSignalPFCands_.push_back(itau->signalCands().size());
-        // 
-        // tauNumIsolationPFChargedHadrCands_.push_back(itau->isolationChargedHadrCands().size());
-        // tauNumIsolationPFNeutrHadrCands_.push_back(itau->isolationNeutrHadrCands().size());
-        // tauNumIsolationPFGammaCands_.push_back(itau->isolationGammaCands().size());
-        // tauNumIsolationPFCands_.push_back(itau->isolationCands().size());
-        // 
-        // edm::Handle<reco::VertexCollection> vertexs;
-        // e.getByToken(vtxLabel_, vertexs);
-        // 
-        // if (vertexs->size()>0) {
-        //     pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(itau->leadChargedHadrCand().get());
-        //     taudz_.push_back(packedLeadTauCand->dz());
-        //     taudxy_.push_back(packedLeadTauCand->dxy());
-        //     tauLeadChargedHadronExists_.push_back(true);
-        //     tauLeadChargedHadronEta_.push_back(packedLeadTauCand->eta());
-        //     tauLeadChargedHadronPhi_.push_back(packedLeadTauCand->phi());
-        //     tauLeadChargedHadronPt_.push_back(packedLeadTauCand->pt());
-        // }
+        tauChargedIsoPtSum_.push_back(itau->tauID("chargedIsoPtSum") );
+        tauNeutralIsoPtSum_.push_back(itau->tauID("neutralIsoPtSum")  );
+        tauPuCorrPtSum_.push_back(itau->tauID("puCorrPtSum")  );
+        tauneutralIsoPtSumWeight_.push_back(itau->tauID("neutralIsoPtSumWeight"));
+        taufootprintCorrection_.push_back(itau->tauID("footprintCorrection"));
+        tauphotonPtSumOutsideSignalCone_.push_back(itau->tauID("photonPtSumOutsideSignalCone"));
+        
+        tauNumSignalPFChargedHadrCands_.push_back(itau->signalChargedHadrCands().size());
+        tauNumSignalPFNeutrHadrCands_.push_back(itau->signalNeutrHadrCands().size());
+        tauNumSignalPFGammaCands_.push_back(itau->signalGammaCands().size());
+        tauNumSignalPFCands_.push_back(itau->signalCands().size());
+        
+        tauNumIsolationPFChargedHadrCands_.push_back(itau->isolationChargedHadrCands().size());
+        tauNumIsolationPFNeutrHadrCands_.push_back(itau->isolationNeutrHadrCands().size());
+        tauNumIsolationPFGammaCands_.push_back(itau->isolationGammaCands().size());
+        tauNumIsolationPFCands_.push_back(itau->isolationCands().size());
+        
+        edm::Handle<reco::VertexCollection> vertexs;
+        e.getByToken(vtxLabel_, vertexs);
+        
+        if (vertexs->size()>0) {
+            pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(itau->leadChargedHadrCand().get());
+            taudz_.push_back(packedLeadTauCand->dz());
+            taudxy_.push_back(packedLeadTauCand->dxy());
+            tauLeadChargedHadronExists_.push_back(true);
+            tauLeadChargedHadronEta_.push_back(packedLeadTauCand->eta());
+            tauLeadChargedHadronPhi_.push_back(packedLeadTauCand->phi());
+            tauLeadChargedHadronPt_.push_back(packedLeadTauCand->pt());
+        }
         
         
         

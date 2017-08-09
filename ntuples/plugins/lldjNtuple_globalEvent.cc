@@ -21,6 +21,8 @@ float       vtz_;
 float       rho_;
 float       rhoCentral_;
 
+Int_t       nTruePU_;
+
 // ULong64_t   HLTEleMuX_;
 // ULong64_t   HLTPho_;
 // ULong64_t   HLTJet_;
@@ -77,6 +79,9 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
   tree->Branch("vtz",                  &vtz_);
   tree->Branch("rho",                  &rho_);
   tree->Branch("rhoCentral",           &rhoCentral_);
+
+
+  tree->Branch("nTruePU",  &nTruePU_);
   //  tree->Branch("HLTEleMuX",            &HLTEleMuX_);
   //  tree->Branch("HLTPho",               &HLTPho_);
   //  tree->Branch("HLTJet",               &HLTJet_);
@@ -106,7 +111,7 @@ void lldjNtuple::branchesGlobalEvent(TTree* tree) {
 
 void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es) {
 
-  phoPrescale_.clear();
+  //phoPrescale_.clear();
 
   edm::Handle<double> rhoHandle;
   e.getByToken(rhoLabel_, rhoHandle);
@@ -121,6 +126,15 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   rho_    = *(rhoHandle.product());
   if (rhoCentralHandle.isValid()) rhoCentral_ = *(rhoCentralHandle.product());
   else rhoCentral_ = -99.;
+
+  nTruePU_ = -1 ;
+  if (!e.isRealData()) {
+   edm::Handle<vector<PileupSummaryInfo> > puInfoHandle;
+   e.getByToken(puCollection_, puInfoHandle);
+   if ( puInfoHandle->size() > 0 ){
+    nTruePU_ = puInfoHandle->at(1).getTrueNumInteractions() ;
+   }
+  }
 
   edm::Handle<reco::VertexCollection> vtxHandle;
   e.getByToken(vtxLabel_, vtxHandle);
@@ -183,21 +197,21 @@ void lldjNtuple::fillGlobalEvent(const edm::Event& e, const edm::EventSetup& es)
   e.getByToken(trgResultsLabel_, trgResultsHandle);
 
   const edm::TriggerNames &trgNames = e.triggerNames(*trgResultsHandle);
-  for (size_t i = 0; i < trgNames.size(); ++i) {
-    const string &name = trgNames.triggerName(i);
-    //printf(" Reading trigger: %s\n" , name.c_str()  );
-  }
+  //for (size_t i = 0; i < trgNames.size(); ++i) {
+  //  const string &name = trgNames.triggerName(i);
+  //  //printf(" Reading trigger: %s\n" , name.c_str()  );
+  //}
 
 
   for (size_t i = 0; i < trgNames.size(); ++i) {
     const string &name = trgNames.triggerName(i);
 
     // HLT name => bit correspondence
-    // PF HT 350 MET 100
-    int bitPFHT350PFMET100 = -1;
-    if      (name.find("HLT_PFHT350_PFMET100_v1")              != string::npos) bitPFHT350PFMET100 = 0 ;
-    else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v1") != string::npos) bitPFHT350PFMET100 = 1 ;
-    else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v2") != string::npos) bitPFHT350PFMET100 = 2 ;
+    ///// PF HT 350 MET 100
+    ///int bitPFHT350PFMET100 = -1;
+    ///if      (name.find("HLT_PFHT350_PFMET100_v1")              != string::npos) bitPFHT350PFMET100 = 0 ;
+    ///else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v1") != string::npos) bitPFHT350PFMET100 = 1 ;
+    ///else if (name.find("HLT_PFHT350_PFMET100_JetIdCleaned_v2") != string::npos) bitPFHT350PFMET100 = 2 ;
 /*
     int bitPFHT300PFMET110 = -1;
     if      (name.find("HLT_PFHT300_PFMET110_v1")              != string::npos) bitPFHT300PFMET110 = 0 ;

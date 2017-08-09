@@ -16,7 +16,7 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7'
 #process.Tracer = cms.Service("Tracer")
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 
 #jec from sqlite
 process.load("CondCore.DBCommon.CondDBCommon_cfi")
@@ -63,7 +63,7 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016F/SingleElectron/MINIAOD/03Feb2017-v1/100000/00B336D6-6AEC-E611-8581-E0071B7AC7B0.root',
         #'/store/data/Run2016G/SingleElectron/MINIAOD/03Feb2017-v1/50000/004A75AB-B2EA-E611-B000-24BE05CEFDF1.root',
         #'/store/data/Run2016H/SingleElectron/MINIAOD/03Feb2017_ver2-v1/100000/00553E5F-29EC-E611-ADB0-00259074AE8C.root',
-        '/store/data/Run2016H/SingleElectron/MINIAOD/03Feb2017_ver3-v1/110000/02973E99-69EC-E611-9913-5065F381A2F1.root',
+        #'/store/data/Run2016H/SingleElectron/MINIAOD/03Feb2017_ver3-v1/110000/02973E99-69EC-E611-9913-5065F381A2F1.root',
         #
         #        # double mu
         #'/store/data/Run2016B/DoubleMuon/MINIAOD/03Feb2017_ver1-v1/110000/02B27BFE-1BEB-E611-8D50-001EC9B20ECB.root',
@@ -81,7 +81,7 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016B/DoubleEG/MINIAOD/03Feb2017_ver1-v1/100000/02C07D99-20EB-E611-92B2-3417EBE700D2.root',
         #'/store/data/Run2016B/DoubleEG/MINIAOD/03Feb2017_ver2-v2/50000/00054938-CEEA-E611-889E-0CC47A4D7650.root',
         #'/store/data/Run2016C/DoubleEG/MINIAOD/03Feb2017-v1/80000/00371362-6AEC-E611-9845-842B2B758BAA.root',
-        #'/store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
+        '/store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
         #'/store/data/Run2016E/DoubleEG/MINIAOD/03Feb2017-v1/110000/003AF399-ABEA-E611-92CF-002590E2DA08.root',
         #'/store/data/Run2016F/DoubleEG/MINIAOD/03Feb2017-v1/80000/0006AFD8-F8EA-E611-9F9D-0CC47A13D09C.root',
         #'/store/data/Run2016G/DoubleEG/MINIAOD/03Feb2017-v1/100000/002F14FF-D0EA-E611-952E-008CFA197AF4.root',
@@ -91,9 +91,7 @@ process.source = cms.Source("PoolSource",
         )
                             )
 
-#process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data_electron.root'))
-#process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data_muon.root'))
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data_SEle_H3.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'))
 
 #process.load("PhysicsTools.PatAlgos.patSequences_cff")
 

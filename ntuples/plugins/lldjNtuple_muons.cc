@@ -13,6 +13,11 @@ vector<float>    muPhi_;
 vector<int>      muCharge_;
 vector<int>      muType_;
 vector<UShort_t> muIDbit_;
+vector<bool>     muPassLooseID_   ;
+vector<bool>     muPassMediumID_  ;
+vector<bool>     muPassTighID_    ;
+vector<bool>     muPassSoftID_    ;
+vector<bool>     muPassHighPtID_  ;
 // vector<float>    muD0_;
 // vector<float>    muDz_;
 // vector<float>    muSIP_;
@@ -51,6 +56,11 @@ void lldjNtuple::branchesMuons(TTree* tree) {
   tree->Branch("muCharge",      &muCharge_);
   tree->Branch("muType",        &muType_);
   tree->Branch("muIDbit",       &muIDbit_);
+  tree->Branch("muPassLooseID" ,  &muPassLooseID_  );
+  tree->Branch("muPassMediumID",  &muPassMediumID_ );
+  tree->Branch("muPassTighID"  ,  &muPassTighID_   );
+  tree->Branch("muPassSoftID"  ,  &muPassSoftID_   );
+  tree->Branch("muPassHighPtID",  &muPassHighPtID_ );
   //tree->Branch("muD0",          &muD0_);
   //tree->Branch("muDz",          &muDz_);
   //tree->Branch("muSIP",         &muSIP_);
@@ -154,6 +164,12 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
     if (iMu->isSoftMuon(vtx))   setbit(tmpmuIDbit, 3);
     if (iMu->isHighPtMuon(vtx)) setbit(tmpmuIDbit, 4);
     muIDbit_.push_back(tmpmuIDbit);
+
+    muPassLooseID_  .push_back(iMu->isLooseMuon())    ;
+    muPassMediumID_ .push_back(iMu->isMediumMuon())   ;
+    muPassTighID_   .push_back(iMu->isTightMuon(vtx)) ;
+    muPassSoftID_   .push_back(iMu->isSoftMuon(vtx))  ;
+    muPassHighPtID_ .push_back(iMu->isHighPtMuon(vtx));
 
     //  muFiredTrgs_.push_back(matchMuonTriggerFilters(iMu->pt(), iMu->eta(), iMu->phi()));
     //  muFiredL1Trgs_.push_back(matchL1TriggerFilters(iMu->pt(), iMu->eta(), iMu->phi()));

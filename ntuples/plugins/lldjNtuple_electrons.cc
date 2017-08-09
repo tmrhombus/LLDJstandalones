@@ -118,6 +118,14 @@ vector<UShort_t> eleIDbit_;
 //  vector<float> gsfEta_;
 //  vector<float> gsfPhi_;
 
+vector<bool> elePassVetoID_;
+vector<bool> elePassLooseID_;
+vector<bool> elePassMediumID_;
+vector<bool> elePassTightID_;
+vector<bool> elePassHEEPID_;
+vector<bool> elePassHLTID_;
+
+
 void lldjNtuple::branchesElectrons(TTree* tree) {
 
   tree->Branch("nEle",                    &nEle_);
@@ -208,6 +216,13 @@ void lldjNtuple::branchesElectrons(TTree* tree) {
 //    tree->Branch("eleFiredDoubleTrgs",          &eleFiredDoubleTrgs_);
 //    tree->Branch("eleFiredL1Trgs",              &eleFiredL1Trgs_);
   tree->Branch("eleIDbit",                    &eleIDbit_);
+
+  tree->Branch("elePassVetoID",   & elePassVetoID_   );
+  tree->Branch("elePassLooseID",  & elePassLooseID_  );
+  tree->Branch("elePassMediumID", & elePassMediumID_ );
+  tree->Branch("elePassTightID",  & elePassTightID_  );
+  tree->Branch("elePassHEEPID",   & elePassHEEPID_   );
+  tree->Branch("elePassHLTID",    & elePassHLTID_    );
 
 //   if (development_) {
 //     tree->Branch("eleESEnP1Raw",              &eleESEnP1Raw_);
@@ -328,6 +343,12 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, m
   // eleFiredDoubleTrgs_         .clear();
   // eleFiredL1Trgs_             .clear();
   eleIDbit_                   .clear();
+  elePassVetoID_   .clear();
+  elePassLooseID_  .clear();
+  elePassMediumID_ .clear();
+  elePassTightID_  .clear();
+  elePassHEEPID_   .clear();
+  elePassHLTID_    .clear();
 
   nEle_ = 0;
 
@@ -711,6 +732,13 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, m
     //elePFClusHcalIso_.push_back(iEle->hcalPFClusterIso());
     
     eleIDbit_.push_back(tmpeleIDbit);
+
+    elePassVetoID_   .push_back( (*veto_id_decisions)[el]   );
+    elePassLooseID_  .push_back( (*loose_id_decisions)[el]  );
+    elePassMediumID_ .push_back( (*medium_id_decisions)[el] );
+    elePassTightID_  .push_back( (*tight_id_decisions)[el]  );
+    elePassHEEPID_   .push_back( (*heep_id_decisions)[el]   );
+    elePassHLTID_    .push_back( (*hlt_id_decisions)[el]    );
   
     nEle_++;
   }

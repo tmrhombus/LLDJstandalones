@@ -105,6 +105,10 @@ vector<float>  phoPhi_;
 // 
  vector<UShort_t> phoIDbit_;
 
+vector<bool>    phoPassLooseID_ ;
+vector<bool>    phoPassMediumID_;
+vector<bool>    phoPassTightID_ ;
+
 // //Necessary for the Photon Footprint removal
 // template <class T, class U>
 // bool isInFootprint(const T& thefootprint, const U& theCandidate) {
@@ -217,7 +221,9 @@ void lldjNtuple::branchesPhotons(TTree* tree) {
   //
   //  tree->Branch("phoxtalBits", &phoxtalBits_);
   tree->Branch("phoIDbit",    &phoIDbit_);
-
+  tree->Branch("phoPassLooseID",  &phoPassLooseID_ );
+  tree->Branch("phoPassMediumID", &phoPassMediumID_);
+  tree->Branch("phoPassTightID",  &phoPassTightID_ );
 }
 
 void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
@@ -690,9 +696,9 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     //    //photrkSumPtHollowConeDR03_                    .push_back(iPho->trkSumPtHollowConeDR03());
     //    //photrkSumPtSolidConeDR03_                     .push_back(iPho->trkSumPtSolidConeDR03());
 
-    //    const auto pho = photonHandle->ptrAt(nPho_);
-    //    
-    //    UShort_t tmpphoIDbit = 0;
+    const auto pho = photonHandle->ptrAt(nPho_);
+    
+    UShort_t tmpphoIDbit = 0;
     //    
     //    phoPFChIso_              .push_back((*phoChargedIsolationMap)[pho]);
     //    phoPFPhoIso_             .push_back((*phoPhotonIsolationMap)[pho]);
@@ -715,8 +721,13 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
     bool isPassTight  = (*tight_id_decisions)[pho];
     if(isPassTight) setbit(tmpphoIDbit, 2);
     
-    phoIDMVA_.push_back((*mvaValues)[pho]);  
+    //phoIDMVA_.push_back((*mvaValues)[pho]);  
     phoIDbit_.push_back(tmpphoIDbit);      
+
+    phoPassLooseID_  .push_back( (*loose_id_decisions)[pho]  );
+    phoPassMediumID_ .push_back( (*medium_id_decisions)[pho] );
+    phoPassTightID_  .push_back( (*tight_id_decisions)[pho]  );
+    
 
     nPho_++;
   }
@@ -724,6 +735,6 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   //if (GEDIdTool) delete GEDIdTool;
 }
 
-//  void lldjNtuple::cleanupPhotons() {
-//  
-//  }
+void lldjNtuple::cleanupPhotons() {
+
+}

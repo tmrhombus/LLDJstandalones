@@ -115,16 +115,16 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   branchesGlobalEvent(tree_);
 
-  if (doGenParticles_) {
-    branchesGenInfo(tree_, fs);
-    branchesGenPart(tree_);
-  }
+  //if (doGenParticles_) {
+  //  branchesGenInfo(tree_, fs);
+  //  branchesGenPart(tree_);
+  //}
 
   branchesMET(tree_);
   branchesPhotons(tree_);
-  #if (dumpPhotons_) branchesPFPhotons(tree_);
+  //if (dumpPhotons_) branchesPFPhotons(tree_);
   branchesElectrons(tree_);
-  #if (runHFElectrons_) branchesHFElectrons(tree_);
+  //if (runHFElectrons_) branchesHFElectrons(tree_);
   branchesMuons(tree_);
   if (dumpTaus_) branchesTaus(tree_);
   if (dumpJets_) branchesJets(tree_);
@@ -136,6 +136,8 @@ lldjNtuple::~lldjNtuple() {
 }
 
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
+
+  //hEvents_->Fill(0.5);
 
   if (doGenParticles_) {
     jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
@@ -166,23 +168,24 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   initTriggerFilters(e);
 
   fillGlobalEvent(e, es);
-  if (!e.isRealData()) {
-    fillGenInfo(e);
-    if (doGenParticles_)
-      fillGenPart(e);
-  }
+  //if (!e.isRealData()) {
+  //  fillGenInfo(e);
+  //  if (doGenParticles_)
+  //    fillGenPart(e);
+  //}
 
   fillMET(e, es);
   fillPhotons(e, es); // FIXME: photons have different vertex (not pv)
   //fillPFPhotons(e, es);
-  fillElectrons(e, es, pv); // doesn't use pv
+  fillElectrons(e, es, pv);
 
   //if (runHFElectrons_ ) fillHFElectrons(e);
-  fillMuons(e, pv, vtx); // doesn't use pv, uses vtx for  if (iMu->isTightMuon(vtx))  setbit(tmpmuIDbit, 2);
+  fillMuons(e, pv, vtx); //muons don't use pv, use vtx for isolation
   if (dumpTaus_) fillTaus(e);
   if (dumpJets_) fillJets(e,es);
 
   hEvents_->Fill(1.);
+  //hEvents_->Fill(1.5);
   tree_->Fill();
 
 }
