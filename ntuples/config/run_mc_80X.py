@@ -137,7 +137,7 @@ process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
 process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 process.lldjNtuple.dumpSoftDrop= cms.bool(True)
 process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
-process.lldjNtuple.runHFElectrons=cms.bool(True)
+#process.lldjNtuple.runHFElectrons=cms.bool(True)
 process.lldjNtuple.isAOD=cms.bool(False)
 process.lldjNtuple.doGenParticles=cms.bool(True)
 process.lldjNtuple.dumpSubJets=cms.bool(True)
@@ -152,18 +152,18 @@ switchOnVIDElectronIdProducer(process, dataFormat)
 switchOnVIDPhotonIdProducer(process, dataFormat)
 
 # define which IDs we want to produce
-my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
+eleid_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
+                 #'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
 
 #add them to the VID producer
-for idmod in my_id_modules:
+for idmod in eleid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
     
-my_phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff',
-                    'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
+phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
+                    #'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
 
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
 process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
@@ -172,7 +172,7 @@ process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
 process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
 
 #add them to the VID producer
-for idmod in my_phoid_modules:
+for idmod in phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
 #builds Ntuple

@@ -122,9 +122,9 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   branchesMET(tree_);
   branchesPhotons(tree_);
-  if (dumpPhotons_) branchesPFPhotons(tree_);
+  #if (dumpPhotons_) branchesPFPhotons(tree_);
   branchesElectrons(tree_);
-  if (runHFElectrons_) branchesHFElectrons(tree_);
+  #if (runHFElectrons_) branchesHFElectrons(tree_);
   branchesMuons(tree_);
   if (dumpTaus_) branchesTaus(tree_);
   if (dumpJets_) branchesJets(tree_);
@@ -136,8 +136,6 @@ lldjNtuple::~lldjNtuple() {
 }
 
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
-
-  hEvents_->Fill(0.5);
 
   if (doGenParticles_) {
     jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
@@ -176,16 +174,15 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
   fillMET(e, es);
   fillPhotons(e, es); // FIXME: photons have different vertex (not pv)
-  fillPFPhotons(e, es);
-  fillElectrons(e, es, pv);
+  //fillPFPhotons(e, es);
+  fillElectrons(e, es, pv); // doesn't use pv
 
-  if (runHFElectrons_ ) fillHFElectrons(e);
-  fillMuons(e, pv, vtx);
+  //if (runHFElectrons_ ) fillHFElectrons(e);
+  fillMuons(e, pv, vtx); // doesn't use pv, uses vtx for  if (iMu->isTightMuon(vtx))  setbit(tmpmuIDbit, 2);
   if (dumpTaus_) fillTaus(e);
   if (dumpJets_) fillJets(e,es);
 
   hEvents_->Fill(1.);
-  //hEvents_->Fill(1.5);
   tree_->Fill();
 
 }

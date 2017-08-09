@@ -39,10 +39,10 @@ vector<float>    mcMomPhi;
 vector<UShort_t> mcStatusFlag;
 vector<int>      mcParentage;
 vector<int>      mcStatus;
-vector<float>    mcCalIsoDR03;
-vector<float>    mcTrkIsoDR03;
-vector<float>    mcCalIsoDR04;
-vector<float>    mcTrkIsoDR04;
+ //vector<float>    mcCalIsoDR03;
+ //vector<float>    mcTrkIsoDR03;
+ //vector<float>    mcCalIsoDR04;
+ //vector<float>    mcTrkIsoDR04;
 
 float getGenCalIso(edm::Handle<reco::GenParticleCollection> handle,
                    reco::GenParticleCollection::const_iterator thisPart,
@@ -152,10 +152,10 @@ void lldjNtuple::branchesGenPart(TTree* tree) {
   tree->Branch("mcStatusFlag", &mcStatusFlag); //-999:non W or Z, 1:hardronic, 2:e, 3:mu, 4:tau
   tree->Branch("mcParentage",  &mcParentage);  // 16*lepton + 8*boson + 4*non-prompt + 2*qcd + exotics
   tree->Branch("mcStatus",     &mcStatus);     // status of the particle
-  tree->Branch("mcCalIsoDR03", &mcCalIsoDR03);
-  tree->Branch("mcTrkIsoDR03", &mcTrkIsoDR03);
-  tree->Branch("mcCalIsoDR04", &mcCalIsoDR04);
-  tree->Branch("mcTrkIsoDR04", &mcTrkIsoDR04);
+  //  tree->Branch("mcCalIsoDR03", &mcCalIsoDR03);
+  //  tree->Branch("mcTrkIsoDR03", &mcTrkIsoDR03);
+  //  tree->Branch("mcCalIsoDR04", &mcCalIsoDR04);
+  //  tree->Branch("mcTrkIsoDR04", &mcTrkIsoDR04);
 }
 
 void lldjNtuple::fillGenInfo(const edm::Event& e) {
@@ -285,10 +285,10 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
   mcStatusFlag.clear();
   mcParentage .clear();
   mcStatus    .clear();
-  mcCalIsoDR03.clear();
-  mcTrkIsoDR03.clear();
-  mcCalIsoDR04.clear();
-  mcTrkIsoDR04.clear();
+  //  mcCalIsoDR03.clear();
+  //  mcTrkIsoDR03.clear();
+  //  mcCalIsoDR04.clear();
+  //  mcTrkIsoDR04.clear();
 
   nMC_ = 0;
 
@@ -411,17 +411,17 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
 
       //mcIndex.push_back(genIndex-1);
 
-      if (photonOrLepton) {
-	mcCalIsoDR03.push_back( getGenCalIso(genParticlesHandle, ip, 0.3, false, false) );
-	mcTrkIsoDR03.push_back( getGenTrkIso(genParticlesHandle, ip, 0.3) );
-	mcCalIsoDR04.push_back( getGenCalIso(genParticlesHandle, ip, 0.4, false, false) );
-	mcTrkIsoDR04.push_back( getGenTrkIso(genParticlesHandle, ip, 0.4) );
-      } else {
-	mcCalIsoDR03.push_back( -999. );
-	mcTrkIsoDR03.push_back( -999. );
-	mcCalIsoDR04.push_back( -999. );
-	mcTrkIsoDR04.push_back( -999. );
-      }
+      // if (photonOrLepton) {
+      //   mcCalIsoDR03.push_back( getGenCalIso(genParticlesHandle, ip, 0.3, false, false) );
+      //   mcTrkIsoDR03.push_back( getGenTrkIso(genParticlesHandle, ip, 0.3) );
+      //   mcCalIsoDR04.push_back( getGenCalIso(genParticlesHandle, ip, 0.4, false, false) );
+      //   mcTrkIsoDR04.push_back( getGenTrkIso(genParticlesHandle, ip, 0.4) );
+      // } else {
+      //   mcCalIsoDR03.push_back( -999. );
+      //   mcTrkIsoDR03.push_back( -999. );
+      //   mcCalIsoDR04.push_back( -999. );
+      //   mcTrkIsoDR04.push_back( -999. );
+      // }
 
       nMC_++;
     } // save info on particles of interest
