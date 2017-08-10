@@ -139,9 +139,9 @@ void lldjNtuple::branchesElectrons(TTree* tree) {
   //  tree->Branch("eleD0",                   &eleD0_);
   //  tree->Branch("eleDz",                   &eleDz_);
   //  tree->Branch("eleSIP",                  &eleSIP_);
-  //  tree->Branch("elePt",                   &elePt_);
-  //  tree->Branch("eleEta",                  &eleEta_);
-  //  tree->Branch("elePhi",                  &elePhi_);
+  tree->Branch("elePt",                   &elePt_);
+  tree->Branch("eleEta",                  &eleEta_);
+  tree->Branch("elePhi",                  &elePhi_);
   //  tree->Branch("eleR9",                   &eleR9_);
   tree->Branch("eleCalibPt",              &eleCalibPt_);
   tree->Branch("eleCalibEn",              &eleCalibEn_);
