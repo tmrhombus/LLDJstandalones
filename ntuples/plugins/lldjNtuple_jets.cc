@@ -853,13 +853,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
             // will need two loops
             //  first find the vtx id for min dz with track (must go through all vtxs)
             //  then (still looping over tracks) add track pt to sumtracksMinDZ[ vtx id w/ min dz to track ]
-            std::cout<<"  vtx trk DZ = "<<daughter2.dz(vtxHandle->at(k).position())<<std::endl;
+                 //std::cout<<"  vtx trk DZ = "<<daughter2.dz(vtxHandle->at(k).position())<<std::endl;
             if(fabs(daughter2.dz(vtxHandle->at(k).position())) < minPvDz) {
              minPvDz = fabs(daughter2.dz(vtxHandle->at(k).position()));
              vtxIDminTrackDz = k;
             }
 	  }  // end looping over vertices
-          printf(" end of vertices, minPVDz was %f at id %i \n", minPvDz,vtxIDminTrackDz); 
+                 //printf(" end of vertices, minPVDz was %f at id %i \n", minPvDz,vtxIDminTrackDz); 
 
           // vtxIDminTrackDz is ID of the best vtx for this track, add track pt to alpha numerator for this vtx
           sumtracksMinDzVtx[vtxIDminTrackDz]  += daughterPt;
@@ -878,7 +878,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	  TotalTrackAngle += Tang.Angle(JetAxis);
 	  // reco::TransientTrack tt(trackHandle->at(id),magneticField_); 
 
-        printf(" end of track, minPVDz was at id %i \n", vtxIDminTrackDz); 
+        //printf(" end of track, minPVDz was at id %i \n", vtxIDminTrackDz); 
         } // if (daughter->charge!=0)
 
         sumalltracks += daughterPt;
@@ -896,7 +896,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     {
      for(unsigned z =0; z <sumtracksMinDzVtx.size(); z++)
      {
-      std::cout<<"sum["<<z<<"] = "<<sumtracksMinDzVtx[z]<<" sumalltracks = "<<sumalltracks<<" div = "<<sumtracksMinDzVtx[z]/sumalltracks<<std::endl;
+      //std::cout<<"sum["<<z<<"] = "<<sumtracksMinDzVtx[z]<<" sumalltracks = "<<sumalltracks<<" div = "<<sumtracksMinDzVtx[z]/sumalltracks<<std::endl;
       jetAlphaD_.push_back(sumtracksMinDzVtx[z]/sumalltracks);
      }
     }
@@ -909,17 +909,17 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     {
      if(jetAlphaD_[y]>alphaM){ alphaM = jetAlphaD_[y];}
     }	
-    std::cout<<"  max = "<<alphaM<<std::endl;
+    // std::cout<<"  max = "<<alphaM<<std::endl;
     jetAlphaMaxD_.push_back(alphaM);
 
 
 
-    if(alphaM<0){
-     for(unsigned z =0; z <sumtracksMinDzVtx.size(); z++)
-     {
-      std::cout<<sumtracksMinDzVtx[z]/sumalltracks<<" "<<sumtracksMinDzVtx[z]<<" "<<sumalltracks<<std::endl;
-     }
-    }
+    //if(alphaM<0){
+    // for(unsigned z =0; z <sumtracksMinDzVtx.size(); z++)
+    // {
+    //  std::cout<<sumtracksMinDzVtx[z]/sumalltracks<<" "<<sumtracksMinDzVtx[z]<<" "<<sumalltracks<<std::endl;
+    // }
+    //}
 
     //      vector<float> alphaNum_ = vector<float>(vtxHandle->size(),0.0);
     //alphaNum_.clear();
