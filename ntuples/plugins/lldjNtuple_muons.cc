@@ -31,8 +31,6 @@ vector<int>     muIsGlobalMuon_                   ;
 vector<int>     muIsPFMuon_                       ; 
 //vector<int>     muIsTightMuonWRTVtx_              ; 
 vector<float>   muPFdBetaIsolation_               ; 
-vector<float>   muPFdBetaIsolationCorr_           ; 
-vector<float>   muPFdBetaIsolationDiff_           ; 
 
 void lldjNtuple::branchesMuons(TTree* tree) {
  tree->Branch("nMu",                            &nMu_                            ) ; 
@@ -59,8 +57,6 @@ void lldjNtuple::branchesMuons(TTree* tree) {
  tree->Branch("muIsPFMuon",                     &muIsPFMuon_                     ) ; 
  //tree->Branch("muIsTightMuonWRTVtx",            &muIsTightMuonWRTVtx_            ) ; 
  tree->Branch("muPFdBetaIsolation",             &muPFdBetaIsolation_             ) ; 
- tree->Branch("muPFdBetaIsolationCorr",         &muPFdBetaIsolationCorr_         ) ; 
- tree->Branch("muPFdBetaIsolationDiff",         &muPFdBetaIsolationDiff_         ) ; 
 }
 
 void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex vtx) {
@@ -90,8 +86,6 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
  muIsPFMuon_                    .clear() ; 
  //muIsTightMuonWRTVtx_           .clear() ; 
  muPFdBetaIsolation_            .clear() ; 
- muPFdBetaIsolationCorr_        .clear() ; 
- muPFdBetaIsolationDiff_        .clear() ; 
 
  edm::Handle<edm::View<pat::Muon> > muonHandle;
  e.getByToken(muonCollection_, muonHandle);
@@ -142,12 +136,9 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
   Float_t muPFPhoIso     = iMu->pfIsolationR04().sumPhotonEt        ;
   Float_t muPFNeuIso     = iMu->pfIsolationR04().sumNeutralHadronEt ;
   Float_t muPFPUIso      = iMu->pfIsolationR04().sumPUPt            ;
-  Float_t pfdBetaIso     = ( muPFChIso + max(0.0,muPFNeuIso + muPFPhoIso - 0.5*muPFPhoIso ) ) / pt ;
-  Float_t pfdBetaIsoCorr = ( muPFChIso + max(0.0,muPFNeuIso + muPFPhoIso - 0.5*muPFPUIso  ) ) / pt ;
+  Float_t pfdBetaIso     = ( muPFChIso + max(0.0,muPFNeuIso + muPFPhoIso - 0.5*muPFPUIso ) ) / pt ;
 
   muPFdBetaIsolation_     .push_back( pfdBetaIso     ) ; 
-  muPFdBetaIsolationCorr_ .push_back( pfdBetaIsoCorr ) ; 
-  muPFdBetaIsolationDiff_ .push_back( pfdBetaIso - pfdBetaIsoCorr   ) ; 
 
   const reco::Muon &recoMu = dynamic_cast<const reco::Muon &>(*iMu);
 
