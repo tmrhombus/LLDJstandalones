@@ -15,10 +15,10 @@ lldjNtuple = cms.EDAnalyzer("lldjNtuple",
                              dumpPDFSystWeight    = cms.bool(False),
                              isAOD                = cms.bool(False), #### actually configured through run_data_74x.py
                              runHFElectrons       = cms.bool(True),
-                             development          = cms.bool(False),
-                             addFilterInfoAOD     = cms.bool(False),
+                             #development          = cms.bool(False),
+                             #addFilterInfoAOD     = cms.bool(False),
                              addFilterInfoMINIAOD = cms.bool(True),
-                             doNoHFMET            = cms.bool(False),
+                             #doNoHFMET            = cms.bool(False),
 
                              trgFilterDeltaPtCut  = cms.double(0.5),
                              trgFilterDeltaRCut   = cms.double(0.3),

@@ -10,14 +10,14 @@ void setbit(UShort_t& x, UShort_t bit) {
 
 lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
-  development_               = ps.getParameter<bool>("development");
-  addFilterInfoAOD_          = ps.getParameter<bool>("addFilterInfoAOD");
-  addFilterInfoMINIAOD_      = ps.getParameter<bool>("addFilterInfoMINIAOD");
-  doNoHFMET_                 = ps.getParameter<bool>("doNoHFMET");
+  //development_               = ps.getParameter<bool>("development");
+  //addFilterInfoAOD_          = ps.getParameter<bool>("addFilterInfoAOD");
+  addFilterInfoMINIAOD_      = ps.getParameter<bool>("addFilterInfoMINIAOD");  // MET Filter
+  //doNoHFMET_                 = ps.getParameter<bool>("doNoHFMET");
 
   doGenParticles_            = ps.getParameter<bool>("doGenParticles");
-  runOnParticleGun_          = ps.getParameter<bool>("runOnParticleGun");
-  runOnSherpa_               = ps.getParameter<bool>("runOnSherpa");
+  //runOnParticleGun_          = ps.getParameter<bool>("runOnParticleGun");
+  //runOnSherpa_               = ps.getParameter<bool>("runOnSherpa");
   dumpPhotons_               = ps.getParameter<bool>("dumpPhotons");
   dumpJets_                  = ps.getParameter<bool>("dumpJets");
   dumpSubJets_               = ps.getParameter<bool>("dumpSubJets");
@@ -25,7 +25,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   dumpTaus_                  = ps.getParameter<bool>("dumpTaus");
   dumpPDFSystWeight_         = ps.getParameter<bool>("dumpPDFSystWeight");
   isAOD_                     = ps.getParameter<bool>("isAOD");
-  runHFElectrons_            = ps.getParameter<bool>("runHFElectrons");
+  //runHFElectrons_            = ps.getParameter<bool>("runHFElectrons");
 
   trgFilterDeltaPtCut_       = ps.getParameter<double>("trgFilterDeltaPtCut");
   trgFilterDeltaRCut_        = ps.getParameter<double>("trgFilterDeltaRCut");

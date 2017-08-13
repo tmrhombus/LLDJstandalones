@@ -312,10 +312,10 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetVtxNtrks",  &jetVtxNtrks_);
   tree->Branch("jetVtx3DVal",  &jetVtx3DVal_);
   tree->Branch("jetVtx3DSig",  &jetVtx3DSig_);
-  if (development_) {
-    tree->Branch("jetHFHAE",         &jetHFHAE_);
-    tree->Branch("jetHFEME",         &jetHFEME_);
-  }
+  //if (development_) {
+  //  tree->Branch("jetHFHAE",         &jetHFHAE_);
+  //  tree->Branch("jetHFEME",         &jetHFEME_);
+  //}
 
  //  // SubJet
  //  if (dumpSubJets_) {
@@ -446,10 +446,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   jetVtxNtrks_                            .clear();
   jetVtx3DVal_                            .clear();
   jetVtx3DSig_                            .clear();
-  if (development_) {
-    jetHFHAE_                               .clear();
-    jetHFEME_                               .clear();
-  }
+  //if (development_) {
+  //  jetHFHAE_                               .clear();
+  //  jetHFEME_                               .clear();
+  //}
 
   // Displaced Jet Variables
   jetAlphaMaxD_                           .clear();
@@ -686,10 +686,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetMUF_.push_back(   iJet->muonEnergyFraction());
     //jetNConstituents_.push_back(iJet->numberOfDaughters());
     jetNConstituents_.push_back(iJet->getJetConstituents().size());
-    if (development_) {
-      jetHFHAE_.push_back( iJet->HFHadronEnergy());
-      jetHFEME_.push_back( iJet->HFEMEnergy());
-    }
+    //if (development_) {
+    //  jetHFHAE_.push_back( iJet->HFHadronEnergy());
+    //  jetHFEME_.push_back( iJet->HFEMEnergy());
+    //}
 
     if (fabs(iJet->eta()) < 5.2) {
       jecUnc->setJetEta(iJet->eta());
