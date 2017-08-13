@@ -42,7 +42,11 @@ void lldjNtuple::initTriggerFilters(const edm::Event &e) {
   }
 
   // filter => index (in trg*[] arrays) mappings
-  static std::map<string,size_t> eleSingleFilters;
+  //declaration:    std::map<key_type,value_type> mapName
+  //iterator:       std::map<key_type,value_type>::iterator it = mapName.  /begin()/end()/find(key)...
+  //to add entry:   mapName[key] = value <---stores value at "position" key
+  //to add entry:   mapName.insert(std::pair<key_type,value_type>(key,value))
+  static std::map<string,size_t> eleSingleFilters;//key is triggername?, value is map size?
   static std::map<string,size_t> eleDoubleFilters;
   static std::map<string,size_t> phoSingleFilters;
   static std::map<string,size_t> phoDoubleFilters;

@@ -31,7 +31,7 @@ Double_t analyzer_base::makeEventWeight(Double_t crossSec,
   // 1.0 for real data
   event_weight=1.0;
   Double_t crossSecScl = crossSec;
-  if(isMC){ event_weight=lumi*crossSecScl/nrEvents; }
+  if(isMC){ event_weight=lumi*crossSecScl/nrEvents; }  ///////can set to 1 as a bug check
   //printf("isMC: %i lumi: %0.9f crossSec: %0.9f nrEvents: %0.9f",isMC,lumi,crossSecScl,nrEvents);
   //printf("  event_weight: %0.9f\n",event_weight);
 
@@ -252,17 +252,18 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    muchi2LocalPosition = 0;
    mutrkKink = 0;
    muBestTrkPtError = 0;
-   
-   jetTestVariable =0;
-//   jetSumIPSig = 0;
-
    muBestTrkPt = 0;
 
-   jetTestVariable = 0;
+   jetSumIP = 0;
+   jetSumIPSig = 0;
+   jetLog10IPSig = 0;
+   jetMedianLog10IPSig =0;
+   jetTrackPhi2 = 0;  
+   jetTrackPDGID = 0;
+   jetTrackMomPDGID = 0;
+   jetNConstituents =0;
 
-   
-   
-   
+   //jetTestVariable =0;
    jetPt = 0;
    jetEn = 0;
    jetEta = 0;
@@ -612,10 +613,16 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muBestTrkPt", &muBestTrkPt, &b_muBestTrkPt);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    
-   // fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable); 
-  // fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
+   fChain->SetBranchAddress("jetSumIP", &jetSumIP, &b_jetSumIP); 
+   fChain->SetBranchAddress("jetSumIPSig", &jetSumIPSig, &b_jetSumIPSig);
+   fChain->SetBranchAddress("jetLog10IPSig", &jetLog10IPSig, &b_jetLog10IPSig);
+   fChain->SetBranchAddress("jetMedianLog10IPSig", &jetMedianLog10IPSig, &b_jetMedianLog10IPSig);   
+   fChain->SetBranchAddress("jetTrackPhi2", &jetTrackPhi2, &b_jetTrackPhi2);
+   fChain->SetBranchAddress("jetTrackPDGID", &jetTrackPDGID, &b_jetTrackPDGID);
+   fChain->SetBranchAddress("jetTrackMomPDGID", &jetTrackMomPDGID, &b_jetTrackMomPDGID);
+   fChain->SetBranchAddress("jetNConstituents", &jetNConstituents, &b_jetNConstituents);
 
-   fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
+   //fChain->SetBranchAddress("jetTestVariable", &jetTestVariable, &b_jetTestVariable);
    
    fChain->SetBranchAddress("jetAlphaMax", &jetAlphaMax, &b_jetAlphaMax);
    fChain->SetBranchAddress("jetAlphaMax2", &jetAlphaMax2, &b_jetAlphaMax2);
