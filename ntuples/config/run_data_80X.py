@@ -1,48 +1,21 @@
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process('LLDJ')
 
-process.load("FWCore.MessageLogger.MessageLogger_cfi")
+##########################################################################################
+# Setup
+
+# this is the process run by cmsRun
+process = cms.Process('LLDJ')
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
-process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-#process.load("Configuration.Geometry.GeometryIdeal_cff" )
-process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff" )
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '80X_dataRun2_2016SeptRepro_v7')
+# log output
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 100  
 
-#process.Tracer = cms.Service("Tracer")
-
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 10000
-
-#jec from sqlite
-process.load("CondCore.DBCommon.CondDBCommon_cfi")
-from CondCore.DBCommon.CondDBSetup_cfi import *
-process.jec = cms.ESSource("PoolDBESSource",CondDBSetup,
- connect = cms.string('sqlite:Summer16_23Sep2016AllV4_DATA.db'),
- toGet = cms.VPSet(
- cms.PSet(
-  record = cms.string('JetCorrectionsRecord'),
-  tag = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK4PFchs'),
-  label = cms.untracked.string('AK4PFchs')
- ),
- cms.PSet(
-  record = cms.string('JetCorrectionsRecord'),
-  tag = cms.string('JetCorrectorParametersCollection_Summer16_23Sep2016AllV4_DATA_AK8PFchs'),
-  label = cms.untracked.string('AK8PFchs')
-  )))
-process.es_prefer_jec = cms.ESPrefer('PoolDBESSource','jec')
-
+# input files
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-        #'/store/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/100000/062FB971-1AED-E611-965F-0CC47A4C8F12.root'
-        #'/store/data/Run2016H/DoubleMuon/MINIAOD/PromptReco-v3/000/284/036/00000/04DC0281-C89F-E611-81C6-02163E0141E6.root'
-        #'/store/data/Run2016B/SingleElectron/MINIAOD/23Sep2016-v2/80000/5A4402F5-638C-E611-A471-0025905A60AA.root'
-        #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/Data_SingleEle_2016H_02973E99-69EC-E611-9913-5065F381A2F1.root'
-
                 # single mu
         #'/store/data/Run2016B/SingleMuon/MINIAOD/03Feb2017_ver1-v1/100000/08AD7B2D-34EE-E611-A7DA-001E674DA2E8.root',
         #'/store/data/Run2016B/SingleMuon/MINIAOD/03Feb2017_ver2-v2/100000/000C6E52-8BEC-E611-B3FF-0025905C42FE.root',
@@ -88,16 +61,25 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver2-v1/100000/023E858B-F7EC-E611-889C-047D7BD6DDF2.root',
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver3-v1/1030000/D41C6358-4DF0-E611-BBAC-002590DB927A.root',
 
-        )
-                            )
+ )
+)
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'))
+# output name
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'));
 
-#process.load("PhysicsTools.PatAlgos.patSequences_cff")
+# cms geometry
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+#process.load("Configuration.Geometry.GeometryRecoDB_cff")
+process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
+
+# global tag
+process.load('Configuration.StandardSequences.Services_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
 process.load( "PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff" )
-process.load( "PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff" )
+##########process.load( "PhysicsTools.PatAlgos.selectionLayer1.selectedPatCandidates_cff" )
 
 ### EGM 80X regression
 from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
@@ -140,9 +122,7 @@ updateJetCollection(
     process,
     jetSource = cms.InputTag('slimmedJetsAK8'),
     labelName = 'UpdatedJECAK8',
-    jetCorrections = ('AK8PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None'),
-    btagDiscriminators = ['pfBoostedDoubleSecondaryVertexAK8BJetTags'],
-    btagPrefix = 'newV4' # optional, in case interested in accessing both the old and new discriminator values
+    jetCorrections = ('AK8PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None')
     )
 
 # MET correction and uncertainties
