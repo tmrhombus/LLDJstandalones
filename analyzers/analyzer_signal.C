@@ -47,6 +47,12 @@ void analyzer_signal::Loop(TString outfilename,
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
 
+  // clear counters for event variables
+  nSelectedPho=0;
+  nSelectedEle=0;
+  nSelectedMuo=0;
+  nSelectedJet=0;
+
   //printf(" Event %lld\n", event);
   //if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
   Long64_t ientry = LoadTree(jentry);
@@ -503,6 +509,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   //    // daniel - this isn't doing what you think it is
   //     // let's say we have initial jet list with 5 jets, and we find nrs 1,2,4 are good
   //     // jet_list.size()==3 but we don't want to fill with jetPt->at(3) 
+  //     // look at the loops where we do lepton/jet cleaning
   //     // i'll just leave this commented out for now
   //    if(jetPt                     ->size()>j){ h_jetPt                      [selbin][j][lepbin].Fill( jetPt                     ->at(j), weight); }
   //    if(jetEn                     ->size()>j){ h_jetEn                      [selbin][j][lepbin].Fill( jetEn                     ->at(j), weight); }
@@ -674,6 +681,13 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_muPFdBetaIsolation      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPFdBetaIsolation     "; 
    TString hname_nJet                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nJet                   "; 
 
+   TString hname_htall                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall "; 
+   TString hname_htjets                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htjets"; 
+   TString hname_nSelectedPho            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedPho";
+   TString hname_nSelectedEle            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedEle";
+   TString hname_nSelectedMuo            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedMuo";
+   TString hname_nSelectedJet            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedJet";
+
    // initalize histograms
    h_nVtx                    [i][k] = initSingleHistogramTH1F( hname_nVtx                    , "nVtx                   ", 60,0,60) ; 
    h_nGoodVtx                [i][k] = initSingleHistogramTH1F( hname_nGoodVtx                , "nGoodVtx               ", 60,0,60) ;  
@@ -718,8 +732,12 @@ Bool_t analyzer_signal::initSigHistograms()
    h_muPFdBetaIsolation      [i][k] = initSingleHistogramTH1F( hname_muPFdBetaIsolation      , "muPFdBetaIsolation     ", 30, -5, 5); 
    h_nJet                    [i][k] = initSingleHistogramTH1F( hname_nJet                    , "nJet                   ", 10,0,10) ; 
 
-   //h_htall  [i][k] = initSingleHistogramTH1F( hname_htall  , "htall ", 50,0,1000) ; 
-   //h_htjets [i][k] = initSingleHistogramTH1F( hname_htjets , "htjets", 50,0,1000) ; 
+   h_htall  [i][k] = initSingleHistogramTH1F( hname_htall  , "htall ", 50,0,1000) ; 
+   h_htjets [i][k] = initSingleHistogramTH1F( hname_htjets , "htjets", 50,0,1000) ; 
+   h_nSelectedPho [i][k] = initSingleHistogramTH1F( hname_nSelectedPho , "nSelectedPho", 10,0,10);
+   h_nSelectedEle [i][k] = initSingleHistogramTH1F( hname_nSelectedEle , "nSelectedEle", 10,0,10);
+   h_nSelectedMuo [i][k] = initSingleHistogramTH1F( hname_nSelectedMuo , "nSelectedMuo", 10,0,10);
+   h_nSelectedJet [i][k] = initSingleHistogramTH1F( hname_nSelectedJet , "nSelectedJet", 10,0,10);
   }
  }
 
@@ -746,8 +764,12 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  h_nMu                     [selbin][lepbin] .Fill( nMu        , weight);  
  h_nJet                    [selbin][lepbin] .Fill( nJet       , weight);  
 
- //h_htall                   [selbin][lepbin] .Fill( htall      , weight); } 
- //h_htjets                  [selbin][lepbin] .Fill( htjets     , weight); } 
+ h_htall                   [selbin][lepbin] .Fill( htall      , weight); 
+ h_htjets                  [selbin][lepbin] .Fill( htjets     , weight); 
+ h_nSelectedPho            [selbin][lepbin] .Fill( nSelectedPho, weight);
+ h_nSelectedEle            [selbin][lepbin] .Fill( nSelectedEle, weight);
+ h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo, weight);
+ h_nSelectedJet            [selbin][lepbin] .Fill( nSelectedJet, weight);
 
  if(phoE                   ->size()>0){ h_phoE                    [selbin][lepbin] .Fill( phoE                   ->at(0), weight ); } 
  if(phoEt                  ->size()>0){ h_phoEt                   [selbin][lepbin] .Fill( phoEt                  ->at(0), weight ); } 
@@ -832,6 +854,10 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
 
   h_htall  [selbin][lepbin].Write(); 
   h_htjets [selbin][lepbin].Write(); 
+  h_nSelectedPho [selbin][lepbin] .Write();
+  h_nSelectedEle [selbin][lepbin] .Write();
+  h_nSelectedMuo [selbin][lepbin] .Write();
+  h_nSelectedJet [selbin][lepbin] .Write();
 
  return kTRUE;
 }
@@ -880,7 +906,7 @@ Bool_t analyzer_signal::askPassZH()
  if ( passGoodVtx
      && passZWindow
      && passPTOSSFg50
-     && passOneJet
+     //&& passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -898,7 +924,7 @@ Bool_t analyzer_signal::askPassDY()
  if ( passGoodVtx
      && passZWindow
      && !passPTOSSFg50
-     && passOneJet
+     //&& passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -917,7 +943,7 @@ Bool_t analyzer_signal::askPassOffZ()
  if ( passGoodVtx
      && !passZWindow
      && passOSSF
-     && passOneJet
+     //&& passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -935,7 +961,7 @@ Bool_t analyzer_signal::askPassNoPair()
  if ( passGoodVtx
      && !passZWindow
      && !passOSSF
-     && passOneJet
+     //&& passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -1043,7 +1069,7 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
  //        , pass_hipt
  //        );       
 
- for(int i = 0; i < nMu; i++) 
+ for(int i = 0; i < muPt->size(); i++) 
  {    
   //  printf(" Muon %i    %i %i %i %i %i \n",i
   //        ,muIDbit->at(i) >> 0 & 0x1 
@@ -1060,165 +1086,12 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
 
   if( pass_bit && pass_kin )
   {
-   // check overlaps
-   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-   //  {    
-   //  }
+   nSelectedMuo++;
    mulist.push_back(i);
   } // if pass_bit && pass_kin
  } // loop over muons
  return mulist;
 }
-
-////-------------------------muon_passLooseID
-//std::vector<int> analyzer_signal::muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname)
-//{
-//  std::vector<int> mulist;
-//   //  151     if (iMu->isLooseMuon())     setbit(tmpmuIDbit, 0);
-//   //  152     if (iMu->isMediumMuon())    setbit(tmpmuIDbit, 1);
-//   //  153     if (iMu->isTightMuon(vtx))  setbit(tmpmuIDbit, 2);
-//   //  154     if (iMu->isSoftMuon(vtx))   setbit(tmpmuIDbit, 3);
-//   //  155     if (iMu->isHighPtMuon(vtx)) setbit(tmpmuIDbit, 4);
-//   ///  root [7] std::bitset<6>(63).to_string()
-//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
-//   ///  root [8] std::bitset<6>(47).to_string()
-//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
-//
-// bool pass_loose  ;
-// bool pass_medium ;
-// bool pass_tight  ;
-// bool pass_soft   ;
-// bool pass_hipt   ;
-//
-//  bool pass_PFMuon = false;
-//  bool pass_globalMuon = false;
-//  bool pass_trackerMuon = false;
-//  bool pass_iso = false;
-//  //Explicitly stating types to avoid a TMath::Max conversion issue 
-//  Float_t zero = 0.0; 
-//  Float_t muPhoPU = 999.9;
-//  Float_t tightIso_combinedRelative = 999.9;
-//  for(int i = 0; i < nMu; i++) 
-//    {    
-//    //  printf(" Muon %i    %i %i %i %i %i \n",i
-//    //        ,muIDbit->at(i) >> 0 & 0x1 
-//    //        ,muIDbit->at(i) >> 1 & 0x1 
-//    //        ,muIDbit->at(i) >> 2 & 0x1 
-//    //        ,muIDbit->at(i) >> 3 & 0x1 
-//    //        ,muIDbit->at(i) >> 4 & 0x1 
-//    //        );       
-//
-//    //  pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
-//    //  pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
-//    //  pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
-//    //  pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
-//    //  pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
-//
-//    //  printf(" Muon %i    %i %i %i %i %i \n\n",i
-//    //        , pass_loose  
-//    //        , pass_medium  
-//    //        , pass_tight
-//    //        , pass_soft
-//    //        , pass_hipt
-//    //        );       
-//
-//      pass_PFMuon =            true;  // muIsPFMuon->at(i);
-//      pass_globalMuon =        true;  // muIsGlobalMuon->at(i);
-//      pass_trackerMuon =       true;  // muIsTrackerMuon->at(i);
-//      muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-//      tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-//      pass_iso = tightIso_combinedRelative < 0.25;
-//      //Muon passes Loose Muon ID and PF-based combined relative, dBeta-corrected Loose Muon Isolation cuts  
-//
-////if( event==767326116 ){
-////      printf(" Event: %lli \n",event);
-////      printf("  muPt              %f \n",  muPt->at(i)                        );
-////      printf("  muIsPFMuon        %f \n",  muIsPFMuon->at(i)                  );
-////      printf("  muIsGlobalMuon    %f \n",  muIsGlobalMuon->at(i)              );
-////      printf("  muIsTrackerMuon   %f \n",  muIsTrackerMuon->at(i)             );
-////      printf("  muPFNeuIso        %f \n",  muPFNeuIso->at(i)                  );
-////      printf("  muPFPhoIso        %f \n",  muPFPhoIso->at(i)                  );
-////      printf("  muPFPUIso         %f \n",  muPFPUIso->at(i)                   );
-////      printf("  muPhoPU           %f \n",  muPhoPU                            );
-////      printf("\n\n");
-////                   std::cout<<muPt->at(i)<<std::endl;
-////                   std::cout<<muEta->at(i)<<std::endl;
-////                   std::cout<<"veto Passed!!!!"<<muEta->at(i)<<" "<<muPhi->at(i)<<" "<<phoSCEta->at(pho_index)<<" "<<phoSCPhi->at(pho_index)<<std::endl;
-////}
-//
-//      //if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) && pass_iso)
-//      if(pass_PFMuon && (pass_globalMuon || pass_trackerMuon) )
-//        {    
-//          //Muon passes pt cut 
-//          Float_t muonPt = getMuonPt(i,sysbinname);
-//          if(muonPt > muPtCut && ( fabs(muEta->at(i)) < muEtaCut ) )
-//            {    
-//              ////Muon does not overlap photon
-//              //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-//              //  {    
-//                 mulist.push_back(i);
-//              //  }    
-//            }    
-//        }    
-//    }    
-//  return mulist;
-//}
-//
-////-------------------------muon_passTightID
-//std::vector<int> analyzer_signal::muon_passTightID(double muPtCut, double muEtaCut, TString sysbinname)
-//{
-//  std::vector<int> mu_cands;
-//  mu_cands.clear();
-//
-//  bool pass_PFMuon = false;
-//  bool pass_globalMuon = false;
-//  // bool pass_trackerMuon = false;
-//  bool pass_chi2ndf = false;
-//  bool pass_chamberHit = false;
-//  bool pass_matchedStations = false;
-//  bool pass_dxy = false;
-//  bool pass_dz = false;
-//  bool pass_pixelHits = false;
-//  bool pass_trackLayers = false;
-//  bool pass_iso = false;
-//  //Explicitly stating types to avoid a TMath::Max conversion issue
-//  Float_t zero = 0.0; 
-//  Float_t muPhoPU = 999.9;
-//  Float_t tightIso_combinedRelative = 999.9;
-//  for(int i = 0; i < nMu; i++) 
-//  {
-//    pass_globalMuon = true;  //muIsGlobalMuon->at(i);
-//    pass_PFMuon =     true;  // muIsPFMuon->at(i);
-//    // pass_trackerMuon = muIsTrackerMuon->at(i);
-//    pass_chi2ndf = muChi2NDF->at(i) < 10.0;
-//    pass_chamberHit = muMuonHits->at(i) > 0; 
-//    pass_matchedStations = muStations->at(i) > 1; 
-//    pass_dxy = fabs(muInnerD0->at(i)) < 0.2; 
-//    pass_dz = fabs(muInnerDz->at(i)) < 0.5; 
-//    pass_pixelHits = muPixelHits->at(i) > 0; 
-//    pass_trackLayers = muTrkLayers->at(i) > 5; 
-//
-//    muPhoPU = muPFNeuIso->at(i) + muPFPhoIso->at(i) - 0.5*muPFPUIso->at(i);
-//    tightIso_combinedRelative = (muPFChIso->at(i) + TMath::Max(zero,muPhoPU))/(muPt->at(i));
-//    pass_iso = tightIso_combinedRelative < 0.15;
-//    //Muon passes Tight Muon ID
-//    if(pass_globalMuon && pass_PFMuon && pass_chi2ndf && pass_chamberHit && pass_matchedStations && pass_dxy && pass_dz && pass_pixelHits && pass_trackLayers)
-//    {    
-//      //Muon passes pt cut 
-//      Float_t muonPt = getMuonPt(i,sysbinname);
-//      if(muonPt > muPtCut && ( fabs(muEta->at(i)) > muEtaCut ) )
-//      {    
-//        ////Muon does not overlap photon
-//        //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-//        //{    
-//          mu_cands.push_back(i);
-//        //}    
-//      }    
-//    }    
-//  }
-//  return mu_cands;
-//}
-
 
 //-------------------------electron_passID
 std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname)
@@ -1235,356 +1108,95 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
 
   bool pass_bit = eleIDbit->at(i) >> bitnr & 0x1 == 1;      
 
-  if( pass_bit && pass_kin )
+  bool pass_overlap = true;
+  // check overlap with photons
+  if(photon_list.size()>0){
+   for(int d=0; d<photon_list.size(); ++d){
+    int phoindex = photon_list[d];
+    if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
+     if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
+    }
+   }//end photons
+  } // if photons
+
+  if( pass_bit && pass_kin && pass_overlap)
   {
-   // check overlaps
-   //if(dR(muEta->at(i),muPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-   //  {    
-   //  }
+   nSelectedEle++;
    elelist.push_back(i);
   } // if pass_bit && pass_kin
- } // loop over muons
+ } // loop over electrons
  return elelist;
 }
 
-
-////-------------------------electron_passLooseID
-//std::vector<int> analyzer_signal::electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname)
-//{
-//  //bool veto_passed = true; //pass veto if no good electron found 
-//   ///    //  eleIDbit
-//   /// 
-//   /// 689     bool isPassVeto  = (*veto_id_decisions)[el];
-//   /// 690     if (isPassVeto) setbit(tmpeleIDbit, 0);
-//   /// 691 
-//   /// 692     bool isPassLoose  = (*loose_id_decisions)[el];
-//   /// 693     if (isPassLoose) setbit(tmpeleIDbit, 1);
-//   /// 694 
-//   /// 695     bool isPassMedium = (*medium_id_decisions)[el];
-//   /// 696     if (isPassMedium) setbit(tmpeleIDbit, 2);
-//   /// 697 
-//   /// 698     bool isPassTight  = (*tight_id_decisions)[el];
-//   /// 699     if (isPassTight) setbit(tmpeleIDbit, 3);
-//   /// 700 
-//   /// 701     bool isPassHEEP = (*heep_id_decisions)[el];
-//   /// 702     if (isPassHEEP) setbit(tmpeleIDbit, 4);
-//   /// 703 
-//   /// 704     bool isPassHLT = (*hlt_id_decisions)[el];
-//   /// 705     if (isPassHLT) setbit(tmpeleIDbit, 5);
-//   /// 
-//   /// 
-//   /// 
-//   ///  root [7] std::bitset<6>(63).to_string()
-//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "111111"
-//   ///  root [8] std::bitset<6>(47).to_string()
-//   ///  (std::basic_string<char, std::char_traits<char>, std::allocator<char> >) "101111"
-//
-//
-//
-//  std::vector<int> elelist;
-//
-//
-//  bool pass_SigmaIEtaIEtaFull5x5 = false;
-//  bool pass_dEtaIn = false;
-//  bool pass_dPhiIn = false;
-//  bool pass_HoverE = false;
-//  bool pass_iso = false;
-//  bool pass_ooEmooP = false;
-//  bool pass_d0 = false;
-//  bool pass_dz = false;
-//  bool pass_missingHits = false;
-//  bool pass_convVeto = false;
-//  //Explicitly stating types to avoid a TMath::Max conversion issue   
-//  Float_t EA = 0.0;
-//  Float_t zero = 0.0;
-//  Float_t EAcorrIso = 999.9;
-//  for(int i = 0; i < nEle; i++)
-//    {
-//      //Make sure these get reset for every electron  
-//      pass_SigmaIEtaIEtaFull5x5 = false;
-//      pass_dEtaIn = false;
-//      pass_dPhiIn = false;
-//      pass_HoverE = false;
-//      pass_iso = false;
-//      pass_ooEmooP = false;
-//      pass_d0 = false;
-//      pass_dz = false;
-//      pass_missingHits = false;
-//      pass_convVeto = false;
-//      //Find EA for corrected relative iso.  
-//      if(abs(eleSCEta->at(i)) <= 1.0)
-//        EA = 0.1752;
-//      else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-//        EA = 0.1862;
-//      else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-//        EA = 0.1411;
-//      else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-//        EA = 0.1534;
-//      else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-//        EA = 0.1903;
-//      else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-//        EA = 0.2243;
-//      else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-//        EA = 0.2687;
-//      EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-//
-//      if(abs(eleSCEta->at(i)) <= 1.479)
-//        {    
-//          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0103;
-//          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.0105;
-//          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.115;
-//          pass_HoverE = eleHoverE->at(i) < 0.104;
-//          pass_iso = EAcorrIso < 0.0893;
-//          pass_ooEmooP = eleEoverPInv->at(i) < 0.102;
-//          pass_d0 = abs(eleD0->at(i)) < 0.0261;
-//          pass_dz = abs(eleDz->at(i)) < 0.41;
-//          pass_missingHits = eleMissHits->at(i) <= 2;
-//          pass_convVeto = eleConvVeto->at(i) == 1;
-//        }     
-//      else if(1.479 < abs(eleSCEta->at(i)) < 2.5) 
-//        {    
-//          pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0301;
-//          pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00814;
-//          pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.182;
-//          pass_HoverE = eleHoverE->at(i) < 0.0897;
-//          pass_iso = EAcorrIso < 0.121;
-//          pass_ooEmooP = eleEoverPInv->at(i) < 0.126;
-//          pass_d0 = abs(eleD0->at(i)) < 0.118;
-//          pass_dz = abs(eleDz->at(i)) < 0.822;
-//          pass_missingHits = eleMissHits->at(i) <= 1;
-//          pass_convVeto = eleConvVeto->at(i) == 1;
-//        }     
-//
-//      //Electron passes Loose Electron ID cuts 
-//      if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)    
-//        {    
-//            //Electron passes pt cut 
-//            Float_t electronPt = getElectronPt(i,sysbinname);
-//            if(electronPt > elePtCut && ( fabs(eleEta->at(i)) < eleEtaCut ) )
-//            {    
-//              ////Electron does not overlap photon 
-//              //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5) 
-//              //  {    
-//                  elelist.push_back(i);
-//              //  }     
-//            }     
-//        }     
-//    }     
-//  return elelist;
-//}
-//
-////-------------------------electron_passTightID
-//std::vector<int> analyzer_signal::electron_passTightID(double elePtCut, double eleEtaCut, TString sysbinname)
-//{
-//
-//  std::vector<int> ele_cands;
-//  ele_cands.clear();
-//
-//  bool pass_SigmaIEtaIEtaFull5x5 = false;
-//  bool pass_dEtaIn = false;
-//  bool pass_dPhiIn = false;
-//  bool pass_HoverE = false;
-//  bool pass_iso = false;
-//  bool pass_ooEmooP = false;
-//  bool pass_d0 = false;
-//  bool pass_dz = false;
-//  bool pass_missingHits = false;
-//  bool pass_convVeto = false;
-//  //Explicitly stating types to avoid a TMath::Max conversion issue
-//  Float_t EA = 0.0;
-//  Float_t zero = 0.0;
-//  Float_t EAcorrIso = 999.9;
-//  for(int i = 0; i < nEle; i++)
-//  {
-//    //Make sure these get reset for every electron
-//    pass_SigmaIEtaIEtaFull5x5 = false;
-//    pass_dEtaIn = false;
-//    pass_dPhiIn = false;
-//    pass_HoverE = false;
-//    pass_iso = false;
-//    pass_ooEmooP = false;
-//    pass_d0 = false;
-//    pass_dz = false;
-//    pass_missingHits = false;
-//    pass_convVeto = false;
-//    //Find EA for corrected relative iso.
-//    if(abs(eleSCEta->at(i)) <= 1.0)
-//      EA = 0.1752;
-//    else if(1.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 1.479)
-//      EA = 0.1862;
-//    else if(1.479 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.0)
-//      EA = 0.1411;
-//    else if(2.0 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.2)
-//      EA = 0.1534;
-//    else if(2.2 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.3)
-//      EA = 0.1903;
-//    else if(2.3 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) <= 2.4)
-//      EA = 0.2243;
-//    else if(2.4 < abs(eleSCEta->at(i)) && abs(eleSCEta->at(i)) < 2.5)
-//      EA = 0.2687;
-//    EAcorrIso = (elePFChIso->at(i) + TMath::Max(zero,elePFNeuIso->at(i) + elePFPhoIso->at(i) - rho*EA))/(elePt->at(i));
-//
-//    if(abs(eleSCEta->at(i)) <= 1.479)
-//    {
-//      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0101;
-//      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00926;
-//      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0336;
-//      pass_HoverE = eleHoverE->at(i) < 0.0597;
-//      pass_iso = EAcorrIso < 0.0354;
-//      pass_ooEmooP = eleEoverPInv->at(i) < 0.012;
-//      pass_d0 = abs(eleD0->at(i)) < 0.0111;
-//      pass_dz = abs(eleDz->at(i)) < 0.0466;
-//      pass_missingHits = eleMissHits->at(i) <= 2;
-//      pass_convVeto = eleConvVeto->at(i) == 1;
-//    }
-//    else if(1.479 < abs(eleSCEta->at(i)) < 2.5)
-//    {
-//      pass_SigmaIEtaIEtaFull5x5 = eleSigmaIEtaIEtaFull5x5->at(i) < 0.0279;
-//      pass_dEtaIn = abs(eledEtaAtVtx->at(i)) < 0.00724;
-//      pass_dPhiIn = abs(eledPhiAtVtx->at(i)) < 0.0918;
-//      pass_HoverE = eleHoverE->at(i) < 0.0615;
-//      pass_iso = EAcorrIso < 0.0646;
-//      pass_ooEmooP = eleEoverPInv->at(i) < 0.00999;
-//      pass_d0 = abs(eleD0->at(i)) < 0.0351;
-//      pass_dz = abs(eleDz->at(i)) < 0.417;
-//      pass_missingHits = eleMissHits->at(i) <= 1;
-//      pass_convVeto = eleConvVeto->at(i) == 1;
-//    }
-//      //Electron passes Loose Electron ID cuts
-//    if(pass_SigmaIEtaIEtaFull5x5 && pass_dEtaIn && pass_dPhiIn && pass_HoverE && pass_iso && pass_ooEmooP && pass_d0 && pass_dz && pass_missingHits && pass_convVeto)
-//    {
-//      //Electron passes pt cut 
-//      Float_t electronPt = getElectronPt(i,sysbinname);
-//      if(electronPt > elePtCut && ( fabs(elePt->at(i)) < eleEtaCut ) )
-//      {
-//        ////Electron does not overlap photon
-//        //if(dR(eleSCEta->at(i),eleSCPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index)) > 0.5)
-//        //{
-//          ele_cands.push_back(i);
-//        //}
-//      }
-//    }
-//  }
-//  return ele_cands;
-//}
-
 //-------------------------jet_passID
-std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut,TString PFJetID, TString sysbinname) {
+std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname) {
 
-  bool jetVeto=true;
-  std::vector<int> jetindex;
-  float PUIDvalue = 0.0;
-
-  //set selection rule
-  bool Loose = false;
-  bool Tight = false;
-  bool TightLepVeto = false;
-  bool custom = false;
-  if(PFJetID == "Loose") Loose = true;
-  else if(PFJetID =="Tight") Tight = true;
-  else if(PFJetID == "TightLepVeto") TightLepVeto = true;
-  else custom = true;
+  std::vector<int> jetlist;
 
   for(int i = 0; i < nJet; i++)
-   {
-    if(0.0 < abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.5)   {PUIDvalue =-0.8;}
-    if(2.5 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <2.75) {PUIDvalue =-0.95;}
-    if(2.75 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <3.0) {PUIDvalue =-0.97;}
-    if(3.00 <= abs(jetEta->at(i)) && abs(jetEta->at(i)) <5.0) {PUIDvalue =-0.99;}
+  {
 
-    bool passOverlap=true;
-    // check overlap with electrons
-    
-     //  if(/*electron_list.size()!=0 ||eleSCEta->size()==0||eleSCPhi->size()==0||*/jetEta->size()==0||jetPhi->size()==0)
-   //std::cout<<"Event: "<<event<<" MuList: "<<muon_list.size()<<" Elist:  "<<electron_list.size()<<" eleSCEtaSize "<<eleSCEta->size() <<" eleSCPhiSize: "<<eleSCPhi->size()<<" jetEtaSize: "<<jetEta->size()<<" jetPhiSize: "<<jetPhi->size() <<std::endl;
-   //if(electron_list.size()>1 &&eleSCEta->size()>1 &&eleSCPhi->size()>1&& jetEta->size()>1 &&jetPhi->size()>1){
-   
-   //if(jetPt->size()>0 && jetEta->size()>0 &&jetPhi->size()>0){
+   bool pass_overlap = true;
+   // check overlap with photons
+   if(photon_list.size()>0){
+    for(int d=0; d<photon_list.size(); ++d){
+     int phoindex = photon_list[d];
+     if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
+      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ){
+       //printf(" Jet   ");
+       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", jetPt->at(i), jetEta->at(i), jetPhi->at(i) );
+       //printf(" Photon");
+       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex) );
+       pass_overlap=false;
+      }
+     }
+    }//end photons
+   } // if photons
+   // check overlap with electrons
    if(electron_list.size()>0){
-       for(int d=0; d<electron_list.size(); ++d){
-         //printf(" brgin looping over electrons\n");
-         int eleindex = electron_list[d];
-          if( dR( eleEta->at(eleindex),elePhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) passOverlap=false;
-       }//end electrons
-   }
-    // check overlap with muons
-if(muon_list.size()>0){
+    for(int d=0; d<electron_list.size(); ++d){
+     //printf(" brgin looping over electrons\n");
+     int eleindex = electron_list[d];
+     if( dR( eleEta->at(eleindex),elePhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) pass_overlap=false; // printf(" OL w electron\n");
+    }//end electrons
+   } // if electrons
+   // check overlap with muons
+   if(muon_list.size()>0){
     for(int d=0; d<muon_list.size(); ++d){
      int muindex = muon_list[d];
      if(muindex<= (muEta->size()-1)&&muindex<= (muPhi->size()-1)){
-      if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  passOverlap=false;
+      if( dR( muEta->at(muindex),muPhi->at(muindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 )  pass_overlap=false; //printf(" OL w muon\n");
      }
     }//end muons
-}
-//}
-    //double deltar = 0.0 ;
-    //      std::cout<<"Jet size: "<<nJet<<std::endl;
-    //      std::cout<<"Jet no:"<<i<<"coming here pujetid: "<<pfJet_pt[i]<<std::endl;
-    //      if(OverlapWithMuon(jetEta->at(i),jetPhi->at(i)))     continue;
-    //      std::cout<<"Jet no:"<<i<<"coming here OverlapWithMuon: "<<pfJet_pt[i]<<std::endl;
-    //      if(OverlapWithElectron(jetEta->at(i),jetPhi->at(i)))   continue;
-    //if(pho_index>=0){
-    //  deltar= dR(jetEta->at(i),jetPhi->at(i),phoSCEta->at(pho_index),phoSCPhi->at(pho_index));
-    //  //std::cout<<"Delta R between photon and jet="<<dR<< "jet pt"<<pfJet_pt[i]<<std::endl;
-    //}
-    //if(deltar>0.4 && jetPt->at(i) >jetPtCut && jetPFLooseId->at(i)==1) //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-    //  && jetPUidFullDiscriminant->at(i)>PUIDvalue)
-   // std::cout<<std::endl<<"passes leptons"<<std::endl; 
+   } // if muons
 
-     //JetID definitions 
-    if( jetPt->at(i) >jetPtCut && abs(jetEta->at(i))<jetEtaCut && jetPFLooseId->at(i)==1 &&jetNConstituents->size()>0 && passOverlap ){//std::cout<<"outerif"<<std::endl;
-     	if(Loose){ //std::cout<<"Loose";
-	   if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
-	      if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1)
-		jetindex.push_back(i);
-	   }
-           if( abs(jetEta->at(i))<=2.4 ){    
-              if(jetNHF->at(i)<0.99 && jetNEF->at(i)<0.99 && jetNConstituents->at(i)>1  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
-                jetindex.push_back(i);
-           }  	
-	}//Loose
-	if(Tight){//std::cout<<"Tight"<<std::endl;
-           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
-              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1)
-                jetindex.push_back(i);
-           }    
-           if( abs(jetEta->at(i))<=2.4 ){
-              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.99)
-                jetindex.push_back(i);
-           }
-        }//Tight    
-	if(TightLepVeto){//std::cout<<"TightLepVeto"<<std::endl;
-           if( abs(jetEta->at(i))<=2.7 && abs(jetEta->at(i))>2.4 ){
-              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8)
-                jetindex.push_back(i);
-           }    
-           if( abs(jetEta->at(i))<=2.4 ){
-              if(jetNHF->at(i)<0.90 && jetNEF->at(i)<0.90 && jetNConstituents->at(i)>1 && jetMUF->at(i)<0.8  && jetCHF->at(i)>0.0 && jetNCH->at(i)>0.0 && jetCEF->at(i)<0.90)
-                jetindex.push_back(i);
-           }
-        }//TightLepVeto
-	if(custom){//std::cout<<"custom"<<std::endl;
-           if( abs(jetEta->at(i))<2.4 ){
- 	      //std::cout<<"NHF: "<<jetNHF->at(i)<<std::endl;
-	      //std::cout<<"CHF: "<<jetCHF->at(i)<<std::endl;
- 	      //std::cout<<"NCH: "<<jetNCH->at(i)<<std::endl;
-	      //std::cout<<"NEF: "<<jetNEF->at(i)<<std::endl;
-	      //std::cout<<"CEF: "<<jetCEF->at(i)<<std::endl;
-	      //std::cout<<"Pt: "<<jetPt->at(i)<<std::endl;
- 	      //std::cout<<"Eta: "<<jetEta->at(i)<<std::endl;
-	      //std::cout<<"phi: "<<jetPhi->at(i)<<std::endl;
-	      //std::cout<<"constituents: "<< jetNConstituents->at(i)<<std::endl;
-              if(/*jetNConstituents->at(i)>1 &&*/ jetNHF->at(i)<0.9 && jetNEF->at(i)<0.9 && jetCHF->at(i)<0.9 /*&& jetNCH->at(i)>0.0*/ && jetCEF->at(i)<0.9)
-               //std::cout<<"cut if"<<std::endl;
-               jetindex.push_back(i);
-           }
-        }//custom
-     }//outer cut pt,eta,passOverlap
-   }//end jets
+   bool pass_loose  ;
+   bool pass_tight  ;
+   pass_loose  = jetID->at(i) >> 1 & 0x1 == 1;      
+   pass_tight  = jetID->at(i) >> 2 & 0x1 == 1;     
+     /// printf(" Jet %i    %i %i %i %i %i %i \n\n",i
+     ///       , pass_loose
+     ///       , pass_tight
+     ///       );       
 
-  //  std::cout<<"Jet size: "<< jetindex.size()<<std::endl;
-  //if(jetindex.size()>1)jetVeto = false;
-  return jetindex;
+   bool pass_id = false;
+   if     (PFJetID == "Loose") pass_id = pass_loose;
+   else if(PFJetID =="Tight" ) pass_id = pass_tight;
+              
+              
+   bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
+              
+   //if( pass_id && pass_kin && pass_overlap )
+   //if( pass_id && pass_kin )
+   if( pass_id && pass_kin && pass_overlap )
+   {
+    printf(" a selected jet\n");
+    nSelectedJet++;
+    jetlist.push_back(i);
+   } // if pass_bit && pass_kin
+  }// for(int i = 0; i < nJet; i++)
+
+  return jetlist;
 
 }
 
@@ -1616,6 +1228,8 @@ std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double pho
                       //);
 
       if(photonId && kinematic ){
+        nSelectedPho++;
+        printf("selected aphoton\n");
         pholist.push_back(p);
       }    
     }    
@@ -1623,57 +1237,6 @@ std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double pho
   return pholist;
 
 }
-
-// https://indico.cern.ch/event/455258/contribution/0/attachments/1173322/1695132/SP15_253rd.pdf -- slide-5
-// Worst Charged Hadron Isolation EA
-Double_t analyzer_signal::EAchargedworst(Double_t eta){
-  Float_t EffectiveArea = 0.0;
-  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.078;
-  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.089;
-  return EffectiveArea;
-}
-
-// standard EA
-Double_t analyzer_signal::EAcharged(Double_t eta){
-  Float_t EffectiveArea = 0.0;
-  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.0;
-  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.0;
-
-  return EffectiveArea;
-}
-
-Double_t analyzer_signal::EAneutral(Double_t eta){
-  Float_t EffectiveArea = 0.;
-  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.0599;
-  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.0819;
-  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0696;
-  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.0360;
-  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.0360;
-  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.0462;
-  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.0656;
-
-  return EffectiveArea;
-}
-
-Double_t analyzer_signal::EAphoton(Double_t eta){
-  Float_t EffectiveArea = 0.;
-  if(fabs(eta) >= 0.0   && fabs(eta) < 1.0   ) EffectiveArea = 0.1271;
-  if(fabs(eta) >= 1.0   && fabs(eta) < 1.479 ) EffectiveArea = 0.1101;
-  if(fabs(eta) >= 1.479 && fabs(eta) < 2.0   ) EffectiveArea = 0.0756;
-  if(fabs(eta) >= 2.0   && fabs(eta) < 2.2   ) EffectiveArea = 0.1175;
-  if(fabs(eta) >= 2.2   && fabs(eta) < 2.3   ) EffectiveArea = 0.1498;
-  if(fabs(eta) >= 2.3   && fabs(eta) < 2.4   ) EffectiveArea = 0.1857;
-  if(fabs(eta) >= 2.4                        ) EffectiveArea = 0.2183;
-
-  return EffectiveArea;
-}
-
-
 
 
  //-------------------------makeDilep

@@ -141,6 +141,11 @@ public :
  Int_t n_mu_passOffZ;
  Int_t n_mu_passNoPair;
 
+ Int_t nSelectedPho;
+ Int_t nSelectedEle;
+ Int_t nSelectedMuo;
+ Int_t nSelectedJet;
+
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
@@ -163,6 +168,12 @@ public :
  // General / leading
  TH1F  h_htall                   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_htjets                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedPho            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedEle            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedMuo            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedJet            [SELBINNAMESIZE][LEPBINNAMESIZE];
+
+
  TH1F  h_nVtx                    [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nGoodVtx                [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nTrksPV                 [SELBINNAMESIZE][LEPBINNAMESIZE];
