@@ -883,7 +883,7 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
  return kTRUE;
 }
 
-// cuts -------------------------------------------------------------
+// trigger ------------------------
 Bool_t analyzer_signal::askPassSingleEle()
 {
  //printf("HLT_Ele23Loose %llu \n", HLT_Ele23Loose) ;
@@ -933,14 +933,14 @@ Bool_t analyzer_signal::askPassDoubleMu()
  return doespass;
 }
 
-
+// signal/control region selections ------------------------
 Bool_t analyzer_signal::askPassSig()
 {
  Bool_t doespass = kTRUE;
  if( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ){
   n_passSig++;
   if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
-  if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
  }
  return doespass;
 }
@@ -957,7 +957,7 @@ Bool_t analyzer_signal::askPassZH()
     )
  { doespass = kTRUE; n_passZH++;
   if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
-  if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
  }
  return doespass;
 }
@@ -975,7 +975,7 @@ Bool_t analyzer_signal::askPassDY()
  { doespass = kTRUE; n_passDY++; 
   //printf("\n PASS DY Event %lld\n", event);
   if( passSingleEle || passDoubleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
-  if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
  }
  return doespass;
 }
@@ -992,7 +992,7 @@ Bool_t analyzer_signal::askPassOffZ()
     )
  { doespass = kTRUE; n_passOffZ++;
   if( passSingleEle || passDoubleEle ) { n_ele_passOffZ++; }
-  if( passSingleMu  || passDoubleMu  ) { n_mu_passOffZ++; }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passOffZ++; }
  }
  return doespass;
 }
@@ -1009,7 +1009,7 @@ Bool_t analyzer_signal::askPassNoPair()
     )
  { doespass = kTRUE; n_passNoPair++;
   if( passSingleEle || passDoubleEle ) { n_ele_passNoPair++; }
-  if( passSingleMu  || passDoubleMu  ) { n_mu_passNoPair++; }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passNoPair++; }
  }
  return doespass;
 }
