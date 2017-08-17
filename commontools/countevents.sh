@@ -4,11 +4,11 @@ outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
 
 xcDY10to50="18610.0"
 xcDY50="5765.4"
-xcDY5to50_HT70to100="301.2"  # +-0.8  # LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
-xcDY5to50_HT100to200="224.2" # +- 5.7
-xcDY5to50_HT200to400="37.2"  # +- 1.1
-xcDY5to50_HT400to600="3.581" # +-0.118 
-xcDY5to50_HT600toInf="1.124" # +-0.038 
+xcDY5to50_HT70To100="301.2"  # +-0.8  # LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
+xcDY5to50_HT100To200="224.2" # +- 5.7
+xcDY5to50_HT200To400="37.2"  # +- 1.1
+xcDY5to50_HT400To600="3.581" # +-0.118 
+xcDY5to50_HT600ToInf="1.124" # +-0.038 
 xcGJets_HT40To100="20790"    # +-9                 
 xcGJets_HT100To200="9238"    # +-4              
 xcGJets_HT200To400="2305"    # +-0.7               
@@ -66,45 +66,87 @@ countalist () {
  printf "crosssection: %s\n" $2 >> ${listdir}/$1.info
 }
 
-countalist "DY10to50"                          ${xcDY10to50}                          
-countalist "DY50"                              ${xcDY50}                              
-countalist "ggZH_HToBB_ZToLL"                  ${xcggZH_HToBB_ZToLL}                  
-countalist "ggZH_HToSSTobbbb_MS40_ctauS0"      ${xcggZH_HToSSTobbbb_MS40_ctauS0}      
-countalist "ggZH_HToSSTobbbb_MS40_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS40_ctauS0p05}   
-countalist "ggZH_HToSSTobbbb_MS40_ctauS1"      ${xcggZH_HToSSTobbbb_MS40_ctauS1}      
-countalist "ggZH_HToSSTobbbb_MS40_ctauS10"     ${xcggZH_HToSSTobbbb_MS40_ctauS10}     
-countalist "ggZH_HToSSTobbbb_MS40_ctauS100"    ${xcggZH_HToSSTobbbb_MS40_ctauS100}    
-countalist "ggZH_HToSSTobbbb_MS40_ctauS1000"   ${xcggZH_HToSSTobbbb_MS40_ctauS1000}   
-countalist "ggZH_HToSSTobbbb_MS40_ctauS10000"  ${xcggZH_HToSSTobbbb_MS40_ctauS10000}  
-countalist "GJets_HT40To100"                   ${xcGJets_HT40To100}                   
-countalist "GJets_HT100To200"                  ${xcGJets_HT100To200}                  
-countalist "GJets_HT200To400"                  ${xcGJets_HT200To400}                  
-countalist "GJets_HT400To600"                  ${xcGJets_HT400To600}                  
-countalist "GJets_HT600ToInf"                  ${xcGJets_HT600ToInf}                  
-countalist "ST_s"                              ${xcST_s}                              
-countalist "STbar_t"                           ${xcSTbar_t}                           
-countalist "ST_t"                              ${xcST_t}                              
-countalist "STbar_tW"                          ${xcSTbar_tW}                          
-countalist "ST_tW"                             ${xcST_tW}                             
-countalist "TTtoLL"                            ${xcTTtoLL}                            
-countalist "TTtoLfromTbar"                     ${xcTTtoLfromTbar}                     
-countalist "TTtoLfromT"                        ${xcTTtoLfromT}                        
-countalist "WG"                                ${xcWG}                                
-countalist "WJetsToLNu"                        ${xcWJetsToLNu}                        
-countalist "WWToLNuLNu"                        ${xcWWToLNuLNu}                        
-countalist "WWToLNuQQ"                         ${xcWWToLNuQQ}                         
-countalist "WZToL3Nu"                          ${xcWZToL3Nu}                          
-countalist "WZTo3LNu"                          ${xcWZTo3LNu}                          
-countalist "WZToLNu2QorQQ2L"                   ${xcWZToLNu2QorQQ2L}                   
-countalist "ZG"                                ${xcZG}                                
-countalist "ZH_HToBB_ZToLL"                    ${xcZH_HToBB_ZToLL}                    
-countalist "ZZToLLNuNu"                        ${xcZZToLLNuNu}                        
-countalist "ZZToLLQQ"                          ${xcZZToLLQQ}                          
-countalist "ZZToNuNuQQ"                        ${xcZZToNuNuQQ}                        
-countalist "ZZToLLLL"                          ${xcZZToLLLL}                          
-# countalist "SingleElectron"                    ${xcSingleElectron}                    
-# countalist "SingleMuon"                        ${xcSingleMuon}                        
-# countalist "DoubleEG"                          ${xcDoubleEG}                          
-# countalist "DoubleMuon"                        ${xcDoubleMuon}                        
-# countalist "MuonEG"                            ${xcMuonEG}                            
+#countalist "DY10to50"                          ${xcDY10to50}                          
+#countalist "DY50"                              ${xcDY50}                              
+#countalist "ggZH_HToBB_ZToLL"                  ${xcggZH_HToBB_ZToLL}                  
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0"      ${xcggZH_HToSSTobbbb_MS40_ctauS0}      
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS40_ctauS0p05}   
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS1"      ${xcggZH_HToSSTobbbb_MS40_ctauS1}      
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS10"     ${xcggZH_HToSSTobbbb_MS40_ctauS10}     
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS100"    ${xcggZH_HToSSTobbbb_MS40_ctauS100}    
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS1000"   ${xcggZH_HToSSTobbbb_MS40_ctauS1000}   
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS10000"  ${xcggZH_HToSSTobbbb_MS40_ctauS10000}  
+#countalist "GJets_HT40To100"                   ${xcGJets_HT40To100}                   
+#countalist "GJets_HT100To200"                  ${xcGJets_HT100To200}                  
+#countalist "GJets_HT200To400"                  ${xcGJets_HT200To400}                  
+#countalist "GJets_HT400To600"                  ${xcGJets_HT400To600}                  
+#countalist "GJets_HT600ToInf"                  ${xcGJets_HT600ToInf}                  
+#countalist "ST_s"                              ${xcST_s}                              
+#countalist "STbar_t"                           ${xcSTbar_t}                           
+#countalist "ST_t"                              ${xcST_t}                              
+#countalist "STbar_tW"                          ${xcSTbar_tW}                          
+#countalist "ST_tW"                             ${xcST_tW}                             
+#countalist "TTtoLL"                            ${xcTTtoLL}                            
+#countalist "TTtoLfromTbar"                     ${xcTTtoLfromTbar}                     
+#countalist "TTtoLfromT"                        ${xcTTtoLfromT}                        
+#countalist "WG"                                ${xcWG}                                
+#countalist "WJetsToLNu"                        ${xcWJetsToLNu}                        
+#countalist "WWToLNuLNu"                        ${xcWWToLNuLNu}                        
+#countalist "WWToLNuQQ"                         ${xcWWToLNuQQ}                         
+#countalist "WZToL3Nu"                          ${xcWZToL3Nu}                          
+#countalist "WZTo3LNu"                          ${xcWZTo3LNu}                          
+#countalist "WZToLNu2QorQQ2L"                   ${xcWZToLNu2QorQQ2L}                   
+#countalist "ZG"                                ${xcZG}                                
+#countalist "ZH_HToBB_ZToLL"                    ${xcZH_HToBB_ZToLL}                    
+#countalist "ZZToLLNuNu"                        ${xcZZToLLNuNu}                        
+#countalist "ZZToLLQQ"                          ${xcZZToLLQQ}                          
+#countalist "ZZToNuNuQQ"                        ${xcZZToNuNuQQ}                        
+#countalist "ZZToLLLL"                          ${xcZZToLLLL}                          
+## countalist "SingleElectron"                    ${xcSingleElectron}                    
+## countalist "SingleMuon"                        ${xcSingleMuon}                        
+## countalist "DoubleEG"                          ${xcDoubleEG}                          
+## countalist "DoubleMuon"                        ${xcDoubleMuon}                        
+## countalist "MuonEG"                            ${xcMuonEG}                            
 
+countalist "DY5to50_HT70To100"                  ${xcDY5to50_HT70To100}                 
+countalist "DY5to50_HT100To200"                 ${xcDY5to50_HT100To200}                
+countalist "DY5to50_HT200To400"                 ${xcDY5to50_HT200To400}                
+countalist "DY5to50_HT400To600"                 ${xcDY5to50_HT400To600}                
+countalist "DY5to50_HT600ToInf"                 ${xcDY5to50_HT600ToInf}                
+#countalist "DY50"                               ${xcDY50}                              
+#countalist "ggZH_HToBB_ZToLL"                   ${xcggZH_HToBB_ZToLL}                  
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0"       ${xcggZH_HToSSTobbbb_MS40_ctauS0}      
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0p05"    ${xcggZH_HToSSTobbbb_MS40_ctauS0p05}   
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS1"       ${xcggZH_HToSSTobbbb_MS40_ctauS1}      
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS10"      ${xcggZH_HToSSTobbbb_MS40_ctauS10}     
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS100"     ${xcggZH_HToSSTobbbb_MS40_ctauS100}    
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS1000"    ${xcggZH_HToSSTobbbb_MS40_ctauS1000}   
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS10000"   ${xcggZH_HToSSTobbbb_MS40_ctauS10000}  
+#countalist "GJets_HT40To100"                    ${xcGJets_HT40To100}                   
+#countalist "GJets_HT100To200"                   ${xcGJets_HT100To200}                  
+#countalist "GJets_HT200To400"                   ${xcGJets_HT200To400}                  
+#countalist "GJets_HT400To600"                   ${xcGJets_HT400To600}                  
+#countalist "GJets_HT600ToInf"                   ${xcGJets_HT600ToInf}                  
+#countalist "ST_s"                               ${xcST_s}                              
+#countalist "STbar_t"                            ${xcSTbar_t}                           
+#countalist "ST_t"                               ${xcST_t}                              
+#countalist "STbar_tW"                           ${xcSTbar_tW}                          
+#countalist "ST_tW"                              ${xcST_tW}                             
+#countalist "TTtoLL"                             ${xcTTtoLL}                            
+#countalist "TTtoLfromTbar"                      ${xcTTtoLfromTbar}                     
+#countalist "TTtoLfromT"                         ${xcTTtoLfromT}                        
+#countalist "WG"                                 ${xcWG}                                
+#countalist "WJetsToLNu"                         ${xcWJetsToLNu}                        
+#countalist "WWToLNuLNu"                         ${xcWWToLNuLNu}                        
+#countalist "WWToLNuQQ"                          ${xcWWToLNuQQ}                         
+#countalist "WZToL3Nu"                           ${xcWZToL3Nu}                          
+#countalist "WZTo3LNu"                           ${xcWZTo3LNu}                          
+#countalist "WZToLNu2QorQQ2L"                    ${xcWZToLNu2QorQQ2L}                   
+#countalist "ZG"                                 ${xcZG}                                
+#countalist "ZH_HToBB_ZToLL"                     ${xcZH_HToBB_ZToLL}                    
+#countalist "ZZToLLNuNu"                         ${xcZZToLLNuNu}                        
+#countalist "ZZToLLQQ"                           ${xcZZToLLQQ}                          
+#countalist "ZZToNuNuQQ"                         ${xcZZToNuNuQQ}                        
+#countalist "ZZToLLLL"                           ${xcZZToLLLL}                          
+##countalist "SingleElectron"                     ${SingleElectron}                    
+##countalist "SingleMuon"                         ${SingleMuon}                        

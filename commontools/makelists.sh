@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # Makes a list of files in eos
 # then greps through to separate into samples
@@ -19,7 +19,12 @@ makealist () {
  sed -i -e "s@/hdfs@@" ${listdir}/$1.list
 }
 
-makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"
+#makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"
+makealist "DY5to50_HT70To100"                   "/DYJetsToLL_M-5to50_HT-70to100_"
+makealist "DY5to50_HT100To200"                  "/DYJetsToLL_M-5to50_HT-100to200_"
+makealist "DY5to50_HT200To400"                  "/DYJetsToLL_M-5to50_HT-200to400_"
+makealist "DY5to50_HT400To600"                  "/DYJetsToLL_M-5to50_HT-400to600_"
+makealist "DY5to50_HT600ToInf"                  "/DYJetsToLL_M-5to50_HT-600toInf_"
 makealist "DY50"                                "/DYJetsToLL_M-50_"
 makealist "ggZH_HToBB_ZToLL"                    "/ggZH_HToBB_ZToLL_"
 makealist "ggZH_HToSSTobbbb_MS40_ctauS0"        "/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-0_"
@@ -57,7 +62,7 @@ makealist "ZZToNuNuQQ"                          "/ZZTo2Q2Nu_"
 makealist "ZZToLLLL"                            "/ZZTo4L_"
 makealist "SingleElectron"                      "/SingleElectron"
 makealist "SingleMuon"                          "/SingleMuon"
-makealist "DoubleEG"                            "/DoubleEG"
-makealist "DoubleMuon"                          "/DoubleMuon"
-makealist "MuonEG"                              "/MuonEG"
+#makealist "DoubleEG"                            "/DoubleEG"
+#makealist "DoubleMuon"                          "/DoubleMuon"
+#makealist "MuonEG"                              "/MuonEG"
 
