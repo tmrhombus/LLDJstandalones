@@ -43,6 +43,30 @@ void analyzer_signal::Loop(TString outfilename,
  n_mu_passOffZ=0;
  n_mu_passNoPair=0;
 
+ // set which collections
+ phoid = "tight";
+ eleid = "tight";
+ muoid = "tight";
+ jetid = "tight";
+
+ if (phoid = "loose")  phoidbit=0;
+ if (phoid = "medium") phoidbit=1;
+ if (phoid = "tight")  phoidbit=2;
+
+ if (eleid = "loose")  eleidbit=1;
+ if (eleid = "medium") eleidbit=2;
+ if (eleid = "tight")  eleidbit=3;
+
+ if (muoid = "loose")  muoidbit=0;
+ if (muoid = "medium") muoidbit=1;
+ if (muoid = "tight")  muoidbit=2;
+
+ if (jetid = "loose")  jetidbit=0;
+ if (jetid = "tight")  jetidbit=1;
+
+ if(isMC) loadPUWeight();
+ if(isMC) loadElectronWeight();
+
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -63,38 +87,33 @@ void analyzer_signal::Loop(TString outfilename,
   //if( event==472257123 ){ printf(" got entry \n"); }
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
-  // make event weight in analyzerBase.C
-  // colisions happen @LHC at a given rate, use 
-  // event_weight to make the simulation match what is seen in data
-  // =lum/cross-section *nrEvents
-  //if( event==472257123 ){ printf("making eventweight\n"); }
-  event_weight = makeEventWeight(crossSec,lumi,nrEvents);
   n_tot++;
 
   //if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
-  photon_list = photon_passLooseID( 15, 2.5, ""); // pt, eta, sysbinname
+  photon_list = photon_passID( phoidbit , 15, 1.4442, ""); // pt, eta, sysbinname
 
   //if( event==472257123 ){ printf("making electronlist\n"); }
   // veto loose medium tight heep hlt
-  electron_list_l = electron_passID( 1, 30, 3, "");
-  electron_list_m = electron_passID( 2, 30, 3, "");
-  electron_list_t = electron_passID( 3, 30, 3, "");
+  electron_list = electron_passID( eleidbit , 30, 2.5, "");
 
   //if( event==472257123 ){ printf("making muonlist\n"); }
-  //muon_list = muon_passTightID( 28, 2.4, ""); 
-  muon_list_l = muon_passID( 0, 15, 3, ""); 
-  muon_list_m = muon_passID( 1, 15, 3, ""); 
-  muon_list_t = muon_passID( 2, 15, 3, ""); 
-  //muon_list = muon_passLooseID( 15, 3, ""); 
-
-  electron_list.clear();
-  muon_list.clear();
-  muon_list = muon_list_t;
-  electron_list = electron_list_t;
+  muon_list = muon_passID( muoidbit , 15, 2.5, ""); 
 
   //if( event==472257123 ){ printf("making jetlist\n"); }
-  jet_list = jet_passID( 20, 2.4,"custom", "");  ///////////place our cuts here
+  jet_list = jet_passID( jetidbit, 20, 2.4, ""); 
+
+  // make event weight in analyzerBase.C
+  // colisions happen @LHC at a given rate, use event_weight
+  // to make the simulation match the rate seen in data
+  // = lum * cross-section / nrEvents generated
+  //if( event==472257123 ){ printf("making eventweight\n"); }
+  event_weight = makeEventWeight(crossSec,lumi,nrEvents);
+  // for MC, simulated pileup is different from observed
+  // in commontools/pileup we make a ratio for scaling MC
+  if(isMC) event_weight *= makePUWeight();
+  // electrons also have an associated scale factor for MC 
+  if(isMC) event_weight *= makeElectronWeight();
 
   // set our met
   themet = pfMET;
@@ -117,10 +136,10 @@ void analyzer_signal::Loop(TString outfilename,
   // calculate ht
   htall  = 0.;
   htjets = 0.;
-  //for(int i=0; i<photon_list.size(); ++i){
-  // int phoindex = photon_list[i];
-  // htall += phoEt->at(phoindex);
-  //}
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   htall += phoEt->at(phoindex);
+  }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -156,7 +175,7 @@ void analyzer_signal::Loop(TString outfilename,
   passPTOSSFg50 = (dilep_pt>50.);
 
   passGoodVtx = nVtx>0;
-  passOneJet = jet_list.size()>0; 
+  passOneJet =  jet_list.size()>0; 
 
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
@@ -166,7 +185,6 @@ void analyzer_signal::Loop(TString outfilename,
   // debug_printobjects();   // helpful printout (turn off when submitting!!!)
   // debug_printmuons();     // helpful printout (turn off when submitting!!!)
   // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
-
   //}
 
    
@@ -509,7 +527,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
   //    // daniel - this isn't doing what you think it is
   //     // let's say we have initial jet list with 5 jets, and we find nrs 1,2,4 are good
   //     // jet_list.size()==3 but we don't want to fill with jetPt->at(3) 
-  //     // look at the loops where we do lepton/jet cleaning
+  //     // look at the loops where we do lepton/jet cleaning or the ht sums
   //     // i'll just leave this commented out for now
   //    if(jetPt                     ->size()>j){ h_jetPt                      [selbin][j][lepbin].Fill( jetPt                     ->at(j), weight); }
   //    if(jetEn                     ->size()>j){ h_jetEn                      [selbin][j][lepbin].Fill( jetEn                     ->at(j), weight); }
@@ -865,25 +883,33 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
 // cuts -------------------------------------------------------------
 Bool_t analyzer_signal::askPassSingleEle()
 {
-// eleFiredSingleTrgs = (vector<unsigned int>*)0x3961a70
-// eleFiredDoubleTrgs = (vector<unsigned int>*)0x3961e80
+ //printf("HLT_Ele23Loose %llu \n", HLT_Ele23Loose) ;
+ //printf("HLT_Ele27Tight %llu \n", HLT_Ele27Tight) ;
+ //printf("HLT_Ele17Ele12 %llu \n", HLT_Ele17Ele12) ;
+ //printf("HLT_Ele23Ele12 %llu \n", HLT_Ele23Ele12) ;
+ //printf("HLT_IsoMu22    %llu \n", HLT_IsoMu22   ) ;
+ //printf("HLT_IsoTkMu22  %llu \n", HLT_IsoTkMu22 ) ;
+ //printf("HLT_Mu17Mu8    %llu \n", HLT_Mu17Mu8   ) ;
+ //printf("HLT_Mu17TkMu8  %llu \n", HLT_Mu17TkMu8 ) ;
+
  Bool_t doespass = kFALSE;
  if(electron_list.size()>0){ 
-   doespass = elePt->at( electron_list.at(0) ) > 30 ;
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (HLT_Ele23Loose > 0) && (HLT_Ele27Tight > 0) );
  } 
+ doespass = kTRUE;
  return doespass;
 }
 
 
 Bool_t analyzer_signal::askPassSingleMu()
 {
-// muFiredSingleTrgs = (vector<unsigned int>*)0x3961a70
-// muFiredDoubleTrgs = (vector<unsigned int>*)0x3961e80
  Bool_t doespass = kFALSE;
  if(muon_list.size()>0){ 
-   doespass = muPt->at( muon_list.at(0) ) > 28 ;
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (HLT_IsoMu22 > 0) && (HLT_IsoTkMu22 > 0) );
  } 
-
+ doespass = kTRUE;
  return doespass;
 }
 
@@ -906,7 +932,7 @@ Bool_t analyzer_signal::askPassZH()
  if ( passGoodVtx
      && passZWindow
      && passPTOSSFg50
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -924,7 +950,7 @@ Bool_t analyzer_signal::askPassDY()
  if ( passGoodVtx
      && passZWindow
      && !passPTOSSFg50
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -943,7 +969,7 @@ Bool_t analyzer_signal::askPassOffZ()
  if ( passGoodVtx
      && !passZWindow
      && passOSSF
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -961,7 +987,7 @@ Bool_t analyzer_signal::askPassNoPair()
  if ( passGoodVtx
      && !passZWindow
      && !passOSSF
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu)
      //&&  triggers..
     )
@@ -1086,6 +1112,7 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
 
   if( pass_bit && pass_kin )
   {
+   //printf(" a selected muon\n");
    nSelectedMuo++;
    mulist.push_back(i);
   } // if pass_bit && pass_kin
@@ -1122,6 +1149,7 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   if( pass_bit && pass_kin && pass_overlap)
   {
    nSelectedEle++;
+   //printf(" a selected electron\n");
    elelist.push_back(i);
   } // if pass_bit && pass_kin
  } // loop over electrons
@@ -1129,7 +1157,7 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
 }
 
 //-------------------------jet_passID
-std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname) {
+std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
 
   std::vector<int> jetlist;
 
@@ -1143,7 +1171,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
      int phoindex = photon_list[d];
      if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
       if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ){
-       //printf(" Jet   ");
+       ////printf(" Jet   ");
        //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", jetPt->at(i), jetEta->at(i), jetPhi->at(i) );
        //printf(" Photon");
        //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex) );
@@ -1152,7 +1180,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
      }
     }//end photons
    } // if photons
-   // check overlap with electrons
+   //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
      //printf(" brgin looping over electrons\n");
@@ -1160,7 +1188,7 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
      if( dR( eleEta->at(eleindex),elePhi->at(eleindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ) pass_overlap=false; // printf(" OL w electron\n");
     }//end electrons
    } // if electrons
-   // check overlap with muons
+   //check overlap with muons
    if(muon_list.size()>0){
     for(int d=0; d<muon_list.size(); ++d){
      int muindex = muon_list[d];
@@ -1170,27 +1198,14 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
     }//end muons
    } // if muons
 
-   bool pass_loose  ;
-   bool pass_tight  ;
-   pass_loose  = jetID->at(i) >> 1 & 0x1 == 1;      
-   pass_tight  = jetID->at(i) >> 2 & 0x1 == 1;     
-     /// printf(" Jet %i    %i %i %i %i %i %i \n\n",i
-     ///       , pass_loose
-     ///       , pass_tight
-     ///       );       
-
-   bool pass_id = false;
-   if     (PFJetID == "Loose") pass_id = pass_loose;
-   else if(PFJetID =="Tight" ) pass_id = pass_tight;
-              
+   bool pass_id  ;
+   pass_id  = jetID->at(i) >> bitnr & 0x1 == 1;      
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
               
-   //if( pass_id && pass_kin && pass_overlap )
-   //if( pass_id && pass_kin )
    if( pass_id && pass_kin && pass_overlap )
    {
-    printf(" a selected jet\n");
+    //printf(" a selected jet\n");
     nSelectedJet++;
     jetlist.push_back(i);
    } // if pass_bit && pass_kin
@@ -1202,39 +1217,32 @@ std::vector<int> analyzer_signal::jet_passID(double jetPtCut, double jetEtaCut, 
 
 
 //-------------------------photon_passLooseID
-std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double phoEtaCut, TString sysbinname){
+std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname){
 
-  std::vector<int> pholist;
-  pholist.clear();
+ std::vector<int> pholist;
+ pholist.clear();
 
-  //Loop over photons                   
-  for(int p=0;p<nPho;p++)
-    {    
+ //Loop over photons                   
+ for(int p=0;p<nPho;p++)
+ {    
+  Float_t thephoPt = getPhotonPt(p,sysbinname);
+  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoEt->at(p); 
+  Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
 
-      Float_t thephoPt = getPhotonPt(p,sysbinname);
-      //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoEt->at(p); 
-      Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
+  //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
+  bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
 
-      //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
-      bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
+  bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-      bool photonId = ( true ); 
-                      // ((*phoHoverE)[p]                <  0.05   ) && 
-                      // ( TMath::Max( ( (*phoPFChIso)[p]       - rho*EAcharged((*phoSCEta)[p]) ), 0.0) < 1.37 )  &&
-                      // ( TMath::Max( ( (*phoPFNeuIso)[p] - rho*EAneutral((*phoSCEta)[p]) ), 0.0) <
-                      //  (1.06 + (0.014 * thephoPt) + (0.000019 * pow(thephoPt, 2.0))) )  &&
-                      // ( TMath::Max( ( (*phoPFPhoIso)[p] - rho*EAphoton((*phoSCEta)[p])  ), 0.0) < 
-                      //  (0.28 + (0.0053 * thephoPt)) ) 
-                      //);
+  if( kinematic && pass_bit){
+   nSelectedPho++;
+   //printf("selected aphoton\n");
+   pholist.push_back(p);
+  }    
+ }    
 
-      if(photonId && kinematic ){
-        nSelectedPho++;
-        printf("selected aphoton\n");
-        pholist.push_back(p);
-      }    
-    }    
-
-  return pholist;
+ return pholist;
 
 }
 
@@ -1295,6 +1303,58 @@ std::vector<int> analyzer_signal::photon_passLooseID(double phoPtCut, double pho
                                                                     
  } 
 
+
+void analyzer_signal::loadPUWeight(){
+ printf("loading PU weight \n");
+ TFile* file_puweights = new TFile( "/home/rhombus/CMS/LLDJ/LLDJstandalones/commontools/pileup/data/puWeights_69200_24jan2017.root" ) ;
+ PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
+ return ;
+}
+
+void analyzer_signal::loadElectronWeight(){
+ printf("loading Electron weight \n");
+ TFile* file_eleweights = new TFile( "/home/rhombus/CMS/LLDJ/LLDJstandalones/commontools/elesfs/egammaEffi_MoriondBH_eleTight.root" ) ;
+ EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
+ return ;
+}
+
+Double_t analyzer_signal::makePUWeight(){
+ Int_t tmpbin = PUWeights->GetBin(nTruePU);
+ Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
+ //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
+ return tmpweight;
+}
+
+Double_t analyzer_signal::makeElectronWeight(){
+
+ Double_t tmpsf;
+ tmpsf = 1.;
+
+ //check overlap with electrons
+ if(electron_list.size()>0){
+  //printf(" esize: %lu\n",electron_list.size());
+  //printf(" esceta: %lu\n",eleSCEta->size());
+  //printf(" ept: %lu\n",elePt->size());
+  for(int d=0; d<electron_list.size(); ++d){
+   //printf(" brgin looping over electrons\n");
+   int eleindex = electron_list[d];
+   //printf(" d: %i eleindex: %i\n",d,eleindex);
+   //printf(" ele sceta %f pt %f \n",eleSCEta->at(eleindex),elePt->at(eleindex));
+   Float_t eeta = eleSCEta->at(eleindex);
+   Float_t ept  = elePt->at(eleindex);
+   Int_t tmpbinx       = EleWeights->GetXaxis()->FindBin( eeta );
+   Int_t tmpbiny       = EleWeights->GetYaxis()->FindBin( ept  );
+   //printf(" bins %i %i\n",tmpbinx,tmpbiny);
+   Int_t tmpbin        = EleWeights->GetBin( tmpbinx, tmpbiny );
+   Double_t tmpweight = EleWeights->GetBinContent(tmpbin);
+   tmpsf *= tmpweight;
+  }//end electrons
+ } // if electrons
+
+ //printf(" done making Electron weight\n");
+
+ return tmpsf;
+}
 
 void analyzer_signal::debug_printobjects(){
 

@@ -25,24 +25,22 @@ public :
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
-                                             TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
+                            TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
 
  double               dR(double eta1, double phi1, double eta2, double phi2);
  double               DeltaPhi(double phi1, double phi2);
 
- std::vector<int>     photon_passLooseID(double phoPtCut=15., double phoEtaCut=1.4442, TString sysbinname="");
-  Double_t            EAchargedworst(Double_t eta);
-  Double_t            EAcharged(Double_t eta);
-  Double_t            EAneutral(Double_t eta);
-  Double_t            EAphoton(Double_t eta);
+ void                  loadPUWeight();
+ Double_t              makePUWeight();
+ TH1F*                 PUWeights;
+ void                  loadElectronWeight();
+ Double_t              makeElectronWeight();
+ TH2F*                 EleWeights;
 
- //std::vector<int>     electron_passLooseID( double elePtCut, double eleEtaCut, TString sysbinname="");
- //std::vector<int>     electron_passTightID( double elePtCut, double eleEtaCut, TString sysbinname="");
+ std::vector<int>     photon_passID  ( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname="");
  std::vector<int>     electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname="");
- //std::vector<int>     muon_passLooseID( double muPtCut, double muEtaCut, TString sysbinname="");
- //std::vector<int>     muon_passTightID( double muPtCut, double muEtaCut, TString sysbinname="");
- std::vector<int>     jet_passID( double jetPtCut, double jetEtaCut, TString PFJetID, TString sysbinname="");
+ std::vector<int>     muon_passID    ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
+ std::vector<int>     jet_passID     ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -69,6 +67,9 @@ public :
  // each int is an entry in vector
  // associated with object passing
  // some selection
+ std::vector<int> photon_list_l;
+ std::vector<int> photon_list_m;
+ std::vector<int> photon_list_t;
  std::vector<int> photon_list;
  std::vector<int> electron_list_l;
  std::vector<int> electron_list_m;
@@ -79,6 +80,16 @@ public :
  std::vector<int> muon_list_t ;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
+
+ TString phoid;
+ TString eleid;
+ TString muoid;
+ TString jetid;
+
+ int phoidbit;
+ int eleidbit;
+ int muoidbit;
+ int jetidbit;
 
  // Selection functions
  Bool_t        askPassSingleEle();
