@@ -49,6 +49,7 @@ public :
  virtual void debug_printobjects();
  virtual void debug_printmuons();
  virtual void debug_printelectrons();
+ virtual void debug_printtriggers();
 
  // 2D Histograms 
  Bool_t        init2DHistograms();
@@ -94,6 +95,8 @@ public :
  // Selection functions
  Bool_t        askPassSingleEle();
  Bool_t        askPassSingleMu();
+ Bool_t        askPassDoubleEle();
+ Bool_t        askPassDoubleMu();
  Bool_t        askPassSig();
  Bool_t        askPassZH();
  Bool_t        askPassDY();
@@ -103,6 +106,8 @@ public :
  // selection booleans
  Bool_t passSingleEle ;
  Bool_t passSingleMu  ;
+ Bool_t passDoubleEle ;
+ Bool_t passDoubleMu  ;
  Bool_t passOSSF      ;
  Bool_t passZWindow   ; 
  Bool_t passGoodVtx   ;

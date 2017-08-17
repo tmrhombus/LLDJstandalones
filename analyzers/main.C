@@ -160,7 +160,8 @@ int main(int argc, char **argv){
 
   // read input file names
   if( Tinputline.Contains("/home/rhombus") ){
-    theChain->Add( Tinputline );
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
   }
 
   //if( Tinputline.Contains("/uscms/home") ){
@@ -168,10 +169,10 @@ int main(int argc, char **argv){
   // printf("Inputfile: %s\n",Tinputline.Data());
   //}
 
-  //if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
-  // theChain->Add( Tinputline );
-  // printf("Inputfile: %s\n",Tinputline.Data());
-  //}
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
   //if( Tinputline.Contains("/store/user") ){
   //  theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );

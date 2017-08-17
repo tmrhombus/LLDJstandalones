@@ -6,6 +6,8 @@
 #include <TFile.h>
 #include <TH1F.h>
 
+#include <stdlib.h>     /* getenv */
+
 #include "vector"
 
 class analyzer_base {

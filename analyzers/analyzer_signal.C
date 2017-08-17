@@ -44,25 +44,25 @@ void analyzer_signal::Loop(TString outfilename,
  n_mu_passNoPair=0;
 
  // set which collections
- phoid = "tight";
- eleid = "tight";
- muoid = "tight";
- jetid = "tight";
+ phoid = "Tight";
+ eleid = "Tight";
+ muoid = "Tight";
+ jetid = "Tight";
 
- if (phoid = "loose")  phoidbit=0;
- if (phoid = "medium") phoidbit=1;
- if (phoid = "tight")  phoidbit=2;
+ if (phoid = "Loose")  phoidbit=0;
+ if (phoid = "Medium") phoidbit=1;
+ if (phoid = "Tight")  phoidbit=2;
 
- if (eleid = "loose")  eleidbit=1;
- if (eleid = "medium") eleidbit=2;
- if (eleid = "tight")  eleidbit=3;
+ if (eleid = "Loose")  eleidbit=1;
+ if (eleid = "Medium") eleidbit=2;
+ if (eleid = "Tight")  eleidbit=3;
 
- if (muoid = "loose")  muoidbit=0;
- if (muoid = "medium") muoidbit=1;
- if (muoid = "tight")  muoidbit=2;
+ if (muoid = "Loose")  muoidbit=0;
+ if (muoid = "Medium") muoidbit=1;
+ if (muoid = "Tight")  muoidbit=2;
 
- if (jetid = "loose")  jetidbit=0;
- if (jetid = "tight")  jetidbit=1;
+ if (jetid = "Loose")  jetidbit=0;
+ if (jetid = "Tight")  jetidbit=1;
 
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight();
@@ -91,17 +91,17 @@ void analyzer_signal::Loop(TString outfilename,
 
   //if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
-  photon_list = photon_passID( phoidbit , 15, 1.4442, ""); // pt, eta, sysbinname
+  photon_list = photon_passID( phoidbit , 30, 1.4442, ""); // pt, eta, sysbinname
 
   //if( event==472257123 ){ printf("making electronlist\n"); }
   // veto loose medium tight heep hlt
   electron_list = electron_passID( eleidbit , 30, 2.5, "");
 
   //if( event==472257123 ){ printf("making muonlist\n"); }
-  muon_list = muon_passID( muoidbit , 15, 2.5, ""); 
+  muon_list = muon_passID( muoidbit , 30, 2.5, ""); 
 
   //if( event==472257123 ){ printf("making jetlist\n"); }
-  jet_list = jet_passID( jetidbit, 20, 2.4, ""); 
+  jet_list = jet_passID( jetidbit, 30, 2.4, ""); 
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use event_weight
@@ -179,13 +179,16 @@ void analyzer_signal::Loop(TString outfilename,
 
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
+  passDoubleEle = askPassDoubleEle();
+  passDoubleMu  = askPassDoubleMu();
 
 
-  //if( event==16638517 ){
-  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  // debug_printmuons();     // helpful printout (turn off when submitting!!!)
-  // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
-  //}
+  if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
+   debug_printobjects();   // helpful printout (turn off when submitting!!!)
+   debug_printmuons();     // helpful printout (turn off when submitting!!!)
+   debug_printelectrons(); // helpful printout (turn off when submitting!!!)
+   debug_printtriggers();
+  }
 
    
   //}
@@ -207,7 +210,7 @@ void analyzer_signal::Loop(TString outfilename,
   // fill histogram
 
   //if( event==472257123 ){ printf("fillEle\n");  }
-  if( passSingleEle ){
+  if( passSingleEle || passDoubleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
    if( doesPassZH    ){ fillSigHistograms(event_weight,2,0); fillJetHistograms(event_weight,2,0); }//fill2DHistograms(event_weight,2); }
@@ -217,7 +220,7 @@ void analyzer_signal::Loop(TString outfilename,
   }
 
   //if( event==472257123 ){ printf("fillMu\n");  }
-  if( passSingleMu ){
+  if( passSingleMu || passDoubleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
    if( doesPassZH    ){ fillSigHistograms(event_weight,2,1); fillJetHistograms(event_weight,2,1); }//fill2DHistograms(event_weight,2); }
@@ -895,21 +898,38 @@ Bool_t analyzer_signal::askPassSingleEle()
  Bool_t doespass = kFALSE;
  if(electron_list.size()>0){ 
   if(isMC) doespass = kTRUE;
-  else doespass = (Bool_t)( (HLT_Ele23Loose > 0) && (HLT_Ele27Tight > 0) );
+  else doespass = (Bool_t)( (HLT_Ele23Loose > 0) || (HLT_Ele27Tight > 0) );
  } 
- doespass = kTRUE;
  return doespass;
 }
 
+Bool_t analyzer_signal::askPassDoubleEle()
+{
+ Bool_t doespass = kFALSE;
+ if(electron_list.size()>0){ 
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (HLT_Ele17Ele12 > 0) || (HLT_Ele23Ele12 > 0) );
+ } 
+ return doespass;
+}
 
 Bool_t analyzer_signal::askPassSingleMu()
 {
  Bool_t doespass = kFALSE;
  if(muon_list.size()>0){ 
   if(isMC) doespass = kTRUE;
-  else doespass = (Bool_t)( (HLT_IsoMu22 > 0) && (HLT_IsoTkMu22 > 0) );
+  else doespass = (Bool_t)( (HLT_IsoMu22 > 0) || (HLT_IsoTkMu22 > 0) );
  } 
- doespass = kTRUE;
+ return doespass;
+}
+
+Bool_t analyzer_signal::askPassDoubleMu()
+{
+ Bool_t doespass = kFALSE;
+ if(muon_list.size()>0){ 
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (HLT_Mu17Mu8 > 0) || (HLT_Mu17TkMu8 > 0) ) ;
+ } 
  return doespass;
 }
 
@@ -917,10 +937,10 @@ Bool_t analyzer_signal::askPassSingleMu()
 Bool_t analyzer_signal::askPassSig()
 {
  Bool_t doespass = kTRUE;
- if( (passSingleEle || passSingleMu) ){
+ if( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ){
   n_passSig++;
-  if( passSingleEle ){ n_ele_passSig++; }
-  if( passSingleMu ) { n_mu_passSig++; }
+  if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
+  if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
  }
  return doespass;
 }
@@ -933,12 +953,11 @@ Bool_t analyzer_signal::askPassZH()
      && passZWindow
      && passPTOSSFg50
      && passOneJet
-     && (passSingleEle || passSingleMu)
-     //&&  triggers..
+     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
     )
  { doespass = kTRUE; n_passZH++;
-  if( passSingleEle ){ n_ele_passZH++; }
-  if( passSingleMu ) { n_mu_passZH++; }
+  if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
+  if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
  }
  return doespass;
 }
@@ -951,13 +970,12 @@ Bool_t analyzer_signal::askPassDY()
      && passZWindow
      && !passPTOSSFg50
      && passOneJet
-     && (passSingleEle || passSingleMu)
-     //&&  triggers..
+     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
     )
  { doespass = kTRUE; n_passDY++; 
   //printf("\n PASS DY Event %lld\n", event);
-  if( passSingleEle ){ n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
-  if( passSingleMu ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
+  if( passSingleEle || passDoubleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
+  if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
  }
  return doespass;
 }
@@ -971,11 +989,10 @@ Bool_t analyzer_signal::askPassOffZ()
      && passOSSF
      && passOneJet
      && (passSingleEle || passSingleMu)
-     //&&  triggers..
     )
  { doespass = kTRUE; n_passOffZ++;
-  if( passSingleEle ){ n_ele_passOffZ++; }
-  if( passSingleMu ) { n_mu_passOffZ++; }
+  if( passSingleEle || passDoubleEle ) { n_ele_passOffZ++; }
+  if( passSingleMu  || passDoubleMu  ) { n_mu_passOffZ++; }
  }
  return doespass;
 }
@@ -989,11 +1006,10 @@ Bool_t analyzer_signal::askPassNoPair()
      && !passOSSF
      && passOneJet
      && (passSingleEle || passSingleMu)
-     //&&  triggers..
     )
  { doespass = kTRUE; n_passNoPair++;
-  if( passSingleEle ){ n_ele_passNoPair++; }
-  if( passSingleMu ) { n_mu_passNoPair++; }
+  if( passSingleEle || passDoubleEle ) { n_ele_passNoPair++; }
+  if( passSingleMu  || passDoubleMu  ) { n_mu_passNoPair++; }
  }
  return doespass;
 }
@@ -1306,14 +1322,24 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
 
 void analyzer_signal::loadPUWeight(){
  printf("loading PU weight \n");
- TFile* file_puweights = new TFile( "/home/rhombus/CMS/LLDJ/LLDJstandalones/commontools/pileup/data/puWeights_69200_24jan2017.root" ) ;
+ char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ TString CMSSW_BASE = (TString)cCMSSW_BASE;
+
+ TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
+ TFile* file_puweights = new TFile( filename ) ;
+ printf(" filename: %s\n",filename.Data());
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
  return ;
 }
 
 void analyzer_signal::loadElectronWeight(){
  printf("loading Electron weight \n");
- TFile* file_eleweights = new TFile( "/home/rhombus/CMS/LLDJ/LLDJstandalones/commontools/elesfs/egammaEffi_MoriondBH_eleTight.root" ) ;
+ char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ TString CMSSW_BASE = (TString)cCMSSW_BASE;
+
+ TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ TFile* file_eleweights = new TFile( filename ) ;
+ printf(" filename: %s\n",filename.Data());
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
  return ;
 }
@@ -1454,3 +1480,20 @@ void analyzer_signal::debug_printelectrons()
  }
 
 }
+
+
+
+void analyzer_signal::debug_printtriggers()
+{
+
+ printf("HLT_Ele23Loose %llu \n", HLT_Ele23Loose) ;
+ printf("HLT_Ele27Tight %llu \n", HLT_Ele27Tight) ;
+ printf("HLT_Ele17Ele12 %llu \n", HLT_Ele17Ele12) ;
+ printf("HLT_Ele23Ele12 %llu \n", HLT_Ele23Ele12) ;
+ printf("HLT_IsoMu22    %llu \n", HLT_IsoMu22   ) ;
+ printf("HLT_IsoTkMu22  %llu \n", HLT_IsoTkMu22 ) ;
+ printf("HLT_Mu17Mu8    %llu \n", HLT_Mu17Mu8   ) ;
+ printf("HLT_Mu17TkMu8  %llu \n", HLT_Mu17TkMu8 ) ;
+
+}
+
