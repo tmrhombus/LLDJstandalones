@@ -42,6 +42,7 @@ void makePUweights()
  Int_t mc_size = mc_values.size();
  // initialize histogram with correct dimensions
  h_mc = new TH1F("h_mc","h_mc",mc_size,0.,mc_size);
+ h_mc ->Sumw2(); 
  for(unsigned int i=0; i<mc_values.size(); ++i){
   //printf("%i %f\n",i,mc_values.at(i));
   h_mc->SetBinContent(i+1,mc_values.at(i));
@@ -60,6 +61,9 @@ void makePUweights()
  h_data66017 = (TH1F*)file_data66017 -> Get("pileup")->Clone("h_data66017") ; 
  h_data69200 = (TH1F*)file_data69200 -> Get("pileup")->Clone("h_data69200") ; 
  h_data72383 = (TH1F*)file_data72383 -> Get("pileup")->Clone("h_data72383") ; 
+ //h_data66017 ->Sumw2(); 
+ //h_data69200 ->Sumw2(); 
+ //h_data72383 ->Sumw2(); 
 
  // normalize data histograms
  h_data66017 -> Scale( 1. / h_data66017->Integral(-1,-1) ); 
@@ -74,6 +78,14 @@ void makePUweights()
  h_PUweight      ->Divide(h_mc); 
  h_PUweight_Up   ->Divide(h_mc); 
  h_PUweight_Down ->Divide(h_mc); 
+
+ h_data66017    -> SetDirectory(0); 
+ h_data69200    -> SetDirectory(0); 
+ h_data72383    -> SetDirectory(0); 
+ h_mc           -> SetDirectory(0);
+ h_PUweight     -> SetDirectory(0);  
+ h_PUweight_Up  -> SetDirectory(0);  
+ h_PUweight_Down-> SetDirectory(0);  
 
 
  // ------- Draw -----------
@@ -183,15 +195,21 @@ void makePUweights()
 
  TFile *outfile = new TFile(inpath + oname_base + ".root","RECREATE");
 
- h_data66017 -> SetLineColor(kBlack); 
- h_data69200 -> SetLineColor(kBlack); 
- h_data72383 -> SetLineColor(kBlack); 
+ h_data66017    -> SetLineColor(kBlack); 
+ h_data69200    -> SetLineColor(kBlack); 
+ h_data72383    -> SetLineColor(kBlack); 
+ h_mc           -> SetLineColor(kBlack);
+ h_PUweight     -> SetLineColor(kBlack);  
+ h_PUweight_Up  -> SetLineColor(kBlack);  
+ h_PUweight_Down-> SetLineColor(kBlack);  
 
  h_data66017 -> Write(); 
  h_data69200 -> Write(); 
  h_data72383 -> Write(); 
  h_mc        -> Write();
+ h_PUweight     -> Write();  
+ h_PUweight_Up  -> Write();  
+ h_PUweight_Down-> Write();  
 
  outfile->Close();
-
 }
