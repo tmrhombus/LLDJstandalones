@@ -15,7 +15,9 @@ do
 done #for sample in DY50..
 
  for sample in \
-  'testdata' 
+ 'SingleElectron' \
+ 'SingleMuon'
+
  do
-   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "../roots" -n 10 -a 1 -d
+   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d
  done # for datasample               

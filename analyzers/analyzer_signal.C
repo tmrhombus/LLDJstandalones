@@ -44,9 +44,9 @@ void analyzer_signal::Loop(TString outfilename,
  n_mu_passNoPair=0;
 
  // set which collections
- phoid = "Tight";
- eleid = "Tight";
- muoid = "Tight";
+ phoid = "Tight"; //Loose"; //Medium"; 
+ eleid = "Tight"; //Loose"; //Medium"; 
+ muoid = "Tight"; //Loose"; //Medium"; 
  jetid = "Tight";
 
  if (phoid = "Loose")  phoidbit=0;
@@ -183,12 +183,12 @@ void analyzer_signal::Loop(TString outfilename,
   passDoubleMu  = askPassDoubleMu();
 
 
-  if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
-   debug_printobjects();   // helpful printout (turn off when submitting!!!)
-   debug_printmuons();     // helpful printout (turn off when submitting!!!)
-   debug_printelectrons(); // helpful printout (turn off when submitting!!!)
-   debug_printtriggers();
-  }
+  //if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
+  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  // debug_printmuons();     // helpful printout (turn off when submitting!!!)
+  // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
+  // debug_printtriggers();
+  //}
 
    
   //}
@@ -210,6 +210,7 @@ void analyzer_signal::Loop(TString outfilename,
   // fill histogram
 
   //if( event==472257123 ){ printf("fillEle\n");  }
+  //if( passSingleEle ){
   if( passSingleEle || passDoubleEle ){
                         fillSigHistograms(event_weight,0,0); fillJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,0); fillJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
@@ -220,6 +221,7 @@ void analyzer_signal::Loop(TString outfilename,
   }
 
   //if( event==472257123 ){ printf("fillMu\n");  }
+  //if( passSingleMu ){
   if( passSingleMu || passDoubleMu ){
                         fillSigHistograms(event_weight,0,1); fillJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
    if( doesPassSig   ){ fillSigHistograms(event_weight,1,1); fillJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
@@ -937,10 +939,13 @@ Bool_t analyzer_signal::askPassDoubleMu()
 Bool_t analyzer_signal::askPassSig()
 {
  Bool_t doespass = kTRUE;
+ //if( (passSingleEle || passSingleMu ) ){
  if( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ){
   n_passSig++;
   if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
+  //if( passSingleEle ) { n_ele_passSig++; }
+  //else if( passSingleMu ) { n_mu_passSig++; }
  }
  return doespass;
 }
@@ -954,10 +959,13 @@ Bool_t analyzer_signal::askPassZH()
      && passPTOSSFg50
      && passOneJet
      && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
+     //&& (passSingleEle || passSingleMu ) 
     )
  { doespass = kTRUE; n_passZH++;
   if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
+  //if( passSingleEle ) { n_ele_passZH++; }
+  //else if( passSingleMu ) { n_mu_passZH++; }
  }
  return doespass;
 }
@@ -971,11 +979,14 @@ Bool_t analyzer_signal::askPassDY()
      && !passPTOSSFg50
      && passOneJet
      && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
+     //&& (passSingleEle || passSingleMu) 
     )
  { doespass = kTRUE; n_passDY++; 
   //printf("\n PASS DY Event %lld\n", event);
   if( passSingleEle || passDoubleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
+  //if( passSingleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
+  //else if( passSingleMu ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
  }
  return doespass;
 }
@@ -988,11 +999,14 @@ Bool_t analyzer_signal::askPassOffZ()
      && !passZWindow
      && passOSSF
      && passOneJet
-     && (passSingleEle || passSingleMu)
+     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu)
+     //&& (passSingleEle || passSingleMu)
     )
  { doespass = kTRUE; n_passOffZ++;
   if( passSingleEle || passDoubleEle ) { n_ele_passOffZ++; }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passOffZ++; }
+  //if( passSingleEle ) { n_ele_passOffZ++; }
+  //else if( passSingleMu ) { n_mu_passOffZ++; }
  }
  return doespass;
 }
@@ -1005,11 +1019,14 @@ Bool_t analyzer_signal::askPassNoPair()
      && !passZWindow
      && !passOSSF
      && passOneJet
-     && (passSingleEle || passSingleMu)
+     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu)
+     //&& (passSingleEle || passSingleMu)
     )
  { doespass = kTRUE; n_passNoPair++;
   if( passSingleEle || passDoubleEle ) { n_ele_passNoPair++; }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passNoPair++; }
+  //if( passSingleEle ) { n_ele_passNoPair++; }
+  //else if( passSingleMu ) { n_mu_passNoPair++; }
  }
  return doespass;
 }
@@ -1322,10 +1339,11 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
 
 void analyzer_signal::loadPUWeight(){
  printf("loading PU weight \n");
- char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
- TString CMSSW_BASE = (TString)cCMSSW_BASE;
+ //char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ //TString CMSSW_BASE = (TString)cCMSSW_BASE;
 
- TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
+ //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
+ TString filename = "puWeights_69200_24jan2017.root" ;
  TFile* file_puweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
@@ -1334,10 +1352,11 @@ void analyzer_signal::loadPUWeight(){
 
 void analyzer_signal::loadElectronWeight(){
  printf("loading Electron weight \n");
- char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
- TString CMSSW_BASE = (TString)cCMSSW_BASE;
+ //char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ //TString CMSSW_BASE = (TString)cCMSSW_BASE;
 
- TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ TString filename = "egammaEffi_MoriondBH_ele"+eleid+".root" ;
  TFile* file_eleweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
