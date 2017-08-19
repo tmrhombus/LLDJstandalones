@@ -15,11 +15,11 @@ void plotter_stacked()
  TString outpath = TString("../plots/");
  //TString aversion = TString(getenv("aversion"));
 
- TString aversion = "coulou" ;
+ //TString aversion = "coulou" ;
  //TString aversion = "coulou_loose";
  //TString aversion = "coulou_med";
  //TString aversion = "coulou_tight_noelsf";
- //TString aversion = "coulou_tight_noelsf_nopusf";
+ TString aversion = "coulou_tight_noelsf_nopusf";
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
@@ -42,7 +42,7 @@ void plotter_stacked()
  leptons.clear();
  leptons.push_back("ele"); 
  leptons.push_back("mu");  
- leptons.push_back("NoLepSel");
+ //leptons.push_back("NoLepSel");
 
  // variables to plot
  std::vector<TString> variables;
