@@ -8,7 +8,8 @@ export nversion="sosou"
 #export aversion="coulou_tight_noelsf" 
 #export aversion="coulou_tight_noelsf_nopusf" 
 #export aversion="coulou_tight_sleptrg" 
-export aversion="coulou_tight" 
+#export aversion="coulou_tight" 
+export aversion="coulou_tight_sigonly" 
 
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null

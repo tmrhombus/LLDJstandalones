@@ -14,10 +14,10 @@ do
 
 done #for sample in DY50..
 
- for sample in \
- 'SingleElectron' \
- 'SingleMuon'
-
- do
-   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d
- done # for datasample               
+# for sample in \
+# 'SingleElectron' \
+# 'SingleMuon'
+#
+# do
+#   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d
+# done # for datasample               

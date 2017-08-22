@@ -10,13 +10,8 @@ lumi=35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
-# "ggZH_HToSSTobbbb_MS40_ctauS0"       \
-# "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
-# "ggZH_HToSSTobbbb_MS40_ctauS1"       \
-# "ggZH_HToSSTobbbb_MS40_ctauS10"      \
-# "ggZH_HToSSTobbbb_MS40_ctauS100"     \
-# "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
-# "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
+# "SingleElectron"                     \
+# "SingleMuon"                         \
 # "DY5to50_HT70To100"                  \
 # "DY5to50_HT100To200"                 \
 # "DY5to50_HT200To400"                 \
@@ -51,8 +46,13 @@ maxfilesperjob=200   # 500=6h
 # "ZZToNuNuQQ"                         \
 # "ZZToLLLL"                           \
 samples=(  \
- "SingleElectron"                     \
- "SingleMuon"                         \
+ "ggZH_HToSSTobbbb_MS40_ctauS0"       \
+ "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
+ "ggZH_HToSSTobbbb_MS40_ctauS1"       \
+ "ggZH_HToSSTobbbb_MS40_ctauS10"      \
+ "ggZH_HToSSTobbbb_MS40_ctauS100"     \
+ "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
+ "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
 )
 
 

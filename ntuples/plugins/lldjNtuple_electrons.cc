@@ -9,7 +9,7 @@
 #include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 using namespace std;
-using namespace reco;
+//using namespace reco;
 
 // (local) variables associated with tree branches
 Int_t            nEle_;
@@ -17,115 +17,77 @@ vector<float>    elePt_;
 vector<float>    eleEn_;
 vector<float>    eleEta_;
 vector<float>    elePhi_;
-vector<int>      eleCharge_;
-vector<UShort_t> eleIDbit_;
-
-vector<int>      eleChargeConsistent_;
 
 vector<float>    eleSCEn_;
 vector<float>    eleSCEta_;
 vector<float>    eleSCPhi_;
 
-vector<float>    eleCalibPt_;
-vector<float>    eleCalibEn_;
+vector<int>      eleCharge_;
+vector<int>      eleChargeConsistent_;
 
-vector<bool>     elePassVetoID_;
-vector<bool>     elePassLooseID_;
-vector<bool>     elePassMediumID_;
-vector<bool>     elePassTightID_;
-vector<bool>     elePassHEEPID_;
-vector<bool>     elePassHLTID_;
+vector<UShort_t> eleIDbit_;
 
 vector<float>    elePFdBetaIsolationRhoEA_ ;
 vector<float>    elePFdBetaIsolationCHS_   ;
 vector<float>    elePFdBetaIsolationDiff_  ;
 
-float       rho;
+float rho;
 
 void lldjNtuple::branchesElectrons(TTree* tree) {
 
- tree->Branch("nEle"                    , &nEle_                    ); 
- tree->Branch("elePt"                   , &elePt_                   ); 
- tree->Branch("eleEn"                   , &eleEn_                   ); 
- tree->Branch("eleEta"                  , &eleEta_                  ); 
- tree->Branch("elePhi"                  , &elePhi_                  ); 
- tree->Branch("eleCharge"               , &eleCharge_               ); 
- tree->Branch("eleIDbit"                , &eleIDbit_                ); 
+ tree->Branch("nEle",                     &nEle_                     );                           
+ tree->Branch("elePt",                    &elePt_                    );     
+ tree->Branch("eleEn",                    &eleEn_                    );     
+ tree->Branch("eleEta",                   &eleEta_                   );     
+ tree->Branch("elePhi",                   &elePhi_                   );     
 
- tree->Branch("eleChargeConsistent"     , &eleChargeConsistent_     ); 
+ tree->Branch("eleSCEn",                  &eleSCEn_                  );     
+ tree->Branch("eleSCEta",                 &eleSCEta_                 );     
+ tree->Branch("eleSCPhi",                 &eleSCPhi_                 );     
 
- tree->Branch("eleSCEn"                 , &eleSCEn_                 ); 
- tree->Branch("eleSCEta"                , &eleSCEta_                ); 
- tree->Branch("eleSCPhi"                , &eleSCPhi_                ); 
+ tree->Branch("eleCharge",                &eleCharge_                );     
+ tree->Branch("eleChargeConsistent",      &eleChargeConsistent_      );     
 
- tree->Branch("eleCalibPt"              , &eleCalibPt_              ); 
- tree->Branch("eleCalibEn"              , &eleCalibEn_              ); 
+ tree->Branch("eleIDbit",                 &eleIDbit_                 );     
 
- tree->Branch("elePassVetoID"           , &elePassVetoID_           ); 
- tree->Branch("elePassLooseID"          , &elePassLooseID_          ); 
- tree->Branch("elePassMediumID"         , &elePassMediumID_         ); 
- tree->Branch("elePassTightID"          , &elePassTightID_          ); 
- tree->Branch("elePassHEEPID"           , &elePassHEEPID_           ); 
- tree->Branch("elePassHLTID"            , &elePassHLTID_            ); 
-
- tree->Branch("elePFdBetaIsolation"     , &elePFdBetaIsolationRhoEA_ ); 
- tree->Branch("elePFdBetaIsolationCorr" , &elePFdBetaIsolationCHS_   ); 
- tree->Branch("elePFdBetaIsolationDiff" , &elePFdBetaIsolationDiff_  ); 
+ tree->Branch("elePFdBetaIsolationRhoEA", &elePFdBetaIsolationRhoEA_ );     
+ tree->Branch("elePFdBetaIsolationCHS",   &elePFdBetaIsolationCHS_   );     
+ tree->Branch("elePFdBetaIsolationDiff",  &elePFdBetaIsolationDiff_  );     
 
 }
 
-void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, math::XYZPoint &pv) {
+void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es) {
     
  // cleanup from previous execution
- nEle_ = 0;
+ nEle_                     = 0;
 
- elePt_                    .clear();
- eleEn_                    .clear();
- eleEta_                   .clear();
- elePhi_                   .clear();
- eleCharge_                .clear();
- eleIDbit_                 .clear();
- 
- eleChargeConsistent_      .clear();
- 
- eleSCEn_                  .clear();
- eleSCEta_                 .clear();
- eleSCPhi_                 .clear();
- 
- eleCalibPt_               .clear();
- eleCalibEn_               .clear();
- 
- elePassVetoID_            .clear();
- elePassLooseID_           .clear();
- elePassMediumID_          .clear();
- elePassTightID_           .clear();
- elePassHEEPID_            .clear();
- elePassHLTID_             .clear();
- 
- elePFdBetaIsolationRhoEA_  .clear();
- elePFdBetaIsolationCHS_    .clear();
- elePFdBetaIsolationDiff_   .clear();
+ elePt_                    .clear();     
+ eleEn_                    .clear();     
+ eleEta_                   .clear();     
+ elePhi_                   .clear();     
+
+ eleSCEn_                  .clear();     
+ eleSCEta_                 .clear();     
+ eleSCPhi_                 .clear();     
+
+ eleCharge_                .clear();     
+ eleChargeConsistent_      .clear();     
+
+ eleIDbit_                 .clear();     
+
+ elePFdBetaIsolationRhoEA_ .clear();     
+ elePFdBetaIsolationCHS_   .clear();     
+ elePFdBetaIsolationDiff_  .clear();     
 
  // get handles
  edm::Handle<edm::View<pat::Electron> > electronHandle;
  e.getByToken(electronCollection_, electronHandle);
-
- edm::Handle<edm::View<pat::Electron> > calibelectronHandle;
- e.getByToken(calibelectronCollection_, calibelectronHandle);
-
- edm::Handle<pat::PackedCandidateCollection> pfcands;
- e.getByToken(pckPFCandidateCollection_, pfcands);
 
  edm::Handle<double> rhoHandle;
  e.getByToken(rhoLabel_, rhoHandle);
 
  if (!electronHandle.isValid()) {
    edm::LogWarning("lldjNtuple") << "no pat::Electrons in event";
-   return;
- }
-
- if (!calibelectronHandle.isValid()) {
-   edm::LogWarning("lldjNtuple") << "no calibrated pat::Electrons in event";
    return;
  }
 
@@ -137,55 +99,25 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, m
  edm::Handle<edm::ValueMap<bool> >  heep_id_decisions;
  //edm::Handle<edm::ValueMap<float> > eleMVAValues;
  //edm::Handle<edm::ValueMap<float> > eleMVAHZZValues;
- edm::Handle<edm::ValueMap<float> > elePFClusEcalIsoValues;
- edm::Handle<edm::ValueMap<float> > elePFClusHcalIsoValues;
+ //edm::Handle<edm::ValueMap<float> > elePFClusEcalIsoValues;
+ //edm::Handle<edm::ValueMap<float> > elePFClusHcalIsoValues;
 
  e.getByToken(eleVetoIdMapToken_ ,         veto_id_decisions);
  e.getByToken(eleLooseIdMapToken_ ,        loose_id_decisions);
  e.getByToken(eleMediumIdMapToken_,        medium_id_decisions);
  e.getByToken(eleTightIdMapToken_,         tight_id_decisions);
  e.getByToken(eleHLTIdMapToken_,           hlt_id_decisions);
- e.getByToken(eleHEEPIdMapToken_ ,         heep_id_decisions);
+ //e.getByToken(eleHEEPIdMapToken_ ,         heep_id_decisions);
  //e.getByToken(eleMVAValuesMapToken_,       eleMVAValues);
  //e.getByToken(eleMVAHZZValuesMapToken_,    eleMVAHZZValues);
- e.getByToken(elePFClusEcalIsoToken_,      elePFClusEcalIsoValues);
- e.getByToken(elePFClusHcalIsoToken_,      elePFClusHcalIsoValues);
-
- edm::Handle<reco::VertexCollection> recVtxs;
- e.getByToken(vtxLabel_, recVtxs);
-
- EcalClusterLazyTools       lazyTool    (e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
- noZS::EcalClusterLazyTools lazyToolnoZS(e, es, ebReducedRecHitCollection_, eeReducedRecHitCollection_, esReducedRecHitCollection_);
+ //e.getByToken(elePFClusEcalIsoToken_,      elePFClusEcalIsoValues);
+ //e.getByToken(elePFClusHcalIsoToken_,      elePFClusHcalIsoValues);
 
  for (edm::View<pat::Electron>::const_iterator iEle = electronHandle->begin(); iEle != electronHandle->end(); ++iEle) {
 
-  Float_t elePt = iEle->pt();
-
-  elePt_              .push_back(elePt);
-  eleEn_              .push_back(iEle->energy());
-  eleEta_             .push_back(iEle->eta());
-  elePhi_             .push_back(iEle->phi());
-  eleCharge_          .push_back(iEle->charge());
-
-  eleChargeConsistent_.push_back((Int_t)iEle->isGsfCtfScPixChargeConsistent());
-
-  Float_t corrPt = -1;
-  Float_t corrEn = -1;
-  for (edm::View<pat::Electron>::const_iterator iCEle = calibelectronHandle->begin(); iCEle != calibelectronHandle->end(); ++iCEle) {
-   if (fabs(iEle->eta() - iCEle->eta()) < 0.001 && fabs(iEle->phi() - iCEle->phi()) < 0.001) {
-    corrPt = iCEle->pt();
-    corrEn = iCEle->energy();
-   }
-  }
-  eleCalibPt_        .push_back(corrPt);
-  eleCalibEn_        .push_back(corrEn);
- 
-  eleSCEn_            .push_back(iEle->superCluster()->energy());
-  eleSCEta_           .push_back(iEle->superCluster()->eta());
-  eleSCPhi_           .push_back(iEle->superCluster()->phi());
-  ///   eleSCRawEn_         .push_back(iEle->superCluster()->rawEnergy());
-  ///   eleSCEtaWidth_      .push_back(iEle->superCluster()->etaWidth());
-  ///   eleSCPhiWidth_      .push_back(iEle->superCluster()->phiWidth());
+  Float_t elePt  = iEle->pt();
+  Float_t eleEta = iEle->eta();
+  //printf(" Electron %u pt %f\n", nEle_, elePt );
 
   const auto el = electronHandle->ptrAt(nEle_);
   UShort_t tmpeleIDbit = 0;
@@ -198,22 +130,10 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, m
   if (isPassMedium) setbit(tmpeleIDbit, 2);
   bool isPassTight  = (*tight_id_decisions)[el];
   if (isPassTight) setbit(tmpeleIDbit, 3);
-  bool isPassHEEP = (*heep_id_decisions)[el];
-  if (isPassHEEP) setbit(tmpeleIDbit, 4);
+  //bool isPassHEEP = (*heep_id_decisions)[el];
+  //if (isPassHEEP) setbit(tmpeleIDbit, 4);
   bool isPassHLT = (*hlt_id_decisions)[el];
   if (isPassHLT) setbit(tmpeleIDbit, 5);
-  eleIDbit_.push_back(tmpeleIDbit);
-
-  elePassVetoID_   .push_back( (*veto_id_decisions)[el]   );
-  elePassLooseID_  .push_back( (*loose_id_decisions)[el]  );
-  elePassMediumID_ .push_back( (*medium_id_decisions)[el] );
-  elePassTightID_  .push_back( (*tight_id_decisions)[el]  );
-  elePassHEEPID_   .push_back( (*heep_id_decisions)[el]   );
-  elePassHLTID_    .push_back( (*hlt_id_decisions)[el]    );
-  
-  //elePFClusEcalIso_.push_back(iEle->ecalPFClusterIso());
-  //elePFClusHcalIso_.push_back(iEle->hcalPFClusterIso());
-  
 
   // twiki https://twiki.cern.ch/twiki/bin/view/CMS/EgammaPFBasedIsolationRun2
   float effectiveArea = 0;
@@ -246,6 +166,24 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es, m
 
   Float_t elePFdBetaIsolationRhoEA =  ( elePFChIso + max( (Float_t)0.0, elePFNeuIso + elePFPhoIso - PUea  ) ) / elePt ;
   Float_t elePFdBetaIsolationCHS   =  ( elePFChIso + max( (Float_t)0.0, elePFNeuIso + elePFPhoIso - PUchs ) ) / elePt ;
+
+  // selections for electron collection
+  if (elePt < 20 || eleEta > 2.6 || tmpeleIDbit==0) continue;
+
+  // and fill variables linked to tree
+  elePt_              .push_back(elePt);
+  eleEn_              .push_back(iEle->energy());
+  eleEta_             .push_back(eleEta);
+  elePhi_             .push_back(iEle->phi());
+  eleCharge_          .push_back(iEle->charge());
+  eleChargeConsistent_.push_back((Int_t)iEle->isGsfCtfScPixChargeConsistent());
+  eleSCEn_            .push_back(iEle->superCluster()->energy());
+  eleSCEta_           .push_back(iEle->superCluster()->eta());
+  eleSCPhi_           .push_back(iEle->superCluster()->phi());
+  ///   eleSCRawEn_         .push_back(iEle->superCluster()->rawEnergy());
+  ///   eleSCEtaWidth_      .push_back(iEle->superCluster()->etaWidth());
+  ///   eleSCPhiWidth_      .push_back(iEle->superCluster()->phiWidth());
+  eleIDbit_.push_back(tmpeleIDbit);
 
   elePFdBetaIsolationRhoEA_ .push_back( elePFdBetaIsolationRhoEA ) ;
   elePFdBetaIsolationCHS_   .push_back( elePFdBetaIsolationCHS   ) ;

@@ -1235,8 +1235,11 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
    pass_id  = jetID->at(i) >> bitnr & 0x1 == 1;      
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
+
+
+   bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
               
-   if( pass_id && pass_kin && pass_overlap )
+   if( pass_id && pass_kin && pass_overlap && pass_signal)
    {
     //printf(" a selected jet\n");
     nSelectedJet++;

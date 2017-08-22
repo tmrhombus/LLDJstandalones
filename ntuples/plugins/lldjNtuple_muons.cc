@@ -14,7 +14,7 @@ vector<int>      muCharge_                        ;
 vector<int>      muType_                          ; 
 vector<UShort_t> muIDbit_                         ; 
 vector<bool>     muPassLooseID_                   ; 
-vector<bool>     muPassMediumID_                  ; 
+vector<bool>     muPassHipID_                  ; 
 vector<bool>     muPassTighID_                    ; 
 // vector<bool>     muPassSoftID_                 ; 
 // vector<bool>     muPassHighPtID_               ; 
@@ -42,7 +42,7 @@ void lldjNtuple::branchesMuons(TTree* tree) {
  tree->Branch("muType",                         &muType_                         ) ; 
  tree->Branch("muIDbit",                        &muIDbit_                        ) ; 
  tree->Branch("muPassLooseID",                  &muPassLooseID_                  ) ; 
- tree->Branch("muPassMediumID",                 &muPassMediumID_                 ) ; 
+ tree->Branch("muPassHipID",                 &muPassHipID_                 ) ; 
  tree->Branch("muPassTighID",                   &muPassTighID_                   ) ; 
  //tree->Branch("muPVIndex",                      &muPVIndex_                      ) ; 
  tree->Branch("muNumberOfMissingInnerHits",     &muNumberOfMissingInnerHits_     ) ; 
@@ -59,7 +59,7 @@ void lldjNtuple::branchesMuons(TTree* tree) {
  tree->Branch("muPFdBetaIsolation",             &muPFdBetaIsolation_             ) ; 
 }
 
-void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex vtx) {
+void lldjNtuple::fillMuons(const edm::Event& e, reco::Vertex vtx) {
 
  // cleanup from previous execution
  nMu_ = 0;
@@ -71,7 +71,7 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
  muType_                        .clear() ; 
  muIDbit_                       .clear() ; 
  muPassLooseID_                 .clear() ; 
- muPassMediumID_                .clear() ; 
+ muPassHipID_                .clear() ; 
  muPassTighID_                  .clear() ; 
  //muPVIndex_                     .clear() ; 
  muNumberOfMissingInnerHits_    .clear() ; 
@@ -100,8 +100,28 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
   nMu_++;
   Float_t pt = iMu->pt();
 
-  if (pt < 3) continue;
+  if (pt < 20) continue;
   if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
+
+  const reco::Muon &recoMu = dynamic_cast<const reco::Muon &>(*iMu);
+
+  if( !recoMu.innerTrack().isNull() ){
+   muNumberOfMissingInnerHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_INNER_HITS) ) ; 
+   muNumberOfMissingMiddleHits_   .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::TRACK_HITS        ) ) ; 
+   muNumberOfMissingOuterHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_OUTER_HITS) ) ; 
+   muNumberOfValidPixelHits_      .push_back( recoMu.innerTrack ()->hitPattern ().numberOfValidPixelHits       ()   ) ; 
+   muTrackerLayersWithMeasurement_.push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithMeasurement ()   ) ; 
+  }
+  //muNumberOfValidHits_           .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::)              ) ; 
+  //muNormalizedChi2_              .push_back( recoMu.globalTrack().normalizedChi2 ()   ) ; 
+
+  bool goodGlob = iMu->isGlobalMuon() && 
+                  iMu->globalTrack()->normalizedChi2() < 3 && 
+                  iMu->combinedQuality().chi2LocalPosition < 12 && 
+                  iMu->combinedQuality().trkKink < 20; 
+  bool isMedium = muon::isLooseMuon(recoMu) && 
+                  iMu->innerTrack()->validFraction() > 0.49 && 
+                  muon::segmentCompatibility(recoMu) > (goodGlob ? 0.303 : 0.451); 
 
   muPt_    .push_back(pt);
   muEn_    .push_back(iMu->energy());
@@ -122,11 +142,7 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
   if (iMu->isHighPtMuon(vtx)) setbit(tmpmuIDbit, 4);
   muIDbit_.push_back(tmpmuIDbit);
 
-  muPassLooseID_  .push_back(iMu->isLooseMuon())    ;
-  muPassMediumID_ .push_back(iMu->isMediumMuon())   ;
-  muPassTighID_   .push_back(iMu->isTightMuon(vtx)) ;
-  //muPassSoftID_   .push_back(iMu->isSoftMuon(vtx))  ;
-  //muPassHighPtID_ .push_back(iMu->isHighPtMuon(vtx));
+  muPassHipID_ .push_back( isMedium )   ;
 
   muIsGlobalMuon_                .push_back(iMu->  isGlobalMuon () ) ; 
   muIsPFMuon_                    .push_back(iMu->  isPFMuon     () ) ; 
@@ -139,18 +155,6 @@ void lldjNtuple::fillMuons(const edm::Event& e, math::XYZPoint& pv, reco::Vertex
   Float_t pfdBetaIso     = ( muPFChIso + max(0.0,muPFNeuIso + muPFPhoIso - 0.5*muPFPUIso ) ) / pt ;
 
   muPFdBetaIsolation_     .push_back( pfdBetaIso     ) ; 
-
-  const reco::Muon &recoMu = dynamic_cast<const reco::Muon &>(*iMu);
-
-  if( !recoMu.innerTrack().isNull() ){
-   muNumberOfMissingInnerHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_INNER_HITS) ) ; 
-   muNumberOfMissingMiddleHits_   .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::TRACK_HITS        ) ) ; 
-   muNumberOfMissingOuterHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_OUTER_HITS) ) ; 
-   muNumberOfValidPixelHits_      .push_back( recoMu.innerTrack ()->hitPattern ().numberOfValidPixelHits       ()   ) ; 
-   muTrackerLayersWithMeasurement_.push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithMeasurement ()   ) ; 
-  }
-  //muNumberOfValidHits_           .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::)              ) ; 
-  //muNormalizedChi2_              .push_back( recoMu.globalTrack().normalizedChi2 ()   ) ; 
 
 //  const pat::PackedCandidate &ppfMu = dynamic_cast<const pat::PackedCandidate &>(*iMu);
 //

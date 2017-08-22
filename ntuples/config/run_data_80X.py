@@ -5,7 +5,7 @@ import FWCore.ParameterSet.Config as cms
 
 # this is the process run by cmsRun
 process = cms.Process('LLDJ')
-process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+#process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 # log output
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -37,6 +37,7 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016G/SingleElectron/MINIAOD/03Feb2017-v1/50000/004A75AB-B2EA-E611-B000-24BE05CEFDF1.root',
         #'/store/data/Run2016H/SingleElectron/MINIAOD/03Feb2017_ver2-v1/100000/00553E5F-29EC-E611-ADB0-00259074AE8C.root',
         #'/store/data/Run2016H/SingleElectron/MINIAOD/03Feb2017_ver3-v1/110000/02973E99-69EC-E611-9913-5065F381A2F1.root',
+        #'/store/data/Run2016G/SingleElectron/MINIAOD/03Feb2017-v1/50000/004A75AB-B2EA-E611-B000-24BE05CEFDF1.root'
         #
         #        # double mu
         #'/store/data/Run2016B/DoubleMuon/MINIAOD/03Feb2017_ver1-v1/110000/02B27BFE-1BEB-E611-8D50-001EC9B20ECB.root',
@@ -54,18 +55,20 @@ process.source = cms.Source("PoolSource",
         #'/store/data/Run2016B/DoubleEG/MINIAOD/03Feb2017_ver1-v1/100000/02C07D99-20EB-E611-92B2-3417EBE700D2.root',
         #'/store/data/Run2016B/DoubleEG/MINIAOD/03Feb2017_ver2-v2/50000/00054938-CEEA-E611-889E-0CC47A4D7650.root',
         #'/store/data/Run2016C/DoubleEG/MINIAOD/03Feb2017-v1/80000/00371362-6AEC-E611-9845-842B2B758BAA.root',
-        '/store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
+        #'/store/data/Run2016D/DoubleEG/MINIAOD/03Feb2017-v1/100000/002CE21C-0BEB-E611-8597-001E67E6F8E6.root',
         #'/store/data/Run2016E/DoubleEG/MINIAOD/03Feb2017-v1/110000/003AF399-ABEA-E611-92CF-002590E2DA08.root',
         #'/store/data/Run2016F/DoubleEG/MINIAOD/03Feb2017-v1/80000/0006AFD8-F8EA-E611-9F9D-0CC47A13D09C.root',
         #'/store/data/Run2016G/DoubleEG/MINIAOD/03Feb2017-v1/100000/002F14FF-D0EA-E611-952E-008CFA197AF4.root',
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver2-v1/100000/023E858B-F7EC-E611-889C-047D7BD6DDF2.root',
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver3-v1/1030000/D41C6358-4DF0-E611-BBAC-002590DB927A.root',
+ 
+         'file:/afs/hep.wisc.edu/cms/tperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/SingleEle_G_004A75AB-B2EA-E611-B000-24BE05CEFDF1.root'
 
  )
 )
 
 # output name
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data_eleG.root'));
 
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
@@ -82,42 +85,24 @@ process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
 process.load( "PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff" )
 
-from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-process = regressionWeights(process)
-process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 from PhysicsTools.PatAlgos.tools.coreTools import *
 runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
 
 ##########################################################################################
 # Jet Energy Corrections
 # https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyCorrections#CorrPatJets
-
-# creates new jet collection called updatedPatJets + labelName + postfix
-from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
-updateJetCollection(
-    process,
-    jetSource = cms.InputTag('slimmedJets'),
-    labelName = 'UpdatedJEC',
-    jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None')
-    )
-updateJetCollection(
-    process,
-    jetSource = cms.InputTag('slimmedJetsAK8'),
-    labelName = 'UpdatedJECAK8',
-    jetCorrections = ('AK8PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute','L2L3Residual']), 'None'),
-    )
+# just take from global tag, no need to update collections
 
 ##########################################################################################
 # Electron / Photon Corrections
 # https://twiki.cern.ch/twiki/bin/view/CMS/EGMRegression
 
 ### EGM 80X regression
-# needs to combe before runOnData? not sure what's going on 
-# 'Process' object has no attribute 'photonMatch'
-##from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
-##process = regressionWeights(process)
-##process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
+from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
+process = regressionWeights(process)
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 
+# Some proesses need random numbers, calculate using TRandom3 - Mersenne Twister
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
  calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
                                      engineName = cms.untracked.string('TRandom3'),
@@ -148,7 +133,7 @@ switchOnVIDPhotonIdProducer(process, dataFormat)
 # define which IDs we want to produce
 eleid_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
                  'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
     
@@ -162,12 +147,34 @@ for idmod in eleid_modules:
 for idmod in phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
+# hack recommended by https://twiki.cern.ch/twiki/bin/view/CMS/EGMRegression#VIDAnchor
+process.selectedElectrons = cms.EDFilter("PATElectronSelector",
+    src = cms.InputTag("calibratedPatElectrons"),
+    cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
+)
+
+process.selectedPhotons = cms.EDFilter("PATPhotonSelector",
+    src = cms.InputTag("calibratedPatPhotons"),
+    cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
+)
+
 # say which collections to run on 
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons') # calibratedPatElectrons?
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
+process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
+
+# 
+process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons')
+process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons')
+
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+
+process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
+process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+
+process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons')
 
 ##########################################################################################
 # Now update MET
@@ -185,8 +192,10 @@ corMETFromMuonAndEG(process,
                     pfCandCollection="", #not needed                        
                     electronCollection="slimmedElectronsBeforeGSFix",
                     photonCollection="slimmedPhotonsBeforeGSFix",
-                    corElectronCollection="slimmedElectrons", # calibratedPatElectrons?
-                    corPhotonCollection="slimmedPhotons",
+                    corElectronCollection="selectedElectrons", # calibratedPatElectrons?
+                    corPhotonCollection="selectedPhotons",
+                    #corElectronCollection="slimmedElectrons", # calibratedPatElectrons?
+                    #corPhotonCollection="slimmedPhotons",
                     allMETEGCorrected=True,
                     muCorrection=False,
                     eGCorrection=True,
@@ -348,6 +357,8 @@ process.p = cms.Path(
     process.regressionApplication*  # e/gamma energy correction/resolution regression
     process.calibratedPatElectrons*
     process.calibratedPatPhotons*
+    process.selectedElectrons*
+    process.selectedPhotons*
     process.egmGsfElectronIDSequence*
     process.egmPhotonIDSequence*
     process.fullPatMetSequence*
