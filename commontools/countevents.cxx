@@ -45,10 +45,10 @@ double countevents(TString Tsample){
    //h_nevents = (TH1F*)theFile->Get("noCutSignature_COUNT");
 
    // add bin contents to total count
-   nevents=h_nevents->GetBinContent(2);
+   nevents=h_nevents->GetBinContent(1);
    //nevents=h_nevents->GetBinContent(1);
    ntotal+=nevents;
-   printf("file: %s \n events: %.1f \n",Tinputline.Data(),nevents);
+   printf("file: /hdfs%s \n events: %.1f \n",Tinputline.Data(),nevents);
 
    theFile->Close();
 
