@@ -4,6 +4,7 @@
 # submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh
 
 printf "Files that are not done in condor: \n"
+ printf "%40s %4s %4s \n" "" Tot  Done
 
 samples=( \
  "DY5to50_HT70To100"                \
@@ -53,12 +54,24 @@ samples=( \
 # "DoubleMuon"                          \
 # "MuonEG"                              \
 
+totin=0
+totdone=0
+
 for sample in ${samples[@]}
 do
  #chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
- var=$(bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
- lc=$( cat "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+
+ var=$(bash "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ lc=$( cat  "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+
+ totdone=$(($totin+$var))
+ totin=$(($totdone+$lc))
+
+ #var=$(bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ #lc=$( cat "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
  printf "%40s %4s %4s \n" ${sample} ${lc}  ${var}
  #echo "${sample} ${lc}  ${var}"
  
 done
+ printf " --------------------------------------------------\n"
+ printf "%40s %4s %4s \n" Total $totdone  $totin
