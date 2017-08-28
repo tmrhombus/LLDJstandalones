@@ -91,6 +91,7 @@ public :
  int eleidbit;
  int muoidbit;
  int jetidbit;
+ float muoisoval;
 
  // Selection functions
  Bool_t        askPassSingleEle();
@@ -182,48 +183,45 @@ public :
 
  // // 1D
  // General / leading
- TH1F  h_htall                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_htjets                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSelectedPho            [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSelectedEle            [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSelectedMuo            [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSelectedJet            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_htall                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_htjets                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedPho             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedEle             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedMuo             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedJet             [SELBINNAMESIZE][LEPBINNAMESIZE];
 
 
- TH1F  h_nVtx                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nGoodVtx                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nTrksPV                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_isPVGood                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_rho                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_rhoCentral              [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nTruePU                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_pfMET                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_pfMETPhi                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_pfMETsumEt              [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nPho                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoE                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoEt                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoEta                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoPhi                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoCalibE               [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoCalibEt              [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCE                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCRawE               [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCPhi                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCEta                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nEle                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePt                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleEn                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleEta                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePhi                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleCharge               [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCEn                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCEta                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCPhi                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleCalibPt              [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleCalibEn              [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolation     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationCorr [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nTrksPV                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_isPVGood                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_rho                      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_rhoCentral               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nTruePU                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_pfMET                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_pfMETPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_pfMETsumEt               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nPho                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_phoSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nEle                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_eleSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePFdBetaIsolationDiff  [SELBINNAMESIZE][LEPBINNAMESIZE];
+
  TH1F  h_nMu                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_muPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_muEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];

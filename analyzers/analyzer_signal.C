@@ -91,17 +91,17 @@ void analyzer_signal::Loop(TString outfilename,
 
   //if( event==472257123 ){ printf("making photonlist\n"); }
   // get lists of "good" electrons, photons, jets
-  photon_list = photon_passID( phoidbit , 30, 1.4442, ""); // pt, eta, sysbinname
+  photon_list = photon_passID( phoidbit, 30, 1.4442, ""); // pt, eta, sysbinname
 
   //if( event==472257123 ){ printf("making electronlist\n"); }
   // veto loose medium tight heep hlt
-  electron_list = electron_passID( eleidbit , 30, 2.5, "");
+  electron_list = electron_passID( eleidbit, 30, 2.1, "");
 
   //if( event==472257123 ){ printf("making muonlist\n"); }
-  muon_list = muon_passID( muoidbit , 30, 2.5, ""); 
+  muon_list = muon_passID( muoidbit, 30, 2.1, ""); 
 
   //if( event==472257123 ){ printf("making jetlist\n"); }
-  jet_list = jet_passID( jetidbit, 30, 2.4, ""); 
+  jet_list = jet_passID( jetidbit, 25, 2.4, ""); 
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use event_weight
@@ -138,7 +138,7 @@ void analyzer_signal::Loop(TString outfilename,
   htjets = 0.;
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
-   htall += phoEt->at(phoindex);
+   htall += phoPt->at(phoindex);
   }
 
   for(int i=0; i<electron_list.size(); ++i){
@@ -672,14 +672,11 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_pfMETPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETPhi               "; 
    TString hname_pfMETsumEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETsumEt             "; 
    TString hname_nPho                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho                   "; 
-   TString hname_phoE                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoE                   "; 
-   TString hname_phoEt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEt                  "; 
+   TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
+   TString hname_phoPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt                  "; 
    TString hname_phoEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta                 "; 
    TString hname_phoPhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi                 "; 
-   TString hname_phoCalibE               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoCalibE              "; 
-   TString hname_phoCalibEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoCalibEt             "; 
-   TString hname_phoSCE                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCE                 "; 
-   TString hname_phoSCRawE               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCRawE              "; 
+   TString hname_phoSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEn                "; 
    TString hname_phoSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCPhi               "; 
    TString hname_phoSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEta               "; 
    TString hname_nEle                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nEle                   "; 
@@ -691,10 +688,9 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_eleSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEn                "; 
    TString hname_eleSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEta               "; 
    TString hname_eleSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCPhi               "; 
-   TString hname_eleCalibPt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleCalibPt             "; 
-   TString hname_eleCalibEn              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleCalibEn             "; 
-   TString hname_elePFdBetaIsolation     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolation    "; 
-   TString hname_elePFdBetaIsolationCorr = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCorr"; 
+   TString hname_elePFdBetaIsolationRhoEA = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationRhoEA"; 
+   TString hname_elePFdBetaIsolationCHS   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCHS  "; 
+   TString hname_elePFdBetaIsolationDiff  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationDiff "; 
    TString hname_nMu                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nMu                    "; 
    TString hname_muPt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPt                   "; 
    TString hname_muEn                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muEn                   "; 
@@ -723,14 +719,11 @@ Bool_t analyzer_signal::initSigHistograms()
    h_pfMETPhi                [i][k] = initSingleHistogramTH1F( hname_pfMETPhi                , "pfMETPhi               ", 30, -5, 5); 
    h_pfMETsumEt              [i][k] = initSingleHistogramTH1F( hname_pfMETsumEt              , "pfMETsumEt             ", 50, 0, 500)  ;
    h_nPho                    [i][k] = initSingleHistogramTH1F( hname_nPho                    , "nPho                   ", 10,0,10) ;  
-   h_phoE                    [i][k] = initSingleHistogramTH1F( hname_phoE                    , "phoE                   ", 50, 0, 500) ;  
-   h_phoEt                   [i][k] = initSingleHistogramTH1F( hname_phoEt                   , "phoEt                  ", 50, 0, 500) ;  
+   h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
+   h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
    h_phoEta                  [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
    h_phoPhi                  [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
-   h_phoCalibE               [i][k] = initSingleHistogramTH1F( hname_phoCalibE               , "phoCalibE              ", 50, 0, 500) ;  
-   h_phoCalibEt              [i][k] = initSingleHistogramTH1F( hname_phoCalibEt              , "phoCalibEt             ", 50, 0, 500) ;  
-   h_phoSCE                  [i][k] = initSingleHistogramTH1F( hname_phoSCE                  , "phoSCE                 ", 50, 0, 500) ;  
-   h_phoSCRawE               [i][k] = initSingleHistogramTH1F( hname_phoSCRawE               , "phoSCRawE              ", 50, 0, 500) ;  
+   h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
    h_phoSCPhi                [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
    h_phoSCEta                [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
    h_nEle                    [i][k] = initSingleHistogramTH1F( hname_nEle                    , "nEle                   ", 10,0,10) ; 
@@ -742,10 +735,9 @@ Bool_t analyzer_signal::initSigHistograms()
    h_eleSCEn                 [i][k] = initSingleHistogramTH1F( hname_eleSCEn                 , "eleSCEn                ", 50, 0, 500) ;  
    h_eleSCEta                [i][k] = initSingleHistogramTH1F( hname_eleSCEta                , "eleSCEta               ", 30, -5, 5); 
    h_eleSCPhi                [i][k] = initSingleHistogramTH1F( hname_eleSCPhi                , "eleSCPhi               ", 30, -5, 5); 
-   h_eleCalibPt              [i][k] = initSingleHistogramTH1F( hname_eleCalibPt              , "eleCalibPt             ", 50, 0, 500) ;  
-   h_eleCalibEn              [i][k] = initSingleHistogramTH1F( hname_eleCalibEn              , "eleCalibEn             ", 50, 0, 500) ;  
-   h_elePFdBetaIsolation     [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolation     , "elePFdBetaIsolation    ", 30, 0, 1) ;
-   h_elePFdBetaIsolationCorr [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCorr , "elePFdBetaIsolationCorr", 30, 0, 1) ;
+   h_elePFdBetaIsolationRhoEA [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationRhoEA, "elePFdBetaIsolationRhoEA", 30, 0, 1); 
+   h_elePFdBetaIsolationCHS   [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCHS  , "elePFdBetaIsolationCHS  ", 30, 0, 1); 
+   h_elePFdBetaIsolationDiff  [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationDiff , "elePFdBetaIsolationDiff ", 30, 0, 1); 
    h_nMu                     [i][k] = initSingleHistogramTH1F( hname_nMu                     , "nMu                    ", 10,0,10) ; 
    h_muPt                    [i][k] = initSingleHistogramTH1F( hname_muPt                    , "muPt                   ", 50, 0, 500) ;  
    h_muEn                    [i][k] = initSingleHistogramTH1F( hname_muEn                    , "muEn                   ", 50, 0, 500) ;  
@@ -794,14 +786,11 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo, weight);
  h_nSelectedJet            [selbin][lepbin] .Fill( nSelectedJet, weight);
 
- if(phoE                   ->size()>0){ h_phoE                    [selbin][lepbin] .Fill( phoE                   ->at(0), weight ); } 
- if(phoEt                  ->size()>0){ h_phoEt                   [selbin][lepbin] .Fill( phoEt                  ->at(0), weight ); } 
+ if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
+ if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
  if(phoEta                 ->size()>0){ h_phoEta                  [selbin][lepbin] .Fill( phoEta                 ->at(0), weight ); } 
  if(phoPhi                 ->size()>0){ h_phoPhi                  [selbin][lepbin] .Fill( phoPhi                 ->at(0), weight ); } 
- if(phoCalibE              ->size()>0){ h_phoCalibE               [selbin][lepbin] .Fill( phoCalibE              ->at(0), weight ); } 
- if(phoCalibEt             ->size()>0){ h_phoCalibEt              [selbin][lepbin] .Fill( phoCalibEt             ->at(0), weight ); } 
- if(phoSCE                 ->size()>0){ h_phoSCE                  [selbin][lepbin] .Fill( phoSCE                 ->at(0), weight ); } 
- if(phoSCRawE              ->size()>0){ h_phoSCRawE               [selbin][lepbin] .Fill( phoSCRawE              ->at(0), weight ); } 
+ if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
  if(phoSCPhi               ->size()>0){ h_phoSCPhi                [selbin][lepbin] .Fill( phoSCPhi               ->at(0), weight ); } 
  if(phoSCEta               ->size()>0){ h_phoSCEta                [selbin][lepbin] .Fill( phoSCEta               ->at(0), weight ); } 
  if(elePt                  ->size()>0){ h_elePt                   [selbin][lepbin] .Fill( elePt                  ->at(0), weight ); } 
@@ -812,10 +801,9 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  if(eleSCEn                ->size()>0){ h_eleSCEn                 [selbin][lepbin] .Fill( eleSCEn                ->at(0), weight ); } 
  if(eleSCEta               ->size()>0){ h_eleSCEta                [selbin][lepbin] .Fill( eleSCEta               ->at(0), weight ); } 
  if(eleSCPhi               ->size()>0){ h_eleSCPhi                [selbin][lepbin] .Fill( eleSCPhi               ->at(0), weight ); } 
- if(eleCalibPt             ->size()>0){ h_eleCalibPt              [selbin][lepbin] .Fill( eleCalibPt             ->at(0), weight ); } 
- if(eleCalibEn             ->size()>0){ h_eleCalibEn              [selbin][lepbin] .Fill( eleCalibEn             ->at(0), weight ); } 
- if(elePFdBetaIsolation    ->size()>0){ h_elePFdBetaIsolation     [selbin][lepbin] .Fill( elePFdBetaIsolation    ->at(0), weight ); } 
- if(elePFdBetaIsolationCorr->size()>0){ h_elePFdBetaIsolationCorr [selbin][lepbin] .Fill( elePFdBetaIsolationCorr->at(0), weight ); } 
+ if(elePFdBetaIsolationRhoEA->size()>0){ h_elePFdBetaIsolationRhoEA[selbin][lepbin].Fill( elePFdBetaIsolationRhoEA->at(0), weight); }
+ if(elePFdBetaIsolationCHS  ->size()>0){ h_elePFdBetaIsolationCHS  [selbin][lepbin].Fill( elePFdBetaIsolationCHS  ->at(0), weight); }
+ if(elePFdBetaIsolationDiff ->size()>0){ h_elePFdBetaIsolationDiff [selbin][lepbin].Fill( elePFdBetaIsolationDiff ->at(0), weight); }
  if(muPt                   ->size()>0){ h_muPt                    [selbin][lepbin] .Fill( muPt                   ->at(0), weight ); } 
  if(muEn                   ->size()>0){ h_muEn                    [selbin][lepbin] .Fill( muEn                   ->at(0), weight ); } 
  if(muEta                  ->size()>0){ h_muEta                   [selbin][lepbin] .Fill( muEta                  ->at(0), weight ); } 
@@ -843,14 +831,11 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
   h_pfMETPhi                [selbin][lepbin].Write(); 
   h_pfMETsumEt              [selbin][lepbin].Write(); 
   h_nPho                    [selbin][lepbin].Write(); 
-  h_phoE                    [selbin][lepbin].Write(); 
-  h_phoEt                   [selbin][lepbin].Write(); 
+  h_phoEn                   [selbin][lepbin].Write(); 
+  h_phoPt                   [selbin][lepbin].Write(); 
   h_phoEta                  [selbin][lepbin].Write(); 
   h_phoPhi                  [selbin][lepbin].Write(); 
-  h_phoCalibE               [selbin][lepbin].Write(); 
-  h_phoCalibEt              [selbin][lepbin].Write(); 
-  h_phoSCE                  [selbin][lepbin].Write(); 
-  h_phoSCRawE               [selbin][lepbin].Write(); 
+  h_phoSCEn                 [selbin][lepbin].Write(); 
   h_phoSCPhi                [selbin][lepbin].Write(); 
   h_phoSCEta                [selbin][lepbin].Write(); 
   h_nEle                    [selbin][lepbin].Write(); 
@@ -862,10 +847,9 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
   h_eleSCEn                 [selbin][lepbin].Write(); 
   h_eleSCEta                [selbin][lepbin].Write(); 
   h_eleSCPhi                [selbin][lepbin].Write(); 
-  h_eleCalibPt              [selbin][lepbin].Write(); 
-  h_eleCalibEn              [selbin][lepbin].Write(); 
-  h_elePFdBetaIsolation     [selbin][lepbin].Write(); 
-  h_elePFdBetaIsolationCorr [selbin][lepbin].Write(); 
+  h_elePFdBetaIsolationRhoEA[selbin][lepbin].Write();
+  h_elePFdBetaIsolationCHS  [selbin][lepbin].Write();
+  h_elePFdBetaIsolationDiff [selbin][lepbin].Write();
   h_nMu                     [selbin][lepbin].Write(); 
   h_muPt                    [selbin][lepbin].Write(); 
   h_muEn                    [selbin][lepbin].Write(); 
@@ -1092,7 +1076,7 @@ Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
 //-------------------------getPhotonPt
 Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
 
-      Float_t photonenergy = phoSCRawE->at(idnr);
+      Float_t photonenergy = phoSCEn->at(idnr);
       if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
       if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
 
@@ -1143,7 +1127,12 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
 
   bool pass_bit = muIDbit->at(i) >> bitnr & 0x1 == 1;      
 
-  if( pass_bit && pass_kin )
+  if (muoid = "Loose")  muoisoval = 0.25 ;
+  if (muoid = "Medium") muoisoval = 0.25 ;
+  if (muoid = "Tight")  muoisoval = 0.15 ;
+  bool pass_iso = muPFdBetaIsolation->at(i) > muoisoval ;
+
+  if( pass_bit && pass_kin && pass_iso )
   {
    //printf(" a selected muon\n");
    nSelectedMuo++;
@@ -1173,11 +1162,16 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   if(photon_list.size()>0){
    for(int d=0; d<photon_list.size(); ++d){
     int phoindex = photon_list[d];
-    if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
+    if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
     }
    }//end photons
   } // if photons
+
+  //// isolation already in VID
+  //bool pass_iso = elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
   if( pass_bit && pass_kin && pass_overlap)
   {
@@ -1207,7 +1201,7 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
        ////printf(" Jet   ");
        //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", jetPt->at(i), jetEta->at(i), jetPhi->at(i) );
        //printf(" Photon");
-       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex) );
+       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoPt->at(phoindex), phoPta->at(phoindex), phoPhi->at(phoindex) );
        pass_overlap=false;
       }
      }
@@ -1236,10 +1230,10 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
 
-
-   bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
+   //bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
               
-   if( pass_id && pass_kin && pass_overlap && pass_signal)
+   //if( pass_id && pass_kin && pass_overlap && pass_signal)
+   if( pass_id && pass_kin && pass_overlap )
    {
     //printf(" a selected jet\n");
     nSelectedJet++;
@@ -1262,7 +1256,7 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
  for(int p=0;p<nPho;p++)
  {    
   Float_t thephoPt = getPhotonPt(p,sysbinname);
-  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoEt->at(p); 
+  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
   Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
 
   //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
@@ -1411,7 +1405,7 @@ void analyzer_signal::debug_printobjects(){
   if(dilep_mass>0.){printf(" Dilep Found\n");}
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoEt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
   }
 
   for(int i=0; i<electron_list.size(); ++i){
