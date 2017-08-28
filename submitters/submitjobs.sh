@@ -10,41 +10,7 @@ lumi=35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
-# "SingleElectron"                     \
-# "SingleMuon"                         \
-# "DY5to50_HT70To100"                  \
-# "DY5to50_HT100To200"                 \
-# "DY5to50_HT200To400"                 \
-# "DY5to50_HT400To600"                 \
-# "DY5to50_HT600ToInf"                 \
-# "DY50"                               \
-# "ggZH_HToBB_ZToLL"                   \
-# "GJets_HT40To100"                    \
-# "GJets_HT100To200"                   \
-# "GJets_HT200To400"                   \
-# "GJets_HT400To600"                   \
-# "GJets_HT600ToInf"                   \
-# "ST_s"                               \
-# "STbar_t"                            \
-# "ST_t"                               \
-# "STbar_tW"                           \
-# "ST_tW"                              \
-# "TTtoLL"                             \
-# "TTtoLfromTbar"                      \
-# "TTtoLfromT"                         \
-# "WG"                                 \
-# "WJetsToLNu"                         \
-# "WWToLNuLNu"                         \
-# "WWToLNuQQ"                          \
-# "WZToL3Nu"                           \
-# "WZTo3LNu"                           \
-# "WZToLNu2QorQQ2L"                    \
-# "ZG"                                 \
-# "ZH_HToBB_ZToLL"                     \
-# "ZZToLLNuNu"                         \
-# "ZZToLLQQ"                           \
-# "ZZToNuNuQQ"                         \
-# "ZZToLLLL"                           \
+
 samples=(  \
  "ggZH_HToSSTobbbb_MS40_ctauS0"       \
  "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
@@ -53,6 +19,41 @@ samples=(  \
  "ggZH_HToSSTobbbb_MS40_ctauS100"     \
  "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
  "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
+ "SingleElectron"                     \
+ "SingleMuon"                         \
+ "DY5to50_HT70To100"                  \
+ "DY5to50_HT100To200"                 \
+ "DY5to50_HT200To400"                 \
+ "DY5to50_HT400To600"                 \
+ "DY5to50_HT600ToInf"                 \
+ "DY50"                               \
+ "ggZH_HToBB_ZToLL"                   \
+ "GJets_HT40To100"                    \
+ "GJets_HT100To200"                   \
+ "GJets_HT200To400"                   \
+ "GJets_HT400To600"                   \
+ "GJets_HT600ToInf"                   \
+ "ST_s"                               \
+ "STbar_t"                            \
+ "ST_t"                               \
+ "STbar_tW"                           \
+ "ST_tW"                              \
+ "TTtoLL"                             \
+ "TTtoLfromTbar"                      \
+ "TTtoLfromT"                         \
+ "WG"                                 \
+ "WJetsToLNu"                         \
+ "WWToLNuLNu"                         \
+ "WWToLNuQQ"                          \
+ "WZToL3Nu"                           \
+ "WZTo3LNu"                           \
+ "WZToLNu2QorQQ2L"                    \
+ "ZG"                                 \
+ "ZH_HToBB_ZToLL"                     \
+ "ZZToLLNuNu"                         \
+ "ZZToLLQQ"                           \
+ "ZZToNuNuQQ"                         \
+ "ZZToLLLL"                           \
 )
 
 
@@ -87,6 +88,9 @@ makeasubmitdir () {
 
  printf "notify_user = $(whoami)@cern.ch\n" >> submitfile
  printf "x509userproxy = $X509_USER_PROXY\n" >> submitfile
+ printf "requirements = TARGET.HAS_CMS_HDFS" >> submitfile
+ #printf 'requirements =  TARGET.Arch == "X86_64" && (MY.RequiresSharedFS=!=true || TARGET.HasAFS_OSG) && (TARGET.OSG_major =!= undefined || TARGET.IS_GLIDEIN=?=true) && IsSlowSlot=!=true  && (TARGET.HasParrotCVMFS=?=true || TARGET.CMS_CVMFS_Exists) && TARGET.HAS_CMS_HDFS"' >> submitfile
+ #printf 'requirements =  TARGET.Arch == "X86_64" && (MY.RequiresSharedFS=!=true || TARGET.HasAFS_OSG) && (TARGET.OSG_major =!= undefined || TARGET.IS_GLIDEIN=?=true) && IsSlowSlot=!=true  && (TARGET.HasParrotCVMFS=?=true || (TARGET.UWCMS_CVMFS_Exists  && TARGET.CMS_CVMFS_Exists) && TARGET.HAS_CMS_HDFS"' >> submitfile
  printf "\n" >> submitfile
  printf "Output = logs/runanalyzer_\$(Cluster)_\$(Process).stdout\n" >> submitfile
  printf "Error  = logs/runanalyzer_\$(Cluster)_\$(Process).stderr\n" >> submitfile

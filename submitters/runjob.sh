@@ -18,8 +18,6 @@ printf "pwd\n"
 pwd
 
 cp ../../puWeights_69200_24jan2017.root         .
-cp ../../ggZH_HToSSTobbbb_MS40_ctauS10000.list  .
-cp ../../ggZH_HToSSTobbbb_MS40_ctauS10000.info  .
 cp ../../egammaEffi_MoriondBH_eleTight.root     .
 cp ../../egammaEffi_MoriondBH_eleMedium.root    .
 cp ../../egammaEffi_MoriondBH_eleLoose.root     .
