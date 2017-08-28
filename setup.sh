@@ -1,15 +1,15 @@
 #!/bin/bash
 
 export nversion="sosou"
-#export aversion="coulou"
-#export aversion="coulou_tight"
-#export aversion="coulou_med"
-#export aversion="coulou_loose"
-#export aversion="coulou_tight_noelsf" 
-#export aversion="coulou_tight_noelsf_nopusf" 
-#export aversion="coulou_tight_sleptrg" 
-#export aversion="coulou_tight" 
-export aversion="coulou_tight_sigonly" 
+#export aversion="laug"
+export aversion="agl_tight"
+#export aversion="laug_med"
+#export aversion="laug_loose"
+#export aversion="laug_tight_noelsf" 
+#export aversion="laug_tight_noelsf_nopusf" 
+#export aversion="laug_tight_sleptrg" 
+#export aversion="laug_tight" 
+#export aversion="laug_tight_sigonly" 
 
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
