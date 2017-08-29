@@ -72,7 +72,7 @@ void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
 
   metFilters_ = 0;
 
-  if (addFilterInfoMINIAOD_) {
+  //if (addFilterInfoMINIAOD_) {
     string filterNamesToCheck[9] = {
       "Flag_HBHENoiseFilter",
       "Flag_HBHENoiseIsoFilter", 
@@ -116,9 +116,9 @@ void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
 	}
       }
     }
-  }
+  //}
   
-  if (addFilterInfoMINIAOD_) {
+  //if (addFilterInfoMINIAOD_) {
     edm::Handle<bool> ifilterbadChCand;
     e.getByToken(BadChCandFilterToken_, ifilterbadChCand);
     bool filterbadChCandidate_ = *ifilterbadChCand;
@@ -129,7 +129,7 @@ void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
     
     if ( !filterbadPFMuon_      ) metFilters_ += pow(2, 7);
     if ( !filterbadChCandidate_ ) metFilters_ += pow(2, 8);
-  }
+  //}
   
   edm::Handle<edm::View<pat::MET> > pfMETHandle;
   e.getByToken(pfMETlabel_, pfMETHandle);
@@ -152,7 +152,7 @@ void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
     pfMETmEtSig_ = (pfMET->mEtSig() < 1.e10) ? pfMET->mEtSig() : 0;
     pfMETSig_    = (pfMET->significance() < 1.e10) ? pfMET->significance() : 0;;
 
-    if (!isAOD_) {
+    //if (!isAOD_) {
       // Type1MET uncertainties =======================================
       pfMET_T1JERUp_ = pfMET->shiftedPt(pat::MET::JetResUp);
       pfMET_T1JERDo_ = pfMET->shiftedPt(pat::MET::JetResDown);
@@ -175,7 +175,7 @@ void lldjNtuple::fillMET(const edm::Event& e, const edm::EventSetup& es) {
       pfMETPhi_T1JESDo_ = pfMET->shiftedPhi(pat::MET::JetEnDown);
       pfMETPhi_T1UESUp_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnUp);
       pfMETPhi_T1UESDo_ = pfMET->shiftedPhi(pat::MET::UnclusteredEnDown);
-    }
+    //}
 
     if (!e.isRealData()) {
       genMET_    = pfMET->genMET()->et();

@@ -15,6 +15,4 @@
 <use name="JetMETCorrections/Objects"/>
 <use name="JetMETCorrections/Modules"/>
 
-<use name="TrackingTools/TransientTrack"/>
-<use name="TrackingTools/Records"/>
 <flags EDM_PLUGIN="1"/>

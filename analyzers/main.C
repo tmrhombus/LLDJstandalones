@@ -159,17 +159,24 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  //if( Tinputline.Contains("/home/rhombus") ){
+  if( Tinputline.Contains("/home/rhombus") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
-  //  theChain->Add( Tinputline );
+  //if( Tinputline.Contains("/uscms/home") ){
+  // theChain->Add( Tinputline );
+  // printf("Inputfile: %s\n",Tinputline.Data());
+  //}
 
-  if( Tinputline.Contains("/uscms/home/ddiaz/") ){
+  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
    theChain->Add( Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
   if( Tinputline.Contains("/store/user") ){
-    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+    theChain->Add( "/hdfs"+Tinputline );
+    //theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
   // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
   // }
    printf("Inputfile: %s\n",Tinputline.Data());

@@ -82,9 +82,9 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillMET        (const edm::Event&, const edm::EventSetup&);
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
   void fillPFPhotons  (const edm::Event&, const edm::EventSetup&);
-  void fillElectrons  (const edm::Event&, const edm::EventSetup&, math::XYZPoint&);
+  void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillHFElectrons(const edm::Event&);
-  void fillMuons      (const edm::Event&, math::XYZPoint&, const reco::Vertex);
+  void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillTaus       (const edm::Event&);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
 
@@ -104,7 +104,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   bool dumpSoftDrop_;
   bool dumpPDFSystWeight_;
 
-  bool isAOD_;
+  //bool isAOD_;
   bool runHFElectrons_;
 
   vector<int> newparticles_;
@@ -139,8 +139,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<EcalRecHitCollection>           esReducedRecHitCollection_; 
   edm::EDGetTokenT<reco::PhotonCollection>         recophotonCollection_;
   edm::EDGetTokenT<reco::TrackCollection>          tracklabel_;
-  edm::EDGetTokenT<reco::GsfElectronCollection>    gsfElectronlabel_;
-  edm::EDGetTokenT<edm::View<reco::GsfTrack> >     gsfTracks_;
+  //edm::EDGetTokenT<reco::GsfElectronCollection>    gsfElectronlabel_;
+  //edm::EDGetTokenT<edm::View<reco::GsfTrack> >     gsfTracks_;
   edm::EDGetTokenT<reco::PFCandidateCollection>    pfAllParticles_;
   edm::EDGetTokenT<vector<pat::PackedCandidate> >  pckPFCdsLabel_;
   edm::EDGetTokenT<edm::View<reco::Candidate> >    recoCdsLabel_;
@@ -176,17 +176,15 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<bool> >  eleMediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> >  eleTightIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> >  eleHLTIdMapToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> >  eleHEEPIdMapToken_;
+  //edm::EDGetTokenT<edm::ValueMap<bool> >  eleHEEPIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<float> > eleMVAValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<float> > eleMVAHZZValuesMapToken_;
   edm::EDGetTokenT<edm::ValueMap<float> > elePFClusEcalIsoToken_;
   edm::EDGetTokenT<edm::ValueMap<float> > elePFClusHcalIsoToken_;
   edm::EDGetTokenT<reco::PFCandidateCollection> pfCandidateCollection_;
   //check
-  edm::EDGetToken gsfEle_;
+  //edm::EDGetToken gsfEle_;
 
-  const MagneticField* magneticField_;
-  
   TTree   *tree_;
   TH1F    *hEvents_;
   TH1F    *hPU_;
