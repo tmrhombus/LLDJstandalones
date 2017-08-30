@@ -130,7 +130,7 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   if(isPassTight) setbit(tmpphoIDbit, 2);
 
   // selections for electron collection
-  if (phoPt < 20 || phoEta > 2.6 || tmpphoIDbit==0) continue;
+  if (phoPt < 20 || fabs(phoEta) > 2.1 || tmpphoIDbit==0) continue;
   
   phoPt_     .push_back(phoPt);
   phoEn_     .push_back(iPho->energy());

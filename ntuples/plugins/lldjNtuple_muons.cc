@@ -99,8 +99,10 @@ void lldjNtuple::fillMuons(const edm::Event& e, reco::Vertex vtx) {
 
   nMu_++;
   Float_t pt = iMu->pt();
+  Float_t eta = iMu->eta();
 
   if (pt < 20) continue;
+  if (fabs(eta) > 2.1) continue;
   if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
 
   const reco::Muon &recoMu = dynamic_cast<const reco::Muon &>(*iMu);
