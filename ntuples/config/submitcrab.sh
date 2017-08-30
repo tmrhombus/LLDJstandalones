@@ -33,54 +33,6 @@ printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${the
 thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names to run over
-#  "Data_SingleMu_G"      \
-#  "Data_SingleMu_F"      \
-#  "Data_SingleMu_E"      \
-#  "Data_SingleMu_D"      \
-#  "Data_SingleMu_C"      \
-#  "Data_SingleMu_B_2"    \
-#  "Data_SingleMu_B_1"    \
-#  "Data_SingleEle_H_3"   \
-#  "Data_SingleEle_H_2"   \
-#  "Data_SingleEle_G"     \
-#  "Data_SingleEle_F"     \
-#  "Data_SingleEle_E"     \
-#  "Data_SingleEle_D"     \
-
-#  "GJets_HT100to200_1" \
-#  "GJets_HT100to200_2" \
-#  "GJets_HT200to400_1" \
-#  "GJets_HT200to400_2" \
-#  "GJets_HT400to600_1" \
-#  "GJets_HT400to600_2" \
-#  "GJets_HT600toInf_1" \
-
-#  "TTtoLL_2"              \
-#  "TTtoLfromT_1"         \
-#  "TTtoLfromT_2"         \
-#  "TTtoLfromTbar_1"      \
-#  "TTtoLfromTbar_2"      \
-#  "STs"                  \
-#  "STtbar"               \
-#  "STt"                  \
-#  "STtbarW_1"            \
-#  "STtbarW_2"            \
-#  "STtW_1"               \
-#  "STtW_2"               \
-#  "WJets_1"              \
-#  "WJets_2"              \
-#  "WWToLNuLNu"           \
-#  "WWToLNuQQ_1"          \
-#  "WWToLNuQQ_2"          \
-#  "WZToLNu2QorQQ2L"      \
-#  "WZToLNuNuNu"          \
-#  "WZToLLLNu"            \
-#  "ZZToNuNuQQ"           \
-#  "ZZToLLQQ"             \
-#  "ZZToLLNuNu"           \
-#  "ZZToLLLL"             \
-
-
 samples=( \
   "ggZH_HSSbbbb_MS_40_ctauS_0"     \
   "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
@@ -91,9 +43,53 @@ samples=( \
   "ggZH_HSSbbbb_MS_40_ctauS_1"     \
   "Data_SingleMu_H_3"    \
   "Data_SingleMu_H_2"    \
+  "Data_SingleMu_G"      \
+  "Data_SingleMu_F"      \
+  "Data_SingleMu_E"      \
+  "Data_SingleMu_D"      \
+  "Data_SingleMu_C"      \
+  "Data_SingleMu_B_2"    \
+  "Data_SingleMu_B_1"    \
+  "Data_SingleEle_H_3"   \
+  "Data_SingleEle_H_2"   \
+  "Data_SingleEle_G"     \
+  "Data_SingleEle_F"     \
+  "Data_SingleEle_E"     \
+  "Data_SingleEle_D"     \
   "Data_SingleEle_C"     \
   "Data_SingleEle_B_2"   \
   "Data_SingleEle_B_1"   \
+  "GJets_HT100to200_1" \
+  "GJets_HT100to200_2" \
+  "GJets_HT200to400_1" \
+  "GJets_HT200to400_2" \
+  "GJets_HT400to600_1" \
+  "GJets_HT400to600_2" \
+  "GJets_HT600toInf_1" \
+  "TTtoLL_2"             \
+  "TTtoLfromT_1"         \
+  "TTtoLfromT_2"         \
+  "TTtoLfromTbar_1"      \
+  "TTtoLfromTbar_2"      \
+  "STs"                  \
+  "STtbar"               \
+  "STt"                  \
+  "STtbarW_1"            \
+  "STtbarW_2"            \
+  "STtW_1"               \
+  "STtW_2"               \
+  "WJets_1"              \
+  "WJets_2"              \
+  "WWToLNuLNu"           \
+  "WWToLNuQQ_1"          \
+  "WWToLNuQQ_2"          \
+  "WZToLNu2QorQQ2L"      \
+  "WZToLNuNuNu"          \
+  "WZToLLLNu"            \
+  "ZZToNuNuQQ"           \
+  "ZZToLLQQ"             \
+  "ZZToLLNuNu"           \
+  "ZZToLLLL"             \
   "GJets_HT40to100_1"  \
   "GJets_HT40to100_2"  \
   "GJets_HT600toInf_2" \
