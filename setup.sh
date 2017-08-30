@@ -1,12 +1,13 @@
 #!/bin/bash
 
-export nversion="Levine"
-#export nversion="sosou"
+#export nversion="Levine"
+export nversion="sosou"
 #export aversion="laug"
 
 #export aversion="tw9_loose"
 #export aversion="tw9_tight"
-export aversion="tw9_cutflowDY_loose"
+#export aversion="tw9_cutflowDY_loose"
+export aversion="t3dy_cutflowDY_loose"
 
 #export aversion="agl_tight"
 #export aversion="laug_med"
