@@ -118,7 +118,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   //phoPhotonIsolationToken_PUPPI_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation_PUPPI"));
 
   Service<TFileService> fs;
-  tree_    = fs->make<TTree>("EventTree", "Event data (tag 2017.06.07)");
+  tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
   // make branches for tree
