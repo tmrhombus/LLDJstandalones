@@ -168,7 +168,7 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es) {
   Float_t elePFdBetaIsolationCHS   =  ( elePFChIso + max( (Float_t)0.0, elePFNeuIso + elePFPhoIso - PUchs ) ) / elePt ;
 
   // selections for electron collection
-  if (elePt < 20 || eleEta > 2.6 || tmpeleIDbit==0) continue;
+  if (elePt < 20 || fabs(eleEta) > 2.1 || tmpeleIDbit==0) continue;
 
   // and fill variables linked to tree
   elePt_              .push_back(elePt);

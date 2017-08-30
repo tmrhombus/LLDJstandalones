@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # script to generate submit files
-# and optionally to submit to condor (@FNAL)
+# and optionally to submit to condor (@UW)
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
