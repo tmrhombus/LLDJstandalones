@@ -68,7 +68,7 @@ process.source = cms.Source("PoolSource",
 )
 
 # output name
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data_eleG.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'));
 
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
