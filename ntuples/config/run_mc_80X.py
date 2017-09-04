@@ -9,8 +9,8 @@ process = cms.Process('LLDJ')
 
 # log output
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 100  
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 #process.Tracer = cms.Service("Tracer")
 
 # input files
@@ -26,7 +26,7 @@ process.source = cms.Source("PoolSource",
   #'/store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext4-v1/00000/004A0552-3929-E611-BD44-0025905A48F0.root'
   #'/store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/08E155A9-FAB6-E611-92BF-00259073E45E.root'
 
-   'file:/afs/hep.wisc.edu/cms/tperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_787B82F9-0ECB-E611-A5CD-1866DAEA7EA8.root',
+   #'file:/afs/hep.wisc.edu/cms/tperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_787B82F9-0ECB-E611-A5CD-1866DAEA7EA8.root',
    #'file:/afs/hep.wisc.edu/cms/tperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_EA59D0D0-5CCB-E611-B501-002590207C28.root',
 
 
@@ -39,11 +39,26 @@ process.source = cms.Source("PoolSource",
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/70576F21-CDC9-E611-BC72-001E675047A5.root',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/EA59D0D0-5CCB-E611-B501-002590207C28.root'
- )
+
+  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
+ ),
+   secondaryFileNames= cms.untracked.vstring(
+  #'/store/mc/RunIISummer16DR80Premix/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/D6822833-FEC8-E611-8CD1-002590E7D7DE.root',
+  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_D6822833-FEC8-E611-8CD1-002590E7D7DE.root'
+ ),
 )
 
+
 # output name
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc_noAOD.root'));
+
+#process.out = cms.OutputModule(
+#"PoolOutputModule",
+#     fileName = cms.untracked.string("output6.root"),
+#     outputCommands = cms.untracked.vstring( 
+#      "keep *", )  
+#)
+
 
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
@@ -115,18 +130,23 @@ for idmod in phoid_modules:
 
 # hack recommended by https://twiki.cern.ch/twiki/bin/view/CMS/EGMRegression#VIDAnchor
 process.selectedElectrons = cms.EDFilter("PATElectronSelector",
-    src = cms.InputTag("calibratedPatElectrons"),
+    src = cms.InputTag("calibratedPatElectrons",'','LLDJ'),
     cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
 )
 
 process.selectedPhotons = cms.EDFilter("PATPhotonSelector",
-    src = cms.InputTag("calibratedPatPhotons"),
+    src = cms.InputTag("calibratedPatPhotons",'','LLDJ'),
     cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
 )
 
 # say which collections to run on 
+#process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
+##process.load("RecoEgamma/ElectronIdentification/ElectronIDValueMapProducer_cfi")
+##process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
+
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
+process.load("RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi")
+
 #process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 #process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
 #process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
@@ -134,18 +154,59 @@ process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
 
 
 # 
-process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons')
-process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons')
+#process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons')
+process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons','','LLDJ')
+process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons','','LLDJ')
 
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
 
-process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons')
-process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons')
+process.electronIDValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+process.photonIDValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
+process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
 
-process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons')
+### ##process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+### ##process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+### ##process.electronRegressionValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+### ##process.photonRegressionValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
+
+process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons','','LLDJ')
+
+
+# be explicit to avoid AOD / miniAOD overlap
+# # ##process.photonIDValueMapProducer.ebReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsEB"),
+# # ##process.photonIDValueMapProducer.ebReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedEBRecHits"),
+# # ##process.photonIDValueMapProducer.eeReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsEE"),
+# # ##process.photonIDValueMapProducer.eeReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedEERecHits"),
+# # ##process.photonIDValueMapProducer.esReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsES"),
+# # ##process.photonIDValueMapProducer.esReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedESRecHits"),
+# # ##process.photonIDValueMapProducer.particleBasedIsolation = cms.InputTag("particleBasedIsolation","gedPhotons"),
+# # ##process.photonIDValueMapProducer.pfCandidates = cms.InputTag("packedPFCandidates"),
+# # ##process.photonIDValueMapProducer.pfCandidatesMiniAOD = cms.InputTag("packedPFCandidates"),
+# # ##process.photonIDValueMapProducer.src = cms.InputTag("selectedPhotons","","LLDJ"),
+# # ##process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("selectedPhotons","","LLDJ"),
+# # ##process.photonIDValueMapProducer.vertices = cms.InputTag("offlinePrimaryVertices"),
+# # ##process.photonIDValueMapProducer.verticesMiniAOD = cms.InputTag("offlineSlimmedPrimaryVertices")
+
+#process.photonIDValueMapProducer.ebReducedRecHitCollection = cms.InputTag("reducedEgamma","reducedEBRecHits"),
+#process.photonIDValueMapProducer.ebReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedEBRecHits"),
+#process.photonIDValueMapProducer.eeReducedRecHitCollection = cms.InputTag("reducedEgamma","reducedEERecHits"),
+#process.photonIDValueMapProducer.eeReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedEERecHits"),
+#process.photonIDValueMapProducer.esReducedRecHitCollection = cms.InputTag("reducedEgamma","reducedESRecHits"),
+#process.photonIDValueMapProducer.esReducedRecHitCollectionMiniAOD = cms.InputTag("reducedEgamma","reducedESRecHits"),
+#process.photonIDValueMapProducer.particleBasedIsolation = cms.InputTag("particleBasedIsolation","gedPhotons"),
+#process.photonIDValueMapProducer.pfCandidates = cms.InputTag("packedPFCandidates"),
+#process.photonIDValueMapProducer.pfCandidatesMiniAOD = cms.InputTag("packedPFCandidates"),
+#process.photonIDValueMapProducer.src = cms.InputTag("selectedPhotons","","LLDJ"),
+#process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("selectedPhotons","","LLDJ"),
+#process.photonIDValueMapProducer.vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+#process.photonIDValueMapProducer.verticesMiniAOD = cms.InputTag("offlineSlimmedPrimaryVertices")
+
+
+
 
 ##########################################################################################
 # Now update MET
@@ -155,6 +216,19 @@ from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMet
 runMetCorAndUncFromMiniAOD(process,
                            isData=False
                            )
+## MET Filters
+#from RecoMET.METFilters.BadPFMuonFilter_cfi import *
+#BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
+#BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+#
+#from RecoMET.METFilters.BadChargedCandidateFilter_cfi import *
+#BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
+#BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+#
+#process.lldjMETFiltersSequence = cms.Sequence(
+#     BadPFMuonFilter *
+#     BadChargedCandidateFilter 
+#)
 
 
 jecLevels = [
@@ -163,18 +237,59 @@ jecLevels = [
 ]
 
 
-#options
-process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
+#NTuplizer
+process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
+
+ electronSrc          = cms.InputTag("selectedElectrons",'','LLDJ'),
+ rhoLabel             = cms.InputTag("fixedGridRhoFastjetAll"),
+ eleVetoIdMap         = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
+ eleLooseIdMap        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
+ eleMediumIdMap       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
+ eleTightIdMap        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
+ eleHLTIdMap          = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),
+ #eleMVAValuesMap      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
+ #eleMVAHZZValuesMap   = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+ #elePFClusEcalIsoProducer  = cms.InputTag("electronEcalPFClusterIsolationProducer"),
+ #elePFClusHcalIsoProducer  = cms.InputTag("electronHcalPFClusterIsolationProducer"),
+
+ rhoCentralLabel      = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
+ pileupCollection     = cms.InputTag("slimmedAddPileupInfo"),
+ VtxLabel             = cms.InputTag("offlineSlimmedPrimaryVertices"),
+ triggerResults       = cms.InputTag("TriggerResults", "", "HLT"),
+
+ ak4JetSrc            = cms.InputTag("slimmedJets"),
+
+ patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
+ BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),
+ BadPFMuonFilter           = cms.InputTag("BadPFMuonFilter"),
+ pfMETLabel           = cms.InputTag("slimmedMETs"),
+
+ muonSrc              = cms.InputTag("slimmedMuons"),
+
+ photonSrc            = cms.InputTag("selectedPhotons",'','LLDJ'),
+
+
+ #triggerEvent         = cms.InputTag("selectedPatTrigger", "", ""),
+
+ #genParticleSrc       = cms.InputTag("prunedGenParticles"),
+ #LHEEventLabel        = cms.InputTag("externalLHEProducer"),
+ #VtxBSLabel           = cms.InputTag("offlinePrimaryVerticesWithBS"),
+
+ #packedPFCands        = cms.InputTag("packedPFCandidates"),
+
+ #dumpSoftDrop         = cms.bool(True),
+ #jecAK8PayloadNames   = cms.vstring(jecLevels),
+ #runHFElectrons       = cms.bool(True),
+ #isAOD                = cms.bool(False),
+ #doGenParticles       = cms.bool(True),
+ #dumpSubJets          = cms.bool(True),
+ #dumpJets             = cms.bool(True),
+ #dumpTaus             = cms.bool(False),
+
+)
+#process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
 process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
-process.lldjNtuple.dumpSoftDrop= cms.bool(True)
-process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
-process.lldjNtuple.runHFElectrons=cms.bool(True)
-process.lldjNtuple.isAOD=cms.bool(False)
-process.lldjNtuple.doGenParticles=cms.bool(True)
-process.lldjNtuple.dumpSubJets=cms.bool(True)
-process.lldjNtuple.dumpJets=cms.bool(True)
-process.lldjNtuple.dumpTaus=cms.bool(False)
-process.lldjNtuple.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
+
 
 #builds Ntuple
 process.p = cms.Path(
@@ -184,11 +299,12 @@ process.p = cms.Path(
     process.selectedElectrons*
     process.selectedPhotons*
     process.egmGsfElectronIDSequence*
-    process.egmPhotonIDSequence*
+    #process.egmPhotonIDSequence
     process.lldjMETFiltersSequence*
     process.lldjNtuple
     )
 
+#process.ep = cms.EndPath(process.out)
 #print process.dumpPython()
 #print process.egmGsfElectronIDSequence.dumpPython()
 
