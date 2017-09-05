@@ -154,7 +154,6 @@ process.load("RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi")
 
 
 # 
-#process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons')
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons','','LLDJ')
 process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons','','LLDJ')
 
@@ -268,28 +267,9 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
 
  photonSrc            = cms.InputTag("selectedPhotons",'','LLDJ'),
 
-
- #triggerEvent         = cms.InputTag("selectedPatTrigger", "", ""),
-
- #genParticleSrc       = cms.InputTag("prunedGenParticles"),
- #LHEEventLabel        = cms.InputTag("externalLHEProducer"),
- #VtxBSLabel           = cms.InputTag("offlinePrimaryVerticesWithBS"),
-
- #packedPFCands        = cms.InputTag("packedPFCandidates"),
-
- #dumpSoftDrop         = cms.bool(True),
- #jecAK8PayloadNames   = cms.vstring(jecLevels),
- #runHFElectrons       = cms.bool(True),
- #isAOD                = cms.bool(False),
- #doGenParticles       = cms.bool(True),
- #dumpSubJets          = cms.bool(True),
- #dumpJets             = cms.bool(True),
- #dumpTaus             = cms.bool(False),
-
 )
-#process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
-process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 
 #builds Ntuple
 process.p = cms.Path(
