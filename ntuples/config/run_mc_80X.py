@@ -260,6 +260,7 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
  AODak4CaloJetsSrc    = cms.InputTag("ak4CaloJets" , "", "RECO"),
  AODak4PFJetsSrc      = cms.InputTag("ak4PFJets"   , "", "RECO"),
  AODak4PFJetsCHSSrc   = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
+ AODVertexSrc         = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
 
  patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
  BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),

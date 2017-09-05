@@ -175,6 +175,11 @@ vector<float>  AODPFchsJetLogTrackAngle_;
 vector<float>  AODPFchsJetMedianLogTrackAngle_;
 vector<float>  AODPFchsJetTotalTrackAngle_;
 
+edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
+edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
+edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+edm::Handle<edm::View<reco::Vertex> > AODVertexHandle;
+
 
 void lldjNtuple::branchesJets(TTree* tree) {
 
@@ -1128,35 +1133,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // AOD Section ----------------------------------------------
   // AOD Jet Handles
-  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
-  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
-  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+//  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
+//  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
+//  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+//  edm::Handle<edm::View<reco::Vertex> > AODVertexHandle;
   e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
   e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
   e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
 
-  // AOD Calo Jets -------------------------------------------
-  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
-   //printf("Calo %f \n",iJet->pt());
-   AODnCaloJet_++;
-
-   float jetpt  = iJet->pt();
-   float jeteta = iJet->eta();
-   float jetphi = iJet->phi();
-
-   AODCaloJetPt_.push_back(jetpt);
-   AODCaloJetEta_.push_back(jeteta);
-   AODCaloJetPhi_.push_back(jetphi);
-   //AODCaloJetAlphaMax_;
-   //AODCaloJetSumIP_;
-   //AODCaloJetSumIPSig_;
-   //AODCaloJetLog10IPSig_;
-   //AODCaloJetMedianLog10IPSig_;
-   //AODCaloJetTrackAngle_;
-   //AODCaloJetLogTrackAngle_;
-   //AODCaloJetMedianLogTrackAngle_;
-   //AODCaloJetTotalTrackAngle_;
-  }
+  e.getByToken( AODVertexLabel_, AODVertexHandle );
 
   // AOD PF Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
@@ -1204,4 +1189,69 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    //AODPFchsJetTotalTrackAngle_;
   }
 
+  // AOD Calo Jets -------------------------------------------
+  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
+   //printf("Calo %f \n",iJet->pt());
+   AODnCaloJet_++;
+
+   float jetpt  = iJet->pt();
+   float jeteta = iJet->eta();
+   float jetphi = iJet->phi();
+
+   AODCaloJetPt_.push_back(jetpt);
+   AODCaloJetEta_.push_back(jeteta);
+   AODCaloJetPhi_.push_back(jetphi);
+   //AODCaloJetAlphaMax_;
+   //AODCaloJetSumIP_;
+   //AODCaloJetSumIPSig_;
+   //AODCaloJetLog10IPSig_;
+   //AODCaloJetMedianLog10IPSig_;
+   //AODCaloJetTrackAngle_;
+   //AODCaloJetLogTrackAngle_;
+   //AODCaloJetMedianLogTrackAngle_;
+   //AODCaloJetTotalTrackAngle_;
+  }
+
+
+}
+
+
+
+void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks,vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
+{
+  double total = 0; 
+  double total2 = 0; 
+  double promptTotal = 0; 
+  double promptTotal2 = 0; 
+  vector<double> alphas(AODVertexHandle->size(),0);
+  vector<double> alphas2(AODVertexHandle->size(),0);
+  for(int i = 0; i < (int)tracks.size(); i++){
+    double pt = tracks[i].initialFreeState().momentum().transverse();
+    total += pt;
+    total2 += pt*pt;
+    if(whichVertex[i] < 0)continue;
+    promptTotal += pt;
+    promptTotal2 += pt*pt;
+    alphas[whichVertex[i]] += pt;
+    alphas2[whichVertex[i]] += pt*pt;
+  }
+  double alphaMax = 0; 
+  double alphaMax2 = 0; 
+  double apMax =0;
+  double apMax2 = 0; 
+  beta = 1.0 - promptTotal/total;
+  beta2 = 1.0 - promptTotal2 / total2;
+  for(int i = 0; i < (int)alphas.size(); i++){
+    if(alphas[i] > alphaMax) alphaMax = alphas[i];
+    if(alphas2[i] > alphaMax2) alphaMax2 = alphas2[i];
+    double ap = alphas[i] / (alphas[i] + beta);
+    double ap2 = alphas2[i] / (alphas2[i] + beta2);
+    if(ap > apMax) apMax = ap;
+    if(ap2 > apMax2) apMax2 = ap2; 
+  }
+  aMax = alphaMax / total;
+  aMax2 = alphaMax2 / total2;
+  aMaxP = apMax;
+  aMaxP2 = apMax2;
+  return;
 }

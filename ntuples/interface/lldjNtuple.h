@@ -134,7 +134,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<reco::CaloJet> >      AODak4CaloJetsLabel_;   
   edm::EDGetTokenT<edm::View<reco::PFJet>   >      AODak4PFJetsLabel_;     
   edm::EDGetTokenT<edm::View<reco::PFJet>   >      AODak4PFJetsCHSLabel_;  
-
+  void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
+  edm::EDGetTokenT<edm::View<reco::Vertex>  >      AODVertexLabel_;
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
