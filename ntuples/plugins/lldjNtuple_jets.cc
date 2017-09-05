@@ -129,6 +129,53 @@ vector<float>  jetGenEta_;
 vector<float>  jetGenPhi_;
 vector<int>    jetGenPartonMomID_;
 
+// AOD variables
+// Calo Jets
+Int_t          AODnCaloJet_;
+vector<float>  AODCaloJetPt_;
+vector<float>  AODCaloJetEta_;
+vector<float>  AODCaloJetPhi_;
+vector<float>  AODCaloJetAlphaMax_;
+vector<float>  AODCaloJetSumIP_;
+vector<float>  AODCaloJetSumIPSig_;
+vector<float>  AODCaloJetLog10IPSig_;
+vector<float>  AODCaloJetMedianLog10IPSig_;
+vector<float>  AODCaloJetTrackAngle_;
+vector<float>  AODCaloJetLogTrackAngle_;
+vector<float>  AODCaloJetMedianLogTrackAngle_;
+vector<float>  AODCaloJetTotalTrackAngle_;
+
+// PF Jets
+Int_t          AODnPFJet_;
+vector<float>  AODPFJetPt_;
+vector<float>  AODPFJetEta_;
+vector<float>  AODPFJetPhi_;
+vector<float>  AODPFJetAlphaMax_;
+vector<float>  AODPFJetSumIP_;
+vector<float>  AODPFJetSumIPSig_;
+vector<float>  AODPFJetLog10IPSig_;
+vector<float>  AODPFJetMedianLog10IPSig_;
+vector<float>  AODPFJetTrackAngle_;
+vector<float>  AODPFJetLogTrackAngle_;
+vector<float>  AODPFJetMedianLogTrackAngle_;
+vector<float>  AODPFJetTotalTrackAngle_;
+
+// PFchs Jets
+Int_t          AODnPFchsJet_;
+vector<float>  AODPFchsJetPt_;
+vector<float>  AODPFchsJetEta_;
+vector<float>  AODPFchsJetPhi_;
+vector<float>  AODPFchsJetAlphaMax_;
+vector<float>  AODPFchsJetSumIP_;
+vector<float>  AODPFchsJetSumIPSig_;
+vector<float>  AODPFchsJetLog10IPSig_;
+vector<float>  AODPFchsJetMedianLog10IPSig_;
+vector<float>  AODPFchsJetTrackAngle_;
+vector<float>  AODPFchsJetLogTrackAngle_;
+vector<float>  AODPFchsJetMedianLogTrackAngle_;
+vector<float>  AODPFchsJetTotalTrackAngle_;
+
+
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
@@ -226,6 +273,49 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("jetGenEta",                  &jetGenEta_);                  
   tree->Branch("jetGenPhi",                  &jetGenPhi_);                  
   tree->Branch("jetGenPartonMomID",          &jetGenPartonMomID_);          
+
+
+  tree->Branch("AODnCaloJet"                   , &AODnCaloJet_);
+  tree->Branch("AODCaloJetPt"                  , &AODCaloJetPt_);
+  tree->Branch("AODCaloJetEta"                 , &AODCaloJetEta_);
+  tree->Branch("AODCaloJetPhi"                 , &AODCaloJetPhi_);
+  tree->Branch("AODCaloJetAlphaMax"            , &AODCaloJetAlphaMax_);
+  tree->Branch("AODCaloJetSumIP"               , &AODCaloJetSumIP_);
+  tree->Branch("AODCaloJetSumIPSig"            , &AODCaloJetSumIPSig_);
+  tree->Branch("AODCaloJetLog10IPSig"          , &AODCaloJetLog10IPSig_);
+  tree->Branch("AODCaloJetMedianLog10IPSig"    , &AODCaloJetMedianLog10IPSig_);
+  tree->Branch("AODCaloJetTrackAngle"          , &AODCaloJetTrackAngle_);
+  tree->Branch("AODCaloJetLogTrackAngle"       , &AODCaloJetLogTrackAngle_);
+  tree->Branch("AODCaloJetMedianLogTrackAngle" , &AODCaloJetMedianLogTrackAngle_);
+  tree->Branch("AODCaloJetTotalTrackAngle"     , &AODCaloJetTotalTrackAngle_);
+                                                 
+  tree->Branch("AODnPFJet"                     , &AODnPFJet_);
+  tree->Branch("AODPFJetPt"                    , &AODPFJetPt_);
+  tree->Branch("AODPFJetEta"                   , &AODPFJetEta_);
+  tree->Branch("AODPFJetPhi"                   , &AODPFJetPhi_);
+  tree->Branch("AODPFJetAlphaMax"              , &AODPFJetAlphaMax_);
+  tree->Branch("AODPFJetSumIP"                 , &AODPFJetSumIP_);
+  tree->Branch("AODPFJetSumIPSig"              , &AODPFJetSumIPSig_);
+  tree->Branch("AODPFJetLog10IPSig"            , &AODPFJetLog10IPSig_);
+  tree->Branch("AODPFJetMedianLog10IPSig"      , &AODPFJetMedianLog10IPSig_);
+  tree->Branch("AODPFJetTrackAngle"            , &AODPFJetTrackAngle_);
+  tree->Branch("AODPFJetLogTrackAngle"         , &AODPFJetLogTrackAngle_);
+  tree->Branch("AODPFJetMedianLogTrackAngle"   , &AODPFJetMedianLogTrackAngle_);
+  tree->Branch("AODPFJetTotalTrackAngle"       , &AODPFJetTotalTrackAngle_);
+                                                
+  tree->Branch("AODnPFchsJet"                  , &AODnPFchsJet_);
+  tree->Branch("AODPFchsJetPt"                 , &AODPFchsJetPt_);
+  tree->Branch("AODPFchsJetEta"                , &AODPFchsJetEta_);
+  tree->Branch("AODPFchsJetPhi"                , &AODPFchsJetPhi_);
+  tree->Branch("AODPFchsJetAlphaMax"           , &AODPFchsJetAlphaMax_);
+  tree->Branch("AODPFchsJetSumIP"              , &AODPFchsJetSumIP_);
+  tree->Branch("AODPFchsJetSumIPSig"           , &AODPFchsJetSumIPSig_);
+  tree->Branch("AODPFchsJetLog10IPSig"         , &AODPFchsJetLog10IPSig_);
+  tree->Branch("AODPFchsJetMedianLog10IPSig"   , &AODPFchsJetMedianLog10IPSig_);
+  tree->Branch("AODPFchsJetTrackAngle"         , &AODPFchsJetTrackAngle_);
+  tree->Branch("AODPFchsJetLogTrackAngle"      , &AODPFchsJetLogTrackAngle_);
+  tree->Branch("AODPFchsJetMedianLogTrackAngle", &AODPFchsJetMedianLogTrackAngle_);
+  tree->Branch("AODPFchsJetTotalTrackAngle"    , &AODPFchsJetTotalTrackAngle_);
   
 }
 
@@ -329,6 +419,49 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  jetGenPhi_.clear();
  jetGenPartonMomID_.clear();
 
+ AODnCaloJet_=0;
+ AODCaloJetPt_.clear();
+ AODCaloJetEta_.clear();
+ AODCaloJetPhi_.clear();
+ AODCaloJetAlphaMax_.clear();
+ AODCaloJetSumIP_.clear();
+ AODCaloJetSumIPSig_.clear();
+ AODCaloJetLog10IPSig_.clear();
+ AODCaloJetMedianLog10IPSig_.clear();
+ AODCaloJetTrackAngle_.clear();
+ AODCaloJetLogTrackAngle_.clear();
+ AODCaloJetMedianLogTrackAngle_.clear();
+ AODCaloJetTotalTrackAngle_.clear();
+
+ AODnPFJet_=0;
+ AODPFJetPt_.clear();
+ AODPFJetEta_.clear();
+ AODPFJetPhi_.clear();
+ AODPFJetAlphaMax_.clear();
+ AODPFJetSumIP_.clear();
+ AODPFJetSumIPSig_.clear();
+ AODPFJetLog10IPSig_.clear();
+ AODPFJetMedianLog10IPSig_.clear();
+ AODPFJetTrackAngle_.clear();
+ AODPFJetLogTrackAngle_.clear();
+ AODPFJetMedianLogTrackAngle_.clear();
+ AODPFJetTotalTrackAngle_.clear();
+
+ AODnPFchsJet_=0;
+ AODPFchsJetPt_.clear();
+ AODPFchsJetEta_.clear();
+ AODPFchsJetPhi_.clear();
+ AODPFchsJetAlphaMax_.clear();
+ AODPFchsJetSumIP_.clear();
+ AODPFchsJetSumIPSig_.clear();
+ AODPFchsJetLog10IPSig_.clear();
+ AODPFchsJetMedianLog10IPSig_.clear();
+ AODPFchsJetTrackAngle_.clear();
+ AODPFchsJetLogTrackAngle_.clear();
+ AODPFchsJetMedianLogTrackAngle_.clear();
+ AODPFchsJetTotalTrackAngle_.clear();
+
+
   edm::Handle<edm::View<pat::Jet> > jetHandle;
   e.getByToken(jetsAK4Label_, jetHandle);
 
@@ -336,15 +469,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     edm::LogWarning("lldjNtuple") << "no pat::Jets (AK4) in event";
     return;
   }
-
-  // AOD Jet Handles
-  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
-  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
-  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
-
-  e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
-  e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
-  e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
 
   //edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
   //if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
@@ -379,19 +503,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   if(dodebug){ printf("Starting loop over jets\n"); }
   unsigned int tmp_jetnr = 0; 
 
-
-  // loop over CALO jets
-  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
-   printf("Calo %f \n",iJet->pt());
-  }
-  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
-   printf("PF %f \n",iJet->pt());
-  }
-  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
-   printf("PFCHS %f \n",iJet->pt());
-  }
-
-  //******Jets Loop****
+  // miniAOD Jets -------------------------------------------
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
     tmp_jetnr++;
     if(dodebug){ printf(" Jet Nr: %u \n",tmp_jetnr); }
@@ -1013,4 +1125,83 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    }
   }
   delete jecUnc;
-}//}if statement on event#
+
+  // AOD Section ----------------------------------------------
+  // AOD Jet Handles
+  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
+  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
+  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+  e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
+  e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
+  e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
+
+  // AOD Calo Jets -------------------------------------------
+  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
+   //printf("Calo %f \n",iJet->pt());
+   AODnCaloJet_++;
+
+   float jetpt  = iJet->pt();
+   float jeteta = iJet->eta();
+   float jetphi = iJet->phi();
+
+   AODCaloJetPt_.push_back(jetpt);
+   AODCaloJetEta_.push_back(jeteta);
+   AODCaloJetPhi_.push_back(jetphi);
+   //AODCaloJetAlphaMax_;
+   //AODCaloJetSumIP_;
+   //AODCaloJetSumIPSig_;
+   //AODCaloJetLog10IPSig_;
+   //AODCaloJetMedianLog10IPSig_;
+   //AODCaloJetTrackAngle_;
+   //AODCaloJetLogTrackAngle_;
+   //AODCaloJetMedianLogTrackAngle_;
+   //AODCaloJetTotalTrackAngle_;
+  }
+
+  // AOD PF Jets -------------------------------------------
+  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
+   //printf("PF %f \n",iJet->pt());
+   AODnPFJet_++;
+
+   float jetpt  = iJet->pt();
+   float jeteta = iJet->eta();
+   float jetphi = iJet->phi();
+
+   AODPFJetPt_.push_back(jetpt);
+   AODPFJetEta_.push_back(jeteta);
+   AODPFJetPhi_.push_back(jetphi);
+   //AODPFJetAlphaMax_;
+   //AODPFJetSumIP_;
+   //AODPFJetSumIPSig_;
+   //AODPFJetLog10IPSig_;
+   //AODPFJetMedianLog10IPSig_;
+   //AODPFJetTrackAngle_;
+   //AODPFJetLogTrackAngle_;
+   //AODPFJetMedianLogTrackAngle_;
+   //AODPFJetTotalTrackAngle_;
+  }
+
+  // AOD PFchs Jets -------------------------------------------
+  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
+   //printf("PFCHS %f \n",iJet->pt());
+   AODnPFchsJet_++;
+
+   float jetpt  = iJet->pt();
+   float jeteta = iJet->eta();
+   float jetphi = iJet->phi();
+
+   AODPFchsJetPt_.push_back(jetpt);
+   AODPFchsJetEta_.push_back(jeteta);
+   AODPFchsJetPhi_.push_back(jetphi);
+   //AODPFchsJetAlphaMax_;
+   //AODPFchsJetSumIP_;
+   //AODPFchsJetSumIPSig_;
+   //AODPFchsJetLog10IPSig_;
+   //AODPFchsJetMedianLog10IPSig_;
+   //AODPFchsJetTrackAngle_;
+   //AODPFchsJetLogTrackAngle_;
+   //AODPFchsJetMedianLogTrackAngle_;
+   //AODPFchsJetTotalTrackAngle_;
+  }
+
+}

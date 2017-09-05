@@ -257,6 +257,9 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
  triggerResults       = cms.InputTag("TriggerResults", "", "HLT"),
 
  ak4JetSrc            = cms.InputTag("slimmedJets"),
+ AODak4CaloJetsSrc    = cms.InputTag("ak4CaloJets" , "", "RECO"),
+ AODak4PFJetsSrc      = cms.InputTag("ak4PFJets"   , "", "RECO"),
+ AODak4PFJetsCHSSrc   = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
 
  patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
  BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),
