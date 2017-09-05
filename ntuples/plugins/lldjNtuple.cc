@@ -34,6 +34,9 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   // jets
   jetsAK4Label_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak4JetSrc"));
+  AODak4CaloJetsLabel_       = consumes<View<reco::CaloJet> >          (ps.getParameter<InputTag>("AODak4CaloJetsSrc"));  
+  AODak4PFJetsLabel_         = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsSrc"));    
+  AODak4PFJetsCHSLabel_      = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsCHSSrc")); 
 
   // met
   patTrgResultsLabel_        = consumes<edm::TriggerResults>           (ps.getParameter<InputTag>("patTriggerResults"));

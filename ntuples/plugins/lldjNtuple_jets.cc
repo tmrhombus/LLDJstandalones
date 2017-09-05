@@ -337,6 +337,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     return;
   }
 
+  // AOD Jet Handles
+  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
+  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
+  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+
+  e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
+  e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
+  e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
+
   //edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
   //if(doGenParticles_)e.getByToken(genParticlesCollection_, genParticlesHandle);
   
@@ -369,6 +378,19 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   if(dodebug){ printf("Starting loop over jets\n"); }
   unsigned int tmp_jetnr = 0; 
+
+
+  // loop over CALO jets
+  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
+   printf("Calo %f \n",iJet->pt());
+  }
+  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
+   printf("PF %f \n",iJet->pt());
+  }
+  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
+   printf("PFCHS %f \n",iJet->pt());
+  }
+
   //******Jets Loop****
   for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
     tmp_jetnr++;
