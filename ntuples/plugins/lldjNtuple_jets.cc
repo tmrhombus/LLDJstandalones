@@ -143,7 +143,14 @@ Int_t          AODnCaloJet_;
 vector<float>  AODCaloJetPt_;
 vector<float>  AODCaloJetEta_;
 vector<float>  AODCaloJetPhi_;
+
 vector<float>  AODCaloJetAlphaMax_;
+vector<float>  AODCaloJetAlphaMax2_;
+vector<float>  AODCaloJetAlphaMaxPrime_;
+vector<float>  AODCaloJetAlphaMaxPrime2_;
+vector<float>  AODCaloJetBeta_;
+vector<float>  AODCaloJetBeta2_;
+
 vector<float>  AODCaloJetSumIP_;
 vector<float>  AODCaloJetSumIPSig_;
 vector<float>  AODCaloJetLog10IPSig_;
@@ -188,6 +195,15 @@ edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;
 edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
 edm::Handle<edm::View<reco::Vertex>  >  AODVertexHandle;
 edm::Handle<edm::View<reco::Track>   >  AODTrackHandle;
+
+std::vector<reco::TransientTrack> transientTracks;
+std::vector<int> vertexVector ;
+std::vector<int> whichVertex_ ;
+
+int nMissingInner ;
+int nMissingOuter ;
+double minTrackPt_ ;
+double maxDRtrackJet_ ;
 
 void lldjNtuple::branchesJets(TTree* tree) {
 
@@ -292,7 +308,14 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODCaloJetPt"                  , &AODCaloJetPt_);
   tree->Branch("AODCaloJetEta"                 , &AODCaloJetEta_);
   tree->Branch("AODCaloJetPhi"                 , &AODCaloJetPhi_);
-  tree->Branch("AODCaloJetAlphaMax"            , &AODCaloJetAlphaMax_);
+
+  tree->Branch("AODCaloJetAlphaMax"            , &AODCaloJetAlphaMax_);                               
+  tree->Branch("AODCaloJetAlphaMax2"           , &AODCaloJetAlphaMax2_);                               
+  tree->Branch("AODCaloJetAlphaMaxPrime"       , &AODCaloJetAlphaMaxPrime_);                               
+  tree->Branch("AODCaloJetAlphaMaxPrime2"      , &AODCaloJetAlphaMaxPrime2_);                               
+  tree->Branch("AODCaloJetBeta"                , &AODCaloJetBeta_);                               
+  tree->Branch("AODCaloJetBeta2"               , &AODCaloJetBeta2_);                               
+
   tree->Branch("AODCaloJetSumIP"               , &AODCaloJetSumIP_);
   tree->Branch("AODCaloJetSumIPSig"            , &AODCaloJetSumIPSig_);
   tree->Branch("AODCaloJetLog10IPSig"          , &AODCaloJetLog10IPSig_);
@@ -436,7 +459,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODCaloJetPt_.clear();
  AODCaloJetEta_.clear();
  AODCaloJetPhi_.clear();
- AODCaloJetAlphaMax_.clear();
+
+ AODCaloJetAlphaMax_.clear();                               
+ AODCaloJetAlphaMax2_.clear();                               
+ AODCaloJetAlphaMaxPrime_.clear();                               
+ AODCaloJetAlphaMaxPrime2_.clear();                               
+ AODCaloJetBeta_.clear();                               
+ AODCaloJetBeta2_.clear();                               
+
  AODCaloJetSumIP_.clear();
  AODCaloJetSumIPSig_.clear();
  AODCaloJetLog10IPSig_.clear();
@@ -1153,9 +1183,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   magneticField_ = &*magneticField;
 
   // Vertex
-  //std::vector<int> whichVertex_;
-  //std::vector<int> whichVertex_.clear();
-  std::vector<int> whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
+        //std::vector<int> whichVertex_;
+        //std::vector<int> whichVertex_.clear();
+  // whichVertex_[i] = for track i, find the vertex with the largest trackWeight
+  //std::vector<int> whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
+  whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
   for(int i = 0; i < (int)AODTrackHandle->size(); i++){
     double maxWeight = 0; 
     int jj = -1;
@@ -1176,51 +1208,26 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   //StateOnTrackerBound stateOnTracker(thePropagator_.product());
 
-    map<reco::TransientTrack,reco::TrackBaseRef> refMap;
-    vector<reco::TransientTrack> transientTracks;
-    vector<TrajectoryStateOnSurface> tsosList;
-    vector<float> tracksIPLogSig;
-    vector<float> tracksIPLog10Sig;
-    vector<float> trackAngles;
-    vector<int> vertexVector;
-    double totalTrackAngle = 0;
-    double totalTrackPt = 0;
-    double totalTrackAnglePt = 0;
-    double minR = 10000;
-    double minPt = 0;
+  map<reco::TransientTrack,reco::TrackBaseRef> refMap;
+  vector<TrajectoryStateOnSurface> tsosList;
+  vector<float> tracksIPLogSig;
+  vector<float> tracksIPLog10Sig;
+  vector<float> trackAngles;
+  //vector<reco::TransientTrack> transientTracks;
+  //vector<int> vertexVector;
+  double totalTrackAngle = 0;
+  double totalTrackPt = 0;
+  double totalTrackAnglePt = 0;
+  double minR = 10000;
+  double minPt = 0;
 
-    TLorentzVector sumVector(0,0,0,0);
-    vector<TLorentzVector> trackVectors;
+  TLorentzVector sumVector(0,0,0,0);
+  vector<TLorentzVector> trackVectors;
 
-    int nMissingInner = 0;
-    int nMissingOuter = 0;
-    double minTrackPtForDiTrack_ = 1.0;
-
-
-
-    for(int j = 0; j < (int)AODTrackHandle->size(); j++){
-      reco::TrackBaseRef tref(AODTrackHandle,j);
-      if (tref->pt() < minTrackPtForDiTrack_)continue;
-      if (!tref->quality(reco::TrackBase::highPurity)) continue;
-      FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
-      //TrajectoryStateOnSurface outer = stateOnTracker(fts);
-      //if(!outer.isValid())continue;
-      //GlobalPoint outerPos = outer.globalPosition();
-      //TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
-      //double drt = trackPos.DeltaR(jetVec);
-      //if(drt > maxTrackToJetDeltaR_)continue;
-      //if(trackToCaloJetMap_[j] < 0)trackToCaloJetMap_[j] = i;
-      //if(drt < minR){
-      //  minR = drt;
-      //  minPt = tref->pt();
-      //}
-
-
-      reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
-      if(!tt.isValid())continue;
-      transientTracks.push_back(tt);
-      vertexVector.push_back(whichVertex_[j]);
-     }
+  nMissingInner   = 0;
+  nMissingOuter   = 0;
+  minTrackPt_     = 1.0;
+  maxDRtrackJet_  = 0.4; 
 
 
   // AOD Calo Jets -------------------------------------------
@@ -1235,7 +1242,21 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    AODCaloJetPt_.push_back(jetpt);
    AODCaloJetEta_.push_back(jeteta);
    AODCaloJetPhi_.push_back(jetphi);
-   //AODCaloJetAlphaMax_;
+
+   // set transientTracks and vertexVector
+   matchTracksToJetToVertex(jetpt, jeteta);
+
+   double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
+   calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+   //calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
+
+   AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
+   AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+   AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+   AODCaloJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+   AODCaloJetBeta_           .push_back(beta          ) ; 
+   AODCaloJetBeta2_          .push_back(beta2         ) ; 
+
    //AODCaloJetSumIP_;
    //AODCaloJetSumIPSig_;
    //AODCaloJetLog10IPSig_;
@@ -1294,6 +1315,40 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 }
 
+
+void lldjNtuple::matchTracksToJetToVertex(float jeteta, float jetphi){
+
+ transientTracks.clear();
+ vertexVector.clear();
+ for(int j = 0; j < (int)AODTrackHandle->size(); j++){
+  reco::TrackBaseRef tref(AODTrackHandle,j);
+  if (tref->pt() < minTrackPt_)continue;  // minimum pT for track
+  if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
+  float tracketa = tref->eta();
+  float trackphi = tref->phi();
+  if (! deltaR( jeteta, jetphi, tracketa, trackphi ) < maxDRtrackJet_ ) continue; // match track to jet
+  
+  FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
+  //TrajectoryStateOnSurface outer = stateOnTracker(fts);
+  //if(!outer.isValid())continue;
+  //GlobalPoint outerPos = outer.globalPosition();
+  //TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
+  //double drt = trackPos.DeltaR(jetVec);
+  //if(drt > maxTrackToJetDeltaR_)continue;
+  //if(trackToCaloJetMap_[j] < 0)trackToCaloJetMap_[j] = i;
+  //if(drt < minR){
+  //  minR = drt;
+  //  minPt = tref->pt();
+  //}
+
+  
+  reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
+  if(!tt.isValid())continue;
+  transientTracks.push_back(tt);
+  vertexVector.push_back(whichVertex_[j]);
+ }
+ return;
+}
 
 void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 {
