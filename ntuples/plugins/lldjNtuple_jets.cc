@@ -31,6 +31,8 @@
 //#include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
 //#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
 //#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+#include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
 
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
@@ -1174,6 +1176,51 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   //StateOnTrackerBound stateOnTracker(thePropagator_.product());
 
+    map<reco::TransientTrack,reco::TrackBaseRef> refMap;
+    vector<reco::TransientTrack> transientTracks;
+    vector<TrajectoryStateOnSurface> tsosList;
+    vector<float> tracksIPLogSig;
+    vector<float> tracksIPLog10Sig;
+    vector<float> trackAngles;
+    vector<int> vertexVector;
+    double totalTrackAngle = 0;
+    double totalTrackPt = 0;
+    double totalTrackAnglePt = 0;
+    double minR = 10000;
+    double minPt = 0;
+
+    TLorentzVector sumVector(0,0,0,0);
+    vector<TLorentzVector> trackVectors;
+
+    int nMissingInner = 0;
+    int nMissingOuter = 0;
+    double minTrackPtForDiTrack_ = 1.0;
+
+
+
+    for(int j = 0; j < (int)AODTrackHandle->size(); j++){
+      reco::TrackBaseRef tref(AODTrackHandle,j);
+      if (tref->pt() < minTrackPtForDiTrack_)continue;
+      if (!tref->quality(reco::TrackBase::highPurity)) continue;
+      FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
+      //TrajectoryStateOnSurface outer = stateOnTracker(fts);
+      //if(!outer.isValid())continue;
+      //GlobalPoint outerPos = outer.globalPosition();
+      //TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
+      //double drt = trackPos.DeltaR(jetVec);
+      //if(drt > maxTrackToJetDeltaR_)continue;
+      //if(trackToCaloJetMap_[j] < 0)trackToCaloJetMap_[j] = i;
+      //if(drt < minR){
+      //  minR = drt;
+      //  minPt = tref->pt();
+      //}
+
+
+      reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
+      if(!tt.isValid())continue;
+      transientTracks.push_back(tt);
+      vertexVector.push_back(whichVertex_[j]);
+     }
 
 
   // AOD Calo Jets -------------------------------------------
