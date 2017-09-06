@@ -9,8 +9,8 @@ process = cms.Process('LLDJ')
 
 # log output
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #process.Tracer = cms.Service("Tracer")
 
 # input files
@@ -50,7 +50,7 @@ process.source = cms.Source("PoolSource",
 
 
 # output name
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc_noAOD.root'));
+process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_mc.root'));
 
 #process.out = cms.OutputModule(
 #"PoolOutputModule",
@@ -193,9 +193,6 @@ process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons','','LLD
 #process.photonIDValueMapProducer.vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
 #process.photonIDValueMapProducer.verticesMiniAOD = cms.InputTag("offlineSlimmedPrimaryVertices")
 
-
-
-
 ##########################################################################################
 # Now update MET
 # 
@@ -228,38 +225,38 @@ jecLevels = [
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
 
- electronSrc          = cms.InputTag("selectedElectrons",'','LLDJ'),
- rhoLabel             = cms.InputTag("fixedGridRhoFastjetAll"),
- eleVetoIdMap         = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
- eleLooseIdMap        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
- eleMediumIdMap       = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
- eleTightIdMap        = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
- eleHLTIdMap          = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),
- #eleMVAValuesMap      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
- #eleMVAHZZValuesMap   = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+ electronSrc               = cms.InputTag("selectedElectrons",'','LLDJ'),
+ rhoLabel                  = cms.InputTag("fixedGridRhoFastjetAll"),
+ eleVetoIdMap              = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
+ eleLooseIdMap             = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
+ eleMediumIdMap            = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
+ eleTightIdMap             = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
+ eleHLTIdMap               = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),
+ #eleMVAValuesMap           = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
+ #eleMVAHZZValuesMap        = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
  #elePFClusEcalIsoProducer  = cms.InputTag("electronEcalPFClusterIsolationProducer"),
  #elePFClusHcalIsoProducer  = cms.InputTag("electronHcalPFClusterIsolationProducer"),
 
- rhoCentralLabel      = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
- pileupCollection     = cms.InputTag("slimmedAddPileupInfo"),
- VtxLabel             = cms.InputTag("offlineSlimmedPrimaryVertices"),
- triggerResults       = cms.InputTag("TriggerResults", "", "HLT"),
+ rhoCentralLabel           = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
+ pileupCollection          = cms.InputTag("slimmedAddPileupInfo"),
+ VtxLabel                  = cms.InputTag("offlineSlimmedPrimaryVertices"),
+ triggerResults            = cms.InputTag("TriggerResults", "", "HLT"),
 
- ak4JetSrc            = cms.InputTag("slimmedJets"),
- AODak4CaloJetsSrc    = cms.InputTag("ak4CaloJets" , "", "RECO"),
- AODak4PFJetsSrc      = cms.InputTag("ak4PFJets"   , "", "RECO"),
- AODak4PFJetsCHSSrc   = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
- AODVertexSrc         = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
- AODTrackSrc          = cms.InputTag("generalTracks", "", "RECO"),
+ ak4JetSrc                 = cms.InputTag("slimmedJets"),
+ AODak4CaloJetsSrc         = cms.InputTag("ak4CaloJets" , "", "RECO"),
+ AODak4PFJetsSrc           = cms.InputTag("ak4PFJets"   , "", "RECO"),
+ AODak4PFJetsCHSSrc        = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
+ AODVertexSrc              = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
+ AODTrackSrc               = cms.InputTag("generalTracks", "", "RECO"),
 
- patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
+ patTriggerResults         = cms.InputTag("TriggerResults", "", "PAT"),
  BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),
  BadPFMuonFilter           = cms.InputTag("BadPFMuonFilter"),
- pfMETLabel           = cms.InputTag("slimmedMETs"),
+ pfMETLabel                = cms.InputTag("slimmedMETs"),
 
- muonSrc              = cms.InputTag("slimmedMuons"),
+ muonSrc                   = cms.InputTag("slimmedMuons"),
 
- photonSrc            = cms.InputTag("selectedPhotons",'','LLDJ'),
+ photonSrc                 = cms.InputTag("selectedPhotons",'','LLDJ'),
 
 )
 

@@ -1182,6 +1182,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   es.get<IdealMagneticFieldRecord>().get(magneticField);
   magneticField_ = &*magneticField;
 
+  //for(int j = 0; j < (int)AODTrackHandle->size(); j++){
+  //  reco::TrackBaseRef tref(AODTrackHandle,j);
+  //  printf("AOD track pt eta phi: %f %f %f\n",tref->pt(),tref->eta(),tref->phi());
+  //}
+
+
   // Vertex
         //std::vector<int> whichVertex_;
         //std::vector<int> whichVertex_.clear();
@@ -1232,7 +1238,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
-   //printf("Calo %f \n",iJet->pt());
+   ////printf("Calo %f \n",iJet->pt());
    AODnCaloJet_++;
 
    float jetpt  = iJet->pt();
@@ -1244,12 +1250,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    AODCaloJetPhi_.push_back(jetphi);
 
    // set transientTracks and vertexVector
-   matchTracksToJetToVertex(jetpt, jeteta);
+   matchTracksToJetToVertex(jeteta, jetphi);
 
+   //printf("transientTracks size %lu\n", transientTracks.size() );
    double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
    //calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 
+   //printf("alphamax %f\n", alphaMax);
    AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
    AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
    AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
@@ -1320,13 +1328,16 @@ void lldjNtuple::matchTracksToJetToVertex(float jeteta, float jetphi){
 
  transientTracks.clear();
  vertexVector.clear();
+
  for(int j = 0; j < (int)AODTrackHandle->size(); j++){
   reco::TrackBaseRef tref(AODTrackHandle,j);
   if (tref->pt() < minTrackPt_)continue;  // minimum pT for track
   if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
   float tracketa = tref->eta();
   float trackphi = tref->phi();
-  if (! deltaR( jeteta, jetphi, tracketa, trackphi ) < maxDRtrackJet_ ) continue; // match track to jet
+  //printf(" jeteta, jetphi, tracketa, trackphi %f %f %f %f dr %f \n",jeteta, jetphi, tracketa, trackphi, deltaR( jeteta, jetphi, tracketa, trackphi));
+  if ( deltaR( jeteta, jetphi, tracketa, trackphi ) > maxDRtrackJet_ ) continue; // match track to jet
+  //printf("  found a track - \n");
   
   FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
   //TrajectoryStateOnSurface outer = stateOnTracker(fts);
@@ -1358,16 +1369,25 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   double promptTotal2 = 0; 
   vector<double> alphas(AODVertexHandle->size(),0);
   vector<double> alphas2(AODVertexHandle->size(),0);
+  //printf("(int)tracks.size() %i\n", (int)tracks.size() );
   for(int i = 0; i < (int)tracks.size(); i++){
     double pt = tracks[i].initialFreeState().momentum().transverse();
     total += pt;
     total2 += pt*pt;
+    //printf("trackpt = %f\n",pt);
     if(whichVertex[i] < 0)continue;
+    //printf(" we have a whichVertex\n");
     promptTotal += pt;
     promptTotal2 += pt*pt;
     alphas[whichVertex[i]] += pt;
     alphas2[whichVertex[i]] += pt*pt;
   }
+
+  //for(int i = 0; i < (int)alphas.size(); i++){
+  // printf("alpha[%i] = %f \n",i,alphas[i]);
+  //}
+
+
   double alphaMax = 0; 
   double alphaMax2 = 0; 
   double apMax =0;
@@ -1386,5 +1406,6 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   aMax2 = alphaMax2 / total2;
   aMaxP = apMax;
   aMaxP2 = apMax2;
+
   return;
 }
