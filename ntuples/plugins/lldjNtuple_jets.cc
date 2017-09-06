@@ -28,6 +28,10 @@
 
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 
+//#include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
+//#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+//#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
@@ -1058,7 +1062,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float jetGenJetEta = -999.;
     float jetGenJetPhi = -999.;
     if( ! e.isRealData() ){
-    //if (doGenParticles_ && genParticlesHandle.isValid()) {
      if ((*iJet).genParton()) {
       jetGenPartonID = (*iJet).genParton()->pdgId();
       jetGenEn = (*iJet).genParton()->energy();
@@ -1134,6 +1137,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   delete jecUnc;
 
   // AOD Section ----------------------------------------------
+
   // AOD Jet Handles
   e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
   e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
@@ -1141,6 +1145,36 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   e.getByToken( AODVertexLabel_, AODVertexHandle );
   e.getByToken( AODTrackLabel_, AODTrackHandle );
+
+  edm::ESHandle<MagneticField> magneticField;
+  es.get<IdealMagneticFieldRecord>().get(magneticField);
+  magneticField_ = &*magneticField;
+
+  // Vertex
+  //std::vector<int> whichVertex_;
+  //std::vector<int> whichVertex_.clear();
+  std::vector<int> whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
+  for(int i = 0; i < (int)AODTrackHandle->size(); i++){
+    double maxWeight = 0; 
+    int jj = -1;
+    reco::TrackBaseRef tref(AODTrackHandle,i);
+    for(int j = 0; j < (int)AODVertexHandle->size();j++){
+      if(AODVertexHandle->at(j).trackWeight(tref) > maxWeight){
+        maxWeight = AODVertexHandle->at(j).trackWeight(tref);
+        jj = j; 
+      }    
+    }    
+    whichVertex_[i] = jj;
+  }
+
+  //std::string thePropagatorName_ = "PropagatorWithMaterial";
+  //es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
+  
+  //es.get<TransientTrackRecord>().get("TransientTrackBuilder",theBuilder_);
+
+  //StateOnTrackerBound stateOnTracker(thePropagator_.product());
+
+
 
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {

@@ -34,6 +34,13 @@
 
 #include "MagneticField/Engine/interface/MagneticField.h" 
 
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+
+#include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+
+
 using namespace std;
 
 void setbit(UShort_t& x, UShort_t bit);
@@ -101,6 +108,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<reco::Vertex>  >      AODVertexLabel_;
   edm::EDGetTokenT<edm::View<reco::Track>  >       AODTrackLabel_;
   const MagneticField*                             magneticField_;
+  edm::ESHandle<Propagator>                        thePropagator_;
+  edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
