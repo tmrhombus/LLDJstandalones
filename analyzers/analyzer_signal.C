@@ -136,10 +136,10 @@ void analyzer_signal::Loop(TString outfilename,
   // calculate ht
   htall  = 0.;
   htjets = 0.;
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   htall += phoPt->at(phoindex);
-  }
+  //for(int i=0; i<photon_list.size(); ++i){
+  // int phoindex = photon_list[i];
+  // htall += phoPt->at(phoindex);
+  //}
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -298,7 +298,16 @@ TH2F analyzer_signal::initSingleHistogramTH2F(TString hname, TString htitle,
 //----------------------------init2DHistograms
 Bool_t analyzer_signal::init2DHistograms()
 {
+ 
+ // initialize names
+ //jetmultnames.clear();
+ //jetmultnames.push_back("LeadingJet");
+ //jetmultnames.push_back("SubleadingJet");
+ //jetmultnames.push_back("ThirdJet");
+ //jetmultnames.push_back("FourthJet");
+ //jetmultnames.push_back("AllPFJets");
 
+ // loop through jets and selections to initialize histograms in parllel (series)
  // // assumes that selbins and jetmultnames have already been filled (initJetHistograms, initSigHistograms)
  // // loop through jets and selections to initialize histograms in parllel (series)
  // for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -403,6 +412,9 @@ Bool_t analyzer_signal::initJetHistograms()
     TString  hname_jetVtxNtrks                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_jetVtxNtrks               "; 
     TString  hname_jetVtx3DVal                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_jetVtx3DVal               "; 
     TString  hname_jetVtx3DSig                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_jetVtx3DSig               "; 
+    TString  hname_IpVAlpha                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_IpVAlpha                  "; 
+    TString  hname_IpVjetPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_IpVjetPt                  "; 
+    TString  hname_AlphaVjetPt                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AlphaVjetPt               "; 
 
     // initialize the histograms
     h_jetPt                      [i][j][k] = initSingleHistogramTH1F( hname_jetPt                     , "jetPt                     " , 50, 0, 500 ); 
@@ -449,7 +461,11 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetVtxNtrks                [i][j][k] = initSingleHistogramTH1F( hname_jetVtxNtrks               , "jetVtxNtrks               " , 30, 0, 30) ; 
     h_jetVtx3DVal                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DVal               , "jetVtx3DVal               " , 30, 0, 1) ; 
     h_jetVtx3DSig                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DSig               , "jetVtx3DSig               " , 30, 0, 1) ;
-
+//std::cout<<"init 2D"<<std::endl;
+    h_IpVAlpha                   [i][j][k] = initSingleHistogramTH2F( hname_IpVAlpha                  , "jetIpVAlpha               " , 30, -2, 3, 30, 0, 1) ;
+    h_IpVjetPt                   [i][j][k] = initSingleHistogramTH2F( hname_IpVjetPt                  , "jetIpVjetPt               " , 30, -2, 3, 50, 0, 500) ;
+    h_AlphaVjetPt                [i][j][k] = initSingleHistogramTH2F( hname_AlphaVjetPt               , "jetAlphaVjetPt            " , 30,  0, 1, 50, 0, 500) ;
+//std::cout<<"init 2D done"<<std::endl;
    }  //    for(unsigned int i=0; i<selbinnames.size(); ++i){
   }   //      for(unsigned int j=0; j<jet_list.size(); ++j){
  }    //         for(unsigned int k=0; k<lepnames.size(); ++k){
@@ -508,7 +524,10 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    if(jetVtxNtrks               ->size()>j){ h_jetVtxNtrks                [selbin][j][lepbin].Fill( jetVtxNtrks               ->at(j), weight); }
    if(jetVtx3DVal               ->size()>j){ h_jetVtx3DVal                [selbin][j][lepbin].Fill( jetVtx3DVal               ->at(j), weight); }
    if(jetVtx3DSig               ->size()>j){ h_jetVtx3DSig                [selbin][j][lepbin].Fill( jetVtx3DSig               ->at(j), weight); }
-
+   if(jetMedianLog10IPSig->size()>j&&jetAlphaMaxD->size()>j){ h_IpVAlpha  [selbin][j][lepbin].Fill(jetMedianLog10IPSig->at(j),jetAlphaMax->at(j), weight); }
+   if(jetMedianLog10IPSig->size()>j&&jetPt->size()>j){ h_IpVjetPt    [selbin][j][lepbin].Fill( jetMedianLog10IPSig->at(j), jetPt->at(j), weight); }
+   if(jetPt->size()>j&&jetAlphaMaxD->size()>j)       { h_AlphaVjetPt [selbin][j][lepbin].Fill( jetAlphaMax        ->at(j), jetPt->at(j), weight); }
+   
    //if(isMC){
    // if(jetPartonID                ->size()>j){h_jetPartonID                 [selbin][j][lepbin].Fill( jetPartonID                ->at(j), weight ); } 
    // if(jetHadFlvr                 ->size()>j){h_jetHadFlvr                  [selbin][j][lepbin].Fill( jetHadFlvr                 ->at(j), weight ); } 
@@ -525,61 +544,67 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    //}
 
   } // if( j<(jetmultnames.size()-1 ) ){
-  //  else // if not ( j<(jetmultnames.size()-1 ) ){
-  //  {//n_entries += jet_list.size(); std::cout<<jet_list.size()<<" "<<n_entries<<std::endl;
-  //   for(unsigned int i =0; i<jet_list.size(); i++)
-  //   { 
-  //    // daniel - this isn't doing what you think it is
-  //     // let's say we have initial jet list with 5 jets, and we find nrs 1,2,4 are good
-  //     // jet_list.size()==3 but we don't want to fill with jetPt->at(3) 
-  //     // look at the loops where we do lepton/jet cleaning or the ht sums
-  //     // i'll just leave this commented out for now
-  //    if(jetPt                     ->size()>j){ h_jetPt                      [selbin][j][lepbin].Fill( jetPt                     ->at(j), weight); }
-  //    if(jetEn                     ->size()>j){ h_jetEn                      [selbin][j][lepbin].Fill( jetEn                     ->at(j), weight); }
-  //    if(jetEta                    ->size()>j){ h_jetEta                     [selbin][j][lepbin].Fill( jetEta                    ->at(j), weight); }
-  //    if(jetPhi                    ->size()>j){ h_jetPhi                     [selbin][j][lepbin].Fill( jetPhi                    ->at(j), weight); }
-  //    if(jetRawPt                  ->size()>j){ h_jetRawPt                   [selbin][j][lepbin].Fill( jetRawPt                  ->at(j), weight); }
-  //    if(jetRawEn                  ->size()>j){ h_jetRawEn                   [selbin][j][lepbin].Fill( jetRawEn                  ->at(j), weight); }
-  //    if(jetArea                   ->size()>j){ h_jetArea                    [selbin][j][lepbin].Fill( jetArea                   ->at(j), weight); }
-  //    if(jetLeadTrackPt            ->size()>j){ h_jetLeadTrackPt             [selbin][j][lepbin].Fill( jetLeadTrackPt            ->at(j), weight); }
-  //    if(jetLeadTrackEta           ->size()>j){ h_jetLeadTrackEta            [selbin][j][lepbin].Fill( jetLeadTrackEta           ->at(j), weight); }
-  //    if(jetLeadTrackPhi           ->size()>j){ h_jetLeadTrackPhi            [selbin][j][lepbin].Fill( jetLeadTrackPhi           ->at(j), weight); }
-  //    if(jetCSV2BJetTags           ->size()>j){ h_jetCSV2BJetTags            [selbin][j][lepbin].Fill( jetCSV2BJetTags           ->at(j), weight); }
-  //    if(jetJetProbabilityBJetTags ->size()>j){ h_jetJetProbabilityBJetTags  [selbin][j][lepbin].Fill( jetJetProbabilityBJetTags ->at(j), weight); }
-  //    if(jetpfCombinedMVAV2BJetTags->size()>j){ h_jetpfCombinedMVAV2BJetTags [selbin][j][lepbin].Fill( jetpfCombinedMVAV2BJetTags->at(j), weight); }
-  //    if(jetAlphaMax               ->size()>j){ h_jetAlphaMax                [selbin][j][lepbin].Fill( jetAlphaMax               ->at(j), weight); }
-  //    if(jetAlphaMax2              ->size()>j){ h_jetAlphaMax2               [selbin][j][lepbin].Fill( jetAlphaMax2              ->at(j), weight); }
-  //    if(jetAlphaMaxP              ->size()>j){ h_jetAlphaMaxP               [selbin][j][lepbin].Fill( jetAlphaMaxP              ->at(j), weight); }
-  //    if(jetAlphaMaxP2             ->size()>j){ h_jetAlphaMaxP2              [selbin][j][lepbin].Fill( jetAlphaMaxP2             ->at(j), weight); }
-  //    if(alphaMax_jetDauVertex_r   ->size()>j){ h_alphaMax_jetDauVertex_r    [selbin][j][lepbin].Fill( alphaMax_jetDauVertex_r   ->at(j), weight); }
-  //    if(jetAlphaMax_PV3onPV2      ->size()>j){ h_jetAlphaMax_PV3onPV2       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onPV2      ->at(j), weight); }
-  //    if(jetAlphaMax_PV3onNeu      ->size()>j){ h_jetAlphaMax_PV3onNeu       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onNeu      ->at(j), weight); }
-  //    if(jetAlphaMax_PV3onAll      ->size()>j){ h_jetAlphaMax_PV3onAll       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onAll      ->at(j), weight); }
-  //    if(jetAlphaMax_PV2onNeu      ->size()>j){ h_jetAlphaMax_PV2onNeu       [selbin][j][lepbin].Fill( jetAlphaMax_PV2onNeu      ->at(j), weight); }
-  //    if(jetAlphaMax_PV2onAll      ->size()>j){ h_jetAlphaMax_PV2onAll       [selbin][j][lepbin].Fill( jetAlphaMax_PV2onAll      ->at(j), weight); }
-  //    if(jetAlpha2Max_PV3onPV2     ->size()>j){ h_jetAlpha2Max_PV3onPV2      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onPV2     ->at(j), weight); }
-  //    if(jetAlpha2Max_PV3onNeu     ->size()>j){ h_jetAlpha2Max_PV3onNeu      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onNeu     ->at(j), weight); }
-  //    if(jetAlpha2Max_PV3onAll     ->size()>j){ h_jetAlpha2Max_PV3onAll      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onAll     ->at(j), weight); }
-  //    if(jetAlpha2Max_PV2onNeu     ->size()>j){ h_jetAlpha2Max_PV2onNeu      [selbin][j][lepbin].Fill( jetAlpha2Max_PV2onNeu     ->at(j), weight); }
-  //    if(jetAlpha2Max_PV2onAll     ->size()>j){ h_jetAlpha2Max_PV2onAll      [selbin][j][lepbin].Fill( jetAlpha2Max_PV2onAll     ->at(j), weight); }
-  //    if(jetAlphaD                 ->size()>j){ h_jetAlphaD                  [selbin][j][lepbin].Fill( jetAlphaD                 ->at(j), weight); }
-  //    if(jetAlphaMaxD              ->size()>j){ h_jetAlphaMaxD               [selbin][j][lepbin].Fill( jetAlphaMaxD              ->at(j), weight); }
-  //    if(jetLog10IPSig             ->size()>j){ h_jetLog10IPSig              [selbin][j][lepbin].Fill( jetLog10IPSig             ->at(j), weight); }
-  //    if(jetMedianLog10IPSig       ->size()>j){ h_jetMedianLog10IPSig        [selbin][j][lepbin].Fill( jetMedianLog10IPSig       ->at(j), weight); }
-  //    if(jetSumIP                  ->size()>j){ h_jetSumIP                   [selbin][j][lepbin].Fill( jetSumIP                  ->at(j), weight); }
-  //    if(jetSumIPSig               ->size()>j){ h_jetSumIPSig                [selbin][j][lepbin].Fill( jetSumIPSig               ->at(j), weight); }
-  //    if(jetTrackAngle             ->size()>j){ h_jetTrackAngle              [selbin][j][lepbin].Fill( jetTrackAngle             ->at(j), weight); }
-  //    if(jetLogTrackAngle          ->size()>j){ h_jetLogTrackAngle           [selbin][j][lepbin].Fill( jetLogTrackAngle          ->at(j), weight); }
-  //    if(jetMedianLogTrackAngle    ->size()>j){ h_jetMedianLogTrackAngle     [selbin][j][lepbin].Fill( jetMedianLogTrackAngle    ->at(j), weight); }
-  //    if(jetTotalTrackAngle        ->size()>j){ h_jetTotalTrackAngle         [selbin][j][lepbin].Fill( jetTotalTrackAngle        ->at(j), weight); }
-  //    if(jetNConstituents          ->size()>j){ h_jetNConstituents           [selbin][j][lepbin].Fill( jetNConstituents          ->at(j), weight); }
-  //    if(jetVtxPt                  ->size()>j){ h_jetVtxPt                   [selbin][j][lepbin].Fill( jetVtxPt                  ->at(j), weight); }
-  //    if(jetVtxMass                ->size()>j){ h_jetVtxMass                 [selbin][j][lepbin].Fill( jetVtxMass                ->at(j), weight); }
-  //    if(jetVtxNtrks               ->size()>j){ h_jetVtxNtrks                [selbin][j][lepbin].Fill( jetVtxNtrks               ->at(j), weight); }
-  //    if(jetVtx3DVal               ->size()>j){ h_jetVtx3DVal                [selbin][j][lepbin].Fill( jetVtx3DVal               ->at(j), weight); }
-  //    if(jetVtx3DSig               ->size()>j){ h_jetVtx3DSig                [selbin][j][lepbin].Fill( jetVtx3DSig               ->at(j), weight); }
-  //   } //  for(unsigned int i =0; i<jet_list.size(); i++)
-  //  } // if not ( j<(jetmultnames.size()-1 ) ){
+    else // if not ( j<(jetmultnames.size()-1 ) ){
+    {//n_entries += jet_list.size(); std::cout<<jet_list.size()<<" "<<n_entries<<std::endl;
+     for(unsigned int i =0; i<jet_list.size(); i++)
+     { 
+      // daniel - this isn't doing what you think it is
+       // let's say we have initial jet list with 5 jets, and we find nrs 1,2,4 are good
+      // jet_list.size()==3 but we don't want to fill with jetPt->at(3) 
+       // look at the loops where we do lepton/jet cleaning or the ht sums
+       // i'll just leave this commented out for now
+      int jindex = jet_list[i];
+      if(jetPt                     ->size()>jindex){ h_jetPt                      [selbin][j][lepbin].Fill( jetPt                     ->at(jindex), weight); }
+      if(jetEn                     ->size()>jindex){ h_jetEn                      [selbin][j][lepbin].Fill( jetEn                     ->at(jindex), weight); }
+      if(jetEta                    ->size()>jindex){ h_jetEta                     [selbin][j][lepbin].Fill( jetEta                    ->at(jindex), weight); }
+      if(jetPhi                    ->size()>jindex){ h_jetPhi                     [selbin][j][lepbin].Fill( jetPhi                    ->at(jindex), weight); }
+      if(jetRawPt                  ->size()>jindex){ h_jetRawPt                   [selbin][j][lepbin].Fill( jetRawPt                  ->at(jindex), weight); }
+      if(jetRawEn                  ->size()>jindex){ h_jetRawEn                   [selbin][j][lepbin].Fill( jetRawEn                  ->at(jindex), weight); }
+      if(jetArea                   ->size()>jindex){ h_jetArea                    [selbin][j][lepbin].Fill( jetArea                   ->at(jindex), weight); }
+      if(jetLeadTrackPt            ->size()>jindex){ h_jetLeadTrackPt             [selbin][j][lepbin].Fill( jetLeadTrackPt            ->at(jindex), weight); }
+      if(jetLeadTrackEta           ->size()>jindex){ h_jetLeadTrackEta            [selbin][j][lepbin].Fill( jetLeadTrackEta           ->at(jindex), weight); }
+      if(jetLeadTrackPhi           ->size()>jindex){ h_jetLeadTrackPhi            [selbin][j][lepbin].Fill( jetLeadTrackPhi           ->at(jindex), weight); }
+      if(jetCSV2BJetTags           ->size()>jindex){ h_jetCSV2BJetTags            [selbin][j][lepbin].Fill( jetCSV2BJetTags           ->at(jindex), weight); }
+      if(jetJetProbabilityBJetTags ->size()>jindex){ h_jetJetProbabilityBJetTags  [selbin][j][lepbin].Fill( jetJetProbabilityBJetTags ->at(jindex), weight); }
+      if(jetpfCombinedMVAV2BJetTags->size()>jindex){ h_jetpfCombinedMVAV2BJetTags [selbin][j][lepbin].Fill( jetpfCombinedMVAV2BJetTags->at(jindex), weight); }
+      if(jetAlphaMax               ->size()>jindex){ h_jetAlphaMax                [selbin][j][lepbin].Fill( jetAlphaMax               ->at(jindex), weight); }
+      if(jetAlphaMax2              ->size()>jindex){ h_jetAlphaMax2               [selbin][j][lepbin].Fill( jetAlphaMax2              ->at(jindex), weight); }
+      if(jetAlphaMaxP              ->size()>jindex){ h_jetAlphaMaxP               [selbin][j][lepbin].Fill( jetAlphaMaxP              ->at(jindex), weight); }
+      if(jetAlphaMaxP2             ->size()>jindex){ h_jetAlphaMaxP2              [selbin][j][lepbin].Fill( jetAlphaMaxP2             ->at(jindex), weight); }
+      if(alphaMax_jetDauVertex_r   ->size()>jindex){ h_alphaMax_jetDauVertex_r    [selbin][j][lepbin].Fill( alphaMax_jetDauVertex_r   ->at(jindex), weight); }
+      if(jetAlphaMax_PV3onPV2      ->size()>jindex){ h_jetAlphaMax_PV3onPV2       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onPV2      ->at(jindex), weight); }
+      if(jetAlphaMax_PV3onNeu      ->size()>jindex){ h_jetAlphaMax_PV3onNeu       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onNeu      ->at(jindex), weight); }
+      if(jetAlphaMax_PV3onAll      ->size()>jindex){ h_jetAlphaMax_PV3onAll       [selbin][j][lepbin].Fill( jetAlphaMax_PV3onAll      ->at(jindex), weight); }
+      if(jetAlphaMax_PV2onNeu      ->size()>jindex){ h_jetAlphaMax_PV2onNeu       [selbin][j][lepbin].Fill( jetAlphaMax_PV2onNeu      ->at(jindex), weight); }
+      if(jetAlphaMax_PV2onAll      ->size()>jindex){ h_jetAlphaMax_PV2onAll       [selbin][j][lepbin].Fill( jetAlphaMax_PV2onAll      ->at(jindex), weight); }
+      if(jetAlpha2Max_PV3onPV2     ->size()>jindex){ h_jetAlpha2Max_PV3onPV2      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onPV2     ->at(jindex), weight); }
+      if(jetAlpha2Max_PV3onNeu     ->size()>jindex){ h_jetAlpha2Max_PV3onNeu      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onNeu     ->at(jindex), weight); }
+      if(jetAlpha2Max_PV3onAll     ->size()>jindex){ h_jetAlpha2Max_PV3onAll      [selbin][j][lepbin].Fill( jetAlpha2Max_PV3onAll     ->at(jindex), weight); }
+      if(jetAlpha2Max_PV2onNeu     ->size()>jindex){ h_jetAlpha2Max_PV2onNeu      [selbin][j][lepbin].Fill( jetAlpha2Max_PV2onNeu     ->at(jindex), weight); }
+      if(jetAlpha2Max_PV2onAll     ->size()>jindex){ h_jetAlpha2Max_PV2onAll      [selbin][j][lepbin].Fill( jetAlpha2Max_PV2onAll     ->at(jindex), weight); }
+      if(jetAlphaD                 ->size()>jindex){ h_jetAlphaD                  [selbin][j][lepbin].Fill( jetAlphaD                 ->at(jindex), weight); }
+      if(jetAlphaMaxD              ->size()>jindex){ h_jetAlphaMaxD               [selbin][j][lepbin].Fill( jetAlphaMaxD              ->at(jindex), weight); }
+      if(jetLog10IPSig             ->size()>jindex){ h_jetLog10IPSig              [selbin][j][lepbin].Fill( jetLog10IPSig             ->at(jindex), weight); }
+      if(jetMedianLog10IPSig       ->size()>jindex){ h_jetMedianLog10IPSig        [selbin][j][lepbin].Fill( jetMedianLog10IPSig       ->at(jindex), weight); }
+      if(jetSumIP                  ->size()>jindex){ h_jetSumIP                   [selbin][j][lepbin].Fill( jetSumIP                  ->at(jindex), weight); }
+      if(jetSumIPSig               ->size()>jindex){ h_jetSumIPSig                [selbin][j][lepbin].Fill( jetSumIPSig               ->at(jindex), weight); }
+      if(jetTrackAngle             ->size()>jindex){ h_jetTrackAngle              [selbin][j][lepbin].Fill( jetTrackAngle             ->at(jindex), weight); }
+      if(jetLogTrackAngle          ->size()>jindex){ h_jetLogTrackAngle           [selbin][j][lepbin].Fill( jetLogTrackAngle          ->at(jindex), weight); }
+      if(jetMedianLogTrackAngle    ->size()>jindex){ h_jetMedianLogTrackAngle     [selbin][j][lepbin].Fill( jetMedianLogTrackAngle    ->at(jindex), weight); }
+      if(jetTotalTrackAngle        ->size()>jindex){ h_jetTotalTrackAngle         [selbin][j][lepbin].Fill( jetTotalTrackAngle        ->at(jindex), weight); }
+      if(jetNConstituents          ->size()>jindex){ h_jetNConstituents           [selbin][j][lepbin].Fill( jetNConstituents          ->at(jindex), weight); }
+      if(jetVtxPt                  ->size()>jindex){ h_jetVtxPt                   [selbin][j][lepbin].Fill( jetVtxPt                  ->at(jindex), weight); }
+      if(jetVtxMass                ->size()>jindex){ h_jetVtxMass                 [selbin][j][lepbin].Fill( jetVtxMass                ->at(jindex), weight); }
+      if(jetVtxNtrks               ->size()>jindex){ h_jetVtxNtrks                [selbin][j][lepbin].Fill( jetVtxNtrks               ->at(jindex), weight); }
+      if(jetVtx3DVal               ->size()>jindex){ h_jetVtx3DVal                [selbin][j][lepbin].Fill( jetVtx3DVal               ->at(jindex), weight); }
+      if(jetVtx3DSig               ->size()>jindex){ h_jetVtx3DSig                [selbin][j][lepbin].Fill( jetVtx3DSig               ->at(jindex), weight); }
+      //std::cout<<"fill 2D"<<std::endl;
+      if(jetMedianLog10IPSig->size()>jindex&&jetAlphaMaxD->size()>jindex){ h_IpVAlpha [selbin][j][lepbin].Fill(jetMedianLog10IPSig->at(jindex),jetAlphaMax->at(jindex), weight); }
+      if(jetMedianLog10IPSig->size()>jindex&&jetPt->size()>jindex){ h_IpVjetPt    [selbin][j][lepbin].Fill( jetMedianLog10IPSig->at(jindex), jetPt->at(jindex), weight); }
+      if(jetPt->size()>jindex&&jetAlphaMaxD->size()>jindex)       { h_AlphaVjetPt [selbin][j][lepbin].Fill( jetAlphaMax        ->at(jindex), jetPt->at(jindex), weight); }
+      //std::cout<<"fill 2D end"<<std::endl;
+     } //  for(unsigned int i =0; i<jet_list.size(); i++)
+    } // if not ( j<(jetmultnames.size()-1 ) ){
  } //for(unsigned int j=0; j<jetmultnames.size(); ++j){
 
  return kTRUE;
@@ -634,6 +659,11 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
   h_jetVtxNtrks                [selbin][j][lepbin].Write(); 
   h_jetVtx3DVal                [selbin][j][lepbin].Write(); 
   h_jetVtx3DSig                [selbin][j][lepbin].Write(); 
+  //std::cout<<"write 2D"<<std::endl;
+  h_IpVAlpha                   [selbin][j][lepbin].Write(); 
+  h_IpVjetPt                   [selbin][j][lepbin].Write(); 
+  h_AlphaVjetPt                [selbin][j][lepbin].Write(); 
+  //std::cout<<"write 2D end"<<std::endl;
  }
 
  return kTRUE;
@@ -672,7 +702,7 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_pfMETPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETPhi               "; 
    TString hname_pfMETsumEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETsumEt             "; 
    TString hname_nPho                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho                   "; 
-   TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
+   //TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
    TString hname_phoPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt                  "; 
    TString hname_phoEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta                 "; 
    TString hname_phoPhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi                 "; 
@@ -688,8 +718,8 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_eleSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEn                "; 
    TString hname_eleSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEta               "; 
    TString hname_eleSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCPhi               "; 
-   TString hname_elePFdBetaIsolationRhoEA = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationRhoEA"; 
-   TString hname_elePFdBetaIsolationCHS   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCHS  "; 
+   //TString hname_elePFdBetaIsolationRhoEA = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationRhoEA"; 
+   //TString hname_elePFdBetaIsolationCHS   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCHS  "; 
    TString hname_elePFdBetaIsolationDiff  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationDiff "; 
    TString hname_nMu                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nMu                    "; 
    TString hname_muPt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPt                   "; 
@@ -719,11 +749,11 @@ Bool_t analyzer_signal::initSigHistograms()
    h_pfMETPhi                [i][k] = initSingleHistogramTH1F( hname_pfMETPhi                , "pfMETPhi               ", 30, -5, 5); 
    h_pfMETsumEt              [i][k] = initSingleHistogramTH1F( hname_pfMETsumEt              , "pfMETsumEt             ", 50, 0, 500)  ;
    h_nPho                    [i][k] = initSingleHistogramTH1F( hname_nPho                    , "nPho                   ", 10,0,10) ;  
-   h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
-   h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
+   //h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
+   //h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
    h_phoEta                  [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
    h_phoPhi                  [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
-   h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
+   //h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
    h_phoSCPhi                [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
    h_phoSCEta                [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
    h_nEle                    [i][k] = initSingleHistogramTH1F( hname_nEle                    , "nEle                   ", 10,0,10) ; 
@@ -735,8 +765,8 @@ Bool_t analyzer_signal::initSigHistograms()
    h_eleSCEn                 [i][k] = initSingleHistogramTH1F( hname_eleSCEn                 , "eleSCEn                ", 50, 0, 500) ;  
    h_eleSCEta                [i][k] = initSingleHistogramTH1F( hname_eleSCEta                , "eleSCEta               ", 30, -5, 5); 
    h_eleSCPhi                [i][k] = initSingleHistogramTH1F( hname_eleSCPhi                , "eleSCPhi               ", 30, -5, 5); 
-   h_elePFdBetaIsolationRhoEA [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationRhoEA, "elePFdBetaIsolationRhoEA", 30, 0, 1); 
-   h_elePFdBetaIsolationCHS   [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCHS  , "elePFdBetaIsolationCHS  ", 30, 0, 1); 
+   //h_elePFdBetaIsolationRhoEA [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationRhoEA, "elePFdBetaIsolationRhoEA", 30, 0, 1); 
+   //h_elePFdBetaIsolationCHS   [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCHS  , "elePFdBetaIsolationCHS  ", 30, 0, 1); 
    h_elePFdBetaIsolationDiff  [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationDiff , "elePFdBetaIsolationDiff ", 30, 0, 1); 
    h_nMu                     [i][k] = initSingleHistogramTH1F( hname_nMu                     , "nMu                    ", 10,0,10) ; 
    h_muPt                    [i][k] = initSingleHistogramTH1F( hname_muPt                    , "muPt                   ", 50, 0, 500) ;  
@@ -786,11 +816,11 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo, weight);
  h_nSelectedJet            [selbin][lepbin] .Fill( nSelectedJet, weight);
 
- if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
- if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
+ //if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
+ //if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
  if(phoEta                 ->size()>0){ h_phoEta                  [selbin][lepbin] .Fill( phoEta                 ->at(0), weight ); } 
  if(phoPhi                 ->size()>0){ h_phoPhi                  [selbin][lepbin] .Fill( phoPhi                 ->at(0), weight ); } 
- if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
+ //if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
  if(phoSCPhi               ->size()>0){ h_phoSCPhi                [selbin][lepbin] .Fill( phoSCPhi               ->at(0), weight ); } 
  if(phoSCEta               ->size()>0){ h_phoSCEta                [selbin][lepbin] .Fill( phoSCEta               ->at(0), weight ); } 
  if(elePt                  ->size()>0){ h_elePt                   [selbin][lepbin] .Fill( elePt                  ->at(0), weight ); } 
@@ -801,8 +831,8 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  if(eleSCEn                ->size()>0){ h_eleSCEn                 [selbin][lepbin] .Fill( eleSCEn                ->at(0), weight ); } 
  if(eleSCEta               ->size()>0){ h_eleSCEta                [selbin][lepbin] .Fill( eleSCEta               ->at(0), weight ); } 
  if(eleSCPhi               ->size()>0){ h_eleSCPhi                [selbin][lepbin] .Fill( eleSCPhi               ->at(0), weight ); } 
- if(elePFdBetaIsolationRhoEA->size()>0){ h_elePFdBetaIsolationRhoEA[selbin][lepbin].Fill( elePFdBetaIsolationRhoEA->at(0), weight); }
- if(elePFdBetaIsolationCHS  ->size()>0){ h_elePFdBetaIsolationCHS  [selbin][lepbin].Fill( elePFdBetaIsolationCHS  ->at(0), weight); }
+ //if(elePFdBetaIsolationRhoEA->size()>0){ h_elePFdBetaIsolationRhoEA[selbin][lepbin].Fill( elePFdBetaIsolationRhoEA->at(0), weight); }
+ //if(elePFdBetaIsolationCHS  ->size()>0){ h_elePFdBetaIsolationCHS  [selbin][lepbin].Fill( elePFdBetaIsolationCHS  ->at(0), weight); }
  if(elePFdBetaIsolationDiff ->size()>0){ h_elePFdBetaIsolationDiff [selbin][lepbin].Fill( elePFdBetaIsolationDiff ->at(0), weight); }
  if(muPt                   ->size()>0){ h_muPt                    [selbin][lepbin] .Fill( muPt                   ->at(0), weight ); } 
  if(muEn                   ->size()>0){ h_muEn                    [selbin][lepbin] .Fill( muEn                   ->at(0), weight ); } 
@@ -831,11 +861,11 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
   h_pfMETPhi                [selbin][lepbin].Write(); 
   h_pfMETsumEt              [selbin][lepbin].Write(); 
   h_nPho                    [selbin][lepbin].Write(); 
-  h_phoEn                   [selbin][lepbin].Write(); 
-  h_phoPt                   [selbin][lepbin].Write(); 
+  //h_phoEn                   [selbin][lepbin].Write(); 
+  //h_phoPt                   [selbin][lepbin].Write(); 
   h_phoEta                  [selbin][lepbin].Write(); 
   h_phoPhi                  [selbin][lepbin].Write(); 
-  h_phoSCEn                 [selbin][lepbin].Write(); 
+  //h_phoSCEn                 [selbin][lepbin].Write(); 
   h_phoSCPhi                [selbin][lepbin].Write(); 
   h_phoSCEta                [selbin][lepbin].Write(); 
   h_nEle                    [selbin][lepbin].Write(); 
@@ -847,8 +877,8 @@ Bool_t analyzer_signal::writeSigHistograms(int selbin, int lepbin)
   h_eleSCEn                 [selbin][lepbin].Write(); 
   h_eleSCEta                [selbin][lepbin].Write(); 
   h_eleSCPhi                [selbin][lepbin].Write(); 
-  h_elePFdBetaIsolationRhoEA[selbin][lepbin].Write();
-  h_elePFdBetaIsolationCHS  [selbin][lepbin].Write();
+  //h_elePFdBetaIsolationRhoEA[selbin][lepbin].Write();
+  //h_elePFdBetaIsolationCHS  [selbin][lepbin].Write();
   h_elePFdBetaIsolationDiff [selbin][lepbin].Write();
   h_nMu                     [selbin][lepbin].Write(); 
   h_muPt                    [selbin][lepbin].Write(); 
@@ -1076,7 +1106,8 @@ Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
 //-------------------------getPhotonPt
 Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
 
-      Float_t photonenergy = phoSCEn->at(idnr);
+      //Float_t photonenergy = phoSCEn->at(idnr);  //  <---works with updated ntuples
+      Float_t photonenergy = phoSCRawE->at(idnr);  /// <---old version Daniel was using
       if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
       if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
 
@@ -1230,10 +1261,10 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
 
-   //bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
+   bool pass_signal = jetGenPartonMomID->at(i) == 9000006 ;//9000006
               
    //if( pass_id && pass_kin && pass_overlap && pass_signal)
-   if( pass_id && pass_kin && pass_overlap )
+   if( pass_id && pass_kin && pass_overlap /*&& pass_signal*/ )
    {
     //printf(" a selected jet\n");
     nSelectedJet++;
@@ -1340,7 +1371,7 @@ void analyzer_signal::loadPUWeight(){
  //TString CMSSW_BASE = (TString)cCMSSW_BASE;
 
  //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
- TString filename = "puWeights_69200_24jan2017.root" ;
+ TString filename = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
  TFile* file_puweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
@@ -1353,7 +1384,7 @@ void analyzer_signal::loadElectronWeight(){
  //TString CMSSW_BASE = (TString)cCMSSW_BASE;
 
  //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
- TString filename = "egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ TString filename = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
  TFile* file_eleweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
@@ -1405,7 +1436,7 @@ void analyzer_signal::debug_printobjects(){
   if(dilep_mass>0.){printf(" Dilep Found\n");}
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
+   //printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
   }
 
   for(int i=0; i<electron_list.size(); ++i){
