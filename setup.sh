@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#export nversion="Levine"
-export nversion="sosou"
+export nversion="amaxtime"
+#export nversion="sosou"
 #export aversion="laug"
 
 #export aversion="tw9_loose"
