@@ -59,7 +59,6 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjnt
 #      "keep *", )  
 #)
 
-
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
@@ -140,18 +139,8 @@ process.selectedPhotons = cms.EDFilter("PATPhotonSelector",
 )
 
 # say which collections to run on 
-#process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-##process.load("RecoEgamma/ElectronIdentification/ElectronIDValueMapProducer_cfi")
-##process.load("RecoEgamma/PhotonIdentification/PhotonIDValueMapProducer_cfi")
-
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
 process.load("RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi")
-
-#process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-#process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-#process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-
 
 # 
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons','','LLDJ')
@@ -261,6 +250,7 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
  AODak4PFJetsSrc      = cms.InputTag("ak4PFJets"   , "", "RECO"),
  AODak4PFJetsCHSSrc   = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
  AODVertexSrc         = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
+ AODTrackSrc          = cms.InputTag("generalTracks", "", "RECO"),
 
  patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
  BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),

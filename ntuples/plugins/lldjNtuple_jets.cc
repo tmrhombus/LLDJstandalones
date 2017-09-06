@@ -26,6 +26,8 @@
 //#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //////#include <GetTrackTrajInfo.h>
 
+#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
+
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
@@ -178,8 +180,8 @@ vector<float>  AODPFchsJetTotalTrackAngle_;
 edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
 edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
 edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
-edm::Handle<edm::View<reco::Vertex> > AODVertexHandle;
-
+edm::Handle<edm::View<reco::Vertex>  >  AODVertexHandle;
+edm::Handle<edm::View<reco::Track>   >  AODTrackHandle;
 
 void lldjNtuple::branchesJets(TTree* tree) {
 
@@ -1133,15 +1135,35 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // AOD Section ----------------------------------------------
   // AOD Jet Handles
-//  edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
-//  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
-//  edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
-//  edm::Handle<edm::View<reco::Vertex> > AODVertexHandle;
   e.getByToken( AODak4CaloJetsLabel_ ,  AODak4CaloJetsHandle  );   
   e.getByToken( AODak4PFJetsLabel_   ,  AODak4PFJetsHandle    );     
   e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
 
   e.getByToken( AODVertexLabel_, AODVertexHandle );
+  e.getByToken( AODTrackLabel_, AODTrackHandle );
+
+  // AOD Calo Jets -------------------------------------------
+  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
+   //printf("Calo %f \n",iJet->pt());
+   AODnCaloJet_++;
+
+   float jetpt  = iJet->pt();
+   float jeteta = iJet->eta();
+   float jetphi = iJet->phi();
+
+   AODCaloJetPt_.push_back(jetpt);
+   AODCaloJetEta_.push_back(jeteta);
+   AODCaloJetPhi_.push_back(jetphi);
+   //AODCaloJetAlphaMax_;
+   //AODCaloJetSumIP_;
+   //AODCaloJetSumIPSig_;
+   //AODCaloJetLog10IPSig_;
+   //AODCaloJetMedianLog10IPSig_;
+   //AODCaloJetTrackAngle_;
+   //AODCaloJetLogTrackAngle_;
+   //AODCaloJetMedianLogTrackAngle_;
+   //AODCaloJetTotalTrackAngle_;
+  }
 
   // AOD PF Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
@@ -1189,35 +1211,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    //AODPFchsJetTotalTrackAngle_;
   }
 
-  // AOD Calo Jets -------------------------------------------
-  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
-   //printf("Calo %f \n",iJet->pt());
-   AODnCaloJet_++;
-
-   float jetpt  = iJet->pt();
-   float jeteta = iJet->eta();
-   float jetphi = iJet->phi();
-
-   AODCaloJetPt_.push_back(jetpt);
-   AODCaloJetEta_.push_back(jeteta);
-   AODCaloJetPhi_.push_back(jetphi);
-   //AODCaloJetAlphaMax_;
-   //AODCaloJetSumIP_;
-   //AODCaloJetSumIPSig_;
-   //AODCaloJetLog10IPSig_;
-   //AODCaloJetMedianLog10IPSig_;
-   //AODCaloJetTrackAngle_;
-   //AODCaloJetLogTrackAngle_;
-   //AODCaloJetMedianLogTrackAngle_;
-   //AODCaloJetTotalTrackAngle_;
-  }
-
-
 }
 
 
-
-void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks,vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
+void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 {
   double total = 0; 
   double total2 = 0; 

@@ -87,6 +87,13 @@ process.source = cms.Source("PoolSource",
 # output name
 process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'));
 
+#process.out = cms.OutputModule(
+#"PoolOutputModule",
+#     fileName = cms.untracked.string("output6.root"),
+#     outputCommands = cms.untracked.vstring( 
+#      "keep *", )  
+#)
+
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
@@ -384,54 +391,20 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
  AODak4PFJetsSrc      = cms.InputTag("ak4PFJets"   , "", "RECO"),
  AODak4PFJetsCHSSrc   = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
  AODVertexSrc         = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
+ AODTrackSrc          = cms.InputTag("generalTracks", "", "RECO"),
 
  patTriggerResults    = cms.InputTag("TriggerResults", "", "PAT"),
  BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),
  BadPFMuonFilter           = cms.InputTag("BadPFMuonFilter"),
- #pfMETLabel           = cms.InputTag("slimmedMETs"),
  pfMETLabel           = cms.InputTag("slimmedMETsMuEGClean", "", "LLDJ"),
 
  muonSrc              = cms.InputTag("slimmedMuons"),
 
  photonSrc            = cms.InputTag("selectedPhotons",'','LLDJ'),
 
-
- #triggerEvent         = cms.InputTag("selectedPatTrigger", "", ""),
-
- #genParticleSrc       = cms.InputTag("prunedGenParticles"),
- #LHEEventLabel        = cms.InputTag("externalLHEProducer"),
- #VtxBSLabel           = cms.InputTag("offlinePrimaryVerticesWithBS"),
-
- #packedPFCands        = cms.InputTag("packedPFCandidates"),
-
- #dumpSoftDrop         = cms.bool(True),
- #jecAK8PayloadNames   = cms.vstring(jecLevels),
- #runHFElectrons       = cms.bool(True),
- #isAOD                = cms.bool(False),
- #doGenParticles       = cms.bool(True),
- #dumpSubJets          = cms.bool(True),
- #dumpJets             = cms.bool(True),
- #dumpTaus             = cms.bool(False),
-
 )
-#process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
-process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 
-####  #options
-####  process.load("LLDJstandalones.ntuples.lldjNtuple_miniAOD_cfi")
-####  process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
-####  process.lldjNtuple.dumpSoftDrop= cms.bool(True)
-####  process.lldjNtuple.jecAK8PayloadNames=cms.vstring(jecLevels)
-####  process.lldjNtuple.runHFElectrons=cms.bool(True)
-####  process.lldjNtuple.isAOD=cms.bool(False)
-####  process.lldjNtuple.doGenParticles=cms.bool(False)
-####  process.lldjNtuple.dumpSubJets=cms.bool(True)
-####  process.lldjNtuple.dumpJets=cms.bool(True)
-####  process.lldjNtuple.dumpTaus=cms.bool(False)
-####  process.lldjNtuple.pfMETLabel=cms.InputTag("slimmedMETsMuEGClean", "", "LLDJ")
-####  ## the following line is only needed when you run on Feb 2017 re-miniAOD
-####  # huh? ^ 
-#process.lldjNtuple.patTriggerResults=cms.InputTag("TriggerResults", "", "PAT")
+process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 
 #builds Ntuple
 process.p = cms.Path(
@@ -443,10 +416,13 @@ process.p = cms.Path(
     process.selectedPhotons*
     process.egmGsfElectronIDSequence*
     #process.egmPhotonIDSequence*
-    process.fullPatMetSequence*
+    process.fullPatMetSequence*    process.egcorrMET*
     process.egcorrMET*
     process.lldjMETFiltersSequence*
     process.lldjNtuple
     )
 
+#process.ep = cms.EndPath(process.out)
+#print process.dumpPython()
+#print process.egmGsfElectronIDSequence.dumpPython()
 

@@ -38,6 +38,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   AODak4PFJetsLabel_         = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsSrc"));    
   AODak4PFJetsCHSLabel_      = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsCHSSrc")); 
   AODVertexLabel_            = consumes<edm::View<reco::Vertex> >      (ps.getParameter<InputTag>("AODVertexSrc"));
+  AODTrackLabel_             = consumes<edm::View<reco::Track> >       (ps.getParameter<InputTag>("AODTrackSrc"));
 
   // met
   patTrgResultsLabel_        = consumes<edm::TriggerResults>           (ps.getParameter<InputTag>("patTriggerResults"));
