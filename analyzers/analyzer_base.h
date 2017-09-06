@@ -48,23 +48,24 @@ public :
    ULong64_t             HLT_Mu17Mu8;
    ULong64_t             HLT_Mu17TkMu8;
    Int_t                 nPho;
-   std::vector<float>   *phoPt;
-   std::vector<float>   *phoEn;
+   std::vector<float>   *phoSCRawE;//old delete later
+//   std::vector<float>   *phoPt;
+//   std::vector<float>   *phoEn;
    std::vector<float>   *phoEta;
    std::vector<float>   *phoPhi;
-   std::vector<float>   *phoSCEn;
+//   std::vector<float>   *phoSCEn;
    std::vector<float>   *phoSCEta;
    std::vector<float>   *phoSCPhi;
    std::vector<unsigned short> *phoIDbit;
-   std::vector<float>   *phoIDMVA;
-   std::vector<float>   *phoObjPFChIso;
-   std::vector<float>   *phoObjPFPhoIso;
-   std::vector<float>   *phoObjPFNeuIso;
-   std::vector<float>   *phoObjPFChWorstIso;
-   std::vector<float>   *phoMapPFChIso;
-   std::vector<float>   *phoMapPFPhoIso;
-   std::vector<float>   *phoMapPFNeuIso;
-   std::vector<float>   *phoMapPFChWorstIso;
+//   std::vector<float>   *phoIDMVA;
+//   std::vector<float>   *phoObjPFChIso;
+//   std::vector<float>   *phoObjPFPhoIso;
+//   std::vector<float>   *phoObjPFNeuIso;
+//   std::vector<float>   *phoObjPFChWorstIso;
+//   std::vector<float>   *phoMapPFChIso;
+//   std::vector<float>   *phoMapPFPhoIso;
+//   std::vector<float>   *phoMapPFNeuIso;
+//   std::vector<float>   *phoMapPFChWorstIso;
    Int_t                 nEle;
    std::vector<float>   *elePt;
    std::vector<float>   *eleEn;
@@ -76,8 +77,8 @@ public :
    std::vector<int>     *eleCharge;
    std::vector<int>     *eleChargeConsistent;
    std::vector<unsigned short> *eleIDbit;
-   std::vector<float>   *elePFdBetaIsolationRhoEA;
-   std::vector<float>   *elePFdBetaIsolationCHS;
+//   std::vector<float>   *elePFdBetaIsolationRhoEA;
+//   std::vector<float>   *elePFdBetaIsolationCHS;
    std::vector<float>   *elePFdBetaIsolationDiff;
    Int_t           nMu;
    std::vector<float>   *muPt;
@@ -88,7 +89,7 @@ public :
    std::vector<int>     *muType;
    std::vector<unsigned short> *muIDbit;
    std::vector<bool>    *muPassLooseID;
-   std::vector<bool>    *muPassHipID;
+//   std::vector<bool>    *muPassHipID;
    std::vector<bool>    *muPassTighID;
    std::vector<int>     *muNumberOfMissingInnerHits;
    std::vector<int>     *muNumberOfMissingMiddleHits;
@@ -122,8 +123,8 @@ public :
    std::vector<int>     *jetNCH;
    std::vector<int>     *jetNNP;
    std::vector<float>   *jetMUF;
-   std::vector<float>   *jetHFHAE;
-   std::vector<float>   *jetHFEME;
+//   std::vector<float>   *jetHFHAE;
+//   std::vector<float>   *jetHFEME;
    std::vector<int>     *jetNConstituents;
    std::vector<float>   *jetVtxPt;
    std::vector<float>   *jetVtxMass;
@@ -228,24 +229,25 @@ public :
    TBranch        *b_HLT_IsoTkMu22;   //!
    TBranch        *b_HLT_Mu17Mu8;   //!
    TBranch        *b_HLT_Mu17TkMu8;   //!
+   TBranch        *b_phoSCRawE;   //! old delete
    TBranch        *b_nPho;   //!
-   TBranch        *b_phoPt;   //!
-   TBranch        *b_phoEn;   //!
+//   TBranch        *b_phoPt;   //!
+//   TBranch        *b_phoEn;   //!
    TBranch        *b_phoEta;   //!
    TBranch        *b_phoPhi;   //!
-   TBranch        *b_phoSCEn;   //!
+//   TBranch        *b_phoSCEn;   //!
    TBranch        *b_phoSCEta;   //!
    TBranch        *b_phoSCPhi;   //!
    TBranch        *b_phoIDbit;   //!
-   TBranch        *b_phoIDMVA;   //!
-   TBranch        *b_phoObjPFChIso;   //!
-   TBranch        *b_phoObjPFPhoIso;   //!
-   TBranch        *b_phoObjPFNeuIso;   //!
-   TBranch        *b_phoObjPFChWorstIso;   //!
-   TBranch        *b_phoMapPFChIso;   //!
-   TBranch        *b_phoMapPFPhoIso;   //!
-   TBranch        *b_phoMapPFNeuIso;   //!
-   TBranch        *b_phoMapPFChWorstIso;   //!
+//   TBranch        *b_phoIDMVA;   //!
+//   TBranch        *b_phoObjPFChIso;   //!
+//   TBranch        *b_phoObjPFPhoIso;   //!
+//   TBranch        *b_phoObjPFNeuIso;   //!
+//   TBranch        *b_phoObjPFChWorstIso;   //!
+//   TBranch        *b_phoMapPFChIso;   //!
+//   TBranch        *b_phoMapPFPhoIso;   //!
+//   TBranch        *b_phoMapPFNeuIso;   //!
+//   TBranch        *b_phoMapPFChWorstIso;   //!
    TBranch        *b_nEle;   //!
    TBranch        *b_elePt;   //!
    TBranch        *b_eleEn;   //!
@@ -257,8 +259,8 @@ public :
    TBranch        *b_eleCharge;   //!
    TBranch        *b_eleChargeConsistent;   //!
    TBranch        *b_eleIDbit;   //!
-   TBranch        *b_elePFdBetaIsolationRhoEA;   //!
-   TBranch        *b_elePFdBetaIsolationCHS;   //!
+//   TBranch        *b_elePFdBetaIsolationRhoEA;   //!
+//   TBranch        *b_elePFdBetaIsolationCHS;   //!
    TBranch        *b_elePFdBetaIsolationDiff;   //!
    TBranch        *b_nMu;   //!
    TBranch        *b_muPt;   //!
@@ -269,7 +271,7 @@ public :
    TBranch        *b_muType;   //!
    TBranch        *b_muIDbit;   //!
    TBranch        *b_muPassLooseID;   //!
-   TBranch        *b_muPassHipID;   //!
+//   TBranch        *b_muPassHipID;   //!
    TBranch        *b_muPassTighID;   //!
    TBranch        *b_muNumberOfMissingInnerHits;   //!
    TBranch        *b_muNumberOfMissingMiddleHits;   //!
@@ -303,8 +305,8 @@ public :
    TBranch        *b_jetNCH;   //!
    TBranch        *b_jetNNP;   //!
    TBranch        *b_jetMUF;   //!
-   TBranch        *b_jetHFHAE;   //!
-   TBranch        *b_jetHFEME;   //!
+//   TBranch        *b_jetHFHAE;   //!
+//   TBranch        *b_jetHFEME;   //!
    TBranch        *b_jetNConstituents;   //!
    TBranch        *b_jetVtxPt;   //!
    TBranch        *b_jetVtxMass;   //!

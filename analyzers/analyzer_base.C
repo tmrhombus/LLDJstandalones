@@ -49,23 +49,24 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    // MC and Data
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // set object pointers
-   phoPt = 0;
-   phoEn = 0;
+   phoSCRawE = 0; //old delete
+//   phoPt = 0;
+//   phoEn = 0;
    phoEta = 0;
    phoPhi = 0;
-   phoSCEn = 0;
+//   phoSCEn = 0;
    phoSCEta = 0;
    phoSCPhi = 0;
    phoIDbit = 0;
-   phoIDMVA = 0;
-   phoObjPFChIso = 0;
-   phoObjPFPhoIso = 0;
-   phoObjPFNeuIso = 0;
-   phoObjPFChWorstIso = 0;
-   phoMapPFChIso = 0;
-   phoMapPFPhoIso = 0;
-   phoMapPFNeuIso = 0;
-   phoMapPFChWorstIso = 0;
+//   phoIDMVA = 0;
+//   phoObjPFChIso = 0;
+//   phoObjPFPhoIso = 0;
+//   phoObjPFNeuIso = 0;
+//   phoObjPFChWorstIso = 0;
+//   phoMapPFChIso = 0;
+//   phoMapPFPhoIso = 0;
+//   phoMapPFNeuIso = 0;
+//   phoMapPFChWorstIso = 0;
    elePt = 0;
    eleEn = 0;
    eleEta = 0;
@@ -76,8 +77,8 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    eleCharge = 0;
    eleChargeConsistent = 0;
    eleIDbit = 0;
-   elePFdBetaIsolationRhoEA = 0;
-   elePFdBetaIsolationCHS = 0;
+//   elePFdBetaIsolationRhoEA = 0;
+//   elePFdBetaIsolationCHS = 0;
    elePFdBetaIsolationDiff = 0;
    muPt = 0;
    muEn = 0;
@@ -87,7 +88,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    muType = 0;
    muIDbit = 0;
    muPassLooseID = 0;
-   muPassHipID = 0;
+//   muPassHipID = 0;
    muPassTighID = 0;
    muNumberOfMissingInnerHits = 0;
    muNumberOfMissingMiddleHits = 0;
@@ -120,8 +121,8 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    jetNCH = 0;
    jetNNP = 0;
    jetMUF = 0;
-   jetHFHAE = 0;
-   jetHFEME = 0;
+//   jetHFHAE = 0;
+//   jetHFEME = 0;
    jetNConstituents = 0;
    jetVtxPt = 0;
    jetVtxMass = 0;
@@ -215,23 +216,24 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("HLT_Mu17Mu8", &HLT_Mu17Mu8, &b_HLT_Mu17Mu8);
    fChain->SetBranchAddress("HLT_Mu17TkMu8", &HLT_Mu17TkMu8, &b_HLT_Mu17TkMu8);
    fChain->SetBranchAddress("nPho", &nPho, &b_nPho);
-   fChain->SetBranchAddress("phoPt", &phoPt, &b_phoPt);
-   fChain->SetBranchAddress("phoEn", &phoEn, &b_phoEn);
+   fChain->SetBranchAddress("phoSCRawE", &phoSCRawE, &b_phoSCRawE);//old delete
+   //fChain->SetBranchAddress("phoPt", &phoPt, &b_phoPt);
+   //fChain->SetBranchAddress("phoEn", &phoEn, &b_phoEn);
    fChain->SetBranchAddress("phoEta", &phoEta, &b_phoEta);
    fChain->SetBranchAddress("phoPhi", &phoPhi, &b_phoPhi);
-   fChain->SetBranchAddress("phoSCEn", &phoSCEn, &b_phoSCEn);
+   //fChain->SetBranchAddress("phoSCEn", &phoSCEn, &b_phoSCEn);
    fChain->SetBranchAddress("phoSCEta", &phoSCEta, &b_phoSCEta);
    fChain->SetBranchAddress("phoSCPhi", &phoSCPhi, &b_phoSCPhi);
    fChain->SetBranchAddress("phoIDbit", &phoIDbit, &b_phoIDbit);
-   fChain->SetBranchAddress("phoIDMVA", &phoIDMVA, &b_phoIDMVA);
-   fChain->SetBranchAddress("phoObjPFChIso", &phoObjPFChIso, &b_phoObjPFChIso);
-   fChain->SetBranchAddress("phoObjPFPhoIso", &phoObjPFPhoIso, &b_phoObjPFPhoIso);
-   fChain->SetBranchAddress("phoObjPFNeuIso", &phoObjPFNeuIso, &b_phoObjPFNeuIso);
-   fChain->SetBranchAddress("phoObjPFChWorstIso", &phoObjPFChWorstIso, &b_phoObjPFChWorstIso);
-   fChain->SetBranchAddress("phoMapPFChIso", &phoMapPFChIso, &b_phoMapPFChIso);
-   fChain->SetBranchAddress("phoMapPFPhoIso", &phoMapPFPhoIso, &b_phoMapPFPhoIso);
-   fChain->SetBranchAddress("phoMapPFNeuIso", &phoMapPFNeuIso, &b_phoMapPFNeuIso);
-   fChain->SetBranchAddress("phoMapPFChWorstIso", &phoMapPFChWorstIso, &b_phoMapPFChWorstIso);
+   //fChain->SetBranchAddress("phoIDMVA", &phoIDMVA, &b_phoIDMVA);
+   //fChain->SetBranchAddress("phoObjPFChIso", &phoObjPFChIso, &b_phoObjPFChIso);
+   //fChain->SetBranchAddress("phoObjPFPhoIso", &phoObjPFPhoIso, &b_phoObjPFPhoIso);
+   //fChain->SetBranchAddress("phoObjPFNeuIso", &phoObjPFNeuIso, &b_phoObjPFNeuIso);
+   //fChain->SetBranchAddress("phoObjPFChWorstIso", &phoObjPFChWorstIso, &b_phoObjPFChWorstIso);
+   //fChain->SetBranchAddress("phoMapPFChIso", &phoMapPFChIso, &b_phoMapPFChIso);
+   //fChain->SetBranchAddress("phoMapPFPhoIso", &phoMapPFPhoIso, &b_phoMapPFPhoIso);
+   //fChain->SetBranchAddress("phoMapPFNeuIso", &phoMapPFNeuIso, &b_phoMapPFNeuIso);
+   //fChain->SetBranchAddress("phoMapPFChWorstIso", &phoMapPFChWorstIso, &b_phoMapPFChWorstIso);
    fChain->SetBranchAddress("nEle", &nEle, &b_nEle);
    fChain->SetBranchAddress("elePt", &elePt, &b_elePt);
    fChain->SetBranchAddress("eleEn", &eleEn, &b_eleEn);
@@ -243,8 +245,8 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("eleCharge", &eleCharge, &b_eleCharge);
    fChain->SetBranchAddress("eleChargeConsistent", &eleChargeConsistent, &b_eleChargeConsistent);
    fChain->SetBranchAddress("eleIDbit", &eleIDbit, &b_eleIDbit);
-   fChain->SetBranchAddress("elePFdBetaIsolationRhoEA", &elePFdBetaIsolationRhoEA, &b_elePFdBetaIsolationRhoEA);
-   fChain->SetBranchAddress("elePFdBetaIsolationCHS", &elePFdBetaIsolationCHS, &b_elePFdBetaIsolationCHS);
+   //fChain->SetBranchAddress("elePFdBetaIsolationRhoEA", &elePFdBetaIsolationRhoEA, &b_elePFdBetaIsolationRhoEA);
+   //fChain->SetBranchAddress("elePFdBetaIsolationCHS", &elePFdBetaIsolationCHS, &b_elePFdBetaIsolationCHS);
    fChain->SetBranchAddress("elePFdBetaIsolationDiff", &elePFdBetaIsolationDiff, &b_elePFdBetaIsolationDiff);
    fChain->SetBranchAddress("nMu", &nMu, &b_nMu);
    fChain->SetBranchAddress("muPt", &muPt, &b_muPt);
@@ -255,7 +257,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muType", &muType, &b_muType);
    fChain->SetBranchAddress("muIDbit", &muIDbit, &b_muIDbit);
    fChain->SetBranchAddress("muPassLooseID", &muPassLooseID, &b_muPassLooseID);
-   fChain->SetBranchAddress("muPassHipID", &muPassHipID, &b_muPassHipID);
+   //fChain->SetBranchAddress("muPassHipID", &muPassHipID, &b_muPassHipID);
    fChain->SetBranchAddress("muPassTighID", &muPassTighID, &b_muPassTighID);
    fChain->SetBranchAddress("muNumberOfMissingInnerHits", &muNumberOfMissingInnerHits, &b_muNumberOfMissingInnerHits);
    fChain->SetBranchAddress("muNumberOfMissingMiddleHits", &muNumberOfMissingMiddleHits, &b_muNumberOfMissingMiddleHits);
@@ -289,8 +291,8 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("jetNCH", &jetNCH, &b_jetNCH);
    fChain->SetBranchAddress("jetNNP", &jetNNP, &b_jetNNP);
    fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
-   fChain->SetBranchAddress("jetHFHAE", &jetHFHAE, &b_jetHFHAE);
-   fChain->SetBranchAddress("jetHFEME", &jetHFEME, &b_jetHFEME);
+   //fChain->SetBranchAddress("jetHFHAE", &jetHFHAE, &b_jetHFHAE);
+   //fChain->SetBranchAddress("jetHFEME", &jetHFEME, &b_jetHFEME);
    fChain->SetBranchAddress("jetNConstituents", &jetNConstituents, &b_jetNConstituents);
    fChain->SetBranchAddress("jetVtxPt", &jetVtxPt, &b_jetVtxPt);
    fChain->SetBranchAddress("jetVtxMass", &jetVtxMass, &b_jetVtxMass);
