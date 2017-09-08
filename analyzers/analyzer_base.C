@@ -49,23 +49,6 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    // MC and Data
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // set object pointers
-   phoPt = 0;
-   phoEn = 0;
-   phoEta = 0;
-   phoPhi = 0;
-   phoSCEn = 0;
-   phoSCEta = 0;
-   phoSCPhi = 0;
-   phoIDbit = 0;
-   phoIDMVA = 0;
-   phoObjPFChIso = 0;
-   phoObjPFPhoIso = 0;
-   phoObjPFNeuIso = 0;
-   phoObjPFChWorstIso = 0;
-   phoMapPFChIso = 0;
-   phoMapPFPhoIso = 0;
-   phoMapPFNeuIso = 0;
-   phoMapPFChWorstIso = 0;
    elePt = 0;
    eleEn = 0;
    eleEta = 0;
@@ -186,6 +169,47 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    jetGenEta = 0;
    jetGenPhi = 0;
    jetGenPartonMomID = 0;
+   AODCaloJetPt = 0;
+   AODCaloJetEta = 0;
+   AODCaloJetPhi = 0;
+   AODCaloJetAlphaMax = 0;
+   AODCaloJetAlphaMax2 = 0;
+   AODCaloJetAlphaMaxPrime = 0;
+   AODCaloJetAlphaMaxPrime2 = 0;
+   AODCaloJetBeta = 0;
+   AODCaloJetBeta2 = 0;
+   AODCaloJetSumIP = 0;
+   AODCaloJetSumIPSig = 0;
+   AODCaloJetLog10IPSig = 0;
+   AODCaloJetMedianLog10IPSig = 0;
+   AODCaloJetTrackAngle = 0;
+   AODCaloJetLogTrackAngle = 0;
+   AODCaloJetMedianLogTrackAngle = 0;
+   AODCaloJetTotalTrackAngle = 0;
+   AODPFJetPt = 0;
+   AODPFJetEta = 0;
+   AODPFJetPhi = 0;
+   AODPFJetAlphaMax = 0;
+   AODPFJetSumIP = 0;
+   AODPFJetSumIPSig = 0;
+   AODPFJetLog10IPSig = 0;
+   AODPFJetMedianLog10IPSig = 0;
+   AODPFJetTrackAngle = 0;
+   AODPFJetLogTrackAngle = 0;
+   AODPFJetMedianLogTrackAngle = 0;
+   AODPFJetTotalTrackAngle = 0;
+   AODPFchsJetPt = 0;
+   AODPFchsJetEta = 0;
+   AODPFchsJetPhi = 0;
+   AODPFchsJetAlphaMax = 0;
+   AODPFchsJetSumIP = 0;
+   AODPFchsJetSumIPSig = 0;
+   AODPFchsJetLog10IPSig = 0;
+   AODPFchsJetMedianLog10IPSig = 0;
+   AODPFchsJetTrackAngle = 0;
+   AODPFchsJetLogTrackAngle = 0;
+   AODPFchsJetMedianLogTrackAngle = 0;
+   AODPFchsJetTotalTrackAngle = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -214,24 +238,6 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("HLT_IsoTkMu22", &HLT_IsoTkMu22, &b_HLT_IsoTkMu22);
    fChain->SetBranchAddress("HLT_Mu17Mu8", &HLT_Mu17Mu8, &b_HLT_Mu17Mu8);
    fChain->SetBranchAddress("HLT_Mu17TkMu8", &HLT_Mu17TkMu8, &b_HLT_Mu17TkMu8);
-   fChain->SetBranchAddress("nPho", &nPho, &b_nPho);
-   fChain->SetBranchAddress("phoPt", &phoPt, &b_phoPt);
-   fChain->SetBranchAddress("phoEn", &phoEn, &b_phoEn);
-   fChain->SetBranchAddress("phoEta", &phoEta, &b_phoEta);
-   fChain->SetBranchAddress("phoPhi", &phoPhi, &b_phoPhi);
-   fChain->SetBranchAddress("phoSCEn", &phoSCEn, &b_phoSCEn);
-   fChain->SetBranchAddress("phoSCEta", &phoSCEta, &b_phoSCEta);
-   fChain->SetBranchAddress("phoSCPhi", &phoSCPhi, &b_phoSCPhi);
-   fChain->SetBranchAddress("phoIDbit", &phoIDbit, &b_phoIDbit);
-   fChain->SetBranchAddress("phoIDMVA", &phoIDMVA, &b_phoIDMVA);
-   fChain->SetBranchAddress("phoObjPFChIso", &phoObjPFChIso, &b_phoObjPFChIso);
-   fChain->SetBranchAddress("phoObjPFPhoIso", &phoObjPFPhoIso, &b_phoObjPFPhoIso);
-   fChain->SetBranchAddress("phoObjPFNeuIso", &phoObjPFNeuIso, &b_phoObjPFNeuIso);
-   fChain->SetBranchAddress("phoObjPFChWorstIso", &phoObjPFChWorstIso, &b_phoObjPFChWorstIso);
-   fChain->SetBranchAddress("phoMapPFChIso", &phoMapPFChIso, &b_phoMapPFChIso);
-   fChain->SetBranchAddress("phoMapPFPhoIso", &phoMapPFPhoIso, &b_phoMapPFPhoIso);
-   fChain->SetBranchAddress("phoMapPFNeuIso", &phoMapPFNeuIso, &b_phoMapPFNeuIso);
-   fChain->SetBranchAddress("phoMapPFChWorstIso", &phoMapPFChWorstIso, &b_phoMapPFChWorstIso);
    fChain->SetBranchAddress("nEle", &nEle, &b_nEle);
    fChain->SetBranchAddress("elePt", &elePt, &b_elePt);
    fChain->SetBranchAddress("eleEn", &eleEn, &b_eleEn);
@@ -355,6 +361,52 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("jetGenEta", &jetGenEta, &b_jetGenEta);
    fChain->SetBranchAddress("jetGenPhi", &jetGenPhi, &b_jetGenPhi);
    fChain->SetBranchAddress("jetGenPartonMomID", &jetGenPartonMomID, &b_jetGenPartonMomID);
+   fChain->SetBranchAddress("AODnCaloJet", &AODnCaloJet, &b_AODnCaloJet);
+   fChain->SetBranchAddress("AODCaloJetPt", &AODCaloJetPt, &b_AODCaloJetPt);
+   fChain->SetBranchAddress("AODCaloJetEta", &AODCaloJetEta, &b_AODCaloJetEta);
+   fChain->SetBranchAddress("AODCaloJetPhi", &AODCaloJetPhi, &b_AODCaloJetPhi);
+   fChain->SetBranchAddress("AODCaloJetAlphaMax", &AODCaloJetAlphaMax, &b_AODCaloJetAlphaMax);
+   fChain->SetBranchAddress("AODCaloJetAlphaMax2", &AODCaloJetAlphaMax2, &b_AODCaloJetAlphaMax2);
+   fChain->SetBranchAddress("AODCaloJetAlphaMaxPrime", &AODCaloJetAlphaMaxPrime, &b_AODCaloJetAlphaMaxPrime);
+   fChain->SetBranchAddress("AODCaloJetAlphaMaxPrime2", &AODCaloJetAlphaMaxPrime2, &b_AODCaloJetAlphaMaxPrime2);
+   fChain->SetBranchAddress("AODCaloJetBeta", &AODCaloJetBeta, &b_AODCaloJetBeta);
+   fChain->SetBranchAddress("AODCaloJetBeta2", &AODCaloJetBeta2, &b_AODCaloJetBeta2);
+   fChain->SetBranchAddress("AODCaloJetSumIP", &AODCaloJetSumIP, &b_AODCaloJetSumIP);
+   fChain->SetBranchAddress("AODCaloJetSumIPSig", &AODCaloJetSumIPSig, &b_AODCaloJetSumIPSig);
+   fChain->SetBranchAddress("AODCaloJetLog10IPSig", &AODCaloJetLog10IPSig, &b_AODCaloJetLog10IPSig);
+   fChain->SetBranchAddress("AODCaloJetMedianLog10IPSig", &AODCaloJetMedianLog10IPSig, &b_AODCaloJetMedianLog10IPSig);
+   fChain->SetBranchAddress("AODCaloJetTrackAngle", &AODCaloJetTrackAngle, &b_AODCaloJetTrackAngle);
+   fChain->SetBranchAddress("AODCaloJetLogTrackAngle", &AODCaloJetLogTrackAngle, &b_AODCaloJetLogTrackAngle);
+   fChain->SetBranchAddress("AODCaloJetMedianLogTrackAngle", &AODCaloJetMedianLogTrackAngle, &b_AODCaloJetMedianLogTrackAngle);
+   fChain->SetBranchAddress("AODCaloJetTotalTrackAngle", &AODCaloJetTotalTrackAngle, &b_AODCaloJetTotalTrackAngle);
+   fChain->SetBranchAddress("AODnPFJet", &AODnPFJet, &b_AODnPFJet);
+   fChain->SetBranchAddress("AODPFJetPt", &AODPFJetPt, &b_AODPFJetPt);
+   fChain->SetBranchAddress("AODPFJetEta", &AODPFJetEta, &b_AODPFJetEta);
+   fChain->SetBranchAddress("AODPFJetPhi", &AODPFJetPhi, &b_AODPFJetPhi);
+   fChain->SetBranchAddress("AODPFJetAlphaMax", &AODPFJetAlphaMax, &b_AODPFJetAlphaMax);
+   fChain->SetBranchAddress("AODPFJetSumIP", &AODPFJetSumIP, &b_AODPFJetSumIP);
+   fChain->SetBranchAddress("AODPFJetSumIPSig", &AODPFJetSumIPSig, &b_AODPFJetSumIPSig);
+   fChain->SetBranchAddress("AODPFJetLog10IPSig", &AODPFJetLog10IPSig, &b_AODPFJetLog10IPSig);
+   fChain->SetBranchAddress("AODPFJetMedianLog10IPSig", &AODPFJetMedianLog10IPSig, &b_AODPFJetMedianLog10IPSig);
+   fChain->SetBranchAddress("AODPFJetTrackAngle", &AODPFJetTrackAngle, &b_AODPFJetTrackAngle);
+   fChain->SetBranchAddress("AODPFJetLogTrackAngle", &AODPFJetLogTrackAngle, &b_AODPFJetLogTrackAngle);
+   fChain->SetBranchAddress("AODPFJetMedianLogTrackAngle", &AODPFJetMedianLogTrackAngle, &b_AODPFJetMedianLogTrackAngle);
+   fChain->SetBranchAddress("AODPFJetTotalTrackAngle", &AODPFJetTotalTrackAngle, &b_AODPFJetTotalTrackAngle);
+   fChain->SetBranchAddress("AODnPFchsJet", &AODnPFchsJet, &b_AODnPFchsJet);
+   fChain->SetBranchAddress("AODPFchsJetPt", &AODPFchsJetPt, &b_AODPFchsJetPt);
+   fChain->SetBranchAddress("AODPFchsJetEta", &AODPFchsJetEta, &b_AODPFchsJetEta);
+   fChain->SetBranchAddress("AODPFchsJetPhi", &AODPFchsJetPhi, &b_AODPFchsJetPhi);
+   fChain->SetBranchAddress("AODPFchsJetAlphaMax", &AODPFchsJetAlphaMax, &b_AODPFchsJetAlphaMax);
+   fChain->SetBranchAddress("AODPFchsJetSumIP", &AODPFchsJetSumIP, &b_AODPFchsJetSumIP);
+   fChain->SetBranchAddress("AODPFchsJetSumIPSig", &AODPFchsJetSumIPSig, &b_AODPFchsJetSumIPSig);
+   fChain->SetBranchAddress("AODPFchsJetLog10IPSig", &AODPFchsJetLog10IPSig, &b_AODPFchsJetLog10IPSig);
+   fChain->SetBranchAddress("AODPFchsJetMedianLog10IPSig", &AODPFchsJetMedianLog10IPSig, &b_AODPFchsJetMedianLog10IPSig);
+   fChain->SetBranchAddress("AODPFchsJetTrackAngle", &AODPFchsJetTrackAngle, &b_AODPFchsJetTrackAngle);
+   fChain->SetBranchAddress("AODPFchsJetLogTrackAngle", &AODPFchsJetLogTrackAngle, &b_AODPFchsJetLogTrackAngle);
+   fChain->SetBranchAddress("AODPFchsJetMedianLogTrackAngle", &AODPFchsJetMedianLogTrackAngle, &b_AODPFchsJetMedianLogTrackAngle);
+   fChain->SetBranchAddress("AODPFchsJetTotalTrackAngle", &AODPFchsJetTotalTrackAngle, &b_AODPFchsJetTotalTrackAngle);
+   fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
+   fChain->SetBranchAddress("genMETPhi", &genMETPhi, &b_genMETPhi);
    fChain->SetBranchAddress("metFilters", &metFilters, &b_metFilters);
    fChain->SetBranchAddress("pfMET", &pfMET, &b_pfMET);
    fChain->SetBranchAddress("pfMETPhi", &pfMETPhi, &b_pfMETPhi);
@@ -372,12 +424,5 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("pfMETPhi_T1UESUp", &pfMETPhi_T1UESUp, &b_pfMETPhi_T1UESUp);
    fChain->SetBranchAddress("pfMETPhi_T1UESDo", &pfMETPhi_T1UESDo, &b_pfMETPhi_T1UESDo);
 
-   //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
-   // MC Only (Hen)
-   //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
-   if(isMC){
-    fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
-    fChain->SetBranchAddress("genMETPhi", &genMETPhi, &b_genMETPhi);
-   }
 
 }

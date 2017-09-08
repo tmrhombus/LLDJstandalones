@@ -21,6 +21,11 @@ void analyzer_signal::Loop(TString outfilename,
   nentries = Long64_t(nevts);
  }
 
+ nmatched = 0;
+ nunmatched = 0;
+
+ drcut = 0.4;
+
  n_tot=0;
  n_test =0;
  n_test2 = 0; 
@@ -78,30 +83,21 @@ void analyzer_signal::Loop(TString outfilename,
   nSelectedJet=0;
 
   //printf(" Event %lld\n", event);
-  //if( event==472257123 ){ printf("EVENT IN QUESTION\n"); }
   Long64_t ientry = LoadTree(jentry);
-  //if( event==472257123 ){ printf(" %lli \n",ientry); }
   if (ientry < 0) break;
-  //if( event==472257123 ){ printf(" didn't break, getting entry \n"); }
   nb = fChain->GetEntry(jentry);   nbytes += nb;
-  //if( event==472257123 ){ printf(" got entry \n"); }
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   n_tot++;
 
-  //if( event==472257123 ){ printf("making photonlist\n"); }
-  // get lists of "good" electrons, photons, jets
-  photon_list = photon_passID( phoidbit, 30, 1.4442, ""); // pt, eta, sysbinname
-
-  //if( event==472257123 ){ printf("making electronlist\n"); }
-  // veto loose medium tight heep hlt
+//  // get lists of "good" electrons, photons, jets
+//  photon_list = photon_passID( phoidbit, 30, 1.4442, ""); // pt, eta, sysbinname
   electron_list = electron_passID( eleidbit, 30, 2.1, "");
-
-  //if( event==472257123 ){ printf("making muonlist\n"); }
   muon_list = muon_passID( muoidbit, 30, 2.1, ""); 
-
-  //if( event==472257123 ){ printf("making jetlist\n"); }
   jet_list = jet_passID( jetidbit, 25, 2.4, ""); 
+  AODcalojet_list   = jet_matchToMiniAOD("calo");          
+  //AODPFjet_list     = jet_matchToMiniAOD("pf");          
+  //AODPFchsjet_list  = jet_matchToMiniAOD("pfchs");          
 
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use event_weight
@@ -136,10 +132,10 @@ void analyzer_signal::Loop(TString outfilename,
   // calculate ht
   htall  = 0.;
   htjets = 0.;
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   htall += phoPt->at(phoindex);
-  }
+//  for(int i=0; i<photon_list.size(); ++i){
+//   int phoindex = photon_list[i];
+//   htall += phoPt->at(phoindex);
+//  }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -155,6 +151,26 @@ void analyzer_signal::Loop(TString outfilename,
    int jetindex = jet_list[i];
    htall  += jetPt->at(jetindex);
    htjets += jetPt->at(jetindex);
+  } 
+
+  
+  // check compatibility between AOD/miniAOD jets
+  printf("miniAOD: %i    AOD: %i \n", (int)jet_list.size(), (int)AODcalojet_list.size() );
+  if( jet_list.size()!=AODcalojet_list.size()){nunmatched ++; continue;}
+  nmatched ++;
+  for(int i=0; i<jet_list.size(); ++i){
+   int miniAODjetindex = jet_list.at(i);
+   int AODjetindex     = AODcalojet_list.at(i);
+   printf(" miniAOD: %f %f %f\n",
+    jetPt ->at(miniAODjetindex), 
+    jetEta->at(miniAODjetindex), 
+    jetPhi->at(miniAODjetindex) );
+
+   printf(" AOD:     %f %f %f\n\n",
+    AODCaloJetPt  ->at(AODjetindex), 
+    AODCaloJetEta ->at(AODjetindex), 
+    AODCaloJetPhi ->at(AODjetindex)  
+   );
   } 
 
   // make dilepton pair
@@ -245,13 +261,16 @@ void analyzer_signal::Loop(TString outfilename,
 
  } // end loop over entries
 
- printf("\n\nSummary\n");
- printf(" ntot        %i \n",n_tot        ); 
- printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
- printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
- printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
- printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
- printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ printf("\n\n Summary   dR=%0.1f\n",drcut);
+ printf("  ntot        %i \n",n_tot        ); 
+ //printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
+ //printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
+ //printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
+ //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
+ //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+
+ printf("  nmatched    %i\n",nmatched);
+ printf("  nunmatched  %i\n",nunmatched);
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -404,6 +423,16 @@ Bool_t analyzer_signal::initJetHistograms()
     TString  hname_jetVtx3DVal                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_jetVtx3DVal               "; 
     TString  hname_jetVtx3DSig                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_jetVtx3DSig               "; 
 
+    TString hname_AODCaloJetPt                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPt            "; 
+    TString hname_AODCaloJetEta               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetEta           "; 
+    TString hname_AODCaloJetPhi               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPhi           "; 
+    TString hname_AODCaloJetAlphaMax          = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAlphaMax      "; 
+    TString hname_AODCaloJetAlphaMax2         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAlphaMax2     "; 
+    TString hname_AODCaloJetAlphaMaxPrime     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAlphaMaxPrime "; 
+    TString hname_AODCaloJetAlphaMaxPrime2    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAlphaMaxPrime2"; 
+    TString hname_AODCaloJetBeta              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetBeta          "; 
+    TString hname_AODCaloJetBeta2             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetBeta2         "; 
+
     // initialize the histograms
     h_jetPt                      [i][j][k] = initSingleHistogramTH1F( hname_jetPt                     , "jetPt                     " , 50, 0, 500 ); 
     h_jetEn                      [i][j][k] = initSingleHistogramTH1F( hname_jetEn                     , "jetEn                     " , 50, 0, 500 ); 
@@ -449,6 +478,16 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetVtxNtrks                [i][j][k] = initSingleHistogramTH1F( hname_jetVtxNtrks               , "jetVtxNtrks               " , 30, 0, 30) ; 
     h_jetVtx3DVal                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DVal               , "jetVtx3DVal               " , 30, 0, 1) ; 
     h_jetVtx3DSig                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DSig               , "jetVtx3DSig               " , 30, 0, 1) ;
+
+    h_AODCaloJetPt               [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt              , "AODCaloJetPt            ", 50,0,500); 
+    h_AODCaloJetEta              [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta             , "AODCaloJetEta           ", 30,-5,5); 
+    h_AODCaloJetPhi              [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPhi             , "AODCaloJetPhi           ", 30,-5,5); 
+    h_AODCaloJetAlphaMax         [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax        , "AODCaloJetAlphaMax      ", 30, 0, 1); 
+    h_AODCaloJetAlphaMax2        [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax2       , "AODCaloJetAlphaMax2     ", 30, 0, 1); 
+    h_AODCaloJetAlphaMaxPrime    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime   , "AODCaloJetAlphaMaxPrime ", 30, 0, 1); 
+    h_AODCaloJetAlphaMaxPrime2   [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime2  , "AODCaloJetAlphaMaxPrime2", 30, 0, 1); 
+    h_AODCaloJetBeta             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta            , "AODCaloJetBeta          ", 30, 0, 1); 
+    h_AODCaloJetBeta2            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta2           , "AODCaloJetBeta2         ", 30, 0, 1); 
 
    }  //    for(unsigned int i=0; i<selbinnames.size(); ++i){
   }   //      for(unsigned int j=0; j<jet_list.size(); ++j){
@@ -508,6 +547,16 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    if(jetVtxNtrks               ->size()>j){ h_jetVtxNtrks                [selbin][j][lepbin].Fill( jetVtxNtrks               ->at(j), weight); }
    if(jetVtx3DVal               ->size()>j){ h_jetVtx3DVal                [selbin][j][lepbin].Fill( jetVtx3DVal               ->at(j), weight); }
    if(jetVtx3DSig               ->size()>j){ h_jetVtx3DSig                [selbin][j][lepbin].Fill( jetVtx3DSig               ->at(j), weight); }
+
+   if(AODCaloJetPt              ->size()>j){ h_AODCaloJetPt                [selbin][j][lepbin].Fill( AODCaloJetPt             ->at(j), weight); }
+   if(AODCaloJetEta             ->size()>j){ h_AODCaloJetEta               [selbin][j][lepbin].Fill( AODCaloJetEta            ->at(j), weight); }
+   if(AODCaloJetPhi             ->size()>j){ h_AODCaloJetPhi               [selbin][j][lepbin].Fill( AODCaloJetPhi            ->at(j), weight); }
+   if(AODCaloJetAlphaMax        ->size()>j){ h_AODCaloJetAlphaMax          [selbin][j][lepbin].Fill( AODCaloJetAlphaMax       ->at(j), weight); }
+   if(AODCaloJetAlphaMax2       ->size()>j){ h_AODCaloJetAlphaMax2         [selbin][j][lepbin].Fill( AODCaloJetAlphaMax2      ->at(j), weight); }
+   if(AODCaloJetAlphaMaxPrime   ->size()>j){ h_AODCaloJetAlphaMaxPrime     [selbin][j][lepbin].Fill( AODCaloJetAlphaMaxPrime  ->at(j), weight); }
+   if(AODCaloJetAlphaMaxPrime2  ->size()>j){ h_AODCaloJetAlphaMaxPrime2    [selbin][j][lepbin].Fill( AODCaloJetAlphaMaxPrime2 ->at(j), weight); }
+   if(AODCaloJetBeta            ->size()>j){ h_AODCaloJetBeta              [selbin][j][lepbin].Fill( AODCaloJetBeta           ->at(j), weight); }
+   if(AODCaloJetBeta2           ->size()>j){ h_AODCaloJetBeta2             [selbin][j][lepbin].Fill( AODCaloJetBeta2          ->at(j), weight); }
 
    //if(isMC){
    // if(jetPartonID                ->size()>j){h_jetPartonID                 [selbin][j][lepbin].Fill( jetPartonID                ->at(j), weight ); } 
@@ -634,6 +683,16 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
   h_jetVtxNtrks                [selbin][j][lepbin].Write(); 
   h_jetVtx3DVal                [selbin][j][lepbin].Write(); 
   h_jetVtx3DSig                [selbin][j][lepbin].Write(); 
+  h_AODCaloJetPt               [selbin][j][lepbin].Write(); 
+  h_AODCaloJetEta              [selbin][j][lepbin].Write(); 
+  h_AODCaloJetPhi              [selbin][j][lepbin].Write(); 
+  h_AODCaloJetAlphaMax         [selbin][j][lepbin].Write(); 
+  h_AODCaloJetAlphaMax2        [selbin][j][lepbin].Write(); 
+  h_AODCaloJetAlphaMaxPrime    [selbin][j][lepbin].Write(); 
+  h_AODCaloJetAlphaMaxPrime2   [selbin][j][lepbin].Write(); 
+  h_AODCaloJetBeta             [selbin][j][lepbin].Write(); 
+  h_AODCaloJetBeta2            [selbin][j][lepbin].Write(); 
+
  }
 
  return kTRUE;
@@ -671,14 +730,14 @@ Bool_t analyzer_signal::initSigHistograms()
    TString hname_pfMET                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMET                  "; 
    TString hname_pfMETPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETPhi               "; 
    TString hname_pfMETsumEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETsumEt             "; 
-   TString hname_nPho                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho                   "; 
-   TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
-   TString hname_phoPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt                  "; 
-   TString hname_phoEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta                 "; 
-   TString hname_phoPhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi                 "; 
-   TString hname_phoSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEn                "; 
-   TString hname_phoSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCPhi               "; 
-   TString hname_phoSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEta               "; 
+   //TString hname_nPho                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho                   "; 
+   //TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
+   //TString hname_phoPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt                  "; 
+   //TString hname_phoEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta                 "; 
+   //TString hname_phoPhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi                 "; 
+   //TString hname_phoSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEn                "; 
+   //TString hname_phoSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCPhi               "; 
+   //TString hname_phoSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEta               "; 
    TString hname_nEle                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nEle                   "; 
    TString hname_elePt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePt                  "; 
    TString hname_eleEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleEn                  "; 
@@ -718,14 +777,14 @@ Bool_t analyzer_signal::initSigHistograms()
    h_pfMET                   [i][k] = initSingleHistogramTH1F( hname_pfMET                   , "pfMET                  ", 50, 0, 500) ;  
    h_pfMETPhi                [i][k] = initSingleHistogramTH1F( hname_pfMETPhi                , "pfMETPhi               ", 30, -5, 5); 
    h_pfMETsumEt              [i][k] = initSingleHistogramTH1F( hname_pfMETsumEt              , "pfMETsumEt             ", 50, 0, 500)  ;
-   h_nPho                    [i][k] = initSingleHistogramTH1F( hname_nPho                    , "nPho                   ", 10,0,10) ;  
-   h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
-   h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
-   h_phoEta                  [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
-   h_phoPhi                  [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
-   h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
-   h_phoSCPhi                [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
-   h_phoSCEta                [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
+   //h_nPho                    [i][k] = initSingleHistogramTH1F( hname_nPho                    , "nPho                   ", 10,0,10) ;  
+   //h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
+   //h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
+   //h_phoEta                  [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
+   //h_phoPhi                  [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
+   //h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
+   //h_phoSCPhi                [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
+   //h_phoSCEta                [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
    h_nEle                    [i][k] = initSingleHistogramTH1F( hname_nEle                    , "nEle                   ", 10,0,10) ; 
    h_elePt                   [i][k] = initSingleHistogramTH1F( hname_elePt                   , "elePt                  ", 50, 0, 500) ;  
    h_eleEn                   [i][k] = initSingleHistogramTH1F( hname_eleEn                   , "eleEn                  ", 50, 0, 500) ;  
@@ -753,6 +812,7 @@ Bool_t analyzer_signal::initSigHistograms()
    h_nSelectedEle [i][k] = initSingleHistogramTH1F( hname_nSelectedEle , "nSelectedEle", 10,0,10);
    h_nSelectedMuo [i][k] = initSingleHistogramTH1F( hname_nSelectedMuo , "nSelectedMuo", 10,0,10);
    h_nSelectedJet [i][k] = initSingleHistogramTH1F( hname_nSelectedJet , "nSelectedJet", 10,0,10);
+
   }
  }
 
@@ -774,7 +834,7 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  h_pfMET                   [selbin][lepbin] .Fill( pfMET      , weight);  
  h_pfMETPhi                [selbin][lepbin] .Fill( pfMETPhi   , weight);  
  h_pfMETsumEt              [selbin][lepbin] .Fill( pfMETsumEt , weight);  
- h_nPho                    [selbin][lepbin] .Fill( nPho       , weight);  
+ //h_nPho                    [selbin][lepbin] .Fill( nPho       , weight);  
  h_nEle                    [selbin][lepbin] .Fill( nEle       , weight);  
  h_nMu                     [selbin][lepbin] .Fill( nMu        , weight);  
  h_nJet                    [selbin][lepbin] .Fill( nJet       , weight);  
@@ -786,13 +846,13 @@ Bool_t analyzer_signal::fillSigHistograms(Double_t weight, int selbin, int lepbi
  h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo, weight);
  h_nSelectedJet            [selbin][lepbin] .Fill( nSelectedJet, weight);
 
- if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
- if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
- if(phoEta                 ->size()>0){ h_phoEta                  [selbin][lepbin] .Fill( phoEta                 ->at(0), weight ); } 
- if(phoPhi                 ->size()>0){ h_phoPhi                  [selbin][lepbin] .Fill( phoPhi                 ->at(0), weight ); } 
- if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
- if(phoSCPhi               ->size()>0){ h_phoSCPhi                [selbin][lepbin] .Fill( phoSCPhi               ->at(0), weight ); } 
- if(phoSCEta               ->size()>0){ h_phoSCEta                [selbin][lepbin] .Fill( phoSCEta               ->at(0), weight ); } 
+ //if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
+ //if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
+ //if(phoEta                 ->size()>0){ h_phoEta                  [selbin][lepbin] .Fill( phoEta                 ->at(0), weight ); } 
+ //if(phoPhi                 ->size()>0){ h_phoPhi                  [selbin][lepbin] .Fill( phoPhi                 ->at(0), weight ); } 
+ //if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
+ //if(phoSCPhi               ->size()>0){ h_phoSCPhi                [selbin][lepbin] .Fill( phoSCPhi               ->at(0), weight ); } 
+ //if(phoSCEta               ->size()>0){ h_phoSCEta                [selbin][lepbin] .Fill( phoSCEta               ->at(0), weight ); } 
  if(elePt                  ->size()>0){ h_elePt                   [selbin][lepbin] .Fill( elePt                  ->at(0), weight ); } 
  if(eleEn                  ->size()>0){ h_eleEn                   [selbin][lepbin] .Fill( eleEn                  ->at(0), weight ); } 
  if(eleEta                 ->size()>0){ h_eleEta                  [selbin][lepbin] .Fill( eleEta                 ->at(0), weight ); } 
@@ -1087,18 +1147,18 @@ Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
 
 }
 
-//-------------------------getPhotonPt
-Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
-
-      Float_t photonenergy = phoSCEn->at(idnr);
-      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
-      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
-
-      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
-
-  return phoPt;
-
-}
+////-------------------------getPhotonPt
+//Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
+//
+//      Float_t photonenergy = phoSCEn->at(idnr);
+//      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
+//      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+//
+//      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
+//
+//  return phoPt;
+//
+//}
 
 
 //-------------------------muon_passID
@@ -1172,15 +1232,15 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   bool pass_bit = eleIDbit->at(i) >> bitnr & 0x1 == 1;      
 
   bool pass_overlap = true;
-  // check overlap with photons
-  if(photon_list.size()>0){
-   for(int d=0; d<photon_list.size(); ++d){
-    int phoindex = photon_list[d];
-    if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
-     if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
-    }
-   }//end photons
-  } // if photons
+//  // check overlap with photons
+//  if(photon_list.size()>0){
+//   for(int d=0; d<photon_list.size(); ++d){
+//    int phoindex = photon_list[d];
+//    if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
+//     if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
+//    }
+//   }//end photons
+//  } // if photons
 
   //// isolation already in VID
   //bool pass_iso = elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -1206,21 +1266,21 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
   {
 
    bool pass_overlap = true;
-   // check overlap with photons
-   if(photon_list.size()>0){
-    for(int d=0; d<photon_list.size(); ++d){
-     int phoindex = photon_list[d];
-     if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
-      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ){
-       ////printf(" Jet   ");
-       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", jetPt->at(i), jetEta->at(i), jetPhi->at(i) );
-       //printf(" Photon");
-       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoPt->at(phoindex), phoPta->at(phoindex), phoPhi->at(phoindex) );
-       pass_overlap=false;
-      }
-     }
-    }//end photons
-   } // if photons
+//   // check overlap with photons
+//   if(photon_list.size()>0){
+//    for(int d=0; d<photon_list.size(); ++d){
+//     int phoindex = photon_list[d];
+//     if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){
+//      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), jetEta->at(i),jetPhi->at(i) ) < 0.4 ){
+//       ////printf(" Jet   ");
+//       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", jetPt->at(i), jetEta->at(i), jetPhi->at(i) );
+//       //printf(" Photon");
+//       //printf("  pt: %4.3f eta: %4.3f phi: %4.3f\n", phoPt->at(phoindex), phoPta->at(phoindex), phoPhi->at(phoindex) );
+//       pass_overlap=false;
+//      }
+//     }
+//    }//end photons
+//   } // if photons
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
@@ -1244,10 +1304,10 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
 
-   //bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
+   bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
               
-   //if( pass_id && pass_kin && pass_overlap && pass_signal)
-   if( pass_id && pass_kin && pass_overlap )
+   //if( pass_id && pass_kin && pass_overlap )
+   if( pass_id && pass_kin && pass_overlap && pass_signal)
    {
     //printf(" a selected jet\n");
     nSelectedJet++;
@@ -1263,33 +1323,98 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
 //-------------------------photon_passLooseID
 std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname){
 
- std::vector<int> pholist;
- pholist.clear();
-
- //Loop over photons                   
- for(int p=0;p<nPho;p++)
- {    
-  Float_t thephoPt = getPhotonPt(p,sysbinname);
-  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
-  Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
-
-  //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
-  bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
-
-  bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
-  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
-
-  if( kinematic && pass_bit){
-   nSelectedPho++;
-   //printf("selected aphoton\n");
-   pholist.push_back(p);
-  }    
- }    
-
- return pholist;
+// std::vector<int> pholist;
+// pholist.clear();
+//
+// //Loop over photons                   
+// for(int p=0;p<nPho;p++)
+// {    
+//  Float_t thephoPt = getPhotonPt(p,sysbinname);
+//  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
+//  Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
+//
+//  //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
+//  bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
+//
+//  bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+//  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
+//
+//  if( kinematic && pass_bit){
+//   nSelectedPho++;
+//   //printf("selected aphoton\n");
+//   pholist.push_back(p);
+//  }    
+// }    
+//
+// return pholist;
 
 }
 
+//-------------------------jet_matchToMiniAOD
+std::vector<int> analyzer_signal::jet_matchToMiniAOD( TString jettype ){
+
+  std::vector<int> tmpAODjetlist;
+
+  // loop over miniAOD jet list (already passed selections)
+  int lengthjets = (int)jet_list.size();
+  for(int i = 0; i < lengthjets; i++)
+  {
+
+   // find index corresponding to miniAOD jet
+   int jetindex = jet_list[i];
+   // miniAOD jet parameters
+   float miniAODjetPt  = jetPt->at(jetindex); 
+   float miniAODjetEta = jetEta->at(jetindex); 
+   float miniAODjetPhi = jetPhi->at(jetindex); 
+
+   // initialize AOD jet parameters
+   float AODjetPt;
+   float AODjetEta;
+   float AODjetPhi;
+
+   // loop over AOD jets and look for match via deltaR
+   int nAODjets;
+   if( jettype=="calo" ){nAODjets = (int)AODCaloJetPt->size();}
+   //if( jettype=="calo" ){nAODjets = (int)AODPFJetPt->size();} // do other jets
+   //if( jettype=="calo" ){nAODjets = (int)AODPFchsJetPt->size();}
+   for( int j = 0; j<nAODjets; j++ ) {
+
+    if( jettype=="calo" ){
+     AODjetPt  = AODCaloJetPt ->at(j) ;
+     AODjetEta = AODCaloJetEta->at(j) ;
+     AODjetPhi = AODCaloJetPhi->at(j) ;
+    }
+
+//    printf(" miniAOD: %f %f %f\n",
+//     miniAODjetPt , 
+//     miniAODjetEta, 
+//     miniAODjetPhi );
+//
+//    printf(" AOD:     %f %f %f\n\n",
+//     AODjetPt , 
+//     AODjetEta, 
+//     AODjetPhi );
+
+    //AODPFJetPt     
+    //AODPFJetEta    
+    //AODPFJetPhi    
+
+    //AODPFchsJetPt  
+    //AODPFchsJetEta 
+    //AODPFchsJetPhi 
+
+    // if find match (AOD,miniAOD), add AODjet to list, break loop over AOD jets 
+    // still have loop over miniAOD jets, so keep going and find next one
+    if( dR( miniAODjetEta, miniAODjetPhi, AODjetEta, AODjetPhi) < drcut ) {  
+       tmpAODjetlist.push_back(j); break;
+    }
+
+   }
+  }
+
+  return tmpAODjetlist;
+
+}
 
  //-------------------------makeDilep
  void analyzer_signal::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
@@ -1417,10 +1542,10 @@ void analyzer_signal::debug_printobjects(){
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
   if(dilep_mass>0.){printf(" Dilep Found\n");}
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
-  }
+//  for(int i=0; i<photon_list.size(); ++i){
+//   int phoindex = photon_list[i];
+//   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
+//  }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
