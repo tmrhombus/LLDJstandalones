@@ -10,6 +10,8 @@
 
 #include "vector"
 
+//#include "DataFormats/Math/interface/deltaR.h"
+
 class analyzer_base {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -25,38 +27,39 @@ public :
    // MC and Data
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // Declaration of leaf types
-   Int_t                 run;
-   Long64_t              event;
-   Int_t                 lumis;
-   Bool_t                isData;
-   Int_t                 nVtx;
-   Int_t                 nGoodVtx;
-   Int_t                 nTrksPV;
-   Bool_t                isPVGood;
-   Float_t               vtx;
-   Float_t               vty;
-   Float_t               vtz;
-   Float_t               rho;
-   Float_t               rhoCentral;
-   Int_t                 nTruePU;
-   ULong64_t             HLT_Ele23Loose;
-   ULong64_t             HLT_Ele27Tight;
-   ULong64_t             HLT_Ele17Ele12;
-   ULong64_t             HLT_Ele23Ele12;
-   ULong64_t             HLT_IsoMu22;
-   ULong64_t             HLT_IsoTkMu22;
-   ULong64_t             HLT_Mu17Mu8;
-   ULong64_t             HLT_Mu17TkMu8;
-   Int_t                 nPho;
-   std::vector<float>   *phoSCRawE;//old delete later
+   Int_t           run;
+   Long64_t        event;
+   Int_t           lumis;
+   Bool_t          isData;
+   Int_t           nVtx;
+   Int_t           nGoodVtx;
+   Int_t           nTrksPV;
+   Bool_t          isPVGood;
+   Float_t         vtx;
+   Float_t         vty;
+   Float_t         vtz;
+   Float_t         rho;
+   Float_t         rhoCentral;
+   Int_t           nTruePU;
+   ULong64_t       HLT_Ele23Loose;
+   ULong64_t       HLT_Ele27Tight;
+   ULong64_t       HLT_Ele17Ele12;
+   ULong64_t       HLT_Ele23Ele12;
+   ULong64_t       HLT_IsoMu22;
+   ULong64_t       HLT_IsoTkMu22;
+   ULong64_t       HLT_Mu17Mu8;
+   ULong64_t       HLT_Mu17TkMu8;
+   Int_t           nEle;
+//   Int_t                 nPho;
+//   std::vector<float>   *phoSCRawE;//old delete later
 //   std::vector<float>   *phoPt;
 //   std::vector<float>   *phoEn;
-   std::vector<float>   *phoEta;
-   std::vector<float>   *phoPhi;
+//   std::vector<float>   *phoEta;
+//   std::vector<float>   *phoPhi;
 //   std::vector<float>   *phoSCEn;
-   std::vector<float>   *phoSCEta;
-   std::vector<float>   *phoSCPhi;
-   std::vector<unsigned short> *phoIDbit;
+//   std::vector<float>   *phoSCEta;
+//   std::vector<float>   *phoSCPhi;
+//   std::vector<unsigned short> *phoIDbit;
 //   std::vector<float>   *phoIDMVA;
 //   std::vector<float>   *phoObjPFChIso;
 //   std::vector<float>   *phoObjPFPhoIso;
@@ -100,7 +103,7 @@ public :
    std::vector<int>     *muIsGlobalMuon;
    std::vector<int>     *muIsPFMuon;
    std::vector<float>   *muPFdBetaIsolation;
-   Int_t                 nJet;
+   Int_t           nJet;
    std::vector<float>   *jetPt;
    std::vector<float>   *jetEn;
    std::vector<float>   *jetEta;
@@ -145,66 +148,112 @@ public :
    std::vector<float>   *jetP4SmearUp;
    std::vector<float>   *jetP4SmearDo;
    std::vector<unsigned int> *jetFiredTrgs;
-   std::vector<float>        *jetAlphaD;
-   std::vector<float>        *jetAlphaMaxD;
-   std::vector<float>        *jetSumIP;
-   std::vector<float>        *jetSumIPSig;
-   std::vector<float>        *jetLog10IPSig;
-   std::vector<float>        *jetMedianLog10IPSig;
-   std::vector<float>        *jetTrackAngle;
-   std::vector<float>        *jetLogTrackAngle;
-   std::vector<float>        *jetMedianLogTrackAngle;
-   std::vector<float>        *jetTotalTrackAngle;
-   std::vector<float>        *jetAlphaMax;
-   std::vector<float>        *jetAlphaMax2;
-   std::vector<float>        *jetAlphaMaxP;
-   std::vector<float>        *jetAlphaMaxP2;
-   std::vector<float>        *jetDauVertex_x;
-   std::vector<float>        *jetDauVertex_y;
-   std::vector<float>        *jetDauVertex_z;
-   std::vector<float>        *jetDauVertex_r;
-   std::vector<float>        *alphaMax_jetDauVertex_r;
-   std::vector<float>        *jetAlphaMax_PV3onPV2;
-   std::vector<float>        *jetAlphaMax_PV3onNeu;
-   std::vector<float>        *jetAlphaMax_PV3onAll;
-   std::vector<float>        *jetAlphaMax_PV2onNeu;
-   std::vector<float>        *jetAlphaMax_PV2onAll;
-   std::vector<float>        *jetAlpha2Max_PV3onPV2;
-   std::vector<float>        *jetAlpha2Max_PV3onNeu;
-   std::vector<float>        *jetAlpha2Max_PV3onAll;
-   std::vector<float>        *jetAlpha2Max_PV2onNeu;
-   std::vector<float>        *jetAlpha2Max_PV2onAll;
+   std::vector<float>   *jetAlphaD;
+   std::vector<float>   *jetAlphaMaxD;
+   std::vector<float>   *jetSumIP;
+   std::vector<float>   *jetSumIPSig;
+   std::vector<float>   *jetLog10IPSig;
+   std::vector<float>   *jetMedianLog10IPSig;
+   std::vector<float>   *jetTrackAngle;
+   std::vector<float>   *jetLogTrackAngle;
+   std::vector<float>   *jetMedianLogTrackAngle;
+   std::vector<float>   *jetTotalTrackAngle;
+   std::vector<float>   *jetAlphaMax;
+   std::vector<float>   *jetAlphaMax2;
+   std::vector<float>   *jetAlphaMaxP;
+   std::vector<float>   *jetAlphaMaxP2;
+   std::vector<float>   *jetDauVertex_x;
+   std::vector<float>   *jetDauVertex_y;
+   std::vector<float>   *jetDauVertex_z;
+   std::vector<float>   *jetDauVertex_r;
+   std::vector<float>   *alphaMax_jetDauVertex_r;
+   std::vector<float>   *jetAlphaMax_PV3onPV2;
+   std::vector<float>   *jetAlphaMax_PV3onNeu;
+   std::vector<float>   *jetAlphaMax_PV3onAll;
+   std::vector<float>   *jetAlphaMax_PV2onNeu;
+   std::vector<float>   *jetAlphaMax_PV2onAll;
+   std::vector<float>   *jetAlpha2Max_PV3onPV2;
+   std::vector<float>   *jetAlpha2Max_PV3onNeu;
+   std::vector<float>   *jetAlpha2Max_PV3onAll;
+   std::vector<float>   *jetAlpha2Max_PV2onNeu;
+   std::vector<float>   *jetAlpha2Max_PV2onAll;
    std::vector<std::vector<float> > *jetTrackPt;
    std::vector<std::vector<float> > *jetTrackEta;
    std::vector<std::vector<float> > *jetTrackPhi;
-   std::vector<std::vector<int> >   *jetTrackPDGID;
-   std::vector<std::vector<int> >   *jetTrackMomPDGID;
-   std::vector<float>               *jetGenJetEn;
-   std::vector<float>               *jetGenJetPt;
-   std::vector<float>               *jetGenJetEta;
-   std::vector<float>               *jetGenJetPhi;
-   std::vector<int>                 *jetGenPartonID;
-   std::vector<float>               *jetGenEn;
-   std::vector<float>               *jetGenPt;
-   std::vector<float>               *jetGenEta;
-   std::vector<float>               *jetGenPhi;
-   std::vector<int>                 *jetGenPartonMomID;
-   Int_t                             metFilters;
-   Float_t                           pfMET;
-   Float_t                           pfMETPhi;
-   Float_t                           pfMETsumEt;
-   Float_t                           pfMETmEtSig;
-   Float_t                           pfMETSig;
-   Float_t                           pfMET_T1JERUp;
-   Float_t                           pfMET_T1JERDo;
-   Float_t                           pfMET_T1JESUp;
-   Float_t                           pfMET_T1JESDo;
-   Float_t                           pfMET_T1UESUp;
-   Float_t                           pfMET_T1UESDo;
-   Float_t                           pfMETPhi_T1JESUp;
-   Float_t                           pfMETPhi_T1JESDo;
-   Float_t                           pfMETPhi_T1UESUp;
-   Float_t                           pfMETPhi_T1UESDo;
+   std::vector<std::vector<int> > *jetTrackPDGID;
+   std::vector<std::vector<int> > *jetTrackMomPDGID;
+   std::vector<float>   *jetGenJetEn;
+   std::vector<float>   *jetGenJetPt;
+   std::vector<float>   *jetGenJetEta;
+   std::vector<float>   *jetGenJetPhi;
+   std::vector<int>     *jetGenPartonID;
+   std::vector<float>   *jetGenEn;
+   std::vector<float>   *jetGenPt;
+   std::vector<float>   *jetGenEta;
+   std::vector<float>   *jetGenPhi;
+   std::vector<int>     *jetGenPartonMomID;
+   Int_t           AODnCaloJet;
+   std::vector<float>   *AODCaloJetPt;
+   std::vector<float>   *AODCaloJetEta;
+   std::vector<float>   *AODCaloJetPhi;
+   std::vector<float>   *AODCaloJetAlphaMax;
+   std::vector<float>   *AODCaloJetAlphaMax2;
+   std::vector<float>   *AODCaloJetAlphaMaxPrime;
+   std::vector<float>   *AODCaloJetAlphaMaxPrime2;
+   std::vector<float>   *AODCaloJetBeta;
+   std::vector<float>   *AODCaloJetBeta2;
+   std::vector<float>   *AODCaloJetSumIP;
+   std::vector<float>   *AODCaloJetSumIPSig;
+   std::vector<float>   *AODCaloJetLog10IPSig;
+   std::vector<float>   *AODCaloJetMedianLog10IPSig;
+   std::vector<float>   *AODCaloJetTrackAngle;
+   std::vector<float>   *AODCaloJetLogTrackAngle;
+   std::vector<float>   *AODCaloJetMedianLogTrackAngle;
+   std::vector<float>   *AODCaloJetTotalTrackAngle;
+   Int_t           AODnPFJet;
+   std::vector<float>   *AODPFJetPt;
+   std::vector<float>   *AODPFJetEta;
+   std::vector<float>   *AODPFJetPhi;
+   std::vector<float>   *AODPFJetAlphaMax;
+   std::vector<float>   *AODPFJetSumIP;
+   std::vector<float>   *AODPFJetSumIPSig;
+   std::vector<float>   *AODPFJetLog10IPSig;
+   std::vector<float>   *AODPFJetMedianLog10IPSig;
+   std::vector<float>   *AODPFJetTrackAngle;
+   std::vector<float>   *AODPFJetLogTrackAngle;
+   std::vector<float>   *AODPFJetMedianLogTrackAngle;
+   std::vector<float>   *AODPFJetTotalTrackAngle;
+   Int_t           AODnPFchsJet;
+   std::vector<float>   *AODPFchsJetPt;
+   std::vector<float>   *AODPFchsJetEta;
+   std::vector<float>   *AODPFchsJetPhi;
+   std::vector<float>   *AODPFchsJetAlphaMax;
+   std::vector<float>   *AODPFchsJetSumIP;
+   std::vector<float>   *AODPFchsJetSumIPSig;
+   std::vector<float>   *AODPFchsJetLog10IPSig;
+   std::vector<float>   *AODPFchsJetMedianLog10IPSig;
+   std::vector<float>   *AODPFchsJetTrackAngle;
+   std::vector<float>   *AODPFchsJetLogTrackAngle;
+   std::vector<float>   *AODPFchsJetMedianLogTrackAngle;
+   std::vector<float>   *AODPFchsJetTotalTrackAngle;
+   Float_t         genMET;
+   Float_t         genMETPhi;
+   Int_t           metFilters;
+   Float_t         pfMET;
+   Float_t         pfMETPhi;
+   Float_t         pfMETsumEt;
+   Float_t         pfMETmEtSig;
+   Float_t         pfMETSig;
+   Float_t         pfMET_T1JERUp;
+   Float_t         pfMET_T1JERDo;
+   Float_t         pfMET_T1JESUp;
+   Float_t         pfMET_T1JESDo;
+   Float_t         pfMET_T1UESUp;
+   Float_t         pfMET_T1UESDo;
+   Float_t         pfMETPhi_T1JESUp;
+   Float_t         pfMETPhi_T1JESDo;
+   Float_t         pfMETPhi_T1UESUp;
+   Float_t         pfMETPhi_T1UESDo;
 
    // List of branches
    TBranch        *b_run;   //!
@@ -229,16 +278,16 @@ public :
    TBranch        *b_HLT_IsoTkMu22;   //!
    TBranch        *b_HLT_Mu17Mu8;   //!
    TBranch        *b_HLT_Mu17TkMu8;   //!
-   TBranch        *b_phoSCRawE;   //! old delete
-   TBranch        *b_nPho;   //!
+//   TBranch        *b_phoSCRawE;   //! old delete
+//   TBranch        *b_nPho;   //!
 //   TBranch        *b_phoPt;   //!
 //   TBranch        *b_phoEn;   //!
-   TBranch        *b_phoEta;   //!
-   TBranch        *b_phoPhi;   //!
+//   TBranch        *b_phoEta;   //!
+//   TBranch        *b_phoPhi;   //!
 //   TBranch        *b_phoSCEn;   //!
-   TBranch        *b_phoSCEta;   //!
-   TBranch        *b_phoSCPhi;   //!
-   TBranch        *b_phoIDbit;   //!
+//   TBranch        *b_phoSCEta;   //!
+//   TBranch        *b_phoSCPhi;   //!
+//   TBranch        *b_phoIDbit;   //!
 //   TBranch        *b_phoIDMVA;   //!
 //   TBranch        *b_phoObjPFChIso;   //!
 //   TBranch        *b_phoObjPFPhoIso;   //!
@@ -371,6 +420,52 @@ public :
    TBranch        *b_jetGenEta;   //!
    TBranch        *b_jetGenPhi;   //!
    TBranch        *b_jetGenPartonMomID;   //!
+   TBranch        *b_AODnCaloJet;   //!
+   TBranch        *b_AODCaloJetPt;   //!
+   TBranch        *b_AODCaloJetEta;   //!
+   TBranch        *b_AODCaloJetPhi;   //!
+   TBranch        *b_AODCaloJetAlphaMax;   //!
+   TBranch        *b_AODCaloJetAlphaMax2;   //!
+   TBranch        *b_AODCaloJetAlphaMaxPrime;   //!
+   TBranch        *b_AODCaloJetAlphaMaxPrime2;   //!
+   TBranch        *b_AODCaloJetBeta;   //!
+   TBranch        *b_AODCaloJetBeta2;   //!
+   TBranch        *b_AODCaloJetSumIP;   //!
+   TBranch        *b_AODCaloJetSumIPSig;   //!
+   TBranch        *b_AODCaloJetLog10IPSig;   //!
+   TBranch        *b_AODCaloJetMedianLog10IPSig;   //!
+   TBranch        *b_AODCaloJetTrackAngle;   //!
+   TBranch        *b_AODCaloJetLogTrackAngle;   //!
+   TBranch        *b_AODCaloJetMedianLogTrackAngle;   //!
+   TBranch        *b_AODCaloJetTotalTrackAngle;   //!
+   TBranch        *b_AODnPFJet;   //!
+   TBranch        *b_AODPFJetPt;   //!
+   TBranch        *b_AODPFJetEta;   //!
+   TBranch        *b_AODPFJetPhi;   //!
+   TBranch        *b_AODPFJetAlphaMax;   //!
+   TBranch        *b_AODPFJetSumIP;   //!
+   TBranch        *b_AODPFJetSumIPSig;   //!
+   TBranch        *b_AODPFJetLog10IPSig;   //!
+   TBranch        *b_AODPFJetMedianLog10IPSig;   //!
+   TBranch        *b_AODPFJetTrackAngle;   //!
+   TBranch        *b_AODPFJetLogTrackAngle;   //!
+   TBranch        *b_AODPFJetMedianLogTrackAngle;   //!
+   TBranch        *b_AODPFJetTotalTrackAngle;   //!
+   TBranch        *b_AODnPFchsJet;   //!
+   TBranch        *b_AODPFchsJetPt;   //!
+   TBranch        *b_AODPFchsJetEta;   //!
+   TBranch        *b_AODPFchsJetPhi;   //!
+   TBranch        *b_AODPFchsJetAlphaMax;   //!
+   TBranch        *b_AODPFchsJetSumIP;   //!
+   TBranch        *b_AODPFchsJetSumIPSig;   //!
+   TBranch        *b_AODPFchsJetLog10IPSig;   //!
+   TBranch        *b_AODPFchsJetMedianLog10IPSig;   //!
+   TBranch        *b_AODPFchsJetTrackAngle;   //!
+   TBranch        *b_AODPFchsJetLogTrackAngle;   //!
+   TBranch        *b_AODPFchsJetMedianLogTrackAngle;   //!
+   TBranch        *b_AODPFchsJetTotalTrackAngle;   //!
+   TBranch        *b_genMET;   //!
+   TBranch        *b_genMETPhi;   //!
    TBranch        *b_metFilters;   //!
    TBranch        *b_pfMET;   //!
    TBranch        *b_pfMETPhi;   //!
@@ -388,16 +483,6 @@ public :
    TBranch        *b_pfMETPhi_T1UESUp;   //!
    TBranch        *b_pfMETPhi_T1UESDo;   //!
 
-
-   //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
-   // MC  (Hen)
-   //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
-   // Declaration of leaf types
-   Float_t         genMET;
-   Float_t         genMETPhi;
-   TBranch        *b_genMET;   //!
-   TBranch        *b_genMETPhi;   //!
-
    //analyzer_base(TTree *tree=0);
    analyzer_base();
    virtual ~analyzer_base();
@@ -408,4 +493,3 @@ public :
 };
 
 #endif
-

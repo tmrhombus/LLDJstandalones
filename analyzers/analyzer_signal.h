@@ -1,4 +1,3 @@
-
 #ifndef analyzer_signal_h
 #define analyzer_signal_h
 
@@ -42,6 +41,8 @@ public :
  std::vector<int>     muon_passID    ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
  std::vector<int>     jet_passID     ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
+ std::vector<int>     jet_matchToMiniAOD( TString jettype="" );
+
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
  Float_t          getMuonPt(int i, TString sysbinname);
@@ -81,6 +82,10 @@ public :
  std::vector<int> muon_list_t ;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
+
+ std::vector<int> AODcalojet_list;
+ std::vector<int> AODPFjet_list;
+ std::vector<int> AODPFchsjet_list;
 
  TString phoid;
  TString eleid;
@@ -163,6 +168,11 @@ public :
  Int_t nSelectedMuo;
  Int_t nSelectedJet;
 
+ // AOD
+ int nmatched;
+ int nunmatched;
+ float drcut;
+
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
@@ -191,7 +201,6 @@ public :
  TH1F  h_nSelectedEle             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedMuo             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedJet             [SELBINNAMESIZE][LEPBINNAMESIZE];
-
 
  TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -278,6 +287,24 @@ public :
  TH1F  h_jetVtxNtrks                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_jetVtx3DVal                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_jetVtx3DSig                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+
+ TH1F  h_AODCaloJetPt                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetEta                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetPhi                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetAlphaMax            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetAlphaMax2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetAlphaMaxPrime       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetAlphaMaxPrime2      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetBeta                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODCaloJetBeta2               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+
+ TH1F  h_AODPFJetPt                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODPFJetEta                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODPFJetPhi                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+
+ TH1F  h_AODPFchsJetPt                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODPFchsJetEta                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
+ TH1F  h_AODPFchsJetPhi                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
 
 };
 

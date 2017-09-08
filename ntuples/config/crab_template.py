@@ -17,7 +17,7 @@ if __name__ == '__main__':
     config.General.transferLogs       = False
     config.JobType.pluginName         = 'Analysis' # PrivateMC
     config.JobType.psetName           = CMSRUNCONFIG
-    config.JobType.inputFiles         = [INPUTFILES]
+    #config.JobType.inputFiles         = [INPUTFILES]
     config.JobType.sendExternalFolder = True
     config.JobType.maxMemoryMB        = MAXMEM
     config.Data.inputDBS              = 'global'    
@@ -25,6 +25,8 @@ if __name__ == '__main__':
     config.Data.totalUnits            = NUNITS
     config.Data.publication           = False
     config.Site.storageSite           = STORESITE
+
+    config.Data.useParent             = True
 
     def submit(config):
         try:

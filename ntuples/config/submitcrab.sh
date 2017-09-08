@@ -33,6 +33,18 @@ printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${the
 thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names to run over
+samples=( \
+  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
+  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
+  "ggZH_HSSbbbb_MS_40_ctauS_10000" \
+  "ggZH_HSSbbbb_MS_40_ctauS_1000"  \
+  "ggZH_HSSbbbb_MS_40_ctauS_100"   \
+  "ggZH_HSSbbbb_MS_40_ctauS_10"    \
+  "ggZH_HSSbbbb_MS_40_ctauS_1"     \
+)
+
+#  "Data_SingleMu_H_3"    \
+#  "Data_SingleMu_H_2"    \
 #  "Data_SingleMu_G"      \
 #  "Data_SingleMu_F"      \
 #  "Data_SingleMu_E"      \
@@ -46,7 +58,9 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 #  "Data_SingleEle_F"     \
 #  "Data_SingleEle_E"     \
 #  "Data_SingleEle_D"     \
-
+#  "Data_SingleEle_C"     \
+#  "Data_SingleEle_B_2"   \
+#  "Data_SingleEle_B_1"   \
 #  "GJets_HT100to200_1" \
 #  "GJets_HT100to200_2" \
 #  "GJets_HT200to400_1" \
@@ -54,8 +68,7 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 #  "GJets_HT400to600_1" \
 #  "GJets_HT400to600_2" \
 #  "GJets_HT600toInf_1" \
-
-#  "TTtoLL_2"              \
+#  "TTtoLL_2"             \
 #  "TTtoLfromT_1"         \
 #  "TTtoLfromT_2"         \
 #  "TTtoLfromTbar_1"      \
@@ -79,44 +92,29 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 #  "ZZToLLQQ"             \
 #  "ZZToLLNuNu"           \
 #  "ZZToLLLL"             \
+#  "GJets_HT40to100_1"  \
+#  "GJets_HT40to100_2"  \
+#  "GJets_HT600toInf_2" \
+#  "DY50_1"             \
+#  "DY50_2"             \
+#  "DY5to50_HT70to100"    \    
+#  "DY5to50_HT100to200_1" \
+#  "DY5to50_HT100to200_2" \
+#  "DY5to50_HT200to400_1" \
+#  "DY5to50_HT200to400_2" \
+#  "DY5to50_HT400to600_1" \
+#  "DY5to50_HT400to600_2" \
+#  "DY5to50_HT600toInf_1" \
+#  "DY5to50_HT600toInf_2" \
+#  "TTtoLL_1"              \
+#  "WG"                   \
+#  "ZG"                   \
+#  "ZH_Hbb_1"             \
+#  "ZH_Hbb_2"             \
+#  "ggZH_Hbb_1"           \
+#  "ggZH_Hbb_2"           \
+#  "ggZH_Hbb_3"           \
 
-
-samples=( \
-  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
-  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
-  "ggZH_HSSbbbb_MS_40_ctauS_10000" \
-  "ggZH_HSSbbbb_MS_40_ctauS_1000"  \
-  "ggZH_HSSbbbb_MS_40_ctauS_100"   \
-  "ggZH_HSSbbbb_MS_40_ctauS_10"    \
-  "ggZH_HSSbbbb_MS_40_ctauS_1"     \
-  "Data_SingleMu_H_3"    \
-  "Data_SingleMu_H_2"    \
-  "Data_SingleEle_C"     \
-  "Data_SingleEle_B_2"   \
-  "Data_SingleEle_B_1"   \
-  "GJets_HT40to100_1"  \
-  "GJets_HT40to100_2"  \
-  "GJets_HT600toInf_2" \
-  "DY50_1"             \
-  "DY50_2"             \
-  "DY5to50_HT70to100"    \    
-  "DY5to50_HT100to200_1" \
-  "DY5to50_HT100to200_2" \
-  "DY5to50_HT200to400_1" \
-  "DY5to50_HT200to400_2" \
-  "DY5to50_HT400to600_1" \
-  "DY5to50_HT400to600_2" \
-  "DY5to50_HT600toInf_1" \
-  "DY5to50_HT600toInf_2" \
-  "TTtoLL_1"              \
-  "WG"                   \
-  "ZG"                   \
-  "ZH_Hbb_1"             \
-  "ZH_Hbb_2"             \
-  "ggZH_Hbb_1"           \
-  "ggZH_Hbb_2"           \
-  "ggZH_Hbb_3"           \
-)
 
 # print which samples we're running over
 printf "For:\n"
@@ -148,11 +146,11 @@ do
  WORKAREA="'crabsubmits_${nversion}'"
 
  CMSRUNCONFIG="'run_mc_80X.py'" 
- INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
+ #INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  if [[ "${samplename:0:4}" == "Data" ]]
  then
   CMSRUNCONFIG="'run_data_80X.py'" 
-  INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
+  #INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  fi
 
  NUNITS="-1"
@@ -172,7 +170,7 @@ do
 
  printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
- printf "INPUTFILES    ${INPUTFILES}   \n" 
+ #printf "INPUTFILES    ${INPUTFILES}   \n" 
  printf "NUNITS        ${NUNITS}       \n" 
  printf "UPERJOB       ${UPERJOB}      \n" 
  printf "SPLITTING     ${SPLITTING}    \n" 
@@ -186,7 +184,7 @@ do
  cp ${subdir}/crab_template.py             "${submitfile}"
  sed -i "s@WORKAREA@${WORKAREA}@g"         "${submitfile}"
  sed -i "s@CMSRUNCONFIG@${CMSRUNCONFIG}@g" "${submitfile}" 
- sed -i "s@INPUTFILES@${INPUTFILES}@g"     "${submitfile}" 
+ #sed -i "s@INPUTFILES@${INPUTFILES}@g"     "${submitfile}" 
  sed -i "s@NUNITS@${NUNITS}@g"             "${submitfile}" 
  sed -i "s@UPERJOB@${UPERJOB}@g"           "${submitfile}" 
  sed -i "s@SPLITTING@${SPLITTING}@g"       "${submitfile}" 

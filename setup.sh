@@ -1,8 +1,15 @@
 #!/bin/bash
 
-export nversion="sosou"
+export nversion="amaxtime"
+#export nversion="sosou"
 #export aversion="laug"
-export aversion="agl_tight"
+
+#export aversion="tw9_loose"
+#export aversion="tw9_tight"
+#export aversion="tw9_cutflowDY_loose"
+export aversion="t3dy_cutflowDY_loose"
+
+#export aversion="agl_tight"
 #export aversion="laug_med"
 #export aversion="laug_loose"
 #export aversion="laug_tight_noelsf" 

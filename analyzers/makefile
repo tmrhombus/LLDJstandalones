@@ -4,6 +4,7 @@ CXXDEPFLAGS = -MMD -MP
 
 all: main
 
+#main:  analyzer_base.o analyzer_signal.o analyzer_AODjets.o main.C 
 main:  analyzer_base.o analyzer_signal.o main.C 
 	g++ --std=c++11 $^ -o runanalyzer.exe ${ROOTFLAGS} ${CXXDEPFLAGS}
 
