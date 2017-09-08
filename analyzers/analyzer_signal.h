@@ -189,7 +189,9 @@ public :
  TH2F histoTH2F;
 
  // // 2D
- // TH2F h_nvertnjets[SELBINNAMESIZE];
+ TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH2F h_IpVjetPt                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH2F h_AlphaVjetPt               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // // 1D
  // General / leading
@@ -211,11 +213,11 @@ public :
  TH1F  h_pfMETPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_pfMETsumEt               [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nPho                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+// TH1F  h_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+// TH1F  h_phoPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_phoEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_phoPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+// TH1F  h_phoSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_phoSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_phoSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nEle                     [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -227,8 +229,8 @@ public :
  TH1F  h_eleSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_eleSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_eleSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
+// TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
+// TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_elePFdBetaIsolationDiff  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  TH1F  h_nMu                     [SELBINNAMESIZE][LEPBINNAMESIZE];
