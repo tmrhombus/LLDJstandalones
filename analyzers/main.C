@@ -159,9 +159,15 @@ int main(int argc, char **argv){
   //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
-  //if( Tinputline.Contains("/home/rhombus") ){
+  if( Tinputline.Contains("/home/rhombus") ){
+   theChain->Add( Tinputline );
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
-  //  theChain->Add( Tinputline );
+  //if( Tinputline.Contains("/uscms/home") ){
+  // theChain->Add( Tinputline );
+  // printf("Inputfile: %s\n",Tinputline.Data());
+  //}
 
   if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
    theChain->Add( Tinputline );
@@ -169,21 +175,16 @@ int main(int argc, char **argv){
   }
 
   if( Tinputline.Contains("/store/user") ){
-
-// 5/11  if( Tinputline.Contains("/store/group") ){
-  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
-  theChain->Add( Tinputline );
-  printf("Inputfile: %s\n",Tinputline.Data());
+    theChain->Add( "/hdfs"+Tinputline );
+    //theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  // }
+   printf("Inputfile: %s\n",Tinputline.Data());
+  }
 
   // if( dolocal ){
   //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
   // }
-  // else{
-    theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
-  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-  // }
-  // printf("Inputfile: %s\n",Tinputline.Data());
-  }
 
 
   inputline_dump.push_back(inputline);
@@ -226,7 +227,7 @@ int main(int argc, char **argv){
  } //while !inputfile.eof()
 
  printf("  lumi: %f\n\n",lumi);
-//****important
+
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
  analyzer.initSigHistograms();
