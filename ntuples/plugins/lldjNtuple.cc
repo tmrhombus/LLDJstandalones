@@ -109,7 +109,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  fillMuons(e, vtx); //muons use vtx for isolation
 
  fillJets(e,es);
- fillMET(e, es);
+ // fillMET(e, es);
 
  hEvents_->Fill(1.);
  tree_->Fill();
