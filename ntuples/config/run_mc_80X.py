@@ -80,7 +80,6 @@ process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 ### EGM 80X regression
 from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
 process = regressionWeights(process)
-process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 
 # Some proesses need random numbers, calculate using TRandom3 - Mersenne Twister
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -94,13 +93,13 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                      engineName = cms.untracked.string('TRandom3')
                                      )
 )
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 
 # correct scale (data) or smear resolution (MC) 
 process.calibratedPatElectrons.isMC = cms.bool(True)
 process.calibratedPatPhotons.isMC = cms.bool(True)
-
 
 ##########################################################################################
 # Electron / Photon Versioned ID
@@ -117,8 +116,8 @@ eleid_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElect
                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
     
-phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff',
-                 'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
+phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
+                 #'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
 
 #add them to the VID producer
 for idmod in eleid_modules:
@@ -138,23 +137,34 @@ process.selectedPhotons = cms.EDFilter("PATPhotonSelector",
     cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
 )
 
-# say which collections to run on 
+# load electron/photon ID configurations
+# we've modified this from the standard ID producer
+# to manually specify AOD/miniAOD
 process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
 process.load("RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi")
 
-# 
+# photon ID (set AOD="" to ensure error if misconfigured)
+
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons','','LLDJ')
 process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons','','LLDJ')
 
-process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
-process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+# we don't use MVA ID now, but maybe some time 
+# process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+# process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+# process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+# process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
 
-process.electronIDValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
-process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+process.electronIDValueMapProducer.src = cms.InputTag("") # make it give error if misconfigured
 process.photonIDValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
-process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
+process.photonIDValueMapProducer.isAOD=cms.bool(False)
+
+process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+
+#process.electronIDValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+#process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+#process.photonIDValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
+#process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
 
 ### ##process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
 ### ##process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
@@ -202,13 +212,12 @@ runMetCorAndUncFromMiniAOD(process,
                            isData=False
                            )
 
-# MET Filters
-#from RecoMET.METFilters.BadPFMuonFilter_cfi import *
+#######################  BadPFMuonFilter
 process.load("RecoMET.METFilters.BadPFMuonFilter_cfi")
 process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons", "", "PAT")
 process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates", "", "PAT")
 
-#from RecoMET.METFilters.BadChargedCandidateFilter_cfi import *
+#######################  BadChargedCandidateFilter             
 process.load("RecoMET.METFilters.BadChargedCandidateFilter_cfi")
 process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons", "", "PAT")
 process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates", "", "PAT")
@@ -218,7 +227,9 @@ process.lldjMETFiltersSequence = cms.Sequence(
      process.BadChargedCandidateFilter 
 )
 
-# For AOD
+##########################################################################################
+# For AOD Track variables
+# 
 process.MaterialPropagator = cms.ESProducer("PropagatorWithMaterialESProducer",
     ComponentName = cms.string('PropagatorWithMaterial'),
     Mass = cms.double(0.105),
@@ -274,6 +285,13 @@ process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
  muonSrc                   = cms.InputTag("slimmedMuons"),
 
  photonSrc                 = cms.InputTag("selectedPhotons",'','LLDJ'),
+ phoLooseIdMap = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose"),
+ phoMediumIdMap = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-medium"),
+ phoTightIdMap = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-tight"),
+ phoChargedIsolation       = cms.InputTag("photonIDValueMapProducer:phoChargedIsolation"),
+ phoNeutralHadronIsolation = cms.InputTag("photonIDValueMapProducer:phoNeutralHadronIsolation"),
+ phoPhotonIsolation        = cms.InputTag("photonIDValueMapProducer:phoPhotonIsolation"),
+ phoWorstChargedIsolation = cms.InputTag("photonIDValueMapProducer:phoWorstChargedIsolation"),
 
 )
 
@@ -285,7 +303,7 @@ process.p = cms.Path(
     process.selectedElectrons*
     process.selectedPhotons*
     process.egmGsfElectronIDSequence*
-    #process.egmPhotonIDSequence
+    process.egmPhotonIDSequence*
     process.lldjMETFiltersSequence*
     process.lldjNtuple
     )
