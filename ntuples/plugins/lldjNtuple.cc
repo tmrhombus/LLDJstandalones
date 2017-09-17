@@ -52,15 +52,15 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   // photons
   photonCollection_          = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonSrc"));
 
-   //  // Photon ID in VID framwork 
-   //  phoLooseIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoLooseIdMap"));
-   //  phoMediumIdMapToken_            = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoMediumIdMap"));
-   //  phoTightIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoTightIdMap"));
-   //  phoMVAValuesMapToken_           = consumes<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoMVAValuesMap")); 
-   //  phoChargedIsolationToken_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation"));
-   //  phoNeutralHadronIsolationToken_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation"));
-   //  phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
-   //  phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
+  // Photon ID in VID framwork 
+  phoLooseIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoLooseIdMap"));
+  phoMediumIdMapToken_            = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoMediumIdMap"));
+  phoTightIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoTightIdMap"));
+  //phoMVAValuesMapToken_           = consumes<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoMVAValuesMap")); 
+  phoChargedIsolationToken_       = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoChargedIsolation"));
+  phoNeutralHadronIsolationToken_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation"));
+  phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
+  phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
@@ -68,7 +68,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   // make branches for tree
   branchesGlobalEvent(tree_);
-  ///branchesPhotons(tree_);
+  branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
 
@@ -86,7 +86,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  jetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
 
  fillGlobalEvent(e, es);
- ////fillPhotons(e, es);
+ fillPhotons(e, es);
  fillElectrons(e, es);
 
  // muons use vtx for isolation
@@ -109,7 +109,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  fillMuons(e, vtx); //muons use vtx for isolation
 
  fillJets(e,es);
- // fillMET(e, es);
+ fillMET(e, es);
 
  hEvents_->Fill(1.);
  tree_->Fill();
