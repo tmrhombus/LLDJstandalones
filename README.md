@@ -54,6 +54,10 @@ git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
 pushd LLDJstandalones;
  # add DisplacedHiggs as upstream
  git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
+
+ pushd initialization
+  bash egammaAODflag.sh
+ popd
 popd
 
 # compile a clean area
