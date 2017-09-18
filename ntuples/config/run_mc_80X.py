@@ -257,6 +257,10 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
  phoWorstChargedIsolation = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
 
+ bits = cms.InputTag("TriggerResults","","HLT"),
+ prescales = cms.InputTag("patTrigger"),
+ objects = cms.InputTag("selectedPatTrigger"),
+
 )
 
 #builds Ntuple

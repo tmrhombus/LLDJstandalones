@@ -62,12 +62,17 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
+  triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
+  triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
+  triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
+
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
   // make branches for tree
   branchesGlobalEvent(tree_);
+  branchesTrigger(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
@@ -86,6 +91,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  jetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
 
  fillGlobalEvent(e, es);
+ fillTrigger(e, es);
  fillPhotons(e, es);
  fillElectrons(e, es);
 
