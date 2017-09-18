@@ -57,8 +57,6 @@ void lldjNtuple::branchesTrigger(TTree* tree){
 
 void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
 
-  printf(" filling trigger brnahces\n");
-
   edm::Handle<edm::TriggerResults>                     triggerBits;
   edm::Handle<edm::View<pat::TriggerObjectStandAlone>> triggerObjects;
   edm::Handle<pat::PackedTriggerPrescales>             triggerPrescales;
@@ -77,42 +75,7 @@ void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
   HLT_Mu17Mu8_          = 0;
   HLT_Mu17TkMu8_        = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //bool cfg_changed = true;
-  //HLTConfigProvider hltCfg;
-  //hltCfg.init(e.getRun(), es, trgResultsProcess_, cfg_changed);
-
-  //edm::Handle<edm::TriggerResults> trgResultsHandle;
-  //e.getByToken(trgResultsLabel_, trgResultsHandle);
-
-  //const edm::TriggerNames &trgnames = e.triggerNames(*trgResultsHandle);
-
   const edm::TriggerNames &trgnames = e.triggerNames(*triggerBits);
-
-
-
-
-  //for (size_t i = 0; i < trgnames.size(); ++i) {
-  //  const string &name = trgnames.triggerName(i);
-  //  //printf(" Reading trigger: %s\n" , name.c_str()  );
-  //}
-
 
   for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
     //  std::cout << "Trigger " << trgnames.triggerName(i) <<
@@ -226,9 +189,6 @@ void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
     unsigned int isPrescaled = triggerPrescales->getPrescaleForIndex(i);
     unsigned int isFired     = triggerBits->accept(i) ;
 
-    //ULong64_t isPrescaled = (hltCfg.prescaleValue(0, name)!=1) ? 1 : 0;
-    //ULong64_t isFired     = (trgResultsHandle->accept(i)) ? 1 : 0;
-
     if ( bitEle23Loose      >= 0 ){
      HLT_Ele23Loose_            |= (isFired     << bitEle23Loose      );
      HLT_Ele23Loose_isPS_       |= (isPrescaled << bitEle23Loose      );
@@ -264,32 +224,6 @@ void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
     }
 
 
-    // if (bitEleMuX >= 0) {
-    //   HLTEleMuX_            |= (isFired << bitEleMuX);
-    //   HLTEleMuXIsPrescaled_ |= (isPrescaled << bitEleMuX);
-    // }
-    
-    //  if (bitPho >= 0) {
-    //    HLTPho_            |= (isFired << bitPho);
-    //    HLTPhoIsPrescaled_ |= (isPrescaled << bitPho);
-    //  }
-    //  
-    //  if (bitJet >= 0) {
-    //    HLTJet_            |= (isFired << bitJet);
-    //    HLTJetIsPrescaled_ |= (isPrescaled << bitJet);
-    //  }
-
-    /*
-    if (bitEle27LooseWHbb  >= 0) {
-      HLT_Ele27_WPLoose_Gsf_WHbbBoost_ |= (isFired <<  bitEle27LooseWHbb);
-      HLT_Ele27_WPLoose_Gsf_WHbbBoost_ |= (isPrescaled <<  bitEle27LooseWHbb);
-     }
-    if ( bitPFHT300PFMET110 >= 0 ){
-      HLT_PFHT300PFMET110_       |= (isFired     << bitPFHT300PFMET110 );
-      HLT_PFHT300PFMET110_isPS_  |= (isPrescaled << bitPFHT300PFMET110 );
-    }
-    */
-
     //std::bitset<bitsize> HLT_PFHT350PFMET100_b(bitPFHT350PFMET100);
     std::bitset<bitsize> HLT_Ele23Loose_b(bitEle23Loose);
     std::bitset<bitsize> HLT_Ele27Tight_b(bitEle27Tight);
@@ -302,22 +236,8 @@ void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
 
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//  IF YOU WANT TO UNPACK TRIGGER OBJECT / MATCHING 
+////////////////////////////////////////////////////
 //    const edm::TriggerNames &names = e.triggerNames(*triggerBits);
 //    std::cout << "\n == TRIGGER PATHS= " << std::endl;
 //    for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) {
