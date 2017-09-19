@@ -124,7 +124,6 @@ runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outpu
 ### EGM 80X regression
 from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
 process = regressionWeights(process)
-process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 
 # Some proesses need random numbers, calculate using TRandom3 - Mersenne Twister
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
@@ -138,6 +137,7 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                      engineName = cms.untracked.string('TRandom3')
                                      )
 )
+process.load('EgammaAnalysis.ElectronTools.regressionApplication_cff')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
 process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
 
@@ -356,7 +356,20 @@ process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
                                           )
 
 
+# For AOD
+process.MaterialPropagator = cms.ESProducer("PropagatorWithMaterialESProducer",
+    ComponentName = cms.string('PropagatorWithMaterial'),
+    Mass = cms.double(0.105),
+    MaxDPhi = cms.double(1.6),
+    PropagationDirection = cms.string('alongMomentum'),
+    SimpleMagneticField = cms.string(''),
+    ptMin = cms.double(-1.0),
+    useRungeKutta = cms.bool(False)
+)
 
+process.TransientTrackBuilderESProducer = cms.ESProducer("TransientTrackBuilderESProducer",
+    ComponentName = cms.string('TransientTrackBuilder')
+)
 
 jecLevels = [
   'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt',
