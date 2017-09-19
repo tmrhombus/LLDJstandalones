@@ -8,13 +8,13 @@ process = cms.Process('LLDJ')
 #process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 # log output
-process.load("FWCore.MessageLogger.MessageLogger_cfi")
+process.load('FWCore.MessageLogger.MessageLogger_cfi')
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
-#process.Tracer = cms.Service("Tracer")
+#process.Tracer = cms.Service('Tracer')
 
 # input files
-process.source = cms.Source("PoolSource",
+process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
                 # single mu
         #'/store/data/Run2016B/SingleMuon/MINIAOD/03Feb2017_ver1-v1/100000/08AD7B2D-34EE-E611-A7DA-001E674DA2E8.root',
@@ -85,18 +85,18 @@ process.source = cms.Source("PoolSource",
 )
 
 # output name
-process.TFileService = cms.Service("TFileService", fileName = cms.string('lldjntuple_data.root'));
+process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_data.root'));
 
 #process.out = cms.OutputModule(
-#"PoolOutputModule",
-#     fileName = cms.untracked.string("output6.root"),
+#'PoolOutputModule',
+#     fileName = cms.untracked.string('output6.root'),
 #     outputCommands = cms.untracked.vstring( 
-#      "keep *", )  
+#      'keep *', )  
 #)
 
 # cms geometry
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
+process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 
 # global tag
 process.load('Configuration.StandardSequences.Services_cff')
@@ -106,8 +106,8 @@ process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 ###########################################################################################
 ## Declare this is data (is this necessary?)
 ## 
-process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
-process.load( "PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff" )
+process.load( 'PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff' )
+process.load( 'PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff' )
 
 from PhysicsTools.PatAlgos.tools.coreTools import *
 runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
@@ -126,7 +126,7 @@ from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
 process = regressionWeights(process)
 
 # Some proesses need random numbers, calculate using TRandom3 - Mersenne Twister
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+process.RandomNumberGeneratorService = cms.Service('RandomNumberGeneratorService',
  calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(8675389),
                                      engineName = cms.untracked.string('TRandom3'),
                                      ),
@@ -156,13 +156,12 @@ switchOnVIDPhotonIdProducer(process, dataFormat)
 
 # define which IDs we want to produce
 eleid_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff',
-                 #'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
-                 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
+                 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff']
+                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
     
-phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff',
-                 'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
+phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
+                 #'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
 
 #add them to the VID producer
 for idmod in eleid_modules:
@@ -172,38 +171,42 @@ for idmod in phoid_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
 # hack recommended by https://twiki.cern.ch/twiki/bin/view/CMS/EGMRegression#VIDAnchor
-process.selectedElectrons = cms.EDFilter("PATElectronSelector",
-    src = cms.InputTag("calibratedPatElectrons",'','LLDJ'),
-    cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
+process.selectedElectrons = cms.EDFilter('PATElectronSelector',
+    src = cms.InputTag('calibratedPatElectrons','','LLDJ'),
+    cut = cms.string('pt>5 && abs(superCluster.eta)<2.5')
 )
 
-process.selectedPhotons = cms.EDFilter("PATPhotonSelector",
-    src = cms.InputTag("calibratedPatPhotons",'','LLDJ'),
-    cut = cms.string("pt>5 && abs(superCluster.eta)<2.5")
+process.selectedPhotons = cms.EDFilter('PATPhotonSelector',
+    src = cms.InputTag('calibratedPatPhotons','','LLDJ'),
+    cut = cms.string('pt>5 && abs(superCluster.eta)<2.5')
 )
 
-# say which collections to run on 
-process.load("RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi")
-process.load("RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi")
+# load electron/photon ID configurations
+# we've modified this from the standard ID producer
+# to manually specify AOD/miniAOD
+process.load('RecoEgamma.ElectronIdentification.ElectronIDValueMapProducer_cfi')
+process.load('RecoEgamma.PhotonIdentification.PhotonIDValueMapProducer_cfi')
 
-# 
+# Set up EGamma IDs
 process.egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('selectedElectrons','','LLDJ')
 process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons','','LLDJ')
+process.egmGsfElectronIDs.isAOD=cms.bool(False)
+process.egmPhotonIDs.isAOD=cms.bool(False)
 
 process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+process.electronIDValueMapProducer.src = cms.InputTag('') # make it give error if misconfigured
+process.electronIDValueMapProducer.isAOD=cms.bool(False)
+
+# Photon ID 
 process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+process.photonIDValueMapProducer.src = cms.InputTag('')
+process.photonIDValueMapProducer.isAOD=cms.bool(False)
 
-process.electronIDValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
-process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
-process.photonIDValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
-process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
-
-### ##process.electronRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
-### ##process.photonRegressionValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
-### ##process.electronRegressionValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
-### ##process.photonRegressionValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
+# we don't use MVA ID now, but maybe some time 
+# process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
+# process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('selectedPhotons','','LLDJ')
+# process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
+# process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
 
 process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons','','LLDJ')
 
@@ -217,27 +220,43 @@ runMetCorAndUncFromMiniAOD(process,
                            isData=True
                            )
 
+#######################  BadPFMuonFilter
+process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
+process.BadPFMuonFilter.muons = cms.InputTag('slimmedMuons', '', 'PAT')
+process.BadPFMuonFilter.PFCandidates = cms.InputTag('packedPFCandidates', '', 'PAT')
+
+#######################  BadChargedCandidateFilter             
+process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
+process.BadChargedCandidateFilter.muons = cms.InputTag('slimmedMuons', '', 'PAT')
+process.BadChargedCandidateFilter.PFCandidates = cms.InputTag('packedPFCandidates', '', 'PAT')
+
+process.lldjMETFiltersSequence = cms.Sequence(
+     process.BadPFMuonFilter *
+     process.BadChargedCandidateFilter 
+)
+
+
 # creae e/g corrected MET on top of the bad muon corrected MET 
 from PhysicsTools.PatUtils.tools.corMETFromMuonAndEG import corMETFromMuonAndEG
 corMETFromMuonAndEG(process,
-                    pfCandCollection="", #not needed                        
-                    electronCollection="slimmedElectronsBeforeGSFix",
-                    photonCollection="slimmedPhotonsBeforeGSFix",
-                    corElectronCollection="selectedElectrons", # calibratedPatElectrons?
-                    corPhotonCollection="selectedPhotons",
-                    #corElectronCollection="slimmedElectrons", # calibratedPatElectrons?
-                    #corPhotonCollection="slimmedPhotons",
+                    pfCandCollection='', #not needed                        
+                    electronCollection='slimmedElectronsBeforeGSFix',
+                    photonCollection='slimmedPhotonsBeforeGSFix',
+                    corElectronCollection='selectedElectrons', # calibratedPatElectrons?
+                    corPhotonCollection='selectedPhotons',
+                    #corElectronCollection='slimmedElectrons', # calibratedPatElectrons?
+                    #corPhotonCollection='slimmedPhotons',
                     allMETEGCorrected=True,
                     muCorrection=False,
                     eGCorrection=True,
                     runOnMiniAOD=True,
-                    postfix="MuEGClean"
+                    postfix='MuEGClean'
                     )
 
 process.slimmedMETsMuEGClean = process.slimmedMETs.clone()
-process.slimmedMETsMuEGClean.src = cms.InputTag("patPFMetT1MuEGClean")
-process.slimmedMETsMuEGClean.rawVariation =  cms.InputTag("patPFMetRawMuEGClean")
-process.slimmedMETsMuEGClean.t1Uncertainties = cms.InputTag("patPFMetT1%sMuEGClean")
+process.slimmedMETsMuEGClean.src = cms.InputTag('patPFMetT1MuEGClean')
+process.slimmedMETsMuEGClean.rawVariation =  cms.InputTag('patPFMetRawMuEGClean')
+process.slimmedMETsMuEGClean.t1Uncertainties = cms.InputTag('patPFMetT1%sMuEGClean')
 del process.slimmedMETsMuEGClean.caloMET
 
 process.egcorrMET = cms.Sequence(
@@ -260,9 +279,9 @@ process.egcorrMET = cms.Sequence(
 # HLT Triggers
 # 
 
-process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
+process.singleEleHLTFilter = cms.EDFilter('HLTHighLevel',
                                           eventSetupPathsKey = cms.string(''),
-                                          TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
+                                          TriggerResultsTag = cms.InputTag('TriggerResults','','HLT'),
                                           HLTPaths = cms.vstring(
                                           #'HLT_Ele27_WPLoose_Gsf_v*',
                                           #'HLT_Ele27_WPTight_Gsf_v*', 
@@ -272,83 +291,83 @@ process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
                                           #'HLT_Ele35_WPLoose_Gsf_v*', 
                                           #'HLT_Ele45_WPLoose_Gsf_v*'
 
-                                          "HLT_PFHT350_PFMET100_v1",
-                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v1",
-                                          "HLT_PFHT350_PFMET100_JetIdCleaned_v2",
+                                          'HLT_PFHT350_PFMET100_v1',
+                                          'HLT_PFHT350_PFMET100_JetIdCleaned_v1',
+                                          'HLT_PFHT350_PFMET100_JetIdCleaned_v2',
 
-                                          "HLT_Ele23_WPLoose_Gsf_v1",
-                                          "HLT_Ele23_WPLoose_Gsf_v2",
-                                          "HLT_Ele23_WPLoose_Gsf_v3",
-                                          "HLT_Ele23_WPLoose_Gsf_v4",
-                                          "HLT_Ele23_WPLoose_Gsf_v5",
-                                          "HLT_Ele23_WPLoose_Gsf_v6",
-                                          "HLT_Ele23_WPLoose_Gsf_v7",
-                                          "HLT_Ele23_WPLoose_Gsf_v8",
-                                          "HLT_Ele23_WPLoose_Gsf_v9",
-                                          "HLT_Ele23_WPLoose_Gsf_v10",
-                                          "HLT_Ele23_WPLoose_Gsf_v11",
-                                          "HLT_Ele23_WPLoose_Gsf_v12",
-                                          "HLT_Ele27_WPTight_Gsf_v1",
-                                          "HLT_Ele27_WPTight_Gsf_v2",
-                                          "HLT_Ele27_WPTight_Gsf_v3",
-                                          "HLT_Ele27_WPTight_Gsf_v4",
-                                          "HLT_Ele27_WPTight_Gsf_v5",
-                                          "HLT_Ele27_WPTight_Gsf_v6",
-                                          "HLT_Ele27_WPTight_Gsf_v7",
-                                          "HLT_Ele27_WPTight_Gsf_v8",
-                                          "HLT_Ele27_WPTight_Gsf_v9",
+                                          'HLT_Ele23_WPLoose_Gsf_v1',
+                                          'HLT_Ele23_WPLoose_Gsf_v2',
+                                          'HLT_Ele23_WPLoose_Gsf_v3',
+                                          'HLT_Ele23_WPLoose_Gsf_v4',
+                                          'HLT_Ele23_WPLoose_Gsf_v5',
+                                          'HLT_Ele23_WPLoose_Gsf_v6',
+                                          'HLT_Ele23_WPLoose_Gsf_v7',
+                                          'HLT_Ele23_WPLoose_Gsf_v8',
+                                          'HLT_Ele23_WPLoose_Gsf_v9',
+                                          'HLT_Ele23_WPLoose_Gsf_v10',
+                                          'HLT_Ele23_WPLoose_Gsf_v11',
+                                          'HLT_Ele23_WPLoose_Gsf_v12',
+                                          'HLT_Ele27_WPTight_Gsf_v1',
+                                          'HLT_Ele27_WPTight_Gsf_v2',
+                                          'HLT_Ele27_WPTight_Gsf_v3',
+                                          'HLT_Ele27_WPTight_Gsf_v4',
+                                          'HLT_Ele27_WPTight_Gsf_v5',
+                                          'HLT_Ele27_WPTight_Gsf_v6',
+                                          'HLT_Ele27_WPTight_Gsf_v7',
+                                          'HLT_Ele27_WPTight_Gsf_v8',
+                                          'HLT_Ele27_WPTight_Gsf_v9',
 
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9",
-                                          "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9",
-                                          "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10",
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9',
+                                          'HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v1',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v2',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v3',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v4',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v5',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v6',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v7',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v8',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v9',
+                                          'HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v10',
 
-                                          "HLT_IsoMu22_v1",
-                                          "HLT_IsoMu22_v2",
-                                          "HLT_IsoMu22_v3",
-                                          "HLT_IsoMu22_v4",
-                                          "HLT_IsoMu22_v5",
-                                          "HLT_IsoMu22_v6",
-                                          "HLT_IsoMu22_v7",
-                                          "HLT_IsoTkMu22_v1",
-                                          "HLT_IsoTkMu22_v2",
-                                          "HLT_IsoTkMu22_v3",
-                                          "HLT_IsoTkMu22_v4",
-                                          "HLT_IsoTkMu22_v5",
-                                          "HLT_IsoTkMu22_v6",
-                                          "HLT_IsoTkMu22_v7",
-                                          "HLT_IsoTkMu22_v8",
-                                          "HLT_IsoTkMu22_v9",
-                                          "HLT_IsoTkMu22_v10",
+                                          'HLT_IsoMu22_v1',
+                                          'HLT_IsoMu22_v2',
+                                          'HLT_IsoMu22_v3',
+                                          'HLT_IsoMu22_v4',
+                                          'HLT_IsoMu22_v5',
+                                          'HLT_IsoMu22_v6',
+                                          'HLT_IsoMu22_v7',
+                                          'HLT_IsoTkMu22_v1',
+                                          'HLT_IsoTkMu22_v2',
+                                          'HLT_IsoTkMu22_v3',
+                                          'HLT_IsoTkMu22_v4',
+                                          'HLT_IsoTkMu22_v5',
+                                          'HLT_IsoTkMu22_v6',
+                                          'HLT_IsoTkMu22_v7',
+                                          'HLT_IsoTkMu22_v8',
+                                          'HLT_IsoTkMu22_v9',
+                                          'HLT_IsoTkMu22_v10',
 
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1",
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2",
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3",
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4",
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5",
-                                          "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5",
-                                          "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6",
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1',
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v2',
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v3',
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4',
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5',
+                                          'HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v2',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v3',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5',
+                                          'HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6',
 
                                           ),
                                           andOr = cms.bool(True), # True = OR, False = AND
@@ -357,7 +376,7 @@ process.singleEleHLTFilter = cms.EDFilter("HLTHighLevel",
 
 
 # For AOD
-process.MaterialPropagator = cms.ESProducer("PropagatorWithMaterialESProducer",
+process.MaterialPropagator = cms.ESProducer('PropagatorWithMaterialESProducer',
     ComponentName = cms.string('PropagatorWithMaterial'),
     Mass = cms.double(0.105),
     MaxDPhi = cms.double(1.6),
@@ -367,7 +386,7 @@ process.MaterialPropagator = cms.ESProducer("PropagatorWithMaterialESProducer",
     useRungeKutta = cms.bool(False)
 )
 
-process.TransientTrackBuilderESProducer = cms.ESProducer("TransientTrackBuilderESProducer",
+process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderESProducer',
     ComponentName = cms.string('TransientTrackBuilder')
 )
 
@@ -380,44 +399,53 @@ jecLevels = [
 
 
 #NTuplizer
-process.lldjNtuple = cms.EDAnalyzer("lldjNtuple",
+process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
- electronSrc               = cms.InputTag("selectedElectrons",'','LLDJ'),
- rhoLabel                  = cms.InputTag("fixedGridRhoFastjetAll"),
- eleVetoIdMap              = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto"),
- eleLooseIdMap             = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
- eleMediumIdMap            = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
- eleTightIdMap             = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
- eleHLTIdMap               = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),
- #eleMVAValuesMap           = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"),
- #eleMVAHZZValuesMap        = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
- #elePFClusEcalIsoProducer  = cms.InputTag("electronEcalPFClusterIsolationProducer"),
- #elePFClusHcalIsoProducer  = cms.InputTag("electronHcalPFClusterIsolationProducer"),
+ electronSrc               = cms.InputTag('selectedElectrons','','LLDJ'),
+ rhoLabel                  = cms.InputTag('fixedGridRhoFastjetAll'),
+ eleVetoIdMap              = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto'),
+ eleLooseIdMap             = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose'),
+ eleMediumIdMap            = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium'),
+ eleTightIdMap             = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight'),
+ eleHLTIdMap               = cms.InputTag('egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1'),
+ #eleMVAValuesMap           = cms.InputTag('electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values'),
+ #eleMVAHZZValuesMap        = cms.InputTag('electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values'),
+ #elePFClusEcalIsoProducer  = cms.InputTag('electronEcalPFClusterIsolationProducer'),
+ #elePFClusHcalIsoProducer  = cms.InputTag('electronHcalPFClusterIsolationProducer'),
 
- rhoCentralLabel           = cms.InputTag("fixedGridRhoFastjetCentralNeutral"),
- pileupCollection          = cms.InputTag("slimmedAddPileupInfo"),
- VtxLabel                  = cms.InputTag("offlineSlimmedPrimaryVertices"),
- triggerResults            = cms.InputTag("TriggerResults", "", "HLT"),
+ rhoCentralLabel           = cms.InputTag('fixedGridRhoFastjetCentralNeutral'),
+ pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
+ VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
+ triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 
- ak4JetSrc                 = cms.InputTag("slimmedJets"),
- AODak4CaloJetsSrc         = cms.InputTag("ak4CaloJets" , "", "RECO"),
- AODak4PFJetsSrc           = cms.InputTag("ak4PFJets"   , "", "RECO"),
- AODak4PFJetsCHSSrc        = cms.InputTag("ak4PFJetsCHS", "", "RECO"),
- AODVertexSrc              = cms.InputTag("offlinePrimaryVertices", "", "RECO"),
- AODTrackSrc               = cms.InputTag("generalTracks", "", "RECO"),
+ ak4JetSrc                 = cms.InputTag('slimmedJets'),
+ AODak4CaloJetsSrc         = cms.InputTag('ak4CaloJets' , '', 'RECO'),
+ AODak4PFJetsSrc           = cms.InputTag('ak4PFJets'   , '', 'RECO'),
+ AODak4PFJetsCHSSrc        = cms.InputTag('ak4PFJetsCHS', '', 'RECO'),
+ AODVertexSrc              = cms.InputTag('offlinePrimaryVertices', '', 'RECO'),
+ AODTrackSrc               = cms.InputTag('generalTracks', '', 'RECO'),
 
- patTriggerResults         = cms.InputTag("TriggerResults", "", "PAT"),
- BadChargedCandidateFilter = cms.InputTag("BadChargedCandidateFilter"),
- BadPFMuonFilter           = cms.InputTag("BadPFMuonFilter"),
- pfMETLabel                = cms.InputTag("slimmedMETsMuEGClean", "", "LLDJ"),
+ patTriggerResults         = cms.InputTag('TriggerResults', '', 'PAT'),
+ BadChargedCandidateFilter = cms.InputTag('BadChargedCandidateFilter'),
+ BadPFMuonFilter           = cms.InputTag('BadPFMuonFilter'),
+ pfMETLabel                = cms.InputTag('slimmedMETsMuEGClean', '', 'LLDJ'),
 
- muonSrc                   = cms.InputTag("slimmedMuons"),
+ muonSrc                   = cms.InputTag('slimmedMuons'),
 
- photonSrc                 = cms.InputTag("selectedPhotons",'','LLDJ'),
+ photonSrc                 = cms.InputTag('selectedPhotons','','LLDJ'),
+ phoLooseIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose'),
+ phoMediumIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-medium'),
+ phoTightIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-tight'),
+ phoChargedIsolation       = cms.InputTag('photonIDValueMapProducer:phoChargedIsolation'),
+ phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
+ phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
+ phoWorstChargedIsolation = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
+
+ bits = cms.InputTag("TriggerResults","","HLT"),
+ prescales = cms.InputTag("patTrigger"),
+ objects = cms.InputTag("selectedPatTrigger"),
 
 )
-
-process.load("LLDJstandalones.ntuples.lldjMETFilters_cff")
 
 #builds Ntuple
 process.p = cms.Path(
@@ -428,8 +456,8 @@ process.p = cms.Path(
     process.selectedElectrons*
     process.selectedPhotons*
     process.egmGsfElectronIDSequence*
-    #process.egmPhotonIDSequence*
-    process.fullPatMetSequence*    process.egcorrMET*
+    process.egmPhotonIDSequence*
+    process.fullPatMetSequence* 
     process.egcorrMET*
     process.lldjMETFiltersSequence*
     process.lldjNtuple

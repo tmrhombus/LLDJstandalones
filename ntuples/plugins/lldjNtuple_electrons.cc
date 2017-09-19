@@ -102,11 +102,11 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es) {
  //edm::Handle<edm::ValueMap<float> > elePFClusEcalIsoValues;
  //edm::Handle<edm::ValueMap<float> > elePFClusHcalIsoValues;
 
- e.getByToken(eleVetoIdMapToken_ ,         veto_id_decisions);
- e.getByToken(eleLooseIdMapToken_ ,        loose_id_decisions);
- e.getByToken(eleMediumIdMapToken_,        medium_id_decisions);
- e.getByToken(eleTightIdMapToken_,         tight_id_decisions);
- e.getByToken(eleHLTIdMapToken_,           hlt_id_decisions);
+ //   ///e.getByToken(eleVetoIdMapToken_ ,         veto_id_decisions);
+ //   ///e.getByToken(eleLooseIdMapToken_ ,        loose_id_decisions);
+ //   ///e.getByToken(eleMediumIdMapToken_,        medium_id_decisions);
+ //   ///e.getByToken(eleTightIdMapToken_,         tight_id_decisions);
+ //   ///e.getByToken(eleHLTIdMapToken_,           hlt_id_decisions);
  //e.getByToken(eleHEEPIdMapToken_ ,         heep_id_decisions);
  //e.getByToken(eleMVAValuesMapToken_,       eleMVAValues);
  //e.getByToken(eleMVAHZZValuesMapToken_,    eleMVAHZZValues);
@@ -122,18 +122,18 @@ void lldjNtuple::fillElectrons(const edm::Event &e, const edm::EventSetup &es) {
   const auto el = electronHandle->ptrAt(nEle_);
   UShort_t tmpeleIDbit = 0;
   ///el->electronID("cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto") also works
-  bool isPassVeto  = (*veto_id_decisions)[el];
-  if (isPassVeto) setbit(tmpeleIDbit, 0);
-  bool isPassLoose  = (*loose_id_decisions)[el];
-  if (isPassLoose) setbit(tmpeleIDbit, 1);
-  bool isPassMedium = (*medium_id_decisions)[el];
-  if (isPassMedium) setbit(tmpeleIDbit, 2);
-  bool isPassTight  = (*tight_id_decisions)[el];
-  if (isPassTight) setbit(tmpeleIDbit, 3);
-  //bool isPassHEEP = (*heep_id_decisions)[el];
-  //if (isPassHEEP) setbit(tmpeleIDbit, 4);
-  bool isPassHLT = (*hlt_id_decisions)[el];
-  if (isPassHLT) setbit(tmpeleIDbit, 5);
+  //   ///bool isPassVeto  = (*veto_id_decisions)[el];
+  //   ///if (isPassVeto) setbit(tmpeleIDbit, 0);
+  //   ///bool isPassLoose  = (*loose_id_decisions)[el];
+  //   ///if (isPassLoose) setbit(tmpeleIDbit, 1);
+  //   ///bool isPassMedium = (*medium_id_decisions)[el];
+  //   ///if (isPassMedium) setbit(tmpeleIDbit, 2);
+  //   ///bool isPassTight  = (*tight_id_decisions)[el];
+  //   ///if (isPassTight) setbit(tmpeleIDbit, 3);
+  //   /////bool isPassHEEP = (*heep_id_decisions)[el];
+  //   /////if (isPassHEEP) setbit(tmpeleIDbit, 4);
+  //   ///bool isPassHLT = (*hlt_id_decisions)[el];
+  //   ///if (isPassHLT) setbit(tmpeleIDbit, 5);
 
   // twiki https://twiki.cern.ch/twiki/bin/view/CMS/EgammaPFBasedIsolationRun2
   float effectiveArea = 0;
