@@ -21,7 +21,7 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
-#include "HiggsAnalysis/HiggsTo2photons/interface/CiCPhotonID.h"
+//#include "HiggsAnalysis/HiggsTo2photons/interface/CiCPhotonID.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
@@ -39,6 +39,8 @@
 #include "TrackingTools/GeomPropagators/interface/StateOnTrackerBound.h"
 #include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
 #include "TrackingTools/Records/interface/TransientTrackRecord.h"
+
+#include "DataFormats/PatCandidates/interface/PackedTriggerPrescales.h"
 
 
 using namespace std;
@@ -67,6 +69,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesElectrons  (TTree*);
   void branchesMuons      (TTree*);
   void branchesJets       (TTree*);
+  void branchesTrigger    (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -74,6 +77,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
+  void fillTrigger    (const edm::Event&, const edm::EventSetup&);
 
   // collections
   // electrons
@@ -127,22 +131,20 @@ class lldjNtuple : public edm::EDAnalyzer {
   // photons
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;
 
-//  ///Photon ID in VID framework - 11th May, 2015
-//  // photon ID decision objects and isolations
-//  edm::EDGetTokenT<edm::ValueMap<bool> >  phoLooseIdMapToken_;
-//  edm::EDGetTokenT<edm::ValueMap<bool> >  phoMediumIdMapToken_;
-//  edm::EDGetTokenT<edm::ValueMap<bool> >  phoTightIdMapToken_;
-//  edm::EDGetTokenT<edm::ValueMap<float> > phoMVAValuesMapToken_;
-//  edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_; 
-//  edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_; 
-//  edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_; 
-//  edm::EDGetTokenT<edm::ValueMap<float> > phoWorstChargedIsolationToken_; 
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_CITK_;
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_CITK_;
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_CITK_;
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_PUPPI_;
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_PUPPI_;
-//  //edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_PUPPI_;
+  // photon ID decision objects and isolations
+  edm::EDGetTokenT<edm::ValueMap<bool> >  phoLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> >  phoMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> >  phoTightIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<float> > phoMVAValuesMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<float> > phoChargedIsolationToken_; 
+  edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_; 
+  edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_; 
+  edm::EDGetTokenT<edm::ValueMap<float> > phoWorstChargedIsolationToken_; 
+
+  // trigger
+  edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
+  edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
+  edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
 
   TTree   *tree_;
   TH1F    *hEvents_;
