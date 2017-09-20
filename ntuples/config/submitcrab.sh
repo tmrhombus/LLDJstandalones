@@ -1,7 +1,7 @@
 #voms-proxy-init --voms cms --valid 100:00
 
 # do we submit or just generate submit scripts
-dosubmit=true
+dosubmit=false
 
 # start the timer
 START=$(date +%s);
@@ -13,13 +13,6 @@ mkdir -p ${thesubdir}
 printf "Making submit configurations in\n ${thesubdir}\n\n"
 
 # copy necessary files into submit directory
-cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt"   ${thesubdir}
-cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt"   ${thesubdir} 
-cp "${subdir}/Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt" ${thesubdir}  
-cp "${subdir}/Summer16_23Sep2016AllV4_DATA.db"                        ${thesubdir}     
-cp "${subdir}/Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt"        ${thesubdir}
-cp "${subdir}/Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt"        ${thesubdir}
-cp "${subdir}/Summer16_23Sep2016V4_MC.db"                             ${thesubdir}
 cp "${subdir}/run_data_80X.py"                                        ${thesubdir}
 cp "${subdir}/run_mc_80X.py"                                          ${thesubdir}
 
@@ -34,13 +27,13 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names to run over
 samples=( \
-  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
-  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
   "ggZH_HSSbbbb_MS_40_ctauS_10000" \
   "ggZH_HSSbbbb_MS_40_ctauS_1000"  \
   "ggZH_HSSbbbb_MS_40_ctauS_100"   \
   "ggZH_HSSbbbb_MS_40_ctauS_10"    \
   "ggZH_HSSbbbb_MS_40_ctauS_1"     \
+  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
+  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
 )
 
 #  "Data_SingleMu_H_3"    \
@@ -146,11 +139,9 @@ do
  WORKAREA="'crabsubmits_${nversion}'"
 
  CMSRUNCONFIG="'run_mc_80X.py'" 
- #INPUTFILES="'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016V4_MC.db'"
  if [[ "${samplename:0:4}" == "Data" ]]
  then
   CMSRUNCONFIG="'run_data_80X.py'" 
-  #INPUTFILES="'Summer16_23Sep2016BCDV4_DATA_L2Relative_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L3Absolute_AK8PFchs.txt', 'Summer16_23Sep2016BCDV4_DATA_L2L3Residual_AK8PFchs.txt', 'Summer16_23Sep2016AllV4_DATA.db' "
  fi
 
  NUNITS="-1"
@@ -158,19 +149,13 @@ do
  SPLITTING="'FileBased'"
  REQUESTNAME="'${samplename}'"
  DATASET="'${datasetname}'"
- STORESITE="'T2_US_Wisconsin'"
- OUTLFNBASE="'/store/user/tmperry/${nversion}'"
-  #STORESITE="'T3_US_FNALLPC'"
-  #OUTLFNBASE="'/store/user/${USER}/${nversion}'"
+ STORESITE="'T3_US_FNALLPC'"
+ OUTLFNBASE="'/store/group/lpchbb/LLDJntuples/${nversion}'"
  MAXMEM="4000"
  #MAXMEM="2500"
 
- #STORESITE="'T2_US_FNAL'"
- #OUTLFNBASE="'/eos/store/tmperry/${nversion}'"
-
  printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
- #printf "INPUTFILES    ${INPUTFILES}   \n" 
  printf "NUNITS        ${NUNITS}       \n" 
  printf "UPERJOB       ${UPERJOB}      \n" 
  printf "SPLITTING     ${SPLITTING}    \n" 
@@ -184,7 +169,6 @@ do
  cp ${subdir}/crab_template.py             "${submitfile}"
  sed -i "s@WORKAREA@${WORKAREA}@g"         "${submitfile}"
  sed -i "s@CMSRUNCONFIG@${CMSRUNCONFIG}@g" "${submitfile}" 
- #sed -i "s@INPUTFILES@${INPUTFILES}@g"     "${submitfile}" 
  sed -i "s@NUNITS@${NUNITS}@g"             "${submitfile}" 
  sed -i "s@UPERJOB@${UPERJOB}@g"           "${submitfile}" 
  sed -i "s@SPLITTING@${SPLITTING}@g"       "${submitfile}" 
