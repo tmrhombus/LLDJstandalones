@@ -1371,7 +1371,7 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   double promptTotal2 = 0; 
   vector<double> alphas(AODVertexHandle->size(),0);
   vector<double> alphas2(AODVertexHandle->size(),0);
-  printf("(int)tracks.size() %i\n", (int)tracks.size() );
+  //printf("(int)tracks.size() %i\n", (int)tracks.size() );
 //  for(int i = 0; i < (int)tracks.size(); i++){
 //    double pt = tracks[i].initialFreeState().momentum().transverse();
 //    total += pt;
