@@ -1255,9 +1255,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     vector<float> tracksIPLog10Sig;
     vector<float> trackAngles;
     std::vector<int> vertexVector ;
-    double totalTrackAngle = 0;   //unused
-    double totalTrackPt = 0;      //unused
-    double totalTrackAnglePt = 0; //unused
+    double totalTrackAngle = 0;
+    double totalTrackPt = 0;
+    double totalTrackAnglePt = 0;
     double minR = 10000;
     //double minPt = 0; //unused
     
@@ -1300,16 +1300,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       nMissingInner += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
       nMissingOuter += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_OUTER_HITS);
       
-      //BK todo -- Insert track angle and ip sig variables here
-      //AODCaloJetSumIP_;
-      //AODCaloJetSumIPSig_;
-      //AODCaloJetLog10IPSig_;
-      //AODCaloJetMedianLog10IPSig_;
-      //AODCaloJetTrackAngle_;
-      //AODCaloJetLogTrackAngle_;
-      //AODCaloJetMedianLogTrackAngle_;
-      //AODCaloJetTotalTrackAngle_;
-      
       static GetTrackTrajInfo getTrackTrajInfo; 
       vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
       if ( trajInfo.size() > 0 && trajInfo[0].valid) {
@@ -1343,6 +1333,31 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
     sort(trackAngles.begin(), trackAngles.end());
 
+    //Totals
+    AODCaloJetSumIP_.push_back(sumIP);
+    AODCaloJetSumIPSig_.push_back(sumIPSig);
+    AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+    //Vectors -- not sure we want to save these
+    //AODCaloJetLog10IPSig_; //tracksIPLogSig;
+    //AODCaloJetLogTrackAngle_; //trackAngles; 
+    //AODCaloJetTrackAngle_;
+
+    //Medians
+    if(tracksIPLog10Sig.size() == 0){
+      //do nothing
+    }else if((tracksIPLog10Sig.size()%2 == 0)){
+      AODCaloJetMedianLog10IPSig_.push_back( (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 );
+    }else{
+      AODCaloJetMedianLog10IPSig_.push_back( tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2) );
+    }
+    if(trackAngles.size() == 0){
+      //do nothing
+    }else if(trackAngles.size() % 2 == 0){
+      AODCaloJetMedianLogTrackAngle_.push_back( trackAngles.at(trackAngles.size()/2 - 1) );
+    }else{
+      AODCaloJetMedianLogTrackAngle_.push_back( trackAngles.at((trackAngles.size() - 1)/2) );
+    }
 
 
     double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
