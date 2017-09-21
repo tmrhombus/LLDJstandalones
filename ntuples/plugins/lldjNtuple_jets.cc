@@ -23,7 +23,7 @@
 //#include "TrackingTools/Records/interface/TransientTrackRecord.h"
 //#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 //#include <CandidateBoostedDoubleSecondaryVertexComputer.h>
-//#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
+#include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //#include <GetTrackTrajInfo.h>
 
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
@@ -1178,6 +1178,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   es.get<IdealMagneticFieldRecord>().get(magneticField);
   magneticField_ = &*magneticField;
 
+  //edm::InputTag beamspotLabel_ = pset.getParameter<InputTag>("beamSpotInputTag");
+  //edm::EDGetTokenT<reco::BeamSpot> beamspotToken_;
+  //beamspotToken_ = consumes<reco::BeamSpot>(beamspotLabel_);
+  //edm::Handle<reco::BeamSpot> beamspotHandle_;
+  //e.getByToken(beamspotToken_, beamspotHandle_);
+  edm::Handle<reco::BeamSpot> beamspotHandle_;
+  e.getByToken(beamspotLabel_, beamspotHandle_);
+
   std::string thePropagatorName_ = "PropagatorWithMaterial";
   es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
   StateOnTrackerBound stateOnTracker(thePropagator_.product());
@@ -1219,6 +1227,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
+    float sumIP = 0;
+    float sumIPPt = 0;
+    float sumIPSig = 0;
+    float sumIPLogSig = 0;
+    float IVFScore = 0; 
+    int nTracksIPlt0p05 = 0;
+    int nTracksIPSiggt10 = 0;
+    int nTracksIPSiglt5 = 0;
+
     if(verbose_AOD) printf("Calo %f \n",iJet->pt());
     
     AODnCaloJet_++;
@@ -1238,9 +1255,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     vector<float> tracksIPLog10Sig;
     vector<float> trackAngles;
     std::vector<int> vertexVector ;
-    //double totalTrackAngle = 0;   //unused
-    //double totalTrackPt = 0;      //unused
-    //double totalTrackAnglePt = 0; //unused
+    double totalTrackAngle = 0;   //unused
+    double totalTrackPt = 0;      //unused
+    double totalTrackAnglePt = 0; //unused
     double minR = 10000;
     //double minPt = 0; //unused
     
@@ -1293,8 +1310,41 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       //AODCaloJetMedianLogTrackAngle_;
       //AODCaloJetTotalTrackAngle_;
       
+      static GetTrackTrajInfo getTrackTrajInfo; 
+      vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
+      if ( trajInfo.size() > 0 && trajInfo[0].valid) {
+        const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
+        double ta = fabs(trackAngle(e, tt,tsosInnerHit));
+        totalTrackAngle += ta;
+        totalTrackAnglePt += ta*tref->pt();
+        totalTrackPt += tref->pt();
+        trackAngles.push_back(log10(ta));
+        tsosList.push_back(tsosInnerHit);
+      }
+
+      double dxy = fabs(tref->dxy(*beamspotHandle_));
+      double dxyerr = tref->dxyError();
+      double dxySig = 0;
+      if (dxyerr > 0)dxySig = dxy/dxyerr;
+
+      sumIP += dxy;
+      sumIPPt += dxy * AODTrackHandle->at(j).pt();
+      sumIPSig += dxySig;
+      sumIPLogSig += log(dxySig);
+      tracksIPLogSig.push_back(log(dxySig));
+      tracksIPLog10Sig.push_back(log10(dxySig));
+      IVFScore += 1.0/drt;
+      nTracksIPlt0p05 += dxy < 0.05 ? 1 : 0;
+      nTracksIPSiggt10 += dxySig > 10.0 ? 1 : 0;
+      nTracksIPSiglt5 += dxySig < 5.0 ? 1 : 0;
+
     }//end track loop
-    
+    sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
+    sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
+    sort(trackAngles.begin(), trackAngles.end());
+
+
+
     double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
     calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
     
@@ -1405,4 +1455,27 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   aMaxP2 = apMax2;
 
   return;
+}
+
+
+double lldjNtuple::trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit)
+{
+
+  edm::Handle<reco::BeamSpot> beamspotHandle_;
+  e.getByToken(beamspotLabel_, beamspotHandle_);
+  
+  const reco::BeamSpot& pat_beamspot = (*beamspotHandle_);
+  TVector2 bmspot(pat_beamspot.x0(),pat_beamspot.y0());
+  GlobalPoint   innerPos  = tsosInnerHit.globalPosition();
+  GlobalVector innerMom = tsosInnerHit.globalMomentum();
+  TVector2 sv(innerPos.x(),innerPos.y());
+  TVector2 diff = (sv-bmspot);
+  //cout<<"bs x: "<<bmspot.X()<<" y: "<<bmspot.Y()<<endl;
+  //cout<<" sv x: "<<sv.X()<<" y: "<<sv.Y()<<endl;
+  //cout<<" diff phi: "<<diff.Phi()<<endl;
+  TVector2 momentum(innerMom.x(),innerMom.y());
+  //cout<<" p x: "<<momentum.X()<<" y: "<<momentum.Y()<<endl;
+  //cout<<" p phi: "<<momentum.Phi()<<endl;
+  //cout<<" dPhi: "<<diff.DeltaPhi(momentum)<<endl;
+  return diff.DeltaPhi(momentum);
 }

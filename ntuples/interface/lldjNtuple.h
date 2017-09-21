@@ -30,7 +30,7 @@
 #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 //#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
-//#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 #include "MagneticField/Engine/interface/MagneticField.h" 
 
@@ -102,6 +102,9 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::TriggerResults>            trgResultsLabel_;
   string                                           trgResultsProcess_;
 
+  // beamspot
+  edm::EDGetTokenT<reco::BeamSpot>                 beamspotLabel_;
+
   // jets
   edm::EDGetTokenT<edm::View<pat::Jet> >           jetsAK4Label_;
    // AOD Jets
@@ -116,6 +119,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
   void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
+
+  double trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit);
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
