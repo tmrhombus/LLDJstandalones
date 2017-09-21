@@ -115,7 +115,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ESHandle<Propagator>                        thePropagator_;
   edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
-  void                                             matchTracksToJetToVertex(float jeteta, float jetphi); 
   void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
 
   // met
