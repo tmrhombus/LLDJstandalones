@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export nversion="amaxtime"
+export nversion="trynitout"
 #export nversion="sosou"
 #export aversion="laug"
 
