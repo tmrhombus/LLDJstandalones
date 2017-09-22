@@ -669,7 +669,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     vector<int>   tmpTrackPDGID;
     vector<int>   tmpTrackMomPDGID;
 
-    //***looping over tracks***
+    // looping over tracks
     for (unsigned id = 0; id < iJet->getJetConstituents().size(); id++) {
 
       // daughter of iJet is reco::Candidate
@@ -697,7 +697,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
                       <<" Charge: "<<daughter->charge()<<" daughterPDGID: "<<daughter2.pdgId()
                       <<" fromPv(): "<<daughter2.fromPV()
                       << " pvAssociationQuality(): " <<daughter2.pvAssociationQuality()
-                      /*<<"motherRef"<<iJet->genParton()->motherRef()->pdgId()*/<<endl;
+		      << endl;
+		   //<<"motherRef"<<iJet->genParton()->motherRef()->pdgId()<<endl;
          cout<<"*************** Daughter Loop Details end*********"<<endl;
         }
 
@@ -989,17 +990,16 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetHadFlvr_.push_back(iJet->hadronFlavour());
 
     // Displaced Jet Variable : median jet log IP significance
-    /*
-    cout<<endl;
-    cout<<endl;
-    cout<<"***********"<<" Event: "<<e.id().event()<<" Jet: "<<nrjet<<", "<<nJet_<<"**************" <<endl;
-    cout<<"Un-Sorted("<<jetLog10IPSig_.size()<<"): ";
-    for (i=0; i<jetLog10IPSig_.size(); i++)
-      {
-       cout<<jetLog10IPSig_[i]<<", ";
-      }
-    cout<<endl;
-    */
+    //
+    //cout<<endl;
+    //cout<<endl;
+    //cout<<"***********"<<" Event: "<<e.id().event()<<" Jet: "<<nrjet<<", "<<nJet_<<"**************" <<endl;
+    //cout<<"Un-Sorted("<<jetLog10IPSig_.size()<<"): ";
+    //for (i=0; i<jetLog10IPSig_.size(); i++)
+    //{
+    //cout<<jetLog10IPSig_[i]<<", ";
+    //}
+    //cout<<endl;
 
     // must sort IPsig to be able to find median
     sort(jetLog10IPSig_.begin(), jetLog10IPSig_.end());
@@ -1007,19 +1007,18 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
     //bool skim = false
     //for(i=0; i<jetLog10IPSig_.begin();i++){
-    /*
-    cout<<endl;
-    cout<<"Last element(b): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
-    if(jetLog10IPSig_.size()>1 && jetLog10IPSig_[jetLog10IPSig_.size()-1] >=9999999.0) jetLog10IPSig_.pop_back();
-    cout<<endl;
-    cout<<"Last element(a): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
-
-    cout<<"Sorted("<<jetLog10IPSig_.size()<<"): ";
-    for (i=0; i<jetLog10IPSig_.size(); i++)
-    {
-     cout<<jetLog10IPSig_[i]<<", "; 
-    }
-    */    
+    //
+    //cout<<endl;
+    //cout<<"Last element(b): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
+    //if(jetLog10IPSig_.size()>1 && jetLog10IPSig_[jetLog10IPSig_.size()-1] >=9999999.0) jetLog10IPSig_.pop_back();
+    //cout<<endl;
+    //cout<<"Last element(a): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
+    //
+    //cout<<"Sorted("<<jetLog10IPSig_.size()<<"): ";
+    //for (i=0; i<jetLog10IPSig_.size(); i++)
+    //{
+    //cout<<jetLog10IPSig_[i]<<", "; 
+    //}
 
     //Now find median
     //Note .at() threw error
@@ -1072,7 +1071,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetSumIP_.push_back(SumIP);
     jetSumIPSig_.push_back(SumIPSig);
 
-    if(jetLogTrackAngle_.size()>0/*TAIsGood.size() >0*/)jetTotalTrackAngle_.push_back(TotalTrackAngle);
+    if(jetLogTrackAngle_.size()>0)jetTotalTrackAngle_.push_back(TotalTrackAngle);
 
 
     // gen jet and parton
@@ -1148,7 +1147,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     }
     
     nJet_++;
-  }///******End Jets Loop******
+  }/// End Jets Loop
   
   if(dodebug){
     printf("    After jet loop, check all track vars\n");
@@ -1173,7 +1172,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken( AODak4PFJetsCHSLabel_,  AODak4PFJetsCHSHandle );  
   e.getByToken( AODVertexLabel_      ,  AODVertexHandle );
   e.getByToken( AODTrackLabel_       ,  AODTrackHandle );
-  
+
   edm::ESHandle<MagneticField> magneticField;
   es.get<IdealMagneticFieldRecord>().get(magneticField);
   magneticField_ = &*magneticField;
@@ -1223,7 +1222,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     whichVertex_[i] = jj;
   }
   
-  
+    
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
@@ -1266,7 +1265,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
     int nMissingInner = 0;
     int nMissingOuter = 0;
-    
+
     for(int j = 0; j < (int)AODTrackHandle->size(); j++){
       reco::TrackBaseRef tref(AODTrackHandle,j);
       if (tref->pt() < minTrackPt_)continue;  // minimum pT for track
@@ -1276,7 +1275,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       if(!outer.isValid())continue;
       GlobalPoint outerPos = outer.globalPosition();
       TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
-
+      
       //Old DR
       //float tracketa = tref->eta();
       //float trackphi = tref->phi();
@@ -1327,11 +1326,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       nTracksIPlt0p05 += dxy < 0.05 ? 1 : 0;
       nTracksIPSiggt10 += dxySig > 10.0 ? 1 : 0;
       nTracksIPSiglt5 += dxySig < 5.0 ? 1 : 0;
-
+      
     }//end track loop
     sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
     sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
     sort(trackAngles.begin(), trackAngles.end());
+    
 
     //Totals
     AODCaloJetSumIP_.push_back(sumIP);
@@ -1373,7 +1373,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
   }
-
+  
 
   // AOD PF Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
@@ -1432,23 +1432,23 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   double promptTotal2 = 0; 
   vector<double> alphas(AODVertexHandle->size(),0);
   vector<double> alphas2(AODVertexHandle->size(),0);
-  printf("(int)tracks.size() %i\n", (int)tracks.size() );
+  //printf("(int)tracks.size() %i\n", (int)tracks.size() );
   for(int i = 0; i < (int)tracks.size(); i++){
     double pt = tracks[i].initialFreeState().momentum().transverse();
     total += pt;
     total2 += pt*pt;
-    printf("trackpt = %f\n",pt);
+    //printf("trackpt = %f\n",pt);
     if(whichVertex[i] < 0)continue;
-    printf(" we have a whichVertex\n");
+    //printf(" we have a whichVertex\n");
     promptTotal += pt;
     promptTotal2 += pt*pt;
     alphas[whichVertex[i]] += pt;
     alphas2[whichVertex[i]] += pt*pt;
   }
-
-  for(int i = 0; i < (int)alphas.size(); i++){
-   printf("alpha[%i] = %f \n",i,alphas[i]);
-  }
+  
+  //for(int i = 0; i < (int)alphas.size(); i++){
+  //  printf("alpha[%i] = %f \n",i,alphas[i]);
+  //}
 
 
   double alphaMax = 0; 
@@ -1476,7 +1476,7 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
 
 double lldjNtuple::trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit)
 {
-
+  
   edm::Handle<reco::BeamSpot> beamspotHandle_;
   e.getByToken(beamspotLabel_, beamspotHandle_);
   
