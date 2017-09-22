@@ -1303,8 +1303,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       static GetTrackTrajInfo getTrackTrajInfo; 
       vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
       if ( trajInfo.size() > 0 && trajInfo[0].valid) {
-        const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
-        double ta = fabs(trackAngle(e, tt,tsosInnerHit));
+	const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
+	double ta = fabs(trackAngle(e, tt,tsosInnerHit));
         totalTrackAngle += ta;
         totalTrackAnglePt += ta*tref->pt();
         totalTrackPt += tref->pt();
@@ -1373,6 +1373,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
   }
+
 
   // AOD PF Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {

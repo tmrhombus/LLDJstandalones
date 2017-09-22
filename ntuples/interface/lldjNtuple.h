@@ -26,6 +26,7 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
+#include "RecoTracker/Record/interface/NavigationSchoolRecord.h"
 
 #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"

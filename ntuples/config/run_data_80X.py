@@ -418,6 +418,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 
+ beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
+
  ak4JetSrc                 = cms.InputTag('slimmedJets'),
  AODak4CaloJetsSrc         = cms.InputTag('ak4CaloJets' , '', 'RECO'),
  AODak4PFJetsSrc           = cms.InputTag('ak4PFJets'   , '', 'RECO'),

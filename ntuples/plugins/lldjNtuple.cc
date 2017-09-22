@@ -33,7 +33,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   trgResultsProcess_         =                                          ps.getParameter<InputTag>("triggerResults").process();
 
   // beamspot 
-  beamspotLabel_             = consumes<reco::BeamSpot>                (ps.getParameter<InputTag>("beamSpotInputTag"));
+  beamspotLabel_             = consumes<reco::BeamSpot>                (ps.getParameter<InputTag>("beamspotLabel_"));
 
   // jets
   jetsAK4Label_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak4JetSrc"));
