@@ -1226,6 +1226,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
+    
     float sumIP = 0;
     float sumIPPt = 0;
     float sumIPSig = 0;
@@ -1236,17 +1237,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     int nTracksIPSiglt5 = 0;
 
     if(verbose_AOD) printf("Calo %f \n",iJet->pt());
-    
-    AODnCaloJet_++;
 
     float jetpt  = iJet->pt();
     float jeteta = iJet->eta();
     float jetphi = iJet->phi();
     
-    AODCaloJetPt_.push_back(jetpt);
-    AODCaloJetEta_.push_back(jeteta);
-    AODCaloJetPhi_.push_back(jetphi);
-    
+        
     map<reco::TransientTrack,reco::TrackBaseRef> refMap;
     std::vector<reco::TransientTrack> transientTracks;
     vector<TrajectoryStateOnSurface> tsosList;
@@ -1286,7 +1282,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       //Rutgers DR
       double drt = deltaR( jeteta, jetphi, trackPos.Eta(), trackPos.Phi() );
       if(drt > maxDRtrackJet_) continue; 
-      if(trackToCaloJetMap_[j] < 0) trackToCaloJetMap_[j] = AODnCaloJet_-1; //ugly 
+      if(trackToCaloJetMap_[j] < 0) trackToCaloJetMap_[j] = 0; //FIXME dummy value (currently not used)
       if(drt < minR){
 	minR = drt;
 	//minPt = tref->pt();
@@ -1331,7 +1327,33 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
     sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
     sort(trackAngles.begin(), trackAngles.end());
+
     
+    double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
+    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+    
+    // ID
+    // Currently have to put the cuts here because I include a cut on the number of matched tracks calculated above
+    // Note: do lepton cleaning in analyzer
+    bool passID = false;
+    if(transientTracks.size()>=1 && iJet->emEnergyFraction()>=0.0 && iJet->emEnergyFraction()<=0.9 && iJet->energyFractionHadronic()>=0.0 && iJet->energyFractionHadronic()<=0.9) passID = true; 
+    if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
+
+    ////////////////////////
+    // Fill tree
+    /////////////////////////
+    AODnCaloJet_++;
+    
+    AODCaloJetPt_.push_back(jetpt);
+    AODCaloJetEta_.push_back(jeteta);
+    AODCaloJetPhi_.push_back(jetphi);
+    
+    AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
+    AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+    AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+    AODCaloJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+    AODCaloJetBeta_           .push_back(beta          ) ; 
+    AODCaloJetBeta2_          .push_back(beta2         ) ; 
 
     //Totals
     AODCaloJetSumIP_.push_back(sumIP);
@@ -1358,17 +1380,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     }else{
       AODCaloJetMedianLogTrackAngle_.push_back( trackAngles.at((trackAngles.size() - 1)/2) );
     }
-
-
-    double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
-    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-    
-    AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
-    AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
-    AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
-    AODCaloJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
-    AODCaloJetBeta_           .push_back(beta          ) ; 
-    AODCaloJetBeta2_          .push_back(beta2         ) ; 
     
     //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
