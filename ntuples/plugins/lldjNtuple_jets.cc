@@ -1226,6 +1226,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // AOD Calo Jets -------------------------------------------
   for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
+    if(verbose_AOD) printf("Calo %f \n",iJet->pt());
+    
+    float jetpt  = iJet->pt();
+    float jeteta = iJet->eta();
+    float jetphi = iJet->phi();
+    
+    //cut here passing in jeteta, jetphi, whichVertex
     
     float sumIP = 0;
     float sumIPPt = 0;
@@ -1235,13 +1242,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     int nTracksIPlt0p05 = 0;
     int nTracksIPSiggt10 = 0;
     int nTracksIPSiglt5 = 0;
-
-    if(verbose_AOD) printf("Calo %f \n",iJet->pt());
-
-    float jetpt  = iJet->pt();
-    float jeteta = iJet->eta();
-    float jetphi = iJet->phi();
-    
         
     map<reco::TransientTrack,reco::TrackBaseRef> refMap;
     std::vector<reco::TransientTrack> transientTracks;
@@ -1328,7 +1328,33 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
     sort(trackAngles.begin(), trackAngles.end());
 
-    
+    //Medians
+    if(tracksIPLog10Sig.size() == 0){
+      //do nothing
+    }else if((tracksIPLog10Sig.size()%2 == 0)){
+      tracksIPLog10Sig_median = (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 ;
+    }else{
+      tracksIPLog10Sig_median = tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2);
+    }
+    if(trackAngles.size() == 0){
+      //do nothing
+    }else if(trackAngles.size() % 2 == 0){
+      trackAngles_median = trackAngles.at(trackAngles.size()/2 - 1);
+    }else{
+      trackAngles_median = trackAngles.at((trackAngles.size() - 1)/2);
+    }
+
+
+    //cut off here, passing;
+    //transientTracks, vertexVector -- for alpha and ntracks
+    //tracksIPLog10Sig_median
+    //trackAngles_median
+    //
+    //sumIP
+    //sumIPSig
+    //totalTrackAngle
+
+
     double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
     calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
     
@@ -1344,10 +1370,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     /////////////////////////
     AODnCaloJet_++;
     
+    //Pt, Eta, Phi
     AODCaloJetPt_.push_back(jetpt);
     AODCaloJetEta_.push_back(jeteta);
     AODCaloJetPhi_.push_back(jetphi);
     
+    //AlphaMax-type variables
     AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
     AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
     AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
@@ -1360,26 +1388,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     AODCaloJetSumIPSig_.push_back(sumIPSig);
     AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
 
-    //Vectors -- not sure we want to save these
+    //Medians
+    AODCaloJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
+    AODCaloJetMedianLogTrackAngle_.push_back(trackAngles_median);
+
+    //Vectors currently not saved
     //AODCaloJetLog10IPSig_; //tracksIPLogSig;
     //AODCaloJetLogTrackAngle_; //trackAngles; 
     //AODCaloJetTrackAngle_;
-
-    //Medians
-    if(tracksIPLog10Sig.size() == 0){
-      //do nothing
-    }else if((tracksIPLog10Sig.size()%2 == 0)){
-      AODCaloJetMedianLog10IPSig_.push_back( (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 );
-    }else{
-      AODCaloJetMedianLog10IPSig_.push_back( tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2) );
-    }
-    if(trackAngles.size() == 0){
-      //do nothing
-    }else if(trackAngles.size() % 2 == 0){
-      AODCaloJetMedianLogTrackAngle_.push_back( trackAngles.at(trackAngles.size()/2 - 1) );
-    }else{
-      AODCaloJetMedianLogTrackAngle_.push_back( trackAngles.at((trackAngles.size() - 1)/2) );
-    }
     
     //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
