@@ -62,8 +62,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
   
-  //   double TrackAngle(const edm::Event&, reco::TransientTrack track, TrajectoryStateOnSurface tSOSInnerHit);
-
   void branchesGlobalEvent(TTree*);
   void branchesMET        (TTree*);
   void branchesPhotons    (TTree*);
@@ -121,6 +119,13 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
 
+  void aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, //StateOnTrackerBound stateOnTracker,
+				  float jeteta, float jetphi,  std::vector<int> whichVertex_,
+				  bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
+				  bool& fill_trackAngles_median, float &trackAngles_median,
+				  float& sumIP, float& sumIPSig, float &totalTrackAngle,
+				  std::vector<reco::TransientTrack>& transientTracks, std::vector<int>& vertexVector);
+  
   double trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit);
 
   // met

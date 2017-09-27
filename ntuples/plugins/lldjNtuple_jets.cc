@@ -168,9 +168,13 @@ vector<float>  AODPFJetPt_;
 vector<float>  AODPFJetEta_;
 vector<float>  AODPFJetPhi_;
 vector<float>  AODPFJetAlphaMax_;
+vector<float>  AODPFJetAlphaMax2_;
+vector<float>  AODPFJetAlphaMaxPrime_;
+vector<float>  AODPFJetAlphaMaxPrime2_;
+vector<float>  AODPFJetBeta_;
+vector<float>  AODPFJetBeta2_;
 vector<float>  AODPFJetSumIP_;
 vector<float>  AODPFJetSumIPSig_;
-vector<float>  AODPFJetLog10IPSig_;
 vector<float>  AODPFJetMedianLog10IPSig_;
 vector<float>  AODPFJetTrackAngle_;
 vector<float>  AODPFJetLogTrackAngle_;
@@ -183,9 +187,13 @@ vector<float>  AODPFchsJetPt_;
 vector<float>  AODPFchsJetEta_;
 vector<float>  AODPFchsJetPhi_;
 vector<float>  AODPFchsJetAlphaMax_;
+vector<float>  AODPFchsJetAlphaMax2_;
+vector<float>  AODPFchsJetAlphaMaxPrime_;
+vector<float>  AODPFchsJetAlphaMaxPrime2_;
+vector<float>  AODPFchsJetBeta_;
+vector<float>  AODPFchsJetBeta2_;
 vector<float>  AODPFchsJetSumIP_;
 vector<float>  AODPFchsJetSumIPSig_;
-vector<float>  AODPFchsJetLog10IPSig_;
 vector<float>  AODPFchsJetMedianLog10IPSig_;
 vector<float>  AODPFchsJetTrackAngle_;
 vector<float>  AODPFchsJetLogTrackAngle_;
@@ -312,7 +320,6 @@ void lldjNtuple::branchesJets(TTree* tree) {
 
   tree->Branch("AODCaloJetSumIP"               , &AODCaloJetSumIP_);
   tree->Branch("AODCaloJetSumIPSig"            , &AODCaloJetSumIPSig_);
-  tree->Branch("AODCaloJetLog10IPSig"          , &AODCaloJetLog10IPSig_);
   tree->Branch("AODCaloJetMedianLog10IPSig"    , &AODCaloJetMedianLog10IPSig_);
   tree->Branch("AODCaloJetTrackAngle"          , &AODCaloJetTrackAngle_);
   tree->Branch("AODCaloJetLogTrackAngle"       , &AODCaloJetLogTrackAngle_);
@@ -324,9 +331,13 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFJetEta"                   , &AODPFJetEta_);
   tree->Branch("AODPFJetPhi"                   , &AODPFJetPhi_);
   tree->Branch("AODPFJetAlphaMax"              , &AODPFJetAlphaMax_);
+  tree->Branch("AODPFJetAlphaMax2_"            , &AODPFJetAlphaMax2_);
+  tree->Branch("AODPFJetAlphaMaxPrime_"        , &AODPFJetAlphaMaxPrime_);
+  tree->Branch("AODPFJetAlphaMaxPrime2_"       , &AODPFJetAlphaMaxPrime2_);
+  tree->Branch("AODPFJetBeta_"                 , &AODPFJetBeta_);
+  tree->Branch("AODPFJetBeta2_"                , &AODPFJetBeta2_);
   tree->Branch("AODPFJetSumIP"                 , &AODPFJetSumIP_);
   tree->Branch("AODPFJetSumIPSig"              , &AODPFJetSumIPSig_);
-  tree->Branch("AODPFJetLog10IPSig"            , &AODPFJetLog10IPSig_);
   tree->Branch("AODPFJetMedianLog10IPSig"      , &AODPFJetMedianLog10IPSig_);
   tree->Branch("AODPFJetTrackAngle"            , &AODPFJetTrackAngle_);
   tree->Branch("AODPFJetLogTrackAngle"         , &AODPFJetLogTrackAngle_);
@@ -338,9 +349,13 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFchsJetEta"                , &AODPFchsJetEta_);
   tree->Branch("AODPFchsJetPhi"                , &AODPFchsJetPhi_);
   tree->Branch("AODPFchsJetAlphaMax"           , &AODPFchsJetAlphaMax_);
+  tree->Branch("AODPFchsJetAlphaMax2_"         , &AODPFchsJetAlphaMax2_);
+  tree->Branch("AODPFchsJetAlphaMaxPrime_"     , &AODPFchsJetAlphaMaxPrime_);
+  tree->Branch("AODPFchsJetAlphaMaxPrime2_"    , &AODPFchsJetAlphaMaxPrime2_);
+  tree->Branch("AODPFchsJetBeta_"              , &AODPFchsJetBeta_);
+  tree->Branch("AODPFchsJetBeta2_"             , &AODPFchsJetBeta2_);
   tree->Branch("AODPFchsJetSumIP"              , &AODPFchsJetSumIP_);
   tree->Branch("AODPFchsJetSumIPSig"           , &AODPFchsJetSumIPSig_);
-  tree->Branch("AODPFchsJetLog10IPSig"         , &AODPFchsJetLog10IPSig_);
   tree->Branch("AODPFchsJetMedianLog10IPSig"   , &AODPFchsJetMedianLog10IPSig_);
   tree->Branch("AODPFchsJetTrackAngle"         , &AODPFchsJetTrackAngle_);
   tree->Branch("AODPFchsJetLogTrackAngle"      , &AODPFchsJetLogTrackAngle_);
@@ -463,7 +478,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  AODCaloJetSumIP_.clear();
  AODCaloJetSumIPSig_.clear();
- AODCaloJetLog10IPSig_.clear();
  AODCaloJetMedianLog10IPSig_.clear();
  AODCaloJetTrackAngle_.clear();
  AODCaloJetLogTrackAngle_.clear();
@@ -475,9 +489,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFJetEta_.clear();
  AODPFJetPhi_.clear();
  AODPFJetAlphaMax_.clear();
+ AODPFJetAlphaMax2_.clear();
+ AODPFJetAlphaMaxPrime_.clear();
+ AODPFJetAlphaMaxPrime2_.clear();
+ AODPFJetBeta_.clear();
+ AODPFJetBeta2_.clear();
  AODPFJetSumIP_.clear();
  AODPFJetSumIPSig_.clear();
- AODPFJetLog10IPSig_.clear();
  AODPFJetMedianLog10IPSig_.clear();
  AODPFJetTrackAngle_.clear();
  AODPFJetLogTrackAngle_.clear();
@@ -489,9 +507,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetEta_.clear();
  AODPFchsJetPhi_.clear();
  AODPFchsJetAlphaMax_.clear();
+ AODPFchsJetAlphaMax2_.clear();
+ AODPFchsJetAlphaMaxPrime_.clear();
+ AODPFchsJetAlphaMaxPrime2_.clear();
+ AODPFchsJetBeta_.clear();
+ AODPFchsJetBeta2_.clear();
  AODPFchsJetSumIP_.clear();
  AODPFchsJetSumIPSig_.clear();
- AODPFchsJetLog10IPSig_.clear();
  AODPFchsJetMedianLog10IPSig_.clear();
  AODPFchsJetTrackAngle_.clear();
  AODPFchsJetLogTrackAngle_.clear();
@@ -1185,14 +1207,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   edm::Handle<reco::BeamSpot> beamspotHandle_;
   e.getByToken(beamspotLabel_, beamspotHandle_);
 
-  std::string thePropagatorName_ = "PropagatorWithMaterial";
-  es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
-  StateOnTrackerBound stateOnTracker(thePropagator_.product());
+  //original stateontracker location
 
   es.get<TransientTrackRecord>().get("TransientTrackBuilder",theBuilder_);
-  
-  const double minTrackPt_ = 1.0;
-  const double maxDRtrackJet_ = 0.4;
   
   //Debug printing
   if(verbose_AOD){
@@ -1231,136 +1248,22 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float jetpt  = iJet->pt();
     float jeteta = iJet->eta();
     float jetphi = iJet->phi();
-    
-    //cut here passing in jeteta, jetphi, whichVertex
-    
-    float sumIP = 0;
-    float sumIPPt = 0;
-    float sumIPSig = 0;
-    float sumIPLogSig = 0;
-    float IVFScore = 0; 
-    int nTracksIPlt0p05 = 0;
-    int nTracksIPSiggt10 = 0;
-    int nTracksIPSiglt5 = 0;
-        
-    map<reco::TransientTrack,reco::TrackBaseRef> refMap;
+
+    bool fill_tracksIPLog10Sig_median=true, fill_trackAngles_median=true;
+    float tracksIPLog10Sig_median=0, trackAngles_median=0;
+    float sumIP=0, sumIPSig=0, totalTrackAngle=0;
     std::vector<reco::TransientTrack> transientTracks;
-    vector<TrajectoryStateOnSurface> tsosList;
-    vector<float> tracksIPLogSig;
-    vector<float> tracksIPLog10Sig;
-    vector<float> trackAngles;
-    std::vector<int> vertexVector ;
-    double totalTrackAngle = 0;
-    double totalTrackPt = 0;
-    double totalTrackAnglePt = 0;
-    double minR = 10000;
-    //double minPt = 0; //unused
-    
-    TLorentzVector sumVector(0,0,0,0);
-    vector<TLorentzVector> trackVectors;
+    std::vector<int> vertexVector;
 
-    int nMissingInner = 0;
-    int nMissingOuter = 0;
-
-    for(int j = 0; j < (int)AODTrackHandle->size(); j++){
-      reco::TrackBaseRef tref(AODTrackHandle,j);
-      if (tref->pt() < minTrackPt_)continue;  // minimum pT for track
-      if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
-      FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
-      TrajectoryStateOnSurface outer = stateOnTracker(fts);
-      if(!outer.isValid())continue;
-      GlobalPoint outerPos = outer.globalPosition();
-      TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
-      
-      //Old DR
-      //float tracketa = tref->eta();
-      //float trackphi = tref->phi();
-      //if(verbose_AOD) printf(" jeteta, jetphi, tracketa, trackphi %f %f %f %f dr %f \n",jeteta, jetphi, tracketa, trackphi, deltaR( jeteta, jetphi, tracketa, trackphi));
-      //if ( deltaR( jeteta, jetphi, tracketa, trackphi ) > maxDRtrackJet_ ) continue; // match track to jet (different from rutgers!)
-      //if(verbose_AOD) printf("  found a track - \n");
-
-      //Rutgers DR
-      double drt = deltaR( jeteta, jetphi, trackPos.Eta(), trackPos.Phi() );
-      if(drt > maxDRtrackJet_) continue; 
-      if(trackToCaloJetMap_[j] < 0) trackToCaloJetMap_[j] = 0; //FIXME dummy value (currently not used)
-      if(drt < minR){
-	minR = drt;
-	//minPt = tref->pt();
-      }
-      reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
-      if(!tt.isValid())continue;
-      transientTracks.push_back(tt);
-      vertexVector.push_back(whichVertex_[j]);
-
-      nMissingInner += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
-      nMissingOuter += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_OUTER_HITS);
-      
-      static GetTrackTrajInfo getTrackTrajInfo; 
-      vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
-      if ( trajInfo.size() > 0 && trajInfo[0].valid) {
-	const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
-	double ta = fabs(trackAngle(e, tt,tsosInnerHit));
-        totalTrackAngle += ta;
-        totalTrackAnglePt += ta*tref->pt();
-        totalTrackPt += tref->pt();
-        trackAngles.push_back(log10(ta));
-        tsosList.push_back(tsosInnerHit);
-      }
-
-      double dxy = fabs(tref->dxy(*beamspotHandle_));
-      double dxyerr = tref->dxyError();
-      double dxySig = 0;
-      if (dxyerr > 0)dxySig = dxy/dxyerr;
-
-      sumIP += dxy;
-      sumIPPt += dxy * AODTrackHandle->at(j).pt();
-      sumIPSig += dxySig;
-      sumIPLogSig += log(dxySig);
-      tracksIPLogSig.push_back(log(dxySig));
-      tracksIPLog10Sig.push_back(log10(dxySig));
-      IVFScore += 1.0/drt;
-      nTracksIPlt0p05 += dxy < 0.05 ? 1 : 0;
-      nTracksIPSiggt10 += dxySig > 10.0 ? 1 : 0;
-      nTracksIPSiglt5 += dxySig < 5.0 ? 1 : 0;
-      
-    }//end track loop
-    sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
-    sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
-    sort(trackAngles.begin(), trackAngles.end());
-
-    //Medians
-    if(tracksIPLog10Sig.size() == 0){
-      //do nothing
-    }else if((tracksIPLog10Sig.size()%2 == 0)){
-      tracksIPLog10Sig_median = (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 ;
-    }else{
-      tracksIPLog10Sig_median = tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2);
-    }
-    if(trackAngles.size() == 0){
-      //do nothing
-    }else if(trackAngles.size() % 2 == 0){
-      trackAngles_median = trackAngles.at(trackAngles.size()/2 - 1);
-    }else{
-      trackAngles_median = trackAngles.at((trackAngles.size() - 1)/2);
-    }
-
-
-    //cut off here, passing;
-    //transientTracks, vertexVector -- for alpha and ntracks
-    //tracksIPLog10Sig_median
-    //trackAngles_median
-    //
-    //sumIP
-    //sumIPSig
-    //totalTrackAngle
-
+    aod_jet_track_calculations(e, es,
+			       jeteta, jetphi, whichVertex_, 
+			       fill_tracksIPLog10Sig_median, tracksIPLog10Sig_median, fill_trackAngles_median, trackAngles_median, 
+			       sumIP, sumIPSig, totalTrackAngle, transientTracks, vertexVector);
 
     double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
     calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-    
+
     // ID
-    // Currently have to put the cuts here because I include a cut on the number of matched tracks calculated above
-    // Note: do lepton cleaning in analyzer
     bool passID = false;
     if(transientTracks.size()>=1 && iJet->emEnergyFraction()>=0.0 && iJet->emEnergyFraction()<=0.9 && iJet->energyFractionHadronic()>=0.0 && iJet->energyFractionHadronic()<=0.9) passID = true; 
     if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
@@ -1389,8 +1292,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
 
     //Medians
-    AODCaloJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-    AODCaloJetMedianLogTrackAngle_.push_back(trackAngles_median);
+    if(fill_tracksIPLog10Sig_median) AODCaloJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
+    if(fill_trackAngles_median) AODCaloJetMedianLogTrackAngle_.push_back(trackAngles_median);
 
     //Vectors currently not saved
     //AODCaloJetLog10IPSig_; //tracksIPLogSig;
@@ -1404,52 +1307,263 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   // AOD PF Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
-   //printf("PF %f \n",iJet->pt());
-   AODnPFJet_++;
+    
+    float jetpt  = iJet->pt();
+    float jeteta = iJet->eta();
+    float jetphi = iJet->phi();
+    
+    bool fill_tracksIPLog10Sig_median=true, fill_trackAngles_median=true;
+    float tracksIPLog10Sig_median=0, trackAngles_median=0;
+    float sumIP=0, sumIPSig=0, totalTrackAngle=0;
+    std::vector<reco::TransientTrack> transientTracks;
+    std::vector<int> vertexVector;
 
-   float jetpt  = iJet->pt();
-   float jeteta = iJet->eta();
-   float jetphi = iJet->phi();
+    aod_jet_track_calculations(e, es,
+			       jeteta, jetphi, whichVertex_, 
+			       fill_tracksIPLog10Sig_median, tracksIPLog10Sig_median, fill_trackAngles_median, trackAngles_median, 
+			       sumIP, sumIPSig, totalTrackAngle, transientTracks, vertexVector);
 
-   AODPFJetPt_.push_back(jetpt);
-   AODPFJetEta_.push_back(jeteta);
-   AODPFJetPhi_.push_back(jetphi);
-   //AODPFJetAlphaMax_;
-   //AODPFJetSumIP_;
-   //AODPFJetSumIPSig_;
-   //AODPFJetLog10IPSig_;
-   //AODPFJetMedianLog10IPSig_;
-   //AODPFJetTrackAngle_;
-   //AODPFJetLogTrackAngle_;
-   //AODPFJetMedianLogTrackAngle_;
-   //AODPFJetTotalTrackAngle_;
+    double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
+    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+
+    
+    // ID
+    bool passID = false;
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
+    double NHF = iJet->neutralHadronEnergyFraction();
+    double NEMF = iJet->neutralEmEnergyFraction();
+    double CHF = iJet->chargedHadronEnergyFraction();
+    //double MUF = iJet->muonEnergyFraction();
+    double CEMF = iJet->chargedEmEnergyFraction();
+    int NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+    //int NumNeutralParticles =iJet->neutralMultiplicity();
+    int CHM = iJet->chargedMultiplicity();
+    bool looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(jeteta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(jeteta)>2.4) && fabs(jeteta)<=2.7;
+    if(transientTracks.size()>=1 && looseJetID) passID = true;
+    if(iJet->pt()<20.0 || fabs(jeteta)>2.4 || !passID) continue;
+
+    ////////////////////////
+    // Fill tree
+    /////////////////////////
+    AODnPFJet_++;
+    
+    //Pt, Eta, Phi
+    AODPFJetPt_.push_back(jetpt);
+    AODPFJetEta_.push_back(jeteta);
+    AODPFJetPhi_.push_back(jetphi);
+    
+    //AlphaMax-type variables
+    AODPFJetAlphaMax_       .push_back(alphaMax      ) ; 
+    AODPFJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+    AODPFJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+    AODPFJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+    AODPFJetBeta_           .push_back(beta          ) ; 
+    AODPFJetBeta2_          .push_back(beta2         ) ; 
+
+    //Totals
+    AODPFJetSumIP_.push_back(sumIP);
+    AODPFJetSumIPSig_.push_back(sumIPSig);
+    AODPFJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+    //Medians
+    if(fill_tracksIPLog10Sig_median) AODPFJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
+    if(fill_trackAngles_median) AODPFJetMedianLogTrackAngle_.push_back(trackAngles_median);
+
   }
 
   // AOD PFchs Jets -------------------------------------------
   for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
-   //printf("PFCHS %f \n",iJet->pt());
-   AODnPFchsJet_++;
 
-   float jetpt  = iJet->pt();
-   float jeteta = iJet->eta();
-   float jetphi = iJet->phi();
+    float jetpt  = iJet->pt();
+    float jeteta = iJet->eta();
+    float jetphi = iJet->phi();
+    
+    bool fill_tracksIPLog10Sig_median=true, fill_trackAngles_median=true;
+    float tracksIPLog10Sig_median=0, trackAngles_median=0;
+    float sumIP=0, sumIPSig=0, totalTrackAngle=0;
+    std::vector<reco::TransientTrack> transientTracks;
+    std::vector<int> vertexVector;
 
-   AODPFchsJetPt_.push_back(jetpt);
-   AODPFchsJetEta_.push_back(jeteta);
-   AODPFchsJetPhi_.push_back(jetphi);
-   //AODPFchsJetAlphaMax_;
-   //AODPFchsJetSumIP_;
-   //AODPFchsJetSumIPSig_;
-   //AODPFchsJetLog10IPSig_;
-   //AODPFchsJetMedianLog10IPSig_;
-   //AODPFchsJetTrackAngle_;
-   //AODPFchsJetLogTrackAngle_;
-   //AODPFchsJetMedianLogTrackAngle_;
-   //AODPFchsJetTotalTrackAngle_;
+    aod_jet_track_calculations(e, es,
+			       jeteta, jetphi, whichVertex_, 
+			       fill_tracksIPLog10Sig_median, tracksIPLog10Sig_median, fill_trackAngles_median, trackAngles_median, 
+			       sumIP, sumIPSig, totalTrackAngle, transientTracks, vertexVector);
+
+    double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
+    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+
+    // ID
+    bool passID = false;
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
+    double NHF = iJet->neutralHadronEnergyFraction();
+    double NEMF = iJet->neutralEmEnergyFraction();
+    double CHF = iJet->chargedHadronEnergyFraction();
+    //double MUF = iJet->muonEnergyFraction();
+    double CEMF = iJet->chargedEmEnergyFraction();
+    int NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+    //int NumNeutralParticles =iJet->neutralMultiplicity();
+    int CHM = iJet->chargedMultiplicity();
+    bool looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(jeteta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(jeteta)>2.4) && fabs(jeteta)<=2.7;
+    if(transientTracks.size()>=1 && looseJetID) passID = true;
+    if(iJet->pt()<20.0 || fabs(jeteta)>2.4 || !passID) continue;
+
+    ////////////////////////
+    // Fill tree
+    /////////////////////////
+    AODnPFchsJet_++;
+    
+    //Pt, Eta, Phi
+    AODPFchsJetPt_.push_back(jetpt);
+    AODPFchsJetEta_.push_back(jeteta);
+    AODPFchsJetPhi_.push_back(jetphi);
+    
+    //AlphaMax-type variables
+    AODPFchsJetAlphaMax_       .push_back(alphaMax      ) ; 
+    AODPFchsJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+    AODPFchsJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+    AODPFchsJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+    AODPFchsJetBeta_           .push_back(beta          ) ; 
+    AODPFchsJetBeta2_          .push_back(beta2         ) ; 
+
+    //Totals
+    AODPFchsJetSumIP_.push_back(sumIP);
+    AODPFchsJetSumIPSig_.push_back(sumIPSig);
+    AODPFchsJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+    //Medians
+    if(fill_tracksIPLog10Sig_median) AODPFchsJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
+    if(fill_trackAngles_median) AODPFchsJetMedianLogTrackAngle_.push_back(trackAngles_median);
+
+  }//end pfchs loop
+  
+}//end fill jets
+
+
+void lldjNtuple::aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, 
+					    float jeteta, float jetphi,  std::vector<int> whichVertex_, 
+					    bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
+					    bool& fill_trackAngles_median, float &trackAngles_median, 
+					    float& sumIP, float& sumIPSig, float &totalTrackAngle,
+					    std::vector<reco::TransientTrack>& transientTracks, std::vector<int>& vertexVector
+					    ){
+
+  const double minTrackPt_ = 1.0;
+  const double maxDRtrackJet_ = 0.4;
+  
+  edm::Handle<reco::BeamSpot> beamspotHandle_;
+  e.getByToken(beamspotLabel_, beamspotHandle_);
+
+  //slow to do this for every jet??
+  std::string thePropagatorName_ = "PropagatorWithMaterial";
+  es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
+  StateOnTrackerBound stateOnTracker(thePropagator_.product());
+
+  float sumIPPt = 0;
+  float sumIPLogSig = 0;
+  float IVFScore = 0; 
+  int nTracksIPlt0p05 = 0;
+  int nTracksIPSiggt10 = 0;
+  int nTracksIPSiglt5 = 0;
+  
+  map<reco::TransientTrack,reco::TrackBaseRef> refMap;
+  vector<TrajectoryStateOnSurface> tsosList;
+  vector<float> tracksIPLogSig;
+  vector<float> tracksIPLog10Sig;
+  vector<float> trackAngles;
+  
+  double totalTrackPt = 0;
+  double totalTrackAnglePt = 0;
+  double minR = 10000;
+  //double minPt = 0; //unused
+  
+  TLorentzVector sumVector(0,0,0,0);
+  vector<TLorentzVector> trackVectors;
+  
+  int nMissingInner = 0;
+  int nMissingOuter = 0;
+
+  for(int j = 0; j < (int)AODTrackHandle->size(); j++){
+
+    reco::TrackBaseRef tref(AODTrackHandle,j);
+    if (tref->pt() < minTrackPt_)continue;  // minimum pT for track
+    if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
+    FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
+    TrajectoryStateOnSurface outer = stateOnTracker(fts);
+    if(!outer.isValid())continue;
+    GlobalPoint outerPos = outer.globalPosition();
+    TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
+
+    //Old DR
+    //float tracketa = tref->eta();
+    //float trackphi = tref->phi();
+    //if(verbose_AOD) printf(" jeteta, jetphi, tracketa, trackphi %f %f %f %f dr %f \n",jeteta, jetphi, tracketa, trackphi, deltaR( jeteta, jetphi, tracketa, trackphi));
+    //if ( deltaR( jeteta, jetphi, tracketa, trackphi ) > maxDRtrackJet_ ) continue; // match track to jet (different from rutgers!)
+    //if(verbose_AOD) printf("  found a track - \n");
+    
+    //Rutgers DR
+    double drt = deltaR( jeteta, jetphi, trackPos.Eta(), trackPos.Phi() );
+    if(drt > maxDRtrackJet_) continue; 
+    //if(trackToCaloJetMap_[j] < 0) trackToCaloJetMap_[j] = 0; //not used
+    if(drt < minR){
+      minR = drt;
+      //minPt = tref->pt();
+    }
+    reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
+    if(!tt.isValid())continue;
+    transientTracks.push_back(tt);
+    vertexVector.push_back(whichVertex_[j]);
+    
+    nMissingInner += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
+    nMissingOuter += tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_OUTER_HITS);
+
+    static GetTrackTrajInfo getTrackTrajInfo; 
+    vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
+    if ( trajInfo.size() > 0 && trajInfo[0].valid) {
+      const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
+      double ta = fabs(trackAngle(e, tt,tsosInnerHit));
+      totalTrackAngle += ta;
+      totalTrackAnglePt += ta*tref->pt();
+      totalTrackPt += tref->pt();
+      trackAngles.push_back(log10(ta));
+      tsosList.push_back(tsosInnerHit);
+    }
+    double dxy = fabs(tref->dxy(*beamspotHandle_));
+    double dxyerr = tref->dxyError();
+    double dxySig = 0;
+    if (dxyerr > 0)dxySig = dxy/dxyerr;
+    sumIP += dxy;
+    sumIPPt += dxy * AODTrackHandle->at(j).pt();
+    sumIPSig += dxySig;
+    sumIPLogSig += log(dxySig);
+    tracksIPLogSig.push_back(log(dxySig));
+    tracksIPLog10Sig.push_back(log10(dxySig));
+    IVFScore += 1.0/drt;
+    nTracksIPlt0p05 += dxy < 0.05 ? 1 : 0;
+    nTracksIPSiggt10 += dxySig > 10.0 ? 1 : 0;
+    nTracksIPSiglt5 += dxySig < 5.0 ? 1 : 0;
+    
+  }//end track loop
+  sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
+  sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
+  sort(trackAngles.begin(), trackAngles.end());
+  
+  //Medians
+  if(tracksIPLog10Sig.size() == 0){
+    fill_tracksIPLog10Sig_median = false;
+  }else if((tracksIPLog10Sig.size()%2 == 0)){
+    tracksIPLog10Sig_median = (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 ;
+  }else{
+    tracksIPLog10Sig_median = tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2);
   }
-
+  if(trackAngles.size() == 0){
+    fill_trackAngles_median = false;
+  }else if(trackAngles.size() % 2 == 0){
+    trackAngles_median = trackAngles.at(trackAngles.size()/2 - 1);
+  }else{
+    trackAngles_median = trackAngles.at((trackAngles.size() - 1)/2);
+  }
+  
 }
-
 
 void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 {
@@ -1506,7 +1620,7 @@ double lldjNtuple::trackAngle(const edm::Event& e, reco::TransientTrack track, T
   
   edm::Handle<reco::BeamSpot> beamspotHandle_;
   e.getByToken(beamspotLabel_, beamspotHandle_);
-  
+
   const reco::BeamSpot& pat_beamspot = (*beamspotHandle_);
   TVector2 bmspot(pat_beamspot.x0(),pat_beamspot.y0());
   GlobalPoint   innerPos  = tsosInnerHit.globalPosition();
