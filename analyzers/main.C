@@ -169,19 +169,19 @@ int main(int argc, char **argv){
   // printf("Inputfile: %s\n",Tinputline.Data());
   //}
 
-  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
+  if( Tinputline.Contains("/uscms/home/ddiaz/") ){
    theChain->Add( Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
-  if( Tinputline.Contains("/store/user") ){
+ /* if( Tinputline.Contains("/store/user") ){
     theChain->Add( "/hdfs"+Tinputline );
     //theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
   // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
   // }
    printf("Inputfile: %s\n",Tinputline.Data());
   }
-
+*/
   // if( dolocal ){
   //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
   // }

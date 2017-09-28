@@ -20,7 +20,8 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
-
+ number_sig =0.0;
+ number_bkg = 0.0;
  nmatched = 0;
  nunmatched = 0;
 
@@ -95,7 +96,7 @@ void analyzer_signal::Loop(TString outfilename,
   electron_list = electron_passID( eleidbit, 30, 2.1, "");
   muon_list = muon_passID( muoidbit, 30, 2.1, ""); 
   jet_list = jet_passID( jetidbit, 25, 2.4, ""); 
-  AODcalojet_list   = jet_matchToMiniAOD("calo");          
+  //AODcalojet_list   = jet_matchToMiniAOD("calo");          
   //AODPFjet_list     = jet_matchToMiniAOD("pf");          
   //AODPFchsjet_list  = jet_matchToMiniAOD("pfchs");          
 
@@ -111,6 +112,16 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
+  
+  //std::cout<<"ntags: "<<ntag<<std::endl; 
+  h_ntags->Fill(ntag);
+  //h_ntags->Write();
+  if(ntag>=2){
+  number_sig = number_sig + event_weight;
+  //number_bkg = number_bkg + event_weight;
+  //std::cout <<"****** event_weight: "<<event_weight<<" lumi "<<lumi<<std::endl;
+  std::cout <<"ntag = "<<ntag<< " numb_sig: "<< number_sig<< " numb_bkg: "<< number_bkg/*<< " event_weight*numb_sig: "<< event_weight*number_sig<< " event_weight*numb_bkg: "<< event_weight*number_bkg*/<<std::endl;
+   }
   // set our met
   themet = pfMET;
   themephi = pfMETPhi;
@@ -156,8 +167,8 @@ void analyzer_signal::Loop(TString outfilename,
 
   
   // check compatibility between AOD/miniAOD jets
-  printf("miniAOD: %i    AOD: %i \n", (int)jet_list.size(), (int)AODcalojet_list.size() );
-  if( jet_list.size()!=AODcalojet_list.size()){nunmatched ++; continue;}
+ // printf("miniAOD: %i    AOD: %i \n", (int)jet_list.size(), (int)AODcalojet_list.size() );
+ /* if( jet_list.size()!=AODcalojet_list.size()){nunmatched ++; continue;}
   nmatched ++;
   for(int i=0; i<jet_list.size(); ++i){
    int miniAODjetindex = jet_list.at(i);
@@ -165,14 +176,14 @@ void analyzer_signal::Loop(TString outfilename,
    printf(" miniAOD: %f %f %f\n",
     jetPt ->at(miniAODjetindex), 
     jetEta->at(miniAODjetindex), 
-    jetPhi->at(miniAODjetindex) );
-
+    jetPhi->at(miniAODjetindex) );*/
+/*
    printf(" AOD:     %f %f %f\n\n",
     AODCaloJetPt  ->at(AODjetindex), 
     AODCaloJetEta ->at(AODjetindex), 
     AODCaloJetPhi ->at(AODjetindex)  
-   );
-  } 
+   );*/
+ // } 
 
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
@@ -269,7 +280,8 @@ void analyzer_signal::Loop(TString outfilename,
  //printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
  //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
-
+ 
+ std::cout <<"  numb_sig:   "<< number_sig<<std::endl;
  printf("  nmatched    %i\n",nmatched);
  printf("  nunmatched  %i\n",nunmatched);
 
@@ -283,6 +295,7 @@ void analyzer_signal::Loop(TString outfilename,
    //write2DHistograms(i,k);
   }
  }
+ h_ntags->Write();
  outfile->Close();
 
 } // end analyzer_signal::Loop()
@@ -435,7 +448,7 @@ Bool_t analyzer_signal::initJetHistograms()
     TString  hname_IpVAlpha                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_IpVAlpha                  "; 
     TString  hname_IpVjetPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_IpVjetPt                  "; 
     TString  hname_AlphaVjetPt                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AlphaVjetPt               "; 
-
+/*
     TString hname_AODCaloJetPt                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPt            "; 
     TString hname_AODCaloJetEta               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetEta           "; 
     TString hname_AODCaloJetPhi               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPhi           "; 
@@ -445,7 +458,7 @@ Bool_t analyzer_signal::initJetHistograms()
     TString hname_AODCaloJetAlphaMaxPrime2    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAlphaMaxPrime2"; 
     TString hname_AODCaloJetBeta              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetBeta          "; 
     TString hname_AODCaloJetBeta2             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetBeta2         "; 
-
+*/
     // initialize the histograms
     h_jetPt                      [i][j][k] = initSingleHistogramTH1F( hname_jetPt                     , "jetPt                     " , 50, 0, 500 ); 
     h_jetEn                      [i][j][k] = initSingleHistogramTH1F( hname_jetEn                     , "jetEn                     " , 50, 0, 500 ); 
@@ -491,7 +504,7 @@ Bool_t analyzer_signal::initJetHistograms()
     h_jetVtxNtrks                [i][j][k] = initSingleHistogramTH1F( hname_jetVtxNtrks               , "jetVtxNtrks               " , 30, 0, 30) ; 
     h_jetVtx3DVal                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DVal               , "jetVtx3DVal               " , 30, 0, 1) ; 
     h_jetVtx3DSig                [i][j][k] = initSingleHistogramTH1F( hname_jetVtx3DSig               , "jetVtx3DSig               " , 30, 0, 1) ;
-
+/*
     h_AODCaloJetPt               [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt              , "AODCaloJetPt            ", 50,0,500); 
     h_AODCaloJetEta              [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta             , "AODCaloJetEta           ", 30,-5,5); 
     h_AODCaloJetPhi              [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPhi             , "AODCaloJetPhi           ", 30,-5,5); 
@@ -501,7 +514,7 @@ Bool_t analyzer_signal::initJetHistograms()
     h_AODCaloJetAlphaMaxPrime2   [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime2  , "AODCaloJetAlphaMaxPrime2", 30, 0, 1); 
     h_AODCaloJetBeta             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta            , "AODCaloJetBeta          ", 30, 0, 1); 
     h_AODCaloJetBeta2            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta2           , "AODCaloJetBeta2         ", 30, 0, 1); 
-
+*/
     h_IpVAlpha                   [i][j][k] = initSingleHistogramTH2F( hname_IpVAlpha                  , "jetIpVAlpha               " , 30, -2, 3, 30, 0, 1) ;
     h_IpVjetPt                   [i][j][k] = initSingleHistogramTH2F( hname_IpVjetPt                  , "jetIpVjetPt               " , 30, -2, 3, 50, 0, 500) ;
     h_AlphaVjetPt                [i][j][k] = initSingleHistogramTH2F( hname_AlphaVjetPt               , "jetAlphaVjetPt            " , 30,  0, 1, 50, 0, 500) ;
@@ -564,7 +577,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    if(jetVtxNtrks               ->size()>j){ h_jetVtxNtrks                [selbin][j][lepbin].Fill( jetVtxNtrks               ->at(j), weight); }
    if(jetVtx3DVal               ->size()>j){ h_jetVtx3DVal                [selbin][j][lepbin].Fill( jetVtx3DVal               ->at(j), weight); }
    if(jetVtx3DSig               ->size()>j){ h_jetVtx3DSig                [selbin][j][lepbin].Fill( jetVtx3DSig               ->at(j), weight); }
-
+/*
    if(AODCaloJetPt              ->size()>j){ h_AODCaloJetPt                [selbin][j][lepbin].Fill( AODCaloJetPt             ->at(j), weight); }
    if(AODCaloJetEta             ->size()>j){ h_AODCaloJetEta               [selbin][j][lepbin].Fill( AODCaloJetEta            ->at(j), weight); }
    if(AODCaloJetPhi             ->size()>j){ h_AODCaloJetPhi               [selbin][j][lepbin].Fill( AODCaloJetPhi            ->at(j), weight); }
@@ -574,7 +587,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
    if(AODCaloJetAlphaMaxPrime2  ->size()>j){ h_AODCaloJetAlphaMaxPrime2    [selbin][j][lepbin].Fill( AODCaloJetAlphaMaxPrime2 ->at(j), weight); }
    if(AODCaloJetBeta            ->size()>j){ h_AODCaloJetBeta              [selbin][j][lepbin].Fill( AODCaloJetBeta           ->at(j), weight); }
    if(AODCaloJetBeta2           ->size()>j){ h_AODCaloJetBeta2             [selbin][j][lepbin].Fill( AODCaloJetBeta2          ->at(j), weight); }
-
+*/
    if(jetMedianLog10IPSig->size()>j&&jetAlphaMaxD->size()>j){ h_IpVAlpha  [selbin][j][lepbin].Fill(jetMedianLog10IPSig->at(j),jetAlphaMax->at(j), weight); }
    if(jetMedianLog10IPSig->size()>j&&jetPt->size()>j){ h_IpVjetPt    [selbin][j][lepbin].Fill( jetMedianLog10IPSig->at(j), jetPt->at(j), weight); }
    if(jetPt->size()>j&&jetAlphaMaxD->size()>j)       { h_AlphaVjetPt [selbin][j][lepbin].Fill( jetAlphaMax        ->at(j), jetPt->at(j), weight); }
@@ -604,7 +617,7 @@ Bool_t analyzer_signal::fillJetHistograms(Double_t weight, int selbin, int lepbi
       // jet_list.size()==3 but we don't want to fill with jetPt->at(3) 
        // look at the loops where we do lepton/jet cleaning or the ht sums
        // i'll just leave this commented out for now
-      int jindex = jet_list[i];
+      int jindex = jet_list[i];  
       if(jetPt                     ->size()>jindex){ h_jetPt                      [selbin][j][lepbin].Fill( jetPt                     ->at(jindex), weight); }
       if(jetEn                     ->size()>jindex){ h_jetEn                      [selbin][j][lepbin].Fill( jetEn                     ->at(jindex), weight); }
       if(jetEta                    ->size()>jindex){ h_jetEta                     [selbin][j][lepbin].Fill( jetEta                    ->at(jindex), weight); }
@@ -710,7 +723,7 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
   h_jetVtxNtrks                [selbin][j][lepbin].Write(); 
   h_jetVtx3DVal                [selbin][j][lepbin].Write(); 
   h_jetVtx3DSig                [selbin][j][lepbin].Write(); 
-
+/*
   h_AODCaloJetPt               [selbin][j][lepbin].Write(); 
   h_AODCaloJetEta              [selbin][j][lepbin].Write(); 
   h_AODCaloJetPhi              [selbin][j][lepbin].Write(); 
@@ -720,7 +733,7 @@ Bool_t analyzer_signal::writeJetHistograms(int selbin, int lepbin)
   h_AODCaloJetAlphaMaxPrime2   [selbin][j][lepbin].Write(); 
   h_AODCaloJetBeta             [selbin][j][lepbin].Write(); 
   h_AODCaloJetBeta2            [selbin][j][lepbin].Write(); 
-
+*/
   h_IpVAlpha                   [selbin][j][lepbin].Write(); 
   h_IpVjetPt                   [selbin][j][lepbin].Write(); 
   h_AlphaVjetPt                [selbin][j][lepbin].Write(); 
@@ -1297,6 +1310,7 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
 std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
 
   std::vector<int> jetlist;
+  ntag = 0;
 
   for(int i = 0; i < nJet; i++)
   {
@@ -1340,13 +1354,15 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
               
    bool pass_kin = jetPt->at(i) > jetPtCut && ( fabs(jetEta->at(i)) < jetEtaCut ) ;
 
-   bool pass_signal = jetGenPartonMomID->at(i) > 9000000 ;//9000006
+   bool pass_signal = abs(jetGenPartonMomID->at(i)) > 9000000 ;//9000006
               
    //if( pass_id && pass_kin && pass_overlap )
-   if( pass_id && pass_kin && pass_overlap && pass_signal)
+   if( pass_id && pass_kin && pass_overlap && pass_signal && jetAlphaMax_PV3onAll->at(i) !=0 )
 
    {
     //printf(" a selected jet\n");
+    if(jetMedianLog10IPSig->at(i) >=0.6 /*&& jetAlphaMaxD->at(i) >=0.0 && jetMedianLog10IPSig->at(i) <=2.0*/ && jetAlphaMaxD->at(i) <=0.1)
+    {ntag= ntag + 1;}
     nSelectedJet++;
     jetlist.push_back(i);
    } // if pass_bit && pass_kin
@@ -1386,7 +1402,7 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
 // return pholist;
 
 }
-
+/*
 //-------------------------jet_matchToMiniAOD
 std::vector<int> analyzer_signal::jet_matchToMiniAOD( TString jettype ){
 
@@ -1451,7 +1467,7 @@ std::vector<int> analyzer_signal::jet_matchToMiniAOD( TString jettype ){
 
   return tmpAODjetlist;
 
-}
+}*/
 
  //-------------------------makeDilep
  void analyzer_signal::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)

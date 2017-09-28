@@ -189,7 +189,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    jetGenEta = 0;
    jetGenPhi = 0;
    jetGenPartonMomID = 0;
-   AODCaloJetPt = 0;
+   /*AODCaloJetPt = 0;
    AODCaloJetEta = 0;
    AODCaloJetPhi = 0;
    AODCaloJetAlphaMax = 0;
@@ -230,7 +230,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    AODPFchsJetLogTrackAngle = 0;
    AODPFchsJetMedianLogTrackAngle = 0;
    AODPFchsJetTotalTrackAngle = 0;
-   // Set branch addresses and branch pointers
+*/   // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
    fCurrent = -1;
@@ -402,7 +402,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("jetGenEta", &jetGenEta, &b_jetGenEta);
    fChain->SetBranchAddress("jetGenPhi", &jetGenPhi, &b_jetGenPhi);
    fChain->SetBranchAddress("jetGenPartonMomID", &jetGenPartonMomID, &b_jetGenPartonMomID);
-   fChain->SetBranchAddress("AODnCaloJet", &AODnCaloJet, &b_AODnCaloJet);
+/*   fChain->SetBranchAddress("AODnCaloJet", &AODnCaloJet, &b_AODnCaloJet);
    fChain->SetBranchAddress("AODCaloJetPt", &AODCaloJetPt, &b_AODCaloJetPt);
    fChain->SetBranchAddress("AODCaloJetEta", &AODCaloJetEta, &b_AODCaloJetEta);
    fChain->SetBranchAddress("AODCaloJetPhi", &AODCaloJetPhi, &b_AODCaloJetPhi);
@@ -446,7 +446,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("AODPFchsJetLogTrackAngle", &AODPFchsJetLogTrackAngle, &b_AODPFchsJetLogTrackAngle);
    fChain->SetBranchAddress("AODPFchsJetMedianLogTrackAngle", &AODPFchsJetMedianLogTrackAngle, &b_AODPFchsJetMedianLogTrackAngle);
    fChain->SetBranchAddress("AODPFchsJetTotalTrackAngle", &AODPFchsJetTotalTrackAngle, &b_AODPFchsJetTotalTrackAngle);
-   fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
+*/   fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
    fChain->SetBranchAddress("genMETPhi", &genMETPhi, &b_genMETPhi);
    fChain->SetBranchAddress("metFilters", &metFilters, &b_metFilters);
    fChain->SetBranchAddress("pfMET", &pfMET, &b_pfMET);

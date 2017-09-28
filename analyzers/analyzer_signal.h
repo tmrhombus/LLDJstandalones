@@ -41,7 +41,7 @@ public :
  std::vector<int>     muon_passID    ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
  std::vector<int>     jet_passID     ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
- std::vector<int>     jet_matchToMiniAOD( TString jettype="" );
+ //std::vector<int>     jet_matchToMiniAOD( TString jettype="" );
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -83,9 +83,9 @@ public :
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
 
- std::vector<int> AODcalojet_list;
- std::vector<int> AODPFjet_list;
- std::vector<int> AODPFchsjet_list;
+ //std::vector<int> AODcalojet_list;
+ //std::vector<int> AODPFjet_list;
+ //std::vector<int> AODPFchsjet_list;
 
  TString phoid;
  TString eleid;
@@ -144,6 +144,9 @@ public :
  Int_t n_tot;
  Int_t n_test;
  Int_t n_test2;
+ Double_t number_sig;
+ Double_t number_bkg;
+ Int_t ntag;
 
  Int_t n_passSig;
  Int_t n_passZH;
@@ -187,6 +190,7 @@ public :
  // initialize histograms as global
  TH1F histoTH1F;
  TH2F histoTH2F;
+ TH1F *h_ntags = new TH1F("h_ntags", "ntags", 10, 0, 10);
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -287,7 +291,7 @@ public :
  TH1F  h_jetVtxNtrks                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_jetVtx3DVal                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_jetVtx3DSig                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
-
+/*
  TH1F  h_AODCaloJetPt                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_AODCaloJetEta                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_AODCaloJetPhi                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
@@ -305,7 +309,7 @@ public :
  TH1F  h_AODPFchsJetPt                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_AODPFchsJetEta                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
  TH1F  h_AODPFchsJetPhi                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE]; 
-
+*/
 };
 
 #endif

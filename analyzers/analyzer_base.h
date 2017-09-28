@@ -69,7 +69,6 @@ public :
 //   std::vector<float>   *phoMapPFPhoIso;
 //   std::vector<float>   *phoMapPFNeuIso;
 //   std::vector<float>   *phoMapPFChWorstIso;
-   Int_t                 nEle;
    std::vector<float>   *elePt;
    std::vector<float>   *eleEn;
    std::vector<float>   *eleEta;
@@ -192,7 +191,7 @@ public :
    std::vector<float>   *jetGenEta;
    std::vector<float>   *jetGenPhi;
    std::vector<int>     *jetGenPartonMomID;
-   Int_t           AODnCaloJet;
+/*   Int_t           AODnCaloJet;
    std::vector<float>   *AODCaloJetPt;
    std::vector<float>   *AODCaloJetEta;
    std::vector<float>   *AODCaloJetPhi;
@@ -236,7 +235,7 @@ public :
    std::vector<float>   *AODPFchsJetLogTrackAngle;
    std::vector<float>   *AODPFchsJetMedianLogTrackAngle;
    std::vector<float>   *AODPFchsJetTotalTrackAngle;
-   Float_t         genMET;
+*/   Float_t         genMET;
    Float_t         genMETPhi;
    Int_t           metFilters;
    Float_t         pfMET;
@@ -420,7 +419,7 @@ public :
    TBranch        *b_jetGenEta;   //!
    TBranch        *b_jetGenPhi;   //!
    TBranch        *b_jetGenPartonMomID;   //!
-   TBranch        *b_AODnCaloJet;   //!
+/*   TBranch        *b_AODnCaloJet;   //!
    TBranch        *b_AODCaloJetPt;   //!
    TBranch        *b_AODCaloJetEta;   //!
    TBranch        *b_AODCaloJetPhi;   //!
@@ -464,7 +463,7 @@ public :
    TBranch        *b_AODPFchsJetLogTrackAngle;   //!
    TBranch        *b_AODPFchsJetMedianLogTrackAngle;   //!
    TBranch        *b_AODPFchsJetTotalTrackAngle;   //!
-   TBranch        *b_genMET;   //!
+*/ TBranch        *b_genMET;   //!
    TBranch        *b_genMETPhi;   //!
    TBranch        *b_metFilters;   //!
    TBranch        *b_pfMET;   //!

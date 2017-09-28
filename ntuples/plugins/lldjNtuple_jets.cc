@@ -1215,12 +1215,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     whichVertex_[i] = jj;
   }
   
-  std::string thePropagatorName_ = "PropagatorWithMaterial";
-  es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
+  //std::string thePropagatorName_ = "PropagatorWithMaterial";
+  //es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
   
-  es.get<TransientTrackRecord>().get("TransientTrackBuilder",theBuilder_);
+  //es.get<TransientTrackRecord>().get("TransientTrackBuilder",theBuilder_);
   
-  StateOnTrackerBound stateOnTracker(thePropagator_.product());
+  //StateOnTrackerBound stateOnTracker(thePropagator_.product());
 
   map<reco::TransientTrack,reco::TrackBaseRef> refMap;
   vector<TrajectoryStateOnSurface> tsosList;
@@ -1332,11 +1332,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    AODCaloJetPhi_.push_back(jetphi);
 
    // set transientTracks and vertexVector
-   matchTracksToJetToVertex(jeteta, jetphi);
+   //matchTracksToJetToVertex(jeteta, jetphi);
 
    //printf("transientTracks size %lu\n", transientTracks.size() );
-   double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
-   calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+   //double alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
+   //calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
 //   //calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 //
 //   //printf("alphamax %f\n", alphaMax);
@@ -1405,7 +1405,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 }
 
-
+/*
 void lldjNtuple::matchTracksToJetToVertex(float jeteta, float jetphi){
 
  transientTracks.clear();
@@ -1447,7 +1447,7 @@ void lldjNtuple::matchTracksToJetToVertex(float jeteta, float jetphi){
  }
  return;
 }
-
+*/
 void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<int> whichVertex, double& aMax, double& aMaxP, double& beta, double& aMax2, double& aMaxP2, double& beta2)
 {
   double total = 0; 
