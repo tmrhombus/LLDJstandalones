@@ -210,12 +210,6 @@ process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderE
     ComponentName = cms.string('TransientTrackBuilder')
 )
 
-# get rid of this next
-jecLevels = [
-  'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
-  'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt'
-]
-
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 

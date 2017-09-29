@@ -17,7 +17,6 @@
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-//#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 //#include "DataFormats/TrackReco/interface/TrackBase.h"
 //#include "DataFormats/VertexReco/interface/Vertex.h"
 //#include "TrackingTools/Records/interface/TransientTrackRecord.h"
@@ -1230,12 +1229,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     double maxWeight = 0; 
     int jj = -1;
     reco::TrackBaseRef tref(AODTrackHandle,i);
-    for(int j = 0; j < (int)AODVertexHandle->size();j++){
-      if(AODVertexHandle->at(j).trackWeight(tref) > maxWeight){
-        maxWeight = AODVertexHandle->at(j).trackWeight(tref);
-        jj = j; 
-      }    
-    }    
+    for(int j = 0; j < (int)AODVertexHandle->size();j++){            //
+      if(AODVertexHandle->at(j).trackWeight(tref) > maxWeight){      //
+        maxWeight = AODVertexHandle->at(j).trackWeight(tref);        //
+        jj = j;                                                      //
+      }                                                              //
+    }                                                                //
     whichVertex_[i] = jj;
   }
   
@@ -1446,7 +1445,6 @@ void lldjNtuple::aod_jet_track_calculations(const edm::Event& e, const edm::Even
 					    float& sumIP, float& sumIPSig, float &totalTrackAngle,
 					    std::vector<reco::TransientTrack>& transientTracks, std::vector<int>& vertexVector
 					    ){
-
   const double minTrackPt_ = 1.0;
   const double maxDRtrackJet_ = 0.4;
   
@@ -1573,6 +1571,7 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   double promptTotal2 = 0; 
   vector<double> alphas(AODVertexHandle->size(),0);
   vector<double> alphas2(AODVertexHandle->size(),0);
+
   //printf("(int)tracks.size() %i\n", (int)tracks.size() );
   for(int i = 0; i < (int)tracks.size(); i++){
     double pt = tracks[i].initialFreeState().momentum().transverse();
@@ -1610,7 +1609,6 @@ void lldjNtuple::calculateAlphaMax(vector<reco::TransientTrack>tracks, vector<in
   aMax2 = alphaMax2 / total2;
   aMaxP = apMax;
   aMaxP2 = apMax2;
-
   return;
 }
 
