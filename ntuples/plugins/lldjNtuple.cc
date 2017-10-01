@@ -90,8 +90,8 @@ lldjNtuple::~lldjNtuple() {
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
  //# https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyResolution
- jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
- jetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
+ slimmedJetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
+ slimmedJetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
 
  fillGlobalEvent(e, es);
  fillTrigger(e, es);

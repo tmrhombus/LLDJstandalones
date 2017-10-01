@@ -159,8 +159,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   TTree   *tree_;
   TH1F    *hEvents_;
 
-  JME::JetResolution            jetResolution_;
-  JME::JetResolutionScaleFactor jetResolutionSF_;
+  JME::JetResolution            slimmedJetResolution_;
+  JME::JetResolutionScaleFactor slimmedJetResolutionSF_;
 };
 
 #endif

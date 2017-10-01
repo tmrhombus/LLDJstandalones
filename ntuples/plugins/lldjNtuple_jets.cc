@@ -39,105 +39,105 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
-// ak4 jets
-Int_t          nJet_;
-vector<float>  jetPt_;
-vector<float>  jetEn_;
-vector<float>  jetEta_;
-vector<float>  jetPhi_;
-vector<float>  jetRawPt_;
-vector<float>  jetRawEn_;
-vector<float>  jetMt_;
-vector<float>  jetArea_;
-vector<float>  jetLeadTrackPt_;
-vector<float>  jetLeadTrackEta_;
-vector<float>  jetLeadTrackPhi_;
-vector<int>    jetLepTrackPID_;
-vector<float>  jetLepTrackPt_;
-vector<float>  jetLepTrackEta_;
-vector<float>  jetLepTrackPhi_;
-vector<float>  jetCHF_;
-vector<float>  jetNHF_;
-vector<float>  jetCEF_;
-vector<float>  jetNEF_;
-vector<int>    jetNCH_;
-vector<int>    jetNNP_;
-vector<float>  jetMUF_;
-vector<float>  jetHFHAE_;
-vector<float>  jetHFEME_;
-vector<int>    jetNConstituents_;
-vector<float>  jetVtxPt_;
-vector<float>  jetVtxMass_;
-vector<float>  jetVtxNtrks_;
-vector<float>  jetVtx3DVal_;
-vector<float>  jetVtx3DSig_;
-vector<float>  jetCSV2BJetTags_; // recommended
-vector<float>  jetJetProbabilityBJetTags_;
-vector<float>  jetpfCombinedMVAV2BJetTags_;
-vector<int>    jetPartonID_;
-vector<int>    jetHadFlvr_;
-vector<bool>   jetPFLooseId_;
-vector<int>    jetID_; 
-vector<float>  jetPUID_;
-vector<int>    jetPUFullID_;
-vector<float>  jetJECUnc_;
-vector<float>  jetP4Smear_;
-vector<float>  jetP4SmearUp_;
-vector<float>  jetP4SmearDo_;
-vector<UInt_t> jetFiredTrgs_;
+// ak4 slimmedJets
+Int_t          nSlimmedJets__;
+vector<float>  slimmedJetPt_;
+vector<float>  slimmedJetEn_;
+vector<float>  slimmedJetEta_;
+vector<float>  slimmedJetPhi_;
+vector<float>  slimmedJetRawPt_;
+vector<float>  slimmedJetRawEn_;
+vector<float>  slimmedJetMt_;
+vector<float>  slimmedJetArea_;
+vector<float>  slimmedJetLeadTrackPt_;
+vector<float>  slimmedJetLeadTrackEta_;
+vector<float>  slimmedJetLeadTrackPhi_;
+vector<int>    slimmedJetLepTrackPID_;
+vector<float>  slimmedJetLepTrackPt_;
+vector<float>  slimmedJetLepTrackEta_;
+vector<float>  slimmedJetLepTrackPhi_;
+vector<float>  slimmedJetCHF_;
+vector<float>  slimmedJetNHF_;
+vector<float>  slimmedJetCEF_;
+vector<float>  slimmedJetNEF_;
+vector<int>    slimmedJetNCH_;
+vector<int>    slimmedJetNNP_;
+vector<float>  slimmedJetMUF_;
+vector<float>  slimmedJetHFHAE_;
+vector<float>  slimmedJetHFEME_;
+vector<int>    slimmedJetNConstituents_;
+vector<float>  slimmedJetVtxPt_;
+vector<float>  slimmedJetVtxMass_;
+vector<float>  slimmedJetVtxNtrks_;
+vector<float>  slimmedJetVtx3DVal_;
+vector<float>  slimmedJetVtx3DSig_;
+vector<float>  slimmedJetCSV2BJetTags_; // recommended
+vector<float>  slimmedJetJetProbabilityBJetTags_;
+vector<float>  slimmedJetpfCombinedMVAV2BJetTags_;
+vector<int>    slimmedJetPartonID_;
+vector<int>    slimmedJetHadFlvr_;
+vector<bool>   slimmedJetPFLooseId_;
+vector<int>    slimmedJetID_; 
+vector<float>  slimmedJetPUID_;
+vector<int>    slimmedJetPUFullID_;
+vector<float>  slimmedJetJECUnc_;
+vector<float>  slimmedJetP4Smear_;
+vector<float>  slimmedJetP4SmearUp_;
+vector<float>  slimmedJetP4SmearDo_;
+vector<UInt_t> slimmedJetFiredTrgs_;
 
 // Displaced Jet Variables
-vector<float>  jetAlphaD_;
-vector<float>  jetAlphaMaxD_;
-vector<float>  jetSumIP_;
-vector<float>  jetSumIPSig_;
-vector<float>  jetLog10IPSig_;
-vector<float>  jetMedianLog10IPSig_;
-vector<float>  jetTrackAngle_;
-vector<float>  jetLogTrackAngle_;
-vector<float>  jetMedianLogTrackAngle_;
-vector<float>  jetTotalTrackAngle_;
-vector<float>  jetAlphaMax_;
-vector<float>  jetAlphaMax2_;
-vector<float>  jetAlphaMaxP_;
-vector<float>  jetAlphaMaxP2_;
-vector<float>  jetDauVertex_x_;
-vector<float>  jetDauVertex_y_;
-vector<float>  jetDauVertex_z_;
-vector<float>  jetDauVertex_r_;
-vector<float>  alphaMax_jetDauVertex_r_;
+vector<float>  slimmedJetAlphaD_;
+vector<float>  slimmedJetAlphaMaxD_;
+vector<float>  slimmedJetSumIP_;
+vector<float>  slimmedJetSumIPSig_;
+vector<float>  slimmedJetLog10IPSig_;
+vector<float>  slimmedJetMedianLog10IPSig_;
+vector<float>  slimmedJetTrackAngle_;
+vector<float>  slimmedJetLogTrackAngle_;
+vector<float>  slimmedJetMedianLogTrackAngle_;
+vector<float>  slimmedJetTotalTrackAngle_;
+vector<float>  slimmedJetAlphaMax_;
+vector<float>  slimmedJetAlphaMax2_;
+vector<float>  slimmedJetAlphaMaxP_;
+vector<float>  slimmedJetAlphaMaxP2_;
+vector<float>  slimmedJetDauVertex_x_;
+vector<float>  slimmedJetDauVertex_y_;
+vector<float>  slimmedJetDauVertex_z_;
+vector<float>  slimmedJetDauVertex_r_;
+vector<float>  alphaMax_slimmedJetDauVertex_r_;
 
 // Alpha Maxs
-vector<float>  jetAlphaMax_PV3onPV2_ ; 
-vector<float>  jetAlphaMax_PV3onNeu_ ; 
-vector<float>  jetAlphaMax_PV3onAll_ ; 
-vector<float>  jetAlphaMax_PV2onNeu_ ; 
-vector<float>  jetAlphaMax_PV2onAll_ ; 
+vector<float>  slimmedJetAlphaMax_PV3onPV2_ ; 
+vector<float>  slimmedJetAlphaMax_PV3onNeu_ ; 
+vector<float>  slimmedJetAlphaMax_PV3onAll_ ; 
+vector<float>  slimmedJetAlphaMax_PV2onNeu_ ; 
+vector<float>  slimmedJetAlphaMax_PV2onAll_ ; 
 
-vector<float>  jetAlpha2Max_PV3onPV2_ ; 
-vector<float>  jetAlpha2Max_PV3onNeu_ ; 
-vector<float>  jetAlpha2Max_PV3onAll_ ; 
-vector<float>  jetAlpha2Max_PV2onNeu_ ; 
-vector<float>  jetAlpha2Max_PV2onAll_ ; 
+vector<float>  slimmedJetAlpha2Max_PV3onPV2_ ; 
+vector<float>  slimmedJetAlpha2Max_PV3onNeu_ ; 
+vector<float>  slimmedJetAlpha2Max_PV3onAll_ ; 
+vector<float>  slimmedJetAlpha2Max_PV2onNeu_ ; 
+vector<float>  slimmedJetAlpha2Max_PV2onAll_ ; 
 
 // Track Info
-vector<vector<float>> jetTrackPt_;
-vector<vector<float>> jetTrackEta_;
-vector<vector<float>> jetTrackPhi_;
-vector<vector<int>>   jetTrackPDGID_;
-vector<vector<int>>   jetTrackMomPDGID_;
+vector<vector<float>> slimmedJetTrackPt_;
+vector<vector<float>> slimmedJetTrackEta_;
+vector<vector<float>> slimmedJetTrackPhi_;
+vector<vector<int>>   slimmedJetTrackPDGID_;
+vector<vector<int>>   slimmedJetTrackMomPDGID_;
 
 //gen-info for ak4
-vector<float>  jetGenJetEn_;
-vector<float>  jetGenJetPt_;
-vector<float>  jetGenJetEta_;
-vector<float>  jetGenJetPhi_;
-vector<int>    jetGenPartonID_;
-vector<float>  jetGenEn_;
-vector<float>  jetGenPt_;
-vector<float>  jetGenEta_;
-vector<float>  jetGenPhi_;
-vector<int>    jetGenPartonMomID_;
+vector<float>  slimmedJetGenJetEn_;
+vector<float>  slimmedJetGenJetPt_;
+vector<float>  slimmedJetGenJetEta_;
+vector<float>  slimmedJetGenJetPhi_;
+vector<int>    slimmedJetGenPartonID_;
+vector<float>  slimmedJetGenEn_;
+vector<float>  slimmedJetGenPt_;
+vector<float>  slimmedJetGenEta_;
+vector<float>  slimmedJetGenPhi_;
+vector<int>    slimmedJetGenPartonMomID_;
 
 // AOD variables
 // Calo Jets
@@ -208,6 +208,7 @@ edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;
 edm::Handle<edm::View<reco::Vertex>  >  AODVertexHandle;
 edm::Handle<edm::View<reco::Track>   >  AODTrackHandle;
 edm::Handle<reco::BeamSpot> beamspotHandle_;
+edm::ESHandle<MagneticField> magneticField;
 
 // transient tracks
 map<reco::TransientTrack,reco::TrackBaseRef> refMap;
@@ -244,100 +245,100 @@ int nMissingOuter;
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
-  tree->Branch("nJet",                       &nJet_);                       
-  tree->Branch("jetPt",                      &jetPt_);                      
-  tree->Branch("jetEn",                      &jetEn_);                      
-  tree->Branch("jetEta",                     &jetEta_);                     
-  tree->Branch("jetPhi",                     &jetPhi_);                     
-  tree->Branch("jetRawPt",                   &jetRawPt_);                   
-  tree->Branch("jetRawEn",                   &jetRawEn_);                   
-  tree->Branch("jetMt",                      &jetMt_);                      
-  tree->Branch("jetArea",                    &jetArea_);                    
-  tree->Branch("jetLeadTrackPt",             &jetLeadTrackPt_);             
-  tree->Branch("jetLeadTrackEta",            &jetLeadTrackEta_);            
-  tree->Branch("jetLeadTrackPhi",            &jetLeadTrackPhi_);            
-  tree->Branch("jetLepTrackPID",             &jetLepTrackPID_);             
-  tree->Branch("jetLepTrackPt",              &jetLepTrackPt_);              
-  tree->Branch("jetLepTrackEta",             &jetLepTrackEta_);             
-  tree->Branch("jetLepTrackPhi",             &jetLepTrackPhi_);             
-  tree->Branch("jetCHF",                     &jetCHF_);                     
-  tree->Branch("jetNHF",                     &jetNHF_);                     
-  tree->Branch("jetCEF",                     &jetCEF_);                     
-  tree->Branch("jetNEF",                     &jetNEF_);                     
-  tree->Branch("jetNCH",                     &jetNCH_);                     
-  tree->Branch("jetNNP",                     &jetNNP_);                     
-  tree->Branch("jetMUF",                     &jetMUF_);                     
-  tree->Branch("jetHFHAE",                   &jetHFHAE_);                   
-  tree->Branch("jetHFEME",                   &jetHFEME_);                   
-  tree->Branch("jetNConstituents",           &jetNConstituents_);           
-  tree->Branch("jetVtxPt",                   &jetVtxPt_);                   
-  tree->Branch("jetVtxMass",                 &jetVtxMass_);                 
-  tree->Branch("jetVtxNtrks",                &jetVtxNtrks_);                
-  tree->Branch("jetVtx3DVal",                &jetVtx3DVal_);                
-  tree->Branch("jetVtx3DSig",                &jetVtx3DSig_);                
-  tree->Branch("jetCSV2BJetTags",            &jetCSV2BJetTags_);            
-  tree->Branch("jetJetProbabilityBJetTags",  &jetJetProbabilityBJetTags_);  
-  tree->Branch("jetpfCombinedMVAV2BJetTags", &jetpfCombinedMVAV2BJetTags_); 
-  tree->Branch("jetPartonID",                &jetPartonID_);                
-  tree->Branch("jetHadFlvr",                 &jetHadFlvr_);                 
-  tree->Branch("jetPFLooseId",               &jetPFLooseId_);               
-  tree->Branch("jetID",                      &jetID_);                      
-  tree->Branch("jetPUID",                    &jetPUID_);                    
-  tree->Branch("jetPUFullID",                &jetPUFullID_);                
-  tree->Branch("jetJECUnc",                  &jetJECUnc_);                  
-  tree->Branch("jetP4Smear",                 &jetP4Smear_);                 
-  tree->Branch("jetP4SmearUp",               &jetP4SmearUp_);               
-  tree->Branch("jetP4SmearDo",               &jetP4SmearDo_);               
-  tree->Branch("jetFiredTrgs",               &jetFiredTrgs_);               
+  tree->Branch("nSlimmedJets_",                       &nSlimmedJets__);                       
+  tree->Branch("slimmedJetPt",                      &slimmedJetPt_);                      
+  tree->Branch("slimmedJetEn",                      &slimmedJetEn_);                      
+  tree->Branch("slimmedJetEta",                     &slimmedJetEta_);                     
+  tree->Branch("slimmedJetPhi",                     &slimmedJetPhi_);                     
+  tree->Branch("slimmedJetRawPt",                   &slimmedJetRawPt_);                   
+  tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);                   
+  tree->Branch("slimmedJetMt",                      &slimmedJetMt_);                      
+  tree->Branch("slimmedJetArea",                    &slimmedJetArea_);                    
+  tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);             
+  tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_);            
+  tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_);            
+  tree->Branch("slimmedJetLepTrackPID",             &slimmedJetLepTrackPID_);             
+  tree->Branch("slimmedJetLepTrackPt",              &slimmedJetLepTrackPt_);              
+  tree->Branch("slimmedJetLepTrackEta",             &slimmedJetLepTrackEta_);             
+  tree->Branch("slimmedJetLepTrackPhi",             &slimmedJetLepTrackPhi_);             
+  tree->Branch("slimmedJetCHF",                     &slimmedJetCHF_);                     
+  tree->Branch("slimmedJetNHF",                     &slimmedJetNHF_);                     
+  tree->Branch("slimmedJetCEF",                     &slimmedJetCEF_);                     
+  tree->Branch("slimmedJetNEF",                     &slimmedJetNEF_);                     
+  tree->Branch("slimmedJetNCH",                     &slimmedJetNCH_);                     
+  tree->Branch("slimmedJetNNP",                     &slimmedJetNNP_);                     
+  tree->Branch("slimmedJetMUF",                     &slimmedJetMUF_);                     
+  tree->Branch("slimmedJetHFHAE",                   &slimmedJetHFHAE_);                   
+  tree->Branch("slimmedJetHFEME",                   &slimmedJetHFEME_);                   
+  tree->Branch("slimmedJetNConstituents",           &slimmedJetNConstituents_);           
+  tree->Branch("slimmedJetVtxPt",                   &slimmedJetVtxPt_);                   
+  tree->Branch("slimmedJetVtxMass",                 &slimmedJetVtxMass_);                 
+  tree->Branch("slimmedJetVtxNtrks",                &slimmedJetVtxNtrks_);                
+  tree->Branch("slimmedJetVtx3DVal",                &slimmedJetVtx3DVal_);                
+  tree->Branch("slimmedJetVtx3DSig",                &slimmedJetVtx3DSig_);                
+  tree->Branch("slimmedJetCSV2BJetTags",            &slimmedJetCSV2BJetTags_);            
+  tree->Branch("slimmedJetJetProbabilityBJetTags",  &slimmedJetJetProbabilityBJetTags_);  
+  tree->Branch("slimmedJetpfCombinedMVAV2BJetTags", &slimmedJetpfCombinedMVAV2BJetTags_); 
+  tree->Branch("slimmedJetPartonID",                &slimmedJetPartonID_);                
+  tree->Branch("slimmedJetHadFlvr",                 &slimmedJetHadFlvr_);                 
+  tree->Branch("slimmedJetPFLooseId",               &slimmedJetPFLooseId_);               
+  tree->Branch("slimmedJetID",                      &slimmedJetID_);                      
+  tree->Branch("slimmedJetPUID",                    &slimmedJetPUID_);                    
+  tree->Branch("slimmedJetPUFullID",                &slimmedJetPUFullID_);                
+  tree->Branch("slimmedJetJECUnc",                  &slimmedJetJECUnc_);                  
+  tree->Branch("slimmedJetP4Smear",                 &slimmedJetP4Smear_);                 
+  tree->Branch("slimmedJetP4SmearUp",               &slimmedJetP4SmearUp_);               
+  tree->Branch("slimmedJetP4SmearDo",               &slimmedJetP4SmearDo_);               
+  tree->Branch("slimmedJetFiredTrgs",               &slimmedJetFiredTrgs_);               
  
-  tree->Branch("jetAlphaD",                  &jetAlphaD_);                  
-  tree->Branch("jetAlphaMaxD",               &jetAlphaMaxD_);               
-  tree->Branch("jetSumIP",                   &jetSumIP_);                   
-  tree->Branch("jetSumIPSig",                &jetSumIPSig_);                
-  tree->Branch("jetLog10IPSig",              &jetLog10IPSig_);              
-  tree->Branch("jetMedianLog10IPSig",        &jetMedianLog10IPSig_);        
-  tree->Branch("jetTrackAngle",              &jetTrackAngle_);              
-  tree->Branch("jetLogTrackAngle",           &jetLogTrackAngle_);           
-  tree->Branch("jetMedianLogTrackAngle",     &jetMedianLogTrackAngle_);     
-  tree->Branch("jetTotalTrackAngle",         &jetTotalTrackAngle_);         
-  tree->Branch("jetAlphaMax",                &jetAlphaMax_);                
-  tree->Branch("jetAlphaMax2",               &jetAlphaMax2_);               
-  tree->Branch("jetAlphaMaxP",               &jetAlphaMaxP_);               
-  tree->Branch("jetAlphaMaxP2",              &jetAlphaMaxP2_);              
-  tree->Branch("jetDauVertex_x",             &jetDauVertex_x_);             
-  tree->Branch("jetDauVertex_y",             &jetDauVertex_y_);             
-  tree->Branch("jetDauVertex_z",             &jetDauVertex_z_);             
-  tree->Branch("jetDauVertex_r",             &jetDauVertex_r_);             
-  tree->Branch("alphaMax_jetDauVertex_r",    &alphaMax_jetDauVertex_r_);    
+  tree->Branch("slimmedJetAlphaD",                  &slimmedJetAlphaD_);                  
+  tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);               
+  tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);                   
+  tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);                
+  tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
+  tree->Branch("slimmedJetMedianLog10IPSig",        &slimmedJetMedianLog10IPSig_);        
+  tree->Branch("slimmedJetTrackAngle",              &slimmedJetTrackAngle_);              
+  tree->Branch("slimmedJetLogTrackAngle",           &slimmedJetLogTrackAngle_);           
+  tree->Branch("slimmedJetMedianLogTrackAngle",     &slimmedJetMedianLogTrackAngle_);     
+  tree->Branch("slimmedJetTotalTrackAngle",         &slimmedJetTotalTrackAngle_);         
+  tree->Branch("slimmedJetAlphaMax",                &slimmedJetAlphaMax_);                
+  tree->Branch("slimmedJetAlphaMax2",               &slimmedJetAlphaMax2_);               
+  tree->Branch("slimmedJetAlphaMaxP",               &slimmedJetAlphaMaxP_);               
+  tree->Branch("slimmedJetAlphaMaxP2",              &slimmedJetAlphaMaxP2_);              
+  tree->Branch("slimmedJetDauVertex_x",             &slimmedJetDauVertex_x_);             
+  tree->Branch("slimmedJetDauVertex_y",             &slimmedJetDauVertex_y_);             
+  tree->Branch("slimmedJetDauVertex_z",             &slimmedJetDauVertex_z_);             
+  tree->Branch("slimmedJetDauVertex_r",             &slimmedJetDauVertex_r_);             
+  tree->Branch("alphaMax_slimmedJetDauVertex_r",    &alphaMax_slimmedJetDauVertex_r_);    
  
-  tree->Branch("jetAlphaMax_PV3onPV2",       &jetAlphaMax_PV3onPV2_);       
-  tree->Branch("jetAlphaMax_PV3onNeu",       &jetAlphaMax_PV3onNeu_);       
-  tree->Branch("jetAlphaMax_PV3onAll",       &jetAlphaMax_PV3onAll_);       
-  tree->Branch("jetAlphaMax_PV2onNeu",       &jetAlphaMax_PV2onNeu_);       
-  tree->Branch("jetAlphaMax_PV2onAll",       &jetAlphaMax_PV2onAll_);       
+  tree->Branch("slimmedJetAlphaMax_PV3onPV2",       &slimmedJetAlphaMax_PV3onPV2_);       
+  tree->Branch("slimmedJetAlphaMax_PV3onNeu",       &slimmedJetAlphaMax_PV3onNeu_);       
+  tree->Branch("slimmedJetAlphaMax_PV3onAll",       &slimmedJetAlphaMax_PV3onAll_);       
+  tree->Branch("slimmedJetAlphaMax_PV2onNeu",       &slimmedJetAlphaMax_PV2onNeu_);       
+  tree->Branch("slimmedJetAlphaMax_PV2onAll",       &slimmedJetAlphaMax_PV2onAll_);       
  
-  tree->Branch("jetAlpha2Max_PV3onPV2",      &jetAlpha2Max_PV3onPV2_);      
-  tree->Branch("jetAlpha2Max_PV3onNeu",      &jetAlpha2Max_PV3onNeu_);      
-  tree->Branch("jetAlpha2Max_PV3onAll",      &jetAlpha2Max_PV3onAll_);      
-  tree->Branch("jetAlpha2Max_PV2onNeu",      &jetAlpha2Max_PV2onNeu_);      
-  tree->Branch("jetAlpha2Max_PV2onAll",      &jetAlpha2Max_PV2onAll_);      
+  tree->Branch("slimmedJetAlpha2Max_PV3onPV2",      &slimmedJetAlpha2Max_PV3onPV2_);      
+  tree->Branch("slimmedJetAlpha2Max_PV3onNeu",      &slimmedJetAlpha2Max_PV3onNeu_);      
+  tree->Branch("slimmedJetAlpha2Max_PV3onAll",      &slimmedJetAlpha2Max_PV3onAll_);      
+  tree->Branch("slimmedJetAlpha2Max_PV2onNeu",      &slimmedJetAlpha2Max_PV2onNeu_);      
+  tree->Branch("slimmedJetAlpha2Max_PV2onAll",      &slimmedJetAlpha2Max_PV2onAll_);      
  
-  tree->Branch("jetTrackPt",                 &jetTrackPt_);                 
-  tree->Branch("jetTrackEta",                &jetTrackEta_);                
-  tree->Branch("jetTrackPhi",                &jetTrackPhi_);                
-  tree->Branch("jetTrackPDGID",              &jetTrackPDGID_);              
-  tree->Branch("jetTrackMomPDGID",           &jetTrackMomPDGID_);           
+  tree->Branch("slimmedJetTrackPt",                 &slimmedJetTrackPt_);                 
+  tree->Branch("slimmedJetTrackEta",                &slimmedJetTrackEta_);                
+  tree->Branch("slimmedJetTrackPhi",                &slimmedJetTrackPhi_);                
+  tree->Branch("slimmedJetTrackPDGID",              &slimmedJetTrackPDGID_);              
+  tree->Branch("slimmedJetTrackMomPDGID",           &slimmedJetTrackMomPDGID_);           
  
-  tree->Branch("jetGenJetEn",                &jetGenJetEn_);                
-  tree->Branch("jetGenJetPt",                &jetGenJetPt_);                
-  tree->Branch("jetGenJetEta",               &jetGenJetEta_);               
-  tree->Branch("jetGenJetPhi",               &jetGenJetPhi_);               
-  tree->Branch("jetGenPartonID",             &jetGenPartonID_);             
-  tree->Branch("jetGenEn",                   &jetGenEn_);                   
-  tree->Branch("jetGenPt",                   &jetGenPt_);                   
-  tree->Branch("jetGenEta",                  &jetGenEta_);                  
-  tree->Branch("jetGenPhi",                  &jetGenPhi_);                  
-  tree->Branch("jetGenPartonMomID",          &jetGenPartonMomID_);          
+  tree->Branch("slimmedJetGenJetEn",                &slimmedJetGenJetEn_);                
+  tree->Branch("slimmedJetGenJetPt",                &slimmedJetGenJetPt_);                
+  tree->Branch("slimmedJetGenJetEta",               &slimmedJetGenJetEta_);               
+  tree->Branch("slimmedJetGenJetPhi",               &slimmedJetGenJetPhi_);               
+  tree->Branch("slimmedJetGenPartonID",             &slimmedJetGenPartonID_);             
+  tree->Branch("slimmedJetGenEn",                   &slimmedJetGenEn_);                   
+  tree->Branch("slimmedJetGenPt",                   &slimmedJetGenPt_);                   
+  tree->Branch("slimmedJetGenEta",                  &slimmedJetGenEta_);                  
+  tree->Branch("slimmedJetGenPhi",                  &slimmedJetGenPhi_);                  
+  tree->Branch("slimmedJetGenPartonMomID",          &slimmedJetGenPartonMomID_);          
 
 
   tree->Branch("AODnCaloJet"                   , &AODnCaloJet_);
@@ -398,105 +399,105 @@ void lldjNtuple::branchesJets(TTree* tree) {
   
 }
 
-//fills jets .clear() to empty vector of old data
+//fills slimmedJets .clear() to empty vector of old data
 void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  bool dodebug = false;
  // cleanup from previous execution
- nJet_=0;
- jetPt_.clear();
- jetEn_.clear();
- jetEta_.clear();
- jetPhi_.clear();
- jetRawPt_.clear();
- jetRawEn_.clear();
- jetMt_.clear();
- jetArea_.clear();
- jetLeadTrackPt_.clear();
- jetLeadTrackEta_.clear();
- jetLeadTrackPhi_.clear();
- jetLepTrackPID_.clear();
- jetLepTrackPt_.clear();
- jetLepTrackEta_.clear();
- jetLepTrackPhi_.clear();
- jetCHF_.clear();
- jetNHF_.clear();
- jetCEF_.clear();
- jetNEF_.clear();
- jetNCH_.clear();
- jetNNP_.clear();
- jetMUF_.clear();
- jetHFHAE_.clear();
- jetHFEME_.clear();
- jetNConstituents_.clear();
- jetVtxPt_.clear();
- jetVtxMass_.clear();
- jetVtxNtrks_.clear();
- jetVtx3DVal_.clear();
- jetVtx3DSig_.clear();
- jetCSV2BJetTags_.clear();
- jetJetProbabilityBJetTags_.clear();
- jetpfCombinedMVAV2BJetTags_.clear();
- jetPartonID_.clear();
- jetHadFlvr_.clear();
- jetPFLooseId_.clear();
- jetID_.clear(); 
- jetPUID_.clear();
- jetPUFullID_.clear();
- jetJECUnc_.clear();
- jetP4Smear_.clear();
- jetP4SmearUp_.clear();
- jetP4SmearDo_.clear();
- jetFiredTrgs_.clear();
+ nSlimmedJets__=0;
+ slimmedJetPt_.clear();
+ slimmedJetEn_.clear();
+ slimmedJetEta_.clear();
+ slimmedJetPhi_.clear();
+ slimmedJetRawPt_.clear();
+ slimmedJetRawEn_.clear();
+ slimmedJetMt_.clear();
+ slimmedJetArea_.clear();
+ slimmedJetLeadTrackPt_.clear();
+ slimmedJetLeadTrackEta_.clear();
+ slimmedJetLeadTrackPhi_.clear();
+ slimmedJetLepTrackPID_.clear();
+ slimmedJetLepTrackPt_.clear();
+ slimmedJetLepTrackEta_.clear();
+ slimmedJetLepTrackPhi_.clear();
+ slimmedJetCHF_.clear();
+ slimmedJetNHF_.clear();
+ slimmedJetCEF_.clear();
+ slimmedJetNEF_.clear();
+ slimmedJetNCH_.clear();
+ slimmedJetNNP_.clear();
+ slimmedJetMUF_.clear();
+ slimmedJetHFHAE_.clear();
+ slimmedJetHFEME_.clear();
+ slimmedJetNConstituents_.clear();
+ slimmedJetVtxPt_.clear();
+ slimmedJetVtxMass_.clear();
+ slimmedJetVtxNtrks_.clear();
+ slimmedJetVtx3DVal_.clear();
+ slimmedJetVtx3DSig_.clear();
+ slimmedJetCSV2BJetTags_.clear();
+ slimmedJetJetProbabilityBJetTags_.clear();
+ slimmedJetpfCombinedMVAV2BJetTags_.clear();
+ slimmedJetPartonID_.clear();
+ slimmedJetHadFlvr_.clear();
+ slimmedJetPFLooseId_.clear();
+ slimmedJetID_.clear(); 
+ slimmedJetPUID_.clear();
+ slimmedJetPUFullID_.clear();
+ slimmedJetJECUnc_.clear();
+ slimmedJetP4Smear_.clear();
+ slimmedJetP4SmearUp_.clear();
+ slimmedJetP4SmearDo_.clear();
+ slimmedJetFiredTrgs_.clear();
  
- jetAlphaD_.clear();
- jetAlphaMaxD_.clear();
- jetSumIP_.clear();
- jetSumIPSig_.clear();
- jetLog10IPSig_.clear();
- jetMedianLog10IPSig_.clear();
- jetTrackAngle_.clear();
- jetLogTrackAngle_.clear();
- jetMedianLogTrackAngle_.clear();
- jetTotalTrackAngle_.clear();
- jetAlphaMax_.clear();
- jetAlphaMax2_.clear();
- jetAlphaMaxP_.clear();
- jetAlphaMaxP2_.clear();
- jetDauVertex_x_.clear();
- jetDauVertex_y_.clear();
- jetDauVertex_z_.clear();
- jetDauVertex_r_.clear();
- alphaMax_jetDauVertex_r_.clear();
+ slimmedJetAlphaD_.clear();
+ slimmedJetAlphaMaxD_.clear();
+ slimmedJetSumIP_.clear();
+ slimmedJetSumIPSig_.clear();
+ slimmedJetLog10IPSig_.clear();
+ slimmedJetMedianLog10IPSig_.clear();
+ slimmedJetTrackAngle_.clear();
+ slimmedJetLogTrackAngle_.clear();
+ slimmedJetMedianLogTrackAngle_.clear();
+ slimmedJetTotalTrackAngle_.clear();
+ slimmedJetAlphaMax_.clear();
+ slimmedJetAlphaMax2_.clear();
+ slimmedJetAlphaMaxP_.clear();
+ slimmedJetAlphaMaxP2_.clear();
+ slimmedJetDauVertex_x_.clear();
+ slimmedJetDauVertex_y_.clear();
+ slimmedJetDauVertex_z_.clear();
+ slimmedJetDauVertex_r_.clear();
+ alphaMax_slimmedJetDauVertex_r_.clear();
  
- jetAlphaMax_PV3onPV2_.clear(); 
- jetAlphaMax_PV3onNeu_.clear(); 
- jetAlphaMax_PV3onAll_.clear(); 
- jetAlphaMax_PV2onNeu_.clear(); 
- jetAlphaMax_PV2onAll_.clear(); 
+ slimmedJetAlphaMax_PV3onPV2_.clear(); 
+ slimmedJetAlphaMax_PV3onNeu_.clear(); 
+ slimmedJetAlphaMax_PV3onAll_.clear(); 
+ slimmedJetAlphaMax_PV2onNeu_.clear(); 
+ slimmedJetAlphaMax_PV2onAll_.clear(); 
  
- jetAlpha2Max_PV3onPV2_.clear(); 
- jetAlpha2Max_PV3onNeu_.clear(); 
- jetAlpha2Max_PV3onAll_.clear(); 
- jetAlpha2Max_PV2onNeu_.clear(); 
- jetAlpha2Max_PV2onAll_.clear(); 
+ slimmedJetAlpha2Max_PV3onPV2_.clear(); 
+ slimmedJetAlpha2Max_PV3onNeu_.clear(); 
+ slimmedJetAlpha2Max_PV3onAll_.clear(); 
+ slimmedJetAlpha2Max_PV2onNeu_.clear(); 
+ slimmedJetAlpha2Max_PV2onAll_.clear(); 
  
- jetTrackPt_.clear();
- jetTrackEta_.clear();
- jetTrackPhi_.clear();
- jetTrackPDGID_.clear();
- jetTrackMomPDGID_.clear();
+ slimmedJetTrackPt_.clear();
+ slimmedJetTrackEta_.clear();
+ slimmedJetTrackPhi_.clear();
+ slimmedJetTrackPDGID_.clear();
+ slimmedJetTrackMomPDGID_.clear();
  
- jetGenJetEn_.clear();
- jetGenJetPt_.clear();
- jetGenJetEta_.clear();
- jetGenJetPhi_.clear();
- jetGenPartonID_.clear();
- jetGenEn_.clear();
- jetGenPt_.clear();
- jetGenEta_.clear();
- jetGenPhi_.clear();
- jetGenPartonMomID_.clear();
+ slimmedJetGenJetEn_.clear();
+ slimmedJetGenJetPt_.clear();
+ slimmedJetGenJetEta_.clear();
+ slimmedJetGenJetPhi_.clear();
+ slimmedJetGenPartonID_.clear();
+ slimmedJetGenEn_.clear();
+ slimmedJetGenPt_.clear();
+ slimmedJetGenEta_.clear();
+ slimmedJetGenPhi_.clear();
+ slimmedJetGenPartonMomID_.clear();
 
  AODnCaloJet_=0;
  AODCaloJetPt_.clear();
@@ -555,10 +556,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetTotalTrackAngle_.clear();
 
 
-  edm::Handle<edm::View<pat::Jet> > jetHandle;
-  e.getByToken(jetsAK4Label_, jetHandle);
+  edm::Handle<edm::View<pat::Jet> > slimmedJetHandle;
+  e.getByToken(jetsAK4Label_, slimmedJetHandle);
 
-  if (!jetHandle.isValid()) {
+  if (!slimmedJetHandle.isValid()) {
     edm::LogWarning("lldjNtuple") << "no pat::Jets (AK4) in event";
     return;
   }
@@ -588,18 +589,18 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // JetCorrectionUncertainty *AK8jecUnc=0;
   // AK8jecUnc = new JetCorrectionUncertainty(AK8JetCorPar);
   
-  //start jets Lvdp
-  int nrjet = 0;
+  //start slimmedJets Lvdp
+  int nrslimmedJet = 0;
   int IP0Sum = 0;
   int TA0Sum = 0;
 
-  if(dodebug){ printf("Starting loop over jets\n"); }
-  unsigned int tmp_jetnr = 0; 
+  if(dodebug){ printf("Starting loop over slimmedJets\n"); }
+  unsigned int tmp_slimmedJetnr = 0; 
 
   // miniAOD Jets -------------------------------------------
-  for (edm::View<pat::Jet>::const_iterator iJet = jetHandle->begin(); iJet != jetHandle->end(); ++iJet) {
-    tmp_jetnr++;
-    if(dodebug){ printf(" Jet Nr: %u \n",tmp_jetnr); }
+  for (edm::View<pat::Jet>::const_iterator iJet = slimmedJetHandle->begin(); iJet != slimmedJetHandle->end(); ++iJet) {
+    tmp_slimmedJetnr++;
+    if(dodebug){ printf(" Jet Nr: %u \n",tmp_slimmedJetnr); }
 
     //get jet axis for track angle
     TVector3 JetAxis(iJet->px(),iJet->py(),iJet->pz());
@@ -634,56 +635,56 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       looseJetID = (NEMF<0.90 && NNP>10); 
       tightJetID = (NEMF<0.90 && NNP>10);
     }
-    Int_t jetIDdecision = 0;
-    if (looseJetID) jetIDdecision += pow(2, 1);
-    if (tightJetID) jetIDdecision += pow(2, 2);
+    Int_t slimmedJetIDdecision = 0;
+    if (looseJetID) slimmedJetIDdecision += pow(2, 1);
+    if (tightJetID) slimmedJetIDdecision += pow(2, 2);
 
-    // place selection on jets making it into collection
-    if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || jetIDdecision==0 ) continue; 
+    // place selection on slimmedJets making it into collection
+    if (iJet->pt() < 20 || fabs(iJet->eta()) > 2.4 || slimmedJetIDdecision==0 ) continue; 
 
-    nrjet++;
+    nrslimmedJet++;
 
-    jetID_.push_back(jetIDdecision);    
+    slimmedJetID_.push_back(slimmedJetIDdecision);    
 
     // PUJet ID from slimmedJets
-    jetPUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant"));
-    jetPUFullID_.push_back(iJet->userInt("pileupJetId:fullId"));
+    slimmedJetPUID_.push_back(iJet->userFloat("pileupJetId:fullDiscriminant"));
+    slimmedJetPUFullID_.push_back(iJet->userInt("pileupJetId:fullId"));
 
     
     if(dodebug){printf(" pt: %f\n",iJet->pt()); }
-    jetPt_.push_back(    iJet->pt());
-    //cout << endl<< iJet->pt()<<" *****jet constituents: "<<iJet->getJetConstituents().size() <<endl;
+    slimmedJetPt_.push_back(    iJet->pt());
+    //cout << endl<< iJet->pt()<<" *****slimmedJet constituents: "<<iJet->getJetConstituents().size() <<endl;
     //cout<<endl<<"JetPT: "<<iJet->pt() <<"Event "<<e.id().event()<<endl;
-    jetEn_.push_back(    iJet->energy());
-    jetEta_.push_back(   iJet->eta());
-    jetPhi_.push_back(   iJet->phi());
-    jetRawPt_.push_back( (*iJet).correctedJet("Uncorrected").pt());
-    jetRawEn_.push_back( (*iJet).correctedJet("Uncorrected").energy());
-    jetMt_.push_back(    iJet->mt());
-    jetArea_.push_back(  iJet->jetArea());
-    jetCEF_.push_back(   iJet->chargedEmEnergyFraction());
-    jetNEF_.push_back(   iJet->neutralEmEnergyFraction());
-    jetCHF_.push_back(   iJet->chargedHadronEnergyFraction());
-    jetNHF_.push_back(   iJet->neutralHadronEnergyFraction());
-    jetNCH_.push_back(   iJet->chargedMultiplicity());
-    jetNNP_.push_back(   iJet->neutralMultiplicity());
-    jetMUF_.push_back(   iJet->muonEnergyFraction());
-    //jetNConstituents_.push_back(iJet->numberOfDaughters());
-    jetNConstituents_.push_back(iJet->getJetConstituents().size());
+    slimmedJetEn_.push_back(    iJet->energy());
+    slimmedJetEta_.push_back(   iJet->eta());
+    slimmedJetPhi_.push_back(   iJet->phi());
+    slimmedJetRawPt_.push_back( (*iJet).correctedJet("Uncorrected").pt());
+    slimmedJetRawEn_.push_back( (*iJet).correctedJet("Uncorrected").energy());
+    slimmedJetMt_.push_back(    iJet->mt());
+    slimmedJetArea_.push_back(  iJet->jetArea());
+    slimmedJetCEF_.push_back(   iJet->chargedEmEnergyFraction());
+    slimmedJetNEF_.push_back(   iJet->neutralEmEnergyFraction());
+    slimmedJetCHF_.push_back(   iJet->chargedHadronEnergyFraction());
+    slimmedJetNHF_.push_back(   iJet->neutralHadronEnergyFraction());
+    slimmedJetNCH_.push_back(   iJet->chargedMultiplicity());
+    slimmedJetNNP_.push_back(   iJet->neutralMultiplicity());
+    slimmedJetMUF_.push_back(   iJet->muonEnergyFraction());
+    //slimmedJetNConstituents_.push_back(iJet->numberOfDaughters());
+    slimmedJetNConstituents_.push_back(iJet->getJetConstituents().size());
     //if (development_) {
-    //  jetHFHAE_.push_back( iJet->HFHadronEnergy());
-    //  jetHFEME_.push_back( iJet->HFEMEnergy());
+    //  slimmedJetHFHAE_.push_back( iJet->HFHadronEnergy());
+    //  slimmedJetHFEME_.push_back( iJet->HFEMEnergy());
     //}
 
     if (fabs(iJet->eta()) < 5.2) {
       jecUnc->setJetEta(iJet->eta());
       jecUnc->setJetPt(iJet->pt()); // here you must use the CORRECTED jet pt
-      jetJECUnc_.push_back(jecUnc->getUncertainty(true));
+      slimmedJetJECUnc_.push_back(jecUnc->getUncertainty(true));
     } else {
-      jetJECUnc_.push_back(-1.);
+      slimmedJetJECUnc_.push_back(-1.);
     }
 
-    //jetFiredTrgs_.push_back(matchJetTriggerFilters(iJet->pt(), iJet->eta(), iJet->phi()));    
+    //slimmedJetFiredTrgs_.push_back(matchJetTriggerFilters(iJet->pt(), iJet->eta(), iJet->phi()));    
 
     //Searching for leading track and lepton
     float leadTrkPt  = -99;
@@ -763,15 +764,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
         tmpTrackPhi   .push_back( daughterPhi   );
         tmpTrackPDGID .push_back( daughterPDGID );
 
-        //jetTrackPDGID_.push_back(daughter2.pdgId());
+        //slimmedJetTrackPDGID_.push_back(daughter2.pdgId());
 
         // r = transverse vertex distance
-        math::XYZPoint jetDauVertex = daughter2.vertex();
-        float jetDauVertex_r = sqrt(pow(jetDauVertex.x(),2)+pow(jetDauVertex.y(),2));
-	jetDauVertex_x_.push_back(jetDauVertex.x());
-	jetDauVertex_y_.push_back(jetDauVertex.y());
-	jetDauVertex_z_.push_back(jetDauVertex.z());
-	jetDauVertex_r_.push_back(jetDauVertex_r);
+        math::XYZPoint slimmedJetDauVertex = daughter2.vertex();
+        float slimmedJetDauVertex_r = sqrt(pow(slimmedJetDauVertex.x(),2)+pow(slimmedJetDauVertex.y(),2));
+	slimmedJetDauVertex_x_.push_back(slimmedJetDauVertex.x());
+	slimmedJetDauVertex_y_.push_back(slimmedJetDauVertex.y());
+	slimmedJetDauVertex_z_.push_back(slimmedJetDauVertex.z());
+	slimmedJetDauVertex_r_.push_back(slimmedJetDauVertex_r);
 
         // set lead soft lepton (track) variables
 	if (abs(daughter->pdgId()) == 11 || abs(daughter->pdgId()) == 13) {
@@ -804,14 +805,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	    SumIP += dxy;
 	    SumIPSig +=dxySig;
 	    //cout <<"************dxy: " <<dxy<< " dxyerr: "<<dxyerr<< " dxySig: "<<dxySig<<" log10dxySig: "<< log10(dxySig) <<endl; 
-	    jetLog10IPSig_.push_back( log10(dxySig) );
+	    slimmedJetLog10IPSig_.push_back( log10(dxySig) );
 	  }     
 
 	  // Alpha----------------------
           int vtxIDminTrackDz=-1;
           float minPvDz = 10000.0; 
 
-          // loop over vertices (already looping over tracks and jets)
+          // loop over vertices (already looping over tracks and slimmedJets)
           if(dodebug){ printf("   Looping over vertices\n"); }
 	  for(unsigned int k = 0; k < vtxHandle->size(); ++k){
 
@@ -844,7 +845,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
              vtxIDminTrackDz = k;
             }
 	  }  // end looping over vertices
-                 //printf(" end of vertices, minPVDz was %f at id %i \n", minPvDz,vtxIDminTrackDz); 
+          if(dodebug){printf(" end of vertices, minPVDz was %f at id %i \n", minPvDz,vtxIDminTrackDz); }
 
           // vtxIDminTrackDz is ID of the best vtx for this track, add track pt to alpha numerator for this vtx
           sumtracksMinDzVtx[vtxIDminTrackDz]  += daughterPt;
@@ -857,9 +858,9 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 	  //get point of closest approach
 	  math::XYZPoint CA = daughter2.vertex();
 	  TVector3 Tang(CA.x(),CA.y(),CA.z());
-	  //jetTrackPhi_.push_back(daughter2.phiAtVtx());
-	  jetTrackAngle_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
-	  jetLogTrackAngle_.push_back( log(fabs(Tang.Angle(JetAxis))) );//not sure if log or log10
+	  //slimmedJetTrackPhi_.push_back(daughter2.phiAtVtx());
+	  slimmedJetTrackAngle_.push_back(Tang.Angle(JetAxis)); //acos(Tang*JetAxis/(MagTang*MagJetAxis)));
+	  slimmedJetLogTrackAngle_.push_back( log(fabs(Tang.Angle(JetAxis))) );//not sure if log or log10
 	  TotalTrackAngle += Tang.Angle(JetAxis);
 	  // reco::TransientTrack tt(trackHandle->at(id),magneticField_); 
 
@@ -874,25 +875,25 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
     // if you want to save this to the ntuple, it should be vector< vector< float > > 
     //  don't forget that we have multiple jets
-    jetAlphaD_.clear();
+    slimmedJetAlphaD_.clear();
 
     //save alpha = sum over tracks associated with vtx / all tracks
     if(sumalltracks>0){
      for(unsigned z =0; z <sumtracksMinDzVtx.size(); z++){
       //std::cout<<"sum["<<z<<"] = "<<sumtracksMinDzVtx[z]<<" sumalltracks = "<<sumalltracks<<" div = "<<sumtracksMinDzVtx[z]/sumalltracks<<std::endl;
-      jetAlphaD_.push_back(sumtracksMinDzVtx[z]/sumalltracks);
+      slimmedJetAlphaD_.push_back(sumtracksMinDzVtx[z]/sumalltracks);
      }
     }
-    else { jetAlphaD_.push_back(-99.9); }
+    else { slimmedJetAlphaD_.push_back(-99.9); }
 
     //set alphaMax variable out of range of true alpha max
     float alphaM = -99.9;
     //find the maximum 
-    for (unsigned y = 0; y<jetAlphaD_.size(); y++){
-     if(jetAlphaD_[y]>alphaM){ alphaM = jetAlphaD_[y];}
+    for (unsigned y = 0; y<slimmedJetAlphaD_.size(); y++){
+     if(slimmedJetAlphaD_[y]>alphaM){ alphaM = slimmedJetAlphaD_[y];}
     }	
     // std::cout<<"  max = "<<alphaM<<std::endl;
-    jetAlphaMaxD_.push_back(alphaM);
+    slimmedJetAlphaMaxD_.push_back(alphaM);
 
 
 
@@ -906,10 +907,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     //      vector<float> alphaNum_ = vector<float>(vtxHandle->size(),0.0);
     //alphaNum_.clear();
     // push back vector of track variables for this specific jet
-    jetTrackPt_    .push_back( tmpTrackPt    );
-    jetTrackEta_   .push_back( tmpTrackEta   );
-    jetTrackPhi_   .push_back( tmpTrackPhi   );
-    jetTrackPDGID_ .push_back( tmpTrackPDGID );
+    slimmedJetTrackPt_    .push_back( tmpTrackPt    );
+    slimmedJetTrackEta_   .push_back( tmpTrackEta   );
+    slimmedJetTrackPhi_   .push_back( tmpTrackPhi   );
+    slimmedJetTrackPDGID_ .push_back( tmpTrackPDGID );
 
     //if(dodebug){ 
     // printf("   Done Loopong over tracks\n"); 
@@ -935,283 +936,233 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
       if(ap2 > apMax2) apMax2 = ap2;
     }
 
-    float jetAlphaMax_PV3onPV2 = -1;
-    float jetAlphaMax_PV3onNeu = -1;
-    float jetAlphaMax_PV3onAll = -1;
-    float jetAlphaMax_PV2onNeu = -1;
-    float jetAlphaMax_PV2onAll = -1;
+    float slimmedJetAlphaMax_PV3onPV2 = -1;
+    float slimmedJetAlphaMax_PV3onNeu = -1;
+    float slimmedJetAlphaMax_PV3onAll = -1;
+    float slimmedJetAlphaMax_PV2onNeu = -1;
+    float slimmedJetAlphaMax_PV2onAll = -1;
 
-    float jetAlpha_PV3onPV2 = -1;
-    float jetAlpha_PV3onNeu = -1;
-    float jetAlpha_PV3onAll = -1;
-    float jetAlpha_PV2onNeu = -1;
-    float jetAlpha_PV2onAll = -1;
+    float slimmedJetAlpha_PV3onPV2 = -1;
+    float slimmedJetAlpha_PV3onNeu = -1;
+    float slimmedJetAlpha_PV3onAll = -1;
+    float slimmedJetAlpha_PV2onNeu = -1;
+    float slimmedJetAlpha_PV2onAll = -1;
 
-    float jetAlpha2Max_PV3onPV2 = -1;
-    float jetAlpha2Max_PV3onNeu = -1;
-    float jetAlpha2Max_PV3onAll = -1;
-    float jetAlpha2Max_PV2onNeu = -1;
-    float jetAlpha2Max_PV2onAll = -1;
+    float slimmedJetAlpha2Max_PV3onPV2 = -1;
+    float slimmedJetAlpha2Max_PV3onNeu = -1;
+    float slimmedJetAlpha2Max_PV3onAll = -1;
+    float slimmedJetAlpha2Max_PV2onNeu = -1;
+    float slimmedJetAlpha2Max_PV2onAll = -1;
 
-    float jetAlpha2_PV3onPV2 = -1;
-    float jetAlpha2_PV3onNeu = -1;
-    float jetAlpha2_PV3onAll = -1;
-    float jetAlpha2_PV2onNeu = -1;
-    float jetAlpha2_PV2onAll = -1;
+    float slimmedJetAlpha2_PV3onPV2 = -1;
+    float slimmedJetAlpha2_PV3onNeu = -1;
+    float slimmedJetAlpha2_PV3onAll = -1;
+    float slimmedJetAlpha2_PV2onNeu = -1;
+    float slimmedJetAlpha2_PV2onAll = -1;
 
     for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
-      jetAlpha_PV3onPV2  = sumtracksfPV3[q]  / sumtracksfPV2[q] ;
-      jetAlpha2_PV3onPV2 = sum2tracksfPV3[q] / sum2tracksfPV2[q];
-      if(jetAlpha_PV3onPV2  > jetAlphaMax_PV3onPV2 ){ jetAlphaMax_PV3onPV2  = jetAlpha_PV3onPV2; }
-      if(jetAlpha2_PV3onPV2 > jetAlpha2Max_PV3onPV2){ jetAlpha2Max_PV3onPV2 = jetAlpha2_PV3onPV2; }
+      slimmedJetAlpha_PV3onPV2  = sumtracksfPV3[q]  / sumtracksfPV2[q] ;
+      slimmedJetAlpha2_PV3onPV2 = sum2tracksfPV3[q] / sum2tracksfPV2[q];
+      if(slimmedJetAlpha_PV3onPV2  > slimmedJetAlphaMax_PV3onPV2 ){ slimmedJetAlphaMax_PV3onPV2  = slimmedJetAlpha_PV3onPV2; }
+      if(slimmedJetAlpha2_PV3onPV2 > slimmedJetAlpha2Max_PV3onPV2){ slimmedJetAlpha2Max_PV3onPV2 = slimmedJetAlpha2_PV3onPV2; }
     }
 
     for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
-      jetAlpha_PV3onNeu  = sumtracksfPV3[q]  / sumneutraltracks ;
-      jetAlpha2_PV3onNeu = sum2tracksfPV3[q] / sum2neutraltracks;
-      if(jetAlpha_PV3onNeu  > jetAlphaMax_PV3onNeu ){ jetAlphaMax_PV3onNeu  = jetAlpha_PV3onNeu; }
-      if(jetAlpha2_PV3onNeu > jetAlpha2Max_PV3onNeu){ jetAlpha2Max_PV3onNeu = jetAlpha2_PV3onNeu; }
+      slimmedJetAlpha_PV3onNeu  = sumtracksfPV3[q]  / sumneutraltracks ;
+      slimmedJetAlpha2_PV3onNeu = sum2tracksfPV3[q] / sum2neutraltracks;
+      if(slimmedJetAlpha_PV3onNeu  > slimmedJetAlphaMax_PV3onNeu ){ slimmedJetAlphaMax_PV3onNeu  = slimmedJetAlpha_PV3onNeu; }
+      if(slimmedJetAlpha2_PV3onNeu > slimmedJetAlpha2Max_PV3onNeu){ slimmedJetAlpha2Max_PV3onNeu = slimmedJetAlpha2_PV3onNeu; }
     }
 
     for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
-      jetAlpha_PV3onAll  = sumtracksfPV3[q]  / sumalltracks ;
-      jetAlpha2_PV3onAll = sum2tracksfPV3[q] / sum2alltracks;
-      if(jetAlpha_PV3onAll  > jetAlphaMax_PV3onAll ){ jetAlphaMax_PV3onAll  = jetAlpha_PV3onAll; }
-      if(jetAlpha2_PV3onAll > jetAlpha2Max_PV3onAll){ jetAlpha2Max_PV3onAll = jetAlpha2_PV3onAll; }
+      slimmedJetAlpha_PV3onAll  = sumtracksfPV3[q]  / sumalltracks ;
+      slimmedJetAlpha2_PV3onAll = sum2tracksfPV3[q] / sum2alltracks;
+      if(slimmedJetAlpha_PV3onAll  > slimmedJetAlphaMax_PV3onAll ){ slimmedJetAlphaMax_PV3onAll  = slimmedJetAlpha_PV3onAll; }
+      if(slimmedJetAlpha2_PV3onAll > slimmedJetAlpha2Max_PV3onAll){ slimmedJetAlpha2Max_PV3onAll = slimmedJetAlpha2_PV3onAll; }
     }
 
     for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
-      jetAlpha_PV2onNeu  = sumtracksfPV2[q]  / sumneutraltracks ;
-      jetAlpha2_PV2onNeu = sum2tracksfPV2[q] / sum2neutraltracks;
-      if(jetAlpha_PV2onNeu  > jetAlphaMax_PV2onNeu ){ jetAlphaMax_PV2onNeu  = jetAlpha_PV2onNeu; }
-      if(jetAlpha2_PV2onNeu > jetAlpha2Max_PV2onNeu){ jetAlpha2Max_PV2onNeu = jetAlpha2_PV2onNeu; }
+      slimmedJetAlpha_PV2onNeu  = sumtracksfPV2[q]  / sumneutraltracks ;
+      slimmedJetAlpha2_PV2onNeu = sum2tracksfPV2[q] / sum2neutraltracks;
+      if(slimmedJetAlpha_PV2onNeu  > slimmedJetAlphaMax_PV2onNeu ){ slimmedJetAlphaMax_PV2onNeu  = slimmedJetAlpha_PV2onNeu; }
+      if(slimmedJetAlpha2_PV2onNeu > slimmedJetAlpha2Max_PV2onNeu){ slimmedJetAlpha2Max_PV2onNeu = slimmedJetAlpha2_PV2onNeu; }
     }
 
     for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
-      jetAlpha_PV2onAll  = sumtracksfPV2[q]  / sumalltracks ;
-      jetAlpha2_PV2onAll = sum2tracksfPV2[q] / sum2alltracks;
-      if(jetAlpha_PV2onAll  > jetAlphaMax_PV2onAll ){ jetAlphaMax_PV2onAll  = jetAlpha_PV2onAll; }
-      if(jetAlpha2_PV2onAll > jetAlpha2Max_PV2onAll){ jetAlpha2Max_PV2onAll = jetAlpha2_PV2onAll; }
+      slimmedJetAlpha_PV2onAll  = sumtracksfPV2[q]  / sumalltracks ;
+      slimmedJetAlpha2_PV2onAll = sum2tracksfPV2[q] / sum2alltracks;
+      if(slimmedJetAlpha_PV2onAll  > slimmedJetAlphaMax_PV2onAll ){ slimmedJetAlphaMax_PV2onAll  = slimmedJetAlpha_PV2onAll; }
+      if(slimmedJetAlpha2_PV2onAll > slimmedJetAlpha2Max_PV2onAll){ slimmedJetAlpha2Max_PV2onAll = slimmedJetAlpha2_PV2onAll; }
     }
 
 
-//        sumalltracks += daughterPt;
-//        sum2alltracks += daughterPt*daughterPt;
-//        sumneutraltracks += daughterPt;
-//        sum2neutraltracks += daughterPt*daughterPt;
-//	sumtracksfPV2[k]  += daughterPt;
-//	sum2tracksfPV2[k] += daughterPt*daughterPt;
-//	sumtracksfPV3[k]  += daughterPt;
-//	sum2tracksfPV3[k] += daughterPt*daughterPt;
+    slimmedJetAlphaMax_PV3onPV2_ .push_back(slimmedJetAlphaMax_PV3onPV2); 
+    slimmedJetAlphaMax_PV3onNeu_ .push_back(slimmedJetAlphaMax_PV3onNeu); 
+    slimmedJetAlphaMax_PV3onAll_ .push_back(slimmedJetAlphaMax_PV3onAll); 
+    slimmedJetAlphaMax_PV2onNeu_ .push_back(slimmedJetAlphaMax_PV2onNeu); 
+    slimmedJetAlphaMax_PV2onAll_ .push_back(slimmedJetAlphaMax_PV2onAll); 
+
+    slimmedJetAlpha2Max_PV3onPV2_ .push_back(slimmedJetAlpha2Max_PV3onPV2);
+    slimmedJetAlpha2Max_PV3onNeu_ .push_back(slimmedJetAlpha2Max_PV3onNeu);
+    slimmedJetAlpha2Max_PV3onAll_ .push_back(slimmedJetAlpha2Max_PV3onAll);
+    slimmedJetAlpha2Max_PV2onNeu_ .push_back(slimmedJetAlpha2Max_PV2onNeu);
+    slimmedJetAlpha2Max_PV2onAll_ .push_back(slimmedJetAlpha2Max_PV2onAll);
 
 
-    jetAlphaMax_PV3onPV2_ .push_back(jetAlphaMax_PV3onPV2); 
-    jetAlphaMax_PV3onNeu_ .push_back(jetAlphaMax_PV3onNeu); 
-    jetAlphaMax_PV3onAll_ .push_back(jetAlphaMax_PV3onAll); 
-    jetAlphaMax_PV2onNeu_ .push_back(jetAlphaMax_PV2onNeu); 
-    jetAlphaMax_PV2onAll_ .push_back(jetAlphaMax_PV2onAll); 
-
-    jetAlpha2Max_PV3onPV2_ .push_back(jetAlpha2Max_PV3onPV2);
-    jetAlpha2Max_PV3onNeu_ .push_back(jetAlpha2Max_PV3onNeu);
-    jetAlpha2Max_PV3onAll_ .push_back(jetAlpha2Max_PV3onAll);
-    jetAlpha2Max_PV2onNeu_ .push_back(jetAlpha2Max_PV2onNeu);
-    jetAlpha2Max_PV2onAll_ .push_back(jetAlpha2Max_PV2onAll);
-
-
-    jetAlphaMax_.push_back(alphaMax / sumalltracks);
-    jetAlphaMax2_.push_back(alphaMax2 / sum2alltracks);
-    jetAlphaMaxP_.push_back(apMax);
-    jetAlphaMaxP2_.push_back(apMax2);
+    slimmedJetAlphaMax_.push_back(alphaMax / sumalltracks);
+    slimmedJetAlphaMax2_.push_back(alphaMax2 / sum2alltracks);
+    slimmedJetAlphaMaxP_.push_back(apMax);
+    slimmedJetAlphaMaxP2_.push_back(apMax2);
 	 
-    jetLeadTrackPt_ .push_back(leadTrkPt);
-    jetLeadTrackEta_.push_back(leadTrkEta);
-    jetLeadTrackPhi_.push_back(leadTrkPhi);
-    jetLepTrackPID_ .push_back(lepTrkPID);
-    jetLepTrackPt_  .push_back(lepTrkPt);
-    jetLepTrackEta_ .push_back(lepTrkEta);
-    jetLepTrackPhi_ .push_back(lepTrkPhi);    
-    jetVtxPt_       .push_back(sqrt(pow(iJet->userFloat("vtxPx"),2)+pow(iJet->userFloat("vtxPy"),2)));
-    jetVtxMass_     .push_back(iJet->userFloat("vtxMass"));
-    jetVtxNtrks_    .push_back(iJet->userFloat("vtxNtracks"));
-    jetVtx3DVal_    .push_back(iJet->userFloat("vtx3DVal"));
-    jetVtx3DSig_    .push_back(iJet->userFloat("vtx3DSig"));
+    slimmedJetLeadTrackPt_ .push_back(leadTrkPt);
+    slimmedJetLeadTrackEta_.push_back(leadTrkEta);
+    slimmedJetLeadTrackPhi_.push_back(leadTrkPhi);
+    slimmedJetLepTrackPID_ .push_back(lepTrkPID);
+    slimmedJetLepTrackPt_  .push_back(lepTrkPt);
+    slimmedJetLepTrackEta_ .push_back(lepTrkEta);
+    slimmedJetLepTrackPhi_ .push_back(lepTrkPhi);    
+    slimmedJetVtxPt_       .push_back(sqrt(pow(iJet->userFloat("vtxPx"),2)+pow(iJet->userFloat("vtxPy"),2)));
+    slimmedJetVtxMass_     .push_back(iJet->userFloat("vtxMass"));
+    slimmedJetVtxNtrks_    .push_back(iJet->userFloat("vtxNtracks"));
+    slimmedJetVtx3DVal_    .push_back(iJet->userFloat("vtx3DVal"));
+    slimmedJetVtx3DSig_    .push_back(iJet->userFloat("vtx3DSig"));
     
     //b-tagging
-    jetCSV2BJetTags_           .push_back(iJet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
-    jetJetProbabilityBJetTags_ .push_back(iJet->bDiscriminator("pfJetProbabilityBJetTags"));
-    jetpfCombinedMVAV2BJetTags_.push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
+    slimmedJetCSV2BJetTags_           .push_back(iJet->bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
+    slimmedJetJetProbabilityBJetTags_ .push_back(iJet->bDiscriminator("pfJetProbabilityBJetTags"));
+    slimmedJetpfCombinedMVAV2BJetTags_.push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
   
     //parton id
-    jetPartonID_.push_back(iJet->partonFlavour());
-    jetHadFlvr_.push_back(iJet->hadronFlavour());
+    slimmedJetPartonID_.push_back(iJet->partonFlavour());
+    slimmedJetHadFlvr_.push_back(iJet->hadronFlavour());
 
     // Displaced Jet Variable : median jet log IP significance
-    //
-    //cout<<endl;
-    //cout<<endl;
-    //cout<<"***********"<<" Event: "<<e.id().event()<<" Jet: "<<nrjet<<", "<<nJet_<<"**************" <<endl;
-    //cout<<"Un-Sorted("<<jetLog10IPSig_.size()<<"): ";
-    //for (i=0; i<jetLog10IPSig_.size(); i++)
-    //{
-    //cout<<jetLog10IPSig_[i]<<", ";
-    //}
-    //cout<<endl;
-
     // must sort IPsig to be able to find median
-    sort(jetLog10IPSig_.begin(), jetLog10IPSig_.end());
-    sort(jetLogTrackAngle_.begin(), jetLogTrackAngle_.end());
-
-    //bool skim = false
-    //for(i=0; i<jetLog10IPSig_.begin();i++){
-    //
-    //cout<<endl;
-    //cout<<"Last element(b): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
-    //if(jetLog10IPSig_.size()>1 && jetLog10IPSig_[jetLog10IPSig_.size()-1] >=9999999.0) jetLog10IPSig_.pop_back();
-    //cout<<endl;
-    //cout<<"Last element(a): "<<jetLog10IPSig_[jetLog10IPSig_.size()-1]<<endl;
-    //
-    //cout<<"Sorted("<<jetLog10IPSig_.size()<<"): ";
-    //for (i=0; i<jetLog10IPSig_.size(); i++)
-    //{
-    //cout<<jetLog10IPSig_[i]<<", "; 
-    //}
+    sort(slimmedJetLog10IPSig_.begin(), slimmedJetLog10IPSig_.end());
+    sort(slimmedJetLogTrackAngle_.begin(), slimmedJetLogTrackAngle_.end());
 
     //Now find median
     //Note .at() threw error
-    if(jetLog10IPSig_.size() == 0){
+    if(slimmedJetLog10IPSig_.size() == 0){
       IP0Sum+=1;
-      jetMedianLog10IPSig_.push_back(-99.9); 
-     // if(fabs(MedianLog10IPSig)>99.0){cout<<"IF "<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
+      slimmedJetMedianLog10IPSig_.push_back(-99.9); 
     }
-    else if(jetLog10IPSig_.size()%2 ==0){
-      //cout<<"elseif"<<" "<<jetLog10IPSig_.size()<<endl;
-      //cout<<"jetLog10IPSig_.size()/2) -1"<< jetLog10IPSig_.size()/2) -1 <<endl;
-      //cout<<"
-      MedianLog10IPSig = 0.5*( jetLog10IPSig_.at( (jetLog10IPSig_.size()/2) -1 ) 
-                             + jetLog10IPSig_.at(  jetLog10IPSig_.size()/2     ));
-      jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
-      //if(fabs(MedianLog10IPSig)>99.0){cout<<"elseif"<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
+    else if(slimmedJetLog10IPSig_.size()%2 ==0){
+      MedianLog10IPSig = 0.5*( slimmedJetLog10IPSig_.at( (slimmedJetLog10IPSig_.size()/2) -1 ) 
+                             + slimmedJetLog10IPSig_.at(  slimmedJetLog10IPSig_.size()/2     ));
+      slimmedJetMedianLog10IPSig_.push_back(MedianLog10IPSig);
     }
     else{
-     // cout<<"ELSE"<<" "<<jetLog10IPSig_.size()<<endl;
-      MedianLog10IPSig =       jetLog10IPSig_.at( (jetLog10IPSig_.size()-1)/2 );
-      jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
-     // if(fabs(MedianLog10IPSig)>99.0){cout<<"ELSE"<<MedianLog10IPSig<<" "<<jetLog10IPSig_.size()<<endl;}
+      MedianLog10IPSig =       slimmedJetLog10IPSig_.at( (slimmedJetLog10IPSig_.size()-1)/2 );
+      slimmedJetMedianLog10IPSig_.push_back(MedianLog10IPSig);
     }
     
-
     // Track Angle still broken FIXME
-    //cout <<" TotalTA: " << TotalTrackAngle<<endl;
-    //TrackAngle_Median
-    if(jetLogTrackAngle_.size() == 0){
-    TA0Sum+=1;
-    //cout<<" IF_TA "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
-    }
-    else if(jetLogTrackAngle_.size()%2 ==0)
+    if(slimmedJetLogTrackAngle_.size() == 0)
     {
-    MedianLogTrackAngle = 0.5*( jetLogTrackAngle_[(jetLogTrackAngle_.size()/2) -1]
-                              + jetLogTrackAngle_[ jetLogTrackAngle_.size()/2    ]);
-    //if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout <<"**************"<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
-    jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
-    //cout<<" elseif_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+     TA0Sum+=1;
+    }
+    else if(slimmedJetLogTrackAngle_.size()%2 ==0)
+    {
+     MedianLogTrackAngle = 0.5*( slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()/2) -1]
+                               + slimmedJetLogTrackAngle_[ slimmedJetLogTrackAngle_.size()/2    ]);
+     slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
     }
     else
     {
-    MedianLogTrackAngle =       jetLogTrackAngle_[(jetLogTrackAngle_.size()-1)/2];
-    //if(MedianLogTrackAngle>10000.0 || MedianLogTrackAngle<-10000.0)cout<<"**************" <<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
-    jetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
-    //cout<<" ELSE_TA: "<<MedianLogTrackAngle<<" "<<jetLogTrackAngle_.size()<<endl;
+     MedianLogTrackAngle =       slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()-1)/2];
+     slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
     }    
 
-    //jetMedianLog10IPSig_.push_back(MedianLog10IPSig);
-    jetSumIP_.push_back(SumIP);
-    jetSumIPSig_.push_back(SumIPSig);
+    //slimmedJetMedianLog10IPSig_.push_back(MedianLog10IPSig);
+    slimmedJetSumIP_.push_back(SumIP);
+    slimmedJetSumIPSig_.push_back(SumIPSig);
 
-    if(jetLogTrackAngle_.size()>0)jetTotalTrackAngle_.push_back(TotalTrackAngle);
+    if(slimmedJetLogTrackAngle_.size()>0)slimmedJetTotalTrackAngle_.push_back(TotalTrackAngle);
 
 
     // gen jet and parton
-    int jetGenPartonID    = -99;
-    int jetGenPartonMomID = -99;
-    float jetGenEn        = -999.;
-    float jetGenPt        = -999.;
-    float jetGenEta       = -999.;
-    float jetGenPhi       = -999.;      
+    int slimmedJetGenPartonID    = -99;
+    int slimmedJetGenPartonMomID = -99;
+    float slimmedJetGenEn        = -999.;
+    float slimmedJetGenPt        = -999.;
+    float slimmedJetGenEta       = -999.;
+    float slimmedJetGenPhi       = -999.;      
      
-    float jetGenJetEn  = -999.;
-    float jetGenJetPt  = -999.;
-    float jetGenJetEta = -999.;
-    float jetGenJetPhi = -999.;
+    float slimmedJetGenJetEn  = -999.;
+    float slimmedJetGenJetPt  = -999.;
+    float slimmedJetGenJetEta = -999.;
+    float slimmedJetGenJetPhi = -999.;
     if( ! e.isRealData() ){
      if ((*iJet).genParton()) {
-      jetGenPartonID = (*iJet).genParton()->pdgId();
-      jetGenEn = (*iJet).genParton()->energy();
-      jetGenPt = (*iJet).genParton()->pt();
-      jetGenEta = (*iJet).genParton()->eta();
-      jetGenPhi = (*iJet).genParton()->phi();
+      slimmedJetGenPartonID = (*iJet).genParton()->pdgId();
+      slimmedJetGenEn = (*iJet).genParton()->energy();
+      slimmedJetGenPt = (*iJet).genParton()->pt();
+      slimmedJetGenEta = (*iJet).genParton()->eta();
+      slimmedJetGenPhi = (*iJet).genParton()->phi();
       if ((*iJet).genParton()->mother()) {
-       jetGenPartonMomID = (*iJet).genParton()->mother()->pdgId();
+       slimmedJetGenPartonMomID = (*iJet).genParton()->mother()->pdgId();
       }
      }
       
-    jetGenPartonID_.push_back(jetGenPartonID);
-    jetGenPartonMomID_.push_back(jetGenPartonMomID);
-    jetGenEn_ .push_back(jetGenEn);
-    jetGenPt_ .push_back(jetGenPt);
-    jetGenEta_ .push_back(jetGenEta);
-    jetGenPhi_ .push_back(jetGenPhi);
+    slimmedJetGenPartonID_.push_back(slimmedJetGenPartonID);
+    slimmedJetGenPartonMomID_.push_back(slimmedJetGenPartonMomID);
+    slimmedJetGenEn_ .push_back(slimmedJetGenEn);
+    slimmedJetGenPt_ .push_back(slimmedJetGenPt);
+    slimmedJetGenEta_ .push_back(slimmedJetGenEta);
+    slimmedJetGenPhi_ .push_back(slimmedJetGenPhi);
     if ((*iJet).genJet()) {
-     jetGenJetEn = (*iJet).genJet()->energy();
-     jetGenJetPt = (*iJet).genJet()->pt();
-     jetGenJetEta = (*iJet).genJet()->eta();
-     jetGenJetPhi = (*iJet).genJet()->phi();
+     slimmedJetGenJetEn = (*iJet).genJet()->energy();
+     slimmedJetGenJetPt = (*iJet).genJet()->pt();
+     slimmedJetGenJetEta = (*iJet).genJet()->eta();
+     slimmedJetGenJetPhi = (*iJet).genJet()->phi();
     }
-    jetGenJetEn_.push_back(jetGenJetEn);
-    jetGenJetPt_.push_back(jetGenJetPt);
-    jetGenJetEta_.push_back(jetGenJetEta);
-    jetGenJetPhi_.push_back(jetGenJetPhi);
+    slimmedJetGenJetEn_.push_back(slimmedJetGenJetEn);
+    slimmedJetGenJetPt_.push_back(slimmedJetGenJetPt);
+    slimmedJetGenJetEta_.push_back(slimmedJetGenJetEta);
+    slimmedJetGenJetPhi_.push_back(slimmedJetGenJetPhi);
     
     // access jet resolution       
     JME::JetParameters parameters;
     parameters.setJetPt(iJet->pt()).setJetEta(iJet->eta()).setRho(rho);
-    float jetResolution = jetResolution_.getResolution(parameters);
+    float slimmedJetResolution = slimmedJetResolution_.getResolution(parameters);
 
      edm::Service<edm::RandomNumberGenerator> rng;
      if (!rng.isAvailable()) edm::LogError("JET : random number generator is missing !");
      CLHEP::HepRandomEngine & engine = rng->getEngine( e.streamID() );
-     float rnd = CLHEP::RandGauss::shoot(&engine, 0., jetResolution);
+     float rnd = CLHEP::RandGauss::shoot(&engine, 0., slimmedJetResolution);
 
-     float jetResolutionSF   = jetResolutionSF_.getScaleFactor(parameters);
-     float jetResolutionSFUp = jetResolutionSF_.getScaleFactor(parameters, Variation::UP);
-     float jetResolutionSFDo = jetResolutionSF_.getScaleFactor(parameters, Variation::DOWN);
+     float slimmedJetResolutionSF   = slimmedJetResolutionSF_.getScaleFactor(parameters);
+     float slimmedJetResolutionSFUp = slimmedJetResolutionSF_.getScaleFactor(parameters, Variation::UP);
+     float slimmedJetResolutionSFDo = slimmedJetResolutionSF_.getScaleFactor(parameters, Variation::DOWN);
 
-     float jetP4Smear   = -1.;
-     float jetP4SmearUp = -1.;
-     float jetP4SmearDo = -1.;
-     if (jetGenJetPt > 0 && reco::deltaR(iJet->eta(), iJet->phi(), jetGenJetEta, jetGenJetPhi) < 0.2 && fabs(iJet->pt()-jetGenJetPt) < 3*jetResolution*iJet->pt()) {
-       jetP4Smear   = 1. + (jetResolutionSF   - 1.)*(iJet->pt() - jetGenJetPt)/iJet->pt();
-       jetP4SmearUp = 1. + (jetResolutionSFUp - 1.)*(iJet->pt() - jetGenJetPt)/iJet->pt();
-       jetP4SmearDo = 1. + (jetResolutionSFDo - 1.)*(iJet->pt() - jetGenJetPt)/iJet->pt();
+     float slimmedJetP4Smear   = -1.;
+     float slimmedJetP4SmearUp = -1.;
+     float slimmedJetP4SmearDo = -1.;
+     if (slimmedJetGenJetPt > 0 && reco::deltaR(iJet->eta(), iJet->phi(), slimmedJetGenJetEta, slimmedJetGenJetPhi) < 0.2 && fabs(iJet->pt()-slimmedJetGenJetPt) < 3*slimmedJetResolution*iJet->pt()) {
+       slimmedJetP4Smear   = 1. + (slimmedJetResolutionSF   - 1.)*(iJet->pt() - slimmedJetGenJetPt)/iJet->pt();
+       slimmedJetP4SmearUp = 1. + (slimmedJetResolutionSFUp - 1.)*(iJet->pt() - slimmedJetGenJetPt)/iJet->pt();
+       slimmedJetP4SmearDo = 1. + (slimmedJetResolutionSFDo - 1.)*(iJet->pt() - slimmedJetGenJetPt)/iJet->pt();
      } else {
-       jetP4Smear   = 1. + rnd*sqrt(max(pow(jetResolutionSF,   2)-1, 0.));
-       jetP4SmearUp = 1. + rnd*sqrt(max(pow(jetResolutionSFUp, 2)-1, 0.));
-       jetP4SmearDo = 1. + rnd*sqrt(max(pow(jetResolutionSFDo, 2)-1, 0.));
+       slimmedJetP4Smear   = 1. + rnd*sqrt(max(pow(slimmedJetResolutionSF,   2)-1, 0.));
+       slimmedJetP4SmearUp = 1. + rnd*sqrt(max(pow(slimmedJetResolutionSFUp, 2)-1, 0.));
+       slimmedJetP4SmearDo = 1. + rnd*sqrt(max(pow(slimmedJetResolutionSFDo, 2)-1, 0.));
      }
-     jetP4Smear_  .push_back(jetP4Smear);
-     jetP4SmearUp_.push_back(jetP4SmearUp);
-     jetP4SmearDo_.push_back(jetP4SmearDo);
+     slimmedJetP4Smear_  .push_back(slimmedJetP4Smear);
+     slimmedJetP4SmearUp_.push_back(slimmedJetP4SmearUp);
+     slimmedJetP4SmearDo_.push_back(slimmedJetP4SmearDo);
     }
     
-    nJet_++;
+    nSlimmedJets__++;
   }/// End Jets Loop
   
   if(dodebug){
     printf("    After jet loop, check all track vars\n");
-    for(unsigned int k = 0; k < jetTrackPt_.size(); ++k){
-      for(unsigned int l = 0; l < jetTrackPt_.at(k).size(); ++l){
+    for(unsigned int k = 0; k < slimmedJetTrackPt_.size(); ++k){
+      for(unsigned int l = 0; l < slimmedJetTrackPt_.at(k).size(); ++l){
 	printf("    pt %f, eta %f, phi %f PDGID %i\n",
-	       jetTrackPt_.at(k).at(l), jetTrackEta_.at(k).at(l),
-	       jetTrackPhi_.at(k).at(l), jetTrackPDGID_.at(k).at(l) );
+	       slimmedJetTrackPt_.at(k).at(l), slimmedJetTrackEta_.at(k).at(l),
+	       slimmedJetTrackPhi_.at(k).at(l), slimmedJetTrackPDGID_.at(k).at(l) );
       }
     }
   }
@@ -1230,11 +1181,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   e.getByToken( AODTrackLabel_       ,  AODTrackHandle );
 
   // Magnetic field
-  edm::ESHandle<MagneticField> magneticField;
   es.get<IdealMagneticFieldRecord>().get(magneticField);
   magneticField_ = &*magneticField;
+
   // beamspot
-  //edm::Handle<reco::BeamSpot> beamspotHandle_;
   e.getByToken(beamspotLabel_, beamspotHandle_);
 
   // set parameters for tracks to be accepted
@@ -1254,30 +1204,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   std::string thePropagatorName_ = "PropagatorWithMaterial";
   es.get<TrackingComponentsRecord>().get(thePropagatorName_,thePropagator_);
   StateOnTrackerBound stateOnTracker(thePropagator_.product());
-
-  //  float sumIPPt = 0;
-  //  float sumIPLogSig = 0;
-  //  float IVFScore = 0; 
-  //  int nTracksIPlt0p05 = 0;
-  //  int nTracksIPSiggt10 = 0;
-  //  int nTracksIPSiglt5 = 0;
-  //  
-  //  map<reco::TransientTrack,reco::TrackBaseRef> refMap;
-  //  vector<TrajectoryStateOnSurface> tsosList;
-  //  vector<float> tracksIPLogSig;
-  //  vector<float> tracksIPLog10Sig;
-  //  vector<float> trackAngles;
-  //  
-  //  double totalTrackPt = 0;
-  //  double totalTrackAnglePt = 0;
-  //  double minR = 10000;
-  //  //double minPt = 0; //unused
-  //  
-  //  TLorentzVector sumVector(0,0,0,0);
-  //  vector<TLorentzVector> trackVectors;
-  //  
-  //  int nMissingInner = 0;
-  //  int nMissingOuter = 0;
 
   sumIPPt          = 0.;
   sumIPLogSig      = 0.;
