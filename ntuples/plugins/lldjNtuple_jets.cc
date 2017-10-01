@@ -1010,7 +1010,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    sort(slimmedJetLogTrackAngle_.begin(), slimmedJetLogTrackAngle_.end());
 
    //Now find median
-   //Note .at() threw error
    if(slimmedJetLog10IPSig_.size() == 0){
      IP0Sum+=1;
      slimmedJetMedianLog10IPSig_.push_back(-99.9); 
@@ -1047,6 +1046,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    slimmedJetSumIPSig_.push_back(SumIPSig);
 
    if(slimmedJetLogTrackAngle_.size()>0)slimmedJetTotalTrackAngle_.push_back(TotalTrackAngle);
+   else slimmedJetTotalTrackAngle_.push_back(0); // or -999?
 
 
    // gen jet and parton
