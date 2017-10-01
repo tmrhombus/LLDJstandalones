@@ -49,6 +49,7 @@ vector<float>  slimmedJetRawPt_;
 vector<float>  slimmedJetRawEn_;
 vector<float>  slimmedJetMt_;
 vector<float>  slimmedJetArea_;
+vector<float>  slimmedJetLeadTrackPID_;
 vector<float>  slimmedJetLeadTrackPt_;
 vector<float>  slimmedJetLeadTrackEta_;
 vector<float>  slimmedJetLeadTrackPhi_;
@@ -105,15 +106,15 @@ vector<float>  alphaMax_slimmedJetDauVertex_r_;
 
 // Alpha Maxs
 vector<float>  slimmedJetAlphaMax_PV3onPV2_ ; 
-vector<float>  slimmedJetAlphaMax_PV3onNeu_ ; 
+vector<float>  slimmedJetAlphaMax_PV3onChg_ ; 
 vector<float>  slimmedJetAlphaMax_PV3onAll_ ; 
-vector<float>  slimmedJetAlphaMax_PV2onNeu_ ; 
+vector<float>  slimmedJetAlphaMax_PV2onChg_ ; 
 vector<float>  slimmedJetAlphaMax_PV2onAll_ ; 
 
 vector<float>  slimmedJetAlpha2Max_PV3onPV2_ ; 
-vector<float>  slimmedJetAlpha2Max_PV3onNeu_ ; 
+vector<float>  slimmedJetAlpha2Max_PV3onChg_ ; 
 vector<float>  slimmedJetAlpha2Max_PV3onAll_ ; 
-vector<float>  slimmedJetAlpha2Max_PV2onNeu_ ; 
+vector<float>  slimmedJetAlpha2Max_PV2onChg_ ; 
 vector<float>  slimmedJetAlpha2Max_PV2onAll_ ; 
 
 // Track Info
@@ -256,6 +257,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);                   
   tree->Branch("slimmedJetMt",                      &slimmedJetMt_);                      
   tree->Branch("slimmedJetArea",                    &slimmedJetArea_);                    
+  tree->Branch("slimmedJetLeadTrackPID",            &slimmedJetLeadTrackPID_);        
   tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);             
   tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_);            
   tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_);            
@@ -310,15 +312,15 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("alphaMax_slimmedJetDauVertex_r",    &alphaMax_slimmedJetDauVertex_r_);    
  
   tree->Branch("slimmedJetAlphaMax_PV3onPV2",       &slimmedJetAlphaMax_PV3onPV2_);       
-  tree->Branch("slimmedJetAlphaMax_PV3onNeu",       &slimmedJetAlphaMax_PV3onNeu_);       
+  tree->Branch("slimmedJetAlphaMax_PV3onChg",       &slimmedJetAlphaMax_PV3onChg_);       
   tree->Branch("slimmedJetAlphaMax_PV3onAll",       &slimmedJetAlphaMax_PV3onAll_);       
-  tree->Branch("slimmedJetAlphaMax_PV2onNeu",       &slimmedJetAlphaMax_PV2onNeu_);       
+  tree->Branch("slimmedJetAlphaMax_PV2onChg",       &slimmedJetAlphaMax_PV2onChg_);       
   tree->Branch("slimmedJetAlphaMax_PV2onAll",       &slimmedJetAlphaMax_PV2onAll_);       
  
   tree->Branch("slimmedJetAlpha2Max_PV3onPV2",      &slimmedJetAlpha2Max_PV3onPV2_);      
-  tree->Branch("slimmedJetAlpha2Max_PV3onNeu",      &slimmedJetAlpha2Max_PV3onNeu_);      
+  tree->Branch("slimmedJetAlpha2Max_PV3onChg",      &slimmedJetAlpha2Max_PV3onChg_);      
   tree->Branch("slimmedJetAlpha2Max_PV3onAll",      &slimmedJetAlpha2Max_PV3onAll_);      
-  tree->Branch("slimmedJetAlpha2Max_PV2onNeu",      &slimmedJetAlpha2Max_PV2onNeu_);      
+  tree->Branch("slimmedJetAlpha2Max_PV2onChg",      &slimmedJetAlpha2Max_PV2onChg_);      
   tree->Branch("slimmedJetAlpha2Max_PV2onAll",      &slimmedJetAlpha2Max_PV2onAll_);      
  
   tree->Branch("slimmedJetTrackPt",                 &slimmedJetTrackPt_);                 
@@ -411,6 +413,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  slimmedJetRawEn_.clear();
  slimmedJetMt_.clear();
  slimmedJetArea_.clear();
+ slimmedJetLeadTrackPID_.clear();
  slimmedJetLeadTrackPt_.clear();
  slimmedJetLeadTrackEta_.clear();
  slimmedJetLeadTrackPhi_.clear();
@@ -465,15 +468,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  alphaMax_slimmedJetDauVertex_r_.clear();
  
  slimmedJetAlphaMax_PV3onPV2_.clear(); 
- slimmedJetAlphaMax_PV3onNeu_.clear(); 
+ slimmedJetAlphaMax_PV3onChg_.clear(); 
  slimmedJetAlphaMax_PV3onAll_.clear(); 
- slimmedJetAlphaMax_PV2onNeu_.clear(); 
+ slimmedJetAlphaMax_PV2onChg_.clear(); 
  slimmedJetAlphaMax_PV2onAll_.clear(); 
  
  slimmedJetAlpha2Max_PV3onPV2_.clear(); 
- slimmedJetAlpha2Max_PV3onNeu_.clear(); 
+ slimmedJetAlpha2Max_PV3onChg_.clear(); 
  slimmedJetAlpha2Max_PV3onAll_.clear(); 
- slimmedJetAlpha2Max_PV2onNeu_.clear(); 
+ slimmedJetAlpha2Max_PV2onChg_.clear(); 
  slimmedJetAlpha2Max_PV2onAll_.clear(); 
  
  slimmedJetTrackPt_.clear();
@@ -721,6 +724,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
      //cast daughter as (pat::PackedCandidate)daughterPAT to access member functions
      const pat::PackedCandidate &daughterPAT = dynamic_cast<const pat::PackedCandidate &>(*iJet->getJetConstituents().at(id));
 
+     // Vertex is already ID'd for miniAOD through jet->daughter
      const reco::VertexRef vref = daughterPAT.vertexRef();
 
      if (daughterRECO.isNonnull() && daughterRECO.isAvailable()) 
@@ -733,16 +737,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
        daughterEta = daughterRECO->eta();
        daughterPhi = daughterRECO->phi();
        daughterPDGID = daughterPAT.pdgId();
-       if(dodebug){ printf("   pt %f, eta %f, phi %f PDGID %i\n", daughterPt,daughterEta,daughterPhi,daughterPDGID); }
-       if(dodebug){
-        cout<<"*************** Daughter Loop Details ************"<<endl;
-                cout <<"VertexRefIndex: "<<vref.index()<<" Pt: "<<daughterRECO->pt()
-                     <<" Charge: "<<daughterRECO->charge()<<" daughterPDGID: "<<daughterPAT.pdgId()
-                     <<" fromPv(): "<<daughterPAT.fromPV()
-                     << " pvAssociationQuality(): " <<daughterPAT.pvAssociationQuality()
-       	      << endl;
-       	   //<<"motherRef"<<iJet->genParton()->motherRef()->pdgId()<<endl;
-        cout<<"*************** Daughter Loop Details end*********"<<endl;
+       if(dodebug){ 
+        printf("  Jet Daughter\n");
+        printf("   pt %f, eta %f, phi %f PDGID %i\n",
+         daughterPt,daughterEta,daughterPhi,daughterPDGID); 
+         cout <<"VertexRefIndex: "<<vref.index()
+              <<" Charge: "<<daughterRECO->charge()
+              <<" fromPv(): "<<daughterPAT.fromPV()
+              << " pvAssociationQuality(): " <<daughterPAT.pvAssociationQuality()
+       	 << endl;
        }
 
        tmpTrackPt    .push_back( daughterPt    );
@@ -772,6 +775,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
        // set lead (neutral) track variables
        if (daughterRECO->charge() != 0 && daughterPt > leadTrkPt) {
+         leadTrkPID = daughterRECO->pdgId();
          leadTrkPt  = daughterPt;
          leadTrkEta = daughterEta;
          leadTrkPhi = daughterPhi;
@@ -794,9 +798,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
            slimmedJetLog10IPSig_.push_back( log10(dxySig) );
          }     
 
-         // Alpha----------------------
-         int vtxIDminTrackDz=-1;
-         float minPvDz = 10000.0; 
+         // Alpha Calculation----------------------
 
          // loop over vertices (already looping over tracks and slimmedJets)
          if(dodebug){ printf("   Looping over vertices\n"); }
@@ -818,6 +820,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
              sum2tracksfPV3[k] += daughterPt*daughterPt;
            }
 
+         int vtxIDminTrackDz=-1;
+         float minPvDz = 10000.0; 
            // vtxIDminTrackDz is the ID of the vtx with smallest dZ to this specific jet daughter
            // will need two loops
            //  first find the vtx id for min dz with track (must go through all vtxs)
@@ -906,27 +910,27 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 
    float slimmedJetAlphaMax_PV3onPV2 = -1;
-   float slimmedJetAlphaMax_PV3onNeu = -1;
+   float slimmedJetAlphaMax_PV3onChg = -1;
    float slimmedJetAlphaMax_PV3onAll = -1;
-   float slimmedJetAlphaMax_PV2onNeu = -1;
+   float slimmedJetAlphaMax_PV2onChg = -1;
    float slimmedJetAlphaMax_PV2onAll = -1;
 
    float slimmedJetAlpha_PV3onPV2 = -1;
-   float slimmedJetAlpha_PV3onNeu = -1;
+   float slimmedJetAlpha_PV3onChg = -1;
    float slimmedJetAlpha_PV3onAll = -1;
-   float slimmedJetAlpha_PV2onNeu = -1;
+   float slimmedJetAlpha_PV2onChg = -1;
    float slimmedJetAlpha_PV2onAll = -1;
 
    float slimmedJetAlpha2Max_PV3onPV2 = -1;
-   float slimmedJetAlpha2Max_PV3onNeu = -1;
+   float slimmedJetAlpha2Max_PV3onChg = -1;
    float slimmedJetAlpha2Max_PV3onAll = -1;
-   float slimmedJetAlpha2Max_PV2onNeu = -1;
+   float slimmedJetAlpha2Max_PV2onChg = -1;
    float slimmedJetAlpha2Max_PV2onAll = -1;
 
    float slimmedJetAlpha2_PV3onPV2 = -1;
-   float slimmedJetAlpha2_PV3onNeu = -1;
+   float slimmedJetAlpha2_PV3onChg = -1;
    float slimmedJetAlpha2_PV3onAll = -1;
-   float slimmedJetAlpha2_PV2onNeu = -1;
+   float slimmedJetAlpha2_PV2onChg = -1;
    float slimmedJetAlpha2_PV2onAll = -1;
 
    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
@@ -937,10 +941,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    }
 
    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
-     slimmedJetAlpha_PV3onNeu  = sumtracksfPV3[q]  / sumneutraltracks ;
-     slimmedJetAlpha2_PV3onNeu = sum2tracksfPV3[q] / sum2neutraltracks;
-     if(slimmedJetAlpha_PV3onNeu  > slimmedJetAlphaMax_PV3onNeu ){ slimmedJetAlphaMax_PV3onNeu  = slimmedJetAlpha_PV3onNeu; }
-     if(slimmedJetAlpha2_PV3onNeu > slimmedJetAlpha2Max_PV3onNeu){ slimmedJetAlpha2Max_PV3onNeu = slimmedJetAlpha2_PV3onNeu; }
+     slimmedJetAlpha_PV3onChg  = sumtracksfPV3[q]  / sumneutraltracks ;
+     slimmedJetAlpha2_PV3onChg = sum2tracksfPV3[q] / sum2neutraltracks;
+     if(slimmedJetAlpha_PV3onChg  > slimmedJetAlphaMax_PV3onChg ){ slimmedJetAlphaMax_PV3onChg  = slimmedJetAlpha_PV3onChg; }
+     if(slimmedJetAlpha2_PV3onChg > slimmedJetAlpha2Max_PV3onChg){ slimmedJetAlpha2Max_PV3onChg = slimmedJetAlpha2_PV3onChg; }
    }
 
    for(unsigned int q = 0; q < sumtracksfPV3.size(); q++){
@@ -951,10 +955,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    }
 
    for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
-     slimmedJetAlpha_PV2onNeu  = sumtracksfPV2[q]  / sumneutraltracks ;
-     slimmedJetAlpha2_PV2onNeu = sum2tracksfPV2[q] / sum2neutraltracks;
-     if(slimmedJetAlpha_PV2onNeu  > slimmedJetAlphaMax_PV2onNeu ){ slimmedJetAlphaMax_PV2onNeu  = slimmedJetAlpha_PV2onNeu; }
-     if(slimmedJetAlpha2_PV2onNeu > slimmedJetAlpha2Max_PV2onNeu){ slimmedJetAlpha2Max_PV2onNeu = slimmedJetAlpha2_PV2onNeu; }
+     slimmedJetAlpha_PV2onChg  = sumtracksfPV2[q]  / sumneutraltracks ;
+     slimmedJetAlpha2_PV2onChg = sum2tracksfPV2[q] / sum2neutraltracks;
+     if(slimmedJetAlpha_PV2onChg  > slimmedJetAlphaMax_PV2onChg ){ slimmedJetAlphaMax_PV2onChg  = slimmedJetAlpha_PV2onChg; }
+     if(slimmedJetAlpha2_PV2onChg > slimmedJetAlpha2Max_PV2onChg){ slimmedJetAlpha2Max_PV2onChg = slimmedJetAlpha2_PV2onChg; }
    }
 
    for(unsigned int q = 0; q < sumtracksfPV2.size(); q++){
@@ -966,17 +970,18 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
 
    slimmedJetAlphaMax_PV3onPV2_ .push_back(slimmedJetAlphaMax_PV3onPV2); 
-   slimmedJetAlphaMax_PV3onNeu_ .push_back(slimmedJetAlphaMax_PV3onNeu); 
+   slimmedJetAlphaMax_PV3onChg_ .push_back(slimmedJetAlphaMax_PV3onChg); 
    slimmedJetAlphaMax_PV3onAll_ .push_back(slimmedJetAlphaMax_PV3onAll); 
-   slimmedJetAlphaMax_PV2onNeu_ .push_back(slimmedJetAlphaMax_PV2onNeu); 
+   slimmedJetAlphaMax_PV2onChg_ .push_back(slimmedJetAlphaMax_PV2onChg); 
    slimmedJetAlphaMax_PV2onAll_ .push_back(slimmedJetAlphaMax_PV2onAll); 
 
    slimmedJetAlpha2Max_PV3onPV2_ .push_back(slimmedJetAlpha2Max_PV3onPV2);
-   slimmedJetAlpha2Max_PV3onNeu_ .push_back(slimmedJetAlpha2Max_PV3onNeu);
+   slimmedJetAlpha2Max_PV3onChg_ .push_back(slimmedJetAlpha2Max_PV3onChg);
    slimmedJetAlpha2Max_PV3onAll_ .push_back(slimmedJetAlpha2Max_PV3onAll);
-   slimmedJetAlpha2Max_PV2onNeu_ .push_back(slimmedJetAlpha2Max_PV2onNeu);
+   slimmedJetAlpha2Max_PV2onChg_ .push_back(slimmedJetAlpha2Max_PV2onChg);
    slimmedJetAlpha2Max_PV2onAll_ .push_back(slimmedJetAlpha2Max_PV2onAll);
 
+   slimmedJetLeadTrackPID_.push_back(leadTrkPID);
    slimmedJetLeadTrackPt_ .push_back(leadTrkPt);
    slimmedJetLeadTrackEta_.push_back(leadTrkEta);
    slimmedJetLeadTrackPhi_.push_back(leadTrkPhi);
