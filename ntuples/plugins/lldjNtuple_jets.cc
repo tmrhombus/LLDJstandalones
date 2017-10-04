@@ -39,6 +39,22 @@
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
+// miniAOD collection handles
+edm::Handle<edm::View<pat::Jet> >   slimmedJetHandle;
+edm::Handle<double>                 rhoHandle;
+edm::Handle<reco::VertexCollection> vtxHandle;
+// AOD Collection Handles
+edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
+edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
+edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
+edm::Handle<edm::View<reco::Vertex>  >  AODVertexHandle;
+edm::Handle<edm::View<reco::Track>   >  AODTrackHandle;
+edm::Handle<reco::BeamSpot> beamspotHandle_;
+edm::ESHandle<MagneticField> magneticField;
+// transient tracks
+map<reco::TransientTrack,reco::TrackBaseRef> refMap;
+vector<TrajectoryStateOnSurface> tsosList;
+
 // ak4 slimmedJets
 Int_t          nSlimmedJets__;
 vector<float>  slimmedJetPt_;
@@ -136,6 +152,7 @@ vector<float>  slimmedJetGenEta_;
 vector<float>  slimmedJetGenPhi_;
 vector<int>    slimmedJetGenPartonMomID_;
 
+// AOD ---------------------------------------------
 // AOD variables
 // Calo Jets
 Int_t          AODnCaloJet_;
@@ -197,25 +214,24 @@ vector<float>  AODPFchsJetLogTrackAngle_;
 vector<float>  AODPFchsJetMedianLogTrackAngle_;
 vector<float>  AODPFchsJetTotalTrackAngle_;
 
-// miniAOD collection handles
-edm::Handle<edm::View<pat::Jet> >   slimmedJetHandle;
-edm::Handle<double>                 rhoHandle;
-edm::Handle<reco::VertexCollection> vtxHandle;
+// temporary variables
+
+vector<TVector3> AODallTrackPositions; // x,y,z 
+vector<int>      AODallTrackMissingInner;
+vector<int>      AODallTrackMissingOuter;
+vector<float>    AODallTrackAngle;
+vector<float>    AODallTrackAnglePt;
+vector<float>    AODallTrackPT
 
 
-// AOD ---------------------------------------------
-// AOD Collection Handles
-edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
-edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
-edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
-edm::Handle<edm::View<reco::Vertex>  >  AODVertexHandle;
-edm::Handle<edm::View<reco::Track>   >  AODTrackHandle;
-edm::Handle<reco::BeamSpot> beamspotHandle_;
-edm::ESHandle<MagneticField> magneticField;
+vertexVector.push_back(whichVertex_[j]) on track j
 
-// transient tracks
-map<reco::TransientTrack,reco::TrackBaseRef> refMap;
-vector<TrajectoryStateOnSurface> tsosList;
+
+
+
+
+
+
 
 // AOD 
 float sumIPPt;
