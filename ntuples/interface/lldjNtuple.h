@@ -117,16 +117,16 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ESHandle<Propagator>                        thePropagator_;
   edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
-  void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
+  // jet functions
+  vector<int> getJetTrackIndexs( float jeteta, float jetphi);
+  void calculateAlphaMax( vector<int> jetTrackIDs,
+   float& alphaMax, float& alphaMaxP, float& beta,
+   float& alphaMax2, float& alphaMaxP2, float& beta2);
+  void calculateTrackAngle( vector<int> jetTrackIDs,
+   float &totalTrackAngle, float &totalTrackAnglePt);
+  void calculateIP( vector<int> jetTrackIDs,
+   float &sumIP, float &sumIPSig);
 
-  void aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, //StateOnTrackerBound stateOnTracker,
-				  float jeteta, float jetphi,  std::vector<int> whichVertex_,
-				  bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
-				  bool& fill_trackAngles_median, float &trackAngles_median,
-				  float& sumIP, float& sumIPSig, float &totalTrackAngle,
-				  std::vector<reco::TransientTrack>& transientTracks, std::vector<int>& vertexVector);
-  
-  double trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit);
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
