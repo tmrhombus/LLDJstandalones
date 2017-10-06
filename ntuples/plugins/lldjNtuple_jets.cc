@@ -17,7 +17,6 @@
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-//#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 //#include "DataFormats/TrackReco/interface/TrackBase.h"
 //#include "DataFormats/VertexReco/interface/Vertex.h"
 //#include "TrackingTools/Records/interface/TransientTrackRecord.h"
@@ -1347,7 +1346,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    calculateTrackAngle(caloJetTrackIDs, totalTrackAngle, totalTrackAnglePt);
    calculateIP(caloJetTrackIDs, sumIP, sumIPSig);
 
-
    ////////////////////////
    // Fill tree
    /////////////////////////
@@ -1667,7 +1665,7 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackA
 
 void lldjNtuple::calculateIP(vector<int> jetTrackIDs, float &tsumIP, float &tsumIPSig)
 {
-  
+ 
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
 
     int trackID = jetTrackIDs[t];

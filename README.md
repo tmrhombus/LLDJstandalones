@@ -2,12 +2,12 @@
 standalone packages for long lived jet analyses
 
 ## Download
-Fermilab uses tcsh by default even though it has bash! 
 
-Starting point is in `LLDJstandalones` 
 ```bash
+# Fermilab uses tcsh by default even though it has bash! 
+# This framework is based in bash and
 # technically maybe you don't need this,
-# but we do use bash scipts in the framework
+# but tcshers be warned
 bash --login
 
 # Set up the area
@@ -55,6 +55,7 @@ pushd LLDJstandalones;
  # add DisplacedHiggs as upstream
  git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
 
+ # this is a hack to disable autodetection of (mini)AOD for VID producers
  pushd initialization
   bash egammaAODflag.sh
  popd
@@ -103,27 +104,4 @@ Some scripts are available in `plotters` folder, ex. dump all plots in a file us
 
 ## Ntuplizer
 To do..
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## ntuplizer configuration  
-## btag
-#git remote add btv-cmssw https://github.com/cms-btv-pog/cmssw.git
-#git fetch --tags btv-cmssw
-#git cms-merge-topic -u cms-btv-pog:BoostedDoubleSVTaggerV4-WithWeightFiles-v1_from-CMSSW_8_0_21
-#
-## other
-#git cms-merge-topic Sam-Harper:HEEPV70VID_8010_ReducedCheckout 
-#git cms-merge-topic Sam-Harper:PackedCandNoPuppi
 

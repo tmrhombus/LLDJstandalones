@@ -65,9 +65,14 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
+  // trigger
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
   triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
   triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
+
+  // gen
+  genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
+  
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
@@ -76,6 +81,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   // make branches for tree
   branchesGlobalEvent(tree_);
   branchesTrigger(tree_);
+  branchesGenPart(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
@@ -95,6 +101,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
  fillGlobalEvent(e, es);
  fillTrigger(e, es);
+ if (!e.isRealData()) fillGenPart(e);
  fillPhotons(e, es);
  fillElectrons(e, es);
 

@@ -210,12 +210,6 @@ process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderE
     ComponentName = cms.string('TransientTrackBuilder')
 )
 
-# get rid of this next
-jecLevels = [
-  'Summer16_23Sep2016V4_MC_L2Relative_AK8PFchs.txt',
-  'Summer16_23Sep2016V4_MC_L3Absolute_AK8PFchs.txt'
-]
-
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
@@ -260,6 +254,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
  phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
  phoWorstChargedIsolation = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
+
+ genParticleSrc    = cms.InputTag("genParticles"),
 
  bits = cms.InputTag("TriggerResults","","HLT"),
  prescales = cms.InputTag("patTrigger"),

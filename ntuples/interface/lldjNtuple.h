@@ -69,6 +69,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesMuons      (TTree*);
   void branchesJets       (TTree*);
   void branchesTrigger    (TTree*);
+  void branchesGenPart    (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -77,6 +78,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
+  void fillGenPart    (const edm::Event&);
+
 
   // collections
   // electrons
@@ -155,6 +158,11 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
+
+  //gen
+  edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;
+
+  
 
   TTree   *tree_;
   TH1F    *hEvents_;
