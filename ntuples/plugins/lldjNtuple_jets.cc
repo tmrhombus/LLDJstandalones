@@ -1648,7 +1648,7 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
     if(ap2 > apMax2) apMax2 = ap2;
   }
   aMax   = tmpMaxSumPt  / trackSumPt;
-  aMax2  = tmpMaxSumPt*tmpMaxSumPt / trackSumPt2;
+  aMax2  = ( tmpMaxSumPt * tmpMaxSumPt ) / trackSumPt2;
   aMaxP  = apMax;
   aMaxP2 = apMax2;
   return;
