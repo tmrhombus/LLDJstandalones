@@ -26,11 +26,12 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
+#include "RecoTracker/Record/interface/NavigationSchoolRecord.h"
 
 #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
 //#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 //#include "PhysicsTools/SelectorUtils/interface/PFJetIDSelectionFunctor.h"
-//#include "DataFormats/BeamSpot/interface/BeamSpot.h"
+#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 #include "MagneticField/Engine/interface/MagneticField.h" 
 
@@ -61,8 +62,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
   
-  //   double TrackAngle(const edm::Event&, reco::TransientTrack track, TrajectoryStateOnSurface tSOSInnerHit);
-
   void branchesGlobalEvent(TTree*);
   void branchesMET        (TTree*);
   void branchesPhotons    (TTree*);
@@ -70,6 +69,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesMuons      (TTree*);
   void branchesJets       (TTree*);
   void branchesTrigger    (TTree*);
+  void branchesGenPart    (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -78,6 +78,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
+  void fillGenPart    (const edm::Event&);
+
 
   // collections
   // electrons
@@ -102,6 +104,9 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::TriggerResults>            trgResultsLabel_;
   string                                           trgResultsProcess_;
 
+  // beamspot
+  edm::EDGetTokenT<reco::BeamSpot>                 beamspotLabel_;
+
   // jets
   edm::EDGetTokenT<edm::View<pat::Jet> >           jetsAK4Label_;
    // AOD Jets
@@ -115,7 +120,16 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ESHandle<Propagator>                        thePropagator_;
   edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
-  void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
+  // jet functions
+  vector<int> getJetTrackIndexs( float jeteta, float jetphi);
+  void calculateAlphaMax( vector<int> jetTrackIDs,
+   float& alphaMax, float& alphaMaxP, float& beta,
+   float& alphaMax2, float& alphaMaxP2, float& beta2);
+  void calculateTrackAngle( vector<int> jetTrackIDs,
+   float &totalTrackAngle, float &totalTrackAnglePt);
+  void calculateIP( vector<int> jetTrackIDs,
+   float &sumIP, float &sumIPSig);
+
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
@@ -145,11 +159,16 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
 
+  //gen
+  edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;
+
+  
+
   TTree   *tree_;
   TH1F    *hEvents_;
 
-  JME::JetResolution            jetResolution_;
-  JME::JetResolutionScaleFactor jetResolutionSF_;
+  JME::JetResolution            slimmedJetResolution_;
+  JME::JetResolutionScaleFactor slimmedJetResolutionSF_;
 };
 
 #endif

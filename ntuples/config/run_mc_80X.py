@@ -7,10 +7,12 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('LLDJ')
 #process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
+process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
+
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 #process.Tracer = cms.Service('Tracer')
 
 # input files
@@ -228,6 +230,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 
+ beamspotLabel_            = cms.InputTag('offlineBeamSpot'),                                    
+
  ak4JetSrc                 = cms.InputTag('slimmedJets'),
  AODak4CaloJetsSrc         = cms.InputTag('ak4CaloJets' , '', 'RECO'),
  AODak4PFJetsSrc           = cms.InputTag('ak4PFJets'   , '', 'RECO'),
@@ -250,6 +254,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
  phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
  phoWorstChargedIsolation = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
+
+ genParticleSrc    = cms.InputTag("genParticles"),
 
  bits = cms.InputTag("TriggerResults","","HLT"),
  prescales = cms.InputTag("patTrigger"),

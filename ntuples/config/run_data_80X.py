@@ -7,6 +7,8 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('LLDJ')
 #process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
+process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
+
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
@@ -409,6 +411,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
+
+ beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
 
  ak4JetSrc                 = cms.InputTag('slimmedJets'),
  AODak4CaloJetsSrc         = cms.InputTag('ak4CaloJets' , '', 'RECO'),

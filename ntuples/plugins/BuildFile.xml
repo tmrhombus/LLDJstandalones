@@ -18,6 +18,7 @@
 <use name="RecoVertex/VertexTools"/>
 <use name="RecoVertex/KalmanVertexFit"/>
 <use name="RecoVertex/ConfigurableVertexReco"/>
+<use name="RecoTracker/DebugTools"/>
 <use name="RecoEcal/EgammaCoreTools"/>
 <use name="RecoEgamma/PhotonIdentification"/>
 <use name="CondFormats/JetMETObjects"/>

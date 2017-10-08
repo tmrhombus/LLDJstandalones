@@ -32,6 +32,9 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   trgResultsLabel_           = consumes<edm::TriggerResults>           (ps.getParameter<InputTag>("triggerResults"));
   trgResultsProcess_         =                                          ps.getParameter<InputTag>("triggerResults").process();
 
+  // beamspot 
+  beamspotLabel_             = consumes<reco::BeamSpot>                (ps.getParameter<InputTag>("beamspotLabel_"));
+
   // jets
   jetsAK4Label_              = consumes<View<pat::Jet> >               (ps.getParameter<InputTag>("ak4JetSrc"));
   AODak4CaloJetsLabel_       = consumes<View<reco::CaloJet> >          (ps.getParameter<InputTag>("AODak4CaloJetsSrc"));  
@@ -62,9 +65,14 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
+  // trigger
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
   triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
   triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
+
+  // gen
+  genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
+  
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
@@ -73,6 +81,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   // make branches for tree
   branchesGlobalEvent(tree_);
   branchesTrigger(tree_);
+  branchesGenPart(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
@@ -87,11 +96,12 @@ lldjNtuple::~lldjNtuple() {
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
  //# https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyResolution
- jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
- jetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
+ slimmedJetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
+ slimmedJetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
 
  fillGlobalEvent(e, es);
  fillTrigger(e, es);
+ if (!e.isRealData()) fillGenPart(e);
  fillPhotons(e, es);
  fillElectrons(e, es);
 
