@@ -229,8 +229,8 @@ vector<float>    AODallTrackAngle;
 
 vector<int>      AODwhichVertexByTrack;
 
-vector<int>      AODallTrackdxy;
-vector<int>      AODallTrackdxyerr;
+vector<float>      AODallTrackdxy;
+vector<float>      AODallTrackdxyerr;
 
 // set parameters for tracks to be accepted
 const float minTrackPt_ = 1.0;
@@ -267,57 +267,57 @@ const float maxDRtrackJet_ = 0.4;
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
-  tree->Branch("nSlimmedJets_",                       &nSlimmedJets__);                       
-  tree->Branch("slimmedJetPt",                      &slimmedJetPt_);                      
-  tree->Branch("slimmedJetEn",                      &slimmedJetEn_);                      
-  tree->Branch("slimmedJetEta",                     &slimmedJetEta_);                     
-  tree->Branch("slimmedJetPhi",                     &slimmedJetPhi_);                     
-  tree->Branch("slimmedJetRawPt",                   &slimmedJetRawPt_);                   
-  tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);                   
-  tree->Branch("slimmedJetMt",                      &slimmedJetMt_);                      
-  tree->Branch("slimmedJetArea",                    &slimmedJetArea_);                    
-  tree->Branch("slimmedJetLeadTrackPID",            &slimmedJetLeadTrackPID_);        
-  tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);             
-  tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_);            
-  tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_);            
-  tree->Branch("slimmedJetLepTrackPID",             &slimmedJetLepTrackPID_);             
-  tree->Branch("slimmedJetLepTrackPt",              &slimmedJetLepTrackPt_);              
-  tree->Branch("slimmedJetLepTrackEta",             &slimmedJetLepTrackEta_);             
-  tree->Branch("slimmedJetLepTrackPhi",             &slimmedJetLepTrackPhi_);             
-  tree->Branch("slimmedJetCHF",                     &slimmedJetCHF_);                     
-  tree->Branch("slimmedJetNHF",                     &slimmedJetNHF_);                     
-  tree->Branch("slimmedJetCEF",                     &slimmedJetCEF_);                     
-  tree->Branch("slimmedJetNEF",                     &slimmedJetNEF_);                     
-  tree->Branch("slimmedJetNCH",                     &slimmedJetNCH_);                     
-  tree->Branch("slimmedJetNNP",                     &slimmedJetNNP_);                     
-  tree->Branch("slimmedJetMUF",                     &slimmedJetMUF_);                     
-  tree->Branch("slimmedJetHFHAE",                   &slimmedJetHFHAE_);                   
-  tree->Branch("slimmedJetHFEME",                   &slimmedJetHFEME_);                   
-  tree->Branch("slimmedJetNConstituents",           &slimmedJetNConstituents_);           
-  tree->Branch("slimmedJetVtxPt",                   &slimmedJetVtxPt_);                   
-  tree->Branch("slimmedJetVtxMass",                 &slimmedJetVtxMass_);                 
-  tree->Branch("slimmedJetVtxNtrks",                &slimmedJetVtxNtrks_);                
-  tree->Branch("slimmedJetVtx3DVal",                &slimmedJetVtx3DVal_);                
-  tree->Branch("slimmedJetVtx3DSig",                &slimmedJetVtx3DSig_);                
-  tree->Branch("slimmedJetCSV2BJetTags",            &slimmedJetCSV2BJetTags_);            
+  tree->Branch("nSlimmedJets_",                     &nSlimmedJets__);          
+  tree->Branch("slimmedJetPt",                      &slimmedJetPt_);           
+  tree->Branch("slimmedJetEn",                      &slimmedJetEn_);           
+  tree->Branch("slimmedJetEta",                     &slimmedJetEta_);          
+  tree->Branch("slimmedJetPhi",                     &slimmedJetPhi_);          
+  tree->Branch("slimmedJetRawPt",                   &slimmedJetRawPt_);        
+  tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);        
+  tree->Branch("slimmedJetMt",                      &slimmedJetMt_);           
+  tree->Branch("slimmedJetArea",                    &slimmedJetArea_);         
+  tree->Branch("slimmedJetLeadTrackPID",            &slimmedJetLeadTrackPID_); 
+  tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);  
+  tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_); 
+  tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_); 
+  tree->Branch("slimmedJetLepTrackPID",             &slimmedJetLepTrackPID_);  
+  tree->Branch("slimmedJetLepTrackPt",              &slimmedJetLepTrackPt_);   
+  tree->Branch("slimmedJetLepTrackEta",             &slimmedJetLepTrackEta_);  
+  tree->Branch("slimmedJetLepTrackPhi",             &slimmedJetLepTrackPhi_);  
+  tree->Branch("slimmedJetCHF",                     &slimmedJetCHF_);          
+  tree->Branch("slimmedJetNHF",                     &slimmedJetNHF_);          
+  tree->Branch("slimmedJetCEF",                     &slimmedJetCEF_);          
+  tree->Branch("slimmedJetNEF",                     &slimmedJetNEF_);          
+  tree->Branch("slimmedJetNCH",                     &slimmedJetNCH_);          
+  tree->Branch("slimmedJetNNP",                     &slimmedJetNNP_);          
+  tree->Branch("slimmedJetMUF",                     &slimmedJetMUF_);          
+  tree->Branch("slimmedJetHFHAE",                   &slimmedJetHFHAE_);        
+  tree->Branch("slimmedJetHFEME",                   &slimmedJetHFEME_);        
+  tree->Branch("slimmedJetNConstituents",           &slimmedJetNConstituents_);
+  tree->Branch("slimmedJetVtxPt",                   &slimmedJetVtxPt_);        
+  tree->Branch("slimmedJetVtxMass",                 &slimmedJetVtxMass_);      
+  tree->Branch("slimmedJetVtxNtrks",                &slimmedJetVtxNtrks_);     
+  tree->Branch("slimmedJetVtx3DVal",                &slimmedJetVtx3DVal_);     
+  tree->Branch("slimmedJetVtx3DSig",                &slimmedJetVtx3DSig_);     
+  tree->Branch("slimmedJetCSV2BJetTags",            &slimmedJetCSV2BJetTags_); 
   tree->Branch("slimmedJetJetProbabilityBJetTags",  &slimmedJetJetProbabilityBJetTags_);  
   tree->Branch("slimmedJetpfCombinedMVAV2BJetTags", &slimmedJetpfCombinedMVAV2BJetTags_); 
-  tree->Branch("slimmedJetPartonID",                &slimmedJetPartonID_);                
-  tree->Branch("slimmedJetHadFlvr",                 &slimmedJetHadFlvr_);                 
-  tree->Branch("slimmedJetPFLooseId",               &slimmedJetPFLooseId_);               
-  tree->Branch("slimmedJetID",                      &slimmedJetID_);                      
-  tree->Branch("slimmedJetPUID",                    &slimmedJetPUID_);                    
-  tree->Branch("slimmedJetPUFullID",                &slimmedJetPUFullID_);                
-  tree->Branch("slimmedJetJECUnc",                  &slimmedJetJECUnc_);                  
-  tree->Branch("slimmedJetP4Smear",                 &slimmedJetP4Smear_);                 
-  tree->Branch("slimmedJetP4SmearUp",               &slimmedJetP4SmearUp_);               
-  tree->Branch("slimmedJetP4SmearDo",               &slimmedJetP4SmearDo_);               
-  tree->Branch("slimmedJetFiredTrgs",               &slimmedJetFiredTrgs_);               
+  tree->Branch("slimmedJetPartonID",                &slimmedJetPartonID_);   
+  tree->Branch("slimmedJetHadFlvr",                 &slimmedJetHadFlvr_);    
+  tree->Branch("slimmedJetPFLooseId",               &slimmedJetPFLooseId_);  
+  tree->Branch("slimmedJetID",                      &slimmedJetID_);         
+  tree->Branch("slimmedJetPUID",                    &slimmedJetPUID_);       
+  tree->Branch("slimmedJetPUFullID",                &slimmedJetPUFullID_);   
+  tree->Branch("slimmedJetJECUnc",                  &slimmedJetJECUnc_);     
+  tree->Branch("slimmedJetP4Smear",                 &slimmedJetP4Smear_);    
+  tree->Branch("slimmedJetP4SmearUp",               &slimmedJetP4SmearUp_);  
+  tree->Branch("slimmedJetP4SmearDo",               &slimmedJetP4SmearDo_);  
+  tree->Branch("slimmedJetFiredTrgs",               &slimmedJetFiredTrgs_);  
  
-  tree->Branch("slimmedJetAlphaD",                  &slimmedJetAlphaD_);                  
-  tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);               
-  tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);                   
-  tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);                
+  tree->Branch("slimmedJetAlphaD",                  &slimmedJetAlphaD_);     
+  tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);  
+  tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);      
+  tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);   
   //tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
   tree->Branch("slimmedJetMedianLog10IPSig",        &slimmedJetMedianLog10IPSig_);        
   tree->Branch("slimmedJetTrackAngle",              &slimmedJetTrackAngle_);              
@@ -1294,6 +1294,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // beamspot info, track impact parameter
   float dxy = fabs(tref->dxy(*beamspotHandle_));
   float dxyerr = tref->dxyError();
+  printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
   AODallTrackdxy   .push_back(dxy   ) ;
   AODallTrackdxyerr.push_back(dxyerr) ;
    
@@ -1318,6 +1319,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   printf("  AODallTrackdxy            %i \n",  (int)AODallTrackdxy          .size() ); 
   printf("  AODallTrackdxyerr         %i \n",  (int)AODallTrackdxyerr       .size() ); 
  }
+
 
  // AOD Calo Jets -------------------------------------------
  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
@@ -1710,6 +1712,8 @@ void lldjNtuple::calculateIP(vector<int> jetTrackIDs, vector<float> &jetIPs, vec
 
     tsumIP    += trackdxy;
     tsumIPSig += trackIPSig;
+
+    printf(" aa trackdyx: %0.4f %0.4f \n", trackdxy, trackIPSig);
 
     jetIPs.push_back(trackdxy);
     jetIPSigs.push_back(trackIPSig);
