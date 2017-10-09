@@ -1,7 +1,7 @@
 #voms-proxy-init --voms cms --valid 100:00
 
 # do we submit or just generate submit scripts
-dosubmit=true
+dosubmit=false
 
 # start the timer
 START=$(date +%s);
@@ -13,8 +13,13 @@ mkdir -p ${thesubdir}
 printf "Making submit configurations in\n ${thesubdir}\n\n"
 
 # copy necessary files into submit directory
+<<<<<<< HEAD
+cp "${subdir}/run_data_80X.py"                                        ${thesubdir}
+cp "${subdir}/run_mc_80X.py"                                          ${thesubdir}
+=======
 cp "${subdir}/run_data_80X.py" ${thesubdir}
 cp "${subdir}/run_mc_80X.py"   ${thesubdir}
+>>>>>>> upstream/master
 
 printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X.py" 
 printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80X.py"   
@@ -27,13 +32,13 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names to run over
 samples=( \
-  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
-  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
   "ggZH_HSSbbbb_MS_40_ctauS_10000" \
   "ggZH_HSSbbbb_MS_40_ctauS_1000"  \
   "ggZH_HSSbbbb_MS_40_ctauS_100"   \
   "ggZH_HSSbbbb_MS_40_ctauS_10"    \
   "ggZH_HSSbbbb_MS_40_ctauS_1"     \
+  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
+  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
 )
 
 #  "Data_SingleMu_H_3"    \

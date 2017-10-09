@@ -17,6 +17,7 @@
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
+//#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 //#include "DataFormats/TrackReco/interface/TrackBase.h"
 //#include "DataFormats/VertexReco/interface/Vertex.h"
 //#include "TrackingTools/Records/interface/TransientTrackRecord.h"
@@ -111,7 +112,7 @@ vector<float>  slimmedJetLog10IPSig_;
 vector<float>  slimmedJetMedianLog10IPSig_;
 vector<float>  slimmedJetTrackAngle_;
 vector<float>  slimmedJetLogTrackAngle_;
-vector<float>  slimmedJetMedianLogTrackAngle_;
+vector<float>  slimmedJetMedianLog10TrackAngle_;
 vector<float>  slimmedJetTotalTrackAngle_;
 vector<float>  slimmedJetDauVertex_x_;
 vector<float>  slimmedJetDauVertex_y_;
@@ -167,11 +168,12 @@ vector<float>  AODCaloJetBeta2_;
 
 vector<float>  AODCaloJetSumIP_;
 vector<float>  AODCaloJetSumIPSig_;
-vector<float>  AODCaloJetLog10IPSig_;
+//vector<float>  AODCaloJetLog10IPSig_;
+vector<float>  AODCaloJetMedianIP_;
 vector<float>  AODCaloJetMedianLog10IPSig_;
 vector<float>  AODCaloJetTrackAngle_;
 vector<float>  AODCaloJetLogTrackAngle_;
-vector<float>  AODCaloJetMedianLogTrackAngle_;
+vector<float>  AODCaloJetMedianLog10TrackAngle_;
 vector<float>  AODCaloJetTotalTrackAngle_;
 
 // PF Jets
@@ -190,7 +192,7 @@ vector<float>  AODPFJetSumIPSig_;
 vector<float>  AODPFJetMedianLog10IPSig_;
 vector<float>  AODPFJetTrackAngle_;
 vector<float>  AODPFJetLogTrackAngle_;
-vector<float>  AODPFJetMedianLogTrackAngle_;
+vector<float>  AODPFJetMedianLog10TrackAngle_;
 vector<float>  AODPFJetTotalTrackAngle_;
 
 // PFchs Jets
@@ -209,7 +211,7 @@ vector<float>  AODPFchsJetSumIPSig_;
 vector<float>  AODPFchsJetMedianLog10IPSig_;
 vector<float>  AODPFchsJetTrackAngle_;
 vector<float>  AODPFchsJetLogTrackAngle_;
-vector<float>  AODPFchsJetMedianLogTrackAngle_;
+vector<float>  AODPFchsJetMedianLog10TrackAngle_;
 vector<float>  AODPFchsJetTotalTrackAngle_;
 
 // temporary variables
@@ -227,8 +229,8 @@ vector<float>    AODallTrackAngle;
 
 vector<int>      AODwhichVertexByTrack;
 
-vector<int>      AODallTrackdxy;
-vector<int>      AODallTrackdxyerr;
+vector<float>      AODallTrackdxy;
+vector<float>      AODallTrackdxyerr;
 
 // set parameters for tracks to be accepted
 const float minTrackPt_ = 1.0;
@@ -265,62 +267,62 @@ const float maxDRtrackJet_ = 0.4;
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
-  tree->Branch("nSlimmedJets_",                       &nSlimmedJets__);                       
-  tree->Branch("slimmedJetPt",                      &slimmedJetPt_);                      
-  tree->Branch("slimmedJetEn",                      &slimmedJetEn_);                      
-  tree->Branch("slimmedJetEta",                     &slimmedJetEta_);                     
-  tree->Branch("slimmedJetPhi",                     &slimmedJetPhi_);                     
-  tree->Branch("slimmedJetRawPt",                   &slimmedJetRawPt_);                   
-  tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);                   
-  tree->Branch("slimmedJetMt",                      &slimmedJetMt_);                      
-  tree->Branch("slimmedJetArea",                    &slimmedJetArea_);                    
-  tree->Branch("slimmedJetLeadTrackPID",            &slimmedJetLeadTrackPID_);        
-  tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);             
-  tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_);            
-  tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_);            
-  tree->Branch("slimmedJetLepTrackPID",             &slimmedJetLepTrackPID_);             
-  tree->Branch("slimmedJetLepTrackPt",              &slimmedJetLepTrackPt_);              
-  tree->Branch("slimmedJetLepTrackEta",             &slimmedJetLepTrackEta_);             
-  tree->Branch("slimmedJetLepTrackPhi",             &slimmedJetLepTrackPhi_);             
-  tree->Branch("slimmedJetCHF",                     &slimmedJetCHF_);                     
-  tree->Branch("slimmedJetNHF",                     &slimmedJetNHF_);                     
-  tree->Branch("slimmedJetCEF",                     &slimmedJetCEF_);                     
-  tree->Branch("slimmedJetNEF",                     &slimmedJetNEF_);                     
-  tree->Branch("slimmedJetNCH",                     &slimmedJetNCH_);                     
-  tree->Branch("slimmedJetNNP",                     &slimmedJetNNP_);                     
-  tree->Branch("slimmedJetMUF",                     &slimmedJetMUF_);                     
-  tree->Branch("slimmedJetHFHAE",                   &slimmedJetHFHAE_);                   
-  tree->Branch("slimmedJetHFEME",                   &slimmedJetHFEME_);                   
-  tree->Branch("slimmedJetNConstituents",           &slimmedJetNConstituents_);           
-  tree->Branch("slimmedJetVtxPt",                   &slimmedJetVtxPt_);                   
-  tree->Branch("slimmedJetVtxMass",                 &slimmedJetVtxMass_);                 
-  tree->Branch("slimmedJetVtxNtrks",                &slimmedJetVtxNtrks_);                
-  tree->Branch("slimmedJetVtx3DVal",                &slimmedJetVtx3DVal_);                
-  tree->Branch("slimmedJetVtx3DSig",                &slimmedJetVtx3DSig_);                
-  tree->Branch("slimmedJetCSV2BJetTags",            &slimmedJetCSV2BJetTags_);            
+  tree->Branch("nSlimmedJets_",                     &nSlimmedJets__);          
+  tree->Branch("slimmedJetPt",                      &slimmedJetPt_);           
+  tree->Branch("slimmedJetEn",                      &slimmedJetEn_);           
+  tree->Branch("slimmedJetEta",                     &slimmedJetEta_);          
+  tree->Branch("slimmedJetPhi",                     &slimmedJetPhi_);          
+  tree->Branch("slimmedJetRawPt",                   &slimmedJetRawPt_);        
+  tree->Branch("slimmedJetRawEn",                   &slimmedJetRawEn_);        
+  tree->Branch("slimmedJetMt",                      &slimmedJetMt_);           
+  tree->Branch("slimmedJetArea",                    &slimmedJetArea_);         
+  tree->Branch("slimmedJetLeadTrackPID",            &slimmedJetLeadTrackPID_); 
+  tree->Branch("slimmedJetLeadTrackPt",             &slimmedJetLeadTrackPt_);  
+  tree->Branch("slimmedJetLeadTrackEta",            &slimmedJetLeadTrackEta_); 
+  tree->Branch("slimmedJetLeadTrackPhi",            &slimmedJetLeadTrackPhi_); 
+  tree->Branch("slimmedJetLepTrackPID",             &slimmedJetLepTrackPID_);  
+  tree->Branch("slimmedJetLepTrackPt",              &slimmedJetLepTrackPt_);   
+  tree->Branch("slimmedJetLepTrackEta",             &slimmedJetLepTrackEta_);  
+  tree->Branch("slimmedJetLepTrackPhi",             &slimmedJetLepTrackPhi_);  
+  tree->Branch("slimmedJetCHF",                     &slimmedJetCHF_);          
+  tree->Branch("slimmedJetNHF",                     &slimmedJetNHF_);          
+  tree->Branch("slimmedJetCEF",                     &slimmedJetCEF_);          
+  tree->Branch("slimmedJetNEF",                     &slimmedJetNEF_);          
+  tree->Branch("slimmedJetNCH",                     &slimmedJetNCH_);          
+  tree->Branch("slimmedJetNNP",                     &slimmedJetNNP_);          
+  tree->Branch("slimmedJetMUF",                     &slimmedJetMUF_);          
+  tree->Branch("slimmedJetHFHAE",                   &slimmedJetHFHAE_);        
+  tree->Branch("slimmedJetHFEME",                   &slimmedJetHFEME_);        
+  tree->Branch("slimmedJetNConstituents",           &slimmedJetNConstituents_);
+  tree->Branch("slimmedJetVtxPt",                   &slimmedJetVtxPt_);        
+  tree->Branch("slimmedJetVtxMass",                 &slimmedJetVtxMass_);      
+  tree->Branch("slimmedJetVtxNtrks",                &slimmedJetVtxNtrks_);     
+  tree->Branch("slimmedJetVtx3DVal",                &slimmedJetVtx3DVal_);     
+  tree->Branch("slimmedJetVtx3DSig",                &slimmedJetVtx3DSig_);     
+  tree->Branch("slimmedJetCSV2BJetTags",            &slimmedJetCSV2BJetTags_); 
   tree->Branch("slimmedJetJetProbabilityBJetTags",  &slimmedJetJetProbabilityBJetTags_);  
   tree->Branch("slimmedJetpfCombinedMVAV2BJetTags", &slimmedJetpfCombinedMVAV2BJetTags_); 
-  tree->Branch("slimmedJetPartonID",                &slimmedJetPartonID_);                
-  tree->Branch("slimmedJetHadFlvr",                 &slimmedJetHadFlvr_);                 
-  tree->Branch("slimmedJetPFLooseId",               &slimmedJetPFLooseId_);               
-  tree->Branch("slimmedJetID",                      &slimmedJetID_);                      
-  tree->Branch("slimmedJetPUID",                    &slimmedJetPUID_);                    
-  tree->Branch("slimmedJetPUFullID",                &slimmedJetPUFullID_);                
-  tree->Branch("slimmedJetJECUnc",                  &slimmedJetJECUnc_);                  
-  tree->Branch("slimmedJetP4Smear",                 &slimmedJetP4Smear_);                 
-  tree->Branch("slimmedJetP4SmearUp",               &slimmedJetP4SmearUp_);               
-  tree->Branch("slimmedJetP4SmearDo",               &slimmedJetP4SmearDo_);               
-  tree->Branch("slimmedJetFiredTrgs",               &slimmedJetFiredTrgs_);               
+  tree->Branch("slimmedJetPartonID",                &slimmedJetPartonID_);   
+  tree->Branch("slimmedJetHadFlvr",                 &slimmedJetHadFlvr_);    
+  tree->Branch("slimmedJetPFLooseId",               &slimmedJetPFLooseId_);  
+  tree->Branch("slimmedJetID",                      &slimmedJetID_);         
+  tree->Branch("slimmedJetPUID",                    &slimmedJetPUID_);       
+  tree->Branch("slimmedJetPUFullID",                &slimmedJetPUFullID_);   
+  tree->Branch("slimmedJetJECUnc",                  &slimmedJetJECUnc_);     
+  tree->Branch("slimmedJetP4Smear",                 &slimmedJetP4Smear_);    
+  tree->Branch("slimmedJetP4SmearUp",               &slimmedJetP4SmearUp_);  
+  tree->Branch("slimmedJetP4SmearDo",               &slimmedJetP4SmearDo_);  
+  tree->Branch("slimmedJetFiredTrgs",               &slimmedJetFiredTrgs_);  
  
-  tree->Branch("slimmedJetAlphaD",                  &slimmedJetAlphaD_);                  
-  tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);               
-  tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);                   
-  tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);                
-  tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
+  tree->Branch("slimmedJetAlphaD",                  &slimmedJetAlphaD_);     
+  tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);  
+  tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);      
+  tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);   
+  //tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
   tree->Branch("slimmedJetMedianLog10IPSig",        &slimmedJetMedianLog10IPSig_);        
   tree->Branch("slimmedJetTrackAngle",              &slimmedJetTrackAngle_);              
   tree->Branch("slimmedJetLogTrackAngle",           &slimmedJetLogTrackAngle_);           
-  tree->Branch("slimmedJetMedianLogTrackAngle",     &slimmedJetMedianLogTrackAngle_);     
+  tree->Branch("slimmedJetMedianLog10TrackAngle",     &slimmedJetMedianLog10TrackAngle_);     
   tree->Branch("slimmedJetTotalTrackAngle",         &slimmedJetTotalTrackAngle_);         
   tree->Branch("slimmedJetDauVertex_x",             &slimmedJetDauVertex_x_);             
   tree->Branch("slimmedJetDauVertex_y",             &slimmedJetDauVertex_y_);             
@@ -371,10 +373,11 @@ void lldjNtuple::branchesJets(TTree* tree) {
 
   tree->Branch("AODCaloJetSumIP"               , &AODCaloJetSumIP_);
   tree->Branch("AODCaloJetSumIPSig"            , &AODCaloJetSumIPSig_);
+  tree->Branch("AODCaloJetMedianIP"            , &AODCaloJetMedianIP_);
   tree->Branch("AODCaloJetMedianLog10IPSig"    , &AODCaloJetMedianLog10IPSig_);
   tree->Branch("AODCaloJetTrackAngle"          , &AODCaloJetTrackAngle_);
   tree->Branch("AODCaloJetLogTrackAngle"       , &AODCaloJetLogTrackAngle_);
-  tree->Branch("AODCaloJetMedianLogTrackAngle" , &AODCaloJetMedianLogTrackAngle_);
+  tree->Branch("AODCaloJetMedianLog10TrackAngle" , &AODCaloJetMedianLog10TrackAngle_);
   tree->Branch("AODCaloJetTotalTrackAngle"     , &AODCaloJetTotalTrackAngle_);
                                                  
   tree->Branch("AODnPFJet"                     , &AODnPFJet_);
@@ -392,7 +395,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFJetMedianLog10IPSig"      , &AODPFJetMedianLog10IPSig_);
   tree->Branch("AODPFJetTrackAngle"            , &AODPFJetTrackAngle_);
   tree->Branch("AODPFJetLogTrackAngle"         , &AODPFJetLogTrackAngle_);
-  tree->Branch("AODPFJetMedianLogTrackAngle"   , &AODPFJetMedianLogTrackAngle_);
+  tree->Branch("AODPFJetMedianLog10TrackAngle"   , &AODPFJetMedianLog10TrackAngle_);
   tree->Branch("AODPFJetTotalTrackAngle"       , &AODPFJetTotalTrackAngle_);
                                                 
   tree->Branch("AODnPFchsJet"                  , &AODnPFchsJet_);
@@ -410,7 +413,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFchsJetMedianLog10IPSig"   , &AODPFchsJetMedianLog10IPSig_);
   tree->Branch("AODPFchsJetTrackAngle"         , &AODPFchsJetTrackAngle_);
   tree->Branch("AODPFchsJetLogTrackAngle"      , &AODPFchsJetLogTrackAngle_);
-  tree->Branch("AODPFchsJetMedianLogTrackAngle", &AODPFchsJetMedianLogTrackAngle_);
+  tree->Branch("AODPFchsJetMedianLog10TrackAngle", &AODPFchsJetMedianLog10TrackAngle_);
   tree->Branch("AODPFchsJetTotalTrackAngle"    , &AODPFchsJetTotalTrackAngle_);
   
 }
@@ -471,11 +474,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  slimmedJetAlphaMaxD_.clear();
  slimmedJetSumIP_.clear();
  slimmedJetSumIPSig_.clear();
- slimmedJetLog10IPSig_.clear();
+ //slimmedJetLog10IPSig_.clear();
  slimmedJetMedianLog10IPSig_.clear();
  slimmedJetTrackAngle_.clear();
  slimmedJetLogTrackAngle_.clear();
- slimmedJetMedianLogTrackAngle_.clear();
+ slimmedJetMedianLog10TrackAngle_.clear();
  slimmedJetTotalTrackAngle_.clear();
  slimmedJetDauVertex_x_.clear();
  slimmedJetDauVertex_y_.clear();
@@ -525,10 +528,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  AODCaloJetSumIP_.clear();
  AODCaloJetSumIPSig_.clear();
+ AODCaloJetMedianIP_.clear();
  AODCaloJetMedianLog10IPSig_.clear();
  AODCaloJetTrackAngle_.clear();
  AODCaloJetLogTrackAngle_.clear();
- AODCaloJetMedianLogTrackAngle_.clear();
+ AODCaloJetMedianLog10TrackAngle_.clear();
  AODCaloJetTotalTrackAngle_.clear();
 
  AODnPFJet_=0;
@@ -546,7 +550,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFJetMedianLog10IPSig_.clear();
  AODPFJetTrackAngle_.clear();
  AODPFJetLogTrackAngle_.clear();
- AODPFJetMedianLogTrackAngle_.clear();
+ AODPFJetMedianLog10TrackAngle_.clear();
  AODPFJetTotalTrackAngle_.clear();
 
  AODnPFchsJet_=0;
@@ -564,7 +568,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetMedianLog10IPSig_.clear();
  AODPFchsJetTrackAngle_.clear();
  AODPFchsJetLogTrackAngle_.clear();
- AODPFchsJetMedianLogTrackAngle_.clear();
+ AODPFchsJetMedianLog10TrackAngle_.clear();
  AODPFchsJetTotalTrackAngle_.clear();
 
  // get slimmedJets
@@ -1048,12 +1052,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    {
     MedianLogTrackAngle = 0.5*( slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()/2) -1]
                               + slimmedJetLogTrackAngle_[ slimmedJetLogTrackAngle_.size()/2    ]);
-    slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    slimmedJetMedianLog10TrackAngle_.push_back(MedianLogTrackAngle);
    }
    else
    {
     MedianLogTrackAngle =       slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()-1)/2];
-    slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    slimmedJetMedianLog10TrackAngle_.push_back(MedianLogTrackAngle);
    }    
 
    //slimmedJetMedianLog10IPSig_.push_back(MedianLog10IPSig);
@@ -1185,200 +1189,238 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  whichVertex_.clear();
  whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
 
+ // clear master track vectors before starting track loop
+ AODallTrackPositions       .clear(); 
+ AODallTrackPt              .clear(); 
+ AODallTrackEta             .clear(); 
+ AODallTrackPhi             .clear(); 
+ AODallTrackIFSPt           .clear(); 
+ AODallTracknMissingInner   .clear(); 
+ AODallTracknMissingOuter   .clear(); 
+ AODallTrackAngle           .clear(); 
+ AODwhichVertexByTrack      .clear(); 
+ AODallTrackdxy             .clear(); 
+ AODallTrackdxyerr          .clear(); 
+
  for(int j = 0; j < (int)AODTrackHandle->size(); j++){
 
-    // get track j using the AOD track handle 
-    reco::TrackBaseRef tref(AODTrackHandle,j);
-    // make transient track (unfolding effects of B field ?)
-    reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
+  // get track j using the AOD track handle 
+  reco::TrackBaseRef tref(AODTrackHandle,j);
+  // make transient track (unfolding effects of B field ?)
+  reco::TransientTrack tt(AODTrackHandle->at(j),magneticField_);
 
-    if(!tt.isValid())continue;
+  if(!tt.isValid())continue;
 
-    // track pt first
-    float trackpt  = tref->pt();
+  // track pt first
+  float trackpt  = tref->pt();
 
-    // make selections on track
-    if (trackpt < minTrackPt_) continue;  // minimum pT for track
-    if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
+  // make selections on track
+  // for alphaMax, track angle we use ttIFSpt, not tref->pt()
+  //   ---------!!!!--------------
+  if (trackpt < minTrackPt_) continue;  // minimum pT for track
+  if (!tref->quality(reco::TrackBase::highPurity)) continue; // track must be highPurity
 
-    // find where track (no B field) would hit outer tracker
-    FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
-    TrajectoryStateOnSurface outer = stateOnTracker(fts);
-    if(!outer.isValid()) continue;
-    GlobalPoint outerPos = outer.globalPosition();
-    TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
+  // find where track (no B field) would hit outer tracker
+  FreeTrajectoryState fts = trajectoryStateTransform::initialFreeState(AODTrackHandle->at(j),magneticField_);
+  TrajectoryStateOnSurface outer = stateOnTracker(fts);
+  if(!outer.isValid()) continue;
+  GlobalPoint outerPos = outer.globalPosition();
+  TVector3 trackPos(outerPos.x(),outerPos.y(),outerPos.z());
 
-    // push back track position to save in master vector
-    AODallTrackPositions.push_back(trackPos);
+  // push back track position to save in master vector
+  AODallTrackPositions.push_back(trackPos);
 
+  // track basics (trackpt above)
+  float tracketa = tref->eta();
+  float trackphi = tref->phi();
+  float ttIFSpt  = tt.initialFreeState().momentum().transverse();
+  AODallTrackPt .push_back(trackpt );  
+  AODallTrackEta.push_back(tracketa);
+  AODallTrackPhi.push_back(trackphi);
+  AODallTrackIFSPt.push_back(ttIFSpt);
 
-    // track basics (trackpt above)
-    float tracketa = tref->eta();
-    float trackphi = tref->phi();
-    float ttIFSpt  = tt.initialFreeState().momentum().transverse();
-    AODallTrackPt .push_back(trackpt );  
-    AODallTrackEta.push_back(tracketa);
-    AODallTrackPhi.push_back(trackphi);
-    AODallTrackIFSPt.push_back(ttIFSpt);
-
-    /// Find best vertex associated with this track
-    // we are on track j
-    // loop over vertices
-    // reassign index bestk if trackWeight is new max
-    float maxWeight = 0; 
-    int bestk = -1;
-    for(int k = 0; k < (int)AODVertexHandle->size();k++){        
-      if(AODVertexHandle->at(k).trackWeight(tref) > maxWeight){  
-        maxWeight = AODVertexHandle->at(k).trackWeight(tref);    
-        bestk = k;                                               
-      }                                                          
-    }                                                            
-    AODwhichVertexByTrack.push_back(bestk); 
+  /// Find best vertex associated with this track
+  // we are on track j
+  // loop over vertices
+  // reassign index bestk if trackWeight is new max
+  float maxWeight = 0; 
+  int bestk = -1;
+  for(int k = 0; k < (int)AODVertexHandle->size();k++){        
+   if(AODVertexHandle->at(k).trackWeight(tref) > maxWeight){  
+    maxWeight = AODVertexHandle->at(k).trackWeight(tref);    
+    bestk = k;                                               
+   }                                                          
+  }                                                            
+  AODwhichVertexByTrack.push_back(bestk); 
   
-    // Number of missing tracker hits 
-    nMissingInner = tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
-    nMissingOuter = tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_OUTER_HITS);
-    AODallTracknMissingInner.push_back(nMissingInner) ;
-    AODallTracknMissingOuter.push_back(nMissingOuter) ;
+  // Number of missing tracker hits 
+  nMissingInner = tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_INNER_HITS);
+  nMissingOuter = tref->hitPattern().numberOfLostTrackerHits(reco::HitPattern::MISSING_OUTER_HITS);
+  AODallTracknMissingInner.push_back(nMissingInner) ;
+  AODallTracknMissingOuter.push_back(nMissingOuter) ;
 
-    /// For track angle
-    // get track trajectory info
-    static GetTrackTrajInfo getTrackTrajInfo; 
-    vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
-    if ( trajInfo.size() > 0 && trajInfo[0].valid) {
-     // get inner tracker hit from trajectory state 
-     const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
+  /// For track angle
+  // get track trajectory info
+  static GetTrackTrajInfo getTrackTrajInfo; 
+  vector<GetTrackTrajInfo::Result> trajInfo = getTrackTrajInfo.analyze(es, (*tref));
+  if ( trajInfo.size() > 0 && trajInfo[0].valid) {
+   // get inner tracker hit from trajectory state 
+   const TrajectoryStateOnSurface& tsosInnerHit = trajInfo[0].detTSOS;
 
-     //  here's the track angle
-     // find beamspot x,y coordinates
-     const reco::BeamSpot& pat_beamspot = (*beamspotHandle_);
-     TVector2 bmspot(pat_beamspot.x0(),pat_beamspot.y0());
-     // find track trajectory state on surface inner hit
-     GlobalPoint  innerPos = tsosInnerHit.globalPosition();
-     GlobalVector innerMom = tsosInnerHit.globalMomentum();
-     
-     // calculate the difference between inner hit and beamspot
-     TVector2 sv(innerPos.x(),innerPos.y());
-     TVector2 diff = (sv-bmspot);
-     //cout<<"bs x: "<<bmspot.X()<<" y: "<<bmspot.Y()<<endl;
-     //cout<<" sv x: "<<sv.X()<<" y: "<<sv.Y()<<endl;
-     //cout<<" diff phi: "<<diff.Phi()<<endl;
-     TVector2 momentum(innerMom.x(),innerMom.y());
-     //cout<<" p x: "<<momentum.X()<<" y: "<<momentum.Y()<<endl;
-     //cout<<" p phi: "<<momentum.Phi()<<endl;
-     //cout<<" dPhi: "<<diff.DeltaPhi(momentum)<<endl;
-     float ta = fabs( diff.DeltaPhi(momentum) ) ;
+   //  here's the track angle
+   // find beamspot x,y coordinates
+   const reco::BeamSpot& pat_beamspot = (*beamspotHandle_);
+   TVector2 bmspot(pat_beamspot.x0(),pat_beamspot.y0());
+   // find track trajectory state on surface inner hit
+   GlobalPoint  innerPos = tsosInnerHit.globalPosition();
+   GlobalVector innerMom = tsosInnerHit.globalMomentum();
+   
+   // calculate the difference between inner hit and beamspot
+   TVector2 sv(innerPos.x(),innerPos.y());
+   TVector2 diff = (sv-bmspot);
+   //cout<<"bs x: "<<bmspot.X()<<" y: "<<bmspot.Y()<<endl;
+   //cout<<" sv x: "<<sv.X()<<" y: "<<sv.Y()<<endl;
+   //cout<<" diff phi: "<<diff.Phi()<<endl;
+   TVector2 momentum(innerMom.x(),innerMom.y());
+   //cout<<" p x: "<<momentum.X()<<" y: "<<momentum.Y()<<endl;
+   //cout<<" p phi: "<<momentum.Phi()<<endl;
+   //cout<<" dPhi: "<<diff.DeltaPhi(momentum)<<endl;
+   float ta = fabs( diff.DeltaPhi(momentum) ) ;
 
-     AODallTrackAngle.push_back(ta);
-    }
-    else{ AODallTrackAngle.push_back(0); }
+   AODallTrackAngle.push_back(ta);
+  }
+  else{ AODallTrackAngle.push_back(0); }
 
-    // beamspot info, track impact parameter
-    float dxy = fabs(tref->dxy(*beamspotHandle_));
-    float dxyerr = tref->dxyError();
-    AODallTrackdxy   .push_back(dxy   ) ;
-    AODallTrackdxyerr.push_back(dxyerr) ;
+  // beamspot info, track impact parameter
+  float dxy = fabs(tref->dxy(*beamspotHandle_));
+  float dxyerr = tref->dxyError();
+  printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
+  AODallTrackdxy   .push_back(dxy   ) ;
+  AODallTrackdxyerr.push_back(dxyerr) ;
    
  }//end track loop
 
-
- //es.get<TransientTrackRecord>().get("TransientTrackBuilder",theBuilder_);
- 
  //Debug printing
  if(verbose_AOD){
-   for(int j = 0; j < (int)AODTrackHandle->size(); j++){
-     reco::TrackBaseRef tref(AODTrackHandle,j);
-     printf("AOD track pt eta phi: %f %f %f\n",tref->pt(),tref->eta(),tref->phi());
-   }
- }
+  for(int j = 0; j < (int)AODTrackHandle->size(); j++){
+   reco::TrackBaseRef tref(AODTrackHandle,j);
+   printf("AOD track pt eta phi: %f %f %f\n",tref->pt(),tref->eta(),tref->phi());
+  }
  
-   
+  printf("  AODallTrackPositions      %i \n",  (int)AODallTrackPositions    .size() ); 
+  printf("  AODallTrackPt             %i \n",  (int)AODallTrackPt           .size() ); 
+  printf("  AODallTrackEta            %i \n",  (int)AODallTrackEta          .size() ); 
+  printf("  AODallTrackPhi            %i \n",  (int)AODallTrackPhi          .size() ); 
+  printf("  AODallTrackIFSPt          %i \n",  (int)AODallTrackIFSPt        .size() ); 
+  printf("  AODallTracknMissingInner  %i \n",  (int)AODallTracknMissingInner.size() ); 
+  printf("  AODallTracknMissingOuter  %i \n",  (int)AODallTracknMissingOuter.size() ); 
+  printf("  AODallTrackAngle          %i \n",  (int)AODallTrackAngle        .size() ); 
+  printf("  AODwhichVertexByTrack     %i \n",  (int)AODwhichVertexByTrack   .size() ); 
+  printf("  AODallTrackdxy            %i \n",  (int)AODallTrackdxy          .size() ); 
+  printf("  AODallTrackdxyerr         %i \n",  (int)AODallTrackdxyerr       .size() ); 
+ }
+
+
  // AOD Calo Jets -------------------------------------------
  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
+  if(verbose_AOD) printf("Calo %f \n",iJet->pt());
+  
+  float jetpt  = iJet->pt();
+  float jeteta = iJet->eta();
+  float jetphi = iJet->phi();
 
-   if(verbose_AOD) printf("Calo %f \n",iJet->pt());
-   
-   float jetpt  = iJet->pt();
-   float jeteta = iJet->eta();
-   float jetphi = iJet->phi();
+  // ID and jet selections
+  bool passID = false;
+  if( iJet->emEnergyFraction()>=0.0
+   && iJet->emEnergyFraction()<=0.9
+   && iJet->energyFractionHadronic()>=0.0
+   && iJet->energyFractionHadronic()<=0.9)  passID = true; 
 
-   // ID and jet selections
-   bool passID = false;
-   if( iJet->emEnergyFraction()>=0.0
-    && iJet->emEnergyFraction()<=0.9
-    && iJet->energyFractionHadronic()>=0.0
-    && iJet->energyFractionHadronic()<=0.9)  passID = true; 
+  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
 
-   if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
+  // caloJetTrackIDs is a vector of ints where each int is the 
+  // index of a track passing deltaR requirement to this jet
+  // out of the master track record of tracks passing basic selections
+  vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
 
-   // initialize variables
-   float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
-   float totalTrackAngle, totalTrackAnglePt = 0.;
-   float sumIP, sumIPSig, medSumIPLog10Sig = 0.;
+  if(verbose_AOD){
+   printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
+   for( int i=0; i<(int)AODallTrackPositions.size(); i++){
+    printf("  allTrack %i %0.1f %0.1f %0.1f \n",i,
+     AODallTrackPt [i] ,
+     AODallTrackEta[i] ,
+     AODallTrackPhi[i] );
 
-   // caloJetTrackIDs is a vector of ints where each int is the 
-   // index of a track passing deltaR requirement to this jet
-   // out of the master track record of tracks passing basic selections
-   vector<int> caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
-
-   if(verbose_AOD){
-    printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
-    for( int i=0; i<(int)AODallTrackPositions.size(); i++){
-     printf("  allTrack %i %0.1f %0.1f %0.1f \n",i,
-      AODallTrackPt [i] ,
-      AODallTrackEta[i] ,
-      AODallTrackPhi[i] );
-
-    }
-    for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
-     printf(" Track %i at %i \n",i,caloJetTrackIDs[i]);
-     printf("  caloTrack %i=%i %0.1f %0.1f %0.1f \n",i,
-      caloJetTrackIDs[i],
-      AODallTrackPt [caloJetTrackIDs[i]] ,
-      AODallTrackEta[caloJetTrackIDs[i]] ,
-      AODallTrackPhi[caloJetTrackIDs[i]] );
-    }
    }
+   for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
+    printf(" Track %i at %i \n",i,caloJetTrackIDs[i]);
+    printf("  caloTrack %i=%i %0.1f %0.1f %0.1f \n",i,
+     caloJetTrackIDs[i],
+     AODallTrackPt [caloJetTrackIDs[i]] ,
+     AODallTrackEta[caloJetTrackIDs[i]] ,
+     AODallTrackPhi[caloJetTrackIDs[i]] );
+   }
+  }
 
-   // do calculations
-   calculateAlphaMax(caloJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-   calculateTrackAngle(caloJetTrackIDs, totalTrackAngle, totalTrackAnglePt);
-   calculateIP(caloJetTrackIDs, sumIP, sumIPSig);
+  // initialize variables
+  float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
+  float totalTrackAngle, totalTrackAnglePt = 0.;
+  float sumIP, sumIPSig = 0.;
+  vector<float> caloJetTrackAngles; 
+  caloJetTrackAngles.clear();
+  vector<float> caloJetIPs; 
+  caloJetIPs.clear();
+  vector<float> caloJetIPSigs; 
+  caloJetIPSigs.clear();
 
-   ////////////////////////
-   // Fill tree
-   /////////////////////////
-   AODnCaloJet_++;
-   
-   //Pt, Eta, Phi
-   AODCaloJetPt_.push_back(jetpt);
-   AODCaloJetEta_.push_back(jeteta);
-   AODCaloJetPhi_.push_back(jetphi);
-   
-   //AlphaMax-type variables
-   AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
-   AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
-   AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
-   AODCaloJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
-   AODCaloJetBeta_           .push_back(beta          ) ; 
-   AODCaloJetBeta2_          .push_back(beta2         ) ; 
+  // do calculations
+  calculateAlphaMax(caloJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+  calculateTrackAngle(caloJetTrackIDs, caloJetTrackAngles, totalTrackAngle, totalTrackAnglePt);
+  calculateIP(caloJetTrackIDs, caloJetIPs, caloJetIPSigs, sumIP, sumIPSig);
 
-   //Totals
-   AODCaloJetSumIP_.push_back(sumIP);
-   AODCaloJetSumIPSig_.push_back(sumIPSig);
-   AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
+  // find medians
+  float medianTrackAngle;
+  medianTrackAngle = findMedian(caloJetTrackAngles);
+  float medianIP;
+  medianIP = findMedian(caloJetIPs);
+  float medianIPSig;
+  medianIPSig = findMedian(caloJetIPSigs);
 
-   /////Medians
-   ///AODCaloJetMedianLog10IPSig_   .push_back(tracksIPLog10Sig_median);
-   ///AODCaloJetMedianLogTrackAngle_.push_back(trackAngles_median);
+  ////////////////////////
+  // Fill tree
+  /////////////////////////
+  AODnCaloJet_++;
+  
+  //Pt, Eta, Phi
+  AODCaloJetPt_.push_back(jetpt);
+  AODCaloJetEta_.push_back(jeteta);
+  AODCaloJetPhi_.push_back(jetphi);
+  
+  //AlphaMax-type variables
+  AODCaloJetAlphaMax_       .push_back(alphaMax      ) ; 
+  AODCaloJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+  AODCaloJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+  AODCaloJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+  AODCaloJetBeta_           .push_back(beta          ) ; 
+  AODCaloJetBeta2_          .push_back(beta2         ) ; 
 
-   //Vectors currently not saved
-   //AODCaloJetLog10IPSig_; //tracksIPLogSig;
-   //AODCaloJetLogTrackAngle_; //trackAngles; 
-   //AODCaloJetTrackAngle_;
-   
-   //Other variables to do: refit vertex, avf vertex, hit info, boost variables
+  //Totals
+  AODCaloJetSumIP_.push_back(sumIP);
+  AODCaloJetSumIPSig_.push_back(sumIPSig);
+
+  AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+  /////Medians
+  AODCaloJetMedianIP_             .push_back(medianIP);
+  AODCaloJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
+  AODCaloJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
+
+  //Vectors currently not saved
+  //AODCaloJetLogTrackAngle_; //trackAngles; 
+  //AODCaloJetTrackAngle_;
+  
+  //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
  }
  
@@ -1445,7 +1487,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //  ///
 //  ///    //Medians
 //  ///    if(fill_tracksIPLog10Sig_median) AODPFJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFJetMedianLogTrackAngle_.push_back(trackAngles_median);
+//  ///    if(fill_trackAngles_median) AODPFJetMedianLog10TrackAngle_.push_back(trackAngles_median);
 //  ///
 //  ///  }
 //  ///
@@ -1510,30 +1552,24 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //  ///
 //  ///    //Medians
 //  ///    if(fill_tracksIPLog10Sig_median) AODPFchsJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFchsJetMedianLogTrackAngle_.push_back(trackAngles_median);
+//  ///    if(fill_trackAngles_median) AODPFchsJetMedianLog10TrackAngle_.push_back(trackAngles_median);
 //  ///
 //  ///  }//end pfchs loop
  
 }//end fill jets
 
 
-vector<int> lldjNtuple::getJetTrackIndexs( float jeteta, float jetphi ){
-
+vector<int> lldjNtuple::getJetTrackIndexs( float jeteta, float jetphi )
+{
  vector<int> idvector;
-
  // loop over all selected tracks, dR match to jet
  for( int i=0; i<(int)AODallTrackPositions.size(); i++){
   float tracketa = AODallTrackPositions[i].Eta(); 
   float trackphi = AODallTrackPositions[i].Phi(); 
-
   float drt = deltaR( jeteta, jetphi, tracketa, trackphi );
-  if(drt < maxDRtrackJet_){
-   idvector.push_back(i);
-  }
-
+  if(drt < maxDRtrackJet_){ idvector.push_back(i); }
  }
  return idvector;
- 
 }
 
 //void lldjNtuple::aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, 
@@ -1576,39 +1612,35 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
   float trackSumPtVtxMatched = 0; 
   float trackSumPtVtxMatched2 = 0; 
 
-  // this is what was segfaulting
   int nrvtxs = AODVertexHandle->size();
   vector<float> trackSumPtByVtx( nrvtxs,0);
   vector<float> trackSumPtByVtx2(nrvtxs,0);
-   //float trackSumPtByVtx [nrvtxs] = {} ;
-   //float trackSumPtByVtx2[nrvtxs] = {} ;
-  //for(int i = 0; i < nrvtxs; i++){
-  // trackSumPtByVtx [i] = 0. ;
-  // trackSumPtByVtx2[i] = 0. ;
-  //}
+
+  // printf(" jetTracksIDs size: %i \n",(int)jetTrackIDs.size() );
+  // printf(" AODwhichVertexByTrack size: %i \n",(int)AODwhichVertexByTrack.size() );
 
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
-    int trackID = jetTrackIDs[t];
+   int trackID = jetTrackIDs[t];
   
-    // sum pt of all tracks passing dR cut
-    float trackpt = AODallTrackIFSPt[trackID];
-    trackSumPt += trackpt;
-    trackSumPt2 += trackpt*trackpt;
+   // sum pt of all tracks passing dR cut
+   float trackpt = AODallTrackIFSPt[trackID];
+   trackSumPt += trackpt;
+   trackSumPt2 += (trackpt*trackpt);
   
-    // now only for tracks associated with a vertex
-    // the index of best vertex for track j is AODwhichVertexByTrack[j]
-    if(AODwhichVertexByTrack[trackID] < 0)continue;
+   // now only for tracks associated with a vertex
+   // the index of best vertex for track j is AODwhichVertexByTrack[j]
+   if(AODwhichVertexByTrack[trackID] < 0)continue;
 
-    trackSumPtVtxMatched += trackpt;
-    trackSumPtVtxMatched2 += trackpt*trackpt;
+   // technically we could get this by summing over trackSumPtByVtx later
+   trackSumPtVtxMatched += trackpt;
+   trackSumPtVtxMatched2 += trackpt*trackpt;
 
-    //// trackSumPtByVtx are sorted by vertex 
-    //printf("  track %i to vtx %i TS %i\n",
-    // trackID, AODwhichVertexByTrack[trackID],
-    // (int)trackSumPtByVtx.size());
-    trackSumPtByVtx[AODwhichVertexByTrack[trackID]] += trackpt;
-    trackSumPtByVtx2[AODwhichVertexByTrack[trackID]] += (trackpt*trackpt);
-
+   //// trackSumPtByVtx are sorted by vertex 
+   //printf("  track %i to vtx %i TS %i\n",
+   // trackID, AODwhichVertexByTrack[trackID],
+   // (int)trackSumPtByVtx.size());
+   trackSumPtByVtx[AODwhichVertexByTrack[trackID]] += trackpt;
+   trackSumPtByVtx2[AODwhichVertexByTrack[trackID]] += (trackpt*trackpt);
   }
   
   // clear variables from previous execution
@@ -1636,7 +1668,7 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
     if(ap2 > apMax2) apMax2 = ap2;
   }
   aMax   = tmpMaxSumPt  / trackSumPt;
-  aMax2  = tmpMaxSumPt*tmpMaxSumPt / trackSumPt2;
+  aMax2  = ( tmpMaxSumPt * tmpMaxSumPt ) / trackSumPt2;
   aMaxP  = apMax;
   aMaxP2 = apMax2;
   return;
@@ -1644,7 +1676,8 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
 }
 
 
-void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackAngle, float &totalTrackAnglePt)
+void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, vector<float> &allTrackAngles,
+ float &totalTrackAngle, float &totalTrackAnglePt)
 {
   
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
@@ -1655,6 +1688,8 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackA
 
     totalTrackAngle   += trackangle;
     totalTrackAnglePt += trackangle*trackpt;
+
+    allTrackAngles.push_back(trackangle);
   }
 
   return;
@@ -1663,25 +1698,61 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackA
 
 
 
-void lldjNtuple::calculateIP(vector<int> jetTrackIDs, float &tsumIP, float &tsumIPSig)
+void lldjNtuple::calculateIP(vector<int> jetTrackIDs, vector<float> &jetIPs, vector<float> &jetIPSigs, float &tsumIP, float &tsumIPSig)
 {
- 
+  
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
 
     int trackID = jetTrackIDs[t];
     // sum pt of all tracks passing dR cut
-    float trackdxy    = 1.;// AODallTrackdxy   [trackID];
-    float trackdxyerr = 1.;// AODallTrackdxyerr[trackID];
+    float trackdxy    = AODallTrackdxy   [trackID];
+    float trackdxyerr = AODallTrackdxyerr[trackID];
     float trackIPSig  = 0;
     if(trackdxyerr>0.) trackIPSig = trackdxy/trackdxyerr;
 
     tsumIP    += trackdxy;
     tsumIPSig += trackIPSig;
 
+    printf(" aa trackdyx: %0.4f %0.4f \n", trackdxy, trackIPSig);
+
+    jetIPs.push_back(trackdxy);
+    jetIPSigs.push_back(trackIPSig);
+
   }
 
   return;
   
 }
 
+
+float lldjNtuple::findMedian( vector<float> thevector){
+
+ float themedian = -999. ;
+
+ //printf(" thevector: ");
+ //for ( int i=0; i<(int)thevector.size(); i++ ){
+ // printf(" %0.4f ",thevector.at(i));
+ //}
+ //printf("\n");
+ std::sort (thevector.begin(), thevector.end());
+ //printf(" sorted thevector: ");
+ //for ( int i=0; i<(int)thevector.size(); i++ ){
+ // printf(" %0.4f ",thevector.at(i));
+ //}
+ //printf("\n");
+
+ if(thevector.size() > 0){
+  if((thevector.size()%2 == 0)){
+   themedian = (
+    thevector.at( (thevector.size() / 2) - 1 )
+  + thevector.at( (thevector.size() / 2)     ) 
+   ) / 2 ;
+  } else {
+   themedian = thevector.at( ( thevector.size() - 1 ) / 2 ) ;
+  }
+ }
+
+ return themedian;
+
+}
 

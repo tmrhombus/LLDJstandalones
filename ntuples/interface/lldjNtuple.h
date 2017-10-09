@@ -126,9 +126,13 @@ class lldjNtuple : public edm::EDAnalyzer {
    float& alphaMax, float& alphaMaxP, float& beta,
    float& alphaMax2, float& alphaMaxP2, float& beta2);
   void calculateTrackAngle( vector<int> jetTrackIDs,
+   vector<float> &allTrackAngles,
    float &totalTrackAngle, float &totalTrackAnglePt);
   void calculateIP( vector<int> jetTrackIDs,
+   vector<float> &jetIPs, vector<float> &jetIPSigs,
    float &sumIP, float &sumIPSig);
+
+  float findMedian(vector<float> thevector);
 
 
   // met

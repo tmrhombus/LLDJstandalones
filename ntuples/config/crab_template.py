@@ -1,8 +1,5 @@
 if __name__ == '__main__':
 
-# Usage : python crabConfig.py (to create jobs)
-#         ./multicrab -c status -d WORKAREA (to check job status)
-
     from CRABAPI.RawCommand import crabCommand
     from httplib import HTTPException
 
@@ -43,7 +40,4 @@ if __name__ == '__main__':
     p = Process(target=submit, args=(config,))
     p.start()
     p.join()
-
-
-
 
