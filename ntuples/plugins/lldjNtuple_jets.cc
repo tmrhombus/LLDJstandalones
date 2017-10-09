@@ -112,7 +112,7 @@ vector<float>  slimmedJetLog10IPSig_;
 vector<float>  slimmedJetMedianLog10IPSig_;
 vector<float>  slimmedJetTrackAngle_;
 vector<float>  slimmedJetLogTrackAngle_;
-vector<float>  slimmedJetMedianLogTrackAngle_;
+vector<float>  slimmedJetMedianLog10TrackAngle_;
 vector<float>  slimmedJetTotalTrackAngle_;
 vector<float>  slimmedJetDauVertex_x_;
 vector<float>  slimmedJetDauVertex_y_;
@@ -168,11 +168,12 @@ vector<float>  AODCaloJetBeta2_;
 
 vector<float>  AODCaloJetSumIP_;
 vector<float>  AODCaloJetSumIPSig_;
-vector<float>  AODCaloJetLog10IPSig_;
+//vector<float>  AODCaloJetLog10IPSig_;
+vector<float>  AODCaloJetMedianIP_;
 vector<float>  AODCaloJetMedianLog10IPSig_;
 vector<float>  AODCaloJetTrackAngle_;
 vector<float>  AODCaloJetLogTrackAngle_;
-vector<float>  AODCaloJetMedianLogTrackAngle_;
+vector<float>  AODCaloJetMedianLog10TrackAngle_;
 vector<float>  AODCaloJetTotalTrackAngle_;
 
 // PF Jets
@@ -191,7 +192,7 @@ vector<float>  AODPFJetSumIPSig_;
 vector<float>  AODPFJetMedianLog10IPSig_;
 vector<float>  AODPFJetTrackAngle_;
 vector<float>  AODPFJetLogTrackAngle_;
-vector<float>  AODPFJetMedianLogTrackAngle_;
+vector<float>  AODPFJetMedianLog10TrackAngle_;
 vector<float>  AODPFJetTotalTrackAngle_;
 
 // PFchs Jets
@@ -210,7 +211,7 @@ vector<float>  AODPFchsJetSumIPSig_;
 vector<float>  AODPFchsJetMedianLog10IPSig_;
 vector<float>  AODPFchsJetTrackAngle_;
 vector<float>  AODPFchsJetLogTrackAngle_;
-vector<float>  AODPFchsJetMedianLogTrackAngle_;
+vector<float>  AODPFchsJetMedianLog10TrackAngle_;
 vector<float>  AODPFchsJetTotalTrackAngle_;
 
 // temporary variables
@@ -317,11 +318,11 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("slimmedJetAlphaMaxD",               &slimmedJetAlphaMaxD_);               
   tree->Branch("slimmedJetSumIP",                   &slimmedJetSumIP_);                   
   tree->Branch("slimmedJetSumIPSig",                &slimmedJetSumIPSig_);                
-  tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
+  //tree->Branch("slimmedJetLog10IPSig",              &slimmedJetLog10IPSig_);              
   tree->Branch("slimmedJetMedianLog10IPSig",        &slimmedJetMedianLog10IPSig_);        
   tree->Branch("slimmedJetTrackAngle",              &slimmedJetTrackAngle_);              
   tree->Branch("slimmedJetLogTrackAngle",           &slimmedJetLogTrackAngle_);           
-  tree->Branch("slimmedJetMedianLogTrackAngle",     &slimmedJetMedianLogTrackAngle_);     
+  tree->Branch("slimmedJetMedianLog10TrackAngle",     &slimmedJetMedianLog10TrackAngle_);     
   tree->Branch("slimmedJetTotalTrackAngle",         &slimmedJetTotalTrackAngle_);         
   tree->Branch("slimmedJetDauVertex_x",             &slimmedJetDauVertex_x_);             
   tree->Branch("slimmedJetDauVertex_y",             &slimmedJetDauVertex_y_);             
@@ -372,10 +373,11 @@ void lldjNtuple::branchesJets(TTree* tree) {
 
   tree->Branch("AODCaloJetSumIP"               , &AODCaloJetSumIP_);
   tree->Branch("AODCaloJetSumIPSig"            , &AODCaloJetSumIPSig_);
+  tree->Branch("AODCaloJetMedianIP"            , &AODCaloJetMedianIP_);
   tree->Branch("AODCaloJetMedianLog10IPSig"    , &AODCaloJetMedianLog10IPSig_);
   tree->Branch("AODCaloJetTrackAngle"          , &AODCaloJetTrackAngle_);
   tree->Branch("AODCaloJetLogTrackAngle"       , &AODCaloJetLogTrackAngle_);
-  tree->Branch("AODCaloJetMedianLogTrackAngle" , &AODCaloJetMedianLogTrackAngle_);
+  tree->Branch("AODCaloJetMedianLog10TrackAngle" , &AODCaloJetMedianLog10TrackAngle_);
   tree->Branch("AODCaloJetTotalTrackAngle"     , &AODCaloJetTotalTrackAngle_);
                                                  
   tree->Branch("AODnPFJet"                     , &AODnPFJet_);
@@ -393,7 +395,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFJetMedianLog10IPSig"      , &AODPFJetMedianLog10IPSig_);
   tree->Branch("AODPFJetTrackAngle"            , &AODPFJetTrackAngle_);
   tree->Branch("AODPFJetLogTrackAngle"         , &AODPFJetLogTrackAngle_);
-  tree->Branch("AODPFJetMedianLogTrackAngle"   , &AODPFJetMedianLogTrackAngle_);
+  tree->Branch("AODPFJetMedianLog10TrackAngle"   , &AODPFJetMedianLog10TrackAngle_);
   tree->Branch("AODPFJetTotalTrackAngle"       , &AODPFJetTotalTrackAngle_);
                                                 
   tree->Branch("AODnPFchsJet"                  , &AODnPFchsJet_);
@@ -411,7 +413,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODPFchsJetMedianLog10IPSig"   , &AODPFchsJetMedianLog10IPSig_);
   tree->Branch("AODPFchsJetTrackAngle"         , &AODPFchsJetTrackAngle_);
   tree->Branch("AODPFchsJetLogTrackAngle"      , &AODPFchsJetLogTrackAngle_);
-  tree->Branch("AODPFchsJetMedianLogTrackAngle", &AODPFchsJetMedianLogTrackAngle_);
+  tree->Branch("AODPFchsJetMedianLog10TrackAngle", &AODPFchsJetMedianLog10TrackAngle_);
   tree->Branch("AODPFchsJetTotalTrackAngle"    , &AODPFchsJetTotalTrackAngle_);
   
 }
@@ -472,11 +474,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  slimmedJetAlphaMaxD_.clear();
  slimmedJetSumIP_.clear();
  slimmedJetSumIPSig_.clear();
- slimmedJetLog10IPSig_.clear();
+ //slimmedJetLog10IPSig_.clear();
  slimmedJetMedianLog10IPSig_.clear();
  slimmedJetTrackAngle_.clear();
  slimmedJetLogTrackAngle_.clear();
- slimmedJetMedianLogTrackAngle_.clear();
+ slimmedJetMedianLog10TrackAngle_.clear();
  slimmedJetTotalTrackAngle_.clear();
  slimmedJetDauVertex_x_.clear();
  slimmedJetDauVertex_y_.clear();
@@ -526,10 +528,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  AODCaloJetSumIP_.clear();
  AODCaloJetSumIPSig_.clear();
+ AODCaloJetMedianIP_.clear();
  AODCaloJetMedianLog10IPSig_.clear();
  AODCaloJetTrackAngle_.clear();
  AODCaloJetLogTrackAngle_.clear();
- AODCaloJetMedianLogTrackAngle_.clear();
+ AODCaloJetMedianLog10TrackAngle_.clear();
  AODCaloJetTotalTrackAngle_.clear();
 
  AODnPFJet_=0;
@@ -547,7 +550,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFJetMedianLog10IPSig_.clear();
  AODPFJetTrackAngle_.clear();
  AODPFJetLogTrackAngle_.clear();
- AODPFJetMedianLogTrackAngle_.clear();
+ AODPFJetMedianLog10TrackAngle_.clear();
  AODPFJetTotalTrackAngle_.clear();
 
  AODnPFchsJet_=0;
@@ -565,7 +568,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetMedianLog10IPSig_.clear();
  AODPFchsJetTrackAngle_.clear();
  AODPFchsJetLogTrackAngle_.clear();
- AODPFchsJetMedianLogTrackAngle_.clear();
+ AODPFchsJetMedianLog10TrackAngle_.clear();
  AODPFchsJetTotalTrackAngle_.clear();
 
  // get slimmedJets
@@ -1049,12 +1052,12 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    {
     MedianLogTrackAngle = 0.5*( slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()/2) -1]
                               + slimmedJetLogTrackAngle_[ slimmedJetLogTrackAngle_.size()/2    ]);
-    slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    slimmedJetMedianLog10TrackAngle_.push_back(MedianLogTrackAngle);
    }
    else
    {
     MedianLogTrackAngle =       slimmedJetLogTrackAngle_[(slimmedJetLogTrackAngle_.size()-1)/2];
-    slimmedJetMedianLogTrackAngle_.push_back(MedianLogTrackAngle);
+    slimmedJetMedianLog10TrackAngle_.push_back(MedianLogTrackAngle);
    }    
 
    //slimmedJetMedianLog10IPSig_.push_back(MedianLog10IPSig);
@@ -1334,15 +1337,10 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
   if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
 
-  // initialize variables
-  float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
-  float totalTrackAngle, totalTrackAnglePt = 0.;
-  float sumIP, sumIPSig, medSumIPLog10Sig = 0.;
-
   // caloJetTrackIDs is a vector of ints where each int is the 
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
-  vector<int> caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
 
   if(verbose_AOD){
    printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
@@ -1363,11 +1361,29 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    }
   }
 
+  // initialize variables
+  float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
+  float totalTrackAngle, totalTrackAnglePt = 0.;
+  float sumIP, sumIPSig = 0.;
+  vector<float> caloJetTrackAngles; 
+  caloJetTrackAngles.clear();
+  vector<float> caloJetIPs; 
+  caloJetIPs.clear();
+  vector<float> caloJetIPSigs; 
+  caloJetIPSigs.clear();
+
   // do calculations
   calculateAlphaMax(caloJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-  calculateTrackAngle(caloJetTrackIDs, totalTrackAngle, totalTrackAnglePt);
-  calculateIP(caloJetTrackIDs, sumIP, sumIPSig);
+  calculateTrackAngle(caloJetTrackIDs, caloJetTrackAngles, totalTrackAngle, totalTrackAnglePt);
+  calculateIP(caloJetTrackIDs, caloJetIPs, caloJetIPSigs, sumIP, sumIPSig);
 
+  // find medians
+  float medianTrackAngle;
+  medianTrackAngle = findMedian(caloJetTrackAngles);
+  float medianIP;
+  medianIP = findMedian(caloJetIPs);
+  float medianIPSig;
+  medianIPSig = findMedian(caloJetIPSigs);
 
   ////////////////////////
   // Fill tree
@@ -1390,14 +1406,15 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   //Totals
   AODCaloJetSumIP_.push_back(sumIP);
   AODCaloJetSumIPSig_.push_back(sumIPSig);
+
   AODCaloJetTotalTrackAngle_.push_back(totalTrackAngle);    
 
   /////Medians
-  ///AODCaloJetMedianLog10IPSig_   .push_back(tracksIPLog10Sig_median);
-  ///AODCaloJetMedianLogTrackAngle_.push_back(trackAngles_median);
+  AODCaloJetMedianIP_             .push_back(medianIP);
+  AODCaloJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
+  AODCaloJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
 
   //Vectors currently not saved
-  //AODCaloJetLog10IPSig_; //tracksIPLogSig;
   //AODCaloJetLogTrackAngle_; //trackAngles; 
   //AODCaloJetTrackAngle_;
   
@@ -1468,7 +1485,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //  ///
 //  ///    //Medians
 //  ///    if(fill_tracksIPLog10Sig_median) AODPFJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFJetMedianLogTrackAngle_.push_back(trackAngles_median);
+//  ///    if(fill_trackAngles_median) AODPFJetMedianLog10TrackAngle_.push_back(trackAngles_median);
 //  ///
 //  ///  }
 //  ///
@@ -1533,7 +1550,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 //  ///
 //  ///    //Medians
 //  ///    if(fill_tracksIPLog10Sig_median) AODPFchsJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFchsJetMedianLogTrackAngle_.push_back(trackAngles_median);
+//  ///    if(fill_trackAngles_median) AODPFchsJetMedianLog10TrackAngle_.push_back(trackAngles_median);
 //  ///
 //  ///  }//end pfchs loop
  
@@ -1606,12 +1623,13 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
    // sum pt of all tracks passing dR cut
    float trackpt = AODallTrackIFSPt[trackID];
    trackSumPt += trackpt;
-   trackSumPt2 += trackpt*trackpt;
+   trackSumPt2 += (trackpt*trackpt);
   
    // now only for tracks associated with a vertex
    // the index of best vertex for track j is AODwhichVertexByTrack[j]
    if(AODwhichVertexByTrack[trackID] < 0)continue;
 
+   // technically we could get this by summing over trackSumPtByVtx later
    trackSumPtVtxMatched += trackpt;
    trackSumPtVtxMatched2 += trackpt*trackpt;
 
@@ -1656,7 +1674,8 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
 }
 
 
-void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackAngle, float &totalTrackAnglePt)
+void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, vector<float> &allTrackAngles,
+ float &totalTrackAngle, float &totalTrackAnglePt)
 {
   
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
@@ -1667,6 +1686,8 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackA
 
     totalTrackAngle   += trackangle;
     totalTrackAnglePt += trackangle*trackpt;
+
+    allTrackAngles.push_back(trackangle);
   }
 
   return;
@@ -1675,7 +1696,7 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, float &totalTrackA
 
 
 
-void lldjNtuple::calculateIP(vector<int> jetTrackIDs, float &tsumIP, float &tsumIPSig)
+void lldjNtuple::calculateIP(vector<int> jetTrackIDs, vector<float> &jetIPs, vector<float> &jetIPSigs, float &tsumIP, float &tsumIPSig)
 {
   
   for(int t=0; t< (int)jetTrackIDs.size(); t++){
@@ -1690,10 +1711,44 @@ void lldjNtuple::calculateIP(vector<int> jetTrackIDs, float &tsumIP, float &tsum
     tsumIP    += trackdxy;
     tsumIPSig += trackIPSig;
 
+    jetIPs.push_back(trackdxy);
+    jetIPSigs.push_back(trackIPSig);
+
   }
 
   return;
   
 }
 
+
+float lldjNtuple::findMedian( vector<float> thevector){
+
+ float themedian = -999. ;
+
+ //printf(" thevector: ");
+ //for ( int i=0; i<(int)thevector.size(); i++ ){
+ // printf(" %0.4f ",thevector.at(i));
+ //}
+ //printf("\n");
+ std::sort (thevector.begin(), thevector.end());
+ //printf(" sorted thevector: ");
+ //for ( int i=0; i<(int)thevector.size(); i++ ){
+ // printf(" %0.4f ",thevector.at(i));
+ //}
+ //printf("\n");
+
+ if(thevector.size() > 0){
+  if((thevector.size()%2 == 0)){
+   themedian = (
+    thevector.at( (thevector.size() / 2) - 1 )
+  + thevector.at( (thevector.size() / 2)     ) 
+   ) / 2 ;
+  } else {
+   themedian = thevector.at( ( thevector.size() - 1 ) / 2 ) ;
+  }
+ }
+
+ return themedian;
+
+}
 
