@@ -1395,7 +1395,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // beamspot info, track impact parameter
   float dxy = fabs(tref->dxy(*beamspotHandle_));
   float dxyerr = tref->dxyError();
-  printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
+  if(verbose_AOD) printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
   AODallTrackdxy   .push_back(dxy   ) ;
   AODallTrackdxyerr.push_back(dxyerr) ;
    
