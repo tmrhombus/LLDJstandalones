@@ -1444,6 +1444,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
   vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  if(caloJetTrackIDs.size()<1) continue;
 
   if(verbose_AOD){
    printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
