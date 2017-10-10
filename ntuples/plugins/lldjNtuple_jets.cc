@@ -35,6 +35,19 @@
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 
+#include "PhysicsTools/RecoUtils/interface/CheckHitPattern.h"
+#include "RecoVertex/ConfigurableVertexReco/interface/ConfigurableVertexReconstructor.h"
+#include "RecoVertex/VertexTools/interface/VertexCompatibleWithBeam.h"
+#include "RecoVertex/VertexTools/interface/VertexDistanceXY.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/KinematicFit/interface/KinematicParticleVertexFitter.h"
+#include "RecoVertex/KinematicFit/interface/KinematicParticleFitter.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/KinematicParticle.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/RefCountedKinematicParticle.h"
+#include "RecoVertex/VertexPrimitives/interface/ConvertToFromReco.h"
+#include "RecoVertex/VertexPrimitives/interface/ConvertError.h"
+
 
 using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
@@ -54,6 +67,11 @@ edm::ESHandle<MagneticField> magneticField;
 // transient tracks
 map<reco::TransientTrack,reco::TrackBaseRef> refMap;
 vector<TrajectoryStateOnSurface> tsosList;
+
+// Global stuff for displaced vertices
+ConfigurableVertexReconstructor* vtxfitter_; 
+VertexDistanceXY vertexDistanceXY_;
+VertexCompatibleWithBeam* vertexBeam_ = new VertexCompatibleWithBeam(vertexDistanceXY_,100);
 
 // ak4 slimmedJets
 Int_t          nSlimmedJets__;
@@ -175,6 +193,33 @@ vector<float>  AODCaloJetTrackAngle_;
 vector<float>  AODCaloJetLogTrackAngle_;
 vector<float>  AODCaloJetMedianLog10TrackAngle_;
 vector<float>  AODCaloJetTotalTrackAngle_;
+
+vector<float>  AODCaloJetAvfVx_;
+vector<float>  AODCaloJetAvfVy_;
+vector<float>  AODCaloJetAvfVz_;
+vector<float>  AODCaloJetAvfVertexTotalChiSquared_;
+vector<float>  AODCaloJetAvfVertexDegreesOfFreedom_;
+vector<float>  AODCaloJetAvfVertexChi2NDoF_;
+vector<float>  AODCaloJetAvfVertexDistanceToBeam_;
+vector<float>  AODCaloJetAvfVertexTransverseError_;
+vector<float>  AODCaloJetAvfVertexTransverseSig_;
+vector<float>  AODCaloJetAvfVertexDeltaEta_;
+vector<float>  AODCaloJetAvfVertexDeltaPhi_;
+vector<float>  AODCaloJetAvfVertexRecoilPt_;
+vector<float>  AODCaloJetAvfVertexTrackMass_;
+vector<float>  AODCaloJetAvfVertexTrackEnergy_;
+vector<float>  AODCaloJetAvfBeamSpotDeltaPhi_;
+vector<float>  AODCaloJetAvfBeamSpotRecoilPt_;
+vector<float>  AODCaloJetAvfBeamSpotMedianDeltaPhi_;
+vector<float>  AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_;
+vector<int>    AODCaloJetNCleanMatchedTracks_;
+vector<int>    AODCaloJetSumHitsInFrontOfVert_;
+vector<int>    AODCaloJetSumMissHitsAfterVert_;
+vector<int>    AODCaloJetHitsInFrontOfVertPerTrack_;
+vector<int>    AODCaloJetMissHitsAfterVertPerTrack_;
+vector<float>  AODCaloJetAvfDistToPV_;
+vector<float>  AODCaloJetAvfVertexDeltaZtoPV_;
+vector<float>  AODCaloJetAvfVertexDeltaZtoPV2_;
 
 // PF Jets
 Int_t          AODnPFJet_;
@@ -379,7 +424,34 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODCaloJetLogTrackAngle"       , &AODCaloJetLogTrackAngle_);
   tree->Branch("AODCaloJetMedianLog10TrackAngle" , &AODCaloJetMedianLog10TrackAngle_);
   tree->Branch("AODCaloJetTotalTrackAngle"     , &AODCaloJetTotalTrackAngle_);
-                                                 
+                       
+  tree->Branch("AODCaloJetAvfVx", &AODCaloJetAvfVx_);
+  tree->Branch("AODCaloJetAvfVy", &AODCaloJetAvfVy_);
+  tree->Branch("AODCaloJetAvfVz", &AODCaloJetAvfVz_);
+  tree->Branch("AODCaloJetAvfVertexTotalChiSquared", &AODCaloJetAvfVertexTotalChiSquared_);
+  tree->Branch("AODCaloJetAvfVertexDegreesOfFreedom", &AODCaloJetAvfVertexDegreesOfFreedom_);
+  tree->Branch("AODCaloJetAvfVertexChi2NDoF", &AODCaloJetAvfVertexChi2NDoF_);
+  tree->Branch("AODCaloJetAvfVertexDistanceToBeam", &AODCaloJetAvfVertexDistanceToBeam_);
+  tree->Branch("AODCaloJetAvfVertexTransverseError", &AODCaloJetAvfVertexTransverseError_);
+  tree->Branch("AODCaloJetAvfVertexTransverseSig", &AODCaloJetAvfVertexTransverseSig_);
+  tree->Branch("AODCaloJetAvfVertexDeltaEta", &AODCaloJetAvfVertexDeltaEta_);
+  tree->Branch("AODCaloJetAvfVertexDeltaPhi", &AODCaloJetAvfVertexDeltaPhi_);
+  tree->Branch("AODCaloJetAvfVertexRecoilPt", &AODCaloJetAvfVertexRecoilPt_);
+  tree->Branch("AODCaloJetAvfVertexTrackMass", &AODCaloJetAvfVertexTrackMass_);
+  tree->Branch("AODCaloJetAvfVertexTrackEnergy", &AODCaloJetAvfVertexTrackEnergy_);
+  tree->Branch("AODCaloJetAvfBeamSpotDeltaPhi", &AODCaloJetAvfBeamSpotDeltaPhi_);
+  tree->Branch("AODCaloJetAvfBeamSpotRecoilPt", &AODCaloJetAvfBeamSpotRecoilPt_);
+  tree->Branch("AODCaloJetAvfBeamSpotMedianDeltaPhi", &AODCaloJetAvfBeamSpotMedianDeltaPhi_);
+  tree->Branch("AODCaloJetAvfBeamSpotLog10MedianDeltaPhi", &AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_);
+  tree->Branch("AODCaloJetNCleanMatchedTracks", &AODCaloJetNCleanMatchedTracks_);
+  tree->Branch("AODCaloJetSumHitsInFrontOfVert", &AODCaloJetSumHitsInFrontOfVert_);
+  tree->Branch("AODCaloJetSumMissHitsAfterVert", &AODCaloJetSumMissHitsAfterVert_);
+  tree->Branch("AODCaloJetHitsInFrontOfVertPerTrack", &AODCaloJetHitsInFrontOfVertPerTrack_);
+  tree->Branch("AODCaloJetMissHitsAfterVertPerTrack", &AODCaloJetMissHitsAfterVertPerTrack_);
+  tree->Branch("AODCaloJetAvfDistToPV", &AODCaloJetAvfDistToPV_);
+  tree->Branch("AODCaloJetAvfVertexDeltaZtoPV", &AODCaloJetAvfVertexDeltaZtoPV_);
+  tree->Branch("AODCaloJetAvfVertexDeltaZtoPV2", &AODCaloJetAvfVertexDeltaZtoPV2_);
+                          
   tree->Branch("AODnPFJet"                     , &AODnPFJet_);
   tree->Branch("AODPFJetPt"                    , &AODPFJetPt_);
   tree->Branch("AODPFJetEta"                   , &AODPFJetEta_);
@@ -534,6 +606,33 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODCaloJetLogTrackAngle_.clear();
  AODCaloJetMedianLog10TrackAngle_.clear();
  AODCaloJetTotalTrackAngle_.clear();
+
+ AODCaloJetAvfVx_.clear();
+ AODCaloJetAvfVy_.clear();
+ AODCaloJetAvfVz_.clear();
+ AODCaloJetAvfVertexTotalChiSquared_.clear();
+ AODCaloJetAvfVertexDegreesOfFreedom_.clear();
+ AODCaloJetAvfVertexChi2NDoF_.clear();
+ AODCaloJetAvfVertexDistanceToBeam_.clear();
+ AODCaloJetAvfVertexTransverseError_.clear();
+ AODCaloJetAvfVertexTransverseSig_.clear();
+ AODCaloJetAvfVertexDeltaEta_.clear();
+ AODCaloJetAvfVertexDeltaPhi_.clear();
+ AODCaloJetAvfVertexRecoilPt_.clear();
+ AODCaloJetAvfVertexTrackMass_.clear();
+ AODCaloJetAvfVertexTrackEnergy_.clear();
+ AODCaloJetAvfBeamSpotDeltaPhi_.clear();
+ AODCaloJetAvfBeamSpotRecoilPt_.clear();
+ AODCaloJetAvfBeamSpotMedianDeltaPhi_.clear();
+ AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_.clear();
+ AODCaloJetNCleanMatchedTracks_.clear();
+ AODCaloJetSumHitsInFrontOfVert_.clear();
+ AODCaloJetSumMissHitsAfterVert_.clear();
+ AODCaloJetHitsInFrontOfVertPerTrack_.clear();
+ AODCaloJetMissHitsAfterVertPerTrack_.clear();
+ AODCaloJetAvfDistToPV_.clear();
+ AODCaloJetAvfVertexDeltaZtoPV_.clear();
+ AODCaloJetAvfVertexDeltaZtoPV2_.clear();
 
  AODnPFJet_=0;
  AODPFJetPt_.clear();
@@ -1189,6 +1288,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  whichVertex_.clear();
  whichVertex_ = vector<int>(AODTrackHandle->size(),-1);
 
+ vtxfitter_ = new ConfigurableVertexReconstructor(lldj_pset_.getParameter<edm::ParameterSet>("vertexFitterConfig"));
+
  // clear master track vectors before starting track loop
  AODallTrackPositions       .clear(); 
  AODallTrackPt              .clear(); 
@@ -1294,7 +1395,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // beamspot info, track impact parameter
   float dxy = fabs(tref->dxy(*beamspotHandle_));
   float dxyerr = tref->dxyError();
-  printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
+  if(verbose_AOD) printf(" dxy dxyerr: %0.4f %0.4f\n", dxy, dxyerr);
   AODallTrackdxy   .push_back(dxy   ) ;
   AODallTrackdxyerr.push_back(dxyerr) ;
    
@@ -1343,6 +1444,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
   vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  if(caloJetTrackIDs.size()<1) continue;
 
   if(verbose_AOD){
    printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
@@ -1378,6 +1480,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   calculateAlphaMax(caloJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
   calculateTrackAngle(caloJetTrackIDs, caloJetTrackAngles, totalTrackAngle, totalTrackAnglePt);
   calculateIP(caloJetTrackIDs, caloJetIPs, caloJetIPSigs, sumIP, sumIPSig);
+  calculateDisplacedVertices(es, caloJetTrackIDs);
 
   // find medians
   float medianTrackAngle;
@@ -1713,7 +1816,7 @@ void lldjNtuple::calculateIP(vector<int> jetTrackIDs, vector<float> &jetIPs, vec
     tsumIP    += trackdxy;
     tsumIPSig += trackIPSig;
 
-    printf(" aa trackdyx: %0.4f %0.4f \n", trackdxy, trackIPSig);
+    //printf(" aa trackdyx: %0.4f %0.4f \n", trackdxy, trackIPSig);
 
     jetIPs.push_back(trackdxy);
     jetIPSigs.push_back(trackIPSig);
@@ -1756,3 +1859,146 @@ float lldjNtuple::findMedian( vector<float> thevector){
 
 }
 
+
+
+void lldjNtuple::deltaVertex3D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dEta, double& dPhi, double& pt, double& m, double& energy)
+{
+  TVector3 pv(AODVertexHandle->at(0).x(),AODVertexHandle->at(0).y(),AODVertexHandle->at(0).z());
+  TVector3 sv(secVert.x(),secVert.y(),secVert.z());
+  TVector3 diff = (sv-pv);
+  TVector3 trackPt(0,0,0);
+  TLorentzVector trackP4(0,0,0,0);
+  for(int i = 0; i < (int)tracks.size(); i++){
+    TVector3 tt;
+    tt.SetPtEtaPhi(tracks[i].trajectoryStateClosestToPoint(secVert).momentum().transverse(),tracks[i].trajectoryStateClosestToPoint(secVert).momentum().eta(),tracks[i].trajectoryStateClosestToPoint(secVert).momentum().phi());
+    trackPt += tt;
+    trackP4 += TLorentzVector(tt,tracks[i].trajectoryStateClosestToPoint(secVert).momentum().mag());
+  }
+  dEta = diff.Eta()-trackPt.Eta();
+  dPhi = diff.DeltaPhi(trackPt);
+  pt = (trackPt - ((trackPt * diff)/(diff * diff) * diff)).Mag();
+  m = trackP4.M();
+  energy = trackP4.E();
+}
+
+void lldjNtuple::deltaVertex2D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dPhi, double& pt, double& mediandPhi)
+{
+
+  //edm::Handle<reco::BeamSpot> beamspotHandle_;//make this global??? BENTODO
+  //e.getByToken(beamspotLabel_, beamspotHandle_);
+
+  const reco::BeamSpot& pat_beamspot = (*beamspotHandle_);
+  TVector2 bmspot(pat_beamspot.x0(),pat_beamspot.y0());
+  TVector2 sv(secVert.x(),secVert.y());
+  TVector2 diff = (sv-bmspot);
+  TVector2 trackPt(0,0);
+  vector<double> trackAngles;
+  for(int i = 0; i < (int)tracks.size(); i++){
+    TVector2 tt;
+    tt.SetMagPhi(tracks[i].trajectoryStateClosestToPoint(secVert).momentum().transverse(),tracks[i].trajectoryStateClosestToPoint(secVert).momentum().phi());
+    trackPt += tt;
+    trackAngles.push_back(fabs(diff.DeltaPhi(tt)));
+  }
+  sort(trackAngles.begin(), trackAngles.end());
+
+  if(trackAngles.size() == 0){
+    //do nothing
+  }else if((trackAngles.size()%2 == 0)){
+    mediandPhi = trackAngles.at(trackAngles.size()/2-1);
+  }else{
+    mediandPhi = trackAngles.at((trackAngles.size()-1)/2);
+  }
+
+  dPhi = diff.DeltaPhi(trackPt);
+  pt = (trackPt - ((trackPt * diff)/(diff * diff) * diff)).Mod();
+
+}
+
+
+vector<reco::TransientTrack> lldjNtuple::cleanTracks(vector<reco::TransientTrack> tracks, GlobalPoint vertPos)
+{
+  vector<reco::TransientTrack> cleanTracks;
+  for(int i = 0; i < (int)tracks.size(); i++){
+    if(tracks[i].trajectoryStateClosestToPoint(vertPos).perigeeError().transverseImpactParameterError() > 0 && tracks[i].trajectoryStateClosestToPoint(vertPos).perigeeParameters().transverseImpactParameter() / tracks[i].trajectoryStateClosestToPoint(vertPos).perigeeError().transverseImpactParameterError() > 3.0)continue;
+    cleanTracks.push_back(tracks[i]);
+  }
+  return cleanTracks;
+}
+
+
+
+
+void lldjNtuple::calculateDisplacedVertices(const edm::EventSetup& es, vector<int> jetTrackIDs){
+  
+  //Select transient tracks for this jet
+  vector<reco::TransientTrack> transientTracks;
+  for(unsigned int j = 0; j < jetTrackIDs.size(); j++){
+    reco::TransientTrack tt(AODTrackHandle->at( jetTrackIDs.at(j) ),magneticField_);
+    transientTracks.push_back(tt);
+  }
+  
+  
+  if(transientTracks.size() > 1){
+    
+    vector<TransientVertex> avfVerts = vtxfitter_->vertices(transientTracks);
+    if(avfVerts.size() > 0 && avfVerts[0].isValid()){
+      GlobalPoint vertPos = avfVerts[0].position();
+      GlobalError vertErr = avfVerts[0].positionError();
+      
+      AODCaloJetAvfVx_.push_back( vertPos.x() );
+      AODCaloJetAvfVy_.push_back( vertPos.y() );
+      AODCaloJetAvfVz_.push_back( vertPos.z() );
+      
+      float vertBeamXY = vertexBeam_->distanceToBeam(reco::Vertex(RecoVertex::convertPos(vertPos),RecoVertex::convertError(vertErr)));
+      
+      AODCaloJetAvfVertexTotalChiSquared_.push_back( avfVerts[0].totalChiSquared() );
+      AODCaloJetAvfVertexDegreesOfFreedom_.push_back( avfVerts[0].degreesOfFreedom() );
+      if(avfVerts[0].degreesOfFreedom() > 0) AODCaloJetAvfVertexChi2NDoF_.push_back( avfVerts[0].totalChiSquared()/avfVerts[0].degreesOfFreedom() );
+      AODCaloJetAvfVertexDistanceToBeam_.push_back( vertBeamXY );
+      double rerr = vertErr.rerr(vertPos);
+      AODCaloJetAvfVertexTransverseError_.push_back( rerr );
+      if(rerr > 0) AODCaloJetAvfVertexTransverseSig_.push_back( vertBeamXY/rerr );
+      
+      vector<reco::TransientTrack> cleanTrackColl = cleanTracks(avfVerts[0].refittedTracks(),vertPos);
+      
+      double d3deta = 0, d3dphi = 0, d3dpt = 0, d3m = 0, d3en;
+      deltaVertex3D(vertPos, cleanTrackColl,d3deta,d3dphi,d3dpt,d3m,d3en);
+      AODCaloJetAvfVertexDeltaEta_.push_back( d3deta );
+      AODCaloJetAvfVertexDeltaPhi_.push_back( d3dphi );
+      AODCaloJetAvfVertexRecoilPt_.push_back( d3dpt );
+      AODCaloJetAvfVertexTrackMass_.push_back( d3m );
+      AODCaloJetAvfVertexTrackEnergy_.push_back( d3en );
+      double d2dphi = 0,d2dpt = 0,d2dphiMed=1e-6;
+      deltaVertex2D(vertPos,cleanTrackColl,d2dphi,d2dpt,d2dphiMed);
+      AODCaloJetAvfBeamSpotDeltaPhi_.push_back( d2dphi );
+      AODCaloJetAvfBeamSpotRecoilPt_.push_back( d2dpt );
+      AODCaloJetAvfBeamSpotMedianDeltaPhi_.push_back( d2dphiMed );
+      AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_.push_back( log10(d2dphiMed) );
+      AODCaloJetNCleanMatchedTracks_.push_back( (int)cleanTrackColl.size() );
+      
+      int nHitsInFront = 0;
+      int nMissingAfter = 0;
+      CheckHitPattern checkHitPattern_;
+      for(int j = 0; j < (int)cleanTrackColl.size(); j++){
+	CheckHitPattern::Result res = checkHitPattern_.analyze(es,cleanTrackColl[j].track(),avfVerts[0].vertexState(),false);
+	nHitsInFront += res.hitsInFrontOfVert;
+	nMissingAfter += res.missHitsAfterVert;
+      }
+      AODCaloJetSumHitsInFrontOfVert_.push_back( nHitsInFront );
+      AODCaloJetSumMissHitsAfterVert_.push_back( nMissingAfter );
+      AODCaloJetHitsInFrontOfVertPerTrack_.push_back( double(nHitsInFront)/double(transientTracks.size()) );
+      AODCaloJetMissHitsAfterVertPerTrack_.push_back( double(nMissingAfter)/double(transientTracks.size()) );
+      
+      AODCaloJetAvfDistToPV_.push_back( 
+				       sqrt(pow((AODVertexHandle->at(0).x() - avfVerts[0].position().x())/AODVertexHandle->at(0).x(),2)
+					    +pow((AODVertexHandle->at(0).y() - avfVerts[0].position().y())/AODVertexHandle->at(0).y(),2)
+					    +pow((AODVertexHandle->at(0).z() - avfVerts[0].position().z())/AODVertexHandle->at(0).z(),2)) );
+      if(AODVertexHandle->size() > 0)AODCaloJetAvfVertexDeltaZtoPV_.push_back( AODVertexHandle->at(0).z() - avfVerts[0].position().z() );
+      if(AODVertexHandle->size() > 1)AODCaloJetAvfVertexDeltaZtoPV2_.push_back( AODVertexHandle->at(1).z() - avfVerts[0].position().z() );
+      
+      
+    }//end valid avf vertex
+      
+  }//end if transientTracks
+
+}//end calculateDisplacedVertices
