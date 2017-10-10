@@ -58,6 +58,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   
  private:
   
+  edm::ParameterSet lldj_pset_;
+
   //   virtual void beginJob() {};
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
@@ -134,6 +136,11 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   float findMedian(vector<float> thevector);
 
+  void calculateDisplacedVertices(const edm::EventSetup& es, vector<int> jetTrackIDs);
+
+  void deltaVertex3D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dEta, double& dPhi, double& pt, double& m, double& energy);
+  void deltaVertex2D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dPhi, double& pt, double& mediandPhi);
+  vector<reco::TransientTrack> cleanTracks(vector<reco::TransientTrack> tracks, GlobalPoint vertPos);
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
