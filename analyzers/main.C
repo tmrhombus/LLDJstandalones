@@ -233,7 +233,7 @@ int main(int argc, char **argv){
  analyzer.Init(theChain, isMC, makelog);
  analyzer.initSelectionCategories();
  analyzer.initBasicHistograms();
- analyzer.initJetHistograms();
+ analyzer.initSlimmedJetHistograms();
  analyzer.init2DHistograms();
 
  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);

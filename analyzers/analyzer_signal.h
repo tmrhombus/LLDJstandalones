@@ -68,9 +68,9 @@ public :
  Bool_t        fill2DHistograms(Double_t weight, int selbin);
  Bool_t        write2DHistograms(int selbin);
  // Jet Variables
- Bool_t        initJetHistograms();
- Bool_t        fillJetHistograms(Double_t weight, int selbin, int lepbin);
- Bool_t        writeJetHistograms(int selbin, int lepbin);
+ Bool_t        initSlimmedJetHistograms();
+ Bool_t        fillSlimmedJetHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeSlimmedJetHistograms(int selbin, int lepbin);
  // Event Variables
  Bool_t        initBasicHistograms();
  Bool_t        fillBasicHistograms(Double_t weight, int selbin, int lepbin);
