@@ -230,6 +230,7 @@ int main(int argc, char **argv){
 
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
+ analyzer.initSelectionCategories();
  analyzer.initSigHistograms();
  analyzer.initJetHistograms();
  analyzer.init2DHistograms();
