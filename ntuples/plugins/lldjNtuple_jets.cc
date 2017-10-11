@@ -74,7 +74,7 @@ VertexDistanceXY vertexDistanceXY_;
 VertexCompatibleWithBeam* vertexBeam_ = new VertexCompatibleWithBeam(vertexDistanceXY_,100);
 
 // ak4 slimmedJets
-Int_t          nSlimmedJets__;
+Int_t          nSlimmedJets_;
 vector<float>  slimmedJetPt_;
 vector<float>  slimmedJetEn_;
 vector<float>  slimmedJetEta_;
@@ -312,7 +312,7 @@ const float maxDRtrackJet_ = 0.4;
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
-  tree->Branch("nSlimmedJets_",                     &nSlimmedJets__);          
+  tree->Branch("nSlimmedJets",                      &nSlimmedJets_);          
   tree->Branch("slimmedJetPt",                      &slimmedJetPt_);           
   tree->Branch("slimmedJetEn",                      &slimmedJetEn_);           
   tree->Branch("slimmedJetEta",                     &slimmedJetEta_);          
@@ -495,7 +495,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  bool dodebug = false;
  // cleanup from previous execution
- nSlimmedJets__=0;
+ nSlimmedJets_=0;
  slimmedJetPt_.clear();
  slimmedJetEn_.clear();
  slimmedJetEta_.clear();
@@ -1239,7 +1239,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     slimmedJetP4SmearDo_.push_back(slimmedJetP4SmearDo);
    }
    
-   nSlimmedJets__++;
+   nSlimmedJets_++;
  }/// End Jets Loop
  
  if(dodebug){
