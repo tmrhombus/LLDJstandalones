@@ -1326,7 +1326,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
 
   std::vector<int> jetlist;
 
-  for(int i = 0; i < nSlimmedJets_; i++)
+  for(int i = 0; i < nSlimmedJets; i++)
   {
 
    bool pass_overlap = true;

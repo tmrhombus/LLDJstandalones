@@ -360,7 +360,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("muIsGlobalMuon", &muIsGlobalMuon, &b_muIsGlobalMuon);
    fChain->SetBranchAddress("muIsPFMuon", &muIsPFMuon, &b_muIsPFMuon);
    fChain->SetBranchAddress("muPFdBetaIsolation", &muPFdBetaIsolation, &b_muPFdBetaIsolation);
-   fChain->SetBranchAddress("nSlimmedJets_", &nSlimmedJets_, &b_nSlimmedJets_);
+   fChain->SetBranchAddress("nSlimmedJets", &nSlimmedJets, &b_nSlimmedJets);
    fChain->SetBranchAddress("slimmedJetPt", &slimmedJetPt, &b_slimmedJetPt);
    fChain->SetBranchAddress("slimmedJetEn", &slimmedJetEn, &b_slimmedJetEn);
    fChain->SetBranchAddress("slimmedJetEta", &slimmedJetEta, &b_slimmedJetEta);

@@ -113,7 +113,7 @@ public :
    std::vector<int>     *muIsGlobalMuon;
    std::vector<int>     *muIsPFMuon;
    std::vector<float>   *muPFdBetaIsolation;
-   Int_t           nSlimmedJets_;
+   Int_t           nSlimmedJets;
    std::vector<float>   *slimmedJetPt;
    std::vector<float>   *slimmedJetEn;
    std::vector<float>   *slimmedJetEta;
@@ -381,7 +381,7 @@ public :
    TBranch        *b_muIsGlobalMuon;   //!
    TBranch        *b_muIsPFMuon;   //!
    TBranch        *b_muPFdBetaIsolation;   //!
-   TBranch        *b_nSlimmedJets_;   //!
+   TBranch        *b_nSlimmedJets;   //!
    TBranch        *b_slimmedJetPt;   //!
    TBranch        *b_slimmedJetEn;   //!
    TBranch        *b_slimmedJetEta;   //!
