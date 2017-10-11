@@ -228,10 +228,11 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
+ // make the analyzer, init some stuff
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
  analyzer.initSelectionCategories();
- analyzer.initSigHistograms();
+ analyzer.initBasicHistograms();
  analyzer.initJetHistograms();
  analyzer.init2DHistograms();
 

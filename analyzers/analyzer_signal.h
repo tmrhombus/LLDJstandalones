@@ -72,9 +72,9 @@ public :
  Bool_t        fillJetHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeJetHistograms(int selbin, int lepbin);
  // Event Variables
- Bool_t        initSigHistograms();
- Bool_t        fillSigHistograms(Double_t weight, int selbin, int lepbin);
- Bool_t        writeSigHistograms(int selbin, int lepbin);
+ Bool_t        initBasicHistograms();
+ Bool_t        fillBasicHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeBasicHistograms(int selbin, int lepbin);
 
  // vectors of ints
  // each int is an entry in vector
@@ -131,7 +131,8 @@ public :
  Double_t themet;
  Double_t themephi;
  Double_t htall;
- Double_t htjets;
+ Double_t htslimmedjets;
+ Double_t htaodcalojets;
 
  // for dilepton
  TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
@@ -202,7 +203,8 @@ public :
  TH1F  h_nSelectedPho             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedEle             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedMuo             [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSelectedJet             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedSlimmedJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -232,8 +234,8 @@ public :
  TH1F  h_eleSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_eleSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_eleSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
-// TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
-// TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_elePFdBetaIsolationDiff  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  TH1F  h_nMu                     [SELBINNAMESIZE][LEPBINNAMESIZE];
