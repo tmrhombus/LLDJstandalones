@@ -662,68 +662,77 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
 //----------------------------writeSlimmedJetHistograms
 Bool_t analyzer_signal::writeSlimmedJetHistograms(int selbin, int lepbin)
 {
-// //printf("writeSlimmedJetHistograms\n");
-// for(unsigned int j=0; j<jetmultnames.size(); ++j){
-//  h_jetPt                      [selbin][j][lepbin].Write(); 
-//  h_jetEn                      [selbin][j][lepbin].Write(); 
-//  h_jetEta                     [selbin][j][lepbin].Write(); 
-//  h_jetPhi                     [selbin][j][lepbin].Write(); 
-//  h_jetRawPt                   [selbin][j][lepbin].Write(); 
-//  h_jetRawEn                   [selbin][j][lepbin].Write(); 
-//  h_jetArea                    [selbin][j][lepbin].Write(); 
-//  h_jetLeadTrackPt             [selbin][j][lepbin].Write(); 
-//  h_jetLeadTrackEta            [selbin][j][lepbin].Write(); 
-//  h_jetLeadTrackPhi            [selbin][j][lepbin].Write(); 
-//  h_jetCSV2BJetTags            [selbin][j][lepbin].Write(); 
-//  h_jetJetProbabilityBJetTags  [selbin][j][lepbin].Write(); 
-//  h_jetpfCombinedMVAV2BJetTags [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax                [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax2               [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMaxP               [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMaxP2              [selbin][j][lepbin].Write(); 
-//  h_alphaMax_jetDauVertex_r    [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax_PV3onPV2       [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax_PV3onChg       [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax_PV3onAll       [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax_PV2onChg       [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMax_PV2onAll       [selbin][j][lepbin].Write(); 
-//  h_jetAlpha2Max_PV3onPV2      [selbin][j][lepbin].Write(); 
-//  h_jetAlpha2Max_PV3onChg      [selbin][j][lepbin].Write(); 
-//  h_jetAlpha2Max_PV3onAll      [selbin][j][lepbin].Write(); 
-//  h_jetAlpha2Max_PV2onChg      [selbin][j][lepbin].Write(); 
-//  h_jetAlpha2Max_PV2onAll      [selbin][j][lepbin].Write(); 
-//  h_jetAlphaD                  [selbin][j][lepbin].Write(); 
-//  h_jetAlphaMaxD               [selbin][j][lepbin].Write(); 
-//  h_jetLog10IPSig              [selbin][j][lepbin].Write(); 
-//  h_jetMedianLog10IPSig        [selbin][j][lepbin].Write(); 
-//  h_jetSumIP                   [selbin][j][lepbin].Write(); 
-//  h_jetSumIPSig                [selbin][j][lepbin].Write(); 
-//  h_jetTrackAngle              [selbin][j][lepbin].Write(); 
-//  h_jetLogTrackAngle           [selbin][j][lepbin].Write(); 
-//  h_jetMedianLogTrackAngle     [selbin][j][lepbin].Write(); 
-//  h_jetTotalTrackAngle         [selbin][j][lepbin].Write(); 
-//  h_jetNConstituents           [selbin][j][lepbin].Write(); 
-//  h_jetVtxPt                   [selbin][j][lepbin].Write(); 
-//  h_jetVtxMass                 [selbin][j][lepbin].Write(); 
-//  h_jetVtxNtrks                [selbin][j][lepbin].Write(); 
-//  h_jetVtx3DVal                [selbin][j][lepbin].Write(); 
-//  h_jetVtx3DSig                [selbin][j][lepbin].Write(); 
-//
-//  h_AODCaloJetPt               [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetEta              [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetPhi              [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetAlphaMax         [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetAlphaMax2        [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetAlphaMaxPrime    [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetAlphaMaxPrime2   [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetBeta             [selbin][j][lepbin].Write(); 
-//  h_AODCaloJetBeta2            [selbin][j][lepbin].Write(); 
-//
-//  h_IpVAlpha                   [selbin][j][lepbin].Write(); 
-//  h_IpVjetPt                   [selbin][j][lepbin].Write(); 
-//  h_AlphaVjetPt                [selbin][j][lepbin].Write(); 
-//
-// }
+ //printf("writeSlimmedJetHistograms\n");
+ for(unsigned int j=0; j<jetmultnames.size(); ++j){
+  h_slimmedJetPt                      [selbin][j][lepbin].Write(); 
+  h_slimmedJetEn                      [selbin][j][lepbin].Write(); 
+  h_slimmedJetEta                     [selbin][j][lepbin].Write(); 
+  h_slimmedJetPhi                     [selbin][j][lepbin].Write(); 
+  h_slimmedJetRawPt                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetRawEn                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetArea                    [selbin][j][lepbin].Write(); 
+  h_slimmedJetLeadTrackPt             [selbin][j][lepbin].Write(); 
+  h_slimmedJetLeadTrackPID            [selbin][j][lepbin].Write(); 
+  h_slimmedJetLeadTrackEta            [selbin][j][lepbin].Write(); 
+  h_slimmedJetLeadTrackPhi            [selbin][j][lepbin].Write(); 
+  h_slimmedJetNConstituents           [selbin][j][lepbin].Write(); 
+  h_slimmedJetVtxPt                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetVtxMass                 [selbin][j][lepbin].Write(); 
+  h_slimmedJetVtxNtrks                [selbin][j][lepbin].Write(); 
+  h_slimmedJetVtx3DVal                [selbin][j][lepbin].Write(); 
+  h_slimmedJetVtx3DSig                [selbin][j][lepbin].Write(); 
+  h_slimmedJetCSV2BJetTags            [selbin][j][lepbin].Write(); 
+  h_slimmedJetJetProbabilityBJetTags  [selbin][j][lepbin].Write(); 
+  h_slimmedJetpfCombinedMVAV2BJetTags [selbin][j][lepbin].Write(); 
+  h_slimmedJetPartonID                [selbin][j][lepbin].Write(); 
+  h_slimmedJetHadFlvr                 [selbin][j][lepbin].Write(); 
+
+  h_slimmedJetAlphaD                  [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlphaMaxD               [selbin][j][lepbin].Write(); 
+  h_slimmedJetMedianLog10IPSig        [selbin][j][lepbin].Write(); 
+  h_slimmedJetSumIP                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetSumIPSig                [selbin][j][lepbin].Write(); 
+  h_slimmedJetTrackAngle              [selbin][j][lepbin].Write(); 
+  h_slimmedJetLogTrackAngle           [selbin][j][lepbin].Write(); 
+  h_slimmedJetTotalTrackAngle         [selbin][j][lepbin].Write(); 
+
+  h_slimmedJetAlphaMax_PV3onPV2       [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlphaMax_PV3onChg       [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlphaMax_PV3onAll       [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlphaMax_PV2onChg       [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlphaMax_PV2onAll       [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlpha2Max_PV3onPV2      [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlpha2Max_PV3onChg      [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlpha2Max_PV3onAll      [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlpha2Max_PV2onChg      [selbin][j][lepbin].Write(); 
+  h_slimmedJetAlpha2Max_PV2onAll      [selbin][j][lepbin].Write(); 
+
+  h_slimmedJetGenJetEn                [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenJetPt                [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenJetEta               [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenJetPhi               [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenPartonID             [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenEn                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenPt                   [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenEta                  [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenPhi                  [selbin][j][lepbin].Write(); 
+  h_slimmedJetGenPartonMomID          [selbin][j][lepbin].Write(); 
+
+  // h_AODCaloJetPt               [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetEta              [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetPhi              [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetAlphaMax         [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetAlphaMax2        [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetAlphaMaxPrime    [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetAlphaMaxPrime2   [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetBeta             [selbin][j][lepbin].Write(); 
+  // h_AODCaloJetBeta2            [selbin][j][lepbin].Write(); 
+
+  // h_IpVAlpha                   [selbin][j][lepbin].Write(); 
+  // h_IpVjetPt                   [selbin][j][lepbin].Write(); 
+  // h_AlphaVjetPt                [selbin][j][lepbin].Write(); 
+
+ }
 
  return kTRUE;
 }
