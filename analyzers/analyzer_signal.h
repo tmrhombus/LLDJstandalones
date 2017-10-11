@@ -199,7 +199,8 @@ public :
  // // 1D
  // General / leading
  TH1F  h_htall                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_htjets                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_htslimmedjets            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_htaodcalojets            [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedPho             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedEle             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedMuo             [SELBINNAMESIZE][LEPBINNAMESIZE];

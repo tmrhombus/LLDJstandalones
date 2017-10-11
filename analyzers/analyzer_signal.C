@@ -762,109 +762,110 @@ void analyzer_signal::initSelectionCategories(){
 //----------------------------initBasicHistograms
 Bool_t analyzer_signal::initBasicHistograms(){
 
-// for(unsigned int i=0; i<selbinnames.size(); ++i){
-//  for(unsigned int k=0; k<lepnames.size(); ++k){
-//
-//   // initialize names
-//   TString hname_nVtx                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nVtx                   "; 
-//   TString hname_nGoodVtx                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nGoodVtx               "; 
-//   TString hname_nTrksPV                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nTrksPV                "; 
-//   TString hname_isPVGood                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_isPVGood               "; 
-//   TString hname_rho                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_rho                    "; 
-//   TString hname_rhoCentral              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_rhoCentral             "; 
-//   TString hname_nTruePU                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nTruePU                "; 
-//   TString hname_pfMET                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMET                  "; 
-//   TString hname_pfMETPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETPhi               "; 
-//   TString hname_pfMETsumEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETsumEt             "; 
-//
-//   TString hname_nPho                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho                   "; 
-//   TString hname_phoEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn                  "; 
-//   TString hname_phoPt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt                  "; 
-//   TString hname_phoEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta                 "; 
-//   TString hname_phoPhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi                 "; 
-//   TString hname_phoSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEn                "; 
-//   TString hname_phoSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCPhi               "; 
-//   TString hname_phoSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEta               "; 
-//
-//   TString hname_nEle                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nEle                   "; 
-//   TString hname_elePt                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePt                  "; 
-//   TString hname_eleEn                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleEn                  "; 
-//   TString hname_eleEta                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleEta                 "; 
-//   TString hname_elePhi                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePhi                 "; 
-//   TString hname_eleCharge               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleCharge              "; 
-//   TString hname_eleSCEn                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEn                "; 
-//   TString hname_eleSCEta                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEta               "; 
-//   TString hname_eleSCPhi                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCPhi               "; 
-//   TString hname_elePFdBetaIsolationRhoEA = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationRhoEA"; 
-//   TString hname_elePFdBetaIsolationCHS   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCHS  "; 
-//   TString hname_elePFdBetaIsolationDiff  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationDiff "; 
-//   TString hname_nMu                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nMu                    "; 
-//   TString hname_muPt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPt                   "; 
-//   TString hname_muEn                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muEn                   "; 
-//   TString hname_muEta                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muEta                  "; 
-//   TString hname_muPhi                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPhi                  "; 
-//   TString hname_muCharge                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muCharge               "; 
-//   TString hname_muPFdBetaIsolation      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPFdBetaIsolation     "; 
-//   TString hname_nJet                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nJet                   "; 
-//
-//   TString hname_htall                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall "; 
-//   TString hname_htjets                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htjets"; 
-//   TString hname_nSelectedPho            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedPho";
-//   TString hname_nSelectedEle            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedEle";
-//   TString hname_nSelectedMuo            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedMuo";
-//   TString hname_nSelectedSlimmedJet            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedSlimmedJet";
-//
-//   // initalize histograms
-//   h_nVtx                    [i][k] = initSingleHistogramTH1F( hname_nVtx                    , "nVtx                   ", 60,0,60) ; 
-//   h_nGoodVtx                [i][k] = initSingleHistogramTH1F( hname_nGoodVtx                , "nGoodVtx               ", 60,0,60) ;  
-//   h_nTrksPV                 [i][k] = initSingleHistogramTH1F( hname_nTrksPV                 , "nTrksPV                ", 60,0,60) ;  
-//   h_isPVGood                [i][k] = initSingleHistogramTH1F( hname_isPVGood                , "isPVGood               ", 2,0,1) ;  
-//   h_rho                     [i][k] = initSingleHistogramTH1F( hname_rho                     , "rho                    ", 30, -3, 3); 
-//   h_rhoCentral              [i][k] = initSingleHistogramTH1F( hname_rhoCentral              , "rhoCentral             ", 30, -3, 3); 
-//   h_nTruePU                 [i][k] = initSingleHistogramTH1F( hname_nTruePU                 , "nTruePU                ", 60,0,60) ;  
-//   h_pfMET                   [i][k] = initSingleHistogramTH1F( hname_pfMET                   , "pfMET                  ", 50, 0, 500) ;  
-//   h_pfMETPhi                [i][k] = initSingleHistogramTH1F( hname_pfMETPhi                , "pfMETPhi               ", 30, -5, 5); 
-//   h_pfMETsumEt              [i][k] = initSingleHistogramTH1F( hname_pfMETsumEt              , "pfMETsumEt             ", 50, 0, 500)  ;
-//
-//   h_nPho                    [i][k] = initSingleHistogramTH1F( hname_nPho                    , "nPho                   ", 10,0,10) ;  
-//   h_phoEn                   [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
-//   h_phoPt                   [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
-//   h_phoEta                  [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
-//   h_phoPhi                  [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
-//   h_phoSCEn                 [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
-//   h_phoSCPhi                [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
-//   h_phoSCEta                [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
-//
-//   h_nEle                    [i][k] = initSingleHistogramTH1F( hname_nEle                    , "nEle                   ", 10,0,10) ; 
-//   h_elePt                   [i][k] = initSingleHistogramTH1F( hname_elePt                   , "elePt                  ", 50, 0, 500) ;  
-//   h_eleEn                   [i][k] = initSingleHistogramTH1F( hname_eleEn                   , "eleEn                  ", 50, 0, 500) ;  
-//   h_eleEta                  [i][k] = initSingleHistogramTH1F( hname_eleEta                  , "eleEta                 ", 30, -5, 5); 
-//   h_elePhi                  [i][k] = initSingleHistogramTH1F( hname_elePhi                  , "elePhi                 ", 30, -5, 5); 
-//   h_eleCharge               [i][k] = initSingleHistogramTH1F( hname_eleCharge               , "eleCharge              ", 3, -1, 1); 
-//   h_eleSCEn                 [i][k] = initSingleHistogramTH1F( hname_eleSCEn                 , "eleSCEn                ", 50, 0, 500) ;  
-//   h_eleSCEta                [i][k] = initSingleHistogramTH1F( hname_eleSCEta                , "eleSCEta               ", 30, -5, 5); 
-//   h_eleSCPhi                [i][k] = initSingleHistogramTH1F( hname_eleSCPhi                , "eleSCPhi               ", 30, -5, 5); 
-//   h_elePFdBetaIsolationRhoEA [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationRhoEA, "elePFdBetaIsolationRhoEA", 30, 0, 1); 
-//   h_elePFdBetaIsolationCHS   [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCHS  , "elePFdBetaIsolationCHS  ", 30, 0, 1); 
-//   h_elePFdBetaIsolationDiff  [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationDiff , "elePFdBetaIsolationDiff ", 30, 0, 1); 
-//   h_nMu                     [i][k] = initSingleHistogramTH1F( hname_nMu                     , "nMu                    ", 10,0,10) ; 
-//   h_muPt                    [i][k] = initSingleHistogramTH1F( hname_muPt                    , "muPt                   ", 50, 0, 500) ;  
-//   h_muEn                    [i][k] = initSingleHistogramTH1F( hname_muEn                    , "muEn                   ", 50, 0, 500) ;  
-//   h_muEta                   [i][k] = initSingleHistogramTH1F( hname_muEta                   , "muEta                  ", 30, -5, 5); 
-//   h_muPhi                   [i][k] = initSingleHistogramTH1F( hname_muPhi                   , "muPhi                  ", 30, -5, 5); 
-//   h_muCharge                [i][k] = initSingleHistogramTH1F( hname_muCharge                , "muCharge               ", 3, -1, 1); 
-//   h_muPFdBetaIsolation      [i][k] = initSingleHistogramTH1F( hname_muPFdBetaIsolation      , "muPFdBetaIsolation     ", 30, -5, 5); 
-//   h_nJet                    [i][k] = initSingleHistogramTH1F( hname_nJet                    , "nJet                   ", 10,0,10) ; 
-//
-//   h_htall  [i][k] = initSingleHistogramTH1F( hname_htall  , "htall ", 50,0,1000) ; 
-//   h_htjets [i][k] = initSingleHistogramTH1F( hname_htjets , "htjets", 50,0,1000) ; 
-//   h_nSelectedPho [i][k] = initSingleHistogramTH1F( hname_nSelectedPho , "nSelectedPho", 10,0,10);
-//   h_nSelectedEle [i][k] = initSingleHistogramTH1F( hname_nSelectedEle , "nSelectedEle", 10,0,10);
-//   h_nSelectedMuo [i][k] = initSingleHistogramTH1F( hname_nSelectedMuo , "nSelectedMuo", 10,0,10);
-//   h_nSelectedSlimmedJet [i][k] = initSingleHistogramTH1F( hname_nSelectedSlimmedJet , "nSelectedSlimmedJet", 10,0,10);
-//
-//  }
-// }
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+  for(unsigned int k=0; k<lepnames.size(); ++k){
+
+   // initialize names
+   TString hname_nVtx                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nVtx        "; 
+   TString hname_nGoodVtx                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nGoodVtx    "; 
+   TString hname_nTrksPV                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nTrksPV     "; 
+   TString hname_isPVGood                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_isPVGood    "; 
+   TString hname_rho                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_rho         "; 
+   TString hname_rhoCentral               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_rhoCentral  "; 
+   TString hname_nTruePU                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nTruePU     "; 
+   TString hname_pfMET                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMET       "; 
+   TString hname_pfMETPhi                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETPhi    "; 
+   TString hname_pfMETsumEt               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_pfMETsumEt  "; 
+
+   TString hname_nPho                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nPho        "; 
+   TString hname_phoEn                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEn       "; 
+   TString hname_phoPt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPt       "; 
+   TString hname_phoEta                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoEta      "; 
+   TString hname_phoPhi                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoPhi      "; 
+   TString hname_phoSCEn                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEn     "; 
+   TString hname_phoSCPhi                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCPhi    "; 
+   TString hname_phoSCEta                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_phoSCEta    "; 
+
+   TString hname_nEle                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nEle        "; 
+   TString hname_elePt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePt       "; 
+   TString hname_eleEn                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleEn       "; 
+   TString hname_eleEta                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleEta      "; 
+   TString hname_elePhi                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePhi      "; 
+   TString hname_eleCharge                = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleCharge   "; 
+   TString hname_eleSCEn                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEn     "; 
+   TString hname_eleSCEta                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCEta    "; 
+   TString hname_eleSCPhi                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_eleSCPhi    "; 
+   TString hname_elePFdBetaIsolationRhoEA = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationRhoEA"; 
+   TString hname_elePFdBetaIsolationCHS   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationCHS  "; 
+   TString hname_elePFdBetaIsolationDiff  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_elePFdBetaIsolationDiff "; 
+   TString hname_nMu                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nMu                "; 
+   TString hname_muPt                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPt               "; 
+   TString hname_muEn                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muEn               "; 
+   TString hname_muEta                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muEta              "; 
+   TString hname_muPhi                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPhi              "; 
+   TString hname_muCharge                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muCharge           "; 
+   TString hname_muPFdBetaIsolation       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_muPFdBetaIsolation "; 
+
+   TString hname_htall                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall        " ;
+   TString hname_htslimmedjets            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htslimmedjets" ;
+   TString hname_htaodcalojets            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htaodcalojets" ;
+
+   TString hname_nSelectedPho             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedPho";
+   TString hname_nSelectedEle             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedEle";
+   TString hname_nSelectedMuo             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedMuo";
+   TString hname_nSelectedSlimmedJet      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedSlimmedJet";
+   TString hname_nSelectedAODCaloJet      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedAODCaloJet";
+
+   // initalize histograms
+   h_nVtx                     [i][k] = initSingleHistogramTH1F( hname_nVtx                    , "nVtx                   ", 60,0,60) ; 
+   h_nGoodVtx                 [i][k] = initSingleHistogramTH1F( hname_nGoodVtx                , "nGoodVtx               ", 60,0,60) ;  
+   h_nTrksPV                  [i][k] = initSingleHistogramTH1F( hname_nTrksPV                 , "nTrksPV                ", 60,0,60) ;  
+   h_isPVGood                 [i][k] = initSingleHistogramTH1F( hname_isPVGood                , "isPVGood               ", 2,0,1) ;  
+   h_rho                      [i][k] = initSingleHistogramTH1F( hname_rho                     , "rho                    ", 30, -3, 3); 
+   h_rhoCentral               [i][k] = initSingleHistogramTH1F( hname_rhoCentral              , "rhoCentral             ", 30, -3, 3); 
+   h_nTruePU                  [i][k] = initSingleHistogramTH1F( hname_nTruePU                 , "nTruePU                ", 60,0,60) ;  
+   h_pfMET                    [i][k] = initSingleHistogramTH1F( hname_pfMET                   , "pfMET                  ", 50, 0, 500) ;  
+   h_pfMETPhi                 [i][k] = initSingleHistogramTH1F( hname_pfMETPhi                , "pfMETPhi               ", 30, -5, 5); 
+   h_pfMETsumEt               [i][k] = initSingleHistogramTH1F( hname_pfMETsumEt              , "pfMETsumEt             ", 50, 0, 500)  ;
+
+   h_phoEn                    [i][k] = initSingleHistogramTH1F( hname_phoEn                   , "phoEn                  ", 50, 0, 500) ;  
+   h_phoPt                    [i][k] = initSingleHistogramTH1F( hname_phoPt                   , "phoPt                  ", 50, 0, 500) ;  
+   h_phoEta                   [i][k] = initSingleHistogramTH1F( hname_phoEta                  , "phoEta                 ", 30, -5, 5); 
+   h_phoPhi                   [i][k] = initSingleHistogramTH1F( hname_phoPhi                  , "phoPhi                 ", 30, -5, 5); 
+   h_phoSCEn                  [i][k] = initSingleHistogramTH1F( hname_phoSCEn                 , "phoSCEn                ", 50, 0, 500) ;  
+   h_phoSCPhi                 [i][k] = initSingleHistogramTH1F( hname_phoSCPhi                , "phoSCPhi               ", 30, -5, 5); 
+   h_phoSCEta                 [i][k] = initSingleHistogramTH1F( hname_phoSCEta                , "phoSCEta               ", 30, -5, 5); 
+
+   h_elePt                    [i][k] = initSingleHistogramTH1F( hname_elePt                   , "elePt                  ", 50, 0, 500) ;  
+   h_eleEn                    [i][k] = initSingleHistogramTH1F( hname_eleEn                   , "eleEn                  ", 50, 0, 500) ;  
+   h_eleEta                   [i][k] = initSingleHistogramTH1F( hname_eleEta                  , "eleEta                 ", 30, -5, 5); 
+   h_elePhi                   [i][k] = initSingleHistogramTH1F( hname_elePhi                  , "elePhi                 ", 30, -5, 5); 
+   h_eleCharge                [i][k] = initSingleHistogramTH1F( hname_eleCharge               , "eleCharge              ", 3, -1, 1); 
+   h_eleSCEn                  [i][k] = initSingleHistogramTH1F( hname_eleSCEn                 , "eleSCEn                ", 50, 0, 500) ;  
+   h_eleSCEta                 [i][k] = initSingleHistogramTH1F( hname_eleSCEta                , "eleSCEta               ", 30, -5, 5); 
+   h_eleSCPhi                 [i][k] = initSingleHistogramTH1F( hname_eleSCPhi                , "eleSCPhi               ", 30, -5, 5); 
+   h_elePFdBetaIsolationRhoEA [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationRhoEA, "elePFdBetaIsolationRhoEA", 30, 0, 1); 
+   h_elePFdBetaIsolationCHS   [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationCHS  , "elePFdBetaIsolationCHS  ", 30, 0, 1); 
+   h_elePFdBetaIsolationDiff  [i][k] = initSingleHistogramTH1F( hname_elePFdBetaIsolationDiff , "elePFdBetaIsolationDiff ", 30, 0, 1); 
+
+   h_muPt                     [i][k] = initSingleHistogramTH1F( hname_muPt                    , "muPt                   ", 50, 0, 500) ;  
+   h_muEn                     [i][k] = initSingleHistogramTH1F( hname_muEn                    , "muEn                   ", 50, 0, 500) ;  
+   h_muEta                    [i][k] = initSingleHistogramTH1F( hname_muEta                   , "muEta                  ", 30, -5, 5); 
+   h_muPhi                    [i][k] = initSingleHistogramTH1F( hname_muPhi                   , "muPhi                  ", 30, -5, 5); 
+   h_muCharge                 [i][k] = initSingleHistogramTH1F( hname_muCharge                , "muCharge               ", 3, -1, 1); 
+   h_muPFdBetaIsolation       [i][k] = initSingleHistogramTH1F( hname_muPFdBetaIsolation      , "muPFdBetaIsolation     ", 30, -5, 5); 
+
+   h_htall                    [i][k] = initSingleHistogramTH1F( hname_htall               , "htall "             , 50,0,1000) ; 
+   h_htslimmedjets            [i][k] = initSingleHistogramTH1F( hname_htslimmedjets       , "htslimmedjets"      , 50,0,1000) ; 
+   h_htaodcalojets            [i][k] = initSingleHistogramTH1F( hname_htaodcalojets       , "htaodcalojets"      , 50,0,1000) ; 
+   h_nSelectedPho             [i][k] = initSingleHistogramTH1F( hname_nSelectedPho        , "nSelectedPho"       , 10,0,10);
+   h_nSelectedEle             [i][k] = initSingleHistogramTH1F( hname_nSelectedEle        , "nSelectedEle"       , 10,0,10);
+   h_nSelectedMuo             [i][k] = initSingleHistogramTH1F( hname_nSelectedMuo        , "nSelectedMuo"       , 10,0,10);
+   h_nSelectedSlimmedJet      [i][k] = initSingleHistogramTH1F( hname_nSelectedSlimmedJet , "nSelectedSlimmedJet", 10,0,10);
+   h_nSelectedAODCaloJet      [i][k] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet , "nSelectedAODCaloJet", 10,0,10);
+
+  }
+ }
 
  return kTRUE;
 }
@@ -873,54 +874,63 @@ Bool_t analyzer_signal::initBasicHistograms(){
 Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lepbin)
 {
 
-// //printf("fillBasicHistograms\n");
-// h_nVtx                    [selbin][lepbin] .Fill( nVtx       , weight);  
-// h_nGoodVtx                [selbin][lepbin] .Fill( nGoodVtx   , weight);  
-// h_nTrksPV                 [selbin][lepbin] .Fill( nTrksPV    , weight);  
-// h_isPVGood                [selbin][lepbin] .Fill( isPVGood   , weight);  
-// h_rho                     [selbin][lepbin] .Fill( rho        , weight);  
-// h_rhoCentral              [selbin][lepbin] .Fill( rhoCentral , weight);  
-// h_nTruePU                 [selbin][lepbin] .Fill( nTruePU    , weight);  
-// h_pfMET                   [selbin][lepbin] .Fill( pfMET      , weight);  
-// h_pfMETPhi                [selbin][lepbin] .Fill( pfMETPhi   , weight);  
-// h_pfMETsumEt              [selbin][lepbin] .Fill( pfMETsumEt , weight);  
-// //h_nPho                    [selbin][lepbin] .Fill( nPho       , weight);  
-// h_nEle                    [selbin][lepbin] .Fill( nEle       , weight);  
-// h_nMu                     [selbin][lepbin] .Fill( nMu        , weight);  
-// h_nJet                    [selbin][lepbin] .Fill( nJet       , weight);  
-//
-// h_htall                   [selbin][lepbin] .Fill( htall      , weight); 
-// h_htjets                  [selbin][lepbin] .Fill( htjets     , weight); 
-// h_nSelectedPho            [selbin][lepbin] .Fill( nSelectedPho, weight);
-// h_nSelectedEle            [selbin][lepbin] .Fill( nSelectedEle, weight);
-// h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo, weight);
-// h_nSelectedSlimmedJet            [selbin][lepbin] .Fill( nSelectedSlimmedJet, weight);
-//
-// //if(phoEn                  ->size()>0){ h_phoEn                   [selbin][lepbin] .Fill( phoEn                  ->at(0), weight ); } 
-// //if(phoPt                  ->size()>0){ h_phoPt                   [selbin][lepbin] .Fill( phoPt                  ->at(0), weight ); } 
-// //if(phoEta                 ->size()>0){ h_phoEta                  [selbin][lepbin] .Fill( phoEta                 ->at(0), weight ); } 
-// //if(phoPhi                 ->size()>0){ h_phoPhi                  [selbin][lepbin] .Fill( phoPhi                 ->at(0), weight ); } 
-// //if(phoSCEn                ->size()>0){ h_phoSCEn                 [selbin][lepbin] .Fill( phoSCEn                ->at(0), weight ); } 
-// //if(phoSCPhi               ->size()>0){ h_phoSCPhi                [selbin][lepbin] .Fill( phoSCPhi               ->at(0), weight ); } 
-// //if(phoSCEta               ->size()>0){ h_phoSCEta                [selbin][lepbin] .Fill( phoSCEta               ->at(0), weight ); } 
-//
-// if(elePt                  ->size()>0){ h_elePt                   [selbin][lepbin] .Fill( elePt                  ->at(0), weight ); } 
-// if(eleEn                  ->size()>0){ h_eleEn                   [selbin][lepbin] .Fill( eleEn                  ->at(0), weight ); } 
-// if(eleEta                 ->size()>0){ h_eleEta                  [selbin][lepbin] .Fill( eleEta                 ->at(0), weight ); } 
-// if(elePhi                 ->size()>0){ h_elePhi                  [selbin][lepbin] .Fill( elePhi                 ->at(0), weight ); } 
-// if(eleCharge              ->size()>0){ h_eleCharge               [selbin][lepbin] .Fill( eleCharge              ->at(0), weight ); } 
-// if(eleSCEn                ->size()>0){ h_eleSCEn                 [selbin][lepbin] .Fill( eleSCEn                ->at(0), weight ); } 
-// if(eleSCEta               ->size()>0){ h_eleSCEta                [selbin][lepbin] .Fill( eleSCEta               ->at(0), weight ); } 
-// if(eleSCPhi               ->size()>0){ h_eleSCPhi                [selbin][lepbin] .Fill( eleSCPhi               ->at(0), weight ); } 
-// //if(elePFdBetaIsolationRhoEA->size()>0){ h_elePFdBetaIsolationRhoEA[selbin][lepbin].Fill( elePFdBetaIsolationRhoEA->at(0), weight); }
-// //if(elePFdBetaIsolationCHS  ->size()>0){ h_elePFdBetaIsolationCHS  [selbin][lepbin].Fill( elePFdBetaIsolationCHS  ->at(0), weight); }
-// if(elePFdBetaIsolationDiff ->size()>0){ h_elePFdBetaIsolationDiff [selbin][lepbin].Fill( elePFdBetaIsolationDiff ->at(0), weight); }
-// if(muPt                   ->size()>0){ h_muPt                    [selbin][lepbin] .Fill( muPt                   ->at(0), weight ); } 
-// if(muEn                   ->size()>0){ h_muEn                    [selbin][lepbin] .Fill( muEn                   ->at(0), weight ); } 
-// if(muEta                  ->size()>0){ h_muEta                   [selbin][lepbin] .Fill( muEta                  ->at(0), weight ); } 
-// if(muPhi                  ->size()>0){ h_muPhi                   [selbin][lepbin] .Fill( muPhi                  ->at(0), weight ); } 
-// if(muCharge               ->size()>0){ h_muCharge                [selbin][lepbin] .Fill( muCharge               ->at(0), weight ); } 
-// if(muPFdBetaIsolation     ->size()>0){ h_muPFdBetaIsolation      [selbin][lepbin] .Fill( muPFdBetaIsolation     ->at(0), weight ); } 
+ // fill single values
+ h_nVtx                    [selbin][lepbin] .Fill( nVtx       , weight);  
+ h_nGoodVtx                [selbin][lepbin] .Fill( nGoodVtx   , weight);  
+ h_nTrksPV                 [selbin][lepbin] .Fill( nTrksPV    , weight);  
+ h_isPVGood                [selbin][lepbin] .Fill( isPVGood   , weight);  
+ h_rho                     [selbin][lepbin] .Fill( rho        , weight);  
+ h_rhoCentral              [selbin][lepbin] .Fill( rhoCentral , weight);  
+ h_nTruePU                 [selbin][lepbin] .Fill( nTruePU    , weight);  
+ h_pfMET                   [selbin][lepbin] .Fill( pfMET      , weight);  
+ h_pfMETPhi                [selbin][lepbin] .Fill( pfMETPhi   , weight);  
+ h_pfMETsumEt              [selbin][lepbin] .Fill( pfMETsumEt , weight);  
+
+ h_htall                   [selbin][lepbin] .Fill( htall              , weight); 
+ h_htslimmedjets           [selbin][lepbin] .Fill( htslimmedjets      , weight); 
+ h_htaodcalojets           [selbin][lepbin] .Fill( htaodcalojets      , weight); 
+ h_nSelectedPho            [selbin][lepbin] .Fill( nSelectedPho       , weight);
+ h_nSelectedEle            [selbin][lepbin] .Fill( nSelectedEle       , weight);
+ h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo       , weight);
+ h_nSelectedSlimmedJet     [selbin][lepbin] .Fill( nSelectedSlimmedJet, weight);
+ h_nSelectedAODCaloJet     [selbin][lepbin] .Fill( nSelectedAODCaloJet, weight);
+
+ // fill leading in vector
+ if(photon_list.size() > 0){
+  int phoindex = photon_list[0];
+  h_phoEn    [selbin][lepbin] .Fill( phoEn   ->at(phoindex), weight );  
+  h_phoPt    [selbin][lepbin] .Fill( phoPt   ->at(phoindex), weight );  
+  h_phoEta   [selbin][lepbin] .Fill( phoEta  ->at(phoindex), weight );  
+  h_phoPhi   [selbin][lepbin] .Fill( phoPhi  ->at(phoindex), weight );  
+  h_phoSCEn  [selbin][lepbin] .Fill( phoSCEn ->at(phoindex), weight );  
+  h_phoSCPhi [selbin][lepbin] .Fill( phoSCPhi->at(phoindex), weight );  
+  h_phoSCEta [selbin][lepbin] .Fill( phoSCEta->at(phoindex), weight );  
+ }
+
+ if(electron_list.size() > 0){
+  int eleindex = electron_list[0];
+  h_elePt                   [selbin][lepbin] .Fill( elePt                    ->at(eleindex), weight );
+  h_eleEn                   [selbin][lepbin] .Fill( eleEn                    ->at(eleindex), weight );
+  h_eleEta                  [selbin][lepbin] .Fill( eleEta                   ->at(eleindex), weight );
+  h_elePhi                  [selbin][lepbin] .Fill( elePhi                   ->at(eleindex), weight );
+  h_eleCharge               [selbin][lepbin] .Fill( eleCharge                ->at(eleindex), weight );
+  h_eleSCEn                 [selbin][lepbin] .Fill( eleSCEn                  ->at(eleindex), weight );
+  h_eleSCEta                [selbin][lepbin] .Fill( eleSCEta                 ->at(eleindex), weight );
+  h_eleSCPhi                [selbin][lepbin] .Fill( eleSCPhi                 ->at(eleindex), weight );
+  h_elePFdBetaIsolationRhoEA[selbin][lepbin] .Fill( elePFdBetaIsolationRhoEA ->at(eleindex), weight ); 
+  h_elePFdBetaIsolationCHS  [selbin][lepbin] .Fill( elePFdBetaIsolationCHS   ->at(eleindex), weight ); 
+  h_elePFdBetaIsolationDiff [selbin][lepbin] .Fill( elePFdBetaIsolationDiff  ->at(eleindex), weight ); 
+ }
+
+ if(muon_list.size() > 0){
+  int muindex = muon_list[0];
+  h_muPt               [selbin][lepbin] .Fill( muPt               ->at(muindex), weight );  
+  h_muEn               [selbin][lepbin] .Fill( muEn               ->at(muindex), weight );  
+  h_muEta              [selbin][lepbin] .Fill( muEta              ->at(muindex), weight );  
+  h_muPhi              [selbin][lepbin] .Fill( muPhi              ->at(muindex), weight );  
+  h_muCharge           [selbin][lepbin] .Fill( muCharge           ->at(muindex), weight );  
+  h_muPFdBetaIsolation [selbin][lepbin] .Fill( muPFdBetaIsolation ->at(muindex), weight );  
+ }
 
  return kTRUE;
 }
