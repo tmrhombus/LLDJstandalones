@@ -895,7 +895,7 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
  h_nSelectedSlimmedJet     [selbin][lepbin] .Fill( nSelectedSlimmedJet, weight);
  h_nSelectedAODCaloJet     [selbin][lepbin] .Fill( nSelectedAODCaloJet, weight);
 
- // fill leading in vector
+ // fill leading photon in vector
  if(photon_list.size() > 0){
   int phoindex = photon_list[0];
   h_phoEn    [selbin][lepbin] .Fill( phoEn   ->at(phoindex), weight );  
@@ -907,6 +907,7 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
   h_phoSCEta [selbin][lepbin] .Fill( phoSCEta->at(phoindex), weight );  
  }
 
+ // fill leading electron in vector
  if(electron_list.size() > 0){
   int eleindex = electron_list[0];
   h_elePt                   [selbin][lepbin] .Fill( elePt                    ->at(eleindex), weight );
@@ -922,6 +923,7 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
   h_elePFdBetaIsolationDiff [selbin][lepbin] .Fill( elePFdBetaIsolationDiff  ->at(eleindex), weight ); 
  }
 
+ // fill leading muon in vector
  if(muon_list.size() > 0){
   int muindex = muon_list[0];
   h_muPt               [selbin][lepbin] .Fill( muPt               ->at(muindex), weight );  
@@ -936,56 +938,54 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
 }
 
 //----------------------------writeBasicHistograms
-//Bool_t analyzer_signal::writeBasicHistograms(int ptbin, int sysbin)
 Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
 {
- //printf("writeBasicHistograms\n");
+ h_nVtx                    [selbin][lepbin] .Write(); 
+ h_nGoodVtx                [selbin][lepbin] .Write(); 
+ h_nTrksPV                 [selbin][lepbin] .Write(); 
+ h_isPVGood                [selbin][lepbin] .Write(); 
+ h_rho                     [selbin][lepbin] .Write(); 
+ h_rhoCentral              [selbin][lepbin] .Write(); 
+ h_nTruePU                 [selbin][lepbin] .Write(); 
+ h_pfMET                   [selbin][lepbin] .Write(); 
+ h_pfMETPhi                [selbin][lepbin] .Write(); 
+ h_pfMETsumEt              [selbin][lepbin] .Write(); 
 
-//  h_nVtx                    [selbin][lepbin].Write(); 
-//  h_nGoodVtx                [selbin][lepbin].Write(); 
-//  h_nTrksPV                 [selbin][lepbin].Write(); 
-//  h_isPVGood                [selbin][lepbin].Write(); 
-//  h_rho                     [selbin][lepbin].Write(); 
-//  h_rhoCentral              [selbin][lepbin].Write(); 
-//  h_nTruePU                 [selbin][lepbin].Write(); 
-//  h_pfMET                   [selbin][lepbin].Write(); 
-//  h_pfMETPhi                [selbin][lepbin].Write(); 
-//  h_pfMETsumEt              [selbin][lepbin].Write(); 
-//  h_nPho                    [selbin][lepbin].Write(); 
-//  //h_phoEn                   [selbin][lepbin].Write(); 
-//  //h_phoPt                   [selbin][lepbin].Write(); 
-//  h_phoEta                  [selbin][lepbin].Write(); 
-//  h_phoPhi                  [selbin][lepbin].Write(); 
-//  //h_phoSCEn                 [selbin][lepbin].Write(); 
-//  h_phoSCPhi                [selbin][lepbin].Write(); 
-//  h_phoSCEta                [selbin][lepbin].Write(); 
-//  h_nEle                    [selbin][lepbin].Write(); 
-//  h_elePt                   [selbin][lepbin].Write(); 
-//  h_eleEn                   [selbin][lepbin].Write(); 
-//  h_eleEta                  [selbin][lepbin].Write(); 
-//  h_elePhi                  [selbin][lepbin].Write(); 
-//  h_eleCharge               [selbin][lepbin].Write(); 
-//  h_eleSCEn                 [selbin][lepbin].Write(); 
-//  h_eleSCEta                [selbin][lepbin].Write(); 
-//  h_eleSCPhi                [selbin][lepbin].Write(); 
-//  //h_elePFdBetaIsolationRhoEA[selbin][lepbin].Write();
-//  //h_elePFdBetaIsolationCHS  [selbin][lepbin].Write();
-//  h_elePFdBetaIsolationDiff [selbin][lepbin].Write();
-//  h_nMu                     [selbin][lepbin].Write(); 
-//  h_muPt                    [selbin][lepbin].Write(); 
-//  h_muEn                    [selbin][lepbin].Write(); 
-//  h_muEta                   [selbin][lepbin].Write(); 
-//  h_muPhi                   [selbin][lepbin].Write(); 
-//  h_muCharge                [selbin][lepbin].Write(); 
-//  h_muPFdBetaIsolation      [selbin][lepbin].Write(); 
-//  h_nJet                    [selbin][lepbin].Write(); 
-//
-//  h_htall  [selbin][lepbin].Write(); 
-//  h_htjets [selbin][lepbin].Write(); 
-//  h_nSelectedPho [selbin][lepbin] .Write();
-//  h_nSelectedEle [selbin][lepbin] .Write();
-//  h_nSelectedMuo [selbin][lepbin] .Write();
-//  h_nSelectedSlimmedJet [selbin][lepbin] .Write();
+ h_htall                   [selbin][lepbin] .Write(); 
+ h_htslimmedjets           [selbin][lepbin] .Write(); 
+ h_htaodcalojets           [selbin][lepbin] .Write(); 
+ h_nSelectedPho            [selbin][lepbin] .Write(); 
+ h_nSelectedEle            [selbin][lepbin] .Write(); 
+ h_nSelectedMuo            [selbin][lepbin] .Write(); 
+ h_nSelectedSlimmedJet     [selbin][lepbin] .Write(); 
+ h_nSelectedAODCaloJet     [selbin][lepbin] .Write(); 
+
+ h_phoEn                   [selbin][lepbin] .Write(); 
+ h_phoPt                   [selbin][lepbin] .Write(); 
+ h_phoEta                  [selbin][lepbin] .Write(); 
+ h_phoPhi                  [selbin][lepbin] .Write(); 
+ h_phoSCEn                 [selbin][lepbin] .Write(); 
+ h_phoSCPhi                [selbin][lepbin] .Write(); 
+ h_phoSCEta                [selbin][lepbin] .Write(); 
+
+ h_elePt                   [selbin][lepbin] .Write(); 
+ h_eleEn                   [selbin][lepbin] .Write(); 
+ h_eleEta                  [selbin][lepbin] .Write(); 
+ h_elePhi                  [selbin][lepbin] .Write(); 
+ h_eleCharge               [selbin][lepbin] .Write(); 
+ h_eleSCEn                 [selbin][lepbin] .Write(); 
+ h_eleSCEta                [selbin][lepbin] .Write(); 
+ h_eleSCPhi                [selbin][lepbin] .Write(); 
+ h_elePFdBetaIsolationRhoEA[selbin][lepbin] .Write(); 
+ h_elePFdBetaIsolationCHS  [selbin][lepbin] .Write(); 
+ h_elePFdBetaIsolationDiff [selbin][lepbin] .Write(); 
+
+ h_muPt                    [selbin][lepbin] .Write(); 
+ h_muEn                    [selbin][lepbin] .Write(); 
+ h_muEta                   [selbin][lepbin] .Write(); 
+ h_muPhi                   [selbin][lepbin] .Write(); 
+ h_muCharge                [selbin][lepbin] .Write(); 
+ h_muPFdBetaIsolation      [selbin][lepbin] .Write(); 
 
  return kTRUE;
 }
