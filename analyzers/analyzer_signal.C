@@ -230,33 +230,33 @@ void analyzer_signal::Loop(TString outfilename,
 
   // fill histogram
 
-  //if( passSingleEle ){
-  if( passSingleEle || passDoubleEle ){
-                        fillBasicHistograms(event_weight,0,0); fillSlimmedJetHistograms(event_weight,0,0);  //fill2DHistograms(event_weight,0);  
-   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); fillSlimmedJetHistograms(event_weight,1,0); }//fill2DHistograms(event_weight,1); }
-   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); fillSlimmedJetHistograms(event_weight,2,0); }//fill2DHistograms(event_weight,2); }
-   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); fillSlimmedJetHistograms(event_weight,3,0); }//fill2DHistograms(event_weight,3); }
-   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); fillSlimmedJetHistograms(event_weight,4,0); }//fill2DHistograms(event_weight,4); }
-   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); fillSlimmedJetHistograms(event_weight,5,0); }//fill2DHistograms(event_weight,5); }
-  }
-
-  //if( passSingleMu ){
-  if( passSingleMu || passDoubleMu ){
-                        fillBasicHistograms(event_weight,0,1); fillSlimmedJetHistograms(event_weight,0,1);  //fill2DHistograms(event_weight,0);  
-   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); fillSlimmedJetHistograms(event_weight,1,1); }//fill2DHistograms(event_weight,1); }
-   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); fillSlimmedJetHistograms(event_weight,2,1); }//fill2DHistograms(event_weight,2); }
-   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); fillSlimmedJetHistograms(event_weight,3,1); }//fill2DHistograms(event_weight,3); }
-   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); fillSlimmedJetHistograms(event_weight,4,1); }//fill2DHistograms(event_weight,4); }
-   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); fillSlimmedJetHistograms(event_weight,5,1); }//fill2DHistograms(event_weight,5); }
-  }
+//  //if( passSingleEle ){
+//  if( passSingleEle || passDoubleEle ){
+//                        fillBasicHistograms(event_weight,0,0); fillSlimmedJetHistograms(event_weight,0,0); fillAODCaloJetHistograms(event_weight,0,0);  
+//   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); fillSlimmedJetHistograms(event_weight,1,0); fillAODCaloJetHistograms(event_weight,1,0); }
+//   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); fillSlimmedJetHistograms(event_weight,2,0); fillAODCaloJetHistograms(event_weight,2,0); }
+//   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); fillSlimmedJetHistograms(event_weight,3,0); fillAODCaloJetHistograms(event_weight,3,0); }
+//   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); fillSlimmedJetHistograms(event_weight,4,0); fillAODCaloJetHistograms(event_weight,4,0); }
+//   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); fillSlimmedJetHistograms(event_weight,5,0); fillAODCaloJetHistograms(event_weight,5,0); }
+//  }
+//
+//  //if( passSingleMu ){
+//  if( passSingleMu || passDoubleMu ){
+//                        fillBasicHistograms(event_weight,0,1); fillSlimmedJetHistograms(event_weight,0,1); fillAODCaloJetHistograms(event_weight,0,1);  
+//   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); fillSlimmedJetHistograms(event_weight,1,1); fillAODCaloJetHistograms(event_weight,1,1); }
+//   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); fillSlimmedJetHistograms(event_weight,2,1); fillAODCaloJetHistograms(event_weight,2,1); }
+//   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); fillSlimmedJetHistograms(event_weight,3,1); fillAODCaloJetHistograms(event_weight,3,1); }
+//   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); fillSlimmedJetHistograms(event_weight,4,1); fillAODCaloJetHistograms(event_weight,4,1); }
+//   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); fillSlimmedJetHistograms(event_weight,5,1); fillAODCaloJetHistograms(event_weight,5,1); }
+//  }
    
   //No Lep selection
-                          fillBasicHistograms(event_weight,0,2); fillSlimmedJetHistograms(event_weight,0,2);  //fill2DHistograms(event_weight,0);  
-     if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); fillSlimmedJetHistograms(event_weight,1,2); }//fill2DHistograms(event_weight,1); }
-     if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); fillSlimmedJetHistograms(event_weight,2,2); }//fill2DHistograms(event_weight,2); }
-     if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); fillSlimmedJetHistograms(event_weight,3,2); }//fill2DHistograms(event_weight,3); }
-     if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); fillSlimmedJetHistograms(event_weight,4,2); }//fill2DHistograms(event_weight,4); }
-     if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); fillSlimmedJetHistograms(event_weight,5,2); }//fill2DHistograms(event_weight,5); }
+                          fillBasicHistograms(event_weight,0,2); fillSlimmedJetHistograms(event_weight,0,2);// fillAODCaloJetHistograms(event_weight,0,2);  
+//     if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); fillSlimmedJetHistograms(event_weight,1,2); fillAODCaloJetHistograms(event_weight,1,2); }
+//     if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); fillSlimmedJetHistograms(event_weight,2,2); fillAODCaloJetHistograms(event_weight,2,2); }
+//     if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); fillSlimmedJetHistograms(event_weight,3,2); fillAODCaloJetHistograms(event_weight,3,2); }
+//     if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); fillSlimmedJetHistograms(event_weight,4,2); fillAODCaloJetHistograms(event_weight,4,2); }
+//     if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); fillSlimmedJetHistograms(event_weight,5,2); fillAODCaloJetHistograms(event_weight,5,2); }
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
@@ -1100,7 +1100,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
  for(unsigned int j=0; j<jetmultnames.size()-1; ++j){
-  if( aodcalojet_list.size()>j ){
+  if( (int)aodcalojet_list.size()>j ){
    int aodcalojetindex = aodcalojet_list[j];
     h_AODCaloJetPt                             [selbin][j][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
     h_AODCaloJetEta                            [selbin][j][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
@@ -1593,6 +1593,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
 
   std::vector<int> jetlist;
 
+  //for(int i = 0; i < (int)slimmedJetPt->size() ; i++)
   for(int i = 0; i < nSlimmedJets; i++)
   {
 
