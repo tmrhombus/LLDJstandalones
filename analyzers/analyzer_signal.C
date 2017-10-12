@@ -230,49 +230,49 @@ void analyzer_signal::Loop(TString outfilename,
 
   // fill histogram
 
-//  //if( passSingleEle ){
-//  if( passSingleEle || passDoubleEle ){
-//                        fillBasicHistograms(event_weight,0,0); fillSlimmedJetHistograms(event_weight,0,0); fillAODCaloJetHistograms(event_weight,0,0);  
-//   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); fillSlimmedJetHistograms(event_weight,1,0); fillAODCaloJetHistograms(event_weight,1,0); }
-//   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); fillSlimmedJetHistograms(event_weight,2,0); fillAODCaloJetHistograms(event_weight,2,0); }
-//   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); fillSlimmedJetHistograms(event_weight,3,0); fillAODCaloJetHistograms(event_weight,3,0); }
-//   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); fillSlimmedJetHistograms(event_weight,4,0); fillAODCaloJetHistograms(event_weight,4,0); }
-//   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); fillSlimmedJetHistograms(event_weight,5,0); fillAODCaloJetHistograms(event_weight,5,0); }
-//  }
-//
-//  //if( passSingleMu ){
-//  if( passSingleMu || passDoubleMu ){
-//                        fillBasicHistograms(event_weight,0,1); fillSlimmedJetHistograms(event_weight,0,1); fillAODCaloJetHistograms(event_weight,0,1);  
-//   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); fillSlimmedJetHistograms(event_weight,1,1); fillAODCaloJetHistograms(event_weight,1,1); }
-//   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); fillSlimmedJetHistograms(event_weight,2,1); fillAODCaloJetHistograms(event_weight,2,1); }
-//   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); fillSlimmedJetHistograms(event_weight,3,1); fillAODCaloJetHistograms(event_weight,3,1); }
-//   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); fillSlimmedJetHistograms(event_weight,4,1); fillAODCaloJetHistograms(event_weight,4,1); }
-//   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); fillSlimmedJetHistograms(event_weight,5,1); fillAODCaloJetHistograms(event_weight,5,1); }
-//  }
+  //if( passSingleEle ){
+  if( passSingleEle || passDoubleEle ){
+                        fillBasicHistograms(event_weight,0,0); fillSlimmedJetHistograms(event_weight,0,0); fillAODCaloJetHistograms(event_weight,0,0);  
+   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); fillSlimmedJetHistograms(event_weight,1,0); fillAODCaloJetHistograms(event_weight,1,0); }
+   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); fillSlimmedJetHistograms(event_weight,2,0); fillAODCaloJetHistograms(event_weight,2,0); }
+   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); fillSlimmedJetHistograms(event_weight,3,0); fillAODCaloJetHistograms(event_weight,3,0); }
+   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); fillSlimmedJetHistograms(event_weight,4,0); fillAODCaloJetHistograms(event_weight,4,0); }
+   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); fillSlimmedJetHistograms(event_weight,5,0); fillAODCaloJetHistograms(event_weight,5,0); }
+  }
+
+  //if( passSingleMu ){
+  if( passSingleMu || passDoubleMu ){
+                        fillBasicHistograms(event_weight,0,1); fillSlimmedJetHistograms(event_weight,0,1); fillAODCaloJetHistograms(event_weight,0,1);  
+   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); fillSlimmedJetHistograms(event_weight,1,1); fillAODCaloJetHistograms(event_weight,1,1); }
+   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); fillSlimmedJetHistograms(event_weight,2,1); fillAODCaloJetHistograms(event_weight,2,1); }
+   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); fillSlimmedJetHistograms(event_weight,3,1); fillAODCaloJetHistograms(event_weight,3,1); }
+   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); fillSlimmedJetHistograms(event_weight,4,1); fillAODCaloJetHistograms(event_weight,4,1); }
+   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); fillSlimmedJetHistograms(event_weight,5,1); fillAODCaloJetHistograms(event_weight,5,1); }
+  }
    
   //No Lep selection
-                          fillBasicHistograms(event_weight,0,2); fillSlimmedJetHistograms(event_weight,0,2);// fillAODCaloJetHistograms(event_weight,0,2);  
-//     if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); fillSlimmedJetHistograms(event_weight,1,2); fillAODCaloJetHistograms(event_weight,1,2); }
-//     if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); fillSlimmedJetHistograms(event_weight,2,2); fillAODCaloJetHistograms(event_weight,2,2); }
-//     if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); fillSlimmedJetHistograms(event_weight,3,2); fillAODCaloJetHistograms(event_weight,3,2); }
-//     if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); fillSlimmedJetHistograms(event_weight,4,2); fillAODCaloJetHistograms(event_weight,4,2); }
-//     if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); fillSlimmedJetHistograms(event_weight,5,2); fillAODCaloJetHistograms(event_weight,5,2); }
+                          fillBasicHistograms(event_weight,0,2); fillSlimmedJetHistograms(event_weight,0,2); fillAODCaloJetHistograms(event_weight,0,2);  
+     if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); fillSlimmedJetHistograms(event_weight,1,2); fillAODCaloJetHistograms(event_weight,1,2); }
+     if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); fillSlimmedJetHistograms(event_weight,2,2); fillAODCaloJetHistograms(event_weight,2,2); }
+     if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); fillSlimmedJetHistograms(event_weight,3,2); fillAODCaloJetHistograms(event_weight,3,2); }
+     if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); fillSlimmedJetHistograms(event_weight,4,2); fillAODCaloJetHistograms(event_weight,4,2); }
+     if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); fillSlimmedJetHistograms(event_weight,5,2); fillAODCaloJetHistograms(event_weight,5,2); }
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
  } // end loop over entries
 
- //printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
- //printf("  nmatched    %i\n",nmatched);
- //printf("  nunmatched  %i\n",nunmatched);
+ printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
+ printf("  nmatched    %i\n",nmatched);
+ printf("  nunmatched  %i\n",nunmatched);
 
- //printf("  ntot        %i \n",n_tot        ); 
- //printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
- //printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
- //printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
- //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
- //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ printf("  ntot        %i \n",n_tot        ); 
+ printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
+ printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
+ printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
+ printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
+ printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -281,6 +281,7 @@ void analyzer_signal::Loop(TString outfilename,
   for(unsigned int k=0; k<lepnames.size(); ++k){
    writeBasicHistograms(i,k);
    writeSlimmedJetHistograms(i,k);
+   writeAODCaloJetHistograms(i,k);
    //write2DHistograms(i,k);
   }
  }
@@ -1115,36 +1116,36 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
     h_AODCaloJetSumIPSig                       [selbin][j][lepbin].Fill( AODCaloJetSumIPSig                       ->at( aodcalojetindex ), weight );  
     h_AODCaloJetMedianIP                       [selbin][j][lepbin].Fill( AODCaloJetMedianIP                       ->at( aodcalojetindex ), weight );  
     h_AODCaloJetMedianLog10IPSig               [selbin][j][lepbin].Fill( AODCaloJetMedianLog10IPSig               ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetTrackAngle                     [selbin][j][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetLogTrackAngle                  [selbin][j][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetMedianLog10TrackAngle          [selbin][j][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetTotalTrackAngle                [selbin][j][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVx                          [selbin][j][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVy                          [selbin][j][lepbin].Fill( AODCaloJetAvfVy                          ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVz                          [selbin][j][lepbin].Fill( AODCaloJetAvfVz                          ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexTotalChiSquared       [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTotalChiSquared       ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDegreesOfFreedom      ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexChi2NDoF              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexChi2NDoF              ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDistanceToBeam        [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDistanceToBeam        ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexTransverseError       [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTransverseError       ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexTransverseSig         [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTransverseSig         ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDeltaEta              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaEta              ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDeltaPhi              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaPhi              ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexRecoilPt              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexRecoilPt              ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexTrackMass             [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTrackMass             ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexTrackEnergy           [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTrackEnergy           ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotDeltaPhi            ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotRecoilPt            ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotMedianDeltaPhi      ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotLog10MedianDeltaPhi ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetNCleanMatchedTracks            [selbin][j][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetSumHitsInFrontOfVert           [selbin][j][lepbin].Fill( AODCaloJetSumHitsInFrontOfVert           ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetSumMissHitsAfterVert           [selbin][j][lepbin].Fill( AODCaloJetSumMissHitsAfterVert           ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][j][lepbin].Fill( AODCaloJetHitsInFrontOfVertPerTrack      ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][j][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfDistToPV                    [selbin][j][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
-    h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetTrackAngle                     [selbin][j][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetLogTrackAngle                  [selbin][j][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetMedianLog10TrackAngle          [selbin][j][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetTotalTrackAngle                [selbin][j][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVx                          [selbin][j][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVy                          [selbin][j][lepbin].Fill( AODCaloJetAvfVy                          ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVz                          [selbin][j][lepbin].Fill( AODCaloJetAvfVz                          ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexTotalChiSquared       [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTotalChiSquared       ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDegreesOfFreedom      ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexChi2NDoF              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexChi2NDoF              ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDistanceToBeam        [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDistanceToBeam        ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexTransverseError       [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTransverseError       ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexTransverseSig         [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTransverseSig         ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDeltaEta              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaEta              ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDeltaPhi              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaPhi              ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexRecoilPt              [selbin][j][lepbin].Fill( AODCaloJetAvfVertexRecoilPt              ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexTrackMass             [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTrackMass             ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexTrackEnergy           [selbin][j][lepbin].Fill( AODCaloJetAvfVertexTrackEnergy           ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotDeltaPhi            ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotRecoilPt            ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotMedianDeltaPhi      ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][j][lepbin].Fill( AODCaloJetAvfBeamSpotLog10MedianDeltaPhi ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetNCleanMatchedTracks            [selbin][j][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetSumHitsInFrontOfVert           [selbin][j][lepbin].Fill( AODCaloJetSumHitsInFrontOfVert           ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetSumMissHitsAfterVert           [selbin][j][lepbin].Fill( AODCaloJetSumMissHitsAfterVert           ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][j][lepbin].Fill( AODCaloJetHitsInFrontOfVertPerTrack      ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][j][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfDistToPV                    [selbin][j][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );  
 
   } // if( aodcalojet_list.size()>j )
  } // for(unsigned int j=0; j<jetmultnames.size()-1; ++j){
@@ -1168,36 +1169,36 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetSumIPSig                       [selbin][incjetbin][lepbin].Fill( AODCaloJetSumIPSig                       ->at( aodcalojetindex ), weight );  
   h_AODCaloJetMedianIP                       [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianIP                       ->at( aodcalojetindex ), weight );  
   h_AODCaloJetMedianLog10IPSig               [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianLog10IPSig               ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetTrackAngle                     [selbin][incjetbin][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetLogTrackAngle                  [selbin][incjetbin][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetMedianLog10TrackAngle          [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetTotalTrackAngle                [selbin][incjetbin][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVx                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVy                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVy                          ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVz                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVz                          ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexTotalChiSquared       [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTotalChiSquared       ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDegreesOfFreedom      ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexChi2NDoF              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexChi2NDoF              ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDistanceToBeam        [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDistanceToBeam        ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexTransverseError       [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTransverseError       ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexTransverseSig         [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTransverseSig         ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDeltaEta              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaEta              ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDeltaPhi              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaPhi              ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexRecoilPt              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexRecoilPt              ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexTrackMass             [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTrackMass             ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexTrackEnergy           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTrackEnergy           ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotDeltaPhi            ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotRecoilPt            ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotMedianDeltaPhi      ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotLog10MedianDeltaPhi ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetNCleanMatchedTracks            [selbin][incjetbin][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetSumHitsInFrontOfVert           [selbin][incjetbin][lepbin].Fill( AODCaloJetSumHitsInFrontOfVert           ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetSumMissHitsAfterVert           [selbin][incjetbin][lepbin].Fill( AODCaloJetSumMissHitsAfterVert           ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetHitsInFrontOfVertPerTrack      ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetTrackAngle                     [selbin][incjetbin][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetLogTrackAngle                  [selbin][incjetbin][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetMedianLog10TrackAngle          [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetTotalTrackAngle                [selbin][incjetbin][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVx                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVy                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVy                          ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVz                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVz                          ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexTotalChiSquared       [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTotalChiSquared       ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDegreesOfFreedom      ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexChi2NDoF              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexChi2NDoF              ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDistanceToBeam        [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDistanceToBeam        ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexTransverseError       [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTransverseError       ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexTransverseSig         [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTransverseSig         ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDeltaEta              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaEta              ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDeltaPhi              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaPhi              ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexRecoilPt              [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexRecoilPt              ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexTrackMass             [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTrackMass             ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexTrackEnergy           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexTrackEnergy           ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotDeltaPhi            ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotRecoilPt            ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotMedianDeltaPhi      ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfBeamSpotLog10MedianDeltaPhi ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetNCleanMatchedTracks            [selbin][incjetbin][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetSumHitsInFrontOfVert           [selbin][incjetbin][lepbin].Fill( AODCaloJetSumHitsInFrontOfVert           ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetSumMissHitsAfterVert           [selbin][incjetbin][lepbin].Fill( AODCaloJetSumMissHitsAfterVert           ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetHitsInFrontOfVertPerTrack      ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
+//  h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );  
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
 

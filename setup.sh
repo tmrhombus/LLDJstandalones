@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export nversion="ttwo"
+export nversion="ditra"
 export aversion="t3dy_cutflowDY_loose"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
