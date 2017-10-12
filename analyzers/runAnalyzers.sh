@@ -5,7 +5,8 @@
 # 'DY50'
 # 'ggZH_HToSSTobbbb_MS40_ctauS100'
 for sample in \
- 'ggZH_HToSSTobbbb_MS40_ctauS100'
+ 'ggZH_HToSSTobbbb_MS40_ctauS100' 
+ #'DY50'
 
 do
 

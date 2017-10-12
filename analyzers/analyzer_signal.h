@@ -7,7 +7,7 @@
 #include <TH2.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
-
+#include <vector>
 class analyzer_signal : public analyzer_base {
 
 public :
@@ -40,7 +40,7 @@ public :
  std::vector<int>     electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
  std::vector<int>     muon_passID    ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
  std::vector<int>     jet_passID     ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
-
+ void tagger(/*Double_t weight*/);
  //std::vector<int>     jet_matchToMiniAOD( TString jettype="" );
 
  Float_t          getPhotonPt(int idnr, TString sysbinname);
@@ -82,7 +82,11 @@ public :
  std::vector<int> muon_list_t ;
  std::vector<int> muon_list ;
  std::vector<int> jet_list ;
-
+ 
+ 
+ static const int  N   = 1;  //number of subdivisions for tagger function
+ std::vector<double> tags;
+ std::vector<double> Number;
  //std::vector<int> AODcalojet_list;
  //std::vector<int> AODPFjet_list;
  //std::vector<int> AODPFchsjet_list;
@@ -144,9 +148,9 @@ public :
  Int_t n_tot;
  Int_t n_test;
  Int_t n_test2;
+ Int_t ntag;
  Double_t number_sig;
  Double_t number_bkg;
- Int_t ntag;
 
  Int_t n_passSig;
  Int_t n_passZH;

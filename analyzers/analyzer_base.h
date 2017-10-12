@@ -22,7 +22,6 @@ public :
    Bool_t isMC;
    FILE * logfile;
    Double_t event_weight;
-
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // MC and Data
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//

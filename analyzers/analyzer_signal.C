@@ -8,8 +8,8 @@
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
                        Double_t crossSec, Int_t nevts)
-{
-
+{// std::cout<<"Top of Loop: n_sig: "<<number_sig<<std::endl;
+ 
  if(makelog){
   logfile = fopen( outfilename+".txt", "w"); 
  }
@@ -20,6 +20,16 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
+ Number.resize(N + 1);
+// tags.resize(N + 1);
+
+ for(int z =0;z<tags.size(); z++)
+ {
+ Number[z] = 0;
+ tags[z] = 0;
+ std::cout<<"z: " <<z<<" N[z]: "<<Number[z]<<" tags[z]: "<<tags[z]<<std::endl;
+ }
+
  number_sig =0.0;
  number_bkg = 0.0;
  nmatched = 0;
@@ -113,14 +123,15 @@ void analyzer_signal::Loop(TString outfilename,
   if(isMC) event_weight *= makeElectronWeight();
 
   
+  tagger(/*event_weight*/);//std::cout<<"tagger called "<<number_bkg<<" times"<<std::endl; number_bkg = number_bkg + 1;
+  //put tagger call here
   //std::cout<<"ntags: "<<ntag<<std::endl; 
   h_ntags->Fill(ntag);
-  //h_ntags->Write();
   if(ntag>=2){
   number_sig = number_sig + event_weight;
   //number_bkg = number_bkg + event_weight;
   //std::cout <<"****** event_weight: "<<event_weight<<" lumi "<<lumi<<std::endl;
-  std::cout <<"ntag = "<<ntag<< " numb_sig: "<< number_sig<< " numb_bkg: "<< number_bkg/*<< " event_weight*numb_sig: "<< event_weight*number_sig<< " event_weight*numb_bkg: "<< event_weight*number_bkg*/<<std::endl;
+  //std::cout <<"ntag = "<<ntag<< " numb_sig: "<< number_sig<< " numb_bkg: "<< number_bkg/*<< " event_weight*numb_sig: "<< event_weight*number_sig<< " event_weight*numb_bkg: "<< event_weight*number_bkg*/<<std::endl;
    }
   // set our met
   themet = pfMET;
@@ -272,7 +283,7 @@ void analyzer_signal::Loop(TString outfilename,
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
 
  } // end loop over entries
-
+ //tagger();
  printf("\n\n Summary   dR=%0.1f\n",drcut);
  printf("  ntot        %i \n",n_tot        ); 
  //printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
@@ -281,7 +292,7 @@ void analyzer_signal::Loop(TString outfilename,
  //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
- std::cout <<"  numb_sig:   "<< number_sig<<std::endl;
+ std::cout <<"  numb_sig:"<< number_sig<<"    Number_bkg:"<<number_bkg<<" Number[0]: "<<Number[0]<<" N[1]: "<<Number[1]<<std::endl;
  printf("  nmatched    %i\n",nmatched);
  printf("  nunmatched  %i\n",nunmatched);
 
@@ -1357,11 +1368,11 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
    bool pass_signal = abs(jetGenPartonMomID->at(i)) > 9000000 ;//9000006
               
    //if( pass_id && pass_kin && pass_overlap )
-   if( pass_id && pass_kin && pass_overlap && pass_signal && jetAlphaMax_PV3onAll->at(i) !=0 )
+   if( pass_id && pass_kin && pass_overlap /*&& pass_signal && jetAlphaMax_PV3onAll->at(i) !=0*/ )
 
    {
     //printf(" a selected jet\n");
-    if(jetMedianLog10IPSig->at(i) >=0.6 /*&& jetAlphaMaxD->at(i) >=0.0 && jetMedianLog10IPSig->at(i) <=2.0*/ && jetAlphaMaxD->at(i) <=0.1)
+    if(jetMedianLog10IPSig->at(i) >=0.5 /*&& jetAlphaMaxD->at(i) >=0.0 && jetMedianLog10IPSig->at(i) <=2.0 && jetAlphaMaxD->at(i) <=0.1*/)
     {ntag= ntag + 1;}
     nSelectedJet++;
     jetlist.push_back(i);
@@ -1372,6 +1383,35 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
 
 }
 
+void analyzer_signal::tagger(/*Double_t weight*/){
+  
+  tags.clear();
+  tags.resize((int)N + 1);
+  double max = 3.0;
+  double min = -2.0;
+  double range = max - min;     //range to be covered
+  //double step  = (range/N); //step size
+  double cut_val;
+
+  for(int j = 0; j<=N; j++){
+    if(j==0)cut_val = 0.5;//min + (double)j*step;
+    else cut_val = 1.0;
+    //std::cout<< "tags["<<j<<"] "<<tags[j]<<std::endl;
+    for(int i = 0; i<jet_list.size(); i++){
+      if(jetMedianLog10IPSig->at(jet_list[i])>= cut_val)
+      {
+      std::cout<<"Tags["<<j<<"}: "<<tags[j]<<" Cut_value: "<< cut_val<<" Actual_value: "<<jetMedianLog10IPSig->at(jet_list[i])<<std::endl;
+      tags[j] = tags[j] + 1;
+      }
+      //std::cout<<number_bkg<<"test tagger: "<<i<<std::endl;  
+    }//looping through all the jets
+ }//looping through different cut values
+ for(int k =0; k<=N; k++){
+    if(tags[k]>=2) Number[k] = Number[k] + event_weight;
+ }
+ 
+  if(tags[0] >= 2 ) number_bkg = number_bkg + event_weight;
+}
 
 //-------------------------photon_passLooseID
 std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname){

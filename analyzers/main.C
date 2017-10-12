@@ -38,10 +38,11 @@ int main(int argc, char **argv){
  char *atfile = (char*)"0";
  bool dolocal = false;
  bool bisMC = false;
- 
+  
  int index;
  int s;
-
+ double numberSignal;
+ double numberBkg;
  opterr = 0;
 
  while ((s = getopt (argc, argv, "s:l:x:e:i:o:a:n:dm")) != -1)

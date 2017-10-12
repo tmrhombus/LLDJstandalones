@@ -876,13 +876,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     jetTrackPhi_   .push_back( tmpTrackPhi   );
     jetTrackPDGID_ .push_back( tmpTrackPDGID );
 
-    //if(dodebug){ 
-    // printf("   Done Loopong over tracks\n"); 
-    // //for(unsigned int k = 0; k < sumtracksfPV2->size(); ++k){
-    // for(unsigned int k = 0; k < sumtracksfPV2.size(); ++k){
-    //    printf("    sum trackpt vtx %u  pt %f / %f \n", k,  sumtracksfPV2[k], sumalltracks );
-    //  }
-    // }
 
     float alphaMax = -1;
     float alphaMax2 = -1;
@@ -1181,7 +1174,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     }
   }
   delete jecUnc;
-  
 
   // AOD Section ----------------------------------------------
   
@@ -1382,8 +1374,8 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
     float sumIP=0, sumIPSig=0, totalTrackAngle=0;
     std::vector<reco::TransientTrack> transientTracks;
     std::vector<int> vertexVector;
-
-
+}
+}
 void lldjNtuple::aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, 
 					    float jeteta, float jetphi,  std::vector<int> whichVertex_, 
 					    bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
