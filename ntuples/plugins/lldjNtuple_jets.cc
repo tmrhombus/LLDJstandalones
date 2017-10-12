@@ -216,6 +216,7 @@ vector<float>  AODCaloJetAvfVertexDeltaZtoPV2_;
 
 // PF Jets
 Int_t          AODnPFJet_;
+vector<int>    AODPFJetID_; 
 vector<float>  AODPFJetPt_;
 vector<float>  AODPFJetEta_;
 vector<float>  AODPFJetPhi_;
@@ -236,6 +237,7 @@ vector<float>  AODPFJetTotalTrackAngle_;
 
 // PFchs Jets
 Int_t          AODnPFchsJet_;
+vector<int>    AODPFchsJetID_; 
 vector<float>  AODPFchsJetPt_;
 vector<float>  AODPFchsJetEta_;
 vector<float>  AODPFchsJetPhi_;
@@ -425,6 +427,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
                           
   // PF Jets
   tree->Branch("AODnPFJet"                        , &AODnPFJet_);                                 
+  tree->Branch("AODPFJetID"                       , &AODPFJetID_);                                 
   tree->Branch("AODPFJetPt"                       , &AODPFJetPt_);                                 
   tree->Branch("AODPFJetEta"                      , &AODPFJetEta_);                                 
   tree->Branch("AODPFJetPhi"                      , &AODPFJetPhi_);                                 
@@ -445,6 +448,7 @@ void lldjNtuple::branchesJets(TTree* tree) {
   
   // PFcms Jets 
   tree->Branch("AODnPFchsJet"                     , &AODnPFchsJet_);                                  
+  tree->Branch("AODPFchsJetID"                    , &AODPFchsJetID_);                                  
   tree->Branch("AODPFchsJetPt"                    , &AODPFchsJetPt_);                                  
   tree->Branch("AODPFchsJetEta"                   , &AODPFchsJetEta_);                                 
   tree->Branch("AODPFchsJetPhi"                   , &AODPFchsJetPhi_);                                      
@@ -611,6 +615,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
 
  // PF Jets
  AODnPFJet_=0;
+ AODPFJetID_.clear();
  AODPFJetPt_.clear();
  AODPFJetEta_.clear();
  AODPFJetPhi_.clear();
@@ -631,6 +636,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  
  // PFchs Jets
  AODnPFchsJet_=0;
+ AODPFchsJetID_.clear();
  AODPFchsJetPt_.clear();
  AODPFchsJetEta_.clear();
  AODPFchsJetPhi_.clear();
@@ -1536,9 +1542,13 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    pfjetPassTightID = (pfjetNEMF<0.90 && pfjetNumNeutralParticle>10 ) ; 
   }
 
-  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !pfjetPassLooseID) continue;
+  Int_t AODPFJetIDdecision = 0;
+  if (pfjetPassLooseID) AODPFJetIDdecision += pow(2, 1);
+  if (pfjetPassTightID) AODPFJetIDdecision += pow(2, 2);
 
-  // pfJetTrackIDs is a vector of ints where each int is the 
+  // selections
+  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || pfjetPassLooseID==0 ) continue;
+
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
   vector<int>   pfJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
@@ -1597,6 +1607,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AODPFJetPt_.push_back(jetpt);
   AODPFJetEta_.push_back(jeteta);
   AODPFJetPhi_.push_back(jetphi);
+  AODPFJetID_.push_back(AODPFJetIDdecision);    
   
   //AlphaMax-type variables
   AODPFJetAlphaMax_       .push_back(alphaMax      ) ; 
@@ -1655,7 +1666,11 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
    pfchsjetPassTightID = (pfchsjetNEMF<0.90 && pfchsjetNumNeutralParticle>10 ) ; 
   }
 
-  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !pfchsjetPassLooseID) continue;
+  Int_t AODPFchsJetIDdecision = 0;
+  if (pfchsjetPassLooseID) AODPFchsJetIDdecision += pow(2, 1);
+  if (pfchsjetPassTightID) AODPFchsJetIDdecision += pow(2, 2);
+
+  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || AODPFchsJetIDdecision==0) continue;
 
   // pfchsJetTrackIDs is a vector of ints where each int is the 
   // index of a track passing deltaR requirement to this jet
@@ -1716,6 +1731,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AODPFchsJetPt_.push_back(jetpt);
   AODPFchsJetEta_.push_back(jeteta);
   AODPFchsJetPhi_.push_back(jetphi);
+  AODPFchsJetID_.push_back(AODPFchsJetIDdecision);
   
   //AlphaMax-type variables
   AODPFchsJetAlphaMax_       .push_back(alphaMax      ) ; 
@@ -1736,7 +1752,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AODPFchsJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
   AODPFchsJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
 
- }//end pf loop
+ }//end pfchs loop
  
 }//end fill jets
 
