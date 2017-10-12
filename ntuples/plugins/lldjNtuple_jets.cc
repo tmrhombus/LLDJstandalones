@@ -227,7 +227,6 @@ vector<float>  AODPFJetBeta_;
 vector<float>  AODPFJetBeta2_;
 vector<float>  AODPFJetSumIP_;
 vector<float>  AODPFJetSumIPSig_;
-//vector<float>  AODPFJetLog10IPSig_;
 vector<float>  AODPFJetMedianIP_;
 vector<float>  AODPFJetMedianLog10IPSig_;
 vector<float>  AODPFJetTrackAngle_;
@@ -248,7 +247,6 @@ vector<float>  AODPFchsJetBeta_;
 vector<float>  AODPFchsJetBeta2_;
 vector<float>  AODPFchsJetSumIP_;
 vector<float>  AODPFchsJetSumIPSig_;
-//vector<float>  AODPFchsJetLog10IPSig_;
 vector<float>  AODPFchsJetMedianIP_;
 vector<float>  AODPFchsJetMedianLog10IPSig_;
 vector<float>  AODPFchsJetTrackAngle_;
@@ -425,42 +423,46 @@ void lldjNtuple::branchesJets(TTree* tree) {
   tree->Branch("AODCaloJetAvfVertexDeltaZtoPV", &AODCaloJetAvfVertexDeltaZtoPV_);
   tree->Branch("AODCaloJetAvfVertexDeltaZtoPV2", &AODCaloJetAvfVertexDeltaZtoPV2_);
                           
-  tree->Branch("AODnPFJet"                     , &AODnPFJet_);
-  tree->Branch("AODPFJetPt"                    , &AODPFJetPt_);
-  tree->Branch("AODPFJetEta"                   , &AODPFJetEta_);
-  tree->Branch("AODPFJetPhi"                   , &AODPFJetPhi_);
-  tree->Branch("AODPFJetAlphaMax"              , &AODPFJetAlphaMax_);
-  tree->Branch("AODPFJetAlphaMax2_"            , &AODPFJetAlphaMax2_);
-  tree->Branch("AODPFJetAlphaMaxPrime_"        , &AODPFJetAlphaMaxPrime_);
-  tree->Branch("AODPFJetAlphaMaxPrime2_"       , &AODPFJetAlphaMaxPrime2_);
-  tree->Branch("AODPFJetBeta_"                 , &AODPFJetBeta_);
-  tree->Branch("AODPFJetBeta2_"                , &AODPFJetBeta2_);
-  tree->Branch("AODPFJetSumIP"                 , &AODPFJetSumIP_);
-  tree->Branch("AODPFJetSumIPSig"              , &AODPFJetSumIPSig_);
-  tree->Branch("AODPFJetMedianLog10IPSig"      , &AODPFJetMedianLog10IPSig_);
-  tree->Branch("AODPFJetTrackAngle"            , &AODPFJetTrackAngle_);
-  tree->Branch("AODPFJetLogTrackAngle"         , &AODPFJetLogTrackAngle_);
-  tree->Branch("AODPFJetMedianLog10TrackAngle"   , &AODPFJetMedianLog10TrackAngle_);
-  tree->Branch("AODPFJetTotalTrackAngle"       , &AODPFJetTotalTrackAngle_);
-                                                
-  tree->Branch("AODnPFchsJet"                  , &AODnPFchsJet_);
-  tree->Branch("AODPFchsJetPt"                 , &AODPFchsJetPt_);
-  tree->Branch("AODPFchsJetEta"                , &AODPFchsJetEta_);
-  tree->Branch("AODPFchsJetPhi"                , &AODPFchsJetPhi_);
-  tree->Branch("AODPFchsJetAlphaMax"           , &AODPFchsJetAlphaMax_);
-  tree->Branch("AODPFchsJetAlphaMax2_"         , &AODPFchsJetAlphaMax2_);
-  tree->Branch("AODPFchsJetAlphaMaxPrime_"     , &AODPFchsJetAlphaMaxPrime_);
-  tree->Branch("AODPFchsJetAlphaMaxPrime2_"    , &AODPFchsJetAlphaMaxPrime2_);
-  tree->Branch("AODPFchsJetBeta_"              , &AODPFchsJetBeta_);
-  tree->Branch("AODPFchsJetBeta2_"             , &AODPFchsJetBeta2_);
-  tree->Branch("AODPFchsJetSumIP"              , &AODPFchsJetSumIP_);
-  tree->Branch("AODPFchsJetSumIPSig"           , &AODPFchsJetSumIPSig_);
-  tree->Branch("AODPFchsJetMedianLog10IPSig"   , &AODPFchsJetMedianLog10IPSig_);
-  tree->Branch("AODPFchsJetTrackAngle"         , &AODPFchsJetTrackAngle_);
-  tree->Branch("AODPFchsJetLogTrackAngle"      , &AODPFchsJetLogTrackAngle_);
-  tree->Branch("AODPFchsJetMedianLog10TrackAngle", &AODPFchsJetMedianLog10TrackAngle_);
-  tree->Branch("AODPFchsJetTotalTrackAngle"    , &AODPFchsJetTotalTrackAngle_);
+  // PF Jets
+  tree->Branch("AODnPFJet"                        , &AODnPFJet_);                                 
+  tree->Branch("AODPFJetPt"                       , &AODPFJetPt_);                                 
+  tree->Branch("AODPFJetEta"                      , &AODPFJetEta_);                                 
+  tree->Branch("AODPFJetPhi"                      , &AODPFJetPhi_);                                 
+  tree->Branch("AODPFJetAlphaMax"                 , &AODPFJetAlphaMax_);                                 
+  tree->Branch("AODPFJetAlphaMax2"                , &AODPFJetAlphaMax2_);                                 
+  tree->Branch("AODPFJetAlphaMaxPrime"            , &AODPFJetAlphaMaxPrime_);                                 
+  tree->Branch("AODPFJetAlphaMaxPrime2"           , &AODPFJetAlphaMaxPrime2_);                                 
+  tree->Branch("AODPFJetBeta"                     , &AODPFJetBeta_);                                 
+  tree->Branch("AODPFJetBeta2"                    , &AODPFJetBeta2_);                                 
+  tree->Branch("AODPFJetSumIP"                    , &AODPFJetSumIP_);                                 
+  tree->Branch("AODPFJetSumIPSig"                 , &AODPFJetSumIPSig_);                                 
+  tree->Branch("AODPFJetMedianIP"                 , &AODPFJetMedianIP_);                                                                           
+  tree->Branch("AODPFJetMedianLog10IPSig"         , &AODPFJetMedianLog10IPSig_);                           
+  tree->Branch("AODPFJetTrackAngle"               , &AODPFJetTrackAngle_);                                    
+  tree->Branch("AODPFJetLogTrackAngle"            , &AODPFJetLogTrackAngle_);                                         
+  tree->Branch("AODPFJetMedianLog10TrackAngle"    , &AODPFJetMedianLog10TrackAngle_);                           
+  tree->Branch("AODPFJetTotalTrackAngle"          , &AODPFJetTotalTrackAngle_);
   
+  // PFcms Jets 
+  tree->Branch("AODnPFchsJet"                     , &AODnPFchsJet_);                                  
+  tree->Branch("AODPFchsJetPt"                    , &AODPFchsJetPt_);                                  
+  tree->Branch("AODPFchsJetEta"                   , &AODPFchsJetEta_);                                 
+  tree->Branch("AODPFchsJetPhi"                   , &AODPFchsJetPhi_);                                      
+  tree->Branch("AODPFchsJetAlphaMax"              , &AODPFchsJetAlphaMax_);                                  
+  tree->Branch("AODPFchsJetAlphaMax2"             , &AODPFchsJetAlphaMax2_);                                     
+  tree->Branch("AODPFchsJetAlphaMaxPrime"         , &AODPFchsJetAlphaMaxPrime_);                                  
+  tree->Branch("AODPFchsJetAlphaMaxPrime2"        , &AODPFchsJetAlphaMaxPrime2_);                       
+  tree->Branch("AODPFchsJetBeta"                  , &AODPFchsJetBeta_);                                  
+  tree->Branch("AODPFchsJetBeta2"                 , &AODPFchsJetBeta2_);                                 
+  tree->Branch("AODPFchsJetSumIP"                 , &AODPFchsJetSumIP_);                                    
+  tree->Branch("AODPFchsJetSumIPSig"              , &AODPFchsJetSumIPSig_);                                 
+  tree->Branch("AODPFchsJetMedianIP"              , &AODPFchsJetMedianIP_);                                   
+  tree->Branch("AODPFchsJetMedianLog10IPSig"      , &AODPFchsJetMedianLog10IPSig_);                              
+  tree->Branch("AODPFchsJetTrackAngle"            , &AODPFchsJetTrackAngle_);                                            
+  tree->Branch("AODPFchsJetLogTrackAngle"         , &AODPFchsJetLogTrackAngle_);                                   
+  tree->Branch("AODPFchsJetMedianLog10TrackAngle" , &AODPFchsJetMedianLog10TrackAngle_);
+  tree->Branch("AODPFchsJetTotalTrackAngle"       , &AODPFchsJetTotalTrackAngle_);
+
 }
 
 //fills slimmedJets .clear() to empty vector of old data
@@ -607,6 +609,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODCaloJetAvfVertexDeltaZtoPV_.clear();
  AODCaloJetAvfVertexDeltaZtoPV2_.clear();
 
+ // PF Jets
  AODnPFJet_=0;
  AODPFJetPt_.clear();
  AODPFJetEta_.clear();
@@ -619,12 +622,14 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFJetBeta2_.clear();
  AODPFJetSumIP_.clear();
  AODPFJetSumIPSig_.clear();
+ AODPFJetMedianIP_.clear();
  AODPFJetMedianLog10IPSig_.clear();
  AODPFJetTrackAngle_.clear();
  AODPFJetLogTrackAngle_.clear();
  AODPFJetMedianLog10TrackAngle_.clear();
  AODPFJetTotalTrackAngle_.clear();
-
+ 
+ // PFchs Jets
  AODnPFchsJet_=0;
  AODPFchsJetPt_.clear();
  AODPFchsJetEta_.clear();
@@ -637,6 +642,7 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetBeta2_.clear();
  AODPFchsJetSumIP_.clear();
  AODPFchsJetSumIPSig_.clear();
+ AODPFchsJetMedianIP_.clear();
  AODPFchsJetMedianLog10IPSig_.clear();
  AODPFchsJetTrackAngle_.clear();
  AODPFchsJetLogTrackAngle_.clear();
@@ -1492,143 +1498,245 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   AODCaloJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
   AODCaloJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
 
-  //Vectors currently not saved
-  //AODCaloJetLogTrackAngle_; //trackAngles; 
-  //AODCaloJetTrackAngle_;
-
  }
- 
 
-//  ///  // AOD PF Jets -------------------------------------------
-//  ///  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
-//  ///    
-//  ///    float jetpt  = iJet->pt();
-//  ///    float jeteta = iJet->eta();
-//  ///    float jetphi = iJet->phi();
-//  ///    
-//  ///    bool fill_tracksIPLog10Sig_median=true, fill_trackAngles_median=true;
-//  ///    float tracksIPLog10Sig_median=0, trackAngles_median=0;
-//  ///    float sumIP=0, sumIPSig=0, totalTrackAngle=0;
-//  ///    vector<reco::TransientTrack> transientTracks;
-//  ///    vector<int> vertexVector;
-//  ///
-//  ///    aod_jet_track_calculations(e, es,
-//  ///			       jeteta, jetphi, whichVertex_, 
-//  ///			       fill_tracksIPLog10Sig_median, tracksIPLog10Sig_median, fill_trackAngles_median, trackAngles_median, 
-//  ///			       sumIP, sumIPSig, totalTrackAngle, transientTracks, vertexVector);
-//  ///
-//  ///    float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
-//  ///    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-//  ///
-//  ///    
-//  ///    // ID
-//  ///    bool passID = false;
-//  ///    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
-//  ///    float NHF = iJet->neutralHadronEnergyFraction();
-//  ///    float NEMF = iJet->neutralEmEnergyFraction();
-//  ///    float CHF = iJet->chargedHadronEnergyFraction();
-//  ///    //float MUF = iJet->muonEnergyFraction();
-//  ///    float CEMF = iJet->chargedEmEnergyFraction();
-//  ///    int NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
-//  ///    //int NumNeutralParticles =iJet->neutralMultiplicity();
-//  ///    int CHM = iJet->chargedMultiplicity();
-//  ///    bool looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(jeteta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(jeteta)>2.4) && fabs(jeteta)<=2.7;
-//  ///    if(transientTracks.size()>=1 && looseJetID) passID = true;
-//  ///    if(iJet->pt()<20.0 || fabs(jeteta)>2.4 || !passID) continue;
-//  ///
-//  ///    ////////////////////////
-//  ///    // Fill tree
-//  ///    /////////////////////////
-//  ///    AODnPFJet_++;
-//  ///    
-//  ///    //Pt, Eta, Phi
-//  ///    AODPFJetPt_.push_back(jetpt);
-//  ///    AODPFJetEta_.push_back(jeteta);
-//  ///    AODPFJetPhi_.push_back(jetphi);
-//  ///    
-//  ///    //AlphaMax-type variables
-//  ///    AODPFJetAlphaMax_       .push_back(alphaMax      ) ; 
-//  ///    AODPFJetAlphaMax2_      .push_back(alphaMax2     ) ; 
-//  ///    AODPFJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
-//  ///    AODPFJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
-//  ///    AODPFJetBeta_           .push_back(beta          ) ; 
-//  ///    AODPFJetBeta2_          .push_back(beta2         ) ; 
-//  ///
-//  ///    //Totals
-//  ///    AODPFJetSumIP_.push_back(sumIP);
-//  ///    AODPFJetSumIPSig_.push_back(sumIPSig);
-//  ///    AODPFJetTotalTrackAngle_.push_back(totalTrackAngle);    
-//  ///
-//  ///    //Medians
-//  ///    if(fill_tracksIPLog10Sig_median) AODPFJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFJetMedianLog10TrackAngle_.push_back(trackAngles_median);
-//  ///
-//  ///  }
-//  ///
-//  ///  // AOD PFchs Jets -------------------------------------------
-//  ///  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
-//  ///
-//  ///    float jetpt  = iJet->pt();
-//  ///    float jeteta = iJet->eta();
-//  ///    float jetphi = iJet->phi();
-//  ///    
-//  ///    bool fill_tracksIPLog10Sig_median=true, fill_trackAngles_median=true;
-//  ///    float tracksIPLog10Sig_median=0, trackAngles_median=0;
-//  ///    float sumIP=0, sumIPSig=0, totalTrackAngle=0;
-//  ///    vector<reco::TransientTrack> transientTracks;
-//  ///    vector<int> vertexVector;
-//  ///
-//  ///    aod_jet_track_calculations(e, es,
-//  ///			       jeteta, jetphi, whichVertex_, 
-//  ///			       fill_tracksIPLog10Sig_median, tracksIPLog10Sig_median, fill_trackAngles_median, trackAngles_median, 
-//  ///			       sumIP, sumIPSig, totalTrackAngle, transientTracks, vertexVector);
-//  ///
-//  ///    float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2;
-//  ///    calculateAlphaMax(transientTracks,vertexVector,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
-//  ///
-//  ///    // ID
-//  ///    bool passID = false;
-//  ///    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
-//  ///    float NHF = iJet->neutralHadronEnergyFraction();
-//  ///    float NEMF = iJet->neutralEmEnergyFraction();
-//  ///    float CHF = iJet->chargedHadronEnergyFraction();
-//  ///    //float MUF = iJet->muonEnergyFraction();
-//  ///    float CEMF = iJet->chargedEmEnergyFraction();
-//  ///    int NumConst = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
-//  ///    //int NumNeutralParticles =iJet->neutralMultiplicity();
-//  ///    int CHM = iJet->chargedMultiplicity();
-//  ///    bool looseJetID = (NHF<0.99 && NEMF<0.99 && NumConst>1) && ((fabs(jeteta)<=2.4 && CHF>0 && CHM>0 && CEMF<0.99) || fabs(jeteta)>2.4) && fabs(jeteta)<=2.7;
-//  ///    if(transientTracks.size()>=1 && looseJetID) passID = true;
-//  ///    if(iJet->pt()<20.0 || fabs(jeteta)>2.4 || !passID) continue;
-//  ///
-//  ///    ////////////////////////
-//  ///    // Fill tree
-//  ///    /////////////////////////
-//  ///    AODnPFchsJet_++;
-//  ///    
-//  ///    //Pt, Eta, Phi
-//  ///    AODPFchsJetPt_.push_back(jetpt);
-//  ///    AODPFchsJetEta_.push_back(jeteta);
-//  ///    AODPFchsJetPhi_.push_back(jetphi);
-//  ///    
-//  ///    //AlphaMax-type variables
-//  ///    AODPFchsJetAlphaMax_       .push_back(alphaMax      ) ; 
-//  ///    AODPFchsJetAlphaMax2_      .push_back(alphaMax2     ) ; 
-//  ///    AODPFchsJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
-//  ///    AODPFchsJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
-//  ///    AODPFchsJetBeta_           .push_back(beta          ) ; 
-//  ///    AODPFchsJetBeta2_          .push_back(beta2         ) ; 
-//  ///
-//  ///    //Totals
-//  ///    AODPFchsJetSumIP_.push_back(sumIP);
-//  ///    AODPFchsJetSumIPSig_.push_back(sumIPSig);
-//  ///    AODPFchsJetTotalTrackAngle_.push_back(totalTrackAngle);    
-//  ///
-//  ///    //Medians
-//  ///    if(fill_tracksIPLog10Sig_median) AODPFchsJetMedianLog10IPSig_.push_back(tracksIPLog10Sig_median);
-//  ///    if(fill_trackAngles_median) AODPFchsJetMedianLog10TrackAngle_.push_back(trackAngles_median);
-//  ///
-//  ///  }//end pfchs loop
+ // AOD PF Jets -------------------------------------------
+ for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
+
+  if(verbose_AOD) printf("PF %f \n",iJet->pt());
+  
+  float jetpt  = iJet->pt();
+  float jeteta = iJet->eta();
+  float jetphi = iJet->phi();
+
+  // ID and jet selections
+  bool pfjetPassLooseID = false;
+  bool pfjetPassTightID = false;
+
+  // from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
+  float pfjetNHF                 = iJet->neutralHadronEnergyFraction();
+  float pfjetNEMF                = iJet->neutralEmEnergyFraction();
+  float pfjetCHF                 = iJet->chargedHadronEnergyFraction();
+  float pfjetMUF                 = iJet->muonEnergyFraction();
+  float pfjetCEMF                = iJet->chargedEmEnergyFraction();
+  float pfjetNumConst            = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+  float pfjetNumNeutralParticle  = iJet->neutralMultiplicity();
+  float pfjetCHM                 = iJet->chargedMultiplicity(); 
+
+  if ( fabs(jeteta) <= 2.7 ){
+   pfjetPassLooseID = (pfjetNHF<0.99 && pfjetNEMF<0.99 && pfjetNumConst>1) && ((abs(jeteta)<=2.4 && pfjetCHF>0 && pfjetCHM>0 && pfjetCEMF<0.99) || abs(jeteta)>2.4) && abs(jeteta)<=2.7 ;
+   pfjetPassTightID = (pfjetNHF<0.90 && pfjetNEMF<0.90 && pfjetNumConst>1) && ((abs(jeteta)<=2.4 && pfjetCHF>0 && pfjetCHM>0 && pfjetCEMF<0.99) || abs(jeteta)>2.4) && abs(jeteta)<=2.7 ;
+  }
+  if ( fabs(jeteta) > 2.7 && fabs(jeteta) <= 3.0 ){
+   pfjetPassLooseID = (pfjetNEMF<0.90 && pfjetNumNeutralParticle>2 ) ;
+   pfjetPassTightID = (pfjetNEMF<0.90 && pfjetNumNeutralParticle>2 ) ;
+  }
+  if ( fabs(jeteta) > 3.0 ){
+   pfjetPassLooseID = (pfjetNEMF<0.90 && pfjetNumNeutralParticle>10 ) ;
+   pfjetPassTightID = (pfjetNEMF<0.90 && pfjetNumNeutralParticle>10 ) ; 
+  }
+
+  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !pfjetPassLooseID) continue;
+
+  // pfJetTrackIDs is a vector of ints where each int is the 
+  // index of a track passing deltaR requirement to this jet
+  // out of the master track record of tracks passing basic selections
+  vector<int>   pfJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  if(pfJetTrackIDs.size()<1) continue;
+
+  if(verbose_AOD){
+   printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
+   for( int i=0; i<(int)AODallTrackPositions.size(); i++){
+    printf("  allTrack %i %0.1f %0.1f %0.1f \n",i,
+     AODallTrackPt [i] ,
+     AODallTrackEta[i] ,
+     AODallTrackPhi[i] );
+
+   }
+   for( int i=0; i<(int)pfJetTrackIDs.size(); i++){
+    printf(" Track %i at %i \n",i,pfJetTrackIDs[i]);
+    printf("  pfTrack %i=%i %0.1f %0.1f %0.1f \n",i,
+     pfJetTrackIDs[i],
+     AODallTrackPt [pfJetTrackIDs[i]] ,
+     AODallTrackEta[pfJetTrackIDs[i]] ,
+     AODallTrackPhi[pfJetTrackIDs[i]] );
+   }
+  }
+
+  // initialize variables
+  float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
+  float totalTrackAngle, totalTrackAnglePt = 0.;
+  float sumIP, sumIPSig = 0.;
+  vector<float> pfJetTrackAngles; 
+  pfJetTrackAngles.clear();
+  vector<float> pfJetIPs; 
+  pfJetIPs.clear();
+  vector<float> pfJetIPSigs; 
+  pfJetIPSigs.clear();
+
+  // do calculations
+  calculateAlphaMax(pfJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+  calculateTrackAngle(pfJetTrackIDs, pfJetTrackAngles, totalTrackAngle, totalTrackAnglePt);
+  calculateIP(pfJetTrackIDs, pfJetIPs, pfJetIPSigs, sumIP, sumIPSig);
+  //calculateDisplacedVertices(es, pfJetTrackIDs);
+
+  // find medians
+  float medianTrackAngle;
+  medianTrackAngle = findMedian(pfJetTrackAngles);
+  float medianIP;
+  medianIP = findMedian(pfJetIPs);
+  float medianIPSig;
+  medianIPSig = findMedian(pfJetIPSigs);
+
+  ////////////////////////
+  // Fill tree
+  /////////////////////////
+  AODnPFJet_++;
+  
+  //Pt, Eta, Phi
+  AODPFJetPt_.push_back(jetpt);
+  AODPFJetEta_.push_back(jeteta);
+  AODPFJetPhi_.push_back(jetphi);
+  
+  //AlphaMax-type variables
+  AODPFJetAlphaMax_       .push_back(alphaMax      ) ; 
+  AODPFJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+  AODPFJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+  AODPFJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+  AODPFJetBeta_           .push_back(beta          ) ; 
+  AODPFJetBeta2_          .push_back(beta2         ) ; 
+
+  //Totals
+  AODPFJetSumIP_.push_back(sumIP);
+  AODPFJetSumIPSig_.push_back(sumIPSig);
+
+  AODPFJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+  /////Medians
+  AODPFJetMedianIP_             .push_back(medianIP);
+  AODPFJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
+  AODPFJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
+
+ }//end pf loop
+
+ // AOD PFchs Jets -------------------------------------------
+ for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsCHSHandle->begin(); iJet != AODak4PFJetsCHSHandle->end(); ++iJet) {
+
+  if(verbose_AOD) printf("PFchs %f \n",iJet->pt());
+  
+  float jetpt  = iJet->pt();
+  float jeteta = iJet->eta();
+  float jetphi = iJet->phi();
+
+  // ID and jet selections
+  bool pfchsjetPassLooseID = false;
+  bool pfchsjetPassTightID = false;
+
+  // from https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_2016
+  float pfchsjetNHF                 = iJet->neutralHadronEnergyFraction();
+  float pfchsjetNEMF                = iJet->neutralEmEnergyFraction();
+  float pfchsjetCHF                 = iJet->chargedHadronEnergyFraction();
+  float pfchsjetMUF                 = iJet->muonEnergyFraction();
+  float pfchsjetCEMF                = iJet->chargedEmEnergyFraction();
+  float pfchsjetNumConst            = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
+  float pfchsjetNumNeutralParticle  = iJet->neutralMultiplicity();
+  float pfchsjetCHM                 = iJet->chargedMultiplicity(); 
+
+  if ( fabs(jeteta) <= 2.7 ){
+   pfchsjetPassLooseID = (pfchsjetNHF<0.99 && pfchsjetNEMF<0.99 && pfchsjetNumConst>1) && ((abs(jeteta)<=2.4 && pfchsjetCHF>0 && pfchsjetCHM>0 && pfchsjetCEMF<0.99) || abs(jeteta)>2.4) && abs(jeteta)<=2.7 ;
+   pfchsjetPassTightID = (pfchsjetNHF<0.90 && pfchsjetNEMF<0.90 && pfchsjetNumConst>1) && ((abs(jeteta)<=2.4 && pfchsjetCHF>0 && pfchsjetCHM>0 && pfchsjetCEMF<0.99) || abs(jeteta)>2.4) && abs(jeteta)<=2.7 ;
+  }
+  if ( fabs(jeteta) > 2.7 && fabs(jeteta) <= 3.0 ){
+   pfchsjetPassLooseID = (pfchsjetNEMF<0.90 && pfchsjetNumNeutralParticle>2 ) ;
+   pfchsjetPassTightID = (pfchsjetNEMF<0.90 && pfchsjetNumNeutralParticle>2 ) ;
+  }
+  if ( fabs(jeteta) > 3.0 ){
+   pfchsjetPassLooseID = (pfchsjetNEMF<0.90 && pfchsjetNumNeutralParticle>10 ) ;
+   pfchsjetPassTightID = (pfchsjetNEMF<0.90 && pfchsjetNumNeutralParticle>10 ) ; 
+  }
+
+  if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !pfchsjetPassLooseID) continue;
+
+  // pfchsJetTrackIDs is a vector of ints where each int is the 
+  // index of a track passing deltaR requirement to this jet
+  // out of the master track record of tracks passing basic selections
+  vector<int>   pfchsJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  if(pfchsJetTrackIDs.size()<1) continue;
+
+  if(verbose_AOD){
+   printf(" AOD Jet pt eta phi: %0.1f %0.1f %0.1f\n",jetpt,jeteta,jetphi);
+   for( int i=0; i<(int)AODallTrackPositions.size(); i++){
+    printf("  allTrack %i %0.1f %0.1f %0.1f \n",i,
+     AODallTrackPt [i] ,
+     AODallTrackEta[i] ,
+     AODallTrackPhi[i] );
+
+   }
+   for( int i=0; i<(int)pfchsJetTrackIDs.size(); i++){
+    printf(" Track %i at %i \n",i,pfchsJetTrackIDs[i]);
+    printf("  pfchsTrack %i=%i %0.1f %0.1f %0.1f \n",i,
+     pfchsJetTrackIDs[i],
+     AODallTrackPt [pfchsJetTrackIDs[i]] ,
+     AODallTrackEta[pfchsJetTrackIDs[i]] ,
+     AODallTrackPhi[pfchsJetTrackIDs[i]] );
+   }
+  }
+
+  // initialize variables
+  float alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2 = -1.;
+  float totalTrackAngle, totalTrackAnglePt = 0.;
+  float sumIP, sumIPSig = 0.;
+  vector<float> pfchsJetTrackAngles; 
+  pfchsJetTrackAngles.clear();
+  vector<float> pfchsJetIPs; 
+  pfchsJetIPs.clear();
+  vector<float> pfchsJetIPSigs; 
+  pfchsJetIPSigs.clear();
+
+  // do calculations
+  calculateAlphaMax(pfchsJetTrackIDs,alphaMax,alphaMaxPrime,beta,alphaMax2,alphaMaxPrime2,beta2);
+  calculateTrackAngle(pfchsJetTrackIDs, pfchsJetTrackAngles, totalTrackAngle, totalTrackAnglePt);
+  calculateIP(pfchsJetTrackIDs, pfchsJetIPs, pfchsJetIPSigs, sumIP, sumIPSig);
+  //calculateDisplacedVertices(es, pfchsJetTrackIDs);
+
+  // find medians
+  float medianTrackAngle;
+  medianTrackAngle = findMedian(pfchsJetTrackAngles);
+  float medianIP;
+  medianIP = findMedian(pfchsJetIPs);
+  float medianIPSig;
+  medianIPSig = findMedian(pfchsJetIPSigs);
+
+  ////////////////////////
+  // Fill tree
+  /////////////////////////
+  AODnPFchsJet_++;
+  
+  //Pt, Eta, Phi
+  AODPFchsJetPt_.push_back(jetpt);
+  AODPFchsJetEta_.push_back(jeteta);
+  AODPFchsJetPhi_.push_back(jetphi);
+  
+  //AlphaMax-type variables
+  AODPFchsJetAlphaMax_       .push_back(alphaMax      ) ; 
+  AODPFchsJetAlphaMax2_      .push_back(alphaMax2     ) ; 
+  AODPFchsJetAlphaMaxPrime_  .push_back(alphaMaxPrime ) ; 
+  AODPFchsJetAlphaMaxPrime2_ .push_back(alphaMaxPrime2) ; 
+  AODPFchsJetBeta_           .push_back(beta          ) ; 
+  AODPFchsJetBeta2_          .push_back(beta2         ) ; 
+
+  //Totals
+  AODPFchsJetSumIP_.push_back(sumIP);
+  AODPFchsJetSumIPSig_.push_back(sumIPSig);
+
+  AODPFchsJetTotalTrackAngle_.push_back(totalTrackAngle);    
+
+  /////Medians
+  AODPFchsJetMedianIP_             .push_back(medianIP);
+  AODPFchsJetMedianLog10IPSig_     .push_back(log10(medianIPSig));
+  AODPFchsJetMedianLog10TrackAngle_.push_back(log10(medianTrackAngle));
+
+ }//end pf loop
  
 }//end fill jets
 
@@ -1646,37 +1754,6 @@ vector<int> lldjNtuple::getJetTrackIndexs( float jeteta, float jetphi )
  return idvector;
 }
 
-//void lldjNtuple::aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, 
-//					    float jeteta, float jetphi,  vector<int> whichVertex_, 
-//					    bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
-//					    bool& fill_trackAngles_median, float &trackAngles_median, 
-//					    float& sumIP, float& sumIPSig, float &totalTrackAngle,
-//					    vector<reco::TransientTrack>& transientTracks, vector<int>& vertexVector
-//					    ){
-//
-//  //  sort(tracksIPLogSig.begin(), tracksIPLogSig.end());
-//  //  sort(tracksIPLog10Sig.begin(), tracksIPLog10Sig.end());
-//  //  sort(trackAngles.begin(), trackAngles.end());
-//  //  
-//  //  //Medians
-//  //  if(tracksIPLog10Sig.size() == 0){
-//  //    fill_tracksIPLog10Sig_median = false;
-//  //  }else if((tracksIPLog10Sig.size()%2 == 0)){
-//  //    tracksIPLog10Sig_median = (tracksIPLog10Sig.at(tracksIPLog10Sig.size()/2-1)+tracksIPLog10Sig.at((tracksIPLog10Sig.size()/2)))/2 ;
-//  //  }else{
-//  //    tracksIPLog10Sig_median = tracksIPLog10Sig.at((tracksIPLog10Sig.size()-1)/2);
-//  //  }
-//  //  if(trackAngles.size() == 0){
-//  //    fill_trackAngles_median = false;
-//  //  }else if(trackAngles.size() % 2 == 0){
-//  //    trackAngles_median = trackAngles.at(trackAngles.size()/2 - 1);
-//  //  }else{
-//  //    trackAngles_median = trackAngles.at((trackAngles.size() - 1)/2);
-//  //  }
-//
-// return;
-//  
-//}
 
 void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& aMaxP, float& beta, float& aMax2, float& aMaxP2, float& beta2)
 {
@@ -1749,7 +1826,6 @@ void lldjNtuple::calculateAlphaMax(vector<int> jetTrackIDs, float& aMax, float& 
 
 }
 
-
 void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, vector<float> &allTrackAngles,
  float &totalTrackAngle, float &totalTrackAnglePt)
 {
@@ -1769,8 +1845,6 @@ void lldjNtuple::calculateTrackAngle(vector<int> jetTrackIDs, vector<float> &all
   return;
   
 }
-
-
 
 void lldjNtuple::calculateIP(vector<int> jetTrackIDs, vector<float> &jetIPs, vector<float> &jetIPSigs, float &tsumIP, float &tsumIPSig)
 {
@@ -1829,8 +1903,6 @@ float lldjNtuple::findMedian( vector<float> thevector){
  return themedian;
 
 }
-
-
 
 void lldjNtuple::deltaVertex3D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dEta, double& dPhi, double& pt, double& m, double& energy)
 {
@@ -1895,7 +1967,6 @@ vector<reco::TransientTrack> lldjNtuple::cleanTracks(vector<reco::TransientTrack
   }
   return cleanTracks;
 }
-
 
 
 
