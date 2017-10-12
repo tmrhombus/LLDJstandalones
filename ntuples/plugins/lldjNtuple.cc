@@ -77,7 +77,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   
 
   Service<TFileService> fs;
-  tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
+  tree_    = fs->make<TTree>("EventTree", "Event data (12 October 2017)");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
   // make branches for tree

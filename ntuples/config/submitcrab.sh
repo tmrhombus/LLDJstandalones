@@ -1,7 +1,7 @@
 #voms-proxy-init --voms cms --valid 100:00
 
 # do we submit or just generate submit scripts
-dosubmit=false
+dosubmit=true
 
 # start the timer
 START=$(date +%s);
@@ -13,13 +13,8 @@ mkdir -p ${thesubdir}
 printf "Making submit configurations in\n ${thesubdir}\n\n"
 
 # copy necessary files into submit directory
-<<<<<<< HEAD
-cp "${subdir}/run_data_80X.py"                                        ${thesubdir}
-cp "${subdir}/run_mc_80X.py"                                          ${thesubdir}
-=======
 cp "${subdir}/run_data_80X.py" ${thesubdir}
 cp "${subdir}/run_mc_80X.py"   ${thesubdir}
->>>>>>> upstream/master
 
 printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X.py" 
 printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80X.py"   
