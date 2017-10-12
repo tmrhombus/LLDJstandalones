@@ -174,7 +174,8 @@ public :
  // AOD
  int nmatched;
  int nunmatched;
- float drcut;
+ float jetmatchdRcut ;
+ float objcleandRcut ;
 
  // bin names
  std::vector<TString> selbinnames;

@@ -24,7 +24,8 @@ void analyzer_signal::Loop(TString outfilename,
  nmatched = 0;
  nunmatched = 0;
 
- drcut = 0.4;
+ jetmatchdRcut = 0.4;
+ objcleandRcut = 0.4;
 
  n_tot=0;
  n_test =0;
@@ -262,7 +263,7 @@ void analyzer_signal::Loop(TString outfilename,
 
  } // end loop over entries
 
- printf("\n\n Summary   dR=%0.1f\n",drcut);
+ printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
  printf("  ntot        %i \n",n_tot        ); 
  //printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
  //printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
@@ -1305,7 +1306,7 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   // for(int d=0; d<photon_list.size(); ++d){
   //  int phoindex = photon_list[d];
   //  if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
-  //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
+  //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < objcleandRcut )  pass_overlap=false;
   //  }
   // }//end photons
   //} // if photons
@@ -1340,7 +1341,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
    // for(int d=0; d<photon_list.size(); ++d){
    //  int phoindex = photon_list[d];
    //  if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
-   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < 0.4 ){
+   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < objcleandRcut ){
    //    pass_overlap=false;
    //   } // if overlap
    //  }
@@ -1351,7 +1352,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
     for(int d=0; d<electron_list.size(); ++d){
      //printf(" brgin looping over electrons\n");
      int eleindex = electron_list[d];
-     if( dR( eleEta->at(eleindex),elePhi->at(eleindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < 0.4 )
+     if( dR( eleEta->at(eleindex),elePhi->at(eleindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < objcleandRcut )
      {
       pass_overlap=false; // printf(" OL w electron\n");
      } // if overlap
@@ -1362,7 +1363,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
     for(int d=0; d<muon_list.size(); ++d){
      int muindex = muon_list[d];
      if(muindex<= (muEta->size()-1)&&muindex<= (muPhi->size()-1)){
-      if( dR( muEta->at(muindex),muPhi->at(muindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < 0.4 )
+      if( dR( muEta->at(muindex),muPhi->at(muindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < objcleandRcut )
       {
        pass_overlap=false; //printf(" OL w muon\n");
       } // if overlap
@@ -1405,7 +1406,7 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
    // for(int d=0; d<photon_list.size(); ++d){
    //  int phoindex = photon_list[d];
    //  if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
-   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < 0.4 ){
+   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut ){
    //    pass_overlap=false;
    //   } // if overlap
    //  }
@@ -1416,7 +1417,7 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
     for(int d=0; d<electron_list.size(); ++d){
      //printf(" brgin looping over electrons\n");
      int eleindex = electron_list[d];
-     if( dR( eleEta->at(eleindex),elePhi->at(eleindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < 0.4 )
+     if( dR( eleEta->at(eleindex),elePhi->at(eleindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
      {
       pass_overlap=false; // printf(" OL w electron\n");
      } // if overlap
@@ -1427,7 +1428,7 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
     for(int d=0; d<muon_list.size(); ++d){
      int muindex = muon_list[d];
      if(muindex<= (muEta->size()-1)&&muindex<= (muPhi->size()-1)){
-      if( dR( muEta->at(muindex),muPhi->at(muindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < 0.4 )
+      if( dR( muEta->at(muindex),muPhi->at(muindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
       {
        pass_overlap=false; //printf(" OL w muon\n");
       } // if overlap
@@ -1534,7 +1535,7 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
 //////
 //////    // if find match (AOD,miniAOD), add AODjet to list, break loop over AOD jets 
 //////    // still have loop over miniAOD jets, so keep going and find next one
-//////    if( dR( miniAODjetEta, miniAODjetPhi, AODjetEta, AODjetPhi) < drcut ) {  
+//////    if( dR( miniAODjetEta, miniAODjetPhi, AODjetEta, AODjetPhi) < jetmatchdRcut ) {  
 //////       tmpAODjetlist.push_back(j); break;
 //////    }
 //////
