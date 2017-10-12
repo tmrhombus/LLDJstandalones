@@ -67,14 +67,18 @@ public :
  Bool_t        init2DHistograms();
  Bool_t        fill2DHistograms(Double_t weight, int selbin);
  Bool_t        write2DHistograms(int selbin);
- // Jet Variables
- Bool_t        initSlimmedJetHistograms();
- Bool_t        fillSlimmedJetHistograms(Double_t weight, int selbin, int lepbin);
- Bool_t        writeSlimmedJetHistograms(int selbin, int lepbin);
  // Event Variables
  Bool_t        initBasicHistograms();
  Bool_t        fillBasicHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeBasicHistograms(int selbin, int lepbin);
+ // SlimmedJet Variables
+ Bool_t        initSlimmedJetHistograms();
+ Bool_t        fillSlimmedJetHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeSlimmedJetHistograms(int selbin, int lepbin);
+ // AODCaloJet Variables
+ Bool_t        initAODCaloJetHistograms();
+ Bool_t        fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeAODCaloJetHistograms(int selbin, int lepbin);
 
  // vectors of ints
  // each int is an entry in vector

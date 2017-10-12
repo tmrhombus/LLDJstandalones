@@ -156,7 +156,7 @@ int main(int argc, char **argv){
 
   // TChain needs a TString..
   Tinputline = inputline;
-  //printf("Inputline: %s\n",Tinputline.Data());
+  printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
   if( Tinputline.Contains("/home/rhombus") ){
@@ -174,7 +174,7 @@ int main(int argc, char **argv){
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 
-  if( Tinputline.Contains("/store/user") ){
+  if( Tinputline.Contains("/store/group") ){
        theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
@@ -205,7 +205,7 @@ int main(int argc, char **argv){
   if( inputfile.fail() ) continue;
 
   Tinputline = inputline;
-  //printf("Inputline: %s\n",Tinputline.Data());
+  printf("Inputline: %s\n",Tinputline.Data());
 
   // read crosssection
   if( Tinputline.Contains("crosssection: ") ){  
