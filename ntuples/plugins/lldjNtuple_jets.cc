@@ -17,14 +17,7 @@
 #include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateOnSurface.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-//#include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
-//#include "DataFormats/TrackReco/interface/TrackBase.h"
-//#include "DataFormats/VertexReco/interface/Vertex.h"
-//#include "TrackingTools/Records/interface/TransientTrackRecord.h"
-//#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-//#include <CandidateBoostedDoubleSecondaryVertexComputer.h>
 #include "RecoTracker/DebugTools/interface/GetTrackTrajInfo.h"
-//#include <GetTrackTrajInfo.h>
 
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 
@@ -234,6 +227,8 @@ vector<float>  AODPFJetBeta_;
 vector<float>  AODPFJetBeta2_;
 vector<float>  AODPFJetSumIP_;
 vector<float>  AODPFJetSumIPSig_;
+//vector<float>  AODPFJetLog10IPSig_;
+vector<float>  AODPFJetMedianIP_;
 vector<float>  AODPFJetMedianLog10IPSig_;
 vector<float>  AODPFJetTrackAngle_;
 vector<float>  AODPFJetLogTrackAngle_;
@@ -253,6 +248,8 @@ vector<float>  AODPFchsJetBeta_;
 vector<float>  AODPFchsJetBeta2_;
 vector<float>  AODPFchsJetSumIP_;
 vector<float>  AODPFchsJetSumIPSig_;
+//vector<float>  AODPFchsJetLog10IPSig_;
+vector<float>  AODPFchsJetMedianIP_;
 vector<float>  AODPFchsJetMedianLog10IPSig_;
 vector<float>  AODPFchsJetTrackAngle_;
 vector<float>  AODPFchsJetLogTrackAngle_;
@@ -274,41 +271,17 @@ vector<float>    AODallTrackAngle;
 
 vector<int>      AODwhichVertexByTrack;
 
-vector<float>      AODallTrackdxy;
-vector<float>      AODallTrackdxyerr;
+vector<float>    AODallTrackdxy;
+vector<float>    AODallTrackdxyerr;
 
 // set parameters for tracks to be accepted
 const float minTrackPt_ = 1.0;
 const float maxDRtrackJet_ = 0.4;
 
 
-///
-///
-///
-///// AOD 
-///float sumIPPt;
-///float sumIPLogSig;
-///float IVFScore; 
-///int nTracksIPlt0p05;
-///int nTracksIPSiggt10;
-///int nTracksIPSiglt5;
-///
-///
-///
-///vector<float> tracksIPLogSig;
-///vector<float> tracksIPLog10Sig;
-///vector<float> trackAngles;
-///
-///float totalTrackPt;
-///float totalTrackAnglePt;
-///float minR;
-/////float minPt = 0; //unused
-///
-///vector<TLorentzVector> trackVectors;
-///
-/////StateOnTrackerBound stateOnTracker;
+// start functions ----------------------------------------
 
-
+// initialize branches
 void lldjNtuple::branchesJets(TTree* tree) {
 
   //link the variable in c++ code to variable in branch
@@ -1522,8 +1495,6 @@ void lldjNtuple::fillJets(const edm::Event& e, const edm::EventSetup& es) {
   //Vectors currently not saved
   //AODCaloJetLogTrackAngle_; //trackAngles; 
   //AODCaloJetTrackAngle_;
-  
-  //Other variables to do: refit vertex, avf vertex, hit info, boost variables
 
  }
  
@@ -1937,9 +1908,7 @@ void lldjNtuple::calculateDisplacedVertices(const edm::EventSetup& es, vector<in
     transientTracks.push_back(tt);
   }
   
-  
   if(transientTracks.size() > 1){
-    
     vector<TransientVertex> avfVerts = vtxfitter_->vertices(transientTracks);
     if(avfVerts.size() > 0 && avfVerts[0].isValid()){
       GlobalPoint vertPos = avfVerts[0].position();
@@ -1954,10 +1923,12 @@ void lldjNtuple::calculateDisplacedVertices(const edm::EventSetup& es, vector<in
       AODCaloJetAvfVertexTotalChiSquared_.push_back( avfVerts[0].totalChiSquared() );
       AODCaloJetAvfVertexDegreesOfFreedom_.push_back( avfVerts[0].degreesOfFreedom() );
       if(avfVerts[0].degreesOfFreedom() > 0) AODCaloJetAvfVertexChi2NDoF_.push_back( avfVerts[0].totalChiSquared()/avfVerts[0].degreesOfFreedom() );
+       else AODCaloJetAvfVertexChi2NDoF_.push_back( 0. );
       AODCaloJetAvfVertexDistanceToBeam_.push_back( vertBeamXY );
       double rerr = vertErr.rerr(vertPos);
       AODCaloJetAvfVertexTransverseError_.push_back( rerr );
       if(rerr > 0) AODCaloJetAvfVertexTransverseSig_.push_back( vertBeamXY/rerr );
+       else AODCaloJetAvfVertexTransverseSig_.push_back( 0. );
       
       vector<reco::TransientTrack> cleanTrackColl = cleanTracks(avfVerts[0].refittedTracks(),vertPos);
       
@@ -1994,11 +1965,69 @@ void lldjNtuple::calculateDisplacedVertices(const edm::EventSetup& es, vector<in
 					    +pow((AODVertexHandle->at(0).y() - avfVerts[0].position().y())/AODVertexHandle->at(0).y(),2)
 					    +pow((AODVertexHandle->at(0).z() - avfVerts[0].position().z())/AODVertexHandle->at(0).z(),2)) );
       if(AODVertexHandle->size() > 0)AODCaloJetAvfVertexDeltaZtoPV_.push_back( AODVertexHandle->at(0).z() - avfVerts[0].position().z() );
+       else AODCaloJetAvfVertexDeltaZtoPV_.push_back( 0. );
       if(AODVertexHandle->size() > 1)AODCaloJetAvfVertexDeltaZtoPV2_.push_back( AODVertexHandle->at(1).z() - avfVerts[0].position().z() );
+       else AODCaloJetAvfVertexDeltaZtoPV2_.push_back( 0. );
       
       
     }//end valid avf vertex
-      
+    else{
+     AODCaloJetAvfVx_.push_back( 0. );
+     AODCaloJetAvfVy_.push_back( 0. );
+     AODCaloJetAvfVz_.push_back( 0. );
+     AODCaloJetAvfVertexTotalChiSquared_.push_back( 0. );
+     AODCaloJetAvfVertexDegreesOfFreedom_.push_back( 0. );
+     AODCaloJetAvfVertexChi2NDoF_.push_back( 0. );
+     AODCaloJetAvfVertexDistanceToBeam_.push_back( 0. );
+     AODCaloJetAvfVertexTransverseError_.push_back( 0. );
+     AODCaloJetAvfVertexTransverseSig_.push_back( 0. );
+     AODCaloJetAvfVertexDeltaEta_.push_back( 0. );
+     AODCaloJetAvfVertexDeltaPhi_.push_back( 0. );
+     AODCaloJetAvfVertexRecoilPt_.push_back( 0. );
+     AODCaloJetAvfVertexTrackMass_.push_back( 0. );
+     AODCaloJetAvfVertexTrackEnergy_.push_back( 0. );
+     AODCaloJetAvfBeamSpotDeltaPhi_.push_back( 0. );
+     AODCaloJetAvfBeamSpotRecoilPt_.push_back( 0. );
+     AODCaloJetAvfBeamSpotMedianDeltaPhi_.push_back( 0. );
+     AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_.push_back( 0. );
+     AODCaloJetNCleanMatchedTracks_.push_back( 0. );
+     AODCaloJetSumHitsInFrontOfVert_.push_back( 0. );
+     AODCaloJetSumMissHitsAfterVert_.push_back( 0. );
+     AODCaloJetHitsInFrontOfVertPerTrack_.push_back( 0. );
+     AODCaloJetMissHitsAfterVertPerTrack_.push_back( 0. );
+     AODCaloJetAvfDistToPV_.push_back( 0. );
+     AODCaloJetAvfVertexDeltaZtoPV_.push_back( 0. );
+     AODCaloJetAvfVertexDeltaZtoPV2_.push_back( 0. );
+    }
+
   }//end if transientTracks
+  else{
+   AODCaloJetAvfVx_.push_back( 0. );
+   AODCaloJetAvfVy_.push_back( 0. );
+   AODCaloJetAvfVz_.push_back( 0. );
+   AODCaloJetAvfVertexTotalChiSquared_.push_back( 0. );
+   AODCaloJetAvfVertexDegreesOfFreedom_.push_back( 0. );
+   AODCaloJetAvfVertexChi2NDoF_.push_back( 0. );
+   AODCaloJetAvfVertexDistanceToBeam_.push_back( 0. );
+   AODCaloJetAvfVertexTransverseError_.push_back( 0. );
+   AODCaloJetAvfVertexTransverseSig_.push_back( 0. );
+   AODCaloJetAvfVertexDeltaEta_.push_back( 0. );
+   AODCaloJetAvfVertexDeltaPhi_.push_back( 0. );
+   AODCaloJetAvfVertexRecoilPt_.push_back( 0. );
+   AODCaloJetAvfVertexTrackMass_.push_back( 0. );
+   AODCaloJetAvfVertexTrackEnergy_.push_back( 0. );
+   AODCaloJetAvfBeamSpotDeltaPhi_.push_back( 0. );
+   AODCaloJetAvfBeamSpotRecoilPt_.push_back( 0. );
+   AODCaloJetAvfBeamSpotMedianDeltaPhi_.push_back( 0. );
+   AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_.push_back( 0. );
+   AODCaloJetNCleanMatchedTracks_.push_back( 0. );
+   AODCaloJetSumHitsInFrontOfVert_.push_back( 0. );
+   AODCaloJetSumMissHitsAfterVert_.push_back( 0. );
+   AODCaloJetHitsInFrontOfVertPerTrack_.push_back( 0. );
+   AODCaloJetMissHitsAfterVertPerTrack_.push_back( 0. );
+   AODCaloJetAvfDistToPV_.push_back( 0. );
+   AODCaloJetAvfVertexDeltaZtoPV_.push_back( 0. );
+   AODCaloJetAvfVertexDeltaZtoPV2_.push_back( 0. );
+  }
 
 }//end calculateDisplacedVertices
