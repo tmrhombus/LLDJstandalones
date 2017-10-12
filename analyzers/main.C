@@ -175,10 +175,7 @@ int main(int argc, char **argv){
   }
 
   if( Tinputline.Contains("/store/user") ){
-    theChain->Add( "/hdfs"+Tinputline );
-    //theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
-  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-  // }
+       theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
    printf("Inputfile: %s\n",Tinputline.Data());
   }
 

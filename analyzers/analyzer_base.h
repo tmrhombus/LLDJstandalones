@@ -61,24 +61,25 @@ public :
    std::vector<float>   *llpDaughterEta;
    std::vector<float>   *llpDaughterPhi;
    std::vector<float>   *llpDaughterMass;
-   Int_t           nPho;
-   std::vector<float>   *phoPt;
-   std::vector<float>   *phoEn;
-   std::vector<float>   *phoEta;
-   std::vector<float>   *phoPhi;
-   std::vector<float>   *phoSCEn;
-   std::vector<float>   *phoSCEta;
-   std::vector<float>   *phoSCPhi;
-   std::vector<unsigned short> *phoIDbit;
-   std::vector<float>   *phoIDMVA;
-   std::vector<float>   *phoObjPFChIso;
-   std::vector<float>   *phoObjPFPhoIso;
-   std::vector<float>   *phoObjPFNeuIso;
-   std::vector<float>   *phoObjPFChWorstIso;
-   std::vector<float>   *phoMapPFChIso;
-   std::vector<float>   *phoMapPFPhoIso;
-   std::vector<float>   *phoMapPFNeuIso;
-   std::vector<float>   *phoMapPFChWorstIso;
+//// #brokenphotons
+//   Int_t           nPho;
+//   std::vector<float>   *phoPt;
+//   std::vector<float>   *phoEn;
+//   std::vector<float>   *phoEta;
+//   std::vector<float>   *phoPhi;
+//   std::vector<float>   *phoSCEn;
+//   std::vector<float>   *phoSCEta;
+//   std::vector<float>   *phoSCPhi;
+//   std::vector<unsigned short> *phoIDbit;
+//   std::vector<float>   *phoIDMVA;
+//   std::vector<float>   *phoObjPFChIso;
+//   std::vector<float>   *phoObjPFPhoIso;
+//   std::vector<float>   *phoObjPFNeuIso;
+//   std::vector<float>   *phoObjPFChWorstIso;
+//   std::vector<float>   *phoMapPFChIso;
+//   std::vector<float>   *phoMapPFPhoIso;
+//   std::vector<float>   *phoMapPFNeuIso;
+//   std::vector<float>   *phoMapPFChWorstIso;
    Int_t           nEle;
    std::vector<float>   *elePt;
    std::vector<float>   *eleEn;
@@ -329,24 +330,25 @@ public :
    TBranch        *b_llpDaughterEta;   //!
    TBranch        *b_llpDaughterPhi;   //!
    TBranch        *b_llpDaughterMass;   //!
-   TBranch        *b_nPho;   //!
-   TBranch        *b_phoPt;   //!
-   TBranch        *b_phoEn;   //!
-   TBranch        *b_phoEta;   //!
-   TBranch        *b_phoPhi;   //!
-   TBranch        *b_phoSCEn;   //!
-   TBranch        *b_phoSCEta;   //!
-   TBranch        *b_phoSCPhi;   //!
-   TBranch        *b_phoIDbit;   //!
-   TBranch        *b_phoIDMVA;   //!
-   TBranch        *b_phoObjPFChIso;   //!
-   TBranch        *b_phoObjPFPhoIso;   //!
-   TBranch        *b_phoObjPFNeuIso;   //!
-   TBranch        *b_phoObjPFChWorstIso;   //!
-   TBranch        *b_phoMapPFChIso;   //!
-   TBranch        *b_phoMapPFPhoIso;   //!
-   TBranch        *b_phoMapPFNeuIso;   //!
-   TBranch        *b_phoMapPFChWorstIso;   //!
+//// #brokenphotons
+//   TBranch        *b_nPho;   //!
+//   TBranch        *b_phoPt;   //!
+//   TBranch        *b_phoEn;   //!
+//   TBranch        *b_phoEta;   //!
+//   TBranch        *b_phoPhi;   //!
+//   TBranch        *b_phoSCEn;   //!
+//   TBranch        *b_phoSCEta;   //!
+//   TBranch        *b_phoSCPhi;   //!
+//   TBranch        *b_phoIDbit;   //!
+//   TBranch        *b_phoIDMVA;   //!
+//   TBranch        *b_phoObjPFChIso;   //!
+//   TBranch        *b_phoObjPFPhoIso;   //!
+//   TBranch        *b_phoObjPFNeuIso;   //!
+//   TBranch        *b_phoObjPFChWorstIso;   //!
+//   TBranch        *b_phoMapPFChIso;   //!
+//   TBranch        *b_phoMapPFPhoIso;   //!
+//   TBranch        *b_phoMapPFNeuIso;   //!
+//   TBranch        *b_phoMapPFChWorstIso;   //!
    TBranch        *b_nEle;   //!
    TBranch        *b_elePt;   //!
    TBranch        *b_eleEn;   //!

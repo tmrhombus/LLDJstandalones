@@ -96,7 +96,7 @@ void analyzer_signal::Loop(TString outfilename,
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
-  photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
+  //photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
   electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
   muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
   slimmedjet_list = slimmedjet_passID( slimmedjetidbit, 25, 2.4,    ""); 
@@ -136,10 +136,11 @@ void analyzer_signal::Loop(TString outfilename,
   htslimmedjets = 0.;
   htaodcalojets = 0.;
 
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   htall += phoPt->at(phoindex);
-  }
+  //// #brokenphotons
+  //for(int i=0; i<photon_list.size(); ++i){
+  // int phoindex = photon_list[i];
+  // htall += phoPt->at(phoindex);
+  //}
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -899,17 +900,18 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
  h_nSelectedSlimmedJet     [selbin][lepbin] .Fill( nSelectedSlimmedJet, weight);
  h_nSelectedAODCaloJet     [selbin][lepbin] .Fill( nSelectedAODCaloJet, weight);
 
- // fill leading photon in vector
- if(photon_list.size() > 0){
-  int phoindex = photon_list[0];
-  h_phoEn    [selbin][lepbin] .Fill( phoEn   ->at(phoindex), weight );  
-  h_phoPt    [selbin][lepbin] .Fill( phoPt   ->at(phoindex), weight );  
-  h_phoEta   [selbin][lepbin] .Fill( phoEta  ->at(phoindex), weight );  
-  h_phoPhi   [selbin][lepbin] .Fill( phoPhi  ->at(phoindex), weight );  
-  h_phoSCEn  [selbin][lepbin] .Fill( phoSCEn ->at(phoindex), weight );  
-  h_phoSCPhi [selbin][lepbin] .Fill( phoSCPhi->at(phoindex), weight );  
-  h_phoSCEta [selbin][lepbin] .Fill( phoSCEta->at(phoindex), weight );  
- }
+ //// #brokenphotons
+ //// fill leading photon in vector
+ //if(photon_list.size() > 0){
+ // int phoindex = photon_list[0];
+ // h_phoEn    [selbin][lepbin] .Fill( phoEn   ->at(phoindex), weight );  
+ // h_phoPt    [selbin][lepbin] .Fill( phoPt   ->at(phoindex), weight );  
+ // h_phoEta   [selbin][lepbin] .Fill( phoEta  ->at(phoindex), weight );  
+ // h_phoPhi   [selbin][lepbin] .Fill( phoPhi  ->at(phoindex), weight );  
+ // h_phoSCEn  [selbin][lepbin] .Fill( phoSCEn ->at(phoindex), weight );  
+ // h_phoSCPhi [selbin][lepbin] .Fill( phoSCPhi->at(phoindex), weight );  
+ // h_phoSCEta [selbin][lepbin] .Fill( phoSCEta->at(phoindex), weight );  
+ //}
 
  // fill leading electron in vector
  if(electron_list.size() > 0){
@@ -1212,18 +1214,19 @@ Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
 
 }
 
-//-------------------------getPhotonPt
-Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
-
-      Float_t photonenergy = phoSCEn->at(idnr);
-      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
-      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
-
-      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
-
-  return phoPt;
-
-}
+//// #brokenphotons
+////-------------------------getPhotonPt
+//Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
+//
+//      Float_t photonenergy = phoSCEn->at(idnr);
+//      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
+//      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+//
+//      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
+//
+//  return phoPt;
+//
+//}
 
 //-------------------------muon_passID
 std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
@@ -1296,15 +1299,16 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   bool pass_bit = eleIDbit->at(i) >> bitnr & 0x1 == 1;      
 
   bool pass_overlap = true;
-  // check overlap with photons
-  if(photon_list.size()>0){
-   for(int d=0; d<photon_list.size(); ++d){
-    int phoindex = photon_list[d];
-    if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
-     if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
-    }
-   }//end photons
-  } // if photons
+  //// #brokenphotons
+  //// check overlap with photons
+  //if(photon_list.size()>0){
+  // for(int d=0; d<photon_list.size(); ++d){
+  //  int phoindex = photon_list[d];
+  //  if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
+  //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < 0.4 )  pass_overlap=false;
+  //  }
+  // }//end photons
+  //} // if photons
 
   //// isolation already in VID
   //bool pass_iso = elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -1330,17 +1334,18 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
   {
 
    bool pass_overlap = true;
-   // check overlap with photons
-   if(photon_list.size()>0){
-    for(int d=0; d<photon_list.size(); ++d){
-     int phoindex = photon_list[d];
-     if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
-      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < 0.4 ){
-       pass_overlap=false;
-      } // if overlap
-     }
-    }//end photons
-   } // if photons
+   //// #brokenphotons
+   //// check overlap with photons
+   //if(photon_list.size()>0){
+   // for(int d=0; d<photon_list.size(); ++d){
+   //  int phoindex = photon_list[d];
+   //  if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
+   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), slimmedJetEta->at(i),slimmedJetPhi->at(i) ) < 0.4 ){
+   //    pass_overlap=false;
+   //   } // if overlap
+   //  }
+   // }//end photons
+   //} // if photons
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
@@ -1394,17 +1399,18 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
   {
 
    bool pass_overlap = true;
-   // check overlap with photons
-   if(photon_list.size()>0){
-    for(int d=0; d<photon_list.size(); ++d){
-     int phoindex = photon_list[d];
-     if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
-      if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < 0.4 ){
-       pass_overlap=false;
-      } // if overlap
-     }
-    }//end photons
-   } // if photons
+   //// #brokenphotons
+   //// check overlap with photons
+   //if(photon_list.size()>0){
+   // for(int d=0; d<photon_list.size(); ++d){
+   //  int phoindex = photon_list[d];
+   //  if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
+   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < 0.4 ){
+   //    pass_overlap=false;
+   //   } // if overlap
+   //  }
+   // }//end photons
+   //} // if photons
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
@@ -1449,25 +1455,25 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
  std::vector<int> pholist;
  pholist.clear();
 
- //Loop over photons                   
- for(int p=0;p<nPho;p++)
- {    
-  Float_t thephoPt = getPhotonPt(p,sysbinname);
-  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
-  Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
+ ////Loop over photons                   
+ //for(int p=0;p<nPho;p++)
+ //{    
+ // Float_t thephoPt = getPhotonPt(p,sysbinname);
+ // //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
+ // Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
 
-  //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
-  bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
+ // //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
+ // bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
 
-  bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
-  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
+ // bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+ // //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-  if( kinematic && pass_bit){
-   nSelectedPho++;
-   //printf("selected aphoton\n");
-   pholist.push_back(p);
-  }    
- }    
+ // if( kinematic && pass_bit){
+ //  nSelectedPho++;
+ //  //printf("selected aphoton\n");
+ //  pholist.push_back(p);
+ // }    
+ //}    
 
  return pholist;
 
