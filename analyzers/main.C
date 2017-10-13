@@ -41,8 +41,8 @@ int main(int argc, char **argv){
   
  int index;
  int s;
- double numberSignal;
- double numberBkg;
+// double numberSignal;
+// double numberBkg;
  opterr = 0;
 
  while ((s = getopt (argc, argv, "s:l:x:e:i:o:a:n:dm")) != -1)

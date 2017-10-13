@@ -20,14 +20,15 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
- Number.resize(N + 1);
+ Number.resize(N+1);
+ CutValue.resize(N+1);
 // tags.resize(N + 1);
 
  for(int z =0;z<tags.size(); z++)
  {
  Number[z] = 0;
  tags[z] = 0;
- std::cout<<"z: " <<z<<" N[z]: "<<Number[z]<<" tags[z]: "<<tags[z]<<std::endl;
+ //std::cout<<"z: " <<z<<" N[z]: "<<Number[z]<<" tags[z]: "<<tags[z]<<std::endl;
  }
 
  number_sig =0.0;
@@ -291,8 +292,13 @@ void analyzer_signal::Loop(TString outfilename,
  //printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
  //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
- 
- std::cout <<"  numb_sig:"<< number_sig<<"    Number_bkg:"<<number_bkg<<" Number[0]: "<<Number[0]<<" N[1]: "<<Number[1]<<std::endl;
+ for(int g = 0; g<Number.size(); g++){
+ std::cout<<"Number["<<g<<"]: "<< Number[g]<<" IPCut: "<<CutValue[g]<<std::endl;
+ NumByCut->SetPoint(g,CutValue[g],Number[g]); 
+ }
+  
+
+ //std::cout <<"  numb_sig:"<< number_sig<<"    Number_bkg:"<<number_bkg<<" Number[0]: "<<Number[0]<<" N[1]: "<<Number[1]<<std::endl;
  printf("  nmatched    %i\n",nmatched);
  printf("  nunmatched  %i\n",nunmatched);
 
@@ -307,6 +313,7 @@ void analyzer_signal::Loop(TString outfilename,
   }
  }
  h_ntags->Write();
+ NumByCut->Write();
  outfile->Close();
 
 } // end analyzer_signal::Loop()
@@ -1368,7 +1375,7 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
    bool pass_signal = abs(jetGenPartonMomID->at(i)) > 9000000 ;//9000006
               
    //if( pass_id && pass_kin && pass_overlap )
-   if( pass_id && pass_kin && pass_overlap /*&& pass_signal && jetAlphaMax_PV3onAll->at(i) !=0*/ )
+   if( pass_id && pass_kin && pass_overlap && pass_signal /*&& jetAlphaMax_PV3onAll->at(i) !=0*/ )
 
    {
     //printf(" a selected jet\n");
@@ -1386,21 +1393,21 @@ std::vector<int> analyzer_signal::jet_passID( int bitnr, double jetPtCut, double
 void analyzer_signal::tagger(/*Double_t weight*/){
   
   tags.clear();
-  tags.resize((int)N + 1);
-  double max = 3.0;
-  double min = -2.0;
-  double range = max - min;     //range to be covered
+  tags.resize((int)N+1);
+  //double max = 3.0;
+  //double min = -2.0;
+  //double range = max - min;     //range to be covered
   //double step  = (range/N); //step size
   double cut_val;
 
   for(int j = 0; j<=N; j++){
-    if(j==0)cut_val = 0.5;//min + (double)j*step;
-    else cut_val = 1.0;
+    cut_val = IPmin + (double)j*IPstep;
+    CutValue[j] = cut_val;
     //std::cout<< "tags["<<j<<"] "<<tags[j]<<std::endl;
     for(int i = 0; i<jet_list.size(); i++){
       if(jetMedianLog10IPSig->at(jet_list[i])>= cut_val)
       {
-      std::cout<<"Tags["<<j<<"}: "<<tags[j]<<" Cut_value: "<< cut_val<<" Actual_value: "<<jetMedianLog10IPSig->at(jet_list[i])<<std::endl;
+      //std::cout<<"Tags["<<j<<"}: "<<tags[j]<<" Cut_value: "<< cut_val<<" Actual_value: "<<jetMedianLog10IPSig->at(jet_list[i])<<std::endl;
       tags[j] = tags[j] + 1;
       }
       //std::cout<<number_bkg<<"test tagger: "<<i<<std::endl;  

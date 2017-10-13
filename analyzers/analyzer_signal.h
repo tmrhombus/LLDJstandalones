@@ -2,9 +2,10 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
-// #include <TROOT.h>
+ //#include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
+#include <TGraph.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include <vector>
@@ -84,9 +85,14 @@ public :
  std::vector<int> jet_list ;
  
  
- static const int  N   = 1;  //number of subdivisions for tagger function
+ double IPmax = 3.0;
+ double IPmin = -2.0;
+ double IPrange = IPmax - IPmin;     //range to be covered
+ double IPstep  = (IPrange/N); //step size
+ static const int  N   = 1000;  //number of subdivisions for tagger function
  std::vector<double> tags;
  std::vector<double> Number;
+ std::vector<double> CutValue;
  //std::vector<int> AODcalojet_list;
  //std::vector<int> AODPFjet_list;
  //std::vector<int> AODPFchsjet_list;
@@ -195,6 +201,7 @@ public :
  TH1F histoTH1F;
  TH2F histoTH2F;
  TH1F *h_ntags = new TH1F("h_ntags", "ntags", 10, 0, 10);
+ TGraph* NumByCut = new TGraph(N);
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
