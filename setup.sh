@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export nversion="trynitout"
+export nversion="Daniel"
 #export nversion="sosou"
 #export aversion="laug"
 

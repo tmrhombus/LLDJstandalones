@@ -293,7 +293,7 @@ void analyzer_signal::Loop(TString outfilename,
  //printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  //printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  for(int g = 0; g<Number.size(); g++){
- std::cout<<"Number["<<g<<"]: "<< Number[g]<<" IPCut: "<<CutValue[g]<<std::endl;
+ //std::cout<<"Number["<<g<<"]: "<< Number[g]<<" IPCut: "<<CutValue[g]<<std::endl;
  NumByCut->SetPoint(g,CutValue[g],Number[g]); 
  }
   
@@ -1405,9 +1405,9 @@ void analyzer_signal::tagger(/*Double_t weight*/){
     CutValue[j] = cut_val;
     //std::cout<< "tags["<<j<<"] "<<tags[j]<<std::endl;
     for(int i = 0; i<jet_list.size(); i++){
-      if(jetMedianLog10IPSig->at(jet_list[i])>= cut_val)
+      if(jetAlphaMax_PV3onAll->at(jet_list[i]) <= cut_val)
       {
-      //std::cout<<"Tags["<<j<<"}: "<<tags[j]<<" Cut_value: "<< cut_val<<" Actual_value: "<<jetMedianLog10IPSig->at(jet_list[i])<<std::endl;
+      //std::cout<<"Tags["<<j<<"}: "<<tags[j]<<" Cut_value: "<< cut_val<<" Actual_value: "<<jetAlphaMaxD->at(jet_list[i])<<std::endl;
       tags[j] = tags[j] + 1;
       }
       //std::cout<<number_bkg<<"test tagger: "<<i<<std::endl;  

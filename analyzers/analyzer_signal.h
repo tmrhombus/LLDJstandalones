@@ -85,8 +85,8 @@ public :
  std::vector<int> jet_list ;
  
  
- double IPmax = 3.0;
- double IPmin = -2.0;
+ double IPmax = 1.0;
+ double IPmin = 0.0;
  double IPrange = IPmax - IPmin;     //range to be covered
  double IPstep  = (IPrange/N); //step size
  static const int  N   = 1000;  //number of subdivisions for tagger function
