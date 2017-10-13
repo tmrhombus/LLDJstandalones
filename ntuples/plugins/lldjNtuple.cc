@@ -10,6 +10,8 @@ void setbit(UShort_t& x, UShort_t bit) {
 
 lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
+  lldj_pset_ = ps;
+
   // electrons
   electronCollection_        = consumes<View<pat::Electron> >          (ps.getParameter<InputTag>("electronSrc"));
   rhoLabel_                  = consumes<double>                        (ps.getParameter<InputTag>("rhoLabel"));
@@ -65,17 +67,23 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
+  // trigger
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
   triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
   triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
 
+  // gen
+  genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
+  
+
   Service<TFileService> fs;
-  tree_    = fs->make<TTree>("EventTree", "Event data (30 August 2017)");
+  tree_    = fs->make<TTree>("EventTree", "Event data (12 October 2017)");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
   // make branches for tree
   branchesGlobalEvent(tree_);
   branchesTrigger(tree_);
+  branchesGenPart(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
@@ -90,11 +98,12 @@ lldjNtuple::~lldjNtuple() {
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
 
  //# https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyResolution
- jetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
- jetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
+ slimmedJetResolution_   = JME::JetResolution::get(es, "AK4PFchs_pt");
+ slimmedJetResolutionSF_ = JME::JetResolutionScaleFactor::get(es, "AK4PFchs");
 
  fillGlobalEvent(e, es);
  fillTrigger(e, es);
+ if (!e.isRealData()) fillGenPart(e);
  fillPhotons(e, es);
  fillElectrons(e, es);
 

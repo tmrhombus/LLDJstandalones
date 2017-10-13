@@ -58,6 +58,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   
  private:
   
+  edm::ParameterSet lldj_pset_;
+
   //   virtual void beginJob() {};
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
@@ -69,6 +71,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesMuons      (TTree*);
   void branchesJets       (TTree*);
   void branchesTrigger    (TTree*);
+  void branchesGenPart    (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -77,6 +80,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
+  void fillGenPart    (const edm::Event&);
+
 
   // collections
   // electrons
@@ -117,16 +122,25 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ESHandle<Propagator>                        thePropagator_;
   edm::ESHandle<TransientTrackBuilder>             theBuilder_;
 
-  void calculateAlphaMax(std::vector<reco::TransientTrack> tracks,std::vector<int>whichVertex, double& alphaMax, double& alphaMaxP, double& beta, double& alphaMax2, double& alphaMaxP2, double& beta2);
+  // jet functions
+  vector<int> getJetTrackIndexs( float jeteta, float jetphi);
+  void calculateAlphaMax( vector<int> jetTrackIDs,
+   float& alphaMax, float& alphaMaxP, float& beta,
+   float& alphaMax2, float& alphaMaxP2, float& beta2);
+  void calculateTrackAngle( vector<int> jetTrackIDs,
+   vector<float> &allTrackAngles,
+   float &totalTrackAngle, float &totalTrackAnglePt);
+  void calculateIP( vector<int> jetTrackIDs,
+   vector<float> &jetIPs, vector<float> &jetIPSigs,
+   float &sumIP, float &sumIPSig);
 
-  void aod_jet_track_calculations(const edm::Event& e, const edm::EventSetup& es, //StateOnTrackerBound stateOnTracker,
-				  float jeteta, float jetphi,  std::vector<int> whichVertex_,
-				  bool& fill_tracksIPLog10Sig_median, float &tracksIPLog10Sig_median, 
-				  bool& fill_trackAngles_median, float &trackAngles_median,
-				  float& sumIP, float& sumIPSig, float &totalTrackAngle,
-				  std::vector<reco::TransientTrack>& transientTracks, std::vector<int>& vertexVector);
-  
-  double trackAngle(const edm::Event& e, reco::TransientTrack track, TrajectoryStateOnSurface tsosInnerHit);
+  float findMedian(vector<float> thevector);
+
+  void calculateDisplacedVertices(const edm::EventSetup& es, vector<int> jetTrackIDs);
+
+  void deltaVertex3D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dEta, double& dPhi, double& pt, double& m, double& energy);
+  void deltaVertex2D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dPhi, double& pt, double& mediandPhi);
+  vector<reco::TransientTrack> cleanTracks(vector<reco::TransientTrack> tracks, GlobalPoint vertPos);
 
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
@@ -156,11 +170,16 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
 
+  //gen
+  edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;
+
+  
+
   TTree   *tree_;
   TH1F    *hEvents_;
 
-  JME::JetResolution            jetResolution_;
-  JME::JetResolutionScaleFactor jetResolutionSF_;
+  JME::JetResolution            slimmedJetResolution_;
+  JME::JetResolutionScaleFactor slimmedJetResolutionSF_;
 };
 
 #endif
