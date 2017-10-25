@@ -38,10 +38,11 @@ int main(int argc, char **argv){
  char *atfile = (char*)"0";
  bool dolocal = false;
  bool bisMC = false;
- 
+  
  int index;
  int s;
-
+// double numberSignal;
+// double numberBkg;
  opterr = 0;
 
  while ((s = getopt (argc, argv, "s:l:x:e:i:o:a:n:dm")) != -1)
@@ -150,36 +151,38 @@ int main(int argc, char **argv){
  while( std::getline(inputfile, inputline) ) {
   if( inputfile.fail() ) continue;
 
-  // we have a flag to decide which file to start at
   nscanned++;
-  if ( nscanned < TIatfile ) continue;
+  if ( nscanned < TIatfile) continue;
   if ( nscanned >= (TIatfile+TInfiles) ) continue;
 
   // TChain needs a TString..
   Tinputline = inputline;
-  printf("raw inputline: %s\n",Tinputline.Data());
+  //printf("Inputline: %s\n",Tinputline.Data());
 
   // read input file names
   if( Tinputline.Contains("/home/rhombus") ){
    theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   printf("Inputfile: %s\n",Tinputline.Data());
   }
 
-  if( Tinputline.Contains("/uscms/home") ){
+  //if( Tinputline.Contains("/uscms/home") ){
+  // theChain->Add( Tinputline );
+  // printf("Inputfile: %s\n",Tinputline.Data());
+  //}
+
+  if( Tinputline.Contains("/uscms/home/ddiaz/") ){
    theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   printf("Inputfile: %s\n",Tinputline.Data());
   }
 
-  if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
-   theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+ /* if( Tinputline.Contains("/store/user") ){
+    theChain->Add( "/hdfs"+Tinputline );
+    //theChain->Add( "root://cmsxrootd.hep.wisc.edu/"+Tinputline );
+  // //    theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+  // }
+   printf("Inputfile: %s\n",Tinputline.Data());
   }
-
-  if( Tinputline.Contains("/store/group") ){
-       theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
-  }
-
+*/
   // if( dolocal ){
   //  theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
   // }
@@ -206,6 +209,7 @@ int main(int argc, char **argv){
   if( inputfile.fail() ) continue;
 
   Tinputline = inputline;
+  //printf("Inputline: %s\n",Tinputline.Data());
 
   // read crosssection
   if( Tinputline.Contains("crosssection: ") ){  
@@ -225,13 +229,10 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
- // make the analyzer, init some stuff
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
- analyzer.initSelectionCategories();
- analyzer.initBasicHistograms();
- analyzer.initAODCaloJetHistograms();
- analyzer.initSlimmedJetHistograms();
+ analyzer.initSigHistograms();
+ analyzer.initJetHistograms();
  analyzer.init2DHistograms();
 
  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);

@@ -27,15 +27,23 @@ thedasmap="${listdir}/ntuple/dasmap.list"
 
 # sample names to run over
 samples=( \
-  "ggZH_HSSbbbb_MS_40_ctauS_0"     \
-  "ggZH_HSSbbbb_MS_40_ctauS_0p05"  \
-  "ggZH_HSSbbbb_MS_40_ctauS_10000" \
-  "ggZH_HSSbbbb_MS_40_ctauS_1000"  \
-  "ggZH_HSSbbbb_MS_40_ctauS_100"   \
-  "ggZH_HSSbbbb_MS_40_ctauS_10"    \
-  "ggZH_HSSbbbb_MS_40_ctauS_1"     \
   "DY50_1"             \
   "DY50_2"             \
+  "TTtoLL_2"             \
+  "TTtoLfromT_1"         \
+  "TTtoLfromT_2"         \
+  "TTtoLfromTbar_1"      \
+  "TTtoLfromTbar_2"      \
+  "Data_SingleMu_H_3"    \
+  "Data_SingleMu_H_2"    \
+  "Data_SingleMu_G"      \
+  "Data_SingleMu_F"      \
+  "Data_SingleMu_E"      \
+  "Data_SingleMu_D"      \
+  "Data_SingleMu_C"      \
+  "Data_SingleMu_B_2"    \
+  "Data_SingleMu_B_1"    \
+  
 )
 
 #  "Data_SingleMu_H_3"    \
