@@ -1097,6 +1097,51 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
 Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin)
 {
 
+ printf(" AODCaloJetPt                            %u\n",  AODCaloJetPt                            ->size() ); 
+ printf(" AODCaloJetEta                           %u\n",  AODCaloJetEta                           ->size() ); 
+ printf(" AODCaloJetPhi                           %u\n",  AODCaloJetPhi                           ->size() ); 
+ printf(" AODCaloJetAlphaMax                      %u\n",  AODCaloJetAlphaMax                      ->size() ); 
+ printf(" AODCaloJetAlphaMax2                     %u\n",  AODCaloJetAlphaMax2                     ->size() ); 
+ printf(" AODCaloJetAlphaMaxPrime                 %u\n",  AODCaloJetAlphaMaxPrime                 ->size() ); 
+ printf(" AODCaloJetAlphaMaxPrime2                %u\n",  AODCaloJetAlphaMaxPrime2                ->size() ); 
+ printf(" AODCaloJetBeta                          %u\n",  AODCaloJetBeta                          ->size() ); 
+ printf(" AODCaloJetBeta2                         %u\n",  AODCaloJetBeta2                         ->size() ); 
+ printf(" AODCaloJetSumIP                         %u\n",  AODCaloJetSumIP                         ->size() ); 
+ printf(" AODCaloJetSumIPSig                      %u\n",  AODCaloJetSumIPSig                      ->size() ); 
+ printf(" AODCaloJetMedianIP                      %u\n",  AODCaloJetMedianIP                      ->size() ); 
+ printf(" AODCaloJetMedianLog10IPSig              %u\n",  AODCaloJetMedianLog10IPSig              ->size() ); 
+ printf(" AODCaloJetTrackAngle                    %u\n",  AODCaloJetTrackAngle                    ->size() ); 
+ printf(" AODCaloJetLogTrackAngle                 %u\n",  AODCaloJetLogTrackAngle                 ->size() ); 
+ printf(" AODCaloJetMedianLog10TrackAngle         %u\n",  AODCaloJetMedianLog10TrackAngle         ->size() ); 
+ printf(" AODCaloJetTotalTrackAngle               %u\n",  AODCaloJetTotalTrackAngle               ->size() ); 
+ printf(" AODCaloJetAvfVx                         %u\n",  AODCaloJetAvfVx                         ->size() ); 
+ printf(" AODCaloJetAvfVy                         %u\n",  AODCaloJetAvfVy                         ->size() ); 
+ printf(" AODCaloJetAvfVz                         %u\n",  AODCaloJetAvfVz                         ->size() ); 
+ printf(" AODCaloJetAvfVertexTotalChiSquared      %u\n",  AODCaloJetAvfVertexTotalChiSquared      ->size() ); 
+ printf(" AODCaloJetAvfVertexDegreesOfFreedom     %u\n",  AODCaloJetAvfVertexDegreesOfFreedom     ->size() ); 
+ printf(" AODCaloJetAvfVertexChi2NDoF             %u\n",  AODCaloJetAvfVertexChi2NDoF             ->size() ); 
+ printf(" AODCaloJetAvfVertexDistanceToBeam       %u\n",  AODCaloJetAvfVertexDistanceToBeam       ->size() ); 
+ printf(" AODCaloJetAvfVertexTransverseError      %u\n",  AODCaloJetAvfVertexTransverseError      ->size() ); 
+ printf(" AODCaloJetAvfVertexTransverseSig        %u\n",  AODCaloJetAvfVertexTransverseSig        ->size() ); 
+ printf(" AODCaloJetAvfVertexDeltaEta             %u\n",  AODCaloJetAvfVertexDeltaEta             ->size() ); 
+ printf(" AODCaloJetAvfVertexDeltaPhi             %u\n",  AODCaloJetAvfVertexDeltaPhi             ->size() ); 
+ printf(" AODCaloJetAvfVertexRecoilPt             %u\n",  AODCaloJetAvfVertexRecoilPt             ->size() ); 
+ printf(" AODCaloJetAvfVertexTrackMass            %u\n",  AODCaloJetAvfVertexTrackMass            ->size() ); 
+ printf(" AODCaloJetAvfVertexTrackEnergy          %u\n",  AODCaloJetAvfVertexTrackEnergy          ->size() ); 
+ printf(" AODCaloJetAvfBeamSpotDeltaPhi           %u\n",  AODCaloJetAvfBeamSpotDeltaPhi           ->size() ); 
+ printf(" AODCaloJetAvfBeamSpotRecoilPt           %u\n",  AODCaloJetAvfBeamSpotRecoilPt           ->size() ); 
+ printf(" AODCaloJetAvfBeamSpotMedianDeltaPhi     %u\n",  AODCaloJetAvfBeamSpotMedianDeltaPhi     ->size() ); 
+ printf(" AODCaloJetAvfBeamSpotLog10MedianDeltaPhi%u\n",  AODCaloJetAvfBeamSpotLog10MedianDeltaPhi->size() ); 
+ printf(" AODCaloJetNCleanMatchedTracks           %u\n",  AODCaloJetNCleanMatchedTracks           ->size() ); 
+ printf(" AODCaloJetSumHitsInFrontOfVert          %u\n",  AODCaloJetSumHitsInFrontOfVert          ->size() ); 
+ printf(" AODCaloJetSumMissHitsAfterVert          %u\n",  AODCaloJetSumMissHitsAfterVert          ->size() ); 
+ printf(" AODCaloJetHitsInFrontOfVertPerTrack     %u\n",  AODCaloJetHitsInFrontOfVertPerTrack     ->size() ); 
+ printf(" AODCaloJetMissHitsAfterVertPerTrack     %u\n",  AODCaloJetMissHitsAfterVertPerTrack     ->size() ); 
+ printf(" AODCaloJetAvfDistToPV                   %u\n",  AODCaloJetAvfDistToPV                   ->size() ); 
+ printf(" AODCaloJetAvfVertexDeltaZtoPV           %u\n",  AODCaloJetAvfVertexDeltaZtoPV           ->size() ); 
+ printf(" AODCaloJetAvfVertexDeltaZtoPV2          %u\n",  AODCaloJetAvfVertexDeltaZtoPV2          ->size() ); 
+
+
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
@@ -1116,8 +1161,8 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
     h_AODCaloJetSumIPSig                       [selbin][j][lepbin].Fill( AODCaloJetSumIPSig                       ->at( aodcalojetindex ), weight );  
     h_AODCaloJetMedianIP                       [selbin][j][lepbin].Fill( AODCaloJetMedianIP                       ->at( aodcalojetindex ), weight );  
     h_AODCaloJetMedianLog10IPSig               [selbin][j][lepbin].Fill( AODCaloJetMedianLog10IPSig               ->at( aodcalojetindex ), weight );  
-//    h_AODCaloJetTrackAngle                     [selbin][j][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
-//    h_AODCaloJetLogTrackAngle                  [selbin][j][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetTrackAngle                   [selbin][j][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
+//    h_AODCaloJetLogTrackAngle                [selbin][j][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
     h_AODCaloJetMedianLog10TrackAngle          [selbin][j][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
     h_AODCaloJetTotalTrackAngle                [selbin][j][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
     h_AODCaloJetAvfVx                          [selbin][j][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
@@ -1169,8 +1214,8 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetSumIPSig                       [selbin][incjetbin][lepbin].Fill( AODCaloJetSumIPSig                       ->at( aodcalojetindex ), weight );  
   h_AODCaloJetMedianIP                       [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianIP                       ->at( aodcalojetindex ), weight );  
   h_AODCaloJetMedianLog10IPSig               [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianLog10IPSig               ->at( aodcalojetindex ), weight );  
-//  h_AODCaloJetTrackAngle                     [selbin][incjetbin][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
-//  h_AODCaloJetLogTrackAngle                  [selbin][incjetbin][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
+////  h_AODCaloJetTrackAngle                     [selbin][incjetbin][lepbin].Fill( AODCaloJetTrackAngle                     ->at( aodcalojetindex ), weight );  
+////  h_AODCaloJetLogTrackAngle                  [selbin][incjetbin][lepbin].Fill( AODCaloJetLogTrackAngle                  ->at( aodcalojetindex ), weight );  
   h_AODCaloJetMedianLog10TrackAngle          [selbin][incjetbin][lepbin].Fill( AODCaloJetMedianLog10TrackAngle          ->at( aodcalojetindex ), weight );  
   h_AODCaloJetTotalTrackAngle                [selbin][incjetbin][lepbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfVx                          [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVx                          ->at( aodcalojetindex ), weight );  
@@ -1198,7 +1243,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
-  h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );  
+  //h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );   // this vector isn't the same length I guess
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
 
