@@ -498,7 +498,7 @@ def main():
         if  opts.limit:
             msg  = "\nShowing %s results" % drange
             msg += ", for more results use --idx/--limit options\n"
-            print(msg)
+            #print(msg)
         mongo_query = jsondict.get('mongo_query', {})
         unique  = False
         fdict   = mongo_query.get('filters', {})
