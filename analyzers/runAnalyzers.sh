@@ -15,9 +15,7 @@
 # 'DY50' \
 # "TTtoLfromTbar"
 for sample in \
- 'WJetsToLNu' \
- 'DY50' \
- "TTtoLfromTbar"
+ 'ggZH_HToSSTobbbb_MS40_ctauS100'
 do
 
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
