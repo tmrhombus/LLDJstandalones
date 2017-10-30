@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
+outdir="${CMSSW_BASE}/src/LLDJstandalones/lists/test"
 
 xcDY10to50="18610.0"
 xcDY50="5765.4"
@@ -44,13 +44,50 @@ xcZG="9117.864"
 
 xcZH_HToBB_ZToLL="1"                 
 xcggZH_HToBB_ZToLL="1"               
-xcggZH_HToSSTobbbb_MS40_ctauS0="1"      
-xcggZH_HToSSTobbbb_MS40_ctauS0p05="1"   
-xcggZH_HToSSTobbbb_MS40_ctauS1="1"      
-xcggZH_HToSSTobbbb_MS40_ctauS10="1"     
-xcggZH_HToSSTobbbb_MS40_ctauS100="1"    
-xcggZH_HToSSTobbbb_MS40_ctauS1000="1"   
-xcggZH_HToSSTobbbb_MS40_ctauS10000="1"  
+xcggZH_HToSSTobbbb_MS15_ctauS0="0.0024783"      
+xcggZH_HToSSTobbbb_MS15_ctauS0p05="0.0024783"   
+xcggZH_HToSSTobbbb_MS15_ctauS1="0.0024783"      
+xcggZH_HToSSTobbbb_MS15_ctauS10="0.0024783"     
+xcggZH_HToSSTobbbb_MS15_ctauS100="0.0024783"    
+xcggZH_HToSSTobbbb_MS15_ctauS1000="0.0024783"   
+xcggZH_HToSSTobbbb_MS15_ctauS10000="0.0024783"  
+xcggZH_HToSSTobbbb_MS40_ctauS0="0.0024783"      
+xcggZH_HToSSTobbbb_MS40_ctauS0p05="0.0024783"   
+xcggZH_HToSSTobbbb_MS40_ctauS1="0.0024783"      
+xcggZH_HToSSTobbbb_MS40_ctauS10="0.0024783"     
+xcggZH_HToSSTobbbb_MS40_ctauS100="0.0024783"    
+xcggZH_HToSSTobbbb_MS40_ctauS1000="0.0024783"   
+xcggZH_HToSSTobbbb_MS40_ctauS10000="0.0024783"  
+xcggZH_HToSSTobbbb_MS55_ctauS0="0.0024783"      
+xcggZH_HToSSTobbbb_MS55_ctauS0p05="0.0024783"   
+xcggZH_HToSSTobbbb_MS55_ctauS1="0.0024783"      
+xcggZH_HToSSTobbbb_MS55_ctauS10="0.0024783"     
+xcggZH_HToSSTobbbb_MS55_ctauS100="0.0024783"    
+xcggZH_HToSSTobbbb_MS55_ctauS1000="0.0024783"   
+xcggZH_HToSSTobbbb_MS55_ctauS10000="0.0024783"  
+
+#need to fix these also I think they can be replaced with a single variable
+xcZH_HToSSTobbbb_MS15_ctauS0="1.0"      
+xcZH_HToSSTobbbb_MS15_ctauS0p05="1.0"   
+xcZH_HToSSTobbbb_MS15_ctauS1="1.0"      
+xcZH_HToSSTobbbb_MS15_ctauS10="1.0"     
+xcZH_HToSSTobbbb_MS15_ctauS100="1.0"    
+xcZH_HToSSTobbbb_MS15_ctauS1000="1.0"   
+xcZH_HToSSTobbbb_MS15_ctauS10000="1.0"  
+xcZH_HToSSTobbbb_MS40_ctauS0="1.0"      
+xcZH_HToSSTobbbb_MS40_ctauS0p05="1.0"   
+xcZH_HToSSTobbbb_MS40_ctauS1="1.0"      
+xcZH_HToSSTobbbb_MS40_ctauS10="1.0"     
+xcZH_HToSSTobbbb_MS40_ctauS100="1.0"    
+xcZH_HToSSTobbbb_MS40_ctauS1000="1.0"   
+xcZH_HToSSTobbbb_MS40_ctauS10000="1.0"  
+xcZH_HToSSTobbbb_MS55_ctauS0="1.0"      
+xcZH_HToSSTobbbb_MS55_ctauS0p05="1.0"   
+xcZH_HToSSTobbbb_MS55_ctauS1="1.0"      
+xcZH_HToSSTobbbb_MS55_ctauS10="1.0"     
+xcZH_HToSSTobbbb_MS55_ctauS100="1.0"    
+xcZH_HToSSTobbbb_MS55_ctauS1000="1.0"   
+xcZH_HToSSTobbbb_MS55_ctauS10000="1.0"  
 
 xcWJetsToLNu="61526.7"   # https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
 
@@ -63,7 +100,7 @@ xcMuonEG="1"
 countalist () {
  printf "Making %s\n" $1
  root -l -b -q 'countevents.cxx("'$1'")'
- printf "crosssection: %s\n" $2 >> ${listdir}/$1.info
+ printf "crosssection: %s\n" $2 >> ${listdir}/test/$1.info
 }
 
 countalist "DY50"                              ${xcDY50}                              
@@ -73,13 +110,48 @@ countalist "DY5to50_HT200To400"                ${xcDY5to50_HT200To400}
 countalist "DY5to50_HT400To600"                ${xcDY5to50_HT400To600}                
 countalist "DY5to50_HT600ToInf"                ${xcDY5to50_HT600ToInf}                
 countalist "ggZH_HToBB_ZToLL"                  ${xcggZH_HToBB_ZToLL}                  
-countalist "ggZH_HToSSTobbbb_MS40_ctauS0"      ${xcggZH_HToSSTobbbb_MS40_ctauS0}      
-countalist "ggZH_HToSSTobbbb_MS40_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS40_ctauS0p05}   
+#countalist "ggZH_HToSSTobbbb_MS15_ctauS0"      ${xcggZH_HToSSTobbbb_MS15_ctauS0}      
+#countalist "ggZH_HToSSTobbbb_MS15_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS15_ctauS0p05}   
+countalist "ggZH_HToSSTobbbb_MS15_ctauS1"      ${xcggZH_HToSSTobbbb_MS15_ctauS1}      
+countalist "ggZH_HToSSTobbbb_MS15_ctauS10"     ${xcggZH_HToSSTobbbb_MS15_ctauS10}     
+countalist "ggZH_HToSSTobbbb_MS15_ctauS100"    ${xcggZH_HToSSTobbbb_MS15_ctauS100}    
+countalist "ggZH_HToSSTobbbb_MS15_ctauS1000"   ${xcggZH_HToSSTobbbb_MS15_ctauS1000}   
+#countalist "ggZH_HToSSTobbbb_MS15_ctauS10000"  ${xcggZH_HToSSTobbbb_MS15_ctauS10000}  
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0"      ${xcggZH_HToSSTobbbb_MS40_ctauS0}      
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS40_ctauS0p05}   
 countalist "ggZH_HToSSTobbbb_MS40_ctauS1"      ${xcggZH_HToSSTobbbb_MS40_ctauS1}      
 countalist "ggZH_HToSSTobbbb_MS40_ctauS10"     ${xcggZH_HToSSTobbbb_MS40_ctauS10}     
 countalist "ggZH_HToSSTobbbb_MS40_ctauS100"    ${xcggZH_HToSSTobbbb_MS40_ctauS100}    
 countalist "ggZH_HToSSTobbbb_MS40_ctauS1000"   ${xcggZH_HToSSTobbbb_MS40_ctauS1000}   
-countalist "ggZH_HToSSTobbbb_MS40_ctauS10000"  ${xcggZH_HToSSTobbbb_MS40_ctauS10000}  
+#countalist "ggZH_HToSSTobbbb_MS40_ctauS10000"  ${xcggZH_HToSSTobbbb_MS40_ctauS10000}  
+#countalist "ggZH_HToSSTobbbb_MS55_ctauS0"      ${xcggZH_HToSSTobbbb_MS55_ctauS0}      
+#countalist "ggZH_HToSSTobbbb_MS55_ctauS0p05"   ${xcggZH_HToSSTobbbb_MS55_ctauS0p05}   
+countalist "ggZH_HToSSTobbbb_MS55_ctauS1"      ${xcggZH_HToSSTobbbb_MS55_ctauS1}      
+countalist "ggZH_HToSSTobbbb_MS55_ctauS10"     ${xcggZH_HToSSTobbbb_MS55_ctauS10}     
+countalist "ggZH_HToSSTobbbb_MS55_ctauS100"    ${xcggZH_HToSSTobbbb_MS55_ctauS100}    
+countalist "ggZH_HToSSTobbbb_MS55_ctauS1000"   ${xcggZH_HToSSTobbbb_MS55_ctauS1000}   
+#countalist "ggZH_HToSSTobbbb_MS55_ctauS10000"  ${xcggZH_HToSSTobbbb_MS55_ctauS10000}  
+#countalist "ZH_HToSSTobbbb_MS15_ctauS0"      ${xcZH_HToSSTobbbb_MS15_ctauS0}      
+#countalist "ZH_HToSSTobbbb_MS15_ctauS0p05"   ${xcZH_HToSSTobbbb_MS15_ctauS0p05}   
+countalist "ZH_HToSSTobbbb_MS15_ctauS1"      ${xcZH_HToSSTobbbb_MS15_ctauS1}      
+countalist "ZH_HToSSTobbbb_MS15_ctauS10"     ${xcZH_HToSSTobbbb_MS15_ctauS10}     
+countalist "ZH_HToSSTobbbb_MS15_ctauS100"    ${xcZH_HToSSTobbbb_MS15_ctauS100}    
+countalist "ZH_HToSSTobbbb_MS15_ctauS1000"   ${xcZH_HToSSTobbbb_MS15_ctauS1000}   
+#countalist "ZH_HToSSTobbbb_MS15_ctauS10000"  ${xcZH_HToSSTobbbb_MS15_ctauS10000}  
+#countalist "ZH_HToSSTobbbb_MS40_ctauS0"      ${xcZH_HToSSTobbbb_MS40_ctauS0}      
+#countalist "ZH_HToSSTobbbb_MS40_ctauS0p05"   ${xcZH_HToSSTobbbb_MS40_ctauS0p05}   
+countalist "ZH_HToSSTobbbb_MS40_ctauS1"      ${xcZH_HToSSTobbbb_MS40_ctauS1}      
+countalist "ZH_HToSSTobbbb_MS40_ctauS10"     ${xcZH_HToSSTobbbb_MS40_ctauS10}     
+countalist "ZH_HToSSTobbbb_MS40_ctauS100"    ${xcZH_HToSSTobbbb_MS40_ctauS100}    
+countalist "ZH_HToSSTobbbb_MS40_ctauS1000"   ${xcZH_HToSSTobbbb_MS40_ctauS1000}   
+#countalist "ZH_HToSSTobbbb_MS40_ctauS10000"  ${xcZH_HToSSTobbbb_MS40_ctauS10000}  
+#countalist "ZH_HToSSTobbbb_MS55_ctauS0"      ${xcZH_HToSSTobbbb_MS55_ctauS0}      
+#countalist "ZH_HToSSTobbbb_MS55_ctauS0p05"   ${xcZH_HToSSTobbbb_MS55_ctauS0p05}   
+countalist "ZH_HToSSTobbbb_MS55_ctauS1"      ${xcZH_HToSSTobbbb_MS55_ctauS1}      
+countalist "ZH_HToSSTobbbb_MS55_ctauS10"     ${xcZH_HToSSTobbbb_MS55_ctauS10}     
+countalist "ZH_HToSSTobbbb_MS55_ctauS100"    ${xcZH_HToSSTobbbb_MS55_ctauS100}    
+countalist "ZH_HToSSTobbbb_MS55_ctauS1000"   ${xcZH_HToSSTobbbb_MS55_ctauS1000}   
+#countalist "ZH_HToSSTobbbb_MS55_ctauS10000"  ${xcZH_HToSSTobbbb_MS55_ctauS10000}  
 countalist "GJets_HT40To100"                   ${xcGJets_HT40To100}                   
 countalist "GJets_HT100To200"                  ${xcGJets_HT100To200}                  
 countalist "GJets_HT200To400"                  ${xcGJets_HT200To400}                  

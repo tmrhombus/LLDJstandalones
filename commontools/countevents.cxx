@@ -9,7 +9,7 @@ double countevents(TString Tsample){
 
  char* listdir;
  listdir = getenv ("listdir");
- TString Tlistdir = TString(listdir);
+ TString Tlistdir = TString(listdir)+"/test";
  TString fulllistname = Tlistdir+"/"+Tsample+".list";
  TString fulloutname   = Tlistdir+"/"+Tsample+".info";
 
@@ -30,14 +30,14 @@ double countevents(TString Tsample){
   if( inputfile.fail() ) continue;
 
   Tinputline = inputline;
-
   if( Tinputline.Contains("/store/user") ){  // if filename
 
    // open file
    TFile* theFile;
-   theFile = TFile::Open("/hdfs"+Tinputline);
+   //theFile = TFile::Open(Tinputline);
+   //std::cout<<"input file test:  "<<"/eos/uscms/store/group/lpchbb/LLDJntuples/furmon/"+Tinputline<<std::endl;
    //theFile = TFile::Open("root://cmsxrootd.hep.wisc.edu/"+Tinputline);
-   //theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
+   theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
 
    // get histogram
    TH1F* h_nevents;
