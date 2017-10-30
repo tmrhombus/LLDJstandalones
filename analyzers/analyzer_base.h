@@ -247,11 +247,11 @@ public :
    std::vector<float>   *AODPFJetEta;
    std::vector<float>   *AODPFJetPhi;
    std::vector<float>   *AODPFJetAlphaMax;
-   std::vector<float>   *AODPFJetAlphaMax2_;
-   std::vector<float>   *AODPFJetAlphaMaxPrime_;
-   std::vector<float>   *AODPFJetAlphaMaxPrime2_;
-   std::vector<float>   *AODPFJetBeta_;
-   std::vector<float>   *AODPFJetBeta2_;
+   std::vector<float>   *AODPFJetAlphaMax2;
+   std::vector<float>   *AODPFJetAlphaMaxPrime;
+   std::vector<float>   *AODPFJetAlphaMaxPrime2;
+   std::vector<float>   *AODPFJetBeta;
+   std::vector<float>   *AODPFJetBeta2;
    std::vector<float>   *AODPFJetSumIP;
    std::vector<float>   *AODPFJetSumIPSig;
    std::vector<float>   *AODPFJetMedianLog10IPSig;
@@ -264,11 +264,11 @@ public :
    std::vector<float>   *AODPFchsJetEta;
    std::vector<float>   *AODPFchsJetPhi;
    std::vector<float>   *AODPFchsJetAlphaMax;
-   std::vector<float>   *AODPFchsJetAlphaMax2_;
-   std::vector<float>   *AODPFchsJetAlphaMaxPrime_;
-   std::vector<float>   *AODPFchsJetAlphaMaxPrime2_;
-   std::vector<float>   *AODPFchsJetBeta_;
-   std::vector<float>   *AODPFchsJetBeta2_;
+   std::vector<float>   *AODPFchsJetAlphaMax2;
+   std::vector<float>   *AODPFchsJetAlphaMaxPrime;
+   std::vector<float>   *AODPFchsJetAlphaMaxPrime2;
+   std::vector<float>   *AODPFchsJetBeta;
+   std::vector<float>   *AODPFchsJetBeta2;
    std::vector<float>   *AODPFchsJetSumIP;
    std::vector<float>   *AODPFchsJetSumIPSig;
    std::vector<float>   *AODPFchsJetMedianLog10IPSig;
@@ -516,11 +516,11 @@ public :
    TBranch        *b_AODPFJetEta;   //!
    TBranch        *b_AODPFJetPhi;   //!
    TBranch        *b_AODPFJetAlphaMax;   //!
-   TBranch        *b_AODPFJetAlphaMax2_;   //!
-   TBranch        *b_AODPFJetAlphaMaxPrime_;   //!
-   TBranch        *b_AODPFJetAlphaMaxPrime2_;   //!
-   TBranch        *b_AODPFJetBeta_;   //!
-   TBranch        *b_AODPFJetBeta2_;   //!
+   TBranch        *b_AODPFJetAlphaMax2;   //!
+   TBranch        *b_AODPFJetAlphaMaxPrime;   //!
+   TBranch        *b_AODPFJetAlphaMaxPrime2;   //!
+   TBranch        *b_AODPFJetBeta;   //!
+   TBranch        *b_AODPFJetBeta2;   //!
    TBranch        *b_AODPFJetSumIP;   //!
    TBranch        *b_AODPFJetSumIPSig;   //!
    TBranch        *b_AODPFJetMedianLog10IPSig;   //!
@@ -533,11 +533,11 @@ public :
    TBranch        *b_AODPFchsJetEta;   //!
    TBranch        *b_AODPFchsJetPhi;   //!
    TBranch        *b_AODPFchsJetAlphaMax;   //!
-   TBranch        *b_AODPFchsJetAlphaMax2_;   //!
-   TBranch        *b_AODPFchsJetAlphaMaxPrime_;   //!
-   TBranch        *b_AODPFchsJetAlphaMaxPrime2_;   //!
-   TBranch        *b_AODPFchsJetBeta_;   //!
-   TBranch        *b_AODPFchsJetBeta2_;   //!
+   TBranch        *b_AODPFchsJetAlphaMax2;   //!
+   TBranch        *b_AODPFchsJetAlphaMaxPrime;   //!
+   TBranch        *b_AODPFchsJetAlphaMaxPrime2;   //!
+   TBranch        *b_AODPFchsJetBeta;   //!
+   TBranch        *b_AODPFchsJetBeta2;   //!
    TBranch        *b_AODPFchsJetSumIP;   //!
    TBranch        *b_AODPFchsJetSumIPSig;   //!
    TBranch        *b_AODPFchsJetMedianLog10IPSig;   //!

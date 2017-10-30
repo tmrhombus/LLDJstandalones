@@ -1,7 +1,7 @@
 #voms-proxy-init --voms cms --valid 100:00
 
 # do we submit or just generate submit scripts
-dosubmit=true
+dosubmit=false
 
 # start the timer
 START=$(date +%s);
@@ -46,15 +46,31 @@ samples=( \
   
 )
 
-#  "Data_SingleMu_H_3"    \
-#  "Data_SingleMu_H_2"    \
-#  "Data_SingleMu_G"      \
-#  "Data_SingleMu_F"      \
-#  "Data_SingleMu_E"      \
-#  "Data_SingleMu_D"      \
-#  "Data_SingleMu_C"      \
-#  "Data_SingleMu_B_2"    \
-#  "Data_SingleMu_B_1"    \
+#  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
+#  "ZH_HToSSTobbbb_MS-55_ctauS-10"     \
+#  "ZH_HToSSTobbbb_MS-55_ctauS-100"    \
+#  "ZH_HToSSTobbbb_MS-55_ctauS-1000"   \
+#  "ZH_HToSSTobbbb_MS-40_ctauS-1"      \
+#  "ZH_HToSSTobbbb_MS-40_ctauS-10"     \
+#  "ZH_HToSSTobbbb_MS-40_ctauS-100"    \
+#  "ZH_HToSSTobbbb_MS-40_ctauS-1000"   \
+#  "ZH_HToSSTobbbb_MS-15_ctauS-1"      \
+#  "ZH_HToSSTobbbb_MS-15_ctauS-10"     \
+#  "ZH_HToSSTobbbb_MS-15_ctauS-100"    \
+#  "ZH_HToSSTobbbb_MS-15_ctauS-1000"   \
+#  "ggZH_HToSSTobbbb_MS-55_ctauS-1"    \
+#  "ggZH_HToSSTobbbb_MS-55_ctauS-10"   \
+#  "ggZH_HToSSTobbbb_MS-55_ctauS-100"  \
+#  "ggZH_HToSSTobbbb_MS-55_ctauS-1000" \
+#  "ggZH_HToSSTobbbb_MS-40_ctauS-1"    \
+#  "ggZH_HToSSTobbbb_MS-40_ctauS-10"   \
+#  "ggZH_HToSSTobbbb_MS-40_ctauS-100"  \
+#  "ggZH_HToSSTobbbb_MS-40_ctauS-1000" \
+#  "ggZH_HToSSTobbbb_MS-15_ctauS-1"    \
+#  "ggZH_HToSSTobbbb_MS-15_ctauS-10"   \
+#  "ggZH_HToSSTobbbb_MS-15_ctauS-100"  \
+#  "ggZH_HToSSTobbbb_MS-15_ctauS-1000" \
+
 #  "Data_SingleEle_H_3"   \
 #  "Data_SingleEle_H_2"   \
 #  "Data_SingleEle_G"     \
@@ -64,6 +80,17 @@ samples=( \
 #  "Data_SingleEle_C"     \
 #  "Data_SingleEle_B_2"   \
 #  "Data_SingleEle_B_1"   \
+
+#  "Data_SingleMu_H_3"    \
+#  "Data_SingleMu_H_2"    \
+#  "Data_SingleMu_G"      \
+#  "Data_SingleMu_F"      \
+#  "Data_SingleMu_E"      \
+#  "Data_SingleMu_D"      \
+#  "Data_SingleMu_C"      \
+#  "Data_SingleMu_B_2"    \
+#  "Data_SingleMu_B_1"    \
+
 #  "GJets_HT100to200_1" \
 #  "GJets_HT100to200_2" \
 #  "GJets_HT200to400_1" \
@@ -149,14 +176,18 @@ do
  WORKAREA="'crabsubmits_${nversion}'"
 
  CMSRUNCONFIG="'run_mc_80X.py'" 
+ ## too many parent accesses for miniAOD->AOD
+ SPLITTING="'EventAwareLumiBased'"
+ #UPERJOB="10000"
+ UPERJOB="5000"
  if [[ "${samplename:0:4}" == "Data" ]]
  then
   CMSRUNCONFIG="'run_data_80X.py'" 
+  SPLITTING="'LumiBased'"
+  UPERJOB="50"
  fi
 
  NUNITS="-1"
- UPERJOB="1"
- SPLITTING="'FileBased'"
  REQUESTNAME="'${samplename}'"
  DATASET="'${datasetname}'"
  STORESITE="'T3_US_FNALLPC'"
