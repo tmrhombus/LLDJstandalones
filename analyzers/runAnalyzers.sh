@@ -2,8 +2,9 @@
 
  #'DY50_5'                            
 # 'DY50'
+ #'ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100' \
 for sample in \
- 'ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100' \
+ 'testmc' \
 
 
 do

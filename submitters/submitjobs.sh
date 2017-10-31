@@ -10,50 +10,51 @@ lumi=35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
+# "ggZH_HToSSTobbbb_MS40_ctauS0"       \
+# "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
+# "ggZH_HToSSTobbbb_MS40_ctauS1"       \
+# "ggZH_HToSSTobbbb_MS40_ctauS10"      \
+# "ggZH_HToSSTobbbb_MS40_ctauS100"     \
+# "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
+# "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
+# "SingleElectron"                     \
+# "SingleMuon"                         \
+# "DY5to50_HT70To100"                  \
+# "DY5to50_HT100To200"                 \
+# "DY5to50_HT200To400"                 \
+# "DY5to50_HT400To600"                 \
+# "DY5to50_HT600ToInf"                 \
+# "DY50"                               \
+# "ggZH_HToBB_ZToLL"                   \
+# "GJets_HT40To100"                    \
+# "GJets_HT100To200"                   \
+# "GJets_HT200To400"                   \
+# "GJets_HT400To600"                   \
+# "GJets_HT600ToInf"                   \
+# "ST_s"                               \
+# "STbar_t"                            \
+# "ST_t"                               \
+# "STbar_tW"                           \
+# "ST_tW"                              \
+# "TTtoLL"                             \
+# "TTtoLfromTbar"                      \
+# "TTtoLfromT"                         \
+# "WG"                                 \
+# "WJetsToLNu"                         \
+# "WWToLNuLNu"                         \
+# "WWToLNuQQ"                          \
+# "WZToL3Nu"                           \
+# "WZTo3LNu"                           \
+# "WZToLNu2QorQQ2L"                    \
+# "ZG"                                 \
+# "ZH_HToBB_ZToLL"                     \
+# "ZZToLLNuNu"                         \
+# "ZZToLLQQ"                           \
+# "ZZToNuNuQQ"                         \
+# "ZZToLLLL"                           \
 
 samples=(  \
- "ggZH_HToSSTobbbb_MS40_ctauS0"       \
- "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
- "ggZH_HToSSTobbbb_MS40_ctauS1"       \
- "ggZH_HToSSTobbbb_MS40_ctauS10"      \
- "ggZH_HToSSTobbbb_MS40_ctauS100"     \
- "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
- "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
- "SingleElectron"                     \
- "SingleMuon"                         \
- "DY5to50_HT70To100"                  \
- "DY5to50_HT100To200"                 \
- "DY5to50_HT200To400"                 \
- "DY5to50_HT400To600"                 \
- "DY5to50_HT600ToInf"                 \
- "DY50"                               \
- "ggZH_HToBB_ZToLL"                   \
- "GJets_HT40To100"                    \
- "GJets_HT100To200"                   \
- "GJets_HT200To400"                   \
- "GJets_HT400To600"                   \
- "GJets_HT600ToInf"                   \
- "ST_s"                               \
- "STbar_t"                            \
- "ST_t"                               \
- "STbar_tW"                           \
- "ST_tW"                              \
- "TTtoLL"                             \
- "TTtoLfromTbar"                      \
- "TTtoLfromT"                         \
- "WG"                                 \
- "WJetsToLNu"                         \
- "WWToLNuLNu"                         \
- "WWToLNuQQ"                          \
- "WZToL3Nu"                           \
- "WZTo3LNu"                           \
- "WZToLNu2QorQQ2L"                    \
- "ZG"                                 \
- "ZH_HToBB_ZToLL"                     \
- "ZZToLLNuNu"                         \
- "ZZToLLQQ"                           \
- "ZZToNuNuQQ"                         \
- "ZZToLLLL"                           \
+ "testmc" \
 )
 
 
@@ -62,19 +63,19 @@ printf "Version: ${aversion}\n"
 # tar up your present CMSSW area
 if [ ! -f ${CMSSW_VERSION}.tar.gz ] 
 then 
- printf "I think I need to tar, couldn't find ${CMSSW_VERSION}.tar.gz \n\n"
+ printf "I think I need to tar, couldn't find ${CMSSW_VERSION}.tar.gz \n"
+ printf " so that's what I'm doing \n"
  tar --exclude-caches-all --exclude-vcs -zcf ${CMSSW_VERSION}.tar.gz -C ${CMSSW_BASE}/.. ${CMSSW_BASE} --exclude=src --exclude=tmp
+ printf " ... done taring \n\n"
 fi
 
 makeasubmitdir () {
  printf "Making submits for $1\n"
  
  # go to the directory
- submitdir=/nfs_scratch/tperry/gitignore/${aversion}/$1
+ submitdir=${asubdir}/gitignore/${aversion}/$1
  mkdir -p ${submitdir} 
  pushd    ${submitdir}  > /dev/null
- ##mkdir -p gitignore/${aversion}/$1
- ##pushd    gitignore/${aversion}/$1 > /dev/null
  #printf " The directory is %s\n" $(pwd)
  
  mkdir -p logs
@@ -88,7 +89,7 @@ makeasubmitdir () {
 
  printf "notify_user = $(whoami)@cern.ch\n" >> submitfile
  printf "x509userproxy = $X509_USER_PROXY\n" >> submitfile
- printf "requirements = TARGET.HAS_CMS_HDFS" >> submitfile
+ #printf "requirements = TARGET.HAS_CMS_HDFS" >> submitfile
  #printf 'requirements =  TARGET.Arch == "X86_64" && (MY.RequiresSharedFS=!=true || TARGET.HasAFS_OSG) && (TARGET.OSG_major =!= undefined || TARGET.IS_GLIDEIN=?=true) && IsSlowSlot=!=true  && (TARGET.HasParrotCVMFS=?=true || TARGET.CMS_CVMFS_Exists) && TARGET.HAS_CMS_HDFS"' >> submitfile
  #printf 'requirements =  TARGET.Arch == "X86_64" && (MY.RequiresSharedFS=!=true || TARGET.HasAFS_OSG) && (TARGET.OSG_major =!= undefined || TARGET.IS_GLIDEIN=?=true) && IsSlowSlot=!=true  && (TARGET.HasParrotCVMFS=?=true || (TARGET.UWCMS_CVMFS_Exists  && TARGET.CMS_CVMFS_Exists) && TARGET.HAS_CMS_HDFS"' >> submitfile
  printf "\n" >> submitfile
@@ -147,9 +148,10 @@ makeasubmitdir () {
 }
 
 
-# actuall call the function
+# actually call the function
 for sample in ${samples[@]} 
 do
+ # set isMC flag if MC
  if [[ ${sample} == "Single"* ]]
  then
   mc=""
@@ -162,6 +164,8 @@ do
  else
   mc="-m"
  fi
+
  makeasubmitdir ${sample} ${mc}
+
 done
 
