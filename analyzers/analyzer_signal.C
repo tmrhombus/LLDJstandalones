@@ -20,7 +20,18 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
-
+ Number.resize(N+1);
+ CutValue.resize(N+1);
+  
+  for(int z =0;z<tags.size(); z++)
+ {
+ Number[z] = 0;
+ tags[z] = 0;
+ //std::cout<<"z: " <<z<<" N[z]: "<<Number[z]<<" tags[z]: "<<tags[z]<<std::endl;
+ }
+ 
+ number_sig =0.0;
+ number_bkg = 0.0;
  nmatched = 0;
  nunmatched = 0;
 
@@ -114,6 +125,11 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
+  tagger();
+  h_ntags->Fill(ntag);
+  if(ntag>=2){
+  number_sig = number_sig + event_weight;
+  }
   // set our met
   themet = pfMET;
   themephi = pfMETPhi;
@@ -165,7 +181,7 @@ void analyzer_signal::Loop(TString outfilename,
    htaodcalojets += AODCaloJetPt->at(aodcalojetindex);
   } 
 
-  
+/*  
   // check compatibility between AOD/miniAOD jets
   printf("miniAOD: %i    AOD: %i \n", (int)slimmedjet_list.size(), (int)aodcalojet_list.size() );
   //if( jet_list.size()!=AODcalojet_list.size()){nunmatched ++; continue;}
@@ -186,7 +202,7 @@ void analyzer_signal::Loop(TString outfilename,
     AODCaloJetPhi ->at(AODjetindex)  
    );
   } 
-
+*/
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
@@ -213,12 +229,12 @@ void analyzer_signal::Loop(TString outfilename,
   passDoubleMu  = askPassDoubleMu();
 
 
-  if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
-   debug_printobjects();   // helpful printout (turn off when submitting!!!)
-   debug_printmuons();     // helpful printout (turn off when submitting!!!)
-   debug_printelectrons(); // helpful printout (turn off when submitting!!!)
-   debug_printtriggers();
-  }
+  //if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
+  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  // debug_printmuons();     // helpful printout (turn off when submitting!!!)
+  // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
+  // debug_printtriggers();
+  //}
 
    
   // set booleans if pass various selections
@@ -273,6 +289,11 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
  printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ 
+ for(int g = 0; g<Number.size(); g++){
+ std::cout<<"Number["<<g<<"]: "<< Number[g]<<" IPCut: "<<CutValue[g]<<std::endl;
+  NumByCut->SetPoint(g,CutValue[g],Number[g]); 
+ }
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -285,6 +306,8 @@ void analyzer_signal::Loop(TString outfilename,
    //write2DHistograms(i,k);
   }
  }
+ h_ntags->Write();
+ NumByCut->Write();
  outfile->Close();
 
 } // end analyzer_signal::Loop()
@@ -775,7 +798,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
- for(unsigned int j=0; j<jetmultnames.size()-1; ++j){
+ for(unsigned int j=0; j<jetmultnames.size(); ++j){
   if( slimmedjet_list.size()>j ){
    int slimmedjetindex = slimmedjet_list[j];
 
@@ -802,7 +825,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
    h_slimmedJetPartonID                [selbin][j][lepbin].Fill( slimmedJetPartonID               ->at( slimmedjetindex ), weight ); 
    h_slimmedJetHadFlvr                 [selbin][j][lepbin].Fill( slimmedJetHadFlvr                ->at( slimmedjetindex ), weight ); 
 
-   h_slimmedJetAlphaD                  [selbin][j][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
+   //h_slimmedJetAlphaD                  [selbin][j][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
    h_slimmedJetAlphaMaxD               [selbin][j][lepbin].Fill( slimmedJetAlphaMaxD              ->at( slimmedjetindex ), weight ); 
    h_slimmedJetMedianLog10IPSig        [selbin][j][lepbin].Fill( slimmedJetMedianLog10IPSig       ->at( slimmedjetindex ), weight ); 
    h_slimmedJetSumIP                   [selbin][j][lepbin].Fill( slimmedJetSumIP                  ->at( slimmedjetindex ), weight ); 
@@ -869,7 +892,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
   h_slimmedJetPartonID                [selbin][incjetbin][lepbin].Fill( slimmedJetPartonID               ->at( slimmedjetindex ), weight ); 
   h_slimmedJetHadFlvr                 [selbin][incjetbin][lepbin].Fill( slimmedJetHadFlvr                ->at( slimmedjetindex ), weight ); 
 
-  h_slimmedJetAlphaD                  [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
+  //h_slimmedJetAlphaD                  [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
   h_slimmedJetAlphaMaxD               [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaMaxD              ->at( slimmedjetindex ), weight ); 
   h_slimmedJetMedianLog10IPSig        [selbin][incjetbin][lepbin].Fill( slimmedJetMedianLog10IPSig       ->at( slimmedjetindex ), weight ); 
   h_slimmedJetSumIP                   [selbin][incjetbin][lepbin].Fill( slimmedJetSumIP                  ->at( slimmedjetindex ), weight ); 
@@ -939,7 +962,7 @@ Bool_t analyzer_signal::writeSlimmedJetHistograms(int selbin, int lepbin)
   h_slimmedJetPartonID                [selbin][j][lepbin].Write(); 
   h_slimmedJetHadFlvr                 [selbin][j][lepbin].Write(); 
 
-  h_slimmedJetAlphaD                  [selbin][j][lepbin].Write(); 
+  //h_slimmedJetAlphaD                  [selbin][j][lepbin].Write(); 
   h_slimmedJetAlphaMaxD               [selbin][j][lepbin].Write(); 
   h_slimmedJetMedianLog10IPSig        [selbin][j][lepbin].Write(); 
   h_slimmedJetSumIP                   [selbin][j][lepbin].Write(); 
@@ -1096,7 +1119,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
 //----------------------------fillAODCaloJetHistograms
 Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin)
 {
-
+/*
  printf(" AODCaloJetPt                            %u\n",  AODCaloJetPt                            ->size() ); 
  printf(" AODCaloJetEta                           %u\n",  AODCaloJetEta                           ->size() ); 
  printf(" AODCaloJetPhi                           %u\n",  AODCaloJetPhi                           ->size() ); 
@@ -1140,7 +1163,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
  printf(" AODCaloJetAvfDistToPV                   %u\n",  AODCaloJetAvfDistToPV                   ->size() ); 
  printf(" AODCaloJetAvfVertexDeltaZtoPV           %u\n",  AODCaloJetAvfVertexDeltaZtoPV           ->size() ); 
  printf(" AODCaloJetAvfVertexDeltaZtoPV2          %u\n",  AODCaloJetAvfVertexDeltaZtoPV2          ->size() ); 
-
+*/
 
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
@@ -1688,7 +1711,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
    bool pass_signal = slimmedJetGenPartonMomID->at(i) > 9000000 ;//9000006 i think?
               
    //if( pass_id && pass_kin && pass_overlap )
-   if( pass_id && pass_kin && pass_overlap && pass_signal)
+   if( pass_id && pass_kin && pass_overlap /*&& pass_signal*/)
    {
     nSelectedSlimmedJet++;
     jetlist.push_back(i);
@@ -1698,6 +1721,32 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
   return jetlist;
 
 }
+
+
+void analyzer_signal::tagger(){
+  //aodcalojet_list, slimmedjet_list.size()
+  //AODCaloJetMedianLog10IPSig,AODCaloJetAlphaMax, AODCaloJetMedianLog10TrackAngle 
+  tags.clear();
+  tags.resize((int)N+1);
+  double cut_val;
+  //jetAlphaMax_PV3onAll, jetAlphaMaxD
+  for(int j = 0; j<=N; j++){
+    cut_val = tagMin + (double)j*tagStep;
+    //cut_val = tagMax - (double)j*tagStep;
+    CutValue[j] = cut_val;
+    for(int i = 0; i<aodcalojet_list.size(); i++){
+      if(AODCaloJetAlphaMax->at(aodcalojet_list[i])<=cut_val/*AODCaloJetMedianLog10IPSig->at(aodcalojet_list[i]) >= 1.585 && AODCaloJetAlphaMax->at(aodcalojet_list[i]) <= 0.98*/) //use >= for IP and TA, <= for alphamax
+      {
+      tags[j] = tags[j] + 1;
+      }
+    }//looping through all the jets
+ }//looping through different cut values
+ for(int k =0; k<=N; k++){
+    if(tags[k]>=2) Number[k] = Number[k] + event_weight;
+ }
+ 
+  //if(tags[0] >= 2 ) number_bkg = number_bkg + event_weight;
+ }
 
 
 //-------------------------aodcalojet_passID
@@ -1747,7 +1796,7 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
 
    bool pass_kin = AODCaloJetPt->at(i) > jetPtCut && ( fabs(AODCaloJetEta->at(i)) < jetEtaCut ) ;
               
-   if( pass_kin && pass_overlap )
+   if( pass_kin && pass_overlap)
    {
     nSelectedAODCaloJet++;
     jetlist.push_back(i);

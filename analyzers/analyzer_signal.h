@@ -2,12 +2,13 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
-// #include <TROOT.h>
+ //#include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
+#include <TGraph.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
-
+#include <vector>
 class analyzer_signal : public analyzer_base {
 
 public :
@@ -49,6 +50,8 @@ public :
  std::vector<int>     slimmedjet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
  std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
+ void tagger();
+
  // get (smeared) object pt
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -89,6 +92,15 @@ public :
  std::vector<int> muon_list ;
  std::vector<int> slimmedjet_list;
  std::vector<int> aodcalojet_list;
+ 
+ double tagMax = 1.0;//3.0;//1.0;//3.0;
+ double tagMin = 0.0;//-2.0;//0.0;//-3.0;
+ double tagRange = tagMax - tagMin;     //range to be covered
+ double tagStep  = (tagRange/N); //step size
+ static const int  N   = 1000;  //number of subdivisions for tagger function
+ std::vector<double> tags;
+ std::vector<double> Number;
+ std::vector<double> CutValue;
 
  // ID bits for collections
  TString phoid;
@@ -150,6 +162,9 @@ public :
  Int_t n_tot;
  Int_t n_test;
  Int_t n_test2;
+ Int_t ntag;
+ Double_t number_sig;
+ Double_t number_bkg;
 
  Int_t n_passSig;
  Int_t n_passZH;
@@ -195,6 +210,8 @@ public :
  // initialize histograms as global
  TH1F histoTH1F;
  TH2F histoTH2F;
+ TH1F *h_ntags = new TH1F("h_ntags", "ntags", 10, 0, 10);
+ TGraph* NumByCut = new TGraph(N);
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
