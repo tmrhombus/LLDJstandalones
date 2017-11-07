@@ -11,9 +11,8 @@ process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
-#process.Tracer = cms.Service('Tracer')
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 10
 
 # input files
 process.source = cms.Source('PoolSource',
@@ -42,40 +41,40 @@ process.source = cms.Source('PoolSource',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/70576F21-CDC9-E611-BC72-001E675047A5.root',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/EA59D0D0-5CCB-E611-B501-002590207C28.root'
 
-  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
+  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
 
  # WW
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/4462CF47-BCB6-E611-A504-00259073E482.root'
+ #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/4462CF47-BCB6-E611-A504-00259073E482.root'
  ),
    secondaryFileNames= cms.untracked.vstring(
-  #'/store/mc/RunIISummer16DR80Premix/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/D6822833-FEC8-E611-8CD1-002590E7D7DE.root',
-  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_D6822833-FEC8-E611-8CD1-002590E7D7DE.root'
-
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/1AF28D8C-44B1-E611-A161-C81F66B7EBF5.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/180344D1-44B1-E611-8F66-3417EBE643E7.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/004CA99F-44B1-E611-9DF1-5065F381A251.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/BA701B7B-45B1-E611-AF3B-008CFA197C10.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/8A8DE7D6-44B1-E611-9159-0025905B8600.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/6C709675-36B2-E611-8E68-FA163E8DA59B.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/3EC0F8E3-44B1-E611-A88A-00266CFFC0C0.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/2ABF398D-51B1-E611-A086-A0000420FE80.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/1CD5EE31-FAB0-E611-B1AE-0025904A8592.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/F84C3806-BBB0-E611-9ABF-0242AC130004.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/E019C372-E1B0-E611-A15F-0025904B1370.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/C8D7E966-52B1-E611-9B70-0025905A48C0.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/881302CB-02B1-E611-B23A-842B2B180A9F.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/4E345448-51B1-E611-B9FA-FA163E23B7E0.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/3C35F9A3-52B1-E611-B656-0242AC130005.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/70000/60F119CA-D1B0-E611-9C46-0242AC130002.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/E8851D65-52B1-E611-B36F-0CC47A4D764A.root', 
- 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/E87CEBEC-0AB1-E611-8BEE-14187741278B.root', 
+ #  #'/store/mc/RunIISummer16DR80Premix/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/D6822833-FEC8-E611-8CD1-002590E7D7DE.root',
+ #  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_D6822833-FEC8-E611-8CD1-002590E7D7DE.root'
+ #
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/1AF28D8C-44B1-E611-A161-C81F66B7EBF5.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/180344D1-44B1-E611-8F66-3417EBE643E7.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/004CA99F-44B1-E611-9DF1-5065F381A251.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/BA701B7B-45B1-E611-AF3B-008CFA197C10.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/8A8DE7D6-44B1-E611-9159-0025905B8600.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/6C709675-36B2-E611-8E68-FA163E8DA59B.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/3EC0F8E3-44B1-E611-A88A-00266CFFC0C0.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/2ABF398D-51B1-E611-A086-A0000420FE80.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/1CD5EE31-FAB0-E611-B1AE-0025904A8592.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/F84C3806-BBB0-E611-9ABF-0242AC130004.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/E019C372-E1B0-E611-A15F-0025904B1370.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/C8D7E966-52B1-E611-9B70-0025905A48C0.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/881302CB-02B1-E611-B23A-842B2B180A9F.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/4E345448-51B1-E611-B9FA-FA163E23B7E0.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/3C35F9A3-52B1-E611-B656-0242AC130005.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/70000/60F119CA-D1B0-E611-9C46-0242AC130002.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/E8851D65-52B1-E611-B36F-0CC47A4D764A.root', 
+ # 'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16DR80Premix/WWTo2L2Nu_13TeV-powheg/AODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/E87CEBEC-0AB1-E611-8BEE-14187741278B.root', 
 
  ),
 )
 
 
 # output name
-process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_mc_ww.root'));
+process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_mc.root'));
 
 #process.out = cms.OutputModule(
 #'PoolOutputModule',
@@ -235,12 +234,10 @@ process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderE
 
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
- vertexFitterConfig = cms.PSet(
-        finder = cms.string('avf'),
-        sigmacut = cms.double(10.),
-        Tini = cms.double(256.),
-        ratio = cms.double(0.25),
-        ),
+
+ doAOD                     = cms.bool(False),
+ doMiniAOD                 = cms.bool(True),
+
  electronSrc               = cms.InputTag('selectedElectrons','','LLDJ'),
  rhoLabel                  = cms.InputTag('fixedGridRhoFastjetAll'),
  eleVetoIdMap              = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto'),
@@ -266,6 +263,12 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  AODak4PFJetsCHSSrc        = cms.InputTag('ak4PFJetsCHS', '', 'RECO'),
  AODVertexSrc              = cms.InputTag('offlinePrimaryVertices', '', 'RECO'),
  AODTrackSrc               = cms.InputTag('generalTracks', '', 'RECO'),
+ vertexFitterConfig = cms.PSet(
+        finder = cms.string('avf'),
+        sigmacut = cms.double(10.),
+        Tini = cms.double(256.),
+        ratio = cms.double(0.25),
+        ),
 
  patTriggerResults         = cms.InputTag('TriggerResults', '', 'PAT'),
  BadChargedCandidateFilter = cms.InputTag('BadChargedCandidateFilter'),
