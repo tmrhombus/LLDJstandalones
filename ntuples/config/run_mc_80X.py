@@ -41,7 +41,8 @@ process.source = cms.Source('PoolSource',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/70576F21-CDC9-E611-BC72-001E675047A5.root',
   #'/store/mc/RunIISummer16MiniAODv2/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/120000/EA59D0D0-5CCB-E611-B501-002590207C28.root'
 
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
+  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_54C6A127-05CA-E611-AAD2-0CC47A1DF1A4.root'
+  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_D6822833-FEC8-E611-8CD1-002590E7D7DE.root'
 
  # WW
  #'root://cms-xrd-global.cern.ch//store/mc/RunIISummer16MiniAODv2/WWTo2L2Nu_13TeV-powheg/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/80000/4462CF47-BCB6-E611-A504-00259073E482.root'
@@ -74,7 +75,8 @@ process.source = cms.Source('PoolSource',
 
 
 # output name
-process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_mc.root'));
+process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_AODmc.root'));
+#process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_mc.root'));
 
 #process.out = cms.OutputModule(
 #'PoolOutputModule',
@@ -136,7 +138,7 @@ switchOnVIDPhotonIdProducer(process, dataFormat)
 # define which IDs we want to produce
 eleid_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
                  'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronHLTPreselecition_Summer16_V1_cff']
-                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
+                 #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff']
                  #'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff']
     
 phoid_modules = ['RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Spring16_V2p2_cff']
@@ -235,8 +237,11 @@ process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderE
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
- doAOD                     = cms.bool(False),
- doMiniAOD                 = cms.bool(True),
+ #doAOD                     = cms.bool(False),
+ #doMiniAOD                 = cms.bool(True),
+
+ doAOD                     = cms.bool(True),
+ doMiniAOD                 = cms.bool(False),
 
  electronSrc               = cms.InputTag('selectedElectrons','','LLDJ'),
  rhoLabel                  = cms.InputTag('fixedGridRhoFastjetAll'),

@@ -73,6 +73,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesAODJets    (TTree*);
   void branchesTrigger    (TTree*);
   void branchesGenPart    (TTree*);
+  void branchesAODEvent   (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -83,6 +84,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillAODJets    (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
   void fillGenPart    (const edm::Event&);
+  void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
 
   bool doAOD_     ; 
   bool doMiniAOD_ ; 
@@ -176,8 +178,6 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   //gen
   edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;
-
-  
 
   TTree   *tree_;
   TH1F    *hEvents_;

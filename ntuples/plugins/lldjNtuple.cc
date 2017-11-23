@@ -81,19 +81,25 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   
 
   Service<TFileService> fs;
-  tree_    = fs->make<TTree>("EventTree", "Event data (12 October 2017)");
+  tree_    = fs->make<TTree>("EventTree", "Event data");
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
+ if(doMiniAOD_){
   // make branches for tree
   branchesGlobalEvent(tree_);
   branchesTrigger(tree_);
-  branchesGenPart(tree_);
   branchesPhotons(tree_);
   branchesElectrons(tree_);
   branchesMuons(tree_);
 
   branchesJets(tree_);   
   branchesMET(tree_);
+ }
+ if(doAOD_){
+  branchesAODEvent(tree_);
+  branchesGenPart(tree_);
+ }
+
 }
 
 lldjNtuple::~lldjNtuple() {
@@ -108,7 +114,6 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  
   fillGlobalEvent(e, es);
   fillTrigger(e, es);
-  //if (!e.isRealData()) fillGenPart(e);
   fillPhotons(e, es);
   fillElectrons(e, es);
  
@@ -133,6 +138,11 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  
   fillJets(e,es);
   fillMET(e, es);
+ }
+
+ if(doAOD_){
+  fillAODEvent(e, es);
+  if (!e.isRealData()) fillGenPart(e);
  }
 
  hEvents_->Fill(1.);
