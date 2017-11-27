@@ -378,8 +378,8 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
  e.getByToken(rhoLabel_, rhoHandle);
  float rho = *(rhoHandle.product());
  
- e.getByToken(vtxLabel_, vtxHandle);
- if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
+// e.getByToken(vtxLabel_, vtxHandle);
+// if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
 
 // // Accessing the JEC uncertainties 
 // //ak4  

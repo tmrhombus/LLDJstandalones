@@ -98,6 +98,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
  if(doAOD_){
   branchesAODEvent(tree_);
   branchesGenPart(tree_);
+  branchesAODJets(tree_);
  }
 
 }
@@ -143,6 +144,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  if(doAOD_){
   fillAODEvent(e, es);
   if (!e.isRealData()) fillGenPart(e);
+  fillAODJets(e, es);
  }
 
  hEvents_->Fill(1.);

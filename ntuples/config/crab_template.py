@@ -23,7 +23,7 @@ if __name__ == '__main__':
     config.Data.publication           = False
     config.Site.storageSite           = STORESITE
 
-    config.Data.useParent             = True
+    #config.Data.useParent             = True
 
     def submit(config):
         try:

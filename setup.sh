@@ -1,7 +1,8 @@
 #!/bin/bash
 
+export nversion="splot"
 #export nversion="ealb10000"
-export nversion="ealb5000"
+#export nversion="ealb5000"
 #export nversion="bloomy50"
 #export nversion="bilumi200"
 #export nversion="bylumi350"
