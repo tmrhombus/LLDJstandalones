@@ -1,12 +1,6 @@
 #!/bin/bash
 
-export nversion="splot"
-#export nversion="ealb10000"
-#export nversion="ealb5000"
-#export nversion="bloomy50"
-#export nversion="bilumi200"
-#export nversion="bylumi350"
-#export nversion="furmon"
+export nversion="splotAOD"
 export aversion="gmapa"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
