@@ -98,8 +98,8 @@ void analyzer_signal::Loop(TString outfilename,
   nSelectedSlimmedJet=0;
   nSelectedAODCaloJet=0;
  
- //OPT_Event                           .clear();
- //OPT_EventWeight                     .clear();
+ OPT_Event                           .clear();
+ OPT_EventWeight                     .clear();
  //OPT_nJets                           .clear();
  OPT_AODCaloJetMedianLog10IPSig      .clear();
  OPT_AODCaloJetMedianLog10TrackAngle .clear();
@@ -132,8 +132,8 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
-  //OPT_Event.push_back(event);
-  //OPT_EventWeight.push_back(event_weight);
+  OPT_Event.push_back(event);
+  OPT_EventWeight.push_back(event_weight);
   //OPT_nJets.push_back(aodcalojet_list.size());
   tagger();
   h_ntags->Fill(ntag);
@@ -1752,19 +1752,19 @@ void analyzer_signal::tagger(){
       //{
       std::cout<<aodcalojet_list.size()<<std::endl;
       //for(int j = 0; j<aodcalojet_list.size(); j++){
-      if(aodcalojet_list.size()>0){std::cout<<"          " <<AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i])<<std::endl;
+      if(aodcalojet_list.size()>0){//std::cout<<"          " <<AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i])<<std::endl;
       OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
       OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojet_list[i]));
       }
+      else{
+      OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
+      OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
+      OPT_AODCaloJetAlphaMax              .push_back(-5);
+      }
       //}
       //tags[j] = tags[j] + 1;
       }
-      //else{
-      //OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
-      //OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
-      //OPT_AODCaloJetAlphaMax              .push_back(-5);
-      //}
     }//looping through all the jets
 // }//looping through different cut values
  

@@ -46,7 +46,6 @@ double countevents(TString Tsample){
 
    // add bin contents to total count
    nevents=h_nevents->GetBinContent(1);
-   //nevents=h_nevents->GetBinContent(1);
    ntotal+=nevents;
    printf("file: /hdfs%s \n events: %.1f \n",Tinputline.Data(),nevents);
 

@@ -40,6 +40,10 @@ do
  done
 done
 
+mv templayer1.out ${outdir}/dir.out
+rm templayer2.out
+rm templayer3.out
+rm templayer4.out
 
 
 #old way half-way works
