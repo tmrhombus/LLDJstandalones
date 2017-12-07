@@ -9,7 +9,7 @@ double countevents(TString Tsample){
 
  char* listdir;
  listdir = getenv ("listdir");
- TString Tlistdir = TString(listdir)+"/test";
+ TString Tlistdir = TString(listdir)+"/taglistdir";
  TString fulllistname = Tlistdir+"/"+Tsample+".list";
  TString fulloutname   = Tlistdir+"/"+Tsample+".info";
 
@@ -30,7 +30,7 @@ double countevents(TString Tsample){
   if( inputfile.fail() ) continue;
 
   Tinputline = inputline;
-  if( Tinputline.Contains("/store/user") ){  // if filename
+  if( Tinputline.Contains("/store/group") ){  // if filename
 
    // open file
    TFile* theFile;

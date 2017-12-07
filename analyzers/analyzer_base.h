@@ -571,6 +571,23 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
                                     Double_t nrEvents);
+   
+// std::vector<int>   OPT_Event;
+// std::vector<float> OPT_EventWeight;
+// std::vector<int>   OPT_nJets;
+// std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
+// std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
+// std::vector<float> OPT_AODCaloJetAlphaMax;
+// TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
+ 
+// void branches(TTree* OPTtree);
+ 
+ // OPTtree->Branch("OPT_Event"                              , &OPT_Event);
+ // OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight);
+ // OPTtree->Branch("OPT_nJets"                              , &OPT_nJets);
+ // OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig);
+ // OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle);
+ // OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax);
 };
 
 #endif

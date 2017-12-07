@@ -7,16 +7,16 @@
 # formatted as one file per line: /store/group/xxx.root
 
 # don't forget to source setup.sh (from xxx/LLDJstandalones)
-mkdir -p "${listdir}/test"
+mkdir -p "${listdir}"
 
 # only works from login.hep.wisc.edu
 # ls  /hdfs/store/user/tmperry/rainday/*/*/*/*/*root > ${listdir}/allfiles.list
 
 makealist () {
  printf "Making %s\n" $1
- fullsamplename=$(grep -i "$2" ${listdir}/test/allfiles.masterlist)
- printf "%s\n"  ${fullsamplename} > ${listdir}/test/$1.list
- sed -i -e "s@/hdfs@@" ${listdir}/test/$1.list
+ fullsamplename=$(grep -i "$2" ${listdir}/allfiles.masterlist)
+ printf "%s\n"  ${fullsamplename} > ${listdir}/$1.list
+ sed -i -e "s@/hdfs@@" ${listdir}/$1.list
 }
 
 #makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"

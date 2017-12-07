@@ -2,17 +2,20 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
- //#include <TROOT.h>
+#include <iostream>
+#include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
 #include <TGraph.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
 #include <vector>
+#include "TTree.h"
+#include "TBranch.h"
+#include <stdlib.h> 
 class analyzer_signal : public analyzer_base {
 
 public :
-
  // basic functions
                analyzer_signal();
  virtual       ~analyzer_signal();
@@ -51,7 +54,27 @@ public :
  std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
  void tagger();
-
+ std::vector<int>   OPT_Event;
+ std::vector<float> OPT_EventWeight;
+ std::vector<int>   OPT_nJets;
+ std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
+ std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
+ std::vector<float> OPT_AODCaloJetAlphaMax;
+ TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
+ //TBranch* b1 = OPTtree->Branch("OPT_Event"                              , &OPT_Event); 
+ //TBranch* b2 = OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight); 
+ //TBranch* b3 = OPTtree->Branch("OPT_nJets"                              , &OPT_nJets); 
+ TBranch* b4 = OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig); 
+ TBranch* b5 = OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_Event); 
+ TBranch* b6 = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
+ //void branches(TTree* OPTtree);
+  //OPTtree->Branch("OPT_Event"                              , &OPT_Event);
+  //OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight);
+  //OPTtree->Branch("OPT_nJets"                              , &OPT_nJets);
+  //OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig);
+  //OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle);
+  //OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax);
+ 
  // get (smeared) object pt
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -93,8 +116,8 @@ public :
  std::vector<int> slimmedjet_list;
  std::vector<int> aodcalojet_list;
  
- double tagMax = 1.0;//3.0;//1.0;//3.0;
- double tagMin = 0.0;//-2.0;//0.0;//-3.0;
+ double tagMax = -3.0;//3.0;//1.0;//3.0;
+ double tagMin = 3.0;//-2.0;//0.0;//-3.0;
  double tagRange = tagMax - tagMin;     //range to be covered
  double tagStep  = (tagRange/N); //step size
  static const int  N   = 1000;  //number of subdivisions for tagger function
