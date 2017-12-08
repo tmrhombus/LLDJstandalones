@@ -20,18 +20,7 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
- Number.resize(N+1);
- CutValue.resize(N+1);
-  
-  for(int z =0;z<tags.size(); z++)
- {
- Number[z] = 0;
- tags[z] = 0;
- //std::cout<<"z: " <<z<<" N[z]: "<<Number[z]<<" tags[z]: "<<tags[z]<<std::endl;
- }
  
- number_sig =0.0;
- number_bkg = 0.0;
  nmatched = 0;
  nunmatched = 0;
 
@@ -132,14 +121,11 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
-  OPT_Event.push_back(event);
-  OPT_EventWeight.push_back(event_weight);
-  //OPT_nJets.push_back(aodcalojet_list.size());
+//  OPT_Event.push_back(event);
+//  OPT_EventWeight.push_back(event_weight);
+//  //OPT_nJets.push_back(aodcalojet_list.size());
   tagger();
-  h_ntags->Fill(ntag);
-  if(ntag>=2){
-  number_sig = number_sig + event_weight;
-  }
+  
   // set our met
   themet = pfMET;
   themephi = pfMETPhi;
@@ -286,6 +272,7 @@ void analyzer_signal::Loop(TString outfilename,
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
+ //tagger();
  OPTtree->Fill();
  } // end loop over entries
 
@@ -300,10 +287,6 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
- for(int g = 0; g<Number.size(); g++){
- //std:://cout<<"Number["<<g<<"]: "<< Number[g]<<" IPCut: "<<CutValue[g]<<std::endl;
-  NumByCut->SetPoint(g,CutValue[g],Number[g]); 
- }
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -317,8 +300,6 @@ void analyzer_signal::Loop(TString outfilename,
    //write2DHistograms(i,k);
   }
  }
- h_ntags->Write();
- NumByCut->Write();
  outfile->Close();
  optfile->cd();
  OPTtree->Write();
@@ -1734,25 +1715,14 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
   return jetlist;
 
 }
-
+ 
 
 void analyzer_signal::tagger(){
-  //aodcalojet_list, slimmedjet_list.size()
-  //AODCaloJetMedianLog10IPSig,AODCaloJetAlphaMax, AODCaloJetMedianLog10TrackAngle 
-  //tags.clear();
-  //tags.resize((int)N+1);
-  //double cut_val;
-  //jetAlphaMax_PV3onAll, jetAlphaMaxD
-  //for(int j = 0; j<=0; j++){
-    //cut_val = tagMin + (double)j*tagStep;
-    //cut_val = tagMax - (double)j*tagStep;
-    //CutValue[j] = cut_val;
+  OPT_Event.push_back(event);
+  OPT_EventWeight.push_back(event_weight);
+  //OPT_nJets.push_back(aodcalojet_list.size());
     for(int i = 0; i<aodcalojet_list.size(); i++){
-      //if(true /*AODCaloJetMedianLog10IPSig->at(aodcalojet_list[i])>=-5AODCaloJetMedianLog10IPSig->at(aodcalojet_list[i]) >= 1.585 && AODCaloJetAlphaMax->at(aodcalojet_list[i]) <= 0.98*/) //use >= for IP and TA, <= for alphamax
-      //{
-      std::cout<<aodcalojet_list.size()<<std::endl;
-      //for(int j = 0; j<aodcalojet_list.size(); j++){
-      if(aodcalojet_list.size()>0){//std::cout<<"          " <<AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i])<<std::endl;
+      if(aodcalojet_list.size()>0){
       OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
       OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojet_list[i]));
@@ -1762,19 +1732,8 @@ void analyzer_signal::tagger(){
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
       OPT_AODCaloJetAlphaMax              .push_back(-5);
       }
-      //}
-      //tags[j] = tags[j] + 1;
-      }
     }//looping through all the jets
-// }//looping through different cut values
- 
- //for(int k =0; k<=N; k++){
- //   if(tags[k]>=2) Number[k] = Number[k] + event_weight;
- // }
- 
-  //if(tags[0] >= 2 ) number_bkg = number_bkg + event_weight;
- //}
-
+}
 
 //-------------------------aodcalojet_passID
 std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {

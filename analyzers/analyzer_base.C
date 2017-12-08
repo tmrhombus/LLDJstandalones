@@ -37,19 +37,6 @@ Double_t analyzer_base::makeEventWeight(Double_t crossSec,
 
   return event_weight;
 }
-/*
-void analyzer_base::branches(TTree *OPTtree){
-
-
-  OPTtree->Branch("OPT_Event"                              , &OPT_Event);
-  OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight);
-  OPTtree->Branch("OPT_nJets"                              , &OPT_nJets);
-  OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig);
-  OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle);
-  OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax);
-
-}
-*/
 
 //----------------------------Init
 void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)

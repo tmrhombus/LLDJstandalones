@@ -60,6 +60,7 @@ public :
  std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
  std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
  std::vector<float> OPT_AODCaloJetAlphaMax;
+ //TFile *optfile = new TFile(outfilename+"_OPT"+".root","RECREATE");
  TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
  TBranch* b1 = OPTtree->Branch("OPT_Event"                              , &OPT_Event); 
  TBranch* b2 = OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight); 
@@ -67,13 +68,6 @@ public :
  TBranch* b4 = OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig); 
  TBranch* b5 = OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle); 
  TBranch* b6 = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
- //void branches(TTree* OPTtree);
-  //OPTtree->Branch("OPT_Event"                              , &OPT_Event);
-  //OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight);
-  //OPTtree->Branch("OPT_nJets"                              , &OPT_nJets);
-  //OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig);
-  //OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle);
-  //OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax);
  
  // get (smeared) object pt
  Float_t          getPhotonPt(int idnr, TString sysbinname);
@@ -116,14 +110,6 @@ public :
  std::vector<int> slimmedjet_list;
  std::vector<int> aodcalojet_list;
  
- double tagMax = -3.0;//3.0;//1.0;//3.0;
- double tagMin = 3.0;//-2.0;//0.0;//-3.0;
- double tagRange = tagMax - tagMin;     //range to be covered
- double tagStep  = (tagRange/N); //step size
- static const int  N   = 1000;  //number of subdivisions for tagger function
- std::vector<double> tags;
- std::vector<double> Number;
- std::vector<double> CutValue;
 
  // ID bits for collections
  TString phoid;
@@ -185,9 +171,6 @@ public :
  Int_t n_tot;
  Int_t n_test;
  Int_t n_test2;
- Int_t ntag;
- Double_t number_sig;
- Double_t number_bkg;
 
  Int_t n_passSig;
  Int_t n_passZH;
@@ -233,8 +216,6 @@ public :
  // initialize histograms as global
  TH1F histoTH1F;
  TH2F histoTH2F;
- TH1F *h_ntags = new TH1F("h_ntags", "ntags", 10, 0, 10);
- TGraph* NumByCut = new TGraph(N);
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
