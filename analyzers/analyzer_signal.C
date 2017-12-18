@@ -7,7 +7,7 @@
 
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts)
+                       Double_t crossSec, Int_t nevts, TFile *optfile)
 {
 
  if(makelog){
@@ -121,7 +121,7 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
-//  OPT_Event.push_back(event);
+//  //OPT_Event.push_back(event);
 //  OPT_EventWeight.push_back(event_weight);
 //  //OPT_nJets.push_back(aodcalojet_list.size());
   tagger();
@@ -272,7 +272,6 @@ void analyzer_signal::Loop(TString outfilename,
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
- //tagger();
  OPTtree->Fill();
  } // end loop over entries
 
@@ -290,7 +289,6 @@ void analyzer_signal::Loop(TString outfilename,
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
- TFile *optfile = new TFile(outfilename+"_OPT"+".root","RECREATE");
  outfile->cd();
  for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
   for(unsigned int k=0; k<lepnames.size(); ++k){
@@ -304,6 +302,8 @@ void analyzer_signal::Loop(TString outfilename,
  optfile->cd();
  OPTtree->Write();
  optfile->Close();
+
+std::cout<<"Total!=0: "<<n_test <<" Total ==0 "<<n_test2<<std::endl;
 } // end analyzer_signal::Loop()
 
 //----------------------------initSingleHistogramTH1F
@@ -1721,18 +1721,23 @@ void analyzer_signal::tagger(){
   OPT_Event.push_back(event);
   OPT_EventWeight.push_back(event_weight);
   //OPT_nJets.push_back(aodcalojet_list.size());
+  if(aodcalojet_list.size()>0){
+    n_test = n_test + 1;
     for(int i = 0; i<aodcalojet_list.size(); i++){
-      if(aodcalojet_list.size()>0){
+      //if(aodcalojet_list.size()>=1){
       OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
       OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojet_list[i]));
+      //std::cout<<">0 " << aodcalojet_list.size()<<",  "<<n_test<<std::endl;
       }
-      else{
-      OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
-      OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
-      OPT_AODCaloJetAlphaMax              .push_back(-5);
-      }
-    }//looping through all the jets
+  }
+  else{
+    OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
+    OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
+    OPT_AODCaloJetAlphaMax              .push_back(-5);
+    n_test2 = n_test2 + 1;
+    //std::cout<<"<0 " <<aodcalojet_list.size()<<",  "<<n_test2<<std::endl;
+  }
 }
 
 //-------------------------aodcalojet_passID
