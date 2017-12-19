@@ -9,7 +9,7 @@ double countevents(TString Tsample){
 
  char* listdir;
  listdir = getenv ("listdir");
- TString Tlistdir = TString(listdir)+"/taglistdir";
+ TString Tlistdir = TString(listdir);
  TString fulllistname = Tlistdir+"/"+Tsample+".list";
  TString fulloutname   = Tlistdir+"/"+Tsample+".info";
 
@@ -34,9 +34,6 @@ double countevents(TString Tsample){
 
    // open file
    TFile* theFile;
-   //theFile = TFile::Open(Tinputline);
-   //std::cout<<"input file test:  "<<"/eos/uscms/store/group/lpchbb/LLDJntuples/furmon/"+Tinputline<<std::endl;
-   //theFile = TFile::Open("root://cmsxrootd.hep.wisc.edu/"+Tinputline);
    theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
 
    // get histogram
