@@ -217,7 +217,7 @@ void analyzer_signal::Loop(TString outfilename,
   passPTOSSFg50 = (dilep_pt>50.);
 
   passGoodVtx = nVtx>0;
-  passOneJet =  slimmedjet_list.size()>0; 
+  passOneJet =  aodcalojet_list.size()>0;//slimmedjet_list.size()>0; 
 
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
@@ -272,14 +272,14 @@ void analyzer_signal::Loop(TString outfilename,
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
- OPTtree->Fill();
+if( doesPassZH ) OPTtree->Fill();
  } // end loop over entries
 
  printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
  printf("  nmatched    %i\n",nmatched);
  printf("  nunmatched  %i\n",nunmatched);
 
- printf("  ntot        %i \n",n_tot        ); 
+ printf(" ntot        %i \n",n_tot        ); 
  printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
  printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
  printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
@@ -1390,23 +1390,22 @@ Bool_t analyzer_signal::askPassSig()
 Bool_t analyzer_signal::askPassZH()
 {
  Bool_t doespass = kFALSE;
-
-//*// if ( passGoodVtx
-//*//     && passZWindow
-//*//     && passPTOSSFg50
-//*//     && passOneJet
-//*//     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
-//*//     //&& (passSingleEle || passSingleMu ) 
-//*//    )
  if ( passGoodVtx
-    )
- { doespass = kTRUE; n_passZH++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
-  //if( passSingleEle ) { n_ele_passZH++; }
-  //else if( passSingleMu ) { n_mu_passZH++; }
- }
+      && passOSSF
+      && passZWindow
+      && passOneJet     
+      //&& passPTOSSFg50
+    ) {doespass = kTRUE; n_passZH++;}
  return doespass;
+ 
+   /*
+   if ( passGoodVtx )
+    { doespass = kTRUE; n_passZH++;
+    if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
+    else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
+    //if( passSingleEle ) { n_ele_passZH++; }
+    //else if( passSingleMu ) { n_mu_passZH++; }
+   }*/
 }
 
 Bool_t analyzer_signal::askPassDY()
