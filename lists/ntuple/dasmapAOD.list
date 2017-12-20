@@ -149,3 +149,13 @@
  Data_MuonEG_H_2    /MuonEG/Run2016H-PromptReco-v2/AOD
  Data_MuonEG_H_3    /MuonEG/Run2016H-PromptReco-v3/AOD
 
+ Data_SinglePhoton_B_1    /SinglePhoton/Run2016B-23Sep2016-v1/AOD
+ Data_SinglePhoton_B_2    /SinglePhoton/Run2016B-23Sep2016-v3/AOD
+ Data_SinglePhoton_C    /SinglePhoton/Run2016C-23Sep2016-v1/AOD
+ Data_SinglePhoton_D    /SinglePhoton/Run2016D-23Sep2016-v1/AOD
+ Data_SinglePhoton_E    /SinglePhoton/Run2016E-23Sep2016-v1/AOD
+ Data_SinglePhoton_F    /SinglePhoton/Run2016F-23Sep2016-v1/AOD
+ Data_SinglePhoton_G    /SinglePhoton/Run2016G-23Sep2016-v1/AOD
+ Data_SinglePhoton_H_3    /SinglePhoton/Run2016H-PromptReco-v3/AOD
+ Data_SinglePhoton_H_2    /SinglePhoton/Run2016H-PromptReco-v2/AOD
+
