@@ -7,7 +7,7 @@
 
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts)
+                       Double_t crossSec, Int_t nevts, TFile *optfile)
 {
 
  if(makelog){
@@ -20,7 +20,7 @@ void analyzer_signal::Loop(TString outfilename,
  if(nevts>0){ 
   nentries = Long64_t(nevts);
  }
-
+ 
  nmatched = 0;
  nunmatched = 0;
 
@@ -86,6 +86,13 @@ void analyzer_signal::Loop(TString outfilename,
   nSelectedMuo=0;
   nSelectedSlimmedJet=0;
   nSelectedAODCaloJet=0;
+ 
+ OPT_Event                           .clear();
+ OPT_EventWeight                     .clear();
+ //OPT_nJets                           .clear();
+ OPT_AODCaloJetMedianLog10IPSig      .clear();
+ OPT_AODCaloJetMedianLog10TrackAngle .clear();
+ OPT_AODCaloJetAlphaMax              .clear();
 
   //printf(" Event %lld\n", event);
   Long64_t ientry = LoadTree(jentry);
@@ -114,6 +121,11 @@ void analyzer_signal::Loop(TString outfilename,
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight();
 
+//  //OPT_Event.push_back(event);
+//  OPT_EventWeight.push_back(event_weight);
+//  //OPT_nJets.push_back(aodcalojet_list.size());
+  tagger();
+  
   // set our met
   themet = pfMET;
   themephi = pfMETPhi;
@@ -165,7 +177,7 @@ void analyzer_signal::Loop(TString outfilename,
    htaodcalojets += AODCaloJetPt->at(aodcalojetindex);
   } 
 
-  
+/*  
   // check compatibility between AOD/miniAOD jets
   printf("miniAOD: %i    AOD: %i \n", (int)slimmedjet_list.size(), (int)aodcalojet_list.size() );
   //if( jet_list.size()!=AODcalojet_list.size()){nunmatched ++; continue;}
@@ -186,7 +198,7 @@ void analyzer_signal::Loop(TString outfilename,
     AODCaloJetPhi ->at(AODjetindex)  
    );
   } 
-
+*/
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
@@ -205,7 +217,7 @@ void analyzer_signal::Loop(TString outfilename,
   passPTOSSFg50 = (dilep_pt>50.);
 
   passGoodVtx = nVtx>0;
-  passOneJet =  slimmedjet_list.size()>0; 
+  passOneJet =  aodcalojet_list.size()>0;//slimmedjet_list.size()>0; 
 
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
@@ -260,19 +272,21 @@ void analyzer_signal::Loop(TString outfilename,
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
-
+if( doesPassZH ) OPTtree->Fill();
+if( doesPassZH ) n_test = n_test + 1;
  } // end loop over entries
 
  printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
  printf("  nmatched    %i\n",nmatched);
  printf("  nunmatched  %i\n",nunmatched);
 
- printf("  ntot        %i \n",n_tot        ); 
+ printf(" ntot        %i \n",n_tot        ); 
  printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
  printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
  printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
  printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ 
 
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
@@ -286,7 +300,11 @@ void analyzer_signal::Loop(TString outfilename,
   }
  }
  outfile->Close();
+ optfile->cd();
+ OPTtree->Write();
+ optfile->Close();
 
+std::cout<<"n_test: "<<n_test <<" n_test2 "<<n_test2<<std::endl;
 } // end analyzer_signal::Loop()
 
 //----------------------------initSingleHistogramTH1F
@@ -775,7 +793,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
- for(unsigned int j=0; j<jetmultnames.size()-1; ++j){
+ for(unsigned int j=0; j<jetmultnames.size(); ++j){
   if( slimmedjet_list.size()>j ){
    int slimmedjetindex = slimmedjet_list[j];
 
@@ -802,7 +820,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
    h_slimmedJetPartonID                [selbin][j][lepbin].Fill( slimmedJetPartonID               ->at( slimmedjetindex ), weight ); 
    h_slimmedJetHadFlvr                 [selbin][j][lepbin].Fill( slimmedJetHadFlvr                ->at( slimmedjetindex ), weight ); 
 
-   h_slimmedJetAlphaD                  [selbin][j][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
+   //h_slimmedJetAlphaD                  [selbin][j][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
    h_slimmedJetAlphaMaxD               [selbin][j][lepbin].Fill( slimmedJetAlphaMaxD              ->at( slimmedjetindex ), weight ); 
    h_slimmedJetMedianLog10IPSig        [selbin][j][lepbin].Fill( slimmedJetMedianLog10IPSig       ->at( slimmedjetindex ), weight ); 
    h_slimmedJetSumIP                   [selbin][j][lepbin].Fill( slimmedJetSumIP                  ->at( slimmedjetindex ), weight ); 
@@ -869,7 +887,7 @@ Bool_t analyzer_signal::fillSlimmedJetHistograms(Double_t weight, int selbin, in
   h_slimmedJetPartonID                [selbin][incjetbin][lepbin].Fill( slimmedJetPartonID               ->at( slimmedjetindex ), weight ); 
   h_slimmedJetHadFlvr                 [selbin][incjetbin][lepbin].Fill( slimmedJetHadFlvr                ->at( slimmedjetindex ), weight ); 
 
-  h_slimmedJetAlphaD                  [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
+  //h_slimmedJetAlphaD                  [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaD                 ->at( slimmedjetindex ), weight ); 
   h_slimmedJetAlphaMaxD               [selbin][incjetbin][lepbin].Fill( slimmedJetAlphaMaxD              ->at( slimmedjetindex ), weight ); 
   h_slimmedJetMedianLog10IPSig        [selbin][incjetbin][lepbin].Fill( slimmedJetMedianLog10IPSig       ->at( slimmedjetindex ), weight ); 
   h_slimmedJetSumIP                   [selbin][incjetbin][lepbin].Fill( slimmedJetSumIP                  ->at( slimmedjetindex ), weight ); 
@@ -939,7 +957,7 @@ Bool_t analyzer_signal::writeSlimmedJetHistograms(int selbin, int lepbin)
   h_slimmedJetPartonID                [selbin][j][lepbin].Write(); 
   h_slimmedJetHadFlvr                 [selbin][j][lepbin].Write(); 
 
-  h_slimmedJetAlphaD                  [selbin][j][lepbin].Write(); 
+  //h_slimmedJetAlphaD                  [selbin][j][lepbin].Write(); 
   h_slimmedJetAlphaMaxD               [selbin][j][lepbin].Write(); 
   h_slimmedJetMedianLog10IPSig        [selbin][j][lepbin].Write(); 
   h_slimmedJetSumIP                   [selbin][j][lepbin].Write(); 
@@ -1096,7 +1114,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
 //----------------------------fillAODCaloJetHistograms
 Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin)
 {
-
+/*
  printf(" AODCaloJetPt                            %u\n",  AODCaloJetPt                            ->size() ); 
  printf(" AODCaloJetEta                           %u\n",  AODCaloJetEta                           ->size() ); 
  printf(" AODCaloJetPhi                           %u\n",  AODCaloJetPhi                           ->size() ); 
@@ -1140,7 +1158,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
  printf(" AODCaloJetAvfDistToPV                   %u\n",  AODCaloJetAvfDistToPV                   ->size() ); 
  printf(" AODCaloJetAvfVertexDeltaZtoPV           %u\n",  AODCaloJetAvfVertexDeltaZtoPV           ->size() ); 
  printf(" AODCaloJetAvfVertexDeltaZtoPV2          %u\n",  AODCaloJetAvfVertexDeltaZtoPV2          ->size() ); 
-
+*/
 
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
@@ -1373,23 +1391,22 @@ Bool_t analyzer_signal::askPassSig()
 Bool_t analyzer_signal::askPassZH()
 {
  Bool_t doespass = kFALSE;
-
-//*// if ( passGoodVtx
-//*//     && passZWindow
-//*//     && passPTOSSFg50
-//*//     && passOneJet
-//*//     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
-//*//     //&& (passSingleEle || passSingleMu ) 
-//*//    )
  if ( passGoodVtx
-    )
- { doespass = kTRUE; n_passZH++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
-  //if( passSingleEle ) { n_ele_passZH++; }
-  //else if( passSingleMu ) { n_mu_passZH++; }
- }
+      && passOSSF
+      && passZWindow
+      && passOneJet     
+      //&& passPTOSSFg50
+    ) {doespass = kTRUE; n_passZH++;}
  return doespass;
+ 
+   /*
+   if ( passGoodVtx )
+    { doespass = kTRUE; n_passZH++;
+    if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
+    else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
+    //if( passSingleEle ) { n_ele_passZH++; }
+    //else if( passSingleMu ) { n_mu_passZH++; }
+   }*/
 }
 
 Bool_t analyzer_signal::askPassDY()
@@ -1580,7 +1597,7 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
   if (muoid = "Loose")  muoisoval = 0.25 ;
   if (muoid = "Medium") muoisoval = 0.25 ;
   if (muoid = "Tight")  muoisoval = 0.15 ;
-  bool pass_iso = muPFdBetaIsolation->at(i) > muoisoval ;
+  bool pass_iso = muPFdBetaIsolation->at(i) < muoisoval ;
 
   if( pass_bit && pass_kin && pass_iso )
   {
@@ -1688,7 +1705,7 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
    bool pass_signal = slimmedJetGenPartonMomID->at(i) > 9000000 ;//9000006 i think?
               
    //if( pass_id && pass_kin && pass_overlap )
-   if( pass_id && pass_kin && pass_overlap && pass_signal)
+   if( pass_id && pass_kin && pass_overlap /*&& pass_signal*/)
    {
     nSelectedSlimmedJet++;
     jetlist.push_back(i);
@@ -1698,7 +1715,30 @@ std::vector<int> analyzer_signal::slimmedjet_passID( int bitnr, double jetPtCut,
   return jetlist;
 
 }
+ 
 
+void analyzer_signal::tagger(){
+  OPT_Event.push_back(event);
+  OPT_EventWeight.push_back(event_weight);
+  //OPT_nJets.push_back(aodcalojet_list.size());
+  if(aodcalojet_list.size()>0){
+    //n_test = n_test + 1;
+    for(int i = 0; i<aodcalojet_list.size(); i++){
+      //if(aodcalojet_list.size()>=1){
+      OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
+      OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
+      OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojet_list[i]));
+      //std::cout<<">0 " << aodcalojet_list.size()<<",  "<<n_test<<std::endl;
+      }
+  }
+  else{
+    OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
+    OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
+    OPT_AODCaloJetAlphaMax              .push_back(-5);
+    //n_test2 = n_test2 + 1;
+    //std::cout<<"<0 " <<aodcalojet_list.size()<<",  "<<n_test2<<std::endl;
+  }
+}
 
 //-------------------------aodcalojet_passID
 std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
@@ -1747,7 +1787,7 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
 
    bool pass_kin = AODCaloJetPt->at(i) > jetPtCut && ( fabs(AODCaloJetEta->at(i)) < jetEtaCut ) ;
               
-   if( pass_kin && pass_overlap )
+   if( pass_kin && pass_overlap)
    {
     nSelectedAODCaloJet++;
     jetlist.push_back(i);
@@ -1867,8 +1907,8 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
    m2.SetPtEtaPhiE( 0,0,0,0 );                                       
                                                                      
     // no pairs                                                    
-    if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
-                                                                   
+    if( electron_list.size()<2 && muon_list.size()<2 ){/*n_test2 = n_test2 + 1;*/return;}             
+    if(muon_list.size()>0) n_test2 = n_test2 + 1;                                                               
      // electrons                                                      
      if( electron_list.size()>1 ){                                           
       for(int i=1; i<electron_list.size(); ++i)                              

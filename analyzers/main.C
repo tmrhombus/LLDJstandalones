@@ -176,7 +176,7 @@ int main(int argc, char **argv){
   }
 
   if( Tinputline.Contains("/store/group") ){
-       theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+       theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
    printf(" Inputfile: %s\n",Tinputline.Data());
   }
 
@@ -225,6 +225,7 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
+ TFile* optfile = new TFile(outfilename+"_OPT.root", "RECREATE");
  // make the analyzer, init some stuff
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
@@ -234,7 +235,7 @@ int main(int argc, char **argv){
  analyzer.initSlimmedJetHistograms();
  analyzer.init2DHistograms();
 
- analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
+ analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile);
 
  // end stopwatch
  sw.Stop();
