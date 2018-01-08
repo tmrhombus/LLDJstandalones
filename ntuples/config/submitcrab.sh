@@ -8,6 +8,13 @@ doAOD=true
 START=$(date +%s);
 printf "Started at ${START}\n\n"
 
+if [ ${doAOD} = true ]
+then
+ nversion="${nversion}AOD"
+fi
+
+printf "nversion is ${nversion} \n"
+
 # make the directory where we'll submit from
 thesubdir="${subdir}/gitignore/${nversion}"
 mkdir -p ${thesubdir} 
@@ -38,39 +45,10 @@ fi
 
 # sample names to run over
 samples=( \
-  "Data_SingleEle_B_2"   \
-  "Data_SingleMu_B_2"    \
+  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
 )
 
-###  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
-###  "ZH_HToSSTobbbb_MS-55_ctauS-10"     \
-###  "ZH_HToSSTobbbb_MS-55_ctauS-100"    \
-###  "ZH_HToSSTobbbb_MS-55_ctauS-1000"   \
-###  "ZH_HToSSTobbbb_MS-40_ctauS-1"      \
-###  "ZH_HToSSTobbbb_MS-40_ctauS-10"     \
-###  "ZH_HToSSTobbbb_MS-40_ctauS-100"    \
-###  "ZH_HToSSTobbbb_MS-40_ctauS-1000"   \
-###  "ZH_HToSSTobbbb_MS-15_ctauS-1"      \
-###  "ZH_HToSSTobbbb_MS-15_ctauS-10"     \
-###  "ZH_HToSSTobbbb_MS-15_ctauS-100"    \
-###  "ZH_HToSSTobbbb_MS-15_ctauS-1000"   \
-###  "ggZH_HToSSTobbbb_MS-55_ctauS-1"    \
-###  "ggZH_HToSSTobbbb_MS-55_ctauS-10"   \
-###  "ggZH_HToSSTobbbb_MS-55_ctauS-100"  \
-###  "ggZH_HToSSTobbbb_MS-55_ctauS-1000" \
-###  "ggZH_HToSSTobbbb_MS-40_ctauS-1"    \
-###  "ggZH_HToSSTobbbb_MS-40_ctauS-10"   \
-###  "ggZH_HToSSTobbbb_MS-40_ctauS-100"  \
-###  "ggZH_HToSSTobbbb_MS-40_ctauS-1000" \
-###  "ggZH_HToSSTobbbb_MS-15_ctauS-1"    \
-###  "ggZH_HToSSTobbbb_MS-15_ctauS-10"   \
-###  "ggZH_HToSSTobbbb_MS-15_ctauS-100"  \
-###  "ggZH_HToSSTobbbb_MS-15_ctauS-1000" \
-###  "Data_SingleEle_B_1"   \
-###  "Data_SingleMu_B_1"    \
-
-
-
+# Signal Samples
 #  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
 #  "ZH_HToSSTobbbb_MS-55_ctauS-10"     \
 #  "ZH_HToSSTobbbb_MS-55_ctauS-100"    \
@@ -96,6 +74,7 @@ samples=( \
 #  "ggZH_HToSSTobbbb_MS-15_ctauS-100"  \
 #  "ggZH_HToSSTobbbb_MS-15_ctauS-1000" \
 
+# Datasets
 #  "Data_SingleEle_H_3"   \
 #  "Data_SingleEle_H_2"   \
 #  "Data_SingleEle_G"     \
@@ -116,10 +95,25 @@ samples=( \
 #  "Data_SingleMu_B_2"    \
 #  "Data_SingleMu_B_1"    \
 
+#  "Data_SinglePhoton_H_3"    \
+#  "Data_SinglePhoton_H_2"    \
+#  "Data_SinglePhoton_G"      \
+#  "Data_SinglePhoton_F"      \
+#  "Data_SinglePhoton_E"      \
+#  "Data_SinglePhoton_D"      \
+#  "Data_SinglePhoton_C"      \
+#  "Data_SinglePhoton_B_2"    \
+#  "Data_SinglePhoton_B_1"    \
+
+# Main Backgrounds
 #  "DY50_1"               \
 #  "DY50_2"               \
 #  "TTtoLL_1"             \
 #  "TTtoLL_2"             \
+#  "WJets_1"              \
+#  "WJets_2"              \
+
+# Other Backgrounds
 #  "TTtoLfromT_1"         \
 #  "TTtoLfromT_2"         \
 #  "TTtoLfromTbar_1"      \
@@ -131,8 +125,6 @@ samples=( \
 #  "STtbarW_2"            \
 #  "STtW_1"               \
 #  "STtW_2"               \
-#  "WJets_1"              \
-#  "WJets_2"              \
 #  "WWToLNuLNu"           \
 #  "WWToLNuQQ_1"          \
 #  "WWToLNuQQ_2"          \
@@ -143,6 +135,13 @@ samples=( \
 #  "ZZToLLQQ"             \
 #  "ZZToLLNuNu"           \
 #  "ZZToLLLL"             \
+#  "WG"                   \
+#  "ZG"                   \
+#  "ZH_Hbb_1"             \
+#  "ZH_Hbb_2"             \
+#  "ggZH_Hbb_1"           \
+#  "ggZH_Hbb_2"           \
+#  "ggZH_Hbb_3"           \
 #  "GJets_HT40to100_1"    \
 #  "GJets_HT40to100_2"    \
 #  "GJets_HT100to200_1"   \
@@ -162,13 +161,6 @@ samples=( \
 #  "DY5to50_HT400to600_2" \
 #  "DY5to50_HT600toInf_1" \
 #  "DY5to50_HT600toInf_2" \
-#  "WG"                   \
-#  "ZG"                   \
-#  "ZH_Hbb_1"             \
-#  "ZH_Hbb_2"             \
-#  "ggZH_Hbb_1"           \
-#  "ggZH_Hbb_2"           \
-#  "ggZH_Hbb_3"           \
 
 # print which samples we're running over
 printf "For:\n"
@@ -203,21 +195,27 @@ do
  then
   if [ ${doAOD} = true ]
   then
+   # DATA AOD
    CMSRUNCONFIG="'run_data_80XAOD.py'" 
+   UPERJOB="100"
   else
+   # DATA miniAOD
    CMSRUNCONFIG="'run_data_80X.py'" 
+   UPERJOB="100"
   fi
   SPLITTING="'LumiBased'"
-  UPERJOB="100"
  else
   if [ ${doAOD} = true ]
   then
+   # MC AOD
    CMSRUNCONFIG="'run_mc_80XAOD.py'" 
+   UPERJOB="10"
   else
+   # MC miniAOD
    CMSRUNCONFIG="'run_mc_80X.py'" 
+   UPERJOB="1"
   fi
   SPLITTING="'FileBased'"
-  UPERJOB="1"
  fi
 
  NUNITS="-1"
@@ -225,8 +223,7 @@ do
  DATASET="'${datasetname}'"
  STORESITE="'T3_US_FNALLPC'"
  OUTLFNBASE="'/store/group/lpchbb/LLDJntuples/${nversion}'"
- #MAXMEM="4000"
- MAXMEM="2500"
+ MAXMEM="2000"
 
  printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
