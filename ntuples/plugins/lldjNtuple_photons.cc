@@ -102,16 +102,16 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
  edm::Handle<edm::ValueMap<float> > phoWorstChargedIsolationMap;
 
 // # brokenphotons
-// e.getByToken(phoLooseIdMapToken_ ,  loose_id_decisions);
-// e.getByToken(phoMediumIdMapToken_,  medium_id_decisions);
-// e.getByToken(phoTightIdMapToken_ ,  tight_id_decisions);
+ e.getByToken(phoLooseIdMapToken_ ,  loose_id_decisions);
+ e.getByToken(phoMediumIdMapToken_,  medium_id_decisions);
+ e.getByToken(phoTightIdMapToken_ ,  tight_id_decisions);
 //
 // //e.getByToken(phoMVAValuesMapToken_, mvaValues);
 // 
-// e.getByToken(phoChargedIsolationToken_,       phoChargedIsolationMap);
-// e.getByToken(phoNeutralHadronIsolationToken_, phoNeutralHadronIsolationMap);
-// e.getByToken(phoPhotonIsolationToken_,        phoPhotonIsolationMap);
-// e.getByToken(phoWorstChargedIsolationToken_,  phoWorstChargedIsolationMap);
+ e.getByToken(phoChargedIsolationToken_,       phoChargedIsolationMap);
+ e.getByToken(phoNeutralHadronIsolationToken_, phoNeutralHadronIsolationMap);
+ e.getByToken(phoPhotonIsolationToken_,        phoPhotonIsolationMap);
+ e.getByToken(phoWorstChargedIsolationToken_,  phoWorstChargedIsolationMap);
 
  int tmpcounter = 0;
 
@@ -124,14 +124,14 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
 
   UShort_t tmpphoIDbit = 0;
   
-  //bool isPassLoose  = (*loose_id_decisions)[pho];
-  //if(isPassLoose) setbit(tmpphoIDbit, 0);
-  //
-  //bool isPassMedium = (*medium_id_decisions)[pho];
-  //if(isPassMedium) setbit(tmpphoIDbit, 1);
-  //
-  //bool isPassTight  = (*tight_id_decisions)[pho];
-  //if(isPassTight) setbit(tmpphoIDbit, 2);
+  bool isPassLoose  = (*loose_id_decisions)[pho];
+  if(isPassLoose) setbit(tmpphoIDbit, 0);
+  
+  bool isPassMedium = (*medium_id_decisions)[pho];
+  if(isPassMedium) setbit(tmpphoIDbit, 1);
+  
+  bool isPassTight  = (*tight_id_decisions)[pho];
+  if(isPassTight) setbit(tmpphoIDbit, 2);
 
   //printf(" PhoID: %hu \n", tmpphoIDbit);
   //// selections for electron collection
@@ -147,15 +147,15 @@ void lldjNtuple::fillPhotons(const edm::Event& e, const edm::EventSetup& es) {
   phoSCEta_  .push_back( (*iPho).superCluster()->eta());       
   phoSCPhi_  .push_back( (*iPho).superCluster()->phi());       
 
-  //phoObjPFChIso_       .push_back(iPho->chargedHadronIso());
-  //phoObjPFPhoIso_      .push_back(iPho->photonIso());
-  //phoObjPFNeuIso_      .push_back(iPho->neutralHadronIso());
+  phoObjPFChIso_       .push_back(iPho->chargedHadronIso());
+  phoObjPFPhoIso_      .push_back(iPho->photonIso());
+  phoObjPFNeuIso_      .push_back(iPho->neutralHadronIso());
 
-  ////phoMapPFChIso_     .push_back((*phoChargedIsolationMap)[pho]);
-  ////phoMapPFPhoIso_    .push_back((*phoPhotonIsolationMap)[pho]);
-  ////phoMapPFNeuIso_    .push_back((*phoNeutralHadronIsolationMap)[pho]);
-  ////phoMapPFChWorstIso_.push_back((*phoWorstChargedIsolationMap)[pho]);
-  ////
+  phoMapPFChIso_     .push_back((*phoChargedIsolationMap)[pho]);
+  phoMapPFPhoIso_    .push_back((*phoPhotonIsolationMap)[pho]);
+  phoMapPFNeuIso_    .push_back((*phoNeutralHadronIsolationMap)[pho]);
+  phoMapPFChWorstIso_.push_back((*phoWorstChargedIsolationMap)[pho]);
+  
   ////phoIDMVA_.push_back((*mvaValues)[pho]);  
   ////phoIDbit_.push_back(tmpphoIDbit);      
 

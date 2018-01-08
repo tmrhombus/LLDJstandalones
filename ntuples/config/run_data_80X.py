@@ -30,7 +30,7 @@ process.source = cms.Source('PoolSource',
         #'/store/data/Run2016H/SingleMuon/MINIAOD/03Feb2017_ver3-v1/80000/0040ECBB-76EA-E611-8FE7-A0000420FE80.root',
         #
         #        # single ele
-        #'/store/data/Run2016B/SingleElectron/MINIAOD/03Feb2017_ver1-v1/100000/000E1D21-47ED-E611-85E0-0CC47A4D762A.root',
+        '/store/data/Run2016B/SingleElectron/MINIAOD/03Feb2017_ver1-v1/100000/000E1D21-47ED-E611-85E0-0CC47A4D762A.root',
         #'/store/data/Run2016B/SingleElectron/MINIAOD/03Feb2017_ver2-v2/110000/003B2C1F-50EB-E611-A8F1-002590E2D9FE.root',
         #'/store/data/Run2016C/SingleElectron/MINIAOD/03Feb2017-v1/100000/02169BE7-81EB-E611-BB99-02163E0137CD.root',
         #'/store/data/Run2016D/SingleElectron/MINIAOD/03Feb2017-v1/110000/001A5DEC-77EB-E611-95CD-0CC47A4C8EE8.root',
@@ -64,30 +64,12 @@ process.source = cms.Source('PoolSource',
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver2-v1/100000/023E858B-F7EC-E611-889C-047D7BD6DDF2.root',
         #'/store/data/Run2016H/DoubleEG/MINIAOD/03Feb2017_ver3-v1/1030000/D41C6358-4DF0-E611-BBAC-002590DB927A.root',
  
-         'file:/afs/hep.wisc.edu/cms/tperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/miniAOD/SingleEle_G_004A75AB-B2EA-E611-B000-24BE05CEFDF1.root'
 
- ),
-   secondaryFileNames= cms.untracked.vstring(
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_48E51770-C58D-E611-A5E8-002590D0B002.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_1034AE6F-AF92-E611-B1DE-20CF3019DEF2.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_2C1C8A8A-B992-E611-9F16-0242AC110003.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_7C74F662-1C93-E611-A6AD-20CF3019DF12.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_E2341FEE-1E93-E611-BB54-20CF3019DF10.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_E4476F29-1093-E611-84A9-001E67504645.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_E4C786C1-A992-E611-A704-0CC47A7E0180.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_F6227198-6193-E611-8FAC-20CF305616D1.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_FADB3E6E-CF92-E611-A832-001E67504AA5.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_80B41FD1-018C-E611-A87F-0CC47A1E046E.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_9AAF5E84-0897-E611-B53D-20CF305B057C.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_AA4719DE-0F97-E611-9C66-0025907B4E24.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_B0AEAD84-0897-E611-A4CC-0CC47A4DEE70.root',
-  'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/Data_SingleEle_G_ECEA8EF3-278C-E611-8051-0CC47A1DF7FC.root',
-
- ),
+ )
 )
 
 # output name
-process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_data.root'));
+process.TFileService = cms.Service('TFileService', fileName = cms.string('lldjntuple_data_miniAOD.root'));
 
 #process.out = cms.OutputModule(
 #'PoolOutputModule',
@@ -195,6 +177,7 @@ process.egmPhotonIDs.physicsObjectSrc = cms.InputTag('selectedPhotons','','LLDJ'
 process.egmGsfElectronIDs.isAOD=cms.bool(False)
 process.egmPhotonIDs.isAOD=cms.bool(False)
 
+# Electron ID 
 process.electronIDValueMapProducer.srcMiniAOD = cms.InputTag('selectedElectrons','','LLDJ')
 process.electronIDValueMapProducer.src = cms.InputTag('') # make it give error if misconfigured
 process.electronIDValueMapProducer.isAOD=cms.bool(False)
@@ -210,6 +193,7 @@ process.photonIDValueMapProducer.isAOD=cms.bool(False)
 # process.electronMVAValueMapProducer.src = cms.InputTag('selectedElectrons','','LLDJ')
 # process.photonMVAValueMapProducer.src = cms.InputTag('selectedPhotons','','LLDJ')
 
+# Photon Isolation
 process.egmPhotonIsolation.srcToIsolate = cms.InputTag('selectedPhotons','','LLDJ')
 
 ##########################################################################################
@@ -244,10 +228,8 @@ corMETFromMuonAndEG(process,
                     pfCandCollection='', #not needed                        
                     electronCollection='slimmedElectronsBeforeGSFix',
                     photonCollection='slimmedPhotonsBeforeGSFix',
-                    corElectronCollection='selectedElectrons', # calibratedPatElectrons?
+                    corElectronCollection='selectedElectrons', 
                     corPhotonCollection='selectedPhotons',
-                    #corElectronCollection='slimmedElectrons', # calibratedPatElectrons?
-                    #corPhotonCollection='slimmedPhotons',
                     allMETEGCorrected=True,
                     muCorrection=False,
                     eGCorrection=True,
@@ -394,12 +376,10 @@ process.TransientTrackBuilderESProducer = cms.ESProducer('TransientTrackBuilderE
 
 #NTuplizer
 process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
- vertexFitterConfig = cms.PSet(
-        finder = cms.string('avf'),
-        sigmacut = cms.double(10.),
-        Tini = cms.double(256.),
-        ratio = cms.double(0.25),
-        ),
+
+ doAOD                     = cms.bool(False),
+ doMiniAOD                 = cms.bool(True),
+
  electronSrc               = cms.InputTag('selectedElectrons','','LLDJ'),
  rhoLabel                  = cms.InputTag('fixedGridRhoFastjetAll'),
  eleVetoIdMap              = cms.InputTag('egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto'),
@@ -425,6 +405,12 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  AODak4PFJetsCHSSrc        = cms.InputTag('ak4PFJetsCHS', '', 'RECO'),
  AODVertexSrc              = cms.InputTag('offlinePrimaryVertices', '', 'RECO'),
  AODTrackSrc               = cms.InputTag('generalTracks', '', 'RECO'),
+ vertexFitterConfig = cms.PSet(
+        finder = cms.string('avf'),
+        sigmacut = cms.double(10.),
+        Tini = cms.double(256.),
+        ratio = cms.double(0.25),
+        ),
 
  patTriggerResults         = cms.InputTag('TriggerResults', '', 'PAT'),
  BadChargedCandidateFilter = cms.InputTag('BadChargedCandidateFilter'),
@@ -434,13 +420,13 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  muonSrc                   = cms.InputTag('slimmedMuons'),
 
  photonSrc                 = cms.InputTag('selectedPhotons','','LLDJ'),
- phoLooseIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose'),
- phoMediumIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-medium'),
- phoTightIdMap = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-tight'),
+ phoLooseIdMap             = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-loose"),
+ phoMediumIdMap            = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-medium"),
+ phoTightIdMap             = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-tight"),
  phoChargedIsolation       = cms.InputTag('photonIDValueMapProducer:phoChargedIsolation'),
  phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
  phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
- phoWorstChargedIsolation = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
+ phoWorstChargedIsolation  = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
 
  genParticleSrc    = cms.InputTag("genParticles"),
 
