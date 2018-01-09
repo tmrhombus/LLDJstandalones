@@ -54,6 +54,12 @@ scramv1 build -j 10;
 # first fork the repository to make your own workspace
 git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
 pushd LLDJstandalones;
+
+ # If you want to check out a specific branch
+ # git fetch origin
+ # git branch -v -a # list branches available, find yours
+ # git checkout -b NAMEOFBRANCH origin/NAMEOFBRANCH 
+
  # add DisplacedHiggs as upstream
  git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
 
