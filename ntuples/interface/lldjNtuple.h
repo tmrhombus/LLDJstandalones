@@ -70,8 +70,10 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesElectrons  (TTree*);
   void branchesMuons      (TTree*);
   void branchesJets       (TTree*);
+  void branchesAODJets    (TTree*);
   void branchesTrigger    (TTree*);
   void branchesGenPart    (TTree*);
+  void branchesAODEvent   (TTree*);
 
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
@@ -79,9 +81,13 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
+  void fillAODJets    (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
   void fillGenPart    (const edm::Event&);
+  void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
 
+  bool doAOD_     ; 
+  bool doMiniAOD_ ; 
 
   // collections
   // electrons
@@ -173,13 +179,16 @@ class lldjNtuple : public edm::EDAnalyzer {
   //gen
   edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;
 
-  
-
   TTree   *tree_;
   TH1F    *hEvents_;
 
   JME::JetResolution            slimmedJetResolution_;
   JME::JetResolutionScaleFactor slimmedJetResolutionSF_;
+
+  // shared between miniAOD jets and AOD jets modules
+  edm::Handle<double>                 rhoHandle;
+  edm::Handle<reco::VertexCollection> vtxHandle;
+
 };
 
 #endif

@@ -1,5 +1,5 @@
 # LLDJstandalones
-standalone packages for long lived jet analyses
+ntuple based analysis package for long lived displaced jet analyses
 
 ## Download
 
@@ -25,9 +25,9 @@ git cms-init;
 ## CMSSW imports and customizations
 
 # EGamma Smearing
-git cms-merge-topic rafaellopesdesa:EgammaAnalysis80_EGMSmearer_Moriond17_23Jan
+git cms-merge-topic cms-egamma:EGM_gain_v1
 pushd EgammaAnalysis/ElectronTools/data
- git clone git@github.com:ECALELFS/ScalesSmearings.git
+ git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git
 popd
 
 # EGamma ID
@@ -47,22 +47,29 @@ pushd HiggsAnalysis/CombinedLimit
  git checkout v7.0.1
 popd
 
+scramv1 build -j 10;
+
 ## LLDJstandalones Framework checkout
 
 # first fork the repository to make your own workspace
 git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
 pushd LLDJstandalones;
+
+ # If you want to check out a specific branch
+ # git fetch origin
+ # git branch -v -a # list branches available, find yours
+ # git checkout -b NAMEOFBRANCH origin/NAMEOFBRANCH 
+
  # add DisplacedHiggs as upstream
  git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
 
  # this is a hack to disable autodetection of (mini)AOD for VID producers
  pushd initialization
-  bash egammaAODflag.sh
+  bash getridofPhotonMVA.sh
  popd
 popd
 
 # compile a clean area
-scramv1 build clean;
 scramv1 build -j 10;
 
 
