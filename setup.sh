@@ -1,7 +1,8 @@
 #!/bin/bash
 
-export nversion="splotAOD"
-export aversion="gmapa"
+export depot="/eos/uscms/store/group/lpchbb/LLDJntuples/"
+export nversion="furwed"
+export aversion="t3dy_cutflowDY_loose"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`

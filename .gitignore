@@ -22,3 +22,5 @@
 
 *_h
 *_cc
+*.list
+*.info
