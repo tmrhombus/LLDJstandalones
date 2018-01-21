@@ -15,7 +15,7 @@ makealist () {
  printf "Making %s\n" $1
  fullsamplename=$(grep -i "$2" ${listdir}/allfiles${filetype}.masterlist)
  printf "%s\n"  ${fullsamplename} > ${listdir}/$1${filetype}.list
- sed -i -e "s@/hdfs@@" ${listdir}/$1${filetype}.list
+ sed -i -e "s@/eos/uscms@@" ${listdir}/$1${filetype}.list
 }
 
 #makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"
