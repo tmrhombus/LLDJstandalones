@@ -30,14 +30,11 @@ double countevents(TString Tsample){
   if( inputfile.fail() ) continue;
 
   Tinputline = inputline;
-
-  if( Tinputline.Contains("/store/user") ){  // if filename
+  if( Tinputline.Contains("/store/group") ){  // if filename
 
    // open file
    TFile* theFile;
-   theFile = TFile::Open("/hdfs"+Tinputline);
-   //theFile = TFile::Open("root://cmsxrootd.hep.wisc.edu/"+Tinputline);
-   //theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
+   theFile = TFile::Open("root://cmseos.fnal.gov/"+Tinputline);
 
    // get histogram
    TH1F* h_nevents;
@@ -46,7 +43,6 @@ double countevents(TString Tsample){
 
    // add bin contents to total count
    nevents=h_nevents->GetBinContent(1);
-   //nevents=h_nevents->GetBinContent(1);
    ntotal+=nevents;
    printf("file: /hdfs%s \n events: %.1f \n",Tinputline.Data(),nevents);
 

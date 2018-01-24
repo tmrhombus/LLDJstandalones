@@ -2,22 +2,26 @@
 #define analyzer_signal_h
 
 #include "analyzer_base.h"
-// #include <TROOT.h>
+#include <iostream>
+#include <TROOT.h>
 #include <TH1.h>
 #include <TH2.h>
+#include <TGraph.h>
 #include <TMath.h>
 #include <TLorentzVector.h>
-
+#include <vector>
+#include "TTree.h"
+#include "TBranch.h"
+#include <stdlib.h> 
 class analyzer_signal : public analyzer_base {
 
 public :
-
  // basic functions
                analyzer_signal();
  virtual       ~analyzer_signal();
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec, Int_t nevts);
+                    Double_t crossSec, Int_t nevts, TFile *optfile);
 
  // make 1D,2D histograms (helper function)
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
@@ -49,6 +53,21 @@ public :
  std::vector<int>     slimmedjet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
  std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
+ void tagger();
+ std::vector<int>   OPT_Event;
+ std::vector<float> OPT_EventWeight;
+ std::vector<int>   OPT_nJets;
+ std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
+ std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
+ std::vector<float> OPT_AODCaloJetAlphaMax;
+ TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
+ TBranch* b1 = OPTtree->Branch("OPT_Event"                              , &OPT_Event); 
+ TBranch* b2 = OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight); 
+ //TBranch* b3 = OPTtree->Branch("OPT_nJets"                              , &OPT_nJets); 
+ TBranch* b4 = OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig); 
+ TBranch* b5 = OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle); 
+ TBranch* b6 = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
+ 
  // get (smeared) object pt
  Float_t          getPhotonPt(int idnr, TString sysbinname);
  Float_t          getElectronPt(int i, TString sysbinname);
@@ -89,6 +108,7 @@ public :
  std::vector<int> muon_list ;
  std::vector<int> slimmedjet_list;
  std::vector<int> aodcalojet_list;
+ 
 
  // ID bits for collections
  TString phoid;

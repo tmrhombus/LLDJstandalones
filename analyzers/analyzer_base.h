@@ -571,6 +571,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
                                     Double_t nrEvents);
+   
 };
 
 #endif
