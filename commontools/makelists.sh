@@ -9,7 +9,8 @@
 # don't forget to source setup.sh (from xxx/LLDJstandalones)
 mkdir -p "${listdir}"
 
-filetype="AOD" # miniAOD=""
+#filetype="AOD" # miniAOD=""
+filetype="" # miniAOD=""
 
 makealist () {
  printf "Making %s\n" $1

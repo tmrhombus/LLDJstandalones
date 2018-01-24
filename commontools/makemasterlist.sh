@@ -11,11 +11,12 @@ outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
 #eosls -d root://cmseos.fnal.gov//store/group/lpchbb/LLDJntuples/furwed/* > ${outdir}/dirout.list
 #eos root://cmseos.fnal.gov ls -d /store/user/lpchbb/LLDJntuples/furwed/*/ > ${outdir}/dirout.list
 
-filetype="AOD" # miniAOD=""
+filetype="" # miniAOD=""
+#filetype="AOD" # miniAOD=""
 
 #xrdfs root://cmseos.fnal.gov ls /eos/uscms/store/user/lpchbb/LLDJntuples/furwed/ > ${outdir}/dirout.list
 #tempbase = ${CMSSW_BASE}/src/commontools
-xrdfs root://cmseos.fnal.gov ls ${depot}${nversion}${filetype} > templayer1.out #${outdir}/dirout.list
+xrdfs root://cmseos.fnal.gov ls ${depot}/${nversion}${filetype} > templayer1.out #${outdir}/dirout.list
 
 # initialize outfile as empty (overwrite if exists)
 echo "" > ${outdir}/allfiles${filetype}.masterlist
@@ -24,7 +25,7 @@ for lineone in $(cat templayer1.out);
 do
  
  xrdfs root://cmseos.fnal.gov ls ${lineone} > templayer2.out  
- echo "Text read from file: ${depot}${nversion}${filetype}/${lineone}"
+ echo "Text read from file: ${depot}/${nversion}${filetype}/${lineone}"
  for linetwo in $(cat templayer2.out)
  do
  
