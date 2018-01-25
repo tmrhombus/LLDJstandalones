@@ -49,37 +49,24 @@ public :
    ULong64_t       HLT_IsoTkMu22;
    ULong64_t       HLT_Mu17Mu8;
    ULong64_t       HLT_Mu17TkMu8;
-   std::vector<int>     *llpId;
-   std::vector<int>     *llpStatus;
-   std::vector<float>   *llpPt;
-   std::vector<float>   *llpEta;
-   std::vector<float>   *llpPhi;
-   std::vector<float>   *llpMass;
-   std::vector<int>     *llpDaughterId;
-   std::vector<int>     *llpDaughterStatus;
-   std::vector<float>   *llpDaughterPt;
-   std::vector<float>   *llpDaughterEta;
-   std::vector<float>   *llpDaughterPhi;
-   std::vector<float>   *llpDaughterMass;
-//// #brokenphotons
-//   Int_t           nPho;
-//   std::vector<float>   *phoPt;
-//   std::vector<float>   *phoEn;
-//   std::vector<float>   *phoEta;
-//   std::vector<float>   *phoPhi;
-//   std::vector<float>   *phoSCEn;
-//   std::vector<float>   *phoSCEta;
-//   std::vector<float>   *phoSCPhi;
-//   std::vector<unsigned short> *phoIDbit;
-//   std::vector<float>   *phoIDMVA;
-//   std::vector<float>   *phoObjPFChIso;
-//   std::vector<float>   *phoObjPFPhoIso;
-//   std::vector<float>   *phoObjPFNeuIso;
-//   std::vector<float>   *phoObjPFChWorstIso;
-//   std::vector<float>   *phoMapPFChIso;
-//   std::vector<float>   *phoMapPFPhoIso;
-//   std::vector<float>   *phoMapPFNeuIso;
-//   std::vector<float>   *phoMapPFChWorstIso;
+   Int_t           nPho;
+   std::vector<float>   *phoPt;
+   std::vector<float>   *phoEn;
+   std::vector<float>   *phoEta;
+   std::vector<float>   *phoPhi;
+   std::vector<float>   *phoSCEn;
+   std::vector<float>   *phoSCEta;
+   std::vector<float>   *phoSCPhi;
+   std::vector<unsigned short> *phoIDbit;
+   std::vector<float>   *phoIDMVA;
+   std::vector<float>   *phoObjPFChIso;
+   std::vector<float>   *phoObjPFPhoIso;
+   std::vector<float>   *phoObjPFNeuIso;
+   std::vector<float>   *phoObjPFChWorstIso;
+   std::vector<float>   *phoMapPFChIso;
+   std::vector<float>   *phoMapPFPhoIso;
+   std::vector<float>   *phoMapPFNeuIso;
+   std::vector<float>   *phoMapPFChWorstIso;
    Int_t           nEle;
    std::vector<float>   *elePt;
    std::vector<float>   *eleEn;
@@ -198,84 +185,6 @@ public :
    std::vector<float>   *slimmedJetGenEta;
    std::vector<float>   *slimmedJetGenPhi;
    std::vector<int>     *slimmedJetGenPartonMomID;
-   Int_t           AODnCaloJet;
-   std::vector<float>   *AODCaloJetPt;
-   std::vector<float>   *AODCaloJetEta;
-   std::vector<float>   *AODCaloJetPhi;
-   std::vector<float>   *AODCaloJetAlphaMax;
-   std::vector<float>   *AODCaloJetAlphaMax2;
-   std::vector<float>   *AODCaloJetAlphaMaxPrime;
-   std::vector<float>   *AODCaloJetAlphaMaxPrime2;
-   std::vector<float>   *AODCaloJetBeta;
-   std::vector<float>   *AODCaloJetBeta2;
-   std::vector<float>   *AODCaloJetSumIP;
-   std::vector<float>   *AODCaloJetSumIPSig;
-   std::vector<float>   *AODCaloJetMedianIP;
-   std::vector<float>   *AODCaloJetMedianLog10IPSig;
-   std::vector<float>   *AODCaloJetTrackAngle;
-   std::vector<float>   *AODCaloJetLogTrackAngle;
-   std::vector<float>   *AODCaloJetMedianLog10TrackAngle;
-   std::vector<float>   *AODCaloJetTotalTrackAngle;
-   std::vector<float>   *AODCaloJetAvfVx;
-   std::vector<float>   *AODCaloJetAvfVy;
-   std::vector<float>   *AODCaloJetAvfVz;
-   std::vector<float>   *AODCaloJetAvfVertexTotalChiSquared;
-   std::vector<float>   *AODCaloJetAvfVertexDegreesOfFreedom;
-   std::vector<float>   *AODCaloJetAvfVertexChi2NDoF;
-   std::vector<float>   *AODCaloJetAvfVertexDistanceToBeam;
-   std::vector<float>   *AODCaloJetAvfVertexTransverseError;
-   std::vector<float>   *AODCaloJetAvfVertexTransverseSig;
-   std::vector<float>   *AODCaloJetAvfVertexDeltaEta;
-   std::vector<float>   *AODCaloJetAvfVertexDeltaPhi;
-   std::vector<float>   *AODCaloJetAvfVertexRecoilPt;
-   std::vector<float>   *AODCaloJetAvfVertexTrackMass;
-   std::vector<float>   *AODCaloJetAvfVertexTrackEnergy;
-   std::vector<float>   *AODCaloJetAvfBeamSpotDeltaPhi;
-   std::vector<float>   *AODCaloJetAvfBeamSpotRecoilPt;
-   std::vector<float>   *AODCaloJetAvfBeamSpotMedianDeltaPhi;
-   std::vector<float>   *AODCaloJetAvfBeamSpotLog10MedianDeltaPhi;
-   std::vector<int>     *AODCaloJetNCleanMatchedTracks;
-   std::vector<int>     *AODCaloJetSumHitsInFrontOfVert;
-   std::vector<int>     *AODCaloJetSumMissHitsAfterVert;
-   std::vector<int>     *AODCaloJetHitsInFrontOfVertPerTrack;
-   std::vector<int>     *AODCaloJetMissHitsAfterVertPerTrack;
-   std::vector<float>   *AODCaloJetAvfDistToPV;
-   std::vector<float>   *AODCaloJetAvfVertexDeltaZtoPV;
-   std::vector<float>   *AODCaloJetAvfVertexDeltaZtoPV2;
-   Int_t           AODnPFJet;
-   std::vector<float>   *AODPFJetPt;
-   std::vector<float>   *AODPFJetEta;
-   std::vector<float>   *AODPFJetPhi;
-   std::vector<float>   *AODPFJetAlphaMax;
-   std::vector<float>   *AODPFJetAlphaMax2;
-   std::vector<float>   *AODPFJetAlphaMaxPrime;
-   std::vector<float>   *AODPFJetAlphaMaxPrime2;
-   std::vector<float>   *AODPFJetBeta;
-   std::vector<float>   *AODPFJetBeta2;
-   std::vector<float>   *AODPFJetSumIP;
-   std::vector<float>   *AODPFJetSumIPSig;
-   std::vector<float>   *AODPFJetMedianLog10IPSig;
-   std::vector<float>   *AODPFJetTrackAngle;
-   std::vector<float>   *AODPFJetLogTrackAngle;
-   std::vector<float>   *AODPFJetMedianLog10TrackAngle;
-   std::vector<float>   *AODPFJetTotalTrackAngle;
-   Int_t           AODnPFchsJet;
-   std::vector<float>   *AODPFchsJetPt;
-   std::vector<float>   *AODPFchsJetEta;
-   std::vector<float>   *AODPFchsJetPhi;
-   std::vector<float>   *AODPFchsJetAlphaMax;
-   std::vector<float>   *AODPFchsJetAlphaMax2;
-   std::vector<float>   *AODPFchsJetAlphaMaxPrime;
-   std::vector<float>   *AODPFchsJetAlphaMaxPrime2;
-   std::vector<float>   *AODPFchsJetBeta;
-   std::vector<float>   *AODPFchsJetBeta2;
-   std::vector<float>   *AODPFchsJetSumIP;
-   std::vector<float>   *AODPFchsJetSumIPSig;
-   std::vector<float>   *AODPFchsJetMedianLog10IPSig;
-   std::vector<float>   *AODPFchsJetTrackAngle;
-   std::vector<float>   *AODPFchsJetLogTrackAngle;
-   std::vector<float>   *AODPFchsJetMedianLog10TrackAngle;
-   std::vector<float>   *AODPFchsJetTotalTrackAngle;
    Float_t         genMET;
    Float_t         genMETPhi;
    Int_t           metFilters;
@@ -318,37 +227,24 @@ public :
    TBranch        *b_HLT_IsoTkMu22;   //!
    TBranch        *b_HLT_Mu17Mu8;   //!
    TBranch        *b_HLT_Mu17TkMu8;   //!
-   TBranch        *b_llpId;   //!
-   TBranch        *b_llpStatus;   //!
-   TBranch        *b_llpPt;   //!
-   TBranch        *b_llpEta;   //!
-   TBranch        *b_llpPhi;   //!
-   TBranch        *b_llpMass;   //!
-   TBranch        *b_llpDaughterId;   //!
-   TBranch        *b_llpDaughterStatus;   //!
-   TBranch        *b_llpDaughterPt;   //!
-   TBranch        *b_llpDaughterEta;   //!
-   TBranch        *b_llpDaughterPhi;   //!
-   TBranch        *b_llpDaughterMass;   //!
-//// #brokenphotons
-//   TBranch        *b_nPho;   //!
-//   TBranch        *b_phoPt;   //!
-//   TBranch        *b_phoEn;   //!
-//   TBranch        *b_phoEta;   //!
-//   TBranch        *b_phoPhi;   //!
-//   TBranch        *b_phoSCEn;   //!
-//   TBranch        *b_phoSCEta;   //!
-//   TBranch        *b_phoSCPhi;   //!
-//   TBranch        *b_phoIDbit;   //!
-//   TBranch        *b_phoIDMVA;   //!
-//   TBranch        *b_phoObjPFChIso;   //!
-//   TBranch        *b_phoObjPFPhoIso;   //!
-//   TBranch        *b_phoObjPFNeuIso;   //!
-//   TBranch        *b_phoObjPFChWorstIso;   //!
-//   TBranch        *b_phoMapPFChIso;   //!
-//   TBranch        *b_phoMapPFPhoIso;   //!
-//   TBranch        *b_phoMapPFNeuIso;   //!
-//   TBranch        *b_phoMapPFChWorstIso;   //!
+   TBranch        *b_nPho;   //!
+   TBranch        *b_phoPt;   //!
+   TBranch        *b_phoEn;   //!
+   TBranch        *b_phoEta;   //!
+   TBranch        *b_phoPhi;   //!
+   TBranch        *b_phoSCEn;   //!
+   TBranch        *b_phoSCEta;   //!
+   TBranch        *b_phoSCPhi;   //!
+   TBranch        *b_phoIDbit;   //!
+   TBranch        *b_phoIDMVA;   //!
+   TBranch        *b_phoObjPFChIso;   //!
+   TBranch        *b_phoObjPFPhoIso;   //!
+   TBranch        *b_phoObjPFNeuIso;   //!
+   TBranch        *b_phoObjPFChWorstIso;   //!
+   TBranch        *b_phoMapPFChIso;   //!
+   TBranch        *b_phoMapPFPhoIso;   //!
+   TBranch        *b_phoMapPFNeuIso;   //!
+   TBranch        *b_phoMapPFChWorstIso;   //!
    TBranch        *b_nEle;   //!
    TBranch        *b_elePt;   //!
    TBranch        *b_eleEn;   //!
@@ -467,84 +363,6 @@ public :
    TBranch        *b_slimmedJetGenEta;   //!
    TBranch        *b_slimmedJetGenPhi;   //!
    TBranch        *b_slimmedJetGenPartonMomID;   //!
-   TBranch        *b_AODnCaloJet;   //!
-   TBranch        *b_AODCaloJetPt;   //!
-   TBranch        *b_AODCaloJetEta;   //!
-   TBranch        *b_AODCaloJetPhi;   //!
-   TBranch        *b_AODCaloJetAlphaMax;   //!
-   TBranch        *b_AODCaloJetAlphaMax2;   //!
-   TBranch        *b_AODCaloJetAlphaMaxPrime;   //!
-   TBranch        *b_AODCaloJetAlphaMaxPrime2;   //!
-   TBranch        *b_AODCaloJetBeta;   //!
-   TBranch        *b_AODCaloJetBeta2;   //!
-   TBranch        *b_AODCaloJetSumIP;   //!
-   TBranch        *b_AODCaloJetSumIPSig;   //!
-   TBranch        *b_AODCaloJetMedianIP;   //!
-   TBranch        *b_AODCaloJetMedianLog10IPSig;   //!
-   TBranch        *b_AODCaloJetTrackAngle;   //!
-   TBranch        *b_AODCaloJetLogTrackAngle;   //!
-   TBranch        *b_AODCaloJetMedianLog10TrackAngle;   //!
-   TBranch        *b_AODCaloJetTotalTrackAngle;   //!
-   TBranch        *b_AODCaloJetAvfVx;   //!
-   TBranch        *b_AODCaloJetAvfVy;   //!
-   TBranch        *b_AODCaloJetAvfVz;   //!
-   TBranch        *b_AODCaloJetAvfVertexTotalChiSquared;   //!
-   TBranch        *b_AODCaloJetAvfVertexDegreesOfFreedom;   //!
-   TBranch        *b_AODCaloJetAvfVertexChi2NDoF;   //!
-   TBranch        *b_AODCaloJetAvfVertexDistanceToBeam;   //!
-   TBranch        *b_AODCaloJetAvfVertexTransverseError;   //!
-   TBranch        *b_AODCaloJetAvfVertexTransverseSig;   //!
-   TBranch        *b_AODCaloJetAvfVertexDeltaEta;   //!
-   TBranch        *b_AODCaloJetAvfVertexDeltaPhi;   //!
-   TBranch        *b_AODCaloJetAvfVertexRecoilPt;   //!
-   TBranch        *b_AODCaloJetAvfVertexTrackMass;   //!
-   TBranch        *b_AODCaloJetAvfVertexTrackEnergy;   //!
-   TBranch        *b_AODCaloJetAvfBeamSpotDeltaPhi;   //!
-   TBranch        *b_AODCaloJetAvfBeamSpotRecoilPt;   //!
-   TBranch        *b_AODCaloJetAvfBeamSpotMedianDeltaPhi;   //!
-   TBranch        *b_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi;   //!
-   TBranch        *b_AODCaloJetNCleanMatchedTracks;   //!
-   TBranch        *b_AODCaloJetSumHitsInFrontOfVert;   //!
-   TBranch        *b_AODCaloJetSumMissHitsAfterVert;   //!
-   TBranch        *b_AODCaloJetHitsInFrontOfVertPerTrack;   //!
-   TBranch        *b_AODCaloJetMissHitsAfterVertPerTrack;   //!
-   TBranch        *b_AODCaloJetAvfDistToPV;   //!
-   TBranch        *b_AODCaloJetAvfVertexDeltaZtoPV;   //!
-   TBranch        *b_AODCaloJetAvfVertexDeltaZtoPV2;   //!
-   TBranch        *b_AODnPFJet;   //!
-   TBranch        *b_AODPFJetPt;   //!
-   TBranch        *b_AODPFJetEta;   //!
-   TBranch        *b_AODPFJetPhi;   //!
-   TBranch        *b_AODPFJetAlphaMax;   //!
-   TBranch        *b_AODPFJetAlphaMax2;   //!
-   TBranch        *b_AODPFJetAlphaMaxPrime;   //!
-   TBranch        *b_AODPFJetAlphaMaxPrime2;   //!
-   TBranch        *b_AODPFJetBeta;   //!
-   TBranch        *b_AODPFJetBeta2;   //!
-   TBranch        *b_AODPFJetSumIP;   //!
-   TBranch        *b_AODPFJetSumIPSig;   //!
-   TBranch        *b_AODPFJetMedianLog10IPSig;   //!
-   TBranch        *b_AODPFJetTrackAngle;   //!
-   TBranch        *b_AODPFJetLogTrackAngle;   //!
-   TBranch        *b_AODPFJetMedianLog10TrackAngle;   //!
-   TBranch        *b_AODPFJetTotalTrackAngle;   //!
-   TBranch        *b_AODnPFchsJet;   //!
-   TBranch        *b_AODPFchsJetPt;   //!
-   TBranch        *b_AODPFchsJetEta;   //!
-   TBranch        *b_AODPFchsJetPhi;   //!
-   TBranch        *b_AODPFchsJetAlphaMax;   //!
-   TBranch        *b_AODPFchsJetAlphaMax2;   //!
-   TBranch        *b_AODPFchsJetAlphaMaxPrime;   //!
-   TBranch        *b_AODPFchsJetAlphaMaxPrime2;   //!
-   TBranch        *b_AODPFchsJetBeta;   //!
-   TBranch        *b_AODPFchsJetBeta2;   //!
-   TBranch        *b_AODPFchsJetSumIP;   //!
-   TBranch        *b_AODPFchsJetSumIPSig;   //!
-   TBranch        *b_AODPFchsJetMedianLog10IPSig;   //!
-   TBranch        *b_AODPFchsJetTrackAngle;   //!
-   TBranch        *b_AODPFchsJetLogTrackAngle;   //!
-   TBranch        *b_AODPFchsJetMedianLog10TrackAngle;   //!
-   TBranch        *b_AODPFchsJetTotalTrackAngle;   //!
    TBranch        *b_genMET;   //!
    TBranch        *b_genMETPhi;   //!
    TBranch        *b_metFilters;   //!
