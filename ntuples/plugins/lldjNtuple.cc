@@ -99,6 +99,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   branchesAODEvent(tree_);
   branchesGenPart(tree_);
   branchesAODJets(tree_);
+  branchesAODMuons(tree_);
  }
 
 }
@@ -145,6 +146,8 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillAODEvent(e, es);
   if (!e.isRealData()) fillGenPart(e);
   fillAODJets(e, es);
+  //fillAODMuons(e, vtx); //muons use vtx for isolation
+  fillAODMuons(e); //muons use vtx for isolation
  }
 
  hEvents_->Fill(1.);

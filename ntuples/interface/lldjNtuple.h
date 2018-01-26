@@ -69,6 +69,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesPhotons    (TTree*);
   void branchesElectrons  (TTree*);
   void branchesMuons      (TTree*);
+  void branchesAODMuons   (TTree*);
   void branchesJets       (TTree*);
   void branchesAODJets    (TTree*);
   void branchesTrigger    (TTree*);
@@ -80,6 +81,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
   void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillMuons      (const edm::Event&, const reco::Vertex);
+  //void fillAODMuons   (const edm::Event&, const reco::Vertex);
+  void fillAODMuons   (const edm::Event&);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillAODJets    (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
