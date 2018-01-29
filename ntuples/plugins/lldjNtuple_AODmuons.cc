@@ -89,7 +89,7 @@ void lldjNtuple::fillAODMuons(const edm::Event& e) {
  AOD_muPFdBetaIsolation_            .clear() ; 
 
  edm::Handle<edm::View<pat::Muon> > muonHandle;
- e.getByToken(muonCollection_, muonHandle);
+ e.getByToken(muonAODCollection_, muonHandle);
 
  if (!muonHandle.isValid()) {
    edm::LogWarning("lldjNtuple") << "no pat::Muons in event";

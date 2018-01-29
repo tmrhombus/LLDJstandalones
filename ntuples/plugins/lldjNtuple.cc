@@ -57,6 +57,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   // muons
   muonCollection_          = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));
+  muonAODCollection_          = consumes<View<pat::Muon> >           (ps.getParameter<InputTag>("muonAODSrc"));
 
   // photons
   photonCollection_        = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonSrc"));

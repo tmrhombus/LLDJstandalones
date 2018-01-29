@@ -160,6 +160,7 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // muons
   edm::EDGetTokenT<edm::View<pat::Muon> >          muonCollection_;
+  edm::EDGetTokenT<edm::View<pat::Muon> >          muonAODCollection_;
 
   // photons
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;

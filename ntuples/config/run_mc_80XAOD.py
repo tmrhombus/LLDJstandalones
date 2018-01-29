@@ -12,7 +12,7 @@ process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 # input files
 process.source = cms.Source('PoolSource',
@@ -110,8 +110,8 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  BadPFMuonFilter           = cms.InputTag('BadPFMuonFilter'),
  pfMETLabel                = cms.InputTag('slimmedMETs'),
 
- #muonSrc                   = cms.InputTag('slimmedMuons'),
- muonSrc                   = cms.InputTag('selectedPatMuons'),
+ muonSrc                   = cms.InputTag('slimmedMuons'),
+ muonAODSrc                = cms.InputTag('selectedPatMuons'),
 
  photonSrc                 = cms.InputTag('selectedPhotons','','LLDJ'),
  phoLooseIdMap             = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose'),
