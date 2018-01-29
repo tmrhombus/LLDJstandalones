@@ -89,6 +89,9 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillGenPart    (const edm::Event&);
   void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
 
+  bool isMediumMuonBCDEF(const reco::Muon & recoMu);
+  bool isMediumMuonGH(const reco::Muon & recoMu);
+
   bool doAOD_     ; 
   bool doMiniAOD_ ; 
 
