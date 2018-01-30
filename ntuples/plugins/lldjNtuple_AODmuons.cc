@@ -18,23 +18,7 @@ vector<bool>     AOD_muPassLooseID_                   ;
 vector<bool>     AOD_muPassMediumBCDEFID_             ;
 vector<bool>     AOD_muPassMediumGHID_                ;
 vector<bool>     AOD_muPassTightID_                   ;
-vector<float>    AOD_muPFdBetaIsolation_               ; 
-//vector<UShort_t> AOD_muIDbit_                         ; 
-//vector<bool>     AOD_muPassLooseID_                   ; 
-//vector<bool>     AOD_muPassHipID_                     ; 
-//vector<bool>     AOD_muPassTighID_                    ; 
-//vector<bool>     AOD_muPassSoftID_                   ; 
-//vector<bool>     AOD_muPassHighPtID_                 ; 
-//vector<float>    AOD_muPVIndex_                      ; 
-//vector<int>     AOD_muNumberOfMissingInnerHits_       ; 
-//vector<int>     AOD_muNumberOfMissingMiddleHits_      ; 
-//vector<int>     AOD_muNumberOfMissingOuterHits_       ; 
-//vector<int>     AOD_muNumberOfValidHits_              ; 
-//vector<float>   AOD_muNormalizedChi2_                 ; 
-//vector<int>     AOD_muNumberOfMatchedStations_        ; 
-//vector<int>     AOD_muNumberOfValidPixelHits_         ; 
-//vector<int>     AOD_muTrackerLayersWithMeasurement_   ; 
-//vector<int>     AOD_muIsTightMuonWRTVtx_              ; 
+vector<float>    AOD_muPFdBetaIsolation_              ; 
 
 
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideMuonIdRun2#Short_Term_Instructions_for_Mori
@@ -49,6 +33,7 @@ bool lldjNtuple::isMediumMuonBCDEF(const reco::Muon & recoMu)
     muon::segmentCompatibility(recoMu) > (goodGlob ? 0.303 : 0.451); 
   return isMedium; 
 }
+
 
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideMuonIdRun2#Short_Term_Instructions_for_Mori
 bool lldjNtuple::isMediumMuonGH(const reco::Muon & recoMu) 
@@ -79,20 +64,6 @@ void lldjNtuple::branchesAODMuons(TTree* tree) {
  tree->Branch("AOD_muPassMediumGHID",               &AOD_muPassMediumGHID_               ) ; 
  tree->Branch("AOD_muPassTightID",                  &AOD_muPassTightID_                  ) ; 
  tree->Branch("AOD_muPFdBetaIsolation",             &AOD_muPFdBetaIsolation_             ) ; 
- //tree->Branch("AOD_muIDbit",                        &AOD_muIDbit_                        ) ; 
- //tree->Branch("AOD_muPassLooseID",                  &AOD_muPassLooseID_                  ) ; 
- //tree->Branch("AOD_muPassHipID",                    &AOD_muPassHipID_                    ) ; 
- //tree->Branch("AOD_muPassTighID",                   &AOD_muPassTighID_                   ) ; 
- //tree->Branch("AOD_muPVIndex",                      &AOD_muPVIndex_                      ) ; 
- //tree->Branch("AOD_muNumberOfMissingInnerHits",     &AOD_muNumberOfMissingInnerHits_     ) ; 
- //tree->Branch("AOD_muNumberOfMissingMiddleHits",    &AOD_muNumberOfMissingMiddleHits_    ) ; 
- //tree->Branch("AOD_muNumberOfMissingOuterHits",     &AOD_muNumberOfMissingOuterHits_     ) ; 
- //tree->Branch("AOD_muNumberOfValidHits",            &AOD_muNumberOfValidHits_            ) ; 
- //tree->Branch("AOD_muNormalizedChi2",               &AOD_muNormalizedChi2_               ) ; 
- //tree->Branch("AOD_muNumberOfMatchedStations",      &AOD_muNumberOfMatchedStations_      ) ; 
- //tree->Branch("AOD_muNumberOfValidPixelHits",       &AOD_muNumberOfValidPixelHits_       ) ; 
- //tree->Branch("AOD_muTrackerLayersWithMeasurement", &AOD_muTrackerLayersWithMeasurement_ ) ; 
- //tree->Branch("AOD_muIsTightMuonWRTVtx",            &AOD_muIsTightMuonWRTVtx_            ) ; 
 }
 
 
@@ -113,21 +84,6 @@ void lldjNtuple::fillAODMuons(const edm::Event& e, reco::Vertex vtx) {
  AOD_muPassMediumGHID_              .clear() ;
  AOD_muPassTightID_                 .clear() ;
  AOD_muPFdBetaIsolation_            .clear() ; 
- //AOD_muIDbit_                       .clear() ; 
- //AOD_muPassLooseID_                 .clear() ; 
- //AOD_muPassHipID_                   .clear() ; 
- //AOD_muPassTighID_                  .clear() ; 
- //AOD_muPVIndex_                     .clear() ; 
- //AOD_muNumberOfMissingInnerHits_    .clear() ; 
- //AOD_muNumberOfMissingMiddleHits_   .clear() ; 
- //AOD_muNumberOfMissingOuterHits_    .clear() ; 
- //AOD_muNumberOfValidHits_           .clear() ; 
- //AOD_muNormalizedChi2_              .clear() ; 
- //AOD_muNumberOfMatchedStations_     .clear() ; 
- //AOD_muNumberOfValidPixelHits_      .clear() ; 
- //AOD_muTrackerLayersWithMeasurement_.clear() ; 
- //AOD_muIsTightMuonWRTVtx_           .clear() ; 
-
 
  edm::Handle<edm::View<pat::Muon> > muonHandle;
  e.getByToken(muonAODCollection_, muonHandle);
@@ -136,7 +92,6 @@ void lldjNtuple::fillAODMuons(const edm::Event& e, reco::Vertex vtx) {
    edm::LogWarning("lldjNtuple") << " missing AOD muon collection";
   return;
  }
-
 
  for (edm::View<pat::Muon>::const_iterator iMu = muonHandle->begin(); iMu != muonHandle->end(); ++iMu) {
 
@@ -174,48 +129,6 @@ void lldjNtuple::fillAODMuons(const edm::Event& e, reco::Vertex vtx) {
   Float_t muPFPUIso      = iMu->pfIsolationR04().sumPUPt            ;
   Float_t pfdBetaIso     = ( muPFChIso + max(0.0,muPFNeuIso + muPFPhoIso - 0.5*muPFPUIso ) ) / pt ;
   AOD_muPFdBetaIsolation_.push_back( pfdBetaIso     ) ;   
-
-
-  //if( !recoMu.innerTrack().isNull() ){
-  // AOD_muNumberOfMissingInnerHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_INNER_HITS) ) ; 
-  // AOD_muNumberOfMissingMiddleHits_   .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::TRACK_HITS        ) ) ; 
-  // AOD_muNumberOfMissingOuterHits_    .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::MISSING_OUTER_HITS) ) ; 
-  // AOD_muNumberOfValidPixelHits_      .push_back( recoMu.innerTrack ()->hitPattern ().numberOfValidPixelHits       ()   ) ; 
-  // AOD_muTrackerLayersWithMeasurement_.push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithMeasurement ()   ) ; 
-  //}
-  //muNumberOfValidHits_           .push_back( recoMu.innerTrack ()->hitPattern ().trackerLayersWithoutMeasurement (reco::HitPattern::)              ) ; 
-  //muNormalizedChi2_              .push_back( recoMu.globalTrack().normalizedChi2 ()   ) ; 
-
-  //bool goodGlob = iMu->isGlobalMuon() && 
-  //                iMu->globalTrack()->normalizedChi2() < 3 && 
-  //                iMu->combinedQuality().chi2LocalPosition < 12 && 
-  //                iMu->combinedQuality().trkKink < 20; 
-  //bool isMedium = muon::isLooseMuon(recoMu) && 
-  //                iMu->innerTrack()->validFraction() > 0.49 && 
-  //                muon::segmentCompatibility(recoMu) > (goodGlob ? 0.303 : 0.451); 
-
-  
-  // AOD_muD0_    .push_back(iMu->muonBestTrack()->dxy(pv));
-  // AOD_muDz_    .push_back(iMu->muonBestTrack()->dz(pv));
-  // AOD_muSIP_   .push_back(fabs(iMu->dB(pat::Muon::PV3D))/iMu->edB(pat::Muon::PV3D));
-
-  //UShort_t tmpmuIDbit = 0;
-  //if (iMu->isLooseMuon())     setbit(tmpmuIDbit, 0);
-  //if (iMu->isMediumMuon())    setbit(tmpmuIDbit, 1);
-  ////if (iMu->isTightMuon(vtx))  setbit(tmpmuIDbit, 2);
-  ////if (iMu->isSoftMuon(vtx))   setbit(tmpmuIDbit, 3);
-  ////if (iMu->isHighPtMuon(vtx)) setbit(tmpmuIDbit, 4);
-  //AOD_muIDbit_.push_back(tmpmuIDbit);
-
-  //AOD_muPassHipID_ .push_back( isMedium )   ;
-
-  //AOD_muIsTightMuonWRTVtx_           .push_back(iMu->  isTightMuonWRTVtx ()  ) ; 
-
-//  const pat::PackedCandidate &ppfMu = dynamic_cast<const pat::PackedCandidate &>(*iMu);
-//
-//  if (!ppfMu.vertexRef().isNull() && ppfMu.vertexRef().isAvailable()){
-//   AOD_muPVIndex_ .push_back(ppfMu.vertexRef().index());
-//  }
 
  }//End muon collection loop
 
