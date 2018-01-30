@@ -11,7 +11,7 @@ process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )  ## number of events -1 does all
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 # input files

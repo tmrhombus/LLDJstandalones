@@ -35,6 +35,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   rhoCentralLabel_         = consumes<double>                        (ps.getParameter<InputTag>("rhoCentralLabel"));
   puCollection_            = consumes<vector<PileupSummaryInfo> >    (ps.getParameter<InputTag>("pileupCollection"));
   vtxLabel_                = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxLabel"));
+  AODVertexLabel_          = consumes<edm::View<reco::Vertex> >      (ps.getParameter<InputTag>("AODVertexSrc"));
   trgResultsLabel_         = consumes<edm::TriggerResults>           (ps.getParameter<InputTag>("triggerResults"));
   trgResultsProcess_       =                                          ps.getParameter<InputTag>("triggerResults").process();
 
@@ -46,7 +47,6 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   AODak4CaloJetsLabel_     = consumes<View<reco::CaloJet> >          (ps.getParameter<InputTag>("AODak4CaloJetsSrc"));  
   AODak4PFJetsLabel_       = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsSrc"));    
   AODak4PFJetsCHSLabel_    = consumes<View<reco::PFJet>   >          (ps.getParameter<InputTag>("AODak4PFJetsCHSSrc")); 
-  AODVertexLabel_          = consumes<edm::View<reco::Vertex> >      (ps.getParameter<InputTag>("AODVertexSrc"));
   AODTrackLabel_           = consumes<edm::View<reco::Track> >       (ps.getParameter<InputTag>("AODTrackSrc"));
 
   // met
@@ -129,7 +129,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   for (vector<reco::Vertex>::const_iterator v = vtxHandle->begin(); v != vtxHandle->end(); ++v) {
     // replace isFake() for miniAOD since it requires tracks while miniAOD vertices don't have tracks:
     // Vertex.h: bool isFake() const {return (chi2_==0 && ndof_==0 && tracks_.empty());}
-    bool isFake = (v->chi2() == 0 && v->ndof() == 0); 
+    bool isFake = -(v->chi2() == 0 && v->ndof() == 0); 
  
     if (!isFake) {
       pv.SetXYZ(v->x(), v->y(), v->z());
@@ -147,8 +147,19 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillAODEvent(e, es);
   if (!e.isRealData()) fillGenPart(e);
   fillAODJets(e, es);
-  //fillAODMuons(e, vtx); //muons use vtx for isolation
-  fillAODMuons(e); //muons use vtx for isolation
+
+  //Vertex for Muon 
+  edm::Handle<edm::View<reco::Vertex> > vtxHandle;
+  e.getByToken(AODVertexLabel_, vtxHandle);
+  reco::Vertex vtx;
+  for (edm::View<reco::Vertex>::const_iterator v = vtxHandle->begin(); v != vtxHandle->end(); ++v) {
+    if (!v->isFake()) {
+      vtx = *v; 
+      break;
+    }   
+  }
+  fillAODMuons(e, vtx); //muons use vtx for isolation
+
  }
 
  hEvents_->Fill(1.);

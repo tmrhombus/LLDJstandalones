@@ -81,8 +81,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
   void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillMuons      (const edm::Event&, const reco::Vertex);
-  //void fillAODMuons   (const edm::Event&, const reco::Vertex);
-  void fillAODMuons   (const edm::Event&);
+  void fillAODMuons   (const edm::Event&, const reco::Vertex);
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillAODJets    (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
