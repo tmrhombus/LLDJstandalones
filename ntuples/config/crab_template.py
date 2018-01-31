@@ -29,6 +29,7 @@ if __name__ == '__main__':
     def submit(config):
         try:
             crabCommand('submit', config = config)
+            #crabCommand('submit', config = config, dryrun=True)
         except HTTPException, hte:
             print hte.headers
 

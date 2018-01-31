@@ -418,6 +418,7 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  pfMETLabel                = cms.InputTag('slimmedMETsMuEGClean', '', 'LLDJ'),
 
  muonSrc                   = cms.InputTag('slimmedMuons'),
+ muonAODSrc                = cms.InputTag('selectedPatMuons'),
 
  photonSrc                 = cms.InputTag('selectedPhotons','','LLDJ'),
  phoLooseIdMap             = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-loose"),
