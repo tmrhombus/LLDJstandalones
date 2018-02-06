@@ -282,7 +282,7 @@ void lldjNtuple::branchesAODJets(TTree* tree) {
 //fills slimmedJets .clear() to empty vector of old data
 void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
 
- bool dodebug = false;
+ // bool dodebug = false;
  // cleanup from previous execution
 
  AODnCaloJet_=0;
@@ -375,8 +375,8 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
  AODPFchsJetMedianLog10TrackAngle_.clear();
  AODPFchsJetTotalTrackAngle_.clear();
  
- e.getByToken(rhoLabel_, rhoHandle);
- float rho = *(rhoHandle.product());
+ //e.getByToken(rhoLabel_, rhoHandle);
+ //float rho = *(rhoHandle.product());
  
 // e.getByToken(vtxLabel_, vtxHandle);
 // if (!vtxHandle.isValid()) edm::LogWarning("lldjNtuple") << "Primary vertices info not unavailable";
@@ -678,7 +678,7 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
   float pfjetNHF                 = iJet->neutralHadronEnergyFraction();
   float pfjetNEMF                = iJet->neutralEmEnergyFraction();
   float pfjetCHF                 = iJet->chargedHadronEnergyFraction();
-  float pfjetMUF                 = iJet->muonEnergyFraction();
+  //float pfjetMUF                 = iJet->muonEnergyFraction();
   float pfjetCEMF                = iJet->chargedEmEnergyFraction();
   float pfjetNumConst            = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
   float pfjetNumNeutralParticle  = iJet->neutralMultiplicity();
@@ -802,7 +802,7 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
   float pfchsjetNHF                 = iJet->neutralHadronEnergyFraction();
   float pfchsjetNEMF                = iJet->neutralEmEnergyFraction();
   float pfchsjetCHF                 = iJet->chargedHadronEnergyFraction();
-  float pfchsjetMUF                 = iJet->muonEnergyFraction();
+  //float pfchsjetMUF                 = iJet->muonEnergyFraction();
   float pfchsjetCEMF                = iJet->chargedEmEnergyFraction();
   float pfchsjetNumConst            = iJet->chargedMultiplicity()+iJet->neutralMultiplicity();
   float pfchsjetNumNeutralParticle  = iJet->neutralMultiplicity();
