@@ -90,6 +90,10 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 
+ AODTriggerInputTag           = cms.InputTag("TriggerResults","","HLT"),
+ AODTriggerEventInputTag      = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
+
+
  beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
 
  ak4JetSrc                 = cms.InputTag('slimmedJets'),
