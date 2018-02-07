@@ -18,7 +18,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 # input files
 process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
-         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
+          'file:data.root'
+#         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
  ),
 )
 
@@ -40,6 +41,10 @@ process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
+
+# pat for muons
+process.load('PhysicsTools.PatAlgos.patSequences_cff')
+
 
 ###########################################################################################
 ## Declare this is data (is this necessary?)
@@ -88,6 +93,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 
+ AODTriggerInputTag           = cms.InputTag("TriggerResults","","HLT"),
+ AODTriggerEventInputTag      = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
+
  beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
 
  ak4JetSrc                 = cms.InputTag('slimmedJets'),
@@ -130,6 +138,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
 #builds Ntuple
 process.p = cms.Path(
+    process.particleFlowPtrs *
+    process.patCandidates *
+    process.selectedPatCandidates *
     process.lldjNtuple
     )
 
