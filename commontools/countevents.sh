@@ -93,15 +93,12 @@ xcWG="405.271"
 xcZG="117.864"
 #Ref: ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
 
-xcZH_HToBB_ZToLL="1"                 
-xcggZH_HToBB_ZToLL="1"               
-#Daniel will update this
-
+xcZH_HToBB_ZToLL="0.044333"
+xcggZH_HToBB_ZToLL="0.0071462"
 xcggZH_HToSSTobbbb="0.0024783"      
 xcZH_HToSSTobbbb="0.015374718"      
 #https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt13TeV#ZH_Process
-#BR(HToSSTobbbb)~20%, BR(ZToll)~10.099%
-
+#BR(HToSSTobbbb)~20%, BR(ZToll)~10.099%, BR(HToBB)~0.5767
 
 xcWJetsToLNu="61526.7"   
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
