@@ -51,6 +51,10 @@ xcWW="118.7"
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeVInclusive
 #Old value: xcWW="10.32"      
 
+xcZZ="16.523"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+#Old value: xcZZ="63.0"
+
 xcWZ="47.13"                  
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
 #Old value: xcWZ="118.7"                  
