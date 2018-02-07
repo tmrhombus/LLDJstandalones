@@ -73,7 +73,7 @@ xcWZToLNu2QorQQ2L="9.82423165827"
 xcZZToNuNuQQ="4.04"
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
 
-xcZZToLLQQ="93.22"
+xcZZToLLQQ="3.22"
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
 
 xcZZToLLNuNu="0.5644"
