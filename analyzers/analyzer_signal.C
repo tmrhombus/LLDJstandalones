@@ -1075,7 +1075,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetMedianLog10IPSig               [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10IPSig               , "AODCaloJetMedianLog10IPSig              ", 30, -3, 3 ); 
     h_AODCaloJetTrackAngle                     [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetTrackAngle                     , "AODCaloJetTrackAngle                    ", 30, -3, 3 ); 
     h_AODCaloJetLogTrackAngle                  [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetLogTrackAngle                  , "AODCaloJetLogTrackAngle                 ", 30, -3, 3 ); 
-    h_AODCaloJetMedianLog10TrackAngle          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10TrackAngle          , "AODCaloJetMedianLog10TrackAngle         ", 30, -3, 3 ); 
+    h_AODCaloJetMedianLog10TrackAngle          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10TrackAngle          , "AODCaloJetMedianLog10TrackAngle         ", 30, -5, 1 ); 
     h_AODCaloJetTotalTrackAngle                [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetTotalTrackAngle                , "AODCaloJetTotalTrackAngle               ", 30, -3, 3 ); 
     h_AODCaloJetAvfVx                          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVx                          , "AODCaloJetAvfVx                         ", 30, -3, 3 ); 
     h_AODCaloJetAvfVy                          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVy                          , "AODCaloJetAvfVy                         ", 30, -3, 3 ); 

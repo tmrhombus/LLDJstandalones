@@ -1,9 +1,9 @@
 ///can do variable cuts or specified cuts
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString lifetime){
 
-bool variable_cut = true;
-bool plot         = true; //plots scanning result
-TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/29_1_2018_tagger/"+lifetime;
+bool variable_cut = false;
+bool plot         = false; //plots scanning result
+TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/test/"+lifetime;
 
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
@@ -289,15 +289,17 @@ if(plot){
 else{
 
 float tags, ntDY, ntTTL_T, ntTTL_Tbar, ntWJ;
+//float nt
 float num_sig = 0.0;
 float num_bkg = 0.0;
 
-//loop over sig files
 TH1F* h_ntags      = new TH1F("h_ntags", "h_ntags", 7, -0.5, 6.5);
 TH1F* h_ntDY       = new TH1F("h_ntDY", "h_ntDY", 7, -0.5, 6.5);
 TH1F* h_ntTTL_T    = new TH1F("h_ntTTL_T", "h_ntTTL_T", 7, -0.5, 6.5);
 TH1F* h_ntTTL_Tbar = new TH1F("h_ntTTL_Tbar", "h_ntTTL_Tbar", 7, -0.5, 6.5);
 TH1F* h_ntWJ       = new TH1F("h_ntWJ", "h_ntWJ", 7, -0.5, 6.5);
+std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ};
+//loop over sig files
 for(int jj = 0; jj <SigFileList.size(); jj++){
 TFile file(SigFileList[jj]);
 			if(prnt)cout<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
@@ -381,7 +383,7 @@ if(prnt)cout<<"*****************************************************************
 }
 }//End Loop over bkg files
 cout <<"Num_sig: "<<num_sig<<"         Num_bkg: " <<num_bkg<<endl;
-
+if(plot){
   //canvas stuff
   //Bool_t dolog = kFALSE;
   Bool_t dolog = kTRUE;
@@ -431,7 +433,6 @@ cout <<"Num_sig: "<<num_sig<<"         Num_bkg: " <<num_bkg<<endl;
   h_ntags      ->SetLineColor(1);
   THStack *hs = new THStack("hs","Number of tags");
   
-  std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ};
   std::sort(v.begin(), v.end(),
               [](TH1F *a, TH1F *b) { return a->Integral() < b->Integral(); });
   //hs.Add(h_ntags);
@@ -480,7 +481,7 @@ cout <<"Num_sig: "<<num_sig<<"         Num_bkg: " <<num_bkg<<endl;
   gPad->RedrawAxis();
   
   canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
-  //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
+} //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
 }//bkg non-var
 
 }
