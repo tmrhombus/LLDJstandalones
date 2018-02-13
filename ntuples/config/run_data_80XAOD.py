@@ -5,14 +5,14 @@ import FWCore.ParameterSet.Config as cms
 
 # this is the process run by cmsRun
 process = cms.Process('LLDJ')
-#process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #process.Tracer = cms.Service('Tracer')
 
 # input files
@@ -42,20 +42,17 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 
+# pat for trigger
+process.load( 'PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff' )
+
 # pat for muons
 process.load('PhysicsTools.PatAlgos.patSequences_cff')
 
 
-###########################################################################################
-## Declare this is data (is this necessary?)
-## 
-process.load( 'PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff' )
-process.load( 'PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff' )
-
 from PhysicsTools.PatAlgos.tools.coreTools import *
-runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
+runOnData( process, names=['All'], outputModules = [])
 
-# For AOD
+# For AOD Track variables
 process.MaterialPropagator = cms.ESProducer('PropagatorWithMaterialESProducer',
     ComponentName = cms.string('PropagatorWithMaterial'),
     Mass = cms.double(0.105),
@@ -136,11 +133,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
 )
 
+
 #builds Ntuple
 process.p = cms.Path(
-    process.particleFlowPtrs *
-    process.patCandidates *
-    process.selectedPatCandidates *
     process.lldjNtuple
     )
 
