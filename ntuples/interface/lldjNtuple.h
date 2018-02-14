@@ -13,6 +13,8 @@
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
@@ -61,6 +63,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ParameterSet lldj_pset_;
 
   //   virtual void beginJob() {};
+  virtual void beginRun(edm::Run const &, edm::EventSetup const&);//for trigger
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
   
@@ -73,6 +76,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesJets       (TTree*);
   void branchesAODJets    (TTree*);
   void branchesTrigger    (TTree*);
+  void branchesAODTrigger    (TTree*);
   void branchesGenPart    (TTree*);
   void branchesAODEvent   (TTree*);
 
@@ -85,6 +89,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillJets       (const edm::Event&, const edm::EventSetup&);
   void fillAODJets    (const edm::Event&, const edm::EventSetup&);
   void fillTrigger    (const edm::Event&, const edm::EventSetup&);
+  void fillAODTrigger    (const edm::Event&, const edm::EventSetup&);
   void fillGenPart    (const edm::Event&);
   void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
 
@@ -181,6 +186,15 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
+  edm::InputTag AODTriggerLabel_;
+  edm::EDGetTokenT<edm::TriggerResults> AODTriggerToken_;
+  edm::InputTag AODTriggerEventLabel_;
+  edm::EDGetTokenT<trigger::TriggerEvent> AODTriggerEventToken_;
+  edm::Handle<edm::TriggerResults> AODTriggerHandle_;
+  edm::Handle<trigger::TriggerEvent> AODTriggerEventHandle_;
+  HLTConfigProvider hltConfig_;
+  HLTPrescaleProvider hltPrescale_;
+
 
   //gen
   edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;

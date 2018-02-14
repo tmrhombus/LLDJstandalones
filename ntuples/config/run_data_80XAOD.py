@@ -5,20 +5,21 @@ import FWCore.ParameterSet.Config as cms
 
 # this is the process run by cmsRun
 process = cms.Process('LLDJ')
-#process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #process.Tracer = cms.Service('Tracer')
 
 # input files
 process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
-         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
+          'file:data.root'
+#         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
  ),
 )
 
@@ -41,16 +42,17 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '80X_dataRun2_2016SeptRepro_v7'
 
-###########################################################################################
-## Declare this is data (is this necessary?)
-## 
-process.load( 'PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff' )
+# pat for trigger
 process.load( 'PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff' )
 
-from PhysicsTools.PatAlgos.tools.coreTools import *
-runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
+# pat for muons
+process.load('PhysicsTools.PatAlgos.patSequences_cff')
 
-# For AOD
+
+from PhysicsTools.PatAlgos.tools.coreTools import *
+runOnData( process, names=['All'], outputModules = [])
+
+# For AOD Track variables
 process.MaterialPropagator = cms.ESProducer('PropagatorWithMaterialESProducer',
     ComponentName = cms.string('PropagatorWithMaterial'),
     Mass = cms.double(0.105),
@@ -87,6 +89,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
+
+ AODTriggerInputTag           = cms.InputTag("TriggerResults","","HLT"),
+ AODTriggerEventInputTag      = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
 
  beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
 
@@ -127,6 +132,7 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  objects = cms.InputTag("selectedPatTrigger"),
 
 )
+
 
 #builds Ntuple
 process.p = cms.Path(
