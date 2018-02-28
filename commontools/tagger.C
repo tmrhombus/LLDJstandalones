@@ -2,7 +2,7 @@
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString lifetime){
 
 bool variable_cut = false;
-bool plot         = false; //plots scanning result
+bool plot         = true; //plots scanning result
 TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/test/"+lifetime;
 
 //1=IP, 2=TA, 3/default=Alpha
@@ -16,12 +16,45 @@ else            {var = "AlphaMax";}
 
 vector<TString> SigFileList;
 vector<TString> BkgFileList;
-SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-BkgFileList.push_back("../roots/tagroots/DY50_OPT.root");
-BkgFileList.push_back("../roots/tagroots/TTtoLfromT_OPT.root");
-BkgFileList.push_back("../roots/tagroots/TTtoLfromTbar_OPT.root");
-BkgFileList.push_back("../roots/tagroots/WJetsToLNu_OPT.root");
+//Big-hitters
+//SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
+SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
+SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+BkgFileList.push_back("../roots/tagroots/DY50_OPT.root"); //kk=0
+BkgFileList.push_back("../roots/tagroots/TTtoLfromT_OPT.root"); //kk=1
+BkgFileList.push_back("../roots/tagroots/TTtoLfromTbar_OPT.root"); //kk=2
+BkgFileList.push_back("../roots/tagroots/WJetsToLNu_OPT.root"); //kk=3
+BkgFileList.push_back("../roots/tagroots/TTtoLL_OPT.root"); //kk=4
+//little-guys
+//single-top
+BkgFileList.push_back("../roots/tagroots/ST_s_OPT.root"); //kk=5
+BkgFileList.push_back("../roots/tagroots/ST_tW_OPT.root"); //kk=6
+BkgFileList.push_back("../roots/tagroots/ST_t_OPT.root"); //kk=7
+BkgFileList.push_back("../roots/tagroots/STbar_tW_OPT.root"); //kk=8
+BkgFileList.push_back("../roots/tagroots/STbar_t_OPT.root"); //kk=9
+//diboson
+BkgFileList.push_back("../roots/tagroots/WG_OPT.root"); //kk=10
+//BkgFileList.push_back("../roots/tagroots/WWToLNuLNu_OPT.root");
+BkgFileList.push_back("../roots/tagroots/WWToLNuQQ_OPT.root"); //kk=11
+BkgFileList.push_back("../roots/tagroots/WZTo3LNu_OPT.root"); //kk=12
+BkgFileList.push_back("../roots/tagroots/WZToL3Nu_OPT.root"); //kk=13
+BkgFileList.push_back("../roots/tagroots/WZToLNu2QorQQ2L_OPT.root"); //kk=14
+BkgFileList.push_back("../roots/tagroots/ZG_OPT.root"); //kk=15
+BkgFileList.push_back("../roots/tagroots/ZH_HToBB_ZToLL_OPT.root"); //kk=16
+BkgFileList.push_back("../roots/tagroots/ZZToLLLL_OPT.root"); //kk=17
+BkgFileList.push_back("../roots/tagroots/ZZToLLNuNu_OPT.root"); //kk=18
+BkgFileList.push_back("../roots/tagroots/ZZToLLQQ_OPT.root"); //kk=19
+BkgFileList.push_back("../roots/tagroots/ZZToNuNuQQ_OPT.root"); //kk=20
+BkgFileList.push_back("../roots/tagroots/ggZH_HToBB_ZToLL_OPT.root"); //kk=21
+//control Region
+///BkgFileList.push_back("../roots/tagroots/GJets_HT100To200_OPT.root");
+///BkgFileList.push_back("../roots/tagroots/GJets_HT200To400_OPT.root");
+///BkgFileList.push_back("../roots/tagroots/GJets_HT400To600_OPT.root");
+///BkgFileList.push_back("../roots/tagroots/GJets_HT40To100_OPT.root");
+///BkgFileList.push_back("../roots/tagroots/GJets_HT600ToInf_OPT.root");
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -288,7 +321,7 @@ if(plot){
 //non variable cut
 else{
 
-float tags, ntDY, ntTTL_T, ntTTL_Tbar, ntWJ;
+float tags, ntDY, ntTTL_T, ntTTL_Tbar, ntWJ, ntTTtoLL, ntDiboson, ntST;
 //float nt
 float num_sig = 0.0;
 float num_bkg = 0.0;
@@ -298,7 +331,10 @@ TH1F* h_ntDY       = new TH1F("h_ntDY", "h_ntDY", 7, -0.5, 6.5);
 TH1F* h_ntTTL_T    = new TH1F("h_ntTTL_T", "h_ntTTL_T", 7, -0.5, 6.5);
 TH1F* h_ntTTL_Tbar = new TH1F("h_ntTTL_Tbar", "h_ntTTL_Tbar", 7, -0.5, 6.5);
 TH1F* h_ntWJ       = new TH1F("h_ntWJ", "h_ntWJ", 7, -0.5, 6.5);
-std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ};
+TH1F* h_ntTTtoLL   = new TH1F("h_ntTTtoLL", "h_ntTTtoLL", 7, -0.5, 6.5);
+TH1F* h_ntDiboson  = new TH1F("h_ntDiboson", "h_ntDiboson", 7, -0.5, 6.5);
+TH1F* h_ntST       = new TH1F("h_ntSingleTop's", "h_ntSingleTop's", 7, -0.5, 6.5);
+std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ, h_ntTTtoLL, h_ntDiboson, h_ntST};
 //loop over sig files
 for(int jj = 0; jj <SigFileList.size(); jj++){
 TFile file(SigFileList[jj]);
@@ -354,6 +390,9 @@ while (reader.Next()) {
     ntTTL_T    = 0;
     ntTTL_Tbar = 0;
     ntWJ       = 0;
+    ntTTtoLL   = 0;
+    ntDiboson  = 0;
+    ntST       = 0;
     			if(prnt)cout<<"Event: "<<Event->at(i)<< " EventWeight: " << EventWeight->at(i)<<std::endl;
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
     for (int j=0; j<TA->size(); j++){
@@ -364,7 +403,10 @@ while (reader.Next()) {
       else if   (kk==1){ntTTL_T = ntTTL_T + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_T<<endl;*/}
       else if   (kk==2){ntTTL_Tbar = ntTTL_Tbar + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_Tbar<<endl;*/}
       else if   (kk==3){ntWJ = ntWJ + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: " <<ntWJ<<endl;*/}
-      else {i=i;}
+      else if   (kk==4){ntTTtoLL = ntTTtoLL +1;}
+      else if   (kk>=10 && kk<=21){ntDiboson = ntDiboson + 1;}
+      else if   (kk>=5  && kk<=9 ){ntST = ntST +1;}
+      else      {i=i;}
       }
     }
     if(tags >=ntags){num_bkg = num_bkg + EventWeight->at(i);}
@@ -373,6 +415,9 @@ while (reader.Next()) {
     else if(kk==1)    {h_ntTTL_T   ->Fill(ntTTL_T, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
     else if(kk==2)    {h_ntTTL_Tbar->Fill(ntTTL_Tbar, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
     else if(kk==3)    {h_ntWJ      ->Fill(ntWJ, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+    else if(kk==4)    {h_ntTTtoLL  ->Fill(ntTTtoLL, EventWeight->at(i)); }
+    else if(kk>=10 && kk<=21)    {h_ntDiboson  ->Fill(ntDiboson, EventWeight->at(i)); }
+    else if(kk>=5  && kk<=9 )    {h_ntST       ->Fill(ntST,      EventWeight->at(i)); }
     else {h_ntDY->Fill(-3); h_ntTTL_T->Fill(-3); h_ntTTL_Tbar->Fill(-3); h_ntWJ->Fill(-3);if(prnt){cout <<"ErrorFile: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
   }
 if(prnt)cout<<"Event Size: "          <<Event->size()<<endl;
@@ -448,16 +493,25 @@ if(plot){
   h_ntTTL_T   ->SetFillColor(9);
   h_ntTTL_Tbar->SetFillColor(41);
   h_ntWJ      ->SetFillColor(46);
+  h_ntTTtoLL  ->SetFillColor(48);
+  h_ntDiboson ->SetFillColor(42);
+  h_ntST      ->SetFillColor(14);
   h_ntDY      ->SetLineColor(8);
   h_ntTTL_T   ->SetLineColor(9);
   h_ntTTL_Tbar->SetLineColor(41);
   h_ntWJ      ->SetLineColor(46);
+  h_ntTTtoLL  ->SetLineColor(48);
+  h_ntDiboson ->SetLineColor(42);
+  h_ntST      ->SetLineColor(14);
   h_ntDY      ->SetLineWidth(3);
   h_ntTTL_T   ->SetLineWidth(3);
   h_ntTTL_Tbar->SetLineWidth(3);
   h_ntWJ      ->SetLineWidth(3);
+  h_ntTTtoLL  ->SetLineWidth(3);
+  h_ntDiboson ->SetLineWidth(3);
+  h_ntST      ->SetLineWidth(3);
   hs->Draw("hist");
-  hs->SetMinimum(1.0);
+  hs->SetMinimum(0.001);
   h_ntags     ->Draw   ("hist same");
   hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":N tags,"+lifetime);
   title2->DrawTextNDC(0.06,0.91,"CMS");
@@ -470,11 +524,14 @@ if(plot){
   TString entries;
   entries.Form("%1.0f",h_ntags->GetEntries());
   //leg2->AddEntry(h_ntags,   entries+" entries", "l");
-  leg2->AddEntry(h_ntags,   "Signal", "l");
-  leg2->AddEntry(h_ntDY,   "DY", "l");
+  leg2->AddEntry(h_ntags,     "Signal", "l");
+  leg2->AddEntry(h_ntDY,      "DY", "l");
   leg2->AddEntry(h_ntTTL_T,   "TTL_T", "l");
-  leg2->AddEntry(h_ntTTL_Tbar,   "TTL_Tbar", "l");
-  leg2->AddEntry(h_ntWJ,   "WJ", "l");
+  leg2->AddEntry(h_ntTTL_Tbar,"TTL_Tbar", "l");
+  leg2->AddEntry(h_ntWJ,      "WJ", "l");
+  leg2->AddEntry(h_ntTTtoLL,  "TTtoLL", "l");
+  leg2->AddEntry(h_ntDiboson, "Diboson", "l");
+  leg2->AddEntry(h_ntST,      "ST", "l");
   leg2->Draw();
   //gStyle->SetOptStat(11);
   gPad->Update();

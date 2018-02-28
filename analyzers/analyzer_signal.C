@@ -115,6 +115,7 @@ void analyzer_signal::Loop(TString outfilename,
   // to make the simulation match the rate seen in data
   // = lum * cross-section / nrEvents generated
   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
+  std::cout<<event_weight<<std::endl;
   // for MC, simulated pileup is different from observed
   // in commontools/pileup we make a ratio for scaling MC
   if(isMC) event_weight *= makePUWeight();
