@@ -8,8 +8,10 @@ void setbit(UShort_t& x, UShort_t bit) {
   x |= (a << bit);
 }
 
-lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
-
+lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
+  hltPrescale_(ps,consumesCollector(),*this) 
+{
+  
   lldj_pset_ = ps;
 
   // choose AOD or miniAOD or both
@@ -76,6 +78,13 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
   triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
   triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
+  //AOD
+  AODTriggerLabel_                =                                                     ps.getParameter<InputTag>("AODTriggerInputTag");
+  AODTriggerToken_                = consumes<edm::TriggerResults>(AODTriggerLabel_);
+  AODTriggerEventLabel_           =                                                     ps.getParameter<InputTag>("AODTriggerEventInputTag");
+  AODTriggerEventToken_           = consumes<trigger::TriggerEvent>(AODTriggerEventLabel_);
+
+
 
   // gen
   genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
@@ -99,6 +108,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
  if(doAOD_){
   branchesAODEvent(tree_);
   branchesGenPart(tree_);
+  branchesAODTrigger(tree_);
   branchesAODJets(tree_);
   branchesAODMuons(tree_);
  }
@@ -106,6 +116,16 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 }
 
 lldjNtuple::~lldjNtuple() {
+}
+
+
+void lldjNtuple::beginRun(edm::Run const& run, edm::EventSetup const& eventsetup) {
+
+  bool changed(true);
+  if(hltConfig_.init(run,eventsetup,"HLT",changed)){
+  }
+  hltPrescale_.init(run,eventsetup,"HLT",changed);
+
 }
 
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
@@ -146,6 +166,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  if(doAOD_){
   fillAODEvent(e, es);
   if (!e.isRealData()) fillGenPart(e);
+  fillAODTrigger(e, es);
   fillAODJets(e, es);
 
   //Vertex for Muon 

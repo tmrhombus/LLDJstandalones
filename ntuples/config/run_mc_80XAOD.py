@@ -5,14 +5,14 @@ import FWCore.ParameterSet.Config as cms
 
 # this is the process run by cmsRun
 process = cms.Process('LLDJ')
-#process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
+process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
 process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
-process.MessageLogger.cerr.FwkReport.reportEvery = 1
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 # input files
 process.source = cms.Source('PoolSource',
@@ -45,14 +45,13 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '80X_mcRun2_asymptotic_2016_TrancheIV_v8'
 
+# pat for trigger
+process.load( 'PhysicsTools.PatAlgos.triggerLayer1.triggerProducer_cff' )
+
 # pat for muons
 process.load('PhysicsTools.PatAlgos.patSequences_cff')
 
-
-
-##########################################################################################
 # For AOD Track variables
-# 
 process.MaterialPropagator = cms.ESProducer('PropagatorWithMaterialESProducer',
     ComponentName = cms.string('PropagatorWithMaterial'),
     Mass = cms.double(0.105),
@@ -89,6 +88,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
+
+ AODTriggerInputTag           = cms.InputTag("TriggerResults","","HLT"),
+ AODTriggerEventInputTag      = cms.InputTag("hltTriggerSummaryAOD","","HLT"),
 
  beamspotLabel_            = cms.InputTag('offlineBeamSpot'),
 
@@ -130,11 +132,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
 )
 
+
 #builds Ntuple
 process.p = cms.Path(
-    process.particleFlowPtrs *
-    process.patCandidates *
-    process.selectedPatCandidates *
     process.lldjNtuple
     )
 
