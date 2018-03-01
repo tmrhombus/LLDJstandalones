@@ -70,6 +70,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void branchesGlobalEvent(TTree*);
   void branchesMET        (TTree*);
   void branchesPhotons    (TTree*);
+  void branchesAODPhotons (TTree*);
   void branchesElectrons  (TTree*);
   void branchesMuons      (TTree*);
   void branchesAODMuons   (TTree*);
@@ -83,6 +84,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
   void fillMET        (const edm::Event&, const edm::EventSetup&);
   void fillPhotons    (const edm::Event&, const edm::EventSetup&);
+  void fillAODPhotons (const edm::Event&, const edm::EventSetup&);
   void fillElectrons  (const edm::Event&, const edm::EventSetup&);
   void fillMuons      (const edm::Event&, const reco::Vertex);
   void fillAODMuons   (const edm::Event&, const reco::Vertex);
@@ -171,6 +173,7 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // photons
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;
+  edm::EDGetTokenT<edm::View<pat::Photon> >        photonAODCollection_;
 
   // photon ID decision objects and isolations
   edm::EDGetTokenT<edm::ValueMap<bool> >  phoLooseIdMapToken_;
@@ -181,6 +184,38 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<float> > phoNeutralHadronIsolationToken_; 
   edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_; 
   edm::EDGetTokenT<edm::ValueMap<float> > phoWorstChargedIsolationToken_; 
+
+  // AOD photon ID
+  edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoLooseIdMapToken_;
+  edm::InputTag AOD_phoLooseIdLabel_;
+    
+  edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoMediumIdMapToken_;
+  edm::InputTag AOD_phoMediumIdLabel_;
+    
+  edm::Handle<edm::ValueMap<bool> > tight_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoTightIdMapToken_;
+  edm::InputTag AOD_phoTightIdLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoChargedIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoChargedIsolationMapToken_;
+  edm::InputTag AOD_phoChargedIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoNeutralHadronIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoNeutralHadronIsolationMapToken_;
+  edm::InputTag AOD_phoNeutralHadronIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoPhotonIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoPhotonIsolationMapToken_;
+  edm::InputTag AOD_phoPhotonIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoWorstChargedIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoWorstChargedIsolationMapToken_;
+  edm::InputTag AOD_phoWorstChargedIsolationLabel_;
+
+
+
 
   // trigger
   edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
