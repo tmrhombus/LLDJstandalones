@@ -76,13 +76,13 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
   //AOD Photon ID
-  AOD_phoLooseIdLabel_ = ps.getParameter<edm::InputTag>("phoLooseIdMap");
-  AOD_phoMediumIdLabel_ = ps.getParameter<edm::InputTag>("phoMediumIdMap");
-  AOD_phoTightIdLabel_ = ps.getParameter<edm::InputTag>("phoTightIdMap");
-  AOD_phoChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("phoChargedIsolationMap");
-  AOD_phoNeutralHadronIsolationLabel_ = ps.getParameter<edm::InputTag>("phoNeutralHadronIsolationMap");
-  AOD_phoPhotonIsolationLabel_ = ps.getParameter<edm::InputTag>("phoPhotonIsolationMap");
-  AOD_phoWorstChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("phoWorstChargedIsolationMap");
+  AOD_phoLooseIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoLooseIdMap");
+  AOD_phoMediumIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoMediumIdMap");
+  AOD_phoTightIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoTightIdMap");
+  AOD_phoChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoChargedIsolationMap");
+  AOD_phoNeutralHadronIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoNeutralHadronIsolationMap");
+  AOD_phoPhotonIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoPhotonIsolationMap");
+  AOD_phoWorstChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoWorstChargedIsolationMap");
   //
   AOD_phoLooseIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoLooseIdLabel_);
   AOD_phoMediumIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoMediumIdLabel_);
