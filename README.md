@@ -26,7 +26,7 @@ scramv1 build -j 10;
 
 # first fork the repository to make your own workspace
 git clone https://github.com/benjaminkreis/LLDJstandalones.git;
-git checkout -b aod)pho origin/aod_pho
+git checkout -b aod_pho origin/aod_pho
 
 cd LLDJstandalones
 
