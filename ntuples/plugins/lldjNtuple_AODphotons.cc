@@ -81,34 +81,58 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
  AOD_phoMapPFNeuIso_     .clear();
  AOD_phoMapPFChWorstIso_ .clear();
 
- edm::Handle<edm::View<pat::Photon> > photonHandle;
- if(e.getByToken(photonAODCollection_, photonHandle)
-    && e.getByToken(AOD_phoLooseIdMapToken_ ,loose_id_decisions) 
-    && e.getByToken(AOD_phoMediumIdMapToken_ ,medium_id_decisions) 
-    && e.getByToken(AOD_phoTightIdMapToken_ ,tight_id_decisions) 
-    && e.getByToken(AOD_phoChargedIsolationMapToken_ ,AOD_phoChargedIsolationHandle_) 
-    && e.getByToken(AOD_phoNeutralHadronIsolationMapToken_ ,AOD_phoNeutralHadronIsolationHandle_) 
-    && e.getByToken(AOD_phoPhotonIsolationMapToken_ ,AOD_phoPhotonIsolationHandle_) 
-    && e.getByToken(AOD_phoWorstChargedIsolationMapToken_ ,AOD_phoWorstChargedIsolationHandle_)
-    )
+ //edm::Handle<edm::View<pat::Photon> > photonHandle;
+ edm::Handle<edm::View<reco::Photon> > photonHandle;
+ e.getByToken(photonAODCollection_, photonHandle);
 
  if (!photonHandle.isValid()) {
+   std::cout << "Invalid photon handle" << std::endl;
    edm::LogWarning("lldjNtuple") << "no pat::Photons in event";
    return;
- }
+ } 
+ 
+ /*
+ if(!(e.getByToken(AOD_phoLooseIdMapToken_ ,loose_id_decisions) 
+    || e.getByToken(AOD_phoMediumIdMapToken_ ,medium_id_decisions) 
+    || e.getByToken(AOD_phoTightIdMapToken_ ,tight_id_decisions) 
+    || e.getByToken(AOD_phoChargedIsolationMapToken_ ,AOD_phoChargedIsolationHandle_) 
+    || e.getByToken(AOD_phoNeutralHadronIsolationMapToken_ ,AOD_phoNeutralHadronIsolationHandle_) 
+    || e.getByToken(AOD_phoPhotonIsolationMapToken_ ,AOD_phoPhotonIsolationHandle_) 
+    || e.getByToken(AOD_phoWorstChargedIsolationMapToken_ ,AOD_phoWorstChargedIsolationHandle_)
+      )){
+   edm::LogWarning("lldjNtuple") << "Failure in ID tokens";
+   return;
+ } 
+ */
 
- int tmpcounter = 0;
+ e.getByToken(AOD_phoLooseIdMapToken_,  loose_id_decisions);
+ e.getByToken(AOD_phoMediumIdMapToken_, medium_id_decisions);
+ e.getByToken(AOD_phoTightIdMapToken_,  tight_id_decisions);
+ e.getByToken(AOD_phoChargedIsolationMapToken_,       AOD_phoChargedIsolationHandle_);
+ e.getByToken(AOD_phoNeutralHadronIsolationMapToken_, AOD_phoNeutralHadronIsolationHandle_);
+ e.getByToken(AOD_phoPhotonIsolationMapToken_,        AOD_phoPhotonIsolationHandle_);
+ e.getByToken(AOD_phoWorstChargedIsolationMapToken_,  AOD_phoWorstChargedIsolationHandle_);
+ 
+ //int tmpcounter = 0;
 
- for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
+ // for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
 
-  Float_t AOD_phoPt  = iPho->et();
-  Float_t AOD_phoEta = iPho->eta();
-  const auto pho = photonHandle->ptrAt( tmpcounter );
-  tmpcounter++;
+for (size_t i = 0; i < photonHandle->size(); ++i){
+  const auto pho = photonHandle->ptrAt(i);
+
+  std::cout << "photon loop" << std::endl;
+ 
+  Float_t AOD_phoPt  = pho->et();
+  std::cout << "photon got pt" << std::endl;
+  Float_t AOD_phoEta = pho->eta();
+  //const auto pho = photonHandle->ptrAt( tmpcounter );
+  //tmpcounter++;
 
   UShort_t tmpphoIDbit = 0;
-  
+  std::cout << "photon try loose" << std::endl;
+  //bool isPassLoose  = (*loose_id_decisions)[pho];
   bool isPassLoose  = (*loose_id_decisions)[pho];
+  std::cout << "photon got loose" << std::endl;
   if(isPassLoose) setbit(tmpphoIDbit, 0);
   
   bool isPassMedium = (*medium_id_decisions)[pho];
@@ -124,17 +148,17 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
 
   AOD_phoPt_     .push_back(AOD_phoPt);
 
-  AOD_phoEn_     .push_back(iPho->energy());
+  AOD_phoEn_     .push_back(pho->energy());
   AOD_phoEta_    .push_back(AOD_phoEta);
-  AOD_phoPhi_    .push_back(iPho->phi());
+  AOD_phoPhi_    .push_back(pho->phi());
 
-  AOD_phoSCEn_   .push_back( (*iPho).superCluster()->energy());      
-  AOD_phoSCEta_  .push_back( (*iPho).superCluster()->eta());       
-  AOD_phoSCPhi_  .push_back( (*iPho).superCluster()->phi());       
+  AOD_phoSCEn_   .push_back( (*pho).superCluster()->energy());      
+  AOD_phoSCEta_  .push_back( (*pho).superCluster()->eta());       
+  AOD_phoSCPhi_  .push_back( (*pho).superCluster()->phi());       
 
-  AOD_phoObjPFChIso_       .push_back(iPho->chargedHadronIso());
-  AOD_phoObjPFPhoIso_      .push_back(iPho->photonIso());
-  AOD_phoObjPFNeuIso_      .push_back(iPho->neutralHadronIso());
+  AOD_phoObjPFChIso_       .push_back(pho->chargedHadronIso());
+  AOD_phoObjPFPhoIso_      .push_back(pho->photonIso());
+  AOD_phoObjPFNeuIso_      .push_back(pho->neutralHadronIso());
 
   //AOD_phoMapPFChIso_     .push_back((*AOD_phoChargedIsolationHandle_)[pho]);
   //AOD_phoMapPFPhoIso_    .push_back((*AOD_phoPhotonIsolationHandle_)[pho]);

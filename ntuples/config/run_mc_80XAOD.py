@@ -137,7 +137,9 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
  phoWorstChargedIsolation  = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
 
- photonAODSrc              = cms.InputTag('selectedPatPhotons'),
+ #photonAODSrc              = cms.InputTag('selectedPatPhotons'),
+ photonAODSrc              = cms.InputTag('gedPhotons'),
+
  AOD_phoLooseIdMap  = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-loose"),
  AOD_phoMediumIdMap = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-medium"),
  AOD_phoTightIdMap  = cms.InputTag("egmPhotonIDs:cutBasedPhotonID-Spring16-V2p2-tight"),

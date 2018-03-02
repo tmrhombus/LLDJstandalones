@@ -173,8 +173,9 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // photons
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;
-  edm::EDGetTokenT<edm::View<pat::Photon> >        photonAODCollection_;
-
+  //edm::EDGetTokenT<edm::View<pat::Photon> >        photonAODCollection_;
+  edm::EDGetToken photonAODCollection_;
+  
   // photon ID decision objects and isolations
   edm::EDGetTokenT<edm::ValueMap<bool> >  phoLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> >  phoMediumIdMapToken_;
