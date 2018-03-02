@@ -120,19 +120,18 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
 for (size_t i = 0; i < photonHandle->size(); ++i){
   const auto pho = photonHandle->ptrAt(i);
 
-  std::cout << "photon loop" << std::endl;
+  //std::cout << "photon loop" << std::endl;
  
   Float_t AOD_phoPt  = pho->et();
-  std::cout << "photon got pt" << std::endl;
+  //std::cout << "photon got pt" << std::endl;
   Float_t AOD_phoEta = pho->eta();
   //const auto pho = photonHandle->ptrAt( tmpcounter );
   //tmpcounter++;
 
   UShort_t tmpphoIDbit = 0;
-  std::cout << "photon try loose" << std::endl;
-  //bool isPassLoose  = (*loose_id_decisions)[pho];
+  //std::cout << "photon try loose" << std::endl;
   bool isPassLoose  = (*loose_id_decisions)[pho];
-  std::cout << "photon got loose" << std::endl;
+  //std::cout << "photon got loose" << std::endl;
   if(isPassLoose) setbit(tmpphoIDbit, 0);
   
   bool isPassMedium = (*medium_id_decisions)[pho];
@@ -160,10 +159,10 @@ for (size_t i = 0; i < photonHandle->size(); ++i){
   AOD_phoObjPFPhoIso_      .push_back(pho->photonIso());
   AOD_phoObjPFNeuIso_      .push_back(pho->neutralHadronIso());
 
-  //AOD_phoMapPFChIso_     .push_back((*AOD_phoChargedIsolationHandle_)[pho]);
-  //AOD_phoMapPFPhoIso_    .push_back((*AOD_phoPhotonIsolationHandle_)[pho]);
-  //AOD_phoMapPFNeuIso_    .push_back((*AOD_phoNeutralHadronIsolationHandle_)[pho]);
-  //AOD_phoMapPFChWorstIso_.push_back((*AOD_phoWorstChargedIsolationHandle_)[pho]);
+  AOD_phoMapPFChIso_     .push_back((*AOD_phoChargedIsolationHandle_)[pho]);
+  AOD_phoMapPFPhoIso_    .push_back((*AOD_phoPhotonIsolationHandle_)[pho]);
+  AOD_phoMapPFNeuIso_    .push_back((*AOD_phoNeutralHadronIsolationHandle_)[pho]);
+  AOD_phoMapPFChWorstIso_.push_back((*AOD_phoWorstChargedIsolationHandle_)[pho]);
   
   ////phoIDMVA_.push_back((*mvaValues)[pho]);  
   ////phoIDbit_.push_back(tmpphoIDbit);      

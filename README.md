@@ -16,62 +16,22 @@ scram pro -n LLDJ_slc6_530_CMSSW_8_0_26_patch1 CMSSW CMSSW_8_0_26_patch1;
 cd LLDJ_slc6_530_CMSSW_8_0_26_patch1/src;
 cmsenv;
 
-# you may need to set up your git name first
-# git config --global user.github <mygithubusername>
-export CMSSW_GIT_REFERENCE=/cvmfs/cms.cern.ch/cmssw.git.daily
-git cms-init;
-
 
 ## CMSSW imports and customizations
-
-# EGamma Smearing
-git cms-merge-topic cms-egamma:EGM_gain_v1
-pushd EgammaAnalysis/ElectronTools/data
- git clone -b Moriond17_gainSwitch_unc https://github.com/ECALELFS/ScalesSmearings.git
-popd
-
-# EGamma ID
-git cms-addpkg RecoEgamma
-git cms-merge-topic ikrav:egm_id_80X_v2
 git cms-merge-topic ikrav:egm_id_80X_v3_photons
-
-# MET
-git cms-merge-topic cms-met:METRecipe_8020 -u
-git cms-merge-topic cms-met:METRecipe_80X_part2 -u
-
-# Higgs Combine Tool
-# https://www.gitbook.com/book/cms-hcomb/combine/details
-git clone https://github.com/cms-analysis/HiggsAnalysis-CombinedLimit.git HiggsAnalysis/CombinedLimit
-pushd HiggsAnalysis/CombinedLimit
- git fetch origin
- git checkout v7.0.1
-popd
 
 scramv1 build -j 10;
 
 ## LLDJstandalones Framework checkout
 
 # first fork the repository to make your own workspace
-git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
-pushd LLDJstandalones;
+git clone https://github.com/benjaminkreis/LLDJstandalones.git;
+git checkout -b aod)pho origin/aod_pho
 
- # If you want to check out a specific branch
- # git fetch origin
- # git branch -v -a # list branches available, find yours
- # git checkout -b NAMEOFBRANCH origin/NAMEOFBRANCH 
-
- # add DisplacedHiggs as upstream
- git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
-
- # this is a hack to disable autodetection of (mini)AOD for VID producers
- pushd initialization
-  bash getridofPhotonMVA.sh
- popd
-popd
+cd LLDJstandalones
 
 # compile a clean area
 scramv1 build -j 10;
-
 
 ## Every time you log in
 # set up some environment variables (bash)
