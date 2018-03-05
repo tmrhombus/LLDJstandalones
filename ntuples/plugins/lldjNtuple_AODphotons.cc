@@ -15,7 +15,7 @@ vector<float>    AOD_phoSCEta_;
 vector<float>    AOD_phoSCPhi_;
 
 vector<UShort_t> AOD_phoIDbit_;
-vector<Float_t>  AOD_phoIDMVA_;
+//vector<Float_t>  AOD_phoIDMVA_;
 
 vector<float>    AOD_phoObjPFChIso_;
 vector<float>    AOD_phoObjPFPhoIso_;
@@ -41,7 +41,7 @@ void lldjNtuple::branchesAODPhotons(TTree* tree) {
  tree->Branch("AOD_phoSCPhi",           &AOD_phoSCPhi_           );             
 
  tree->Branch("AOD_phoIDbit",           &AOD_phoIDbit_           );             
- tree->Branch("AOD_phoIDMVA",           &AOD_phoIDMVA_           );             
+ //tree->Branch("AOD_phoIDMVA",           &AOD_phoIDMVA_           );             
   
  tree->Branch("AOD_phoObjPFChIso",      &AOD_phoObjPFChIso_      );
  tree->Branch("AOD_phoObjPFPhoIso",     &AOD_phoObjPFPhoIso_     );
@@ -69,7 +69,7 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
  AOD_phoSCPhi_           .clear();       
 
  AOD_phoIDbit_           .clear();       
- AOD_phoIDMVA_           .clear();       
+ //AOD_phoIDMVA_           .clear();       
 
  AOD_phoObjPFChIso_      .clear();
  AOD_phoObjPFPhoIso_     .clear();
@@ -81,7 +81,6 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
  AOD_phoMapPFNeuIso_     .clear();
  AOD_phoMapPFChWorstIso_ .clear();
 
- //edm::Handle<edm::View<pat::Photon> > photonHandle;
  edm::Handle<edm::View<reco::Photon> > photonHandle;
  e.getByToken(photonAODCollection_, photonHandle);
 
@@ -91,83 +90,56 @@ void lldjNtuple::fillAODPhotons(const edm::Event& e, const edm::EventSetup& es) 
    return;
  } 
  
- /*
  if(!(e.getByToken(AOD_phoLooseIdMapToken_ ,loose_id_decisions) 
-    || e.getByToken(AOD_phoMediumIdMapToken_ ,medium_id_decisions) 
-    || e.getByToken(AOD_phoTightIdMapToken_ ,tight_id_decisions) 
-    || e.getByToken(AOD_phoChargedIsolationMapToken_ ,AOD_phoChargedIsolationHandle_) 
-    || e.getByToken(AOD_phoNeutralHadronIsolationMapToken_ ,AOD_phoNeutralHadronIsolationHandle_) 
-    || e.getByToken(AOD_phoPhotonIsolationMapToken_ ,AOD_phoPhotonIsolationHandle_) 
-    || e.getByToken(AOD_phoWorstChargedIsolationMapToken_ ,AOD_phoWorstChargedIsolationHandle_)
+    && e.getByToken(AOD_phoMediumIdMapToken_ ,medium_id_decisions) 
+    && e.getByToken(AOD_phoTightIdMapToken_ ,tight_id_decisions) 
+    && e.getByToken(AOD_phoChargedIsolationMapToken_ ,AOD_phoChargedIsolationHandle_) 
+    && e.getByToken(AOD_phoNeutralHadronIsolationMapToken_ ,AOD_phoNeutralHadronIsolationHandle_) 
+    && e.getByToken(AOD_phoPhotonIsolationMapToken_ ,AOD_phoPhotonIsolationHandle_) 
+    && e.getByToken(AOD_phoWorstChargedIsolationMapToken_ ,AOD_phoWorstChargedIsolationHandle_)
       )){
    edm::LogWarning("lldjNtuple") << "Failure in ID tokens";
    return;
  } 
- */
 
- e.getByToken(AOD_phoLooseIdMapToken_,  loose_id_decisions);
- e.getByToken(AOD_phoMediumIdMapToken_, medium_id_decisions);
- e.getByToken(AOD_phoTightIdMapToken_,  tight_id_decisions);
- e.getByToken(AOD_phoChargedIsolationMapToken_,       AOD_phoChargedIsolationHandle_);
- e.getByToken(AOD_phoNeutralHadronIsolationMapToken_, AOD_phoNeutralHadronIsolationHandle_);
- e.getByToken(AOD_phoPhotonIsolationMapToken_,        AOD_phoPhotonIsolationHandle_);
- e.getByToken(AOD_phoWorstChargedIsolationMapToken_,  AOD_phoWorstChargedIsolationHandle_);
- 
- //int tmpcounter = 0;
+ //https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2
+ //https://github.com/ikrav/EgammaWork/blob/ntupler_and_VID_demos_8.0.3/PhotonNtupler/test/runPhotons_VID_CutBased_Spring16_demo.py
+ for (size_t i = 0; i < photonHandle->size(); ++i){
+   const auto pho = photonHandle->ptrAt(i);
 
- // for (edm::View<pat::Photon>::const_iterator iPho = photonHandle->begin(); iPho != photonHandle->end(); ++iPho) {
-
-for (size_t i = 0; i < photonHandle->size(); ++i){
-  const auto pho = photonHandle->ptrAt(i);
-
-  //std::cout << "photon loop" << std::endl;
- 
-  Float_t AOD_phoPt  = pho->et();
-  //std::cout << "photon got pt" << std::endl;
-  Float_t AOD_phoEta = pho->eta();
-  //const auto pho = photonHandle->ptrAt( tmpcounter );
-  //tmpcounter++;
-
-  UShort_t tmpphoIDbit = 0;
-  //std::cout << "photon try loose" << std::endl;
-  bool isPassLoose  = (*loose_id_decisions)[pho];
-  //std::cout << "photon got loose" << std::endl;
-  if(isPassLoose) setbit(tmpphoIDbit, 0);
-  
-  bool isPassMedium = (*medium_id_decisions)[pho];
-  if(isPassMedium) setbit(tmpphoIDbit, 1);
-  
-  bool isPassTight  = (*tight_id_decisions)[pho];
-  if(isPassTight) setbit(tmpphoIDbit, 2);
-
-  //printf(" PhoID: %hu \n", tmpphoIDbit);
-  //// selections for electron collection
-  //if (phoPt < 20 || fabs(phoEta) > 2.1 || tmpphoIDbit==0) continue;
-  if (AOD_phoPt < 20 || fabs(AOD_phoEta) > 2.1) continue;
-
-  AOD_phoPt_     .push_back(AOD_phoPt);
-
-  AOD_phoEn_     .push_back(pho->energy());
-  AOD_phoEta_    .push_back(AOD_phoEta);
-  AOD_phoPhi_    .push_back(pho->phi());
-
-  AOD_phoSCEn_   .push_back( (*pho).superCluster()->energy());      
-  AOD_phoSCEta_  .push_back( (*pho).superCluster()->eta());       
-  AOD_phoSCPhi_  .push_back( (*pho).superCluster()->phi());       
-
-  AOD_phoObjPFChIso_       .push_back(pho->chargedHadronIso());
-  AOD_phoObjPFPhoIso_      .push_back(pho->photonIso());
-  AOD_phoObjPFNeuIso_      .push_back(pho->neutralHadronIso());
-
-  AOD_phoMapPFChIso_     .push_back((*AOD_phoChargedIsolationHandle_)[pho]);
-  AOD_phoMapPFPhoIso_    .push_back((*AOD_phoPhotonIsolationHandle_)[pho]);
-  AOD_phoMapPFNeuIso_    .push_back((*AOD_phoNeutralHadronIsolationHandle_)[pho]);
-  AOD_phoMapPFChWorstIso_.push_back((*AOD_phoWorstChargedIsolationHandle_)[pho]);
-  
-  ////phoIDMVA_.push_back((*mvaValues)[pho]);  
-  ////phoIDbit_.push_back(tmpphoIDbit);      
-
-  nAODPho_++;
+   Float_t AOD_phoPt  = pho->et();
+   Float_t AOD_phoEta = pho->eta();
+   
+   UShort_t tmpphoIDbit = 0;
+   bool isPassLoose  = (*loose_id_decisions)[pho];
+   if(isPassLoose) setbit(tmpphoIDbit, 0);
+   bool isPassMedium = (*medium_id_decisions)[pho];
+   if(isPassMedium) setbit(tmpphoIDbit, 1);
+   bool isPassTight  = (*tight_id_decisions)[pho];
+   if(isPassTight) setbit(tmpphoIDbit, 2);
+   AOD_phoIDbit_.push_back(tmpphoIDbit);      
+   
+   if (AOD_phoPt < 20 || fabs(AOD_phoEta) > 2.1) continue;
+   
+   AOD_phoPt_     .push_back(AOD_phoPt);
+   AOD_phoEn_     .push_back(pho->energy());
+   AOD_phoEta_    .push_back(AOD_phoEta);
+   AOD_phoPhi_    .push_back(pho->phi());
+   
+   AOD_phoSCEn_   .push_back( (*pho).superCluster()->energy());      
+   AOD_phoSCEta_  .push_back( (*pho).superCluster()->eta());       
+   AOD_phoSCPhi_  .push_back( (*pho).superCluster()->phi());       
+   
+   AOD_phoObjPFChIso_       .push_back(pho->chargedHadronIso());
+   AOD_phoObjPFPhoIso_      .push_back(pho->photonIso());
+   AOD_phoObjPFNeuIso_      .push_back(pho->neutralHadronIso());
+   
+   AOD_phoMapPFChIso_     .push_back((*AOD_phoChargedIsolationHandle_)[pho]);
+   AOD_phoMapPFPhoIso_    .push_back((*AOD_phoPhotonIsolationHandle_)[pho]);
+   AOD_phoMapPFNeuIso_    .push_back((*AOD_phoNeutralHadronIsolationHandle_)[pho]);
+   AOD_phoMapPFChWorstIso_.push_back((*AOD_phoWorstChargedIsolationHandle_)[pho]);
+   
+   nAODPho_++;
 
  }
 }

@@ -216,8 +216,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::InputTag AOD_phoWorstChargedIsolationLabel_;
 
 
-
-
   // trigger
   edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
