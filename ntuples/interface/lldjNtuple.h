@@ -67,33 +67,35 @@ class lldjNtuple : public edm::EDAnalyzer {
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
   
-  void branchesGlobalEvent(TTree*);
-  void branchesMET        (TTree*);
-  void branchesPhotons    (TTree*);
-  void branchesAODPhotons (TTree*);
-  void branchesElectrons  (TTree*);
-  void branchesMuons      (TTree*);
-  void branchesAODMuons   (TTree*);
-  void branchesJets       (TTree*);
-  void branchesAODJets    (TTree*);
-  void branchesTrigger    (TTree*);
-  void branchesAODTrigger    (TTree*);
-  void branchesGenPart    (TTree*);
-  void branchesAODEvent   (TTree*);
+  void branchesGlobalEvent (TTree*);
+  void branchesMET         (TTree*);
+  void branchesPhotons     (TTree*);
+  void branchesAODPhotons  (TTree*);
+  void branchesElectrons   (TTree*);
+  void branchesAODElectrons(TTree*);
+  void branchesMuons       (TTree*);
+  void branchesAODMuons    (TTree*);
+  void branchesJets        (TTree*);
+  void branchesAODJets     (TTree*);
+  void branchesTrigger     (TTree*);
+  void branchesAODTrigger  (TTree*);
+  void branchesGenPart     (TTree*);
+  void branchesAODEvent    (TTree*);
 
-  void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
-  void fillMET        (const edm::Event&, const edm::EventSetup&);
-  void fillPhotons    (const edm::Event&, const edm::EventSetup&);
-  void fillAODPhotons (const edm::Event&, const edm::EventSetup&);
-  void fillElectrons  (const edm::Event&, const edm::EventSetup&);
-  void fillMuons      (const edm::Event&, const reco::Vertex);
-  void fillAODMuons   (const edm::Event&, const reco::Vertex);
-  void fillJets       (const edm::Event&, const edm::EventSetup&);
-  void fillAODJets    (const edm::Event&, const edm::EventSetup&);
-  void fillTrigger    (const edm::Event&, const edm::EventSetup&);
-  void fillAODTrigger    (const edm::Event&, const edm::EventSetup&);
-  void fillGenPart    (const edm::Event&);
-  void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
+  void fillGlobalEvent (const edm::Event&, const edm::EventSetup&);
+  void fillMET         (const edm::Event&, const edm::EventSetup&);
+  void fillPhotons     (const edm::Event&, const edm::EventSetup&);
+  void fillAODPhotons  (const edm::Event&, const edm::EventSetup&);
+  void fillElectrons   (const edm::Event&, const edm::EventSetup&);
+  void fillAODElectrons(const edm::Event&, const edm::EventSetup&);
+  void fillMuons       (const edm::Event&, const reco::Vertex);
+  void fillAODMuons    (const edm::Event&, const reco::Vertex);
+  void fillJets        (const edm::Event&, const edm::EventSetup&);
+  void fillAODJets     (const edm::Event&, const edm::EventSetup&);
+  void fillTrigger     (const edm::Event&, const edm::EventSetup&);
+  void fillAODTrigger  (const edm::Event&, const edm::EventSetup&);
+  void fillGenPart     (const edm::Event&);
+  void fillAODEvent    (const edm::Event&, const edm::EventSetup&);
 
   bool isMediumMuonBCDEF(const reco::Muon & recoMu);
   bool isMediumMuonGH(const reco::Muon & recoMu);
@@ -116,6 +118,10 @@ class lldjNtuple : public edm::EDAnalyzer {
   //edm::EDGetTokenT<edm::ValueMap<float> > eleMVAHZZValuesMapToken_;
   //edm::EDGetTokenT<edm::ValueMap<float> > elePFClusEcalIsoToken_;
   //edm::EDGetTokenT<edm::ValueMap<float> > elePFClusHcalIsoToken_;
+
+  // AOD electrons
+  edm::EDGetToken electronAODToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleIdMapToken_;
 
   // global event
   edm::EDGetTokenT<double>                         rhoCentralLabel_;
