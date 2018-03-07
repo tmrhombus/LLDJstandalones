@@ -121,7 +121,9 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // AOD electrons
   edm::EDGetToken electronAODToken_;
-  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleTightIdMapToken_;
 
   // global event
   edm::EDGetTokenT<double>                         rhoCentralLabel_;

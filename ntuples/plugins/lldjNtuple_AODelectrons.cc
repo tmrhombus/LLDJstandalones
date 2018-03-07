@@ -23,14 +23,16 @@ vector<float>    AOD_elePhi_;
 vector<int>      AOD_eleCharge_;
 vector<int>      AOD_eleChargeConsistent_;
 
-vector<int>      AOD_eleId_;
+//vector<int>      AOD_eleLooseId_;
+//vector<int>      AOD_eleMediumId_;
+//vector<int>      AOD_eleTightId_;
 //vector<int>      AOD_eleConversionVeto_;
 
 //vector<float>    AOD_eleSCEn_;
 //vector<float>    AOD_eleSCEta_;
 //vector<float>    AOD_eleSCPhi_;
 
-//vector<UShort_t> AOD_eleIDbit_;
+vector<UShort_t> AOD_eleIDbit_;
 
 //vector<float>    AOD_elePFdBetaIsolationRhoEA_ ;
 //vector<float>    AOD_elePFdBetaIsolationCHS_   ;
@@ -50,14 +52,16 @@ void lldjNtuple::branchesAODElectrons(TTree* tree) {
  tree->Branch("AOD_eleCharge",                &AOD_eleCharge_                );     
  tree->Branch("AOD_eleChargeConsistent",      &AOD_eleChargeConsistent_      );     
 
- tree->Branch("AOD_eleId",                    &AOD_eleId_                    );
+ //tree->Branch("AOD_eleLooseId",                    &AOD_eleLooseId_                    );
+ //tree->Branch("AOD_eleMedium",                     &AOD_eleMediumId_                    );
+ //tree->Branch("AOD_eleTightId",                    &AOD_eleTightId_                    );
  //tree->Branch("AOD_eleConversionVeto",        &AOD_eleConversionVeto_        );
 
  // tree->Branch("AOD_eleSCEn",                  &AOD_eleSCEn_                  );     
  // tree->Branch("AOD_eleSCEta",                 &AOD_eleSCEta_                 );     
  // tree->Branch("AOD_eleSCPhi",                 &AOD_eleSCPhi_                 );     
 
- // tree->Branch("AOD_eleIDbit",                 &AOD_eleIDbit_                 );     
+ tree->Branch("AOD_eleIDbit",                 &AOD_eleIDbit_                 );     
 
  // tree->Branch("AOD_elePFdBetaIsolationRhoEA", &AOD_elePFdBetaIsolationRhoEA_ );     
  // tree->Branch("AOD_elePFdBetaIsolationCHS",   &AOD_elePFdBetaIsolationCHS_   );     
@@ -75,21 +79,23 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
  AOD_eleEta_                   .clear();     
  AOD_elePhi_                   .clear();     
 
- AOD_eleId_                    .clear();
- //AOD_eleConversionVeto_        .clear();
-
- AOD_eleSCEn_                  .clear();     
- AOD_eleSCEta_                 .clear();     
- AOD_eleSCPhi_                 .clear();     
-
  AOD_eleCharge_                .clear();     
  AOD_eleChargeConsistent_      .clear();     
 
+ //AOD_eleLooseId_                    .clear();
+ //AOD_eleMediumId_                   .clear();
+ //AOD_eleTightId_                    .clear();
+ //AOD_eleConversionVeto_        .clear();
+
+ //AOD_eleSCEn_                  .clear();     
+ //AOD_eleSCEta_                 .clear();     
+ //AOD_eleSCPhi_                 .clear();     
+
  AOD_eleIDbit_                 .clear();     
 
- AOD_elePFdBetaIsolationRhoEA_ .clear();     
- AOD_elePFdBetaIsolationCHS_   .clear();     
- AOD_elePFdBetaIsolationDiff_  .clear();     
+ //AOD_elePFdBetaIsolationRhoEA_ .clear();     
+ //AOD_elePFdBetaIsolationCHS_   .clear();     
+ //AOD_elePFdBetaIsolationDiff_  .clear();     
 
 
  //https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2
@@ -111,8 +117,12 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
  //e.getByToken(conversionsToken_, conversions);
 
  //ID
- edm::Handle<edm::ValueMap<bool> > ele_id_decisions;
- e.getByToken(AOD_eleIdMapToken_ ,ele_id_decisions);
+ edm::Handle<edm::ValueMap<bool> > ele_id_decisions_loose;
+ e.getByToken(AOD_eleLooseIdMapToken_ ,ele_id_decisions_loose);
+ edm::Handle<edm::ValueMap<bool> > ele_id_decisions_medium;
+ e.getByToken(AOD_eleMediumIdMapToken_ ,ele_id_decisions_medium);
+ edm::Handle<edm::ValueMap<bool> > ele_id_decisions_tight;
+ e.getByToken(AOD_eleTightIdMapToken_ ,ele_id_decisions_tight);
  
  for (size_t i = 0; i < electrons->size(); ++i){
    const auto el = electrons->ptrAt(i);
@@ -133,9 +143,15 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
    //							      theBeamSpot->position());
    //passConversionVeto_.push_back( (int) passConvVeto );
    
-   
-   bool isPassEleId  = (*ele_id_decisions)[el];
-   AOD_eleId_.push_back  ( (int)isPassEleId  );
+   UShort_t tmpeleIDbit = 0;
+   bool isPassEleLooseId  = (*ele_id_decisions_loose)[el];
+   if(isPassEleLooseId) setbit(tmpeleIDbit, 0);
+   bool isPassEleMediumId  = (*ele_id_decisions_medium)[el];
+   if(isPassEleMediumId) setbit(tmpeleIDbit, 1);
+   bool isPassEleTightId  = (*ele_id_decisions_tight)[el];
+   if(isPassEleTightId) setbit(tmpeleIDbit, 2);
+   AOD_eleIDbit_.push_back(tmpeleIDbit);
+
    
    nAODEle_++;
  }   
