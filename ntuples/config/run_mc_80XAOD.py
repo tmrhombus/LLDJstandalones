@@ -152,11 +152,11 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  AOD_phoWorstChargedIsolationMap  = cms.InputTag("photonIDValueMapProducer", "phoWorstChargedIsolation"),
 
  electronAODSrc = cms.InputTag("gedGsfElectrons"),
- #AOD_eleIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),
+ #AOD_eleIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),#doesn't work with AOD
  AOD_eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose"),
  AOD_eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
  AOD_eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
- #conversions  = cms.InputTag('allConversions'),                                    
+ conversions  = cms.InputTag('allConversions'),                                    
 
  genParticleSrc    = cms.InputTag("genParticles"),
 

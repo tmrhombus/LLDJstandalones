@@ -6,6 +6,10 @@
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 
+#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+
 #include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 
 
@@ -23,17 +27,12 @@ vector<float>    AOD_elePhi_;
 vector<int>      AOD_eleCharge_;
 vector<int>      AOD_eleChargeConsistent_;
 
-//vector<int>      AOD_eleLooseId_;
-//vector<int>      AOD_eleMediumId_;
-//vector<int>      AOD_eleTightId_;
-//vector<int>      AOD_eleConversionVeto_;
+vector<UShort_t> AOD_eleIDbit_;
+vector<int>      AOD_elePassConversionVeto_;
 
 //vector<float>    AOD_eleSCEn_;
 //vector<float>    AOD_eleSCEta_;
 //vector<float>    AOD_eleSCPhi_;
-
-vector<UShort_t> AOD_eleIDbit_;
-
 //vector<float>    AOD_elePFdBetaIsolationRhoEA_ ;
 //vector<float>    AOD_elePFdBetaIsolationCHS_   ;
 //vector<float>    AOD_elePFdBetaIsolationDiff_  ;
@@ -52,17 +51,12 @@ void lldjNtuple::branchesAODElectrons(TTree* tree) {
  tree->Branch("AOD_eleCharge",                &AOD_eleCharge_                );     
  tree->Branch("AOD_eleChargeConsistent",      &AOD_eleChargeConsistent_      );     
 
- //tree->Branch("AOD_eleLooseId",                    &AOD_eleLooseId_                    );
- //tree->Branch("AOD_eleMedium",                     &AOD_eleMediumId_                    );
- //tree->Branch("AOD_eleTightId",                    &AOD_eleTightId_                    );
- //tree->Branch("AOD_eleConversionVeto",        &AOD_eleConversionVeto_        );
+ tree->Branch("AOD_eleIDbit",                 &AOD_eleIDbit_                 );     
+ tree->Branch("AOD_elePassConversionVeto",    &AOD_elePassConversionVeto_        );
 
  // tree->Branch("AOD_eleSCEn",                  &AOD_eleSCEn_                  );     
  // tree->Branch("AOD_eleSCEta",                 &AOD_eleSCEta_                 );     
  // tree->Branch("AOD_eleSCPhi",                 &AOD_eleSCPhi_                 );     
-
- tree->Branch("AOD_eleIDbit",                 &AOD_eleIDbit_                 );     
-
  // tree->Branch("AOD_elePFdBetaIsolationRhoEA", &AOD_elePFdBetaIsolationRhoEA_ );     
  // tree->Branch("AOD_elePFdBetaIsolationCHS",   &AOD_elePFdBetaIsolationCHS_   );     
  // tree->Branch("AOD_elePFdBetaIsolationDiff",  &AOD_elePFdBetaIsolationDiff_  );     
@@ -82,17 +76,12 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
  AOD_eleCharge_                .clear();     
  AOD_eleChargeConsistent_      .clear();     
 
- //AOD_eleLooseId_                    .clear();
- //AOD_eleMediumId_                   .clear();
- //AOD_eleTightId_                    .clear();
- //AOD_eleConversionVeto_        .clear();
+ AOD_eleIDbit_                 .clear();     
+ AOD_elePassConversionVeto_    .clear();
 
  //AOD_eleSCEn_                  .clear();     
  //AOD_eleSCEta_                 .clear();     
  //AOD_eleSCPhi_                 .clear();     
-
- AOD_eleIDbit_                 .clear();     
-
  //AOD_elePFdBetaIsolationRhoEA_ .clear();     
  //AOD_elePFdBetaIsolationCHS_   .clear();     
  //AOD_elePFdBetaIsolationDiff_  .clear();     
@@ -113,8 +102,12 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
  //Skip PV for now (for dz)
 
  // Get the conversions collection
- //edm::Handle<reco::ConversionCollection> conversions;
- //e.getByToken(conversionsToken_, conversions);
+ edm::Handle<reco::ConversionCollection> conversions;
+ e.getByToken(conversionsAODToken_, conversions);
+
+ // Beamspot needed for conversion veto
+ edm::Handle<reco::BeamSpot> theBeamSpot;
+ e.getByToken(beamspotLabel_, theBeamSpot);
 
  //ID
  edm::Handle<edm::ValueMap<bool> > ele_id_decisions_loose;
@@ -138,10 +131,10 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
    AOD_eleChargeConsistent_.push_back((Int_t)el->isGsfCtfScPixChargeConsistent());
    
    // Conversion rejection
-   //bool passConvVeto = !ConversionTools::hasMatchedConversion(*el, 
-   //							      conversions,
-   //							      theBeamSpot->position());
-   //passConversionVeto_.push_back( (int) passConvVeto );
+   bool passConvVeto = !ConversionTools::hasMatchedConversion(*el, 
+   							      conversions,
+   							      theBeamSpot->position());
+   AOD_elePassConversionVeto_.push_back( (int) passConvVeto );
    
    UShort_t tmpeleIDbit = 0;
    bool isPassEleLooseId  = (*ele_id_decisions_loose)[el];

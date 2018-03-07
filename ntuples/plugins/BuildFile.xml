@@ -23,6 +23,7 @@
 <use name="RecoTracker/DebugTools"/>
 <use name="RecoEcal/EgammaCoreTools"/>
 <use name="RecoEgamma/PhotonIdentification"/>
+<use name="RecoEgamma/ElectronIdentification" />
 <use name="DataFormats/EgammaCandidates"/>
 <use name="CondFormats/JetMETObjects"/>
 <use name="JetMETCorrections/Objects"/>

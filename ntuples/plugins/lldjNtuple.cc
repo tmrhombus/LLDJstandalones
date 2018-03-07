@@ -35,6 +35,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
 
   // AOD electron
   electronAODToken_    = mayConsume<edm::View<reco::GsfElectron> >(ps.getParameter<edm::InputTag>("electronAODSrc"));
+  conversionsAODToken_ = mayConsume< reco::ConversionCollection >(ps.getParameter<edm::InputTag>("conversions"));
   AOD_eleLooseIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleLooseIdMap"));
   AOD_eleMediumIdMapToken_   = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleMediumIdMap"));
   AOD_eleTightIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleTightIdMap"));
