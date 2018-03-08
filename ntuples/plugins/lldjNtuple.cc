@@ -33,6 +33,14 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   //elePFClusEcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusEcalIsoProducer"));
   //elePFClusHcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusHcalIsoProducer"));
 
+  // AOD electron
+  electronAODToken_    = mayConsume<edm::View<reco::GsfElectron> >(ps.getParameter<edm::InputTag>("electronAODSrc"));
+  conversionsAODToken_ = mayConsume< reco::ConversionCollection >(ps.getParameter<edm::InputTag>("conversions"));
+  AOD_eleLooseIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleLooseIdMap"));
+  AOD_eleMediumIdMapToken_   = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleMediumIdMap"));
+  AOD_eleTightIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleTightIdMap"));
+
+
   // global event
   rhoCentralLabel_         = consumes<double>                        (ps.getParameter<InputTag>("rhoCentralLabel"));
   puCollection_            = consumes<vector<PileupSummaryInfo> >    (ps.getParameter<InputTag>("pileupCollection"));
@@ -133,6 +141,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   branchesAODJets(tree_);
   branchesAODMuons(tree_);
   branchesAODPhotons(tree_);
+  branchesAODElectrons(tree_);
  }
 
 }
@@ -191,6 +200,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillAODTrigger(e, es);
   fillAODJets(e, es);
   fillAODPhotons(e, es);
+  fillAODElectrons(e, es);
 
   //Vertex for Muon 
   edm::Handle<edm::View<reco::Vertex> > vtxHandle;
