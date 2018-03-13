@@ -33,6 +33,14 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   //elePFClusEcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusEcalIsoProducer"));
   //elePFClusHcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusHcalIsoProducer"));
 
+  // AOD electron
+  electronAODToken_    = mayConsume<edm::View<reco::GsfElectron> >(ps.getParameter<edm::InputTag>("electronAODSrc"));
+  conversionsAODToken_ = mayConsume< reco::ConversionCollection >(ps.getParameter<edm::InputTag>("conversions"));
+  AOD_eleLooseIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleLooseIdMap"));
+  AOD_eleMediumIdMapToken_   = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleMediumIdMap"));
+  AOD_eleTightIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleTightIdMap"));
+
+
   // global event
   rhoCentralLabel_         = consumes<double>                        (ps.getParameter<InputTag>("rhoCentralLabel"));
   puCollection_            = consumes<vector<PileupSummaryInfo> >    (ps.getParameter<InputTag>("pileupCollection"));
@@ -63,6 +71,8 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
 
   // photons
   photonCollection_        = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonSrc"));
+  //photonAODCollection_     = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonAODSrc"));
+  photonAODCollection_     =  mayConsume<edm::View<reco::Photon> >           (ps.getParameter<InputTag>("photonAODSrc"));
 
   // Photon ID in VID framwork 
   phoLooseIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoLooseIdMap"));
@@ -73,6 +83,25 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   phoNeutralHadronIsolationToken_ = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoNeutralHadronIsolation"));
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
+
+  //AOD Photon ID
+  AOD_phoLooseIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoLooseIdMap");
+  AOD_phoMediumIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoMediumIdMap");
+  AOD_phoTightIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoTightIdMap");
+  AOD_phoChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoChargedIsolationMap");
+  AOD_phoNeutralHadronIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoNeutralHadronIsolationMap");
+  AOD_phoPhotonIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoPhotonIsolationMap");
+  AOD_phoWorstChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoWorstChargedIsolationMap");
+  //
+  AOD_phoLooseIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoLooseIdLabel_);
+  AOD_phoMediumIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoMediumIdLabel_);
+  AOD_phoTightIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoTightIdLabel_);
+  AOD_phoChargedIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoChargedIsolationLabel_);
+  AOD_phoNeutralHadronIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoNeutralHadronIsolationLabel_);
+  AOD_phoPhotonIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoPhotonIsolationLabel_);
+  AOD_phoWorstChargedIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoWorstChargedIsolationLabel_);
+
+
 
   // trigger
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
@@ -111,6 +140,8 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   branchesAODTrigger(tree_);
   branchesAODJets(tree_);
   branchesAODMuons(tree_);
+  branchesAODPhotons(tree_);
+  branchesAODElectrons(tree_);
  }
 
 }
@@ -168,6 +199,8 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   if (!e.isRealData()) fillGenPart(e);
   fillAODTrigger(e, es);
   fillAODJets(e, es);
+  fillAODPhotons(e, es);
+  fillAODElectrons(e, es);
 
   //Vertex for Muon 
   edm::Handle<edm::View<reco::Vertex> > vtxHandle;
