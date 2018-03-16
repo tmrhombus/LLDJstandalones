@@ -64,6 +64,11 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   BadChCandFilterToken_    = consumes<bool>                          (ps.getParameter<InputTag>("BadChargedCandidateFilter"));
   BadPFMuonFilterToken_    = consumes<bool>                          (ps.getParameter<edm::InputTag>("BadPFMuonFilter"));
   pfMETlabel_              = consumes<View<pat::MET> >               (ps.getParameter<InputTag>("pfMETLabel"));
+  AODCaloMETlabel_         = consumes<edm::View<reco::CaloMET> >     (ps.getParameter<InputTag>("AODCaloMETlabel"));
+  AODpfChMETlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfChMETlabel"));
+  AODpfMETlabel_           = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETlabel"));
+  AODpfMETEIlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETEIlabel"));
+
 
   // muons
   muonCollection_          = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));
@@ -142,6 +147,7 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   branchesAODMuons(tree_);
   branchesAODPhotons(tree_);
   branchesAODElectrons(tree_);
+  branchesAODMET(tree_);
  }
 
 }
@@ -213,6 +219,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
     }   
   }
   fillAODMuons(e, vtx); //muons use vtx for isolation
+  fillAODMET(e, es);
 
  }
 
