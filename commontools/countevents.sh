@@ -3,53 +3,105 @@
 outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
 
 xcDY10to50="18610.0"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z
+#Other ref: https://cms-pdmv.cern.ch/mcm/requests?prepid=*GS*&dataset_name=DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8&page=0&shown=524415
+#Other ref: https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DDYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+
 xcDY50="5765.4"
-xcDY5to50_HT70To100="301.2"  # +-0.8  # LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
+#Ref: https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DDYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV FEWZ 3.1.b2 1921.8*3
+
+xcDY5to50_HT70To100="301.2"  # +-0.8  
 xcDY5to50_HT100To200="224.2" # +- 5.7
 xcDY5to50_HT200To400="37.2"  # +- 1.1
 xcDY5to50_HT400To600="3.581" # +-0.118 
 xcDY5to50_HT600ToInf="1.124" # +-0.038 
+#Ref: LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
+
 xcGJets_HT40To100="20790"    # +-9                 
 xcGJets_HT100To200="9238"    # +-4              
 xcGJets_HT200To400="2305"    # +-0.7               
 xcGJets_HT400To600="274.4"   # +-0.2               
 xcGJets_HT600ToInf="93.46"   # +-0.06            
-xcST_s="3.36"       #+0.13 -0.12 NLO                          
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z
+
+xcST_s="3.36"       #+0.13 -0.12 NLO
 xcSTbar_t="26.38"   # +1.32-1.18
 xcST_t="44.33"      # +1.76-1.49
-xcSTbar_tW="19.56"  # from OSU - how? 35.85 +-0.9, +-1.7 NNLO
-xcST_tW="19.56"     # from OSU - how? 35.85 +-0.9, +-1.7 NNLO                     
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcSTbar_tW="19.56"
+xcST_tW="19.56"
+#Ref: this is to match OSU
+#Ref for other value (35.85 +-0.9, +-1.7 NNLO): https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns 
+
 xcTTJets="831.76"   #NNLO
-xcTTtoLL="87.31"          
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcTTtoLL="87.31"  #NNLO        
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
 xcTTtoLfromT="182.7"      
 xcTTtoLfromTbar="182.7"   
-xcWW="10.32"      # not sure VV.. https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeVInclusive
-xcZZ="63.0"                   
-xcWZ="118.7"                  
+#NEED PRIMARY REFERENCE
+#Other ref: 114 https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DTTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8
+#Other ref: https://twiki.cern.ch/twiki/bin/view/LHCPhysics/TtbarNNLO
+
+xcWW="118.7"      
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeVInclusive
+#Old value: xcWW="10.32"      
+
+xcZZ="16.523"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+#Old value: xcZZ="63.0"
+
+xcWZ="47.13"                  
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+#Old value: xcWZ="118.7"                  
 
 xcWWToLNuQQ="49.997"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns 
+
 xcWWToLNuLNu="12.178"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
 
 xcWZToL3Nu="3.03"                         
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
 xcWZTo3LNu="4.42965"                         
-xcWZToLNu2QorQQ2L="9.82423165827" # ???
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
 
-xcZZToNuNuQQ="94.04"
-xcZZToLLQQ="93.22"
-xcZZToLLNuNu="90.5644"
-xcZZToLLLL="91.256"
+xcWZToLNu2QorQQ2L="9.82423165827" 
+#Ref: https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DWZToLNu2QorQQ2L_aTGC_13TeV-madgraph-pythia8
 
-xcWG="9405.271"
-xcZG="9117.864"
-#https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt13TeV#ZH_Process
-#BR(HToSSTobbbb)~20%, BR(ZToll)~10.099%
-xcZH_HToBB_ZToLL="1"                 
-xcggZH_HToBB_ZToLL="1"               
+xcZZToNuNuQQ="4.04"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcZZToLLQQ="3.22"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcZZToLLNuNu="0.5644"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+#Ref: https://cms-gen-dev.cern.ch/xsdb/?columns=67108863&currentPage=0&pageSize=10&searchQuery=DAS%3DZZTo2L2Nu_13TeV_powheg_pythia8
+
+xcZZToLLLL="1.256"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcWG="405.271"
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+
+xcZG="117.864"
+#Ref: ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8
+
+xcZH_HToBB_ZToLL="0.044333"
+xcggZH_HToBB_ZToLL="0.0071462"
 xcggZH_HToSSTobbbb="0.0024783"      
-
 xcZH_HToSSTobbbb="0.015374718"      
+#https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt13TeV#ZH_Process
+#BR(HToSSTobbbb)~20%, BR(ZToll)~10.099%, BR(HToBB)~0.5767
 
-xcWJetsToLNu="61526.7"   # https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
+xcWJetsToLNu="61526.7"   
+#Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
 
 xcSingleElectron="1"                    
 xcSingleMuon="1"                        
