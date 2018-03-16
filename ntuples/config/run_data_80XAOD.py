@@ -18,8 +18,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 # input files
 process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
-          'file:data.root'
-#         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
+          #'file:data.root'
+         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
  ),
 )
 
@@ -127,11 +127,22 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  BadChargedCandidateFilter = cms.InputTag('BadChargedCandidateFilter'),
  BadPFMuonFilter           = cms.InputTag('BadPFMuonFilter'),
  pfMETLabel                = cms.InputTag('slimmedMETsMuEGClean', '', 'LLDJ'),
+ AODCaloMETlabel           = cms.InputTag('caloMet','','RECO'),    
+ AODpfChMETlabel           = cms.InputTag('pfChMet','','RECO'),    
+ AODpfMETlabel             = cms.InputTag('pfMet','','RECO'),  
+ AODpfMETEIlabel           = cms.InputTag('pfMetEI','','RECO'),    
 
  muonSrc                   = cms.InputTag('slimmedMuons'),
  muonAODSrc                = cms.InputTag('selectedPatMuons'),
 
  photonSrc                 = cms.InputTag('selectedPhotons','','LLDJ'),
+ phoLooseIdMap             = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose'),
+ phoMediumIdMap            = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-medium'),
+ phoTightIdMap             = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-tight'),
+ phoChargedIsolation       = cms.InputTag('photonIDValueMapProducer:phoChargedIsolation'),
+ phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
+ phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
+ phoWorstChargedIsolation  = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
  #photonAODSrc              = cms.InputTag('selectedPatPhotons'),
  photonAODSrc              = cms.InputTag('gedPhotons'),
 
@@ -142,14 +153,6 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  AOD_phoNeutralHadronIsolationMap = cms.InputTag("photonIDValueMapProducer", "phoNeutralHadronIsolation"),
  AOD_phoPhotonIsolationMap        = cms.InputTag("photonIDValueMapProducer", "phoPhotonIsolation"),
  AOD_phoWorstChargedIsolationMap  = cms.InputTag("photonIDValueMapProducer", "phoWorstChargedIsolation"),
-
- phoLooseIdMap             = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-loose'),
- phoMediumIdMap            = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-medium'),
- phoTightIdMap             = cms.InputTag('egmPhotonIDs:cutBasedPhotonID-Spring15-25ns-V1-standalone-tight'),
- phoChargedIsolation       = cms.InputTag('photonIDValueMapProducer:phoChargedIsolation'),
- phoNeutralHadronIsolation = cms.InputTag('photonIDValueMapProducer:phoNeutralHadronIsolation'),
- phoPhotonIsolation        = cms.InputTag('photonIDValueMapProducer:phoPhotonIsolation'),
- phoWorstChargedIsolation  = cms.InputTag('photonIDValueMapProducer:phoWorstChargedIsolation'),
 
  electronAODSrc = cms.InputTag("gedGsfElectrons"),
  #AOD_eleIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronHLTPreselection-Summer16-V1"),#doesn't work with AOD
