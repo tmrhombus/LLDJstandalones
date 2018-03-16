@@ -13,6 +13,8 @@
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "HLTrigger/HLTcore/interface/HLTPrescaleProvider.h"
 #include "DataFormats/PatCandidates/interface/TriggerObjectStandAlone.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
@@ -61,32 +63,41 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::ParameterSet lldj_pset_;
 
   //   virtual void beginJob() {};
+  virtual void beginRun(edm::Run const &, edm::EventSetup const&);//for trigger
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   //   virtual void endJob() {};
   
-  void branchesGlobalEvent(TTree*);
-  void branchesMET        (TTree*);
-  void branchesPhotons    (TTree*);
-  void branchesElectrons  (TTree*);
-  void branchesMuons      (TTree*);
-  void branchesAODMuons   (TTree*);
-  void branchesJets       (TTree*);
-  void branchesAODJets    (TTree*);
-  void branchesTrigger    (TTree*);
-  void branchesGenPart    (TTree*);
-  void branchesAODEvent   (TTree*);
+  void branchesGlobalEvent (TTree*);
+  void branchesMET         (TTree*);
+  void branchesAODMET      (TTree*);
+  void branchesPhotons     (TTree*);
+  void branchesAODPhotons  (TTree*);
+  void branchesElectrons   (TTree*);
+  void branchesAODElectrons(TTree*);
+  void branchesMuons       (TTree*);
+  void branchesAODMuons    (TTree*);
+  void branchesJets        (TTree*);
+  void branchesAODJets     (TTree*);
+  void branchesTrigger     (TTree*);
+  void branchesAODTrigger  (TTree*);
+  void branchesGenPart     (TTree*);
+  void branchesAODEvent    (TTree*);
 
-  void fillGlobalEvent(const edm::Event&, const edm::EventSetup&);
-  void fillMET        (const edm::Event&, const edm::EventSetup&);
-  void fillPhotons    (const edm::Event&, const edm::EventSetup&);
-  void fillElectrons  (const edm::Event&, const edm::EventSetup&);
-  void fillMuons      (const edm::Event&, const reco::Vertex);
-  void fillAODMuons   (const edm::Event&, const reco::Vertex);
-  void fillJets       (const edm::Event&, const edm::EventSetup&);
-  void fillAODJets    (const edm::Event&, const edm::EventSetup&);
-  void fillTrigger    (const edm::Event&, const edm::EventSetup&);
-  void fillGenPart    (const edm::Event&);
-  void fillAODEvent   (const edm::Event&, const edm::EventSetup&);
+  void fillGlobalEvent (const edm::Event&, const edm::EventSetup&);
+  void fillMET         (const edm::Event&, const edm::EventSetup&);
+  void fillAODMET      (const edm::Event&, const edm::EventSetup&);
+  void fillPhotons     (const edm::Event&, const edm::EventSetup&);
+  void fillAODPhotons  (const edm::Event&, const edm::EventSetup&);
+  void fillElectrons   (const edm::Event&, const edm::EventSetup&);
+  void fillAODElectrons(const edm::Event&, const edm::EventSetup&);
+  void fillMuons       (const edm::Event&, const reco::Vertex);
+  void fillAODMuons    (const edm::Event&, const reco::Vertex);
+  void fillJets        (const edm::Event&, const edm::EventSetup&);
+  void fillAODJets     (const edm::Event&, const edm::EventSetup&);
+  void fillTrigger     (const edm::Event&, const edm::EventSetup&);
+  void fillAODTrigger  (const edm::Event&, const edm::EventSetup&);
+  void fillGenPart     (const edm::Event&);
+  void fillAODEvent    (const edm::Event&, const edm::EventSetup&);
 
   bool isMediumMuonBCDEF(const reco::Muon & recoMu);
   bool isMediumMuonGH(const reco::Muon & recoMu);
@@ -109,6 +120,13 @@ class lldjNtuple : public edm::EDAnalyzer {
   //edm::EDGetTokenT<edm::ValueMap<float> > eleMVAHZZValuesMapToken_;
   //edm::EDGetTokenT<edm::ValueMap<float> > elePFClusEcalIsoToken_;
   //edm::EDGetTokenT<edm::ValueMap<float> > elePFClusHcalIsoToken_;
+
+  // AOD electrons
+  edm::EDGetToken electronAODToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleLooseIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleMediumIdMapToken_;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_eleTightIdMapToken_;
+  edm::EDGetTokenT<reco::ConversionCollection> conversionsAODToken_;
 
   // global event
   edm::EDGetTokenT<double>                         rhoCentralLabel_;
@@ -159,6 +177,11 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<bool> BadChCandFilterToken_;
   edm::EDGetTokenT<bool> BadPFMuonFilterToken_;
   edm::EDGetTokenT<edm::View<pat::MET> >           pfMETlabel_;
+  edm::EDGetTokenT<edm::View<reco::CaloMET> >      AODCaloMETlabel_;
+  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfChMETlabel_;
+  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETlabel_;
+  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETEIlabel_;
+  
 
   // muons
   edm::EDGetTokenT<edm::View<pat::Muon> >          muonCollection_;
@@ -166,7 +189,9 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // photons
   edm::EDGetTokenT<edm::View<pat::Photon> >        photonCollection_;
-
+  //edm::EDGetTokenT<edm::View<pat::Photon> >        photonAODCollection_;
+  edm::EDGetToken photonAODCollection_;
+  
   // photon ID decision objects and isolations
   edm::EDGetTokenT<edm::ValueMap<bool> >  phoLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> >  phoMediumIdMapToken_;
@@ -177,10 +202,49 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<float> > phoPhotonIsolationToken_; 
   edm::EDGetTokenT<edm::ValueMap<float> > phoWorstChargedIsolationToken_; 
 
+  // AOD photon ID
+  edm::Handle<edm::ValueMap<bool> > loose_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoLooseIdMapToken_;
+  edm::InputTag AOD_phoLooseIdLabel_;
+    
+  edm::Handle<edm::ValueMap<bool> > medium_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoMediumIdMapToken_;
+  edm::InputTag AOD_phoMediumIdLabel_;
+    
+  edm::Handle<edm::ValueMap<bool> > tight_id_decisions;
+  edm::EDGetTokenT<edm::ValueMap<bool> > AOD_phoTightIdMapToken_;
+  edm::InputTag AOD_phoTightIdLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoChargedIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoChargedIsolationMapToken_;
+  edm::InputTag AOD_phoChargedIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoNeutralHadronIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoNeutralHadronIsolationMapToken_;
+  edm::InputTag AOD_phoNeutralHadronIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoPhotonIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoPhotonIsolationMapToken_;
+  edm::InputTag AOD_phoPhotonIsolationLabel_;
+    
+  edm::Handle<edm::ValueMap<float> > AOD_phoWorstChargedIsolationHandle_;
+  edm::EDGetTokenT<edm::ValueMap<float> > AOD_phoWorstChargedIsolationMapToken_;
+  edm::InputTag AOD_phoWorstChargedIsolationLabel_;
+
+
   // trigger
   edm::EDGetTokenT<edm::TriggerResults>                     triggerBits_;
   edm::EDGetTokenT<edm::View<pat::TriggerObjectStandAlone>> triggerObjects_;
   edm::EDGetTokenT<pat::PackedTriggerPrescales>             triggerPrescales_;
+  edm::InputTag AODTriggerLabel_;
+  edm::EDGetTokenT<edm::TriggerResults> AODTriggerToken_;
+  edm::InputTag AODTriggerEventLabel_;
+  edm::EDGetTokenT<trigger::TriggerEvent> AODTriggerEventToken_;
+  edm::Handle<edm::TriggerResults> AODTriggerHandle_;
+  edm::Handle<trigger::TriggerEvent> AODTriggerEventHandle_;
+  HLTConfigProvider hltConfig_;
+  HLTPrescaleProvider hltPrescale_;
+
 
   //gen
   edm::EDGetTokenT<vector<reco::GenParticle> >     genParticlesCollection_;

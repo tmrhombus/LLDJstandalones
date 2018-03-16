@@ -8,8 +8,10 @@ void setbit(UShort_t& x, UShort_t bit) {
   x |= (a << bit);
 }
 
-lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
-
+lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
+  hltPrescale_(ps,consumesCollector(),*this) 
+{
+  
   lldj_pset_ = ps;
 
   // choose AOD or miniAOD or both
@@ -30,6 +32,14 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   //eleMVAHZZValuesMapToken_ = consumes<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("eleMVAHZZValuesMap"));
   //elePFClusEcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusEcalIsoProducer"));
   //elePFClusHcalIsoToken_   = mayConsume<edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("elePFClusHcalIsoProducer"));
+
+  // AOD electron
+  electronAODToken_    = mayConsume<edm::View<reco::GsfElectron> >(ps.getParameter<edm::InputTag>("electronAODSrc"));
+  conversionsAODToken_ = mayConsume< reco::ConversionCollection >(ps.getParameter<edm::InputTag>("conversions"));
+  AOD_eleLooseIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleLooseIdMap"));
+  AOD_eleMediumIdMapToken_   = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleMediumIdMap"));
+  AOD_eleTightIdMapToken_    = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("AOD_eleTightIdMap"));
+
 
   // global event
   rhoCentralLabel_         = consumes<double>                        (ps.getParameter<InputTag>("rhoCentralLabel"));
@@ -54,6 +64,11 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   BadChCandFilterToken_    = consumes<bool>                          (ps.getParameter<InputTag>("BadChargedCandidateFilter"));
   BadPFMuonFilterToken_    = consumes<bool>                          (ps.getParameter<edm::InputTag>("BadPFMuonFilter"));
   pfMETlabel_              = consumes<View<pat::MET> >               (ps.getParameter<InputTag>("pfMETLabel"));
+  AODCaloMETlabel_         = consumes<edm::View<reco::CaloMET> >     (ps.getParameter<InputTag>("AODCaloMETlabel"));
+  AODpfChMETlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfChMETlabel"));
+  AODpfMETlabel_           = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETlabel"));
+  AODpfMETEIlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETEIlabel"));
+
 
   // muons
   muonCollection_          = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));
@@ -61,6 +76,8 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
 
   // photons
   photonCollection_        = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonSrc"));
+  //photonAODCollection_     = consumes<View<pat::Photon> >            (ps.getParameter<InputTag>("photonAODSrc"));
+  photonAODCollection_     =  mayConsume<edm::View<reco::Photon> >           (ps.getParameter<InputTag>("photonAODSrc"));
 
   // Photon ID in VID framwork 
   phoLooseIdMapToken_             = consumes<edm::ValueMap<bool> >(ps.getParameter<edm::InputTag>("phoLooseIdMap"));
@@ -72,10 +89,36 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
   phoPhotonIsolationToken_        = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoPhotonIsolation"));
   phoWorstChargedIsolationToken_  = consumes <edm::ValueMap<float> >(ps.getParameter<edm::InputTag>("phoWorstChargedIsolation"));
 
+  //AOD Photon ID
+  AOD_phoLooseIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoLooseIdMap");
+  AOD_phoMediumIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoMediumIdMap");
+  AOD_phoTightIdLabel_ = ps.getParameter<edm::InputTag>("AOD_phoTightIdMap");
+  AOD_phoChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoChargedIsolationMap");
+  AOD_phoNeutralHadronIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoNeutralHadronIsolationMap");
+  AOD_phoPhotonIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoPhotonIsolationMap");
+  AOD_phoWorstChargedIsolationLabel_ = ps.getParameter<edm::InputTag>("AOD_phoWorstChargedIsolationMap");
+  //
+  AOD_phoLooseIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoLooseIdLabel_);
+  AOD_phoMediumIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoMediumIdLabel_);
+  AOD_phoTightIdMapToken_ = consumes<edm::ValueMap<bool> >(AOD_phoTightIdLabel_);
+  AOD_phoChargedIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoChargedIsolationLabel_);
+  AOD_phoNeutralHadronIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoNeutralHadronIsolationLabel_);
+  AOD_phoPhotonIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoPhotonIsolationLabel_);
+  AOD_phoWorstChargedIsolationMapToken_ = consumes<edm::ValueMap<float> >(AOD_phoWorstChargedIsolationLabel_);
+
+
+
   // trigger
   triggerBits_                    = consumes <edm::TriggerResults>                     (ps.getParameter<edm::InputTag>("bits"));
   triggerObjects_                 = consumes <edm::View<pat::TriggerObjectStandAlone>> (ps.getParameter<edm::InputTag>("objects"));
   triggerPrescales_               = consumes <pat::PackedTriggerPrescales>             (ps.getParameter<edm::InputTag>("prescales"));
+  //AOD
+  AODTriggerLabel_                =                                                     ps.getParameter<InputTag>("AODTriggerInputTag");
+  AODTriggerToken_                = consumes<edm::TriggerResults>(AODTriggerLabel_);
+  AODTriggerEventLabel_           =                                                     ps.getParameter<InputTag>("AODTriggerEventInputTag");
+  AODTriggerEventToken_           = consumes<trigger::TriggerEvent>(AODTriggerEventLabel_);
+
+
 
   // gen
   genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
@@ -99,13 +142,27 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) {
  if(doAOD_){
   branchesAODEvent(tree_);
   branchesGenPart(tree_);
+  branchesAODTrigger(tree_);
   branchesAODJets(tree_);
   branchesAODMuons(tree_);
+  branchesAODPhotons(tree_);
+  branchesAODElectrons(tree_);
+  branchesAODMET(tree_);
  }
 
 }
 
 lldjNtuple::~lldjNtuple() {
+}
+
+
+void lldjNtuple::beginRun(edm::Run const& run, edm::EventSetup const& eventsetup) {
+
+  bool changed(true);
+  if(hltConfig_.init(run,eventsetup,"HLT",changed)){
+  }
+  hltPrescale_.init(run,eventsetup,"HLT",changed);
+
 }
 
 void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
@@ -146,7 +203,10 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
  if(doAOD_){
   fillAODEvent(e, es);
   if (!e.isRealData()) fillGenPart(e);
+  fillAODTrigger(e, es);
   fillAODJets(e, es);
+  fillAODPhotons(e, es);
+  fillAODElectrons(e, es);
 
   //Vertex for Muon 
   edm::Handle<edm::View<reco::Vertex> > vtxHandle;
@@ -159,6 +219,7 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
     }   
   }
   fillAODMuons(e, vtx); //muons use vtx for isolation
+  fillAODMET(e, es);
 
  }
 
