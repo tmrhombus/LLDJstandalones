@@ -69,7 +69,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   
   void branchesGlobalEvent (TTree*);
   void branchesMET         (TTree*);
-  void branchesAODMET      (TTree*);
   void branchesPhotons     (TTree*);
   void branchesAODPhotons  (TTree*);
   void branchesElectrons   (TTree*);
@@ -85,7 +84,6 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   void fillGlobalEvent (const edm::Event&, const edm::EventSetup&);
   void fillMET         (const edm::Event&, const edm::EventSetup&);
-  void fillAODMET      (const edm::Event&, const edm::EventSetup&);
   void fillPhotons     (const edm::Event&, const edm::EventSetup&);
   void fillAODPhotons  (const edm::Event&, const edm::EventSetup&);
   void fillElectrons   (const edm::Event&, const edm::EventSetup&);
@@ -177,11 +175,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<bool> BadChCandFilterToken_;
   edm::EDGetTokenT<bool> BadPFMuonFilterToken_;
   edm::EDGetTokenT<edm::View<pat::MET> >           pfMETlabel_;
-  edm::EDGetTokenT<edm::View<reco::CaloMET> >      AODCaloMETlabel_;
-  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfChMETlabel_;
-  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETlabel_;
-  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETEIlabel_;
-  
 
   // muons
   edm::EDGetTokenT<edm::View<pat::Muon> >          muonCollection_;
