@@ -180,8 +180,6 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<reco::CaloMET> >      AODCaloMETlabel_;
   edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfChMETlabel_;
   edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETlabel_;
-  edm::EDGetTokenT<edm::View<reco::PFMET> >        AODpfMETEIlabel_;
-  
 
   // muons
   edm::EDGetTokenT<edm::View<pat::Muon> >          muonCollection_;

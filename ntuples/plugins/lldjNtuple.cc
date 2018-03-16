@@ -67,8 +67,6 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   AODCaloMETlabel_         = consumes<edm::View<reco::CaloMET> >     (ps.getParameter<InputTag>("AODCaloMETlabel"));
   AODpfChMETlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfChMETlabel"));
   AODpfMETlabel_           = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETlabel"));
-  AODpfMETEIlabel_         = consumes<edm::View<reco::PFMET> >       (ps.getParameter<InputTag>("AODpfMETEIlabel"));
-
 
   // muons
   muonCollection_          = consumes<View<pat::Muon> >              (ps.getParameter<InputTag>("muonSrc"));

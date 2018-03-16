@@ -134,7 +134,6 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
  AODCaloMETlabel           = cms.InputTag('caloMet','','RECO'),    
  AODpfChMETlabel           = cms.InputTag('pfChMet','','RECO'),    
  AODpfMETlabel             = cms.InputTag('pfMet','','RECO'),  
- AODpfMETEIlabel           = cms.InputTag('pfMetEI','','RECO'),    
 
  muonSrc                   = cms.InputTag('slimmedMuons'),
  muonAODSrc                = cms.InputTag('selectedPatMuons'),
