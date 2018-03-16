@@ -7,6 +7,10 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('LLDJ')
 process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True) )
 
+#Setup FWK for multithreaded
+process.options.numberOfThreads=cms.untracked.uint32(4)
+process.options.numberOfStreams=cms.untracked.uint32(0)
+
 process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
