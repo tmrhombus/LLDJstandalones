@@ -234,7 +234,7 @@ do
   then
    # MC AOD
    CMSRUNCONFIG="'${msubmitconfig}'" 
-   UPERJOB="10"
+   UPERJOB="1"
   elif [ ${dominiAOD} = true ]
   then
    # MC miniAOD
