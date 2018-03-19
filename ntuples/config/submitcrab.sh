@@ -3,6 +3,8 @@
 # do we submit or just generate submit scripts
 dosubmit=true
 doAOD=true
+dominiAOD=false
+domakeMiniAOD=false
 
 # start the timer
 START=$(date +%s);
@@ -11,9 +13,14 @@ printf "Started at ${START}\n\n"
 if [ ${doAOD} = true ]
 then
  nversion="${nversion}AOD"
+elif [ ${domakeMiniAOD} = true ]
+then
+ nversion="${nversion}MakeMiniAOD"
 fi
 
 printf "nversion is ${nversion} \n"
+printf "configured as \n"
+printf " doAOD=${doAOD}, dominiAOD=${dominiAOD}, domakeMiniAOD=${domakeMiniAOD}\n"
 
 # make the directory where we'll submit from
 thesubdir="${subdir}/gitignore/${nversion}"
@@ -23,24 +30,26 @@ printf "Making submit configurations in\n ${thesubdir}\n\n"
 # copy necessary files into submit directory
 if [ ${doAOD} = true ]
 then
- cp "${subdir}/run_data_80XAOD.py" ${thesubdir}
- cp "${subdir}/run_mc_80XAOD.py"   ${thesubdir}
- printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80XAOD.py" 
- printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80XAOD.py"   
- printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80XAOD.py" 
- printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_mc_80XAOD.py"   
- # get the DAS name mapping
+ dsubmitconfig="run_data_80XAOD.py"
+ msubmitconfig="run_mc_80XAOD.py"
+ thedasmap="${listdir}/ntuple/dasmapAOD.list"
+elif [ ${dominiAOD} = true ]
+then
+ dsubmitconfig="run_data_80X.py"
+ msubmitconfig="run_mc_80X.py"
+ thedasmap="${listdir}/ntuple/dasmap.list"
+elif [ ${domakeMiniAOD} = true ]
+then
+ dsubmitconfig="EXO-RunIISummer16MiniAODv2-DATA_cfg.py"
+ msubmitconfig="EXO-RunIISummer16MiniAODv2-MC_cfg.py"
  thedasmap="${listdir}/ntuple/dasmapAOD.list"
 else
- cp "${subdir}/run_data_80X.py" ${thesubdir}
- cp "${subdir}/run_mc_80X.py"   ${thesubdir}
- printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_data_80X.py" 
- printf "process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) ) \n" >> "${thesubdir}/run_mc_80X.py"   
- printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_data_80X.py" 
- printf "process.MessageLogger.cerr.FwkReport.reportEvery = 1000000 \n" >> "${thesubdir}/run_mc_80X.py"   
- # get the DAS name mapping
- thedasmap="${listdir}/ntuple/dasmap.list"
+ printf "SOMETHING'S UP --- YOU HAVE doAOD=${doAOD}, dominiAOD=${dominiAOD}, domakeMiniAOD=${domakeMiniAOD}\n"
 fi
+
+# copy cmsRun configuration to submit directory
+cp "${subdir}/${dsubmitconfig}"  ${thesubdir}
+cp "${subdir}/${msubmitconfig}"  ${thesubdir}
 
 
 # sample names to run over
@@ -191,28 +200,50 @@ do
  # set veriables for submitting this specific sample
  WORKAREA="'crabsubmits_${nversion}'"
 
+ # check if running data or MC
  if [[ "${samplename:0:4}" == "Data" ]]
  then
+  dodata=true
+ else
+  dodata=false
+ fi
+ printf "dodata = ${dodata}\n"
+
+ # choose correct config parameters
+ if [ ${dodata} = true ]
+ then 
   if [ ${doAOD} = true ]
   then
    # DATA AOD
-   CMSRUNCONFIG="'run_data_80XAOD.py'" 
+   CMSRUNCONFIG="'${dsubmitconfig}'" 
    UPERJOB="100"
-  else
+  elif [ ${dominiAOD} = true ]
+  then
    # DATA miniAOD
-   CMSRUNCONFIG="'run_data_80X.py'" 
+   CMSRUNCONFIG="'${dsubmitconfig}'" 
+   UPERJOB="100"
+  elif [ ${domakeMiniAOD} = true ]
+  then
+   # DATA makeMiniAOD
+   CMSRUNCONFIG="'${dsubmitconfig}'" 
    UPERJOB="100"
   fi
   SPLITTING="'LumiBased'"
- else
+ else #if [ ${dodata} = true ]
   if [ ${doAOD} = true ]
   then
    # MC AOD
-   CMSRUNCONFIG="'run_mc_80XAOD.py'" 
-   UPERJOB="10"
-  else
+   CMSRUNCONFIG="'${msubmitconfig}'" 
+   UPERJOB="1"
+  elif [ ${dominiAOD} = true ]
+  then
    # MC miniAOD
-   CMSRUNCONFIG="'run_mc_80X.py'" 
+   CMSRUNCONFIG="'${msubmitconfig}'" 
+   UPERJOB="1"
+  elif [ ${domakeMiniAOD} = true ]
+  then
+   # MC makeMiniAOD
+   CMSRUNCONFIG="'${msubmitconfig}'" 
    UPERJOB="1"
   fi
   SPLITTING="'FileBased'"
