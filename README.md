@@ -23,8 +23,6 @@ git cms-merge-topic ikrav:egm_id_80X_v3_photons
 scramv1 build -j 10;
 
 ## LLDJstandalones Framework checkout
-
-# first fork the repository to make your own workspace
 git clone https://github.com/DisplacedHiggs/LLDJstandalones.git;
 
 cd LLDJstandalones
