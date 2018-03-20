@@ -25,8 +25,7 @@ scramv1 build -j 10;
 ## LLDJstandalones Framework checkout
 
 # first fork the repository to make your own workspace
-git clone https://github.com/benjaminkreis/LLDJstandalones.git;
-git checkout -b aod_pho origin/aod_pho
+git clone https://github.com/DisplacedHiggs/LLDJstandalones.git;
 
 cd LLDJstandalones
 
