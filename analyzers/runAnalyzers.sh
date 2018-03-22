@@ -73,38 +73,11 @@
  #'ggZH_HToSSTobbbb_MS15_ctauS1000' \
 
 for sample in \
- "TTtoLL" \
-'WJetsToLNu' \
-'DY50' \
-"TTtoLfromTbar" \
-"TTtoLfromT" \
-'ST_s' \
-'ST_t' \
-'ST_tW ' \
-'STbar_t' \
-'STbar_tW' \
-'WG' \
-'WWToLNuLNu' \
-'WWToLNuQQ' \
-'WZTo3LNu' \
-'WZToL3Nu' \
-'WZToLNu2QorQQ2L' \
-'ZG' \
-'ZH_HToBB_ZToLL' \
-'ZZToLLLL' \
-'ZZToLLNuNu' \
-'ZZToLLQQ' \
-'ZZToNuNuQQ' \
-'ggZH_HToBB_ZToLL' \
-'GJets_HT100To200' \
-'GJets_HT200To400' \
-'GJets_HT400To600' \
-'GJets_HT40To100' \
-'GJets_HT600ToInf'
+ "lldjntuple_mc_miniAOD"
 do
 
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1" -i "../lists" -o "junk" -n 1 -a 1 -d -m
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "6000" -i "../lists" -o "junk" -n 1000 -a 1 -d -m
 #i  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "-1" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
 
 done #for sample in DY50..

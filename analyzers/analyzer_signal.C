@@ -227,7 +227,7 @@ void analyzer_signal::Loop(TString outfilename,
 
 
   //if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){
-  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
+   debug_printobjects();   // helpful printout (turn off when submitting!!!)
   // debug_printmuons();     // helpful printout (turn off when submitting!!!)
   // debug_printelectrons(); // helpful printout (turn off when submitting!!!)
   // debug_printtriggers();
@@ -1541,19 +1541,19 @@ Float_t analyzer_signal::getElectronPt(int i, TString sysbinname){
 
 }
 
-//// #brokenphotons
-////-------------------------getPhotonPt
-//Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
-//
-//      Float_t photonenergy = phoSCEn->at(idnr);
-//      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
-//      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
-//
-//      Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
-//
-//  return phoPt;
-//
-//}
+// #brokenphotons
+//-------------------------getPhotonPt
+Float_t analyzer_signal::getPhotonPt(int idnr, TString sysbinname){
+
+      Float_t photonenergy = phoSCEn->at(idnr);
+      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
+      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+
+     Float_t phoPt = photonenergy/TMath::CosH( (*phoSCEta)[idnr] );
+
+  return phoPt;
+
+}
 
 //-------------------------muon_passID
 std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
@@ -1807,24 +1807,24 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
  pholist.clear();
 
  ////Loop over photons                   
- //for(int p=0;p<nPho;p++)
- //{    
- // Float_t thephoPt = getPhotonPt(p,sysbinname);
- // //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
- // Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
+ for(int p=0;p<nPho;p++)
+ {    
+  Float_t thephoPt = getPhotonPt(p,sysbinname);
+  //Float_t thephoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  phoPt->at(p); 
+  Float_t thephoEta = phoSCEta->at(p);                                  //  phoEta->at(p);
 
- // //bool kinematic = phoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
- // bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
+  bool kinematic = thephoPt > phoPtCut && fabs((*phoSCEta)[p])<phoEtaCut;
+  //bool kinematic = thephoPt > phoPtCut && fabs(thephoEta)<phoEtaCut;
 
- // bool pass_bit = phoIDbit->at(p) >> bitnr & 0x1 == 1; 
- // //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
+  bool pass_bit = true; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
- // if( kinematic && pass_bit){
- //  nSelectedPho++;
- //  //printf("selected aphoton\n");
- //  pholist.push_back(p);
- // }    
- //}    
+  if( kinematic && pass_bit){
+   nSelectedPho++;
+   //printf("selected aphoton\n");
+   pholist.push_back(p);
+  }    
+ }    
 
  return pholist;
 

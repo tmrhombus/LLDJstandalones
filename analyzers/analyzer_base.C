@@ -66,10 +66,10 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
 //   phoEn = 0;
 //   phoEta = 0;
 //   phoPhi = 0;
-//   phoSCEn = 0;
-//   phoSCEta = 0;
+   phoSCEn = 0;
+   phoSCEta = 0;
 //   phoSCPhi = 0;
-//   phoIDbit = 0;
+   phoIDbit = 0;
 //   phoIDMVA = 0;
 //   phoObjPFChIso = 0;
 //   phoObjPFPhoIso = 0;
@@ -310,15 +310,15 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("llpDaughterPhi", &llpDaughterPhi, &b_llpDaughterPhi);
    fChain->SetBranchAddress("llpDaughterMass", &llpDaughterMass, &b_llpDaughterMass);
 //// #brokenphotons
-//   fChain->SetBranchAddress("nPho", &nPho, &b_nPho);
+   fChain->SetBranchAddress("nPho", &nPho, &b_nPho);
 //   fChain->SetBranchAddress("phoPt", &phoPt, &b_phoPt);
 //   fChain->SetBranchAddress("phoEn", &phoEn, &b_phoEn);
 //   fChain->SetBranchAddress("phoEta", &phoEta, &b_phoEta);
 //   fChain->SetBranchAddress("phoPhi", &phoPhi, &b_phoPhi);
-//   fChain->SetBranchAddress("phoSCEn", &phoSCEn, &b_phoSCEn);
-//   fChain->SetBranchAddress("phoSCEta", &phoSCEta, &b_phoSCEta);
+   fChain->SetBranchAddress("phoSCEn", &phoSCEn, &b_phoSCEn);
+   fChain->SetBranchAddress("phoSCEta", &phoSCEta, &b_phoSCEta);
 //   fChain->SetBranchAddress("phoSCPhi", &phoSCPhi, &b_phoSCPhi);
-//   fChain->SetBranchAddress("phoIDbit", &phoIDbit, &b_phoIDbit);
+   fChain->SetBranchAddress("phoIDbit", &phoIDbit, &b_phoIDbit);
 //   fChain->SetBranchAddress("phoIDMVA", &phoIDMVA, &b_phoIDMVA);
 //   fChain->SetBranchAddress("phoObjPFChIso", &phoObjPFChIso, &b_phoObjPFChIso);
 //   fChain->SetBranchAddress("phoObjPFPhoIso", &phoObjPFPhoIso, &b_phoObjPFPhoIso);
