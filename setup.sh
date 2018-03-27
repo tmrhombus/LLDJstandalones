@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples/"
-export nversion="tt50_lumiMask"
+export nversion="tt_LS50_lumiMask"
 export aversion="t3dy_cutflowDY_loose"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
