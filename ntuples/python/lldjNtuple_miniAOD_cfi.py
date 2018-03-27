@@ -26,6 +26,7 @@ lldjNtuple = cms.EDAnalyzer("lldjNtuple",
                              electronSrc          = cms.InputTag("selectedElectrons"),
                              photonSrc            = cms.InputTag("selectedPhotons"),
                              muonSrc              = cms.InputTag("slimmedMuons"),
+                             muonAODSrc           = cms.InputTag("selectedPatMuons"),
 
                              #isAOD                = cms.bool(False), #### actually configured through run_data_74x.py
 

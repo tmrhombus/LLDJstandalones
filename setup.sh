@@ -14,3 +14,4 @@ export plotdir="${basedir}/plots"
 export andir="${basedir}/analysis"
 
 export subdir="${basedir}/ntuples/config"
+export asubdir="${basedir}/submitters"

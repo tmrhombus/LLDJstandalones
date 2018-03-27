@@ -232,7 +232,7 @@ void lldjNtuple::fillTrigger(const edm::Event &e, const edm::EventSetup &es){
     std::bitset<bitsize> HLT_IsoMu22_b(bitIsoMu22);
     std::bitset<bitsize> HLT_IsoTkMu22_b(bitIsoTkMu22);
     std::bitset<bitsize> HLT_Mu17Mu8_b(bitMu17Mu8);
-    std::bitset<bitsize> HLT_Mu17TkMu8_b(HLT_Mu17TkMu8_b);
+    std::bitset<bitsize> HLT_Mu17TkMu8_b(bitMu17TkMu8);
 
   }
 

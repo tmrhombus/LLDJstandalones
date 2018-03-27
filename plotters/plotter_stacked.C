@@ -5,7 +5,7 @@ void plotter_stacked()
 {
 
  // Draw signal as lines
- Bool_t drawSignal = kTRUE;
+ Bool_t drawSignal = kFALSE; //kTRUE;
  Bool_t drawRatio = kTRUE;
  // y axis plots as log
  Bool_t dolog = kTRUE;
@@ -15,11 +15,7 @@ void plotter_stacked()
  TString outpath = TString("../plots/");
  //TString aversion = TString(getenv("aversion"));
 
- TString aversion = "laug_tight" ;
- //TString aversion = "coulou_loose";
- //TString aversion = "coulou_med";
- //TString aversion = "coulou_tight_noelsf";
- //TString aversion = "coulou_tight_noelsf_nopusf";
+ TString aversion = "jan23firsttry" ;
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
@@ -30,9 +26,9 @@ void plotter_stacked()
  // phase space regions to plot
  std::vector<TString> regions;
  regions.clear();
- regions.push_back("NoSel");
+ //regions.push_back("NoSel");
  //regions.push_back("Sig");
- regions.push_back("ZH");
+ //regions.push_back("ZH");
  regions.push_back("DY");
  // regions.push_back("OffZ");
  // regions.push_back("NoPair"); 
@@ -41,84 +37,84 @@ void plotter_stacked()
  std::vector<TString> leptons;
  leptons.clear();
  leptons.push_back("ele"); 
- leptons.push_back("mu");  
+ //leptons.push_back("mu");  
  //leptons.push_back("NoLepSel");
 
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
 
- variables.push_back("nVtx");                   
+ //variables.push_back("nVtx");                   
  // variables.push_back("nGoodVtx");               
  // variables.push_back("nTrksPV");                
 //  variables.push_back("rho");                    
-  variables.push_back("pfMET");                  
-  variables.push_back("pfMETPhi");               
+  //variables.push_back("pfMET");                  
+  //variables.push_back("pfMETPhi");               
 //  variables.push_back("pfMETsumEt");             
-  variables.push_back("nPho");                   
+  //variables.push_back("nPho");                   
 //  variables.push_back("phoE");                   
-  variables.push_back("phoEt");                  
-  variables.push_back("phoEta");                 
-  variables.push_back("phoPhi");                 
+//  variables.push_back("phoEt");                  
+//  variables.push_back("phoEta");                 
+//  variables.push_back("phoPhi");                 
 //  variables.push_back("phoCalibE");              
 //  variables.push_back("phoCalibEt");             
 //  variables.push_back("phoSCE");                 
 //  variables.push_back("phoSCRawE");              
 //  variables.push_back("phoSCPhi");               
 //  variables.push_back("phoSCEta");               
-  variables.push_back("nEle");                   
+//  variables.push_back("nEle");                   
   variables.push_back("elePt");                  
-  variables.push_back("eleEta");                 
-  variables.push_back("elePhi");                 
-  variables.push_back("eleSCEn");                
-  variables.push_back("eleSCEta");               
-  variables.push_back("eleSCPhi");               
-  variables.push_back("eleCalibPt");             
-  variables.push_back("eleCalibEn");             
-  variables.push_back("nMu");                    
-  variables.push_back("muPt");                   
-  variables.push_back("muEn");                   
-  variables.push_back("muEta");                  
-  variables.push_back("muPhi");                  
-  variables.push_back("nJet");                   
-  variables.push_back("htall"); 
-  variables.push_back("htjets");
-  variables.push_back("nSelectedPho");
-  variables.push_back("nSelectedEle");
-  variables.push_back("nSelectedMuo");
-  variables.push_back("nSelectedJet");
-  variables.push_back("LeadingJet_jetPt");                      
-  variables.push_back("LeadingJet_jetEn");                      
-  variables.push_back("LeadingJet_jetEta");                     
-  variables.push_back("LeadingJet_jetPhi");                     
+//  variables.push_back("eleEta");                 
+//  variables.push_back("elePhi");                 
+//  variables.push_back("eleSCEn");                
+//  variables.push_back("eleSCEta");               
+//  variables.push_back("eleSCPhi");               
+//  variables.push_back("eleCalibPt");             
+//  variables.push_back("eleCalibEn");             
+//  variables.push_back("nMu");                    
+//  variables.push_back("muPt");                   
+//  variables.push_back("muEn");                   
+//  variables.push_back("muEta");                  
+//  variables.push_back("muPhi");                  
+//  variables.push_back("nJet");                   
+//  variables.push_back("htall"); 
+//  variables.push_back("htjets");
+//  variables.push_back("nSelectedPho");
+//  variables.push_back("nSelectedEle");
+//  variables.push_back("nSelectedMuo");
+//  variables.push_back("nSelectedJet");
+//  variables.push_back("LeadingJet_jetPt");                      
+//  variables.push_back("LeadingJet_jetEn");                      
+//  variables.push_back("LeadingJet_jetEta");                     
+//  variables.push_back("LeadingJet_jetPhi");                     
 //  variables.push_back("LeadingJet_jetArea");                    
 //  variables.push_back("LeadingJet_jetLeadTrackPt");             
 //  variables.push_back("LeadingJet_jetLeadTrackEta");            
 //  variables.push_back("LeadingJet_jetLeadTrackPhi");            
-  variables.push_back("LeadingJet_jetCSV2BJetTags");            
-  variables.push_back("LeadingJet_jetJetProbabilityBJetTags");  
-  variables.push_back("LeadingJet_jetpfCombinedMVAV2BJetTags"); 
-  variables.push_back("LeadingJet_jetAlphaMax");                
-  variables.push_back("LeadingJet_jetAlphaMax2");               
-  variables.push_back("LeadingJet_jetAlphaMaxP");               
-  variables.push_back("LeadingJet_jetAlphaMaxP2");              
-  variables.push_back("LeadingJet_alphaMax_jetDauVertex_r");    
-  variables.push_back("LeadingJet_jetAlphaMax_PV3onPV2");       
-  variables.push_back("LeadingJet_jetAlphaMax_PV3onNeu");       
-  variables.push_back("LeadingJet_jetAlphaMax_PV3onAll");       
-  variables.push_back("LeadingJet_jetAlphaMax_PV2onNeu");       
-  variables.push_back("LeadingJet_jetAlphaMax_PV2onAll");       
-  variables.push_back("LeadingJet_jetAlpha2Max_PV3onPV2");      
-  variables.push_back("LeadingJet_jetAlpha2Max_PV3onNeu");      
-  variables.push_back("LeadingJet_jetAlpha2Max_PV3onAll");      
-  variables.push_back("LeadingJet_jetAlpha2Max_PV2onNeu");      
-  variables.push_back("LeadingJet_jetAlpha2Max_PV2onAll");      
-  variables.push_back("LeadingJet_jetAlphaD");                  
-  variables.push_back("LeadingJet_jetAlphaMaxD");               
-  variables.push_back("LeadingJet_jetLog10IPSig");              
-  variables.push_back("LeadingJet_jetMedianLog10IPSig");        
-  variables.push_back("LeadingJet_jetSumIP");                   
-  variables.push_back("LeadingJet_jetSumIPSig");                
+//  variables.push_back("LeadingJet_jetCSV2BJetTags");            
+//  variables.push_back("LeadingJet_jetJetProbabilityBJetTags");  
+//  variables.push_back("LeadingJet_jetpfCombinedMVAV2BJetTags"); 
+//  variables.push_back("LeadingJet_jetAlphaMax");                
+//  variables.push_back("LeadingJet_jetAlphaMax2");               
+//  variables.push_back("LeadingJet_jetAlphaMaxP");               
+//  variables.push_back("LeadingJet_jetAlphaMaxP2");              
+//  variables.push_back("LeadingJet_alphaMax_jetDauVertex_r");    
+//  variables.push_back("LeadingJet_jetAlphaMax_PV3onPV2");       
+//  variables.push_back("LeadingJet_jetAlphaMax_PV3onNeu");       
+//  variables.push_back("LeadingJet_jetAlphaMax_PV3onAll");       
+//  variables.push_back("LeadingJet_jetAlphaMax_PV2onNeu");       
+//  variables.push_back("LeadingJet_jetAlphaMax_PV2onAll");       
+//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onPV2");      
+//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onNeu");      
+//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onAll");      
+//  variables.push_back("LeadingJet_jetAlpha2Max_PV2onNeu");      
+//  variables.push_back("LeadingJet_jetAlpha2Max_PV2onAll");      
+//  variables.push_back("LeadingJet_jetAlphaD");                  
+//  variables.push_back("LeadingJet_jetAlphaMaxD");               
+//  variables.push_back("LeadingJet_jetLog10IPSig");              
+//  variables.push_back("LeadingJet_jetMedianLog10IPSig");        
+//  variables.push_back("LeadingJet_jetSumIP");                   
+//  variables.push_back("LeadingJet_jetSumIPSig");                
 //  variables.push_back("LeadingJet_jetTrackAngle");              
 //  variables.push_back("LeadingJet_jetLogTrackAngle");           
 //  variables.push_back("LeadingJet_jetMedianLogTrackAngle");     
@@ -260,25 +256,25 @@ void plotter_stacked()
  TH1F* h_Data   ;
 
  // load histogram files
- file_DY5to50_HT100To200                = new TFile( inpath + "DY5to50_HT100To200.root"               ) ; 
- file_DY5to50_HT200To400                = new TFile( inpath + "DY5to50_HT200To400.root"               ) ; 
- file_DY5to50_HT400To600                = new TFile( inpath + "DY5to50_HT400To600.root"               ) ; 
- file_DY5to50_HT600ToInf                = new TFile( inpath + "DY5to50_HT600ToInf.root"               ) ; 
- file_DY5to50_HT70To100                 = new TFile( inpath + "DY5to50_HT70To100.root"                ) ; 
+// file_DY5to50_HT100To200                = new TFile( inpath + "DY5to50_HT100To200.root"               ) ; 
+// file_DY5to50_HT200To400                = new TFile( inpath + "DY5to50_HT200To400.root"               ) ; 
+// file_DY5to50_HT400To600                = new TFile( inpath + "DY5to50_HT400To600.root"               ) ; 
+// file_DY5to50_HT600ToInf                = new TFile( inpath + "DY5to50_HT600ToInf.root"               ) ; 
+// file_DY5to50_HT70To100                 = new TFile( inpath + "DY5to50_HT70To100.root"                ) ; 
  file_DY50                              = new TFile( inpath + "DY50.root"                             ) ;
- file_ggZH_HToBB_ZToLL                  = new TFile( inpath + "ggZH_HToBB_ZToLL.root"                 ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS0      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0.root"     ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS0p05   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0p05.root"  ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS1      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1.root"     ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS10     = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10.root"    ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS100    = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS100.root"   ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS1000   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1000.root"  ) ;
- file_ggZH_HToSSTobbbb_MS40_ctauS10000  = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10000.root" ) ;
- file_GJets_HT40To100                   = new TFile( inpath + "GJets_HT40To100.root"                  ) ;
- file_GJets_HT100To200                  = new TFile( inpath + "GJets_HT100To200.root"                 ) ;
- file_GJets_HT200To400                  = new TFile( inpath + "GJets_HT200To400.root"                 ) ;
- file_GJets_HT400To600                  = new TFile( inpath + "GJets_HT400To600.root"                 ) ;
- file_GJets_HT600ToInf                  = new TFile( inpath + "GJets_HT600ToInf.root"                 ) ;
+// file_ggZH_HToBB_ZToLL                  = new TFile( inpath + "ggZH_HToBB_ZToLL.root"                 ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS0      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0.root"     ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS0p05   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0p05.root"  ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS1      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1.root"     ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS10     = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10.root"    ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS100    = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS100.root"   ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS1000   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1000.root"  ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS10000  = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10000.root" ) ;
+// file_GJets_HT40To100                   = new TFile( inpath + "GJets_HT40To100.root"                  ) ;
+// file_GJets_HT100To200                  = new TFile( inpath + "GJets_HT100To200.root"                 ) ;
+// file_GJets_HT200To400                  = new TFile( inpath + "GJets_HT200To400.root"                 ) ;
+// file_GJets_HT400To600                  = new TFile( inpath + "GJets_HT400To600.root"                 ) ;
+// file_GJets_HT600ToInf                  = new TFile( inpath + "GJets_HT600ToInf.root"                 ) ;
  file_ST_s                              = new TFile( inpath + "ST_s.root"                             ) ;
  file_STbar_t                           = new TFile( inpath + "STbar_t.root"                          ) ;
  file_ST_t                              = new TFile( inpath + "ST_t.root"                             ) ;
@@ -321,25 +317,25 @@ void plotter_stacked()
 
     // get histograms from files
     //h_DY10to50                          = (TH1F*)file_DY10to50                         ->Get("h_"+varname)->Clone( "DY10to50"                         ) ;
-    h_DY5to50_HT100To200                = (TH1F*)file_DY5to50_HT100To200               ->Get("h_"+varname)->Clone( "DY5to50_HT100To200"               ) ; 
-    h_DY5to50_HT200To400                = (TH1F*)file_DY5to50_HT200To400               ->Get("h_"+varname)->Clone( "DY5to50_HT200To400"               ) ; 
-    h_DY5to50_HT400To600                = (TH1F*)file_DY5to50_HT400To600               ->Get("h_"+varname)->Clone( "DY5to50_HT400To600"               ) ; 
-    h_DY5to50_HT600ToInf                = (TH1F*)file_DY5to50_HT600ToInf               ->Get("h_"+varname)->Clone( "DY5to50_HT600ToInf"               ) ; 
-    h_DY5to50_HT70To100                 = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "DY5to50_HT70To100"                ) ; 
+//    h_DY5to50_HT100To200                = (TH1F*)file_DY5to50_HT100To200               ->Get("h_"+varname)->Clone( "DY5to50_HT100To200"               ) ; 
+//    h_DY5to50_HT200To400                = (TH1F*)file_DY5to50_HT200To400               ->Get("h_"+varname)->Clone( "DY5to50_HT200To400"               ) ; 
+//    h_DY5to50_HT400To600                = (TH1F*)file_DY5to50_HT400To600               ->Get("h_"+varname)->Clone( "DY5to50_HT400To600"               ) ; 
+//    h_DY5to50_HT600ToInf                = (TH1F*)file_DY5to50_HT600ToInf               ->Get("h_"+varname)->Clone( "DY5to50_HT600ToInf"               ) ; 
+//    h_DY5to50_HT70To100                 = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "DY5to50_HT70To100"                ) ; 
     h_DY50                              = (TH1F*)file_DY50                             ->Get("h_"+varname)->Clone( "DY50"                             ) ;
-    h_ggZH_HToBB_ZToLL                  = (TH1F*)file_ggZH_HToBB_ZToLL                 ->Get("h_"+varname)->Clone( "ggZH_HToBB_ZToLL"                 ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0"     ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0p05   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0p05"  ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1"     ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10     = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10    ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10"    ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS100    = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS100   ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS100"   ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1000   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1000"  ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10000  = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10000" ) ;
-    h_GJets_HT40To100                   = (TH1F*)file_GJets_HT40To100                  ->Get("h_"+varname)->Clone( "GJets_HT40To100"                  ) ;
-    h_GJets_HT100To200                  = (TH1F*)file_GJets_HT100To200                 ->Get("h_"+varname)->Clone( "GJets_HT100To200"                 ) ;
-    h_GJets_HT200To400                  = (TH1F*)file_GJets_HT200To400                 ->Get("h_"+varname)->Clone( "GJets_HT200To400"                 ) ;
-    h_GJets_HT400To600                  = (TH1F*)file_GJets_HT400To600                 ->Get("h_"+varname)->Clone( "GJets_HT400To600"                 ) ;
-    h_GJets_HT600ToInf                  = (TH1F*)file_GJets_HT600ToInf                 ->Get("h_"+varname)->Clone( "GJets_HT600ToInf"                 ) ;
+//    h_ggZH_HToBB_ZToLL                  = (TH1F*)file_ggZH_HToBB_ZToLL                 ->Get("h_"+varname)->Clone( "ggZH_HToBB_ZToLL"                 ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0"     ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0p05   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0p05"  ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1"     ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10     = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10    ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10"    ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS100    = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS100   ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS100"   ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1000   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1000"  ) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10000  = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10000" ) ;
+//    h_GJets_HT40To100                   = (TH1F*)file_GJets_HT40To100                  ->Get("h_"+varname)->Clone( "GJets_HT40To100"                  ) ;
+//    h_GJets_HT100To200                  = (TH1F*)file_GJets_HT100To200                 ->Get("h_"+varname)->Clone( "GJets_HT100To200"                 ) ;
+//    h_GJets_HT200To400                  = (TH1F*)file_GJets_HT200To400                 ->Get("h_"+varname)->Clone( "GJets_HT200To400"                 ) ;
+//    h_GJets_HT400To600                  = (TH1F*)file_GJets_HT400To600                 ->Get("h_"+varname)->Clone( "GJets_HT400To600"                 ) ;
+//    h_GJets_HT600ToInf                  = (TH1F*)file_GJets_HT600ToInf                 ->Get("h_"+varname)->Clone( "GJets_HT600ToInf"                 ) ;
     h_ST_s                              = (TH1F*)file_ST_s                             ->Get("h_"+varname)->Clone( "ST_s"                             ) ;
     h_STbar_t                           = (TH1F*)file_STbar_t                          ->Get("h_"+varname)->Clone( "STbar_t"                          ) ;
     h_ST_t                              = (TH1F*)file_ST_t                             ->Get("h_"+varname)->Clone( "ST_t"                             ) ;
@@ -372,25 +368,25 @@ void plotter_stacked()
     //h_ZG->Scale(117.864/9117.864);
 
     // integrals of histograms
-    Double_t int_DY5to50_HT100To200                = h_DY5to50_HT100To200               ->Integral(0,-1) ; 
-    Double_t int_DY5to50_HT200To400                = h_DY5to50_HT200To400               ->Integral(0,-1) ; 
-    Double_t int_DY5to50_HT400To600                = h_DY5to50_HT400To600               ->Integral(0,-1) ; 
-    Double_t int_DY5to50_HT600ToInf                = h_DY5to50_HT600ToInf               ->Integral(0,-1) ; 
-    Double_t int_DY5to50_HT70To100                 = h_DY5to50_HT70To100                ->Integral(0,-1) ; 
+//    Double_t int_DY5to50_HT100To200                = h_DY5to50_HT100To200               ->Integral(0,-1) ; 
+//    Double_t int_DY5to50_HT200To400                = h_DY5to50_HT200To400               ->Integral(0,-1) ; 
+//    Double_t int_DY5to50_HT400To600                = h_DY5to50_HT400To600               ->Integral(0,-1) ; 
+//    Double_t int_DY5to50_HT600ToInf                = h_DY5to50_HT600ToInf               ->Integral(0,-1) ; 
+//    Double_t int_DY5to50_HT70To100                 = h_DY5to50_HT70To100                ->Integral(0,-1) ; 
     Double_t int_DY50                              = h_DY50                             ->Integral(0,-1) ;
-    Double_t int_ggZH_HToBB_ZToLL                  = h_ggZH_HToBB_ZToLL                 ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
-    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
-    Double_t int_GJets_HT40To100                   = h_GJets_HT40To100                  ->Integral(0,-1) ;
-    Double_t int_GJets_HT100To200                  = h_GJets_HT100To200                 ->Integral(0,-1) ;
-    Double_t int_GJets_HT200To400                  = h_GJets_HT200To400                 ->Integral(0,-1) ;
-    Double_t int_GJets_HT400To600                  = h_GJets_HT400To600                 ->Integral(0,-1) ;
-    Double_t int_GJets_HT600ToInf                  = h_GJets_HT600ToInf                 ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToBB_ZToLL                  = h_ggZH_HToBB_ZToLL                 ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
+//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
+//    Double_t int_GJets_HT40To100                   = h_GJets_HT40To100                  ->Integral(0,-1) ;
+//    Double_t int_GJets_HT100To200                  = h_GJets_HT100To200                 ->Integral(0,-1) ;
+//    Double_t int_GJets_HT200To400                  = h_GJets_HT200To400                 ->Integral(0,-1) ;
+//    Double_t int_GJets_HT400To600                  = h_GJets_HT400To600                 ->Integral(0,-1) ;
+//    Double_t int_GJets_HT600ToInf                  = h_GJets_HT600ToInf                 ->Integral(0,-1) ;
     Double_t int_ST_s                              = h_ST_s                             ->Integral(0,-1) ;
     Double_t int_STbar_t                           = h_STbar_t                          ->Integral(0,-1) ;
     Double_t int_ST_t                              = h_ST_t                             ->Integral(0,-1) ;
@@ -428,18 +424,18 @@ void plotter_stacked()
      fprintf (outtable, "\\Large  Backgrounds \\\\\n");
      fprintf (outtable, " \\hline \n");
      //fprintf (outtable, "DY10to50                          & %3.1f  \\\\\n", int_DY10to50                         ) ;
-     fprintf (outtable, "DY5to50_HT100To200                & %3.1f  \\\\\n", int_DY5to50_HT100To200               ) ; 
-     fprintf (outtable, "DY5to50_HT200To400                & %3.1f  \\\\\n", int_DY5to50_HT200To400               ) ; 
-     fprintf (outtable, "DY5to50_HT400To600                & %3.1f  \\\\\n", int_DY5to50_HT400To600               ) ; 
-     fprintf (outtable, "DY5to50_HT600ToInf                & %3.1f  \\\\\n", int_DY5to50_HT600ToInf               ) ; 
-     fprintf (outtable, "DY5to50_HT70To100                 & %3.1f  \\\\\n", int_DY5to50_HT70To100                ) ; 
+//     fprintf (outtable, "DY5to50_HT100To200                & %3.1f  \\\\\n", int_DY5to50_HT100To200               ) ; 
+//     fprintf (outtable, "DY5to50_HT200To400                & %3.1f  \\\\\n", int_DY5to50_HT200To400               ) ; 
+//     fprintf (outtable, "DY5to50_HT400To600                & %3.1f  \\\\\n", int_DY5to50_HT400To600               ) ; 
+//     fprintf (outtable, "DY5to50_HT600ToInf                & %3.1f  \\\\\n", int_DY5to50_HT600ToInf               ) ; 
+//     fprintf (outtable, "DY5to50_HT70To100                 & %3.1f  \\\\\n", int_DY5to50_HT70To100                ) ; 
      fprintf (outtable, "DY50                              & %3.1f  \\\\\n", int_DY50                             ) ;
-     fprintf (outtable, "ggZH\\_HToBB\\_ZToLL              & %3.1f  \\\\\n", int_ggZH_HToBB_ZToLL                 ) ;
-     fprintf (outtable, "GJets\\_HT40To100                 & %3.1f  \\\\\n", int_GJets_HT40To100                  ) ;
-     fprintf (outtable, "GJets\\_HT100To200                & %3.1f  \\\\\n", int_GJets_HT100To200                 ) ;
-     fprintf (outtable, "GJets\\_HT200To400                & %3.1f  \\\\\n", int_GJets_HT200To400                 ) ;
-     fprintf (outtable, "GJets\\_HT400To600                & %3.1f  \\\\\n", int_GJets_HT400To600                 ) ;
-     fprintf (outtable, "GJets\\_HT600ToInf                & %3.1f  \\\\\n", int_GJets_HT600ToInf                 ) ;
+//     fprintf (outtable, "ggZH\\_HToBB\\_ZToLL              & %3.1f  \\\\\n", int_ggZH_HToBB_ZToLL                 ) ;
+//     fprintf (outtable, "GJets\\_HT40To100                 & %3.1f  \\\\\n", int_GJets_HT40To100                  ) ;
+//     fprintf (outtable, "GJets\\_HT100To200                & %3.1f  \\\\\n", int_GJets_HT100To200                 ) ;
+//     fprintf (outtable, "GJets\\_HT200To400                & %3.1f  \\\\\n", int_GJets_HT200To400                 ) ;
+//     fprintf (outtable, "GJets\\_HT400To600                & %3.1f  \\\\\n", int_GJets_HT400To600                 ) ;
+//     fprintf (outtable, "GJets\\_HT600ToInf                & %3.1f  \\\\\n", int_GJets_HT600ToInf                 ) ;
      fprintf (outtable, "ST\\_s                            & %3.1f  \\\\\n", int_ST_s                             ) ;
      fprintf (outtable, "STbar\\_t                         & %3.1f  \\\\\n", int_STbar_t                          ) ;
      fprintf (outtable, "ST\\_t                            & %3.1f  \\\\\n", int_ST_t                             ) ;
@@ -456,7 +452,7 @@ void plotter_stacked()
      fprintf (outtable, "WZTo3LNu                          & %3.1f  \\\\\n", int_WZTo3LNu                         ) ;
      fprintf (outtable, "WZToLNu2QorQQ2L                   & %3.1f  \\\\\n", int_WZToLNu2QorQQ2L                  ) ;
      fprintf (outtable, "ZG                                & %3.1f  \\\\\n", int_ZG                               ) ;
-     fprintf (outtable, "ZH\\_HToBB\\_ZToLL                    & %3.1f  \\\\\n", int_ZH_HToBB_ZToLL                   ) ;
+//     fprintf (outtable, "ZH\\_HToBB\\_ZToLL                    & %3.1f  \\\\\n", int_ZH_HToBB_ZToLL                   ) ;
      fprintf (outtable, "ZZToLLNuNu                        & %3.1f  \\\\\n", int_ZZToLLNuNu                       ) ;
      fprintf (outtable, "ZZToLLQQ                          & %3.1f  \\\\\n", int_ZZToLLQQ                         ) ;
      fprintf (outtable, "ZZToNuNuQQ                        & %3.1f  \\\\\n", int_ZZToNuNuQQ                       ) ;
@@ -470,32 +466,32 @@ void plotter_stacked()
      //fprintf (outtable, "DoubleMuon                        & %3.1f  \\\\\n", int_DoubleMuon                       ) ;
      //fprintf (outtable, "MuonEG                            & %3.1f  \\\\\n", int_MuonEG                           ) ;
      fprintf (outtable, " \\hline \n");
-     fprintf (outtable, "Signel (only relative matters (xc = 1 ) \\\\\n");
-     fprintf (outtable, " \\hline \n");
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
-     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
+//     fprintf (outtable, "Signel (only relative matters (xc = 1 ) \\\\\n");
+//     fprintf (outtable, " \\hline \n");
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
+//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
      fprintf (outtable, "\\end{tabular}\n\n");
      fprintf (outtable, "\\end{document}\n\n");
     fclose (outtable);
 
     // merge some histograms
     h_DY = (TH1F*)h_DY50->Clone("h_DY");
-     h_DY->Add(h_DY5to50_HT100To200); 
-     h_DY->Add(h_DY5to50_HT200To400); 
-     h_DY->Add(h_DY5to50_HT400To600); 
-     h_DY->Add(h_DY5to50_HT600ToInf); 
-     h_DY->Add(h_DY5to50_HT70To100 ); 
+//     h_DY->Add(h_DY5to50_HT100To200); 
+//     h_DY->Add(h_DY5to50_HT200To400); 
+//     h_DY->Add(h_DY5to50_HT400To600); 
+//     h_DY->Add(h_DY5to50_HT600ToInf); 
+//     h_DY->Add(h_DY5to50_HT70To100 ); 
 
-    h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
-     h_GJets->Add(h_GJets_HT100To200);
-     h_GJets->Add(h_GJets_HT200To400);
-     h_GJets->Add(h_GJets_HT400To600);
-     h_GJets->Add(h_GJets_HT600ToInf);
+//    h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
+//     h_GJets->Add(h_GJets_HT100To200);
+//     h_GJets->Add(h_GJets_HT200To400);
+//     h_GJets->Add(h_GJets_HT400To600);
+//     h_GJets->Add(h_GJets_HT600ToInf);
 
     h_ST = (TH1F*)h_ST_s->Clone("h_ST");
      h_ST->Add(h_STbar_t);
@@ -503,8 +499,8 @@ void plotter_stacked()
      h_ST->Add(h_STbar_tW);
      h_ST->Add(h_ST_tW);
 
-    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
-     h_ZH->Add(h_ggZH_HToBB_ZToLL);
+//    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
+//     h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
     h_VV = (TH1F*)h_WWToLNuLNu->Clone("h_VV");
      h_VV->Add(h_WWToLNuQQ      ) ;
@@ -524,17 +520,17 @@ void plotter_stacked()
      h_VG->Add(h_ZG);
 
     h_Totbkg= (TH1F*)h_DY50->Clone("h_Totbkg");
-     h_Totbkg->Add(h_DY5to50_HT100To200) ; 
-     h_Totbkg->Add(h_DY5to50_HT200To400) ; 
-     h_Totbkg->Add(h_DY5to50_HT400To600) ; 
-     h_Totbkg->Add(h_DY5to50_HT600ToInf) ; 
-     h_Totbkg->Add(h_DY5to50_HT70To100 ) ; 
-     h_Totbkg->Add(h_ggZH_HToBB_ZToLL) ;
-     h_Totbkg->Add(h_GJets_HT40To100 ) ;
-     h_Totbkg->Add(h_GJets_HT100To200) ;
-     h_Totbkg->Add(h_GJets_HT200To400) ;
-     h_Totbkg->Add(h_GJets_HT400To600) ;
-     h_Totbkg->Add(h_GJets_HT600ToInf) ;
+//     h_Totbkg->Add(h_DY5to50_HT100To200) ; 
+//     h_Totbkg->Add(h_DY5to50_HT200To400) ; 
+//     h_Totbkg->Add(h_DY5to50_HT400To600) ; 
+//     h_Totbkg->Add(h_DY5to50_HT600ToInf) ; 
+//     h_Totbkg->Add(h_DY5to50_HT70To100 ) ; 
+//     h_Totbkg->Add(h_ggZH_HToBB_ZToLL) ;
+//     h_Totbkg->Add(h_GJets_HT40To100 ) ;
+//     h_Totbkg->Add(h_GJets_HT100To200) ;
+//     h_Totbkg->Add(h_GJets_HT200To400) ;
+//     h_Totbkg->Add(h_GJets_HT400To600) ;
+//     h_Totbkg->Add(h_GJets_HT600ToInf) ;
      h_Totbkg->Add(h_ST_s            ) ;
      h_Totbkg->Add(h_STbar_t         ) ;
      h_Totbkg->Add(h_ST_t            ) ;
@@ -571,9 +567,9 @@ void plotter_stacked()
 
     // count + ratio
     Double_t int_DY     = h_DY     ->Integral(0,-1) ; 
-    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; 
+//    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; 
     Double_t int_ST     = h_ST     ->Integral(0,-1) ; 
-    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; 
+//    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; 
     Double_t int_VV     = h_VV     ->Integral(0,-1) ; 
     Double_t int_TT     = h_TT     ->Integral(0,-1) ; 
     Double_t int_VG     = h_VG     ->Integral(0,-1) ; 
@@ -592,9 +588,9 @@ void plotter_stacked()
      fprintf (summarytable, "\\Large  Backgrounds \\\\\n");
      fprintf (summarytable, " \\hline \n");
      fprintf (summarytable, "DY      & %3.1f \\\\\n", int_DY     ) ; 
-     fprintf (summarytable, "GJets   & %3.1f \\\\\n", int_GJets  ) ; 
+//     fprintf (summarytable, "GJets   & %3.1f \\\\\n", int_GJets  ) ; 
      fprintf (summarytable, "ST      & %3.1f \\\\\n", int_ST     ) ; 
-     fprintf (summarytable, "ZH      & %3.1f \\\\\n", int_ZH     ) ; 
+//     fprintf (summarytable, "ZH      & %3.1f \\\\\n", int_ZH     ) ; 
      fprintf (summarytable, "VV      & %3.1f \\\\\n", int_VV     ) ; 
      fprintf (summarytable, "TT      & %3.1f \\\\\n", int_TT     ) ; 
      fprintf (summarytable, "VG      & %3.1f \\\\\n", int_VG     ) ; 
@@ -611,29 +607,29 @@ void plotter_stacked()
 
     // set attributes
     h_DY         -> SetLineColor(kBlack); 
-    h_GJets      -> SetLineColor(kBlack);
+//    h_GJets      -> SetLineColor(kBlack);
     h_ST         -> SetLineColor(kBlack); 
     h_TT         -> SetLineColor(kBlack); 
     h_WJetsToLNu -> SetLineColor(kBlack); 
     h_VV         -> SetLineColor(kBlack); 
     h_VG         -> SetLineColor(kBlack); 
-    h_ZH         -> SetLineColor(kBlack);
+//    h_ZH         -> SetLineColor(kBlack);
 
-    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
-
-    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
+//
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
+//    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetMarkerStyle(8);
@@ -642,36 +638,36 @@ void plotter_stacked()
 
     // make stack
     THStack *bgstack = new THStack("bgstack","");
-    bgstack->Add(h_ZH         );
+//    bgstack->Add(h_ZH         );
     bgstack->Add(h_VG         );
     bgstack->Add(h_WJetsToLNu ); 
     bgstack->Add(h_TT         ); 
     bgstack->Add(h_ST         ); 
     bgstack->Add(h_VV         ); 
-    bgstack->Add(h_GJets      );
+//    bgstack->Add(h_GJets      );
     bgstack->Add(h_DY         ); 
 
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS0p05   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS1      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1)); 
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS10     ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1)); 
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS100    ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1));   
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS1000   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1));  
-    }                                     
-    if( h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) > 0.1){ ;
-       h_ggZH_HToSSTobbbb_MS40_ctauS10000  ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ); 
-    }
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS0p05   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS1      ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1)); 
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS10     ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1)); 
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS100    ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1));   
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS1000   ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1));  
+//    }                                     
+//    if( h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) > 0.1){ ;
+//       h_ggZH_HToSSTobbbb_MS40_ctauS10000  ->Scale( int_Totbkg / h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ); 
+//    }
 
     // make legend
     TLegend *leg = new TLegend(0.6,0.6,0.85,0.85);
@@ -687,27 +683,27 @@ void plotter_stacked()
      leg->AddEntry(h_Data      , "Data Single Ele+Mu", "lpe");
     }
     leg->AddEntry(h_DY           , "Drell-Yan", "f"); 
-    leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
+//    leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
     leg->AddEntry(h_VV           , "Diboson", "f"); 
     leg->AddEntry(h_ST           , "Single Top", "f"); 
     leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
     leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
     leg->AddEntry(h_VG           , "V#gamma", "f");
-    leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
+//    leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
 
      TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
-    if(drawSignal){
-     sigleg->SetBorderSize(0);
-     sigleg->SetFillColor(kWhite);
-     sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
-     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
-    }
+//    if(drawSignal){
+//     sigleg->SetBorderSize(0);
+//     sigleg->SetFillColor(kWhite);
+//     sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
+//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
+//    }
 
     // set max and draw
     Double_t ymax = h_Data->GetMaximum();
@@ -721,16 +717,16 @@ void plotter_stacked()
     bgstack->Draw("sames hist PFC ");
     h_Data->Draw("sames E");
 
-    if(drawSignal){
-     h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Draw("hist sames") ;
-     h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Draw("hist sames") ;
-     sigleg->Draw();
-    }
+//    if(drawSignal){
+//     h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Draw("hist sames") ;
+//     h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Draw("hist sames") ;
+//     sigleg->Draw();
+//    }
     leg->Draw();
 
     // add titles

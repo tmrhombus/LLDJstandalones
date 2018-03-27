@@ -61,14 +61,15 @@ for sample in ${samples[@]}
 do
  #chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh"
 
- lc=$( cat  "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | grep "root" | wc -l )
- left=$(bash "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ #lc=$( cat  "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | grep "root" | wc -l )
+ #left=$(bash "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+
+ left=$(bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
+ lc=$( cat "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
 
  totin=$(($totin+$lc))
  totleft=$(($totleft+$left))
 
- #left=$(bash "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
- #lc=$( cat "${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh" | wc -l )
  printf "%40s %4s %4s \n" ${sample} ${lc}  ${left}
  #echo "${sample} ${lc}  ${left}"
  
