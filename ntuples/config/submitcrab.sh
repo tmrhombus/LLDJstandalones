@@ -1,7 +1,7 @@
 #voms-proxy-init --voms cms --valid 100:00
 
 # do we submit or just generate submit scripts
-dosubmit=false
+dosubmit=true
 doAOD=true
 dominiAOD=false
 domakeMiniAOD=false
