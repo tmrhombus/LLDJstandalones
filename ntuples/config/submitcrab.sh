@@ -54,7 +54,35 @@ cp "${subdir}/${msubmitconfig}"  ${thesubdir}
 
 # sample names to run over
 samples=( \
-  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
+##  "Data_SingleEle_H_3"   \
+##  "Data_SingleEle_H_2"   \
+##  "Data_SingleEle_G"     \
+##  "Data_SingleEle_F"     \
+  "Data_SingleEle_E"     \
+  "Data_SingleEle_D"     \
+  "Data_SingleEle_C"     \
+  "Data_SingleEle_B_2"   \
+#  "Data_SingleEle_B_1"   \
+
+##  "Data_SingleMu_H_3"    \
+##  "Data_SingleMu_H_2"    \
+##  "Data_SingleMu_G"      \
+##  "Data_SingleMu_F"      \
+  "Data_SingleMu_E"      \
+  "Data_SingleMu_D"      \
+#  "Data_SingleMu_C"      \
+#  "Data_SingleMu_B_2"    \
+#  "Data_SingleMu_B_1"    \
+
+#  "Data_SinglePhoton_H_3"    \
+#  "Data_SinglePhoton_H_2"    \
+#  "Data_SinglePhoton_G"      \
+#  "Data_SinglePhoton_F"      \
+#  "Data_SinglePhoton_E"      \
+#  "Data_SinglePhoton_D"      \
+#  "Data_SinglePhoton_C"      \
+#  "Data_SinglePhoton_B_2"    \
+#  "Data_SinglePhoton_B_1"    \
 )
 
 # Signal Samples
@@ -216,7 +244,7 @@ do
   then
    # DATA AOD
    CMSRUNCONFIG="'${dsubmitconfig}'" 
-   UPERJOB="100"
+   UPERJOB="50"
   elif [ ${dominiAOD} = true ]
   then
    # DATA miniAOD
@@ -254,7 +282,7 @@ do
  DATASET="'${datasetname}'"
  STORESITE="'T3_US_FNALLPC'"
  OUTLFNBASE="'/store/group/lpchbb/LLDJntuples/${nversion}'"
- MAXMEM="2000"
+ MAXMEM="4000"
 
  printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
