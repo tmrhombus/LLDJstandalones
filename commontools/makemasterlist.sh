@@ -37,6 +37,9 @@ do
  done
 done
 
+#remove bad entries from masterlist
+sed -i '/log/d' ${outdir}/allfiles${filetype}.masterlist
+sed -i '/failed/d' ${outdir}/allfiles${filetype}.masterlist
 #save master list and remove junk files
 mv templayer1.out ${outdir}/dir.out
 rm templayer2.out
