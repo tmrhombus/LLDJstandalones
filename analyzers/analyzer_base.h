@@ -63,13 +63,13 @@ public :
    std::vector<float>   *llpDaughterMass;
 // #brokenphotons
    Int_t           nPho;
-   //std::vector<float>   *phoPt;
-   //std::vector<float>   *phoEn;
-   //std::vector<float>   *phoEta;
-   //std::vector<float>   *phoPhi;
+   std::vector<float>   *phoPt;
+   std::vector<float>   *phoEn;
+   std::vector<float>   *phoEta;
+   std::vector<float>   *phoPhi;
    std::vector<float>   *phoSCEn;
    std::vector<float>   *phoSCEta;
-   //std::vector<float>   *phoSCPhi;
+   std::vector<float>   *phoSCPhi;
    std::vector<unsigned short> *phoIDbit;
    //std::vector<float>   *phoIDMVA;
    //std::vector<float>   *phoObjPFChIso;
@@ -254,13 +254,13 @@ public :
    //TBranch        *b_llpDaughterMass;   //!
 // #brokenphotons
    TBranch        *b_nPho;   //!
-//   TBranch        *b_phoPt;   //!
-//   TBranch        *b_phoEn;   //!
-//   TBranch        *b_phoEta;   //!
-//   TBranch        *b_phoPhi;   //!
+   TBranch        *b_phoPt;   //!
+   TBranch        *b_phoEn;   //!
+   TBranch        *b_phoEta;   //!
+   TBranch        *b_phoPhi;   //!
    TBranch        *b_phoSCEn;   //!
    TBranch        *b_phoSCEta;   //!
-//   TBranch        *b_phoSCPhi;   //!
+   TBranch        *b_phoSCPhi;   //!
    TBranch        *b_phoIDbit;   //!
 //   TBranch        *b_phoIDMVA;   //!
 //   TBranch        *b_phoObjPFChIso;   //!

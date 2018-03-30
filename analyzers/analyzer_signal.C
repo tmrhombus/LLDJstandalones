@@ -1884,11 +1884,9 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double phoPtCut, dou
 
 void analyzer_signal::loadPUWeight(){
  printf("loading PU weight \n");
- //char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
- //TString CMSSW_BASE = (TString)cCMSSW_BASE;
- //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
-
- TString filename = "puWeights_69200_24jan2017.root" ;
+ char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ TString CMSSW_BASE = (TString)cCMSSW_BASE;
+ TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
  TFile* file_puweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
@@ -1897,11 +1895,9 @@ void analyzer_signal::loadPUWeight(){
 
 void analyzer_signal::loadElectronWeight(){
  printf("loading Electron weight \n");
- //char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
- //TString CMSSW_BASE = (TString)cCMSSW_BASE;
- //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
-
- TString filename = "egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
+ TString CMSSW_BASE = (TString)cCMSSW_BASE;
+ TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
  TFile* file_eleweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
