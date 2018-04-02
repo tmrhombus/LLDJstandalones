@@ -365,6 +365,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    //fChain->SetBranchAddress("metFilters", &metFilters, &b_metFilters);
    //fChain->SetBranchAddress("pfMET", &pfMET, &b_pfMET);
    fChain->SetBranchAddress("AOD_pfMET_phi", &AOD_pfMET_phi, &b_AOD_pfMET_phi);
+   fChain->SetBranchAddress("AOD_pfMET_pt", &AOD_pfMET_pt, &b_AOD_pfMET_pt);
    //fChain->SetBranchAddress("pfMETsumEt", &pfMETsumEt, &b_pfMETsumEt);
    //fChain->SetBranchAddress("pfMETmEtSig", &pfMETmEtSig, &b_pfMETmEtSig);
    //fChain->SetBranchAddress("pfMETSig", &pfMETSig, &b_pfMETSig);

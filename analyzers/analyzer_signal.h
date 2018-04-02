@@ -237,6 +237,7 @@ public :
 
  //TH1F  h_AOD_pfMET                    [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_pfMET_phi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_pfMET_pt                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  //TH1F  h_AOD_pfMETsumEt               [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nAODPho                      [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -266,6 +267,8 @@ public :
  TH1F  h_AOD_muPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_muCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_muPFdBetaIsolation      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muDxy                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muDxyErr                [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODnCaloJet             [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  // AOD jet histograms

@@ -198,6 +198,7 @@ public :
    //Int_t           metFilters;
    //Float_t         pfMET;
    Float_t         AOD_pfMET_phi;
+   Float_t         AOD_pfMET_pt;
    //Float_t         pfMETsumEt;
    //Float_t         pfMETmEtSig;
    //Float_t         pfMETSig;
@@ -384,6 +385,7 @@ public :
    //TBranch        *b_metFilters;   //!
    //TBranch        *b_pfMET;   //!
    TBranch        *b_AOD_pfMET_phi;   //!
+   TBranch        *b_AOD_pfMET_pt;   //!
    //TBranch        *b_pfMETsumEt;   //!
    //TBranch        *b_pfMETmEtSig;   //!
    //TBranch        *b_pfMETSig;   //!

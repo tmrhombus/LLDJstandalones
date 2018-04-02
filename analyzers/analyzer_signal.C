@@ -384,9 +384,10 @@ Bool_t analyzer_signal::initBasicHistograms(){
    //TString hname_nTruePU                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nTruePU     "; 
    //TString hname_AOD_pfMET                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_pfMET       "; 
    TString hname_AOD_pfMET_phi                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_pfMET_phi    "; 
-   //TString hname_AOD_pfMETsumEt               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_pfMETsumEt  "; 
+   TString hname_AOD_pfMET_pt                  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_pfMET_pt    "; 
+   //TString hname_AOD_pfMETsumEt              = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_pfMETsumEt  "; 
 
-   TString hname_nAODPho                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nAODPho        "; 
+   TString hname_nAODPho                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nAODPho        "; 
    TString hname_AOD_phoEn                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_phoEn       "; 
    TString hname_AOD_phoPt                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_phoPt       "; 
    TString hname_AOD_phoEta                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_phoEta      "; 
@@ -415,6 +416,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    TString hname_AOD_muPhi                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muPhi              "; 
    TString hname_AOD_muCharge                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muCharge           "; 
    TString hname_AOD_muPFdBetaIsolation       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muPFdBetaIsolation "; 
+   TString hname_AOD_muDxy                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxy              "; 
+   TString hname_AOD_muDxyErr                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxyErr           "; 
 
    TString hname_htall                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall        " ;
    TString hname_htaodcalojets            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htaodcalojets" ;
@@ -434,7 +437,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    //h_rhoCentral               [i][k] = initSingleHistogramTH1F( hname_rhoCentral              , "rhoCentral             ", 30, -3, 3); 
    //h_nTruePU                  [i][k] = initSingleHistogramTH1F( hname_nTruePU                 , "nTruePU                ", 60,0,60) ;  
    //h_AOD_pfMET                    [i][k] = initSingleHistogramTH1F( hname_AOD_pfMET                   , "AOD_pfMET                  ", 50, 0, 500) ;  
-   h_AOD_pfMET_phi                 [i][k] = initSingleHistogramTH1F( hname_AOD_pfMET_phi                , "AOD_pfMET_phi               ", 30, -5, 5); 
+   h_AOD_pfMET_phi                  [i][k] = initSingleHistogramTH1F( hname_AOD_pfMET_phi               , "AOD_pfMET_phi              ", 30, -5, 5); 
+   h_AOD_pfMET_pt                   [i][k] = initSingleHistogramTH1F( hname_AOD_pfMET_pt                , "AOD_pfMET_pt               ", 50, 0, 500); 
    //h_AOD_pfMETsumEt               [i][k] = initSingleHistogramTH1F( hname_AOD_pfMETsumEt              , "AOD_pfMETsumEt             ", 50, 0, 500)  ;
 
    h_AOD_phoEn                    [i][k] = initSingleHistogramTH1F( hname_AOD_phoEn                   , "AOD_phoEn                  ", 50, 0, 500) ;  
@@ -463,6 +467,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    h_AOD_muPhi                    [i][k] = initSingleHistogramTH1F( hname_AOD_muPhi                   , "AOD_muPhi                  ", 30, -5, 5); 
    h_AOD_muCharge                 [i][k] = initSingleHistogramTH1F( hname_AOD_muCharge                , "AOD_muCharge               ", 3, -1, 1); 
    h_AOD_muPFdBetaIsolation       [i][k] = initSingleHistogramTH1F( hname_AOD_muPFdBetaIsolation      , "AOD_muPFdBetaIsolation     ", 30, -5, 5); 
+   h_AOD_muDxy                    [i][k] = initSingleHistogramTH1F( hname_AOD_muDxy                   , "AOD_muDxy                  ", 30, 0, 10); 
+   h_AOD_muDxyErr                 [i][k] = initSingleHistogramTH1F( hname_AOD_muDxyErr                , "AOD_muDxyErr               ", 30, 0, 0.5); 
 
    h_htall                    [i][k] = initSingleHistogramTH1F( hname_htall               , "htall "             , 50,0,1000) ; 
    h_htaodcalojets            [i][k] = initSingleHistogramTH1F( hname_htaodcalojets       , "htaodcalojets"      , 50,0,1000) ; 
@@ -491,7 +497,8 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
  //h_rhoCentral              [selbin][lepbin] .Fill( rhoCentral , weight);  
  //h_nTruePU                 [selbin][lepbin] .Fill( nTruePU    , weight);  
  //h_AOD_pfMET                   [selbin][lepbin] .Fill( AOD_pfMET      , weight);  
- h_AOD_pfMET_phi                [selbin][lepbin] .Fill( AOD_pfMET_phi   , weight);  
+ h_AOD_pfMET_phi                 [selbin][lepbin] .Fill( AOD_pfMET_phi   , weight);  
+ h_AOD_pfMET_pt                  [selbin][lepbin] .Fill( AOD_pfMET_pt   , weight);  
  //h_AOD_pfMETsumEt              [selbin][lepbin] .Fill( AOD_pfMETsumEt , weight);  
 
  h_htall                   [selbin][lepbin] .Fill( htall              , weight); 
@@ -539,6 +546,8 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
   h_AOD_muPhi              [selbin][lepbin] .Fill( AOD_muPhi              ->at(muindex), weight );  
   h_AOD_muCharge           [selbin][lepbin] .Fill( AOD_muCharge           ->at(muindex), weight );  
   h_AOD_muPFdBetaIsolation [selbin][lepbin] .Fill( AOD_muPFdBetaIsolation ->at(muindex), weight );  
+  h_AOD_muDxy              [selbin][lepbin] .Fill( AOD_muDxy              ->at(muindex), weight );  
+  h_AOD_muDxyErr           [selbin][lepbin] .Fill( AOD_muDxyErr           ->at(muindex), weight );  
  }
 
  return kTRUE;
@@ -555,7 +564,8 @@ Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
  //h_rhoCentral              [selbin][lepbin] .Write(); 
  //h_nTruePU                 [selbin][lepbin] .Write(); 
  //h_AOD_pfMET                   [selbin][lepbin] .Write(); 
- h_AOD_pfMET_phi                [selbin][lepbin] .Write(); 
+ h_AOD_pfMET_phi                 [selbin][lepbin] .Write(); 
+ h_AOD_pfMET_pt                  [selbin][lepbin] .Write(); 
  //h_AOD_pfMETsumEt              [selbin][lepbin] .Write(); 
 
  h_htall                   [selbin][lepbin] .Write(); 
@@ -592,6 +602,8 @@ Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
  h_AOD_muPhi                   [selbin][lepbin] .Write(); 
  h_AOD_muCharge                [selbin][lepbin] .Write(); 
  h_AOD_muPFdBetaIsolation      [selbin][lepbin] .Write(); 
+ h_AOD_muDxy                   [selbin][lepbin] .Write(); 
+ h_AOD_muDxyErr                [selbin][lepbin] .Write(); 
 
  return kTRUE;
 }
