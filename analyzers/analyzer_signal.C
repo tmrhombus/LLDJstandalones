@@ -764,7 +764,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
- for(unsigned int j=0; j<jetmultnames.size()-1; ++j){
+ for(unsigned int j=0; j<jetmultnames.size()-(int)!fillAll; ++j){
   if( (int)aodcalojet_list.size()>j ){
    int aodcalojetindex = aodcalojet_list[j];
     h_AODCaloJetPt                             [selbin][j][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
@@ -874,7 +874,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
 Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
 {
  //printf("writeAODCaloJetHistograms\n");
- for(unsigned int j=0; j<jetmultnames.size(); ++j){
+ for(unsigned int j=0; j<jetmultnames.size()-(int)!fillAll; ++j){
   h_AODCaloJetPt                             [selbin][j][lepbin].Write(); 
   h_AODCaloJetEta                            [selbin][j][lepbin].Write(); 
   h_AODCaloJetPhi                            [selbin][j][lepbin].Write(); 
