@@ -53,10 +53,11 @@ Make sure to run `source setup.sh` from the `LLDJstandalones` directory first to
 
 ### list files
 From `commontools` folder
-1. `bash makelists.sh` makes lists of files and puts them in `lists` folder
-2. `bash rmbadfiles.sh` removes a few specific corrupted files from lists
-3. `bash cleanlists.sh` goes through lists and makes sure only .root files are present
-4. `bash countevents.sh` calls `countevents.cxx` and makes .info files in `lists` folder
+1. `bash makemasterlist.sh` makes master lists from which other lists are derived
+2. `bash makelists.sh` makes lists of files and puts them in `lists` folder
+3. `bash rmbadfiles.sh` removes a few specific corrupted files from lists
+4. `bash cleanlists.sh` goes through lists and makes sure only .root files are present
+5. `bash countevents.sh` calls `countevents.cxx` and makes .info files in `lists` folder
 
 ### run analyzer
 From `analyzers` folder
