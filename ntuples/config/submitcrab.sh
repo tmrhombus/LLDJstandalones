@@ -243,10 +243,6 @@ do
  if [ ${dodata} = true ]
  then
      LUMIMASK="'${PWD}/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'"
-     if [[ ${datasetname} =~ .*PromptReco.* ]]
-     then
-	 LUMIMASK="'${PWD}/jsons/Cert_271036-284044_13TeV_PromptReco_Collisions16_JSON.txt'"
-     fi
  fi
 
  # choose correct config parameters
