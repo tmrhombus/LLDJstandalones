@@ -59,9 +59,6 @@ void analyzer_signal::Loop(TString outfilename,
  if (phoid = "Medium") phoidbit=1;
  if (phoid = "Tight")  phoidbit=2;
 
- //if (eleid = "Loose")  eleidbit=1;
- //if (eleid = "Medium") eleidbit=2;
- //if (eleid = "Tight")  eleidbit=3;
  if (eleid = "Loose")  eleidbit=0;
  if (eleid = "Medium") eleidbit=1;
  if (eleid = "Tight")  eleidbit=2;
@@ -876,19 +873,12 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
  
   //Preliminary tag.  Call it Tag0. 
   //Selection could also be done earlier to make a list like the kinematic and id selection on calo jets
-  //  if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 && 
-  //      AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 && 
-  //      AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
-  //std::cout <<"BEN: " <<AODCaloJetMedianLog10IPSig->at(aodcalojetindex) << " " << AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex) << " " << AODCaloJetAlphaMax->at(aodcalojetindex) << " " << AODCaloJetPt                             ->at( aodcalojetindex ) <<std::endl;
-  //loose test
-  if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>0.1 && 
-      AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-3.5 && 
-      AODCaloJetAlphaMax->at(aodcalojetindex)<2.5) {
+  if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 && 
+      AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 && 
+      AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
 
-    //std::cout << "PRE: " << h_AODCaloJet_Tag0_Pt[selbin][incjetbin][lepbin].Integral() << std::endl;
     h_AODCaloJet_Tag0_Pt                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
-    //std::cout << "POST: " << h_AODCaloJet_Tag0_Pt[selbin][incjetbin][lepbin].Integral() << std::endl;
-
+    
   }//Tag0
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
