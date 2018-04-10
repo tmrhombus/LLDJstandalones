@@ -207,34 +207,36 @@ void analyzer_signal::Loop(TString outfilename,
 
   //if( passSingleEle ){
   if( passSingleEle || passDoubleEle ){
-                        fillBasicHistograms(event_weight,0,0);  /* fillSlimmedJetHistograms(event_weight,0,0);*/ fillAODCaloJetHistograms(event_weight,0,0);  
-   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); /* fillSlimmedJetHistograms(event_weight,1,0);*/ fillAODCaloJetHistograms(event_weight,1,0); }
-   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); /* fillSlimmedJetHistograms(event_weight,2,0);*/ fillAODCaloJetHistograms(event_weight,2,0); }
-   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); /* fillSlimmedJetHistograms(event_weight,3,0);*/ fillAODCaloJetHistograms(event_weight,3,0); }
-   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); /* fillSlimmedJetHistograms(event_weight,4,0);*/ fillAODCaloJetHistograms(event_weight,4,0); }
-   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); /* fillSlimmedJetHistograms(event_weight,5,0);*/ fillAODCaloJetHistograms(event_weight,5,0); }
+                        fillBasicHistograms(event_weight,0,0); fillAODCaloJetHistograms(event_weight,0,0);  
+   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,0); fillAODCaloJetHistograms(event_weight,1,0); }
+   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,0); fillAODCaloJetHistograms(event_weight,2,0); }
+   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,0); fillAODCaloJetHistograms(event_weight,3,0); }
+   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,0); fillAODCaloJetHistograms(event_weight,4,0); }
+   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,0); fillAODCaloJetHistograms(event_weight,5,0); }
   }
 
   //if( passSingleMu ){
   if( passSingleMu || passDoubleMu ){
-                        fillBasicHistograms(event_weight,0,1);  /* fillSlimmedJetHistograms(event_weight,0,1);*/ fillAODCaloJetHistograms(event_weight,0,1);  
-   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); /* fillSlimmedJetHistograms(event_weight,1,1);*/ fillAODCaloJetHistograms(event_weight,1,1); }
-   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); /* fillSlimmedJetHistograms(event_weight,2,1);*/ fillAODCaloJetHistograms(event_weight,2,1); }
-   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); /* fillSlimmedJetHistograms(event_weight,3,1);*/ fillAODCaloJetHistograms(event_weight,3,1); }
-   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); /* fillSlimmedJetHistograms(event_weight,4,1);*/ fillAODCaloJetHistograms(event_weight,4,1); }
-   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); /* fillSlimmedJetHistograms(event_weight,5,1);*/ fillAODCaloJetHistograms(event_weight,5,1); }
+                        fillBasicHistograms(event_weight,0,1); fillAODCaloJetHistograms(event_weight,0,1);  
+   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,1); fillAODCaloJetHistograms(event_weight,1,1); }
+   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,1); fillAODCaloJetHistograms(event_weight,2,1); }
+   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,1); fillAODCaloJetHistograms(event_weight,3,1); }
+   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,1); fillAODCaloJetHistograms(event_weight,4,1); }
+   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,1); fillAODCaloJetHistograms(event_weight,5,1); }
   }
    
   //No Lep selection
-                        fillBasicHistograms(event_weight,0,2);  /* fillSlimmedJetHistograms(event_weight,0,2);*/ fillAODCaloJetHistograms(event_weight,0,2);  
-   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); /* fillSlimmedJetHistograms(event_weight,1,2);*/ fillAODCaloJetHistograms(event_weight,1,2); }
-   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); /* fillSlimmedJetHistograms(event_weight,2,2);*/ fillAODCaloJetHistograms(event_weight,2,2); }
-   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); /* fillSlimmedJetHistograms(event_weight,3,2);*/ fillAODCaloJetHistograms(event_weight,3,2); }
-   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); /* fillSlimmedJetHistograms(event_weight,4,2);*/ fillAODCaloJetHistograms(event_weight,4,2); }
-   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); /* fillSlimmedJetHistograms(event_weight,5,2);*/ fillAODCaloJetHistograms(event_weight,5,2); }
+                        fillBasicHistograms(event_weight,0,2); fillAODCaloJetHistograms(event_weight,0,2);  
+   if( doesPassSig   ){ fillBasicHistograms(event_weight,1,2); fillAODCaloJetHistograms(event_weight,1,2); }
+   if( doesPassZH    ){ fillBasicHistograms(event_weight,2,2); fillAODCaloJetHistograms(event_weight,2,2); }
+   if( doesPassDY    ){ fillBasicHistograms(event_weight,3,2); fillAODCaloJetHistograms(event_weight,3,2); }
+   if( doesPassOffZ  ){ fillBasicHistograms(event_weight,4,2); fillAODCaloJetHistograms(event_weight,4,2); }
+   if( doesPassNoPair){ fillBasicHistograms(event_weight,5,2); fillAODCaloJetHistograms(event_weight,5,2); }
   
   //printf("make log: %0.i\n",makelog);
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
+  
+  //use if(eventSelection) here
   OPTtree->Fill();
  } // end loop over entries
 
