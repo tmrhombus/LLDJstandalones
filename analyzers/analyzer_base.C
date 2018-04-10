@@ -87,6 +87,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    //AOD_eleSCPhi = 0;
    AOD_eleCharge = 0;
    AOD_eleChargeConsistent = 0;
+   AOD_elePassConversionVeto = 0;
    AOD_eleIDbit = 0;
    //AOD_elePFdBetaIsolationRhoEA = 0;
    //AOD_elePFdBetaIsolationCHS = 0;
@@ -256,6 +257,7 @@ void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
    //fChain->SetBranchAddress("AOD_eleSCPhi", &AOD_eleSCPhi, &b_AOD_eleSCPhi);
    fChain->SetBranchAddress("AOD_eleCharge", &AOD_eleCharge, &b_AOD_eleCharge);
    fChain->SetBranchAddress("AOD_eleChargeConsistent", &AOD_eleChargeConsistent, &b_AOD_eleChargeConsistent);
+   fChain->SetBranchAddress("AOD_elePassConversionVeto", &AOD_elePassConversionVeto, &b_AOD_elePassConversionVeto);
    fChain->SetBranchAddress("AOD_eleIDbit", &AOD_eleIDbit, &b_AOD_eleIDbit);
    //fChain->SetBranchAddress("AOD_elePFdBetaIsolationRhoEA", &AOD_elePFdBetaIsolationRhoEA, &b_AOD_elePFdBetaIsolationRhoEA);
    //fChain->SetBranchAddress("AOD_elePFdBetaIsolationCHS", &AOD_elePFdBetaIsolationCHS, &b_AOD_elePFdBetaIsolationCHS);

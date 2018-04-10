@@ -89,6 +89,7 @@ public :
    //std::vector<float>   *AOD_eleSCPhi;
    std::vector<int>     *AOD_eleCharge;
    std::vector<int>     *AOD_eleChargeConsistent;
+   std::vector<int>     *AOD_elePassConversionVeto;
    std::vector<unsigned short> *AOD_eleIDbit;
    //std::vector<float>   *AOD_elePFdBetaIsolationRhoEA;
    //std::vector<float>   *AOD_elePFdBetaIsolationCHS;
@@ -276,6 +277,7 @@ public :
    //TBranch        *b_AOD_eleSCPhi;   //!
    TBranch        *b_AOD_eleCharge;   //!
    TBranch        *b_AOD_eleChargeConsistent;   //!
+   TBranch        *b_AOD_elePassConversionVeto;   //!
    TBranch        *b_AOD_eleIDbit;   //!
    //TBranch        *b_AOD_elePFdBetaIsolationRhoEA;   //!
    //TBranch        *b_AOD_elePFdBetaIsolationCHS;   //!
