@@ -31,7 +31,7 @@ public :
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
  //option to turn on/off the "AllJets" histograms
- bool fillAll = false;
+ bool fillAll = true;
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
@@ -317,6 +317,9 @@ public :
  TH1F  h_AODCaloJetAvfDistToPV                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+
+ //Tag0
+ TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
 };
 
