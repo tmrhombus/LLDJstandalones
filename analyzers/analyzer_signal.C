@@ -59,9 +59,9 @@ void analyzer_signal::Loop(TString outfilename,
  if (phoid = "Medium") phoidbit=1;
  if (phoid = "Tight")  phoidbit=2;
 
- if (eleid = "Loose")  eleidbit=1;
- if (eleid = "Medium") eleidbit=2;
- if (eleid = "Tight")  eleidbit=3;
+ if (eleid = "Loose")  eleidbit=0;
+ if (eleid = "Medium") eleidbit=1;
+ if (eleid = "Tight")  eleidbit=2;
 
  if (muoid = "Loose")  muoidbit=0;
  if (muoid = "Medium") muoidbit=1;
@@ -181,6 +181,7 @@ void analyzer_signal::Loop(TString outfilename,
   passPTOSSFg50 = (dilep_pt>50.);
 
   //passGoodVtx = nVtx>0;
+  passGoodVtx = true;//UNTIL WE HAVE VERTICES IN NTUPLES
   
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
@@ -663,6 +664,8 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     TString hname_AODCaloJetAvfVertexDeltaZtoPV           = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV";            
     TString hname_AODCaloJetAvfVertexDeltaZtoPV2          = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV2";           
 
+    TString hname_AODCaloJet_Tag0_Pt                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJet_Tag0_Pt";                             
+
     h_AODCaloJetPt                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
     h_AODCaloJetEta                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
     h_AODCaloJetPhi                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPhi                            , "AODCaloJetPhi                           ", 30,-5,5   ); 
@@ -706,6 +709,9 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetAvfDistToPV                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfDistToPV                    , "AODCaloJetAvfDistToPV                   ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV            , "AODCaloJetAvfVertexDeltaZtoPV           ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV2           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV2           , "AODCaloJetAvfVertexDeltaZtoPV2          ", 30, -3, 3 ); 
+
+    //Tag0
+    h_AODCaloJet_Tag0_Pt                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJet_Tag0_Pt                       , "AODCaloJet_Tag0_Pt                      ", 50,0,500  ); 
 
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -818,7 +824,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
 
  // now fill inclusive
  // this should work, and if it doesn't that's a clue we screwed up somewhere earlier
-  int incjetbin = (int) jetmultnames.size();
+ int incjetbin = (int) jetmultnames.size()-1;
  for(int i =0; i<(int)aodcalojet_list.size(); i++)
  { 
   int aodcalojetindex = aodcalojet_list[i];
@@ -865,6 +871,17 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
 //h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );   // this vector isn't the same length I guess
+
+ 
+  //Preliminary tag.  Call it Tag0. 
+  //Selection could also be done earlier to make a list like the kinematic and id selection on calo jets
+  if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 && 
+      AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 && 
+      AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
+
+    h_AODCaloJet_Tag0_Pt                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
+    
+  }//Tag0
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
 
@@ -920,6 +937,8 @@ Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
   h_AODCaloJetAvfDistToPV                    [selbin][j][lepbin].Write(); 
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Write(); 
  // h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Write(); 
+
+  h_AODCaloJet_Tag0_Pt                       [selbin][j][lepbin].Write(); 
 
  }
 
@@ -1194,7 +1213,10 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
  {    
 
   Float_t electronPt = getElectronPt(i,sysbinname);
+
   bool pass_kin = electronPt > elePtCut && ( fabs(AOD_eleEta->at(i)) < eleEtaCut ) ;
+
+  bool pass_convsersion_veto = (AOD_elePassConversionVeto->at(i) > 0); //could have been bool
 
   bool pass_bit = AOD_eleIDbit->at(i) >> bitnr & 0x1 == 1;      
 
@@ -1215,7 +1237,7 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   //bool pass_iso = elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
   //bool pass_iso = elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
-  if( pass_bit && pass_kin && pass_overlap)
+  if( pass_bit && pass_kin && pass_overlap && pass_convsersion_veto)
   {
    nSelectedEle++;
    //printf(" a selected electron\n");
