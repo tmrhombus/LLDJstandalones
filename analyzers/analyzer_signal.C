@@ -1188,7 +1188,7 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
   if (muoid = "Loose")  muoisoval = 0.25 ;
   if (muoid = "Medium") muoisoval = 0.25 ;
   if (muoid = "Tight")  muoisoval = 0.15 ;
-  bool pass_iso = AOD_muPFdBetaIsolation->at(i) > muoisoval ;
+  bool pass_iso = AOD_muPFdBetaIsolation->at(i) < muoisoval ;
 
   if( pass_bit && pass_kin && pass_iso )
   {
