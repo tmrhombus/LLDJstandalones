@@ -50,7 +50,7 @@ void analyzer_signal::Loop(TString outfilename,
  n_mu_passNoPair = 0;
 
  // set which collections
- phoid = "Loose"; // "Tight"; "Loose"; //Medium"; 
+ phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
  eleid = "Loose"; // "Tight"; "Loose"; //Medium"; 
  muoid = "Loose"; // "Tight"; "Loose"; //Medium"; 
  jetid = "Loose"; // "Tight"; "Loose";
@@ -238,7 +238,7 @@ void analyzer_signal::Loop(TString outfilename,
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
   
   //use if(eventSelection) here
-  OPTtree->Fill();
+  if(doesPassZH)OPTtree->Fill();
  } // end loop over entries
 
  printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
@@ -259,7 +259,6 @@ void analyzer_signal::Loop(TString outfilename,
  for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
   for(unsigned int k=0; k<lepnames.size(); ++k){
    writeBasicHistograms(i,k);
-   //writeSlimmedJetHistograms(i,k);
    writeAODCaloJetHistograms(i,k);
    //write2DHistograms(i,k);
   }
@@ -269,7 +268,6 @@ void analyzer_signal::Loop(TString outfilename,
  OPTtree->Write();
  optfile->Close();
 
-//std::cout<<"Total!=0: "<<n_test <<" Total ==0 "<<n_test2<<std::endl;
 } // end analyzer_signal::Loop()
 
 //----------------------------initSingleHistogramTH1F
@@ -283,7 +281,6 @@ TH1F analyzer_signal::initSingleHistogramTH1F(TString hname, TString htitle, Int
  return histoTH1F;
 
 }
-
 
 
 //----------------------------initSingleHistogramTH2F
@@ -724,51 +721,6 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
 Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin)
 {
 
-// printf(" AODCaloJetPt                            %u\n",  AODCaloJetPt                            ->size() ); 
-// printf(" AODCaloJetEta                           %u\n",  AODCaloJetEta                           ->size() ); 
-// printf(" AODCaloJetPhi                           %u\n",  AODCaloJetPhi                           ->size() ); 
-// printf(" AODCaloJetAlphaMax                      %u\n",  AODCaloJetAlphaMax                      ->size() ); 
-// printf(" AODCaloJetAlphaMax2                     %u\n",  AODCaloJetAlphaMax2                     ->size() ); 
-// printf(" AODCaloJetAlphaMaxPrime                 %u\n",  AODCaloJetAlphaMaxPrime                 ->size() ); 
-// printf(" AODCaloJetAlphaMaxPrime2                %u\n",  AODCaloJetAlphaMaxPrime2                ->size() ); 
-// printf(" AODCaloJetBeta                          %u\n",  AODCaloJetBeta                          ->size() ); 
-// printf(" AODCaloJetBeta2                         %u\n",  AODCaloJetBeta2                         ->size() ); 
-// printf(" AODCaloJetSumIP                         %u\n",  AODCaloJetSumIP                         ->size() ); 
-// printf(" AODCaloJetSumIPSig                      %u\n",  AODCaloJetSumIPSig                      ->size() ); 
-// printf(" AODCaloJetMedianIP                      %u\n",  AODCaloJetMedianIP                      ->size() ); 
-// printf(" AODCaloJetMedianLog10IPSig              %u\n",  AODCaloJetMedianLog10IPSig              ->size() ); 
-// printf(" AODCaloJetTrackAngle                    %u\n",  AODCaloJetTrackAngle                    ->size() ); 
-// printf(" AODCaloJetLogTrackAngle                 %u\n",  AODCaloJetLogTrackAngle                 ->size() ); 
-// printf(" AODCaloJetMedianLog10TrackAngle         %u\n",  AODCaloJetMedianLog10TrackAngle         ->size() ); 
-// printf(" AODCaloJetTotalTrackAngle               %u\n",  AODCaloJetTotalTrackAngle               ->size() ); 
-// printf(" AODCaloJetAvfVx                         %u\n",  AODCaloJetAvfVx                         ->size() ); 
-// printf(" AODCaloJetAvfVy                         %u\n",  AODCaloJetAvfVy                         ->size() ); 
-// printf(" AODCaloJetAvfVz                         %u\n",  AODCaloJetAvfVz                         ->size() ); 
-// printf(" AODCaloJetAvfVertexTotalChiSquared      %u\n",  AODCaloJetAvfVertexTotalChiSquared      ->size() ); 
-// printf(" AODCaloJetAvfVertexDegreesOfFreedom     %u\n",  AODCaloJetAvfVertexDegreesOfFreedom     ->size() ); 
-// printf(" AODCaloJetAvfVertexChi2NDoF             %u\n",  AODCaloJetAvfVertexChi2NDoF             ->size() ); 
-// printf(" AODCaloJetAvfVertexDistanceToBeam       %u\n",  AODCaloJetAvfVertexDistanceToBeam       ->size() ); 
-// printf(" AODCaloJetAvfVertexTransverseError      %u\n",  AODCaloJetAvfVertexTransverseError      ->size() ); 
-// printf(" AODCaloJetAvfVertexTransverseSig        %u\n",  AODCaloJetAvfVertexTransverseSig        ->size() ); 
-// printf(" AODCaloJetAvfVertexDeltaEta             %u\n",  AODCaloJetAvfVertexDeltaEta             ->size() ); 
-// printf(" AODCaloJetAvfVertexDeltaPhi             %u\n",  AODCaloJetAvfVertexDeltaPhi             ->size() ); 
-// printf(" AODCaloJetAvfVertexRecoilPt             %u\n",  AODCaloJetAvfVertexRecoilPt             ->size() ); 
-// printf(" AODCaloJetAvfVertexTrackMass            %u\n",  AODCaloJetAvfVertexTrackMass            ->size() ); 
-// printf(" AODCaloJetAvfVertexTrackEnergy          %u\n",  AODCaloJetAvfVertexTrackEnergy          ->size() ); 
-// printf(" AODCaloJetAvfBeamSpotDeltaPhi           %u\n",  AODCaloJetAvfBeamSpotDeltaPhi           ->size() ); 
-// printf(" AODCaloJetAvfBeamSpotRecoilPt           %u\n",  AODCaloJetAvfBeamSpotRecoilPt           ->size() ); 
-// printf(" AODCaloJetAvfBeamSpotMedianDeltaPhi     %u\n",  AODCaloJetAvfBeamSpotMedianDeltaPhi     ->size() ); 
-// printf(" AODCaloJetAvfBeamSpotLog10MedianDeltaPhi%u\n",  AODCaloJetAvfBeamSpotLog10MedianDeltaPhi->size() ); 
-// printf(" AODCaloJetNCleanMatchedTracks           %u\n",  AODCaloJetNCleanMatchedTracks           ->size() ); 
-// printf(" AODCaloJetSumHitsInFrontOfVert          %u\n",  AODCaloJetSumHitsInFrontOfVert          ->size() ); 
-// printf(" AODCaloJetSumMissHitsAfterVert          %u\n",  AODCaloJetSumMissHitsAfterVert          ->size() ); 
-// printf(" AODCaloJetHitsInFrontOfVertPerTrack     %u\n",  AODCaloJetHitsInFrontOfVertPerTrack     ->size() ); 
-// printf(" AODCaloJetMissHitsAfterVertPerTrack     %u\n",  AODCaloJetMissHitsAfterVertPerTrack     ->size() ); 
-// printf(" AODCaloJetAvfDistToPV                   %u\n",  AODCaloJetAvfDistToPV                   ->size() ); 
-// printf(" AODCaloJetAvfVertexDeltaZtoPV           %u\n",  AODCaloJetAvfVertexDeltaZtoPV           ->size() ); 
-// printf(" AODCaloJetAvfVertexDeltaZtoPV2          %u\n",  AODCaloJetAvfVertexDeltaZtoPV2          ->size() ); 
-
-
  // i don't really like this hacky loop
  // idea is to have jets: 1,2,3,4,all
  // first fill individual jets
@@ -870,7 +822,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][incjetbin][lepbin].Fill( AODCaloJetMissHitsAfterVertPerTrack      ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
-//h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );   // this vector isn't the same length I guess
+//h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );// this vector isn't the same length I guess
 
  
   //Preliminary tag.  Call it Tag0. 
@@ -948,15 +900,6 @@ Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
 // trigger ------------------------
 Bool_t analyzer_signal::askPassSingleEle()
 {
- //printf("AOD_HLT_Ele23Loose %llu \n", AOD_HLT_Ele23Loose) ;
- //printf("AOD_HLT_Ele27Tight %llu \n", AOD_HLT_Ele27Tight) ;
- //printf("AOD_HLT_Ele17Ele12 %llu \n", AOD_HLT_Ele17Ele12) ;
- //printf("AOD_HLT_Ele23Ele12 %llu \n", AOD_HLT_Ele23Ele12) ;
- //printf("AOD_HLT_IsoMu22    %llu \n", AOD_HLT_IsoMu22   ) ;
- //printf("AOD_HLT_IsoTkMu22  %llu \n", AOD_HLT_IsoTkMu22 ) ;
- //printf("AOD_HLT_Mu17Mu8    %llu \n", AOD_HLT_Mu17Mu8   ) ;
- //printf("AOD_HLT_Mu17TkMu8  %llu \n", AOD_HLT_Mu17TkMu8 ) ;
-
  Bool_t doespass = kFALSE;
  if(electron_list.size()>0){ 
   if(isMC) doespass = kTRUE;
@@ -1013,7 +956,7 @@ Bool_t analyzer_signal::askPassZH()
 
  if( passGoodVtx
     && passZWindow
-    && passPTOSSFg50
+    //&& passPTOSSFg50
     //&& passOneJet
     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
    )
@@ -1036,7 +979,7 @@ if ( passGoodVtx
     )
  { doespass = kTRUE; n_passDY++; 
   if( passSingleEle || passDoubleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  } // printf("\n PASS SingleMu Event %lld\n", event); }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  }//  printf("\n PASS SingleMu Event %lld\n", event); }
  }
  return doespass;
 }
@@ -1190,7 +1133,7 @@ std::vector<int> analyzer_signal::muon_passID( int bitnr, double muPtCut, double
   if (muoid = "Loose")  muoisoval = 0.25 ;
   if (muoid = "Medium") muoisoval = 0.25 ;
   if (muoid = "Tight")  muoisoval = 0.15 ;
-  bool pass_iso = AOD_muPFdBetaIsolation->at(i) > muoisoval ;
+  bool pass_iso = AOD_muPFdBetaIsolation->at(i) < muoisoval ;
 
   if( pass_bit && pass_kin && pass_iso )
   {
@@ -1221,21 +1164,20 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
   bool pass_bit = AOD_eleIDbit->at(i) >> bitnr & 0x1 == 1;      
 
   bool pass_overlap = true;
-  //// #brokenphotons
-  //// check overlap with photons
-  //if(photon_list.size()>0){
-  // for(int d=0; d<photon_list.size(); ++d){
-  //  int phoindex = photon_list[d];
-  //  if(phoindex<= (phoEta->size()-1) && phoindex<= (phoPhi->size()-1)){
-  //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), eleEta->at(i),elePhi->at(i) ) < objcleandRcut )  pass_overlap=false;
-  //  }
-  // }//end photons
-  //} // if photons
-
+/*
+  if(photon_list.size()>0){
+   for(int d=0; d<photon_list.size(); ++d){
+    int phoindex = photon_list[d];
+    if(phoindex<= (AOD_phoEta->size()-1) && phoindex<= (AOD_phoPhi->size()-1)){
+     if( dR( AOD_phoEta->at(phoindex),AOD_phoPhi->at(phoindex), AOD_eleEta->at(i),AOD_elePhi->at(i) ) < objcleandRcut )  pass_overlap=false;
+    }
+   }//end photons
+  } // if photons
+*/
   //// isolation already in VID
-  //bool pass_iso = elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
-  //bool pass_iso = elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
-  //bool pass_iso = elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = AOD_elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = AOD_elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = AOD_elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
   if( pass_bit && pass_kin && pass_overlap && pass_convsersion_veto)
   {
@@ -1250,15 +1192,12 @@ std::vector<int> analyzer_signal::electron_passID( int bitnr, double elePtCut, d
 void analyzer_signal::tagger(){
   OPT_Event.push_back(event);
   OPT_EventWeight.push_back(event_weight);
-  //OPT_nJets.push_back(aodcalojet_list.size());
   if(aodcalojet_list.size()>0){
     n_test = n_test + 1;
     for(int i = 0; i<aodcalojet_list.size(); i++){
-      //if(aodcalojet_list.size()>=1){
       OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
       OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojet_list[i]));
-      //std::cout<<">0 " << aodcalojet_list.size()<<",  "<<n_test<<std::endl;
       }
   }
   else{
@@ -1266,7 +1205,6 @@ void analyzer_signal::tagger(){
     OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
     OPT_AODCaloJetAlphaMax              .push_back(-5);
     n_test2 = n_test2 + 1;
-    //std::cout<<"<0 " <<aodcalojet_list.size()<<",  "<<n_test2<<std::endl;
   }
 }
 
@@ -1279,18 +1217,19 @@ std::vector<int> analyzer_signal::aodcalojet_passID( int bitnr, double jetPtCut,
   {
 
    bool pass_overlap = true;
-   //// #brokenphotons
-   //// check overlap with photons
-   //if(photon_list.size()>0){
-   // for(int d=0; d<photon_list.size(); ++d){
-   //  int phoindex = photon_list[d];
-   //  if(phoindex<= (phoEta->size()-1)&&phoindex<= (phoPhi->size()-1)){  //  <---- shouldn't be needed?
-   //   if( dR( phoEta->at(phoindex),phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut ){
-   //    pass_overlap=false;
-   //   } // if overlap
-   //  }
-   // }//end photons
-   //} // if photons
+/*
+   // check overlap with photons
+   if(photon_list.size()>0){
+    for(int d=0; d<photon_list.size(); ++d){
+     int phoindex = photon_list[d];
+     if(phoindex<= (AOD_phoEta->size()-1)&&phoindex<= (AOD_phoPhi->size()-1)){  //  <---- shouldn't be needed?
+      if( dR( AOD_phoEta->at(phoindex),AOD_phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut ){
+       pass_overlap=false;
+      } // if overlap
+     }
+    }//end photons
+   } // if photons
+*/
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
@@ -1339,13 +1278,12 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
  for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
-  //Float_t theAOD_phoPt =  phoSCRawE->at(p) / TMath::CosH( (*phoSCEta)[p] ); //  AOD_phoPt->at(p); 
-  Float_t thephoEta = AOD_phoSCEta->at(p);                                  //  phoEta->at(p);
+  Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p);
 
-  bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoSCEta)[p])<phoEtaCut;
-  //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoEta)<phoEtaCut;
+  bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
+  //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
 
-  bool pass_bit = true; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+  bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
   //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
   if( kinematic && pass_bit){
@@ -1482,10 +1420,10 @@ void analyzer_signal::debug_printobjects(){
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
   if(dilep_mass>0.){printf(" Dilep Found\n");}
 
-//  for(int i=0; i<photon_list.size(); ++i){
-//   int phoindex = photon_list[i];
-//   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), phoEta->at(phoindex), phoPhi->at(phoindex));
-//  }
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), AOD_phoEta->at(phoindex), AOD_phoPhi->at(phoindex));
+  }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
