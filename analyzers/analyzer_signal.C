@@ -416,8 +416,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    TString hname_AOD_muPhi                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muPhi              "; 
    TString hname_AOD_muCharge                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muCharge           "; 
    TString hname_AOD_muPFdBetaIsolation       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muPFdBetaIsolation "; 
-   TString hname_AOD_muDxy                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxy              "; 
-   TString hname_AOD_muDxyErr                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxyErr           "; 
+   //TString hname_AOD_muDxy                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxy              "; 
+   //TString hname_AOD_muDxyErr                 = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_muDxyErr           "; 
 
    TString hname_htall                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall        " ;
    TString hname_htaodcalojets            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htaodcalojets" ;
@@ -467,8 +467,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    h_AOD_muPhi                    [i][k] = initSingleHistogramTH1F( hname_AOD_muPhi                   , "AOD_muPhi                  ", 30, -5, 5); 
    h_AOD_muCharge                 [i][k] = initSingleHistogramTH1F( hname_AOD_muCharge                , "AOD_muCharge               ", 3, -1, 1); 
    h_AOD_muPFdBetaIsolation       [i][k] = initSingleHistogramTH1F( hname_AOD_muPFdBetaIsolation      , "AOD_muPFdBetaIsolation     ", 30, -5, 5); 
-   h_AOD_muDxy                    [i][k] = initSingleHistogramTH1F( hname_AOD_muDxy                   , "AOD_muDxy                  ", 30, 0, 10); 
-   h_AOD_muDxyErr                 [i][k] = initSingleHistogramTH1F( hname_AOD_muDxyErr                , "AOD_muDxyErr               ", 30, 0, 0.5); 
+   //h_AOD_muDxy                    [i][k] = initSingleHistogramTH1F( hname_AOD_muDxy                   , "AOD_muDxy                  ", 30, 0, 10); 
+   //h_AOD_muDxyErr                 [i][k] = initSingleHistogramTH1F( hname_AOD_muDxyErr                , "AOD_muDxyErr               ", 30, 0, 0.5); 
 
    h_htall                    [i][k] = initSingleHistogramTH1F( hname_htall               , "htall "             , 50,0,1000) ; 
    h_htaodcalojets            [i][k] = initSingleHistogramTH1F( hname_htaodcalojets       , "htaodcalojets"      , 50,0,1000) ; 
@@ -518,7 +518,7 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
   h_AOD_phoPhi   [selbin][lepbin] .Fill( AOD_phoPhi  ->at(phoindex), weight );  
   h_AOD_phoSCEn  [selbin][lepbin] .Fill( AOD_phoSCEn ->at(phoindex), weight );  
   h_AOD_phoSCPhi [selbin][lepbin] .Fill( AOD_phoSCPhi->at(phoindex), weight );  
-  h_AOD_phoSCEta [selbin][lepbin] .Fill( AOD_phoSCEta->at(phoindex), weight );  
+  h_AOD_phoSCEta [selbin][lepbin] .Fill( AOD_phoSCEta->at(phoindex), weight );   
  }
 
  // fill leading electron in vector
@@ -539,6 +539,7 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
 
  // fill leading muon in vector
  if(muon_list.size() > 0){
+
   int muindex = muon_list[0];
   h_AOD_muPt               [selbin][lepbin] .Fill( AOD_muPt               ->at(muindex), weight );  
   h_AOD_muEn               [selbin][lepbin] .Fill( AOD_muEn               ->at(muindex), weight );  
@@ -546,8 +547,9 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
   h_AOD_muPhi              [selbin][lepbin] .Fill( AOD_muPhi              ->at(muindex), weight );  
   h_AOD_muCharge           [selbin][lepbin] .Fill( AOD_muCharge           ->at(muindex), weight );  
   h_AOD_muPFdBetaIsolation [selbin][lepbin] .Fill( AOD_muPFdBetaIsolation ->at(muindex), weight );  
-  h_AOD_muDxy              [selbin][lepbin] .Fill( AOD_muDxy              ->at(muindex), weight );  
-  h_AOD_muDxyErr           [selbin][lepbin] .Fill( AOD_muDxyErr           ->at(muindex), weight );  
+  //h_AOD_muDxy              [selbin][lepbin] .Fill( AOD_muDxy              ->at(muindex), weight );  
+  //h_AOD_muDxyErr           [selbin][lepbin] .Fill( AOD_muDxyErr           ->at(muindex), weight );  
+
  }
 
  return kTRUE;
@@ -602,8 +604,8 @@ Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
  h_AOD_muPhi                   [selbin][lepbin] .Write(); 
  h_AOD_muCharge                [selbin][lepbin] .Write(); 
  h_AOD_muPFdBetaIsolation      [selbin][lepbin] .Write(); 
- h_AOD_muDxy                   [selbin][lepbin] .Write(); 
- h_AOD_muDxyErr                [selbin][lepbin] .Write(); 
+ //h_AOD_muDxy                   [selbin][lepbin] .Write(); 
+ //h_AOD_muDxyErr                [selbin][lepbin] .Write(); 
 
  return kTRUE;
 }
@@ -1358,7 +1360,8 @@ void analyzer_signal::loadPUWeight(){
  printf("loading PU weight \n");
  char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
  TString CMSSW_BASE = (TString)cCMSSW_BASE;
- TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
+ //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/puWeights_69200_24jan2017.root" ;
+ TString filename = "puWeights_69200_24jan2017.root" ;
  TFile* file_puweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
@@ -1369,7 +1372,8 @@ void analyzer_signal::loadElectronWeight(){
  printf("loading Electron weight \n");
  char* cCMSSW_BASE = std::getenv("CMSSW_BASE");
  TString CMSSW_BASE = (TString)cCMSSW_BASE;
- TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ //TString filename = CMSSW_BASE+"/src/LLDJstandalones/data/egammaEffi_MoriondBH_ele"+eleid+".root" ;
+ TString filename = "egammaEffi_MoriondBH_ele"+eleid+".root" ;
  TFile* file_eleweights = new TFile( filename ) ;
  printf(" filename: %s\n",filename.Data());
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
