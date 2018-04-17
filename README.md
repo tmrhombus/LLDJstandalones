@@ -25,9 +25,16 @@ scramv1 build -j 10;
 ## LLDJstandalones Framework checkout
 
 # first fork the repository to make your own workspace
-git clone https://github.com/benjaminkreis/LLDJstandalones.git;
-git checkout -b aod_pho origin/aod_pho
+git clone https://github.com/<mygithubusername>/LLDJstandalones.git;
+pushd LLDJstandalones;
 
+ # If you want to check out a specific branch
+ # git fetch origin
+ # git branch -v -a # list branches available, find yours
+ # git checkout -b NAMEOFBRANCH origin/NAMEOFBRANCH 
+
+ # add DisplacedHiggs as upstream
+ git remote add upstream https://github.com/DisplacedHiggs/LLDJstandalones.git
 cd LLDJstandalones
 
 # compile a clean area
@@ -46,10 +53,11 @@ Make sure to run `source setup.sh` from the `LLDJstandalones` directory first to
 
 ### list files
 From `commontools` folder
-1. `bash makelists.sh` makes lists of files and puts them in `lists` folder
-2. `bash rmbadfiles.sh` removes a few specific corrupted files from lists
-3. `bash cleanlists.sh` goes through lists and makes sure only .root files are present
-4. `bash countevents.sh` calls `countevents.cxx` and makes .info files in `lists` folder
+1. `bash makemasterlist.sh` makes master lists from which other lists are derived
+2. `bash makelists.sh` makes lists of files and puts them in `lists` folder
+3. `bash rmbadfiles.sh` removes a few specific corrupted files from lists
+4. `bash cleanlists.sh` goes through lists and makes sure only .root files are present
+5. `bash countevents.sh` calls `countevents.cxx` and makes .info files in `lists` folder
 
 ### run analyzer
 From `analyzers` folder

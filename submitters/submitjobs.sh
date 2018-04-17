@@ -6,33 +6,33 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=35870
+lumi=20000     #35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
-# "ggZH_HToSSTobbbb_MS40_ctauS0"       \
-# "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
+## "ggZH_HToSSTobbbb_MS40_ctauS0"       \
+## "ggZH_HToSSTobbbb_MS40_ctauS0p05"    \
 # "ggZH_HToSSTobbbb_MS40_ctauS1"       \
 # "ggZH_HToSSTobbbb_MS40_ctauS10"      \
 # "ggZH_HToSSTobbbb_MS40_ctauS100"     \
 # "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
-# "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
-# "SingleElectron"                     \
-# "SingleMuon"                         \
-# "DY5to50_HT70To100"                  \
-# "DY5to50_HT100To200"                 \
-# "DY5to50_HT200To400"                 \
-# "DY5to50_HT400To600"                 \
-# "DY5to50_HT600ToInf"                 \
+## "ggZH_HToSSTobbbb_MS40_ctauS10000"   \
+## "SingleElectron"                     \
+## "SingleMuon"                         \
+## "DY5to50_HT70To100"                  \
+## "DY5to50_HT100To200"                 \
+## "DY5to50_HT200To400"                 \
+## "DY5to50_HT400To600"                 \
+## "DY5to50_HT600ToInf"                 \
 # "DY50"                               \
-# "ggZH_HToBB_ZToLL"                   \
-# "GJets_HT40To100"                    \
-# "GJets_HT100To200"                   \
-# "GJets_HT200To400"                   \
-# "GJets_HT400To600"                   \
-# "GJets_HT600ToInf"                   \
+## "ggZH_HToBB_ZToLL"                   \
+## "GJets_HT40To100"                    \
+## "GJets_HT100To200"                   \
+## "GJets_HT200To400"                   \
+## "GJets_HT400To600"                   \
+## "GJets_HT600ToInf"                   \
 # "ST_s"                               \
-# "STbar_t"                            \
+## "STbar_t"                            \
 # "ST_t"                               \
 # "STbar_tW"                           \
 # "ST_tW"                              \
@@ -47,14 +47,55 @@ maxfilesperjob=200   # 500=6h
 # "WZTo3LNu"                           \
 # "WZToLNu2QorQQ2L"                    \
 # "ZG"                                 \
-# "ZH_HToBB_ZToLL"                     \
+## "ZH_HToBB_ZToLL"                     \
 # "ZZToLLNuNu"                         \
 # "ZZToLLQQ"                           \
 # "ZZToNuNuQQ"                         \
 # "ZZToLLLL"                           \
 
 samples=(  \
- "testmc" \
+ "ggZH_HToSSTobbbb_MS40_ctauS1"       \
+ "ggZH_HToSSTobbbb_MS40_ctauS10"      \
+ "ggZH_HToSSTobbbb_MS40_ctauS100"     \
+ "ggZH_HToSSTobbbb_MS40_ctauS1000"    \
+ "ggZH_HToSSTobbbb_MS15_ctauS1"       \
+ "ggZH_HToSSTobbbb_MS15_ctauS1000"    \
+ "ggZH_HToSSTobbbb_MS55_ctauS1"       \
+ "ggZH_HToSSTobbbb_MS55_ctauS100"     \
+ "ZH_HToSSTobbbb_MS40_ctauS10"        \
+ "ZH_HToSSTobbbb_MS40_ctauS100"       \
+ "ZH_HToSSTobbbb_MS40_ctauS1000"      \
+ "ZH_HToSSTobbbb_MS15_ctauS1"         \
+ "ZH_HToSSTobbbb_MS15_ctauS10"        \
+ "ZH_HToSSTobbbb_MS15_ctauS100"       \
+ "ZH_HToSSTobbbb_MS15_ctauS1000"      \
+ "ZH_HToSSTobbbb_MS55_ctauS10"        \
+ "ZH_HToSSTobbbb_MS55_ctauS1000"      \
+ "DY50"                               \
+ "ST_s"                               \
+ "ST_t"                               \
+ "STbar_tW"                           \
+ "ST_tW"                              \
+ "TTtoLL"                             \
+ "TTtoLfromTbar"                      \
+ "TTtoLfromT"                         \
+ "WG"                                 \
+ "WJetsToLNu"                         \
+ "WWToLNuLNu"                         \
+ "WWToLNuQQ"                          \
+ "WZToL3Nu"                           \
+ "WZTo3LNu"                           \
+ "WZToLNu2QorQQ2L"                    \
+ "ZG"                                 \
+ "ZZToLLNuNu"                         \
+ "ZZToLLQQ"                           \
+ "ZZToNuNuQQ"                         \
+ "ZZToLLLL"                           \
+ "GJets_HT40To100"                    \
+ "GJets_HT100To200"                   \
+ "GJets_HT200To400"                   \
+ "GJets_HT400To600"                   \
+ "GJets_HT600ToInf"
 )
 
 
@@ -76,7 +117,7 @@ makeasubmitdir () {
  submitdir=${asubdir}/gitignore/${aversion}/$1
  mkdir -p ${submitdir} 
  pushd    ${submitdir}  > /dev/null
- #printf " The directory is %s\n" $(pwd)
+ printf " The directory is %s\n" $(pwd)
  
  mkdir -p logs
  

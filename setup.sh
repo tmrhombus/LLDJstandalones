@@ -1,8 +1,7 @@
 #!/bin/bash
 
-export depot="/eos/uscms/store/group/lpchbb/LLDJntuples/"
-#export nversion="test"
-export nversion="uu"
+export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
+export nversion="tt"
 export aversion="t3dy_cutflowDY_loose"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
