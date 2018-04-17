@@ -1367,10 +1367,10 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
 		}         
 	    }          
 	}           
-    }
-    e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_i]), AOD_eleEta->at(electron_list[best_ee_i]), AOD_elePhi->at(electron_list[best_ee_i]), AOD_eleEn->at(electron_list[best_ee_i]) );
-    e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_j]), AOD_eleEta->at(electron_list[best_ee_j]), AOD_elePhi->at(electron_list[best_ee_j]), AOD_eleEn->at(electron_list[best_ee_j]) );  
-    ee = e1 + e2;
+      e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_i]), AOD_eleEta->at(electron_list[best_ee_i]), AOD_elePhi->at(electron_list[best_ee_i]), AOD_eleEn->at(electron_list[best_ee_i]) );
+      e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_j]), AOD_eleEta->at(electron_list[best_ee_j]), AOD_elePhi->at(electron_list[best_ee_j]), AOD_eleEn->at(electron_list[best_ee_j]) );  
+      ee = e1 + e2;
+    }//electron size > 1
 
     // muons                                
     double best_mm_mass = 9e9;
@@ -1394,10 +1394,10 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
 		}   
 	    }    
 	}
-    }
-    m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_i]), AOD_muEta->at(muon_list[best_mm_i]), AOD_muPhi->at(muon_list[best_mm_i]), AOD_muEn->at(muon_list[best_mm_i]) );
-    m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_j]), AOD_muEta->at(muon_list[best_mm_j]), AOD_muPhi->at(muon_list[best_mm_j]), AOD_muEn->at(muon_list[best_mm_j]) );  
-    mm = m1 + m2;      
+      m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_i]), AOD_muEta->at(muon_list[best_mm_i]), AOD_muPhi->at(muon_list[best_mm_i]), AOD_muEn->at(muon_list[best_mm_i]) );
+      m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_j]), AOD_muEta->at(muon_list[best_mm_j]), AOD_muPhi->at(muon_list[best_mm_j]), AOD_muEn->at(muon_list[best_mm_j]) );  
+      mm = m1 + m2;      
+    }//muon size > 1
 
     *fv_ee = ee;  
     *fv_mm = mm;  
