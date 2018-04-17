@@ -50,7 +50,8 @@ samples=( \
 # "GJets_HT400To600"                 \
 # "GJets_HT600ToInf"                 \
 
-for sample in ${samples[@]}
+#for sample in ${samples[@]}
+for sample in $(ls ${basedir}/submitters/gitignore/${aversion}/)
 do
  chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"
  bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"

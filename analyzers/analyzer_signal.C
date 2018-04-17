@@ -258,9 +258,10 @@ void analyzer_signal::Loop(TString outfilename,
  outfile->cd();
  for(int i=0; i<selbinnames.size(); ++i){  // i = selbin
   for(unsigned int k=0; k<lepnames.size(); ++k){
-   writeBasicHistograms(i,k);
-   writeAODCaloJetHistograms(i,k);
-   //write2DHistograms(i,k);
+    scaleVariableBinHistograms(i,k);
+    writeBasicHistograms(i,k);
+    writeAODCaloJetHistograms(i,k);
+    //write2DHistograms(i,k);
   }
  }
  outfile->Close();
@@ -282,6 +283,17 @@ TH1F analyzer_signal::initSingleHistogramTH1F(TString hname, TString htitle, Int
 
 }
 
+//Overload for variable binning
+TH1F analyzer_signal::initSingleHistogramTH1F(TString hname, TString htitle, int nbins, Float_t xbins[])
+{
+
+  histoTH1F.Clear();
+  histoTH1F = TH1F( hname , htitle , nbins , xbins );
+  histoTH1F.Sumw2();
+
+  return histoTH1F;
+
+}
 
 //----------------------------initSingleHistogramTH2F
 TH2F analyzer_signal::initSingleHistogramTH2F(TString hname, TString htitle,
@@ -555,6 +567,18 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
  return kTRUE;
 }
 
+
+//---------------------------scaleVariableBinHistograms
+Bool_t analyzer_signal::scaleVariableBinHistograms(int selbin, int lepbin)
+{
+
+  for(unsigned int j=0; j<jetmultnames.size()-(int)!fillAll; ++j){
+    h_AODCaloJetPt_forEff                      [selbin][j][lepbin].Scale(1, "width");
+    h_AODCaloJet_Tag0_Pt                       [selbin][j][lepbin].Scale(1, "width");
+  }
+}
+
+
 //----------------------------writeBasicHistograms
 Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
 {
@@ -664,6 +688,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     TString hname_AODCaloJetAvfVertexDeltaZtoPV2          = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV2";           
 
     TString hname_AODCaloJet_Tag0_Pt                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJet_Tag0_Pt";                             
+    TString hname_AODCaloJetPt_forEff                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPt_forEff";
 
     h_AODCaloJetPt                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
     h_AODCaloJetEta                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
@@ -709,8 +734,11 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetAvfVertexDeltaZtoPV            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV            , "AODCaloJetAvfVertexDeltaZtoPV           ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV2           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV2           , "AODCaloJetAvfVertexDeltaZtoPV2          ", 30, -3, 3 ); 
 
-    //Tag0
-    h_AODCaloJet_Tag0_Pt                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJet_Tag0_Pt                       , "AODCaloJet_Tag0_Pt                      ", 50,0,500  ); 
+    //For efficiencies
+    const int Pt_n_xbins = 10;
+    float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
+    h_AODCaloJet_Tag0_Pt                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJet_Tag0_Pt                       , "AODCaloJet_Tag0_Pt                      ",  Pt_n_xbins, Pt_xbins );
+    h_AODCaloJetPt_forEff                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt_forEff                      , "AODCaloJetPt_forEff                     ",  Pt_n_xbins, Pt_xbins );
 
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -826,7 +854,9 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
 //h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );// this vector isn't the same length I guess
 
- 
+  //For efficiencies
+  h_AODCaloJetPt_forEff                      [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );
+
   //Preliminary tag.  Call it Tag0. 
   //Selection could also be done earlier to make a list like the kinematic and id selection on calo jets
   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 && 
@@ -891,6 +921,8 @@ Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
   h_AODCaloJetAvfDistToPV                    [selbin][j][lepbin].Write(); 
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Write(); 
  // h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Write(); 
+
+  h_AODCaloJetPt_forEff                      [selbin][j][lepbin].Write();
 
   h_AODCaloJet_Tag0_Pt                       [selbin][j][lepbin].Write(); 
 
@@ -1312,46 +1344,79 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
                                                                      
     // no pairs                                                    
     if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
-                                                                   
-     // electrons                                                      
-     if( electron_list.size()>1 ){                                           
-      for(int i=1; i<electron_list.size(); ++i)                              
-      {                                                                
-       if( AOD_eleCharge->at(0)*AOD_eleCharge->at(i)==-1 )                     
-       {                                                               
-        //printf(" --we have electrons ");                             
-        e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );  
-        e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );  
-        break;   
-       }         
-      }          
-     }           
-     //printf(": diele mass = %f", ee.M());  
-     ee = e1 + e2;                           
-                                             
-     // muons                                
-     if( muon_list.size()>1 ){                  
-      for(int i=1; i<muon_list.size(); ++i)     
-      {                                           
-        if( AOD_muCharge->at(0)*AOD_muCharge->at(i)==-1 ) 
-        {                                         
-         //printf(" --we have muons ");           
-         m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[0]), AOD_muEta->at(muon_list[0]), AOD_muPhi->at(muon_list[0]), AOD_muEn->at(muon_list[0]) );             
-         //printf(": charge pass ");    
-         m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );             
-         break;                                                                                           
-        } 
-      }   
-     }    
-     //printf(": dimu mass = %f", mm.M());  
-     mm = m1 + m2; 
-                   
-     *fv_ee = ee;  
-     *fv_mm = mm;  
-     // take highest mass dilepton pair 
-     if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
-     else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
-   return;                                                          
+
+    // electrons    
+    double best_ee_mass = 9e9;
+    int best_ee_i=-1, best_ee_j=-1;
+    if( electron_list.size()>1 ){                                           
+      for(int i=0; i<electron_list.size(); ++i)                              
+	{                                                                
+	  for(int j=i+1; j<electron_list.size(); ++j)
+	    {
+	      if( AOD_eleCharge->at(i)*AOD_eleCharge->at(i)==-1 )                     
+		{                                                               
+		  TLorentzVector temp1, temp2, temp12;
+		  temp1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
+		  temp2.SetPtEtaPhiE( AOD_elePt->at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
+		  temp12 = temp1+temp2;
+		  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_ee_mass) ){
+		    best_ee_mass = temp12.M();
+		    best_ee_i=i;
+		    best_ee_j=j;
+		  }
+		}         
+	    }          
+	}           
+    }
+    e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_i]), AOD_eleEta->at(electron_list[best_ee_i]), AOD_elePhi->at(electron_list[best_ee_i]), AOD_eleEn->at(electron_list[best_ee_i]) );
+    e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_j]), AOD_eleEta->at(electron_list[best_ee_j]), AOD_elePhi->at(electron_list[best_ee_j]), AOD_eleEn->at(electron_list[best_ee_j]) );  
+    ee = e1 + e2;
+
+    // muons                                
+    double best_mm_mass = 9e9;
+    int best_mm_i=-1, best_mm_j=-1;
+    if( muon_list.size()>1 ){                  
+      for(int i=0; i<muon_list.size(); ++i)     
+	{                                           
+	  for(int j=i+1; j<muon_list.size(); ++j)
+	    {
+	      if( AOD_muCharge->at(0)*AOD_muCharge->at(i)==-1 ) 
+		{            
+		  TLorentzVector temp1, temp2, temp12;
+		  temp1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
+		  temp2.SetPtEtaPhiE( AOD_muPt->at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
+		  temp12 = temp1+temp2;
+		  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_mm_mass) ){
+		    best_mm_mass = temp12.M();
+		    best_mm_i=i;
+		    best_mm_j=j;                             
+		  } 
+		}   
+	    }    
+	}
+    }
+    m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_i]), AOD_muEta->at(muon_list[best_mm_i]), AOD_muPhi->at(muon_list[best_mm_i]), AOD_muEn->at(muon_list[best_mm_i]) );
+    m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_j]), AOD_muEta->at(muon_list[best_mm_j]), AOD_muPhi->at(muon_list[best_mm_j]), AOD_muEn->at(muon_list[best_mm_j]) );  
+    mm = m1 + m2;      
+
+    *fv_ee = ee;  
+    *fv_mm = mm;  
+    
+    // take highest mass dilepton pair 
+    //if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
+    //else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
+
+    // take pair closest to Z mass
+    if( fabs(91.1876-ee.M()) < fabs(91.1876-mm.M()) ){
+      *fv_1 = e1; 
+      *fv_2 = e2;
+    } 
+    else{
+      *fv_1 = m1; 
+      *fv_2 = m2;
+    }
+
+    return;                                                          
                                                                     
  } 
 
