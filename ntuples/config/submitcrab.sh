@@ -54,7 +54,36 @@ cp "${subdir}/${msubmitconfig}"  ${thesubdir}
 
 # sample names to run over
 samples=( \
-  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
+  "Data_SingleEle_H_3"   \
+  "Data_SingleEle_H_2"   \
+  "Data_SingleEle_G"     \
+  "Data_SingleEle_F"     \
+  "Data_SingleEle_E"     \
+  "Data_SingleEle_D"     \
+  "Data_SingleEle_C"     \
+  "Data_SingleEle_B_2"   \
+  "Data_SingleEle_B_1"   \
+
+  "Data_SingleMu_H_3"    \
+  "Data_SingleMu_H_2"    \
+  "Data_SingleMu_G"      \
+  "Data_SingleMu_F"      \
+  "Data_SingleMu_E"      \
+  "Data_SingleMu_D"      \
+  "Data_SingleMu_C"      \
+  "Data_SingleMu_B_2"    \
+  "Data_SingleMu_B_1"    \
+
+  "Data_SinglePhoton_H_3"    \
+  "Data_SinglePhoton_H_2"    \
+  "Data_SinglePhoton_G"      \
+  "Data_SinglePhoton_F"      \
+  "Data_SinglePhoton_E"      \
+  "Data_SinglePhoton_D"      \
+  "Data_SinglePhoton_C"      \
+  "Data_SinglePhoton_B_2"    \
+  "Data_SinglePhoton_B_1"    \
+  "DY50_1"               \
 )
 
 # Signal Samples
@@ -197,7 +226,7 @@ do
  submitname="submit_${samplename}"
  submitfile="${thesubdir}/${submitname}.py"
 
- # set veriables for submitting this specific sample
+ # set variables for submitting this specific sample
  WORKAREA="'crabsubmits_${nversion}'"
 
  # check if running data or MC
@@ -209,6 +238,13 @@ do
  fi
  printf "dodata = ${dodata}\n"
 
+ # lumi mask
+ LUMIMASK=""
+ if [ ${dodata} = true ]
+ then
+     LUMIMASK="'${PWD}/jsons/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'"
+ fi
+
  # choose correct config parameters
  if [ ${dodata} = true ]
  then 
@@ -216,7 +252,7 @@ do
   then
    # DATA AOD
    CMSRUNCONFIG="'${dsubmitconfig}'" 
-   UPERJOB="100"
+   UPERJOB="50"
   elif [ ${dominiAOD} = true ]
   then
    # DATA miniAOD
@@ -254,7 +290,7 @@ do
  DATASET="'${datasetname}'"
  STORESITE="'T3_US_FNALLPC'"
  OUTLFNBASE="'/store/group/lpchbb/LLDJntuples/${nversion}'"
- MAXMEM="2000"
+ MAXMEM="4000"
 
  printf "WORKAREA      ${WORKAREA}     \n" 
  printf "CMSRUNCONFIG  ${CMSRUNCONFIG} \n" 
@@ -263,6 +299,7 @@ do
  printf "SPLITTING     ${SPLITTING}    \n" 
  printf "REQUESTNAME   ${REQUESTNAME}  \n" 
  printf "DATASET       ${DATASET}      \n" 
+ printf "LUMIMASK      ${LUMIMASK}     \n" 
  printf "STORESITE     ${STORESITE}    \n" 
  printf "OUTLFNBASE    ${OUTLFNBASE}   \n" 
  printf "MAXMEM        ${MAXMEM}       \n" 
@@ -276,9 +313,16 @@ do
  sed -i "s@SPLITTING@${SPLITTING}@g"       "${submitfile}" 
  sed -i "s@REQUESTNAME@${REQUESTNAME}@g"   "${submitfile}" 
  sed -i "s@DATASET@${DATASET}@g"           "${submitfile}" 
+ sed -i "s@LUMIMASK@${LUMIMASK}@g"         "${submitfile}" 
  sed -i "s@STORESITE@${STORESITE}@g"       "${submitfile}" 
  sed -i "s@OUTLFNBASE@${OUTLFNBASE}@g"     "${submitfile}" 
  sed -i "s@MAXMEM@${MAXMEM}@g"             "${submitfile}" 
+
+ # remove lumi mask for mc
+ if [ ${dodata} = false ]
+ then
+     sed -i "/config.Data.lumiMask/d" "${submitfile}"
+ fi
 
  # submit the jobs
  if [ ${dosubmit} = true ]

@@ -21,8 +21,7 @@ public :
  virtual       ~analyzer_signal();
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec, Int_t nevts);
-                    //Double_t crossSec, Int_t nevts, TFile *optfile);
+                    Double_t crossSec, Int_t nevts, TFile *optfile);
 
  // make 1D,2D histograms (helper function)
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
@@ -31,6 +30,8 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ //option to turn on/off the "AllJets" histograms
+ bool fillAll = true;
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
@@ -51,23 +52,22 @@ public :
  std::vector<int>     photon_passID     ( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname="");
  std::vector<int>     electron_passID   ( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
  std::vector<int>     muon_passID       ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
- std::vector<int>     slimmedjet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
  std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
 
- //void tagger();
- //std::vector<int>   OPT_Event;
- //std::vector<float> OPT_EventWeight;
- //std::vector<int>   OPT_nJets;
- //std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
- //std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
- //std::vector<float> OPT_AODCaloJetAlphaMax;
- //TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
- //TBranch* b1 = OPTtree->Branch("OPT_Event"                              , &OPT_Event); 
- //TBranch* b2 = OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight); 
- ////TBranch* b3 = OPTtree->Branch("OPT_nJets"                              , &OPT_nJets); 
- //TBranch* b4 = OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig); 
- //TBranch* b5 = OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle); 
- //TBranch* b6 = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
+ void tagger();
+ std::vector<int>   OPT_Event;
+ std::vector<float> OPT_EventWeight;
+ std::vector<int>   OPT_nJets;
+ std::vector<float> OPT_AODCaloJetMedianLog10IPSig;
+ std::vector<float> OPT_AODCaloJetMedianLog10TrackAngle;
+ std::vector<float> OPT_AODCaloJetAlphaMax;
+ TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
+ TBranch* b1 = OPTtree->Branch("OPT_Event"                              , &OPT_Event); 
+ TBranch* b2 = OPTtree->Branch("OPT_EventWeight"                        , &OPT_EventWeight); 
+ //TBranch* b3 = OPTtree->Branch("OPT_nJets"                              , &OPT_nJets); 
+ TBranch* b4 = OPTtree->Branch("OPT_AODCaloJetMedianLog10IPSig"         , &OPT_AODCaloJetMedianLog10IPSig); 
+ TBranch* b5 = OPTtree->Branch("OPT_AODCaloJetMedianLog10TrackAngle"    , &OPT_AODCaloJetMedianLog10TrackAngle); 
+ TBranch* b6 = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
  
  // get (smeared) object pt
  Float_t          getPhotonPt(int idnr, TString sysbinname);
@@ -107,7 +107,6 @@ public :
  std::vector<int> photon_list;
  std::vector<int> electron_list;
  std::vector<int> muon_list ;
- std::vector<int> slimmedjet_list;
  std::vector<int> aodcalojet_list;
  
 
@@ -120,7 +119,6 @@ public :
  int phoidbit;
  int eleidbit;
  int muoidbit;
- int slimmedjetidbit;
  int aodcalojetidbit;
  float muoisoval;
 
@@ -156,7 +154,6 @@ public :
  Double_t themet;
  Double_t themephi;
  Double_t htall;
- Double_t htslimmedjets;
  Double_t htaodcalojets;
 
  // for dilepton
@@ -225,7 +222,6 @@ public :
  // // 1D
  // General / leading
  TH1F  h_htall                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_htslimmedjets            [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_htaodcalojets            [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedPho             [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedEle             [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -233,107 +229,49 @@ public :
  TH1F  h_nSelectedSlimmedJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
 
- TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nTrksPV                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_isPVGood                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_rho                      [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_rhoCentral               [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nTruePU                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nTrksPV                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_isPVGood                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_rho                      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_rhoCentral               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nTruePU                  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
- TH1F  h_pfMET                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_pfMETPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_pfMETsumEt               [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nPho                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_phoSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nEle                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_eleSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_elePFdBetaIsolationDiff  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_AOD_pfMET                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_pfMET_phi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_pfMET_pt                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_AOD_pfMETsumEt               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nAODPho                      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_phoSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nEle                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_elePt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_eleEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_eleEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_elePhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_eleCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_eleSCEn                  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_eleSCEta                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_eleSCPhi                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_elePFdBetaIsolationRhoEA [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_elePFdBetaIsolationCHS   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_elePFdBetaIsolationDiff  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
- TH1F  h_nMu                     [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_muPFdBetaIsolation      [SELBINNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_nSlimmedJets            [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_nMu                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muPt                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muEn                    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muEta                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muPhi                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muPFdBetaIsolation      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muDxy                   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_muDxyErr                [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODnCaloJet             [SELBINNAMESIZE][LEPBINNAMESIZE];
-
- // Jet
- TH1F  h_slimmedJetPt                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetEn                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetEta                            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetPhi                            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetRawPt                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetRawEn                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetMt                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetArea                           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLeadTrackPID                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLeadTrackPt                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLeadTrackEta                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLeadTrackPhi                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLepTrackPID                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLepTrackPt                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLepTrackEta                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLepTrackPhi                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetNConstituents                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetVtxPt                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetVtxMass                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetVtxNtrks                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetVtx3DVal                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetVtx3DSig                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetCSV2BJetTags                   [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetJetProbabilityBJetTags         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetpfCombinedMVAV2BJetTags        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetPartonID                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetHadFlvr                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
-
- TH1F  h_slimmedJetAlphaD                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlphaMaxD                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetSumIP                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetSumIPSig                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetMedianLog10IPSig               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetTrackAngle                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetLogTrackAngle                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
-
- TH1F  h_slimmedJetAlphaMax_PV3onPV2              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlphaMax_PV3onChg              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlphaMax_PV3onAll              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlphaMax_PV2onChg              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlphaMax_PV2onAll              [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlpha2Max_PV3onPV2             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlpha2Max_PV3onChg             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlpha2Max_PV3onAll             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlpha2Max_PV2onChg             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetAlpha2Max_PV2onAll             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenJetEn                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenJetPt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenJetEta                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenJetPhi                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenPartonID                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenEn                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenPt                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenEta                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenPhi                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_slimmedJetGenPartonMomID                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // AOD jet histograms
  TH1F  h_AODCaloJetPt                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -379,6 +317,9 @@ public :
  TH1F  h_AODCaloJetAvfDistToPV                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+
+ //Tag0
+ TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
 };
 

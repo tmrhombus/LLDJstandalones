@@ -9,6 +9,7 @@
 # don't forget to source setup.sh (from xxx/LLDJstandalones)
 mkdir -p "${listdir}"
 
+#depricated?
 #filetype="AOD" # miniAOD=""
 filetype="" # miniAOD=""
 
@@ -19,7 +20,7 @@ makealist () {
  sed -i -e "s@/eos/uscms@@" ${listdir}/$1${filetype}.list
 }
 
-#makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"
+makealist "DY10to50"                            "/DYJetsToLL_M-10to50_"
 makealist "DY5to50_HT70To100"                   "/DYJetsToLL_M-5to50_HT-70to100_"
 makealist "DY5to50_HT100To200"                  "/DYJetsToLL_M-5to50_HT-100to200_"
 makealist "DY5to50_HT200To400"                  "/DYJetsToLL_M-5to50_HT-200to400_"
@@ -97,7 +98,7 @@ makealist "ZZToNuNuQQ"                          "/ZZTo2Q2Nu_"
 makealist "ZZToLLLL"                            "/ZZTo4L_"
 makealist "SingleElectron"                      "/SingleElectron"
 makealist "SingleMuon"                          "/SingleMuon"
-#makealist "DoubleEG"                            "/DoubleEG"
-#makealist "DoubleMuon"                          "/DoubleMuon"
-#makealist "MuonEG"                              "/MuonEG"
+makealist "DoubleEG"                            "/DoubleEG"
+makealist "DoubleMuon"                          "/DoubleMuon"
+makealist "MuonEG"                              "/MuonEG"
 

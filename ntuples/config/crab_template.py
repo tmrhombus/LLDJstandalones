@@ -41,6 +41,7 @@ if __name__ == '__main__':
     config.General.requestName = REQUESTNAME
     config.Data.unitsPerJob    = UPERJOB
     config.Data.inputDataset   = DATASET
+    config.Data.lumiMask = LUMIMASK
     config.Data.outLFNDirBase  = OUTLFNBASE
     p = Process(target=submit, args=(config,))
     p.start()
