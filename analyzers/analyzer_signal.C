@@ -759,7 +759,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetAvfDistToPV                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfDistToPV                    , "AODCaloJetAvfDistToPV                   ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV            , "AODCaloJetAvfVertexDeltaZtoPV           ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV2           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV2           , "AODCaloJetAvfVertexDeltaZtoPV2          ", 30, -3, 3 ); 
-    h_AODCaloJetdR                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR                             , "AODCaloJetdR                            ", 10,  0, 3.142 ); 
+    h_AODCaloJetdR                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR                             , "AODCaloJetdR                            ", 30,  0, 5 ); 
 
     //For efficiencies
     const int Pt_n_xbins = 10;
@@ -768,7 +768,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetPtVar                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar                       , "AODCaloJetPtVar                           ",  Pt_n_xbins, Pt_xbins );
 
     h_AODCaloJetNCleanMatchedTracks_Tag0   [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0    , "AODCaloJetNCleanMatchedTracks_Tag0        ", 20, 0, 20 ); 
-    h_AODCaloJetdR_Tag0                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR_Tag0                     , "AODCaloJetdR_Tag0                         ", 10,  0, 3.142 ); 
+    h_AODCaloJetdR_Tag0                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR_Tag0                     , "AODCaloJetdR_Tag0                         ", 30,  0, 5 ); 
 
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
