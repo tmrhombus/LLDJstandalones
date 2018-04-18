@@ -1,168 +1,180 @@
-#define analyzer_signal_cxx
-#include "analyzer_signal.h"
-#include <TH2.h>
-#include <TStyle.h>
-#include <TCanvas.h>
-#include <iostream>
+ #define analyzer_signal_cxx
+ #include "analyzer_signal.h"
+ #include <TH2.h>
+ #include <TStyle.h>
+ #include <TCanvas.h>
+ #include <iostream>
 
-void analyzer_signal::Loop(TString outfilename, 
-                       Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts, TFile *optfile)
-{
+ void analyzer_signal::Loop(TString outfilename, 
+			Double_t lumi, Double_t nrEvents,
+			Double_t crossSec, Int_t nevts, TFile *optfile)
+ {
 
- if(makelog){
-  logfile = fopen( outfilename+".txt", "w"); 
- }
-
- if (fChain == 0) return;
-
- Long64_t nentries = fChain->GetEntriesFast();
- if(nevts>0){ 
-  nentries = Long64_t(nevts);
- }
- 
- nmatched   = 0;
- nunmatched = 0;
-
- jetmatchdRcut = 0.4;
- objcleandRcut = 0.4;
-
- n_tot   = 0;
- n_test  = 0;
- n_test2 = 0; 
-
- n_passSig    = 0;
- n_passZH     = 0;
- n_passDY     = 0;
- n_passOffZ   = 0;
- n_passNoPair = 0;
-
- n_ele_passSig    = 0;
- n_ele_passZH     = 0;
- n_ele_passDY     = 0;
- n_ele_passOffZ   = 0;
- n_ele_passNoPair = 0;
-
- n_mu_passSig    = 0;
- n_mu_passZH     = 0;
- n_mu_passDY     = 0;
- n_mu_passOffZ   = 0;
- n_mu_passNoPair = 0;
-
- // set which collections
- phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
- eleid = "Loose"; // "Tight"; "Loose"; //Medium"; 
- muoid = "Loose"; // "Tight"; "Loose"; //Medium"; 
- jetid = "Loose"; // "Tight"; "Loose";
-
- if (phoid = "Loose")  phoidbit=0;
- if (phoid = "Medium") phoidbit=1;
- if (phoid = "Tight")  phoidbit=2;
-
- if (eleid = "Loose")  eleidbit=0;
- if (eleid = "Medium") eleidbit=1;
- if (eleid = "Tight")  eleidbit=2;
-
- if (muoid = "Loose")  muoidbit=0;
- if (muoid = "Medium") muoidbit=1;
- if (muoid = "Tight")  muoidbit=2;
-
- if (jetid = "Loose")  aodcalojetidbit=0;
- if (jetid = "Tight")  aodcalojetidbit=1;
-
- if(isMC) loadPUWeight();
- if(isMC) loadElectronWeight();
-
- // start looping over entries
- Long64_t nbytes = 0, nb = 0;
- for (Long64_t jentry=0; jentry<nentries;jentry++) {
-
-  // clear counters for event variables
-  nSelectedPho=0;
-  nSelectedEle=0;
-  nSelectedMuo=0;
-  //nSelectedSlimmedJet=0;
-  nSelectedAODCaloJet=0;
- 
-  //clear optimization arrays each new event
-  OPT_Event                           .clear();
-  OPT_EventWeight                     .clear();
-  OPT_AODCaloJetMedianLog10IPSig      .clear();
-  OPT_AODCaloJetMedianLog10TrackAngle .clear();
-  OPT_AODCaloJetAlphaMax              .clear();
-
-  //printf(" Event %lld\n", event);
-  Long64_t ientry = LoadTree(jentry);
-  if (ientry < 0) break;
-  nb = fChain->GetEntry(jentry);   nbytes += nb;
-  if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
-
-  n_tot++;
-
-  // get lists of "good" electrons, photons, jets
-  // idbit, pt, eta, sysbinname
-  photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
-  electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
-  muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
-  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
-
-  // make event weight in analyzerBase.C
-  // colisions happen @LHC at a given rate, use event_weight
-  // to make the simulation match the rate seen in data
-  // = lum * cross-section / nrEvents generated
-  event_weight = makeEventWeight(crossSec,lumi,nrEvents);
-  //std::cout<<event_weight<<std::endl;
-  // for MC, simulated pileup is different from observed
-  // in commontools/pileup we make a ratio for scaling MC
-  //if(isMC) event_weight *= makePUWeight();<-----need nTruePU
-  // electrons also have an associated scale factor for MC 
-  if(isMC) event_weight *= makeElectronWeight();
-
-  tagger();
-  
-  // set our met
-  //themet = AOD_pfMET;
-  themephi = AOD_pfMET_phi;
-  // AOD_pfMET_T1JERUp;   //!
-  // AOD_pfMET_T1JERDo;   //!
-  // AOD_pfMET_T1JESUp;   //!
-  // AOD_pfMET_T1JESDo;   //!
-  // AOD_pfMET_T1MESUp;   //!
-  // AOD_pfMET_T1MESDo;   //!
-  // AOD_pfMET_T1EESUp;   //!
-  // AOD_pfMET_T1EESDo;   //!
-  // AOD_pfMET_T1PESUp;   //!
-  // AOD_pfMET_T1PESDo;   //!
-  // AOD_pfMET_T1TESUp;   //!
-  // AOD_pfMET_T1TESDo;   //!
-  // AOD_pfMET_T1UESUp;   //!
-  // AOD_pfMET_T1UESDo;   //!
-
-  // calculate ht
-  htall  = 0.;
-  htaodcalojets = 0.;
-
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   htall += AOD_phoPt->at(phoindex);
+  if(makelog){
+   logfile = fopen( outfilename+".txt", "w"); 
   }
 
-  for(int i=0; i<electron_list.size(); ++i){
-   int eleindex = electron_list[i];
-   htall += AOD_elePt->at(eleindex);
+  if (fChain == 0) return;
+
+  Long64_t nentries = fChain->GetEntriesFast();
+  if(nevts>0){ 
+   nentries = Long64_t(nevts);
   }
 
-  for(int i=0; i<muon_list.size(); ++i){
-   int muindex = muon_list[i];
-   htall += AOD_muPt->at(muindex);
-  }
+  nmatched   = 0;
+  nunmatched = 0;
 
-  for(int i=0; i<aodcalojet_list.size(); ++i){
-   int aodcalojetindex = aodcalojet_list[i];
-   htall  += AODCaloJetPt->at(aodcalojetindex);
-   htaodcalojets += AODCaloJetPt->at(aodcalojetindex);
-  } 
+  jetmatchdRcut = 0.4;
+  objcleandRcut = 0.4;
 
+  n_tot   = 0;
+  n_test  = 0;
+  n_test2 = 0; 
+
+  n_passSig    = 0;
+  n_passZH     = 0;
+  n_passDY     = 0;
+  n_passOffZ   = 0;
+  n_passNoPair = 0;
+
+  n_ele_passSig    = 0;
+  n_ele_passZH     = 0;
+  n_ele_passDY     = 0;
+  n_ele_passOffZ   = 0;
+  n_ele_passNoPair = 0;
+
+  n_mu_passSig    = 0;
+  n_mu_passZH     = 0;
+  n_mu_passDY     = 0;
+  n_mu_passOffZ   = 0;
+  n_mu_passNoPair = 0;
+
+  // set which collections
+  phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
+  eleid = "Loose"; // "Tight"; "Loose"; //Medium"; 
+  muoid = "Loose"; // "Tight"; "Loose"; //Medium"; 
+  jetid = "Loose"; // "Tight"; "Loose";
+
+  if (phoid = "Loose")  phoidbit=0;
+  if (phoid = "Medium") phoidbit=1;
+  if (phoid = "Tight")  phoidbit=2;
+
+  if (eleid = "Loose")  eleidbit=0;
+  if (eleid = "Medium") eleidbit=1;
+  if (eleid = "Tight")  eleidbit=2;
+
+  if (muoid = "Loose")  muoidbit=0;
+  if (muoid = "Medium") muoidbit=1;
+  if (muoid = "Tight")  muoidbit=2;
+
+  if (jetid = "Loose")  aodcalojetidbit=0;
+  if (jetid = "Tight")  aodcalojetidbit=1;
+
+  if(isMC) loadPUWeight();
+  if(isMC) loadElectronWeight();
+
+  // start looping over entries
+  Long64_t nbytes = 0, nb = 0;
+  for (Long64_t jentry=0; jentry<nentries;jentry++) {
+
+   // clear counters for event variables
+   nSelectedPho=0;
+   nSelectedEle=0;
+   nSelectedMuo=0;
+   //nSelectedSlimmedJet=0;
+   nSelectedAODCaloJet=0;
+
+   //clear optimization arrays each new event
+   OPT_Event                           .clear();
+   OPT_EventWeight                     .clear();
+   OPT_AODCaloJetMedianLog10IPSig      .clear();
+   OPT_AODCaloJetMedianLog10TrackAngle .clear();
+   OPT_AODCaloJetAlphaMax              .clear();
+
+   //printf(" Event %lld\n", event);
+   Long64_t ientry = LoadTree(jentry);
+   if (ientry < 0) break;
+   nb = fChain->GetEntry(jentry);   nbytes += nb;
+   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
+
+   n_tot++;
+
+   // get lists of "good" electrons, photons, jets
+   // idbit, pt, eta, sysbinname
+   photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
+   electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
+   muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
+   aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
+
+   // make event weight in analyzerBase.C
+   // colisions happen @LHC at a given rate, use event_weight
+   // to make the simulation match the rate seen in data
+   // = lum * cross-section / nrEvents generated
+   event_weight = makeEventWeight(crossSec,lumi,nrEvents);
+   //std::cout<<event_weight<<std::endl;
+   // for MC, simulated pileup is different from observed
+   // in commontools/pileup we make a ratio for scaling MC
+   //if(isMC) event_weight *= makePUWeight();<-----need nTruePU
+   // electrons also have an associated scale factor for MC 
+   if(isMC) event_weight *= makeElectronWeight();
+
+   tagger();
+
+   // set our met
+   //themet = AOD_pfMET;
+   themephi = AOD_pfMET_phi;
+   // AOD_pfMET_T1JERUp;   //!
+   // AOD_pfMET_T1JERDo;   //!
+   // AOD_pfMET_T1JESUp;   //!
+   // AOD_pfMET_T1JESDo;   //!
+   // AOD_pfMET_T1MESUp;   //!
+   // AOD_pfMET_T1MESDo;   //!
+   // AOD_pfMET_T1EESUp;   //!
+   // AOD_pfMET_T1EESDo;   //!
+   // AOD_pfMET_T1PESUp;   //!
+   // AOD_pfMET_T1PESDo;   //!
+   // AOD_pfMET_T1TESUp;   //!
+   // AOD_pfMET_T1TESDo;   //!
+   // AOD_pfMET_T1UESUp;   //!
+   // AOD_pfMET_T1UESDo;   //!
+
+   // calculate ht
+   htall  = 0.;
+   htaodcalojets = 0.;
+
+   for(int i=0; i<photon_list.size(); ++i){
+    int phoindex = photon_list[i];
+    htall += AOD_phoPt->at(phoindex);
+   }
+
+   for(int i=0; i<electron_list.size(); ++i){
+    int eleindex = electron_list[i];
+    htall += AOD_elePt->at(eleindex);
+   }
+
+   for(int i=0; i<muon_list.size(); ++i){
+    int muindex = muon_list[i];
+    htall += AOD_muPt->at(muindex);
+   }
+
+   for(int i=0; i<aodcalojet_list.size(); ++i){
+     int aodcalojetindex = aodcalojet_list[i];
+     htall  += AODCaloJetPt->at(aodcalojetindex);
+     htaodcalojets += AODCaloJetPt->at(aodcalojetindex);
+     
+     //compute the dRs
+     float min_dR = -1;
+     for(int j=0; j<aodcalojet_list.size(); ++j){
+       if(i==j) continue;
+       float my_dR = dR(AODCaloJetEta->at(aodcalojet_list[i]), AODCaloJetPhi->at(aodcalojet_list[i]), AODCaloJetEta->at(aodcalojet_list[j]), AODCaloJetPhi->at(aodcalojet_list[j]));
+       if(my_dR < min_dR || min_dR<0){
+	 min_dR = my_dR;
+       }
+     }
+     aodcalojet_dR.push_back(min_dR);
+     
+   } 
+   
   // make dilepton pair
   fourVec_l1.SetPtEtaPhiE(0,0,0,0);
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
@@ -573,8 +585,8 @@ Bool_t analyzer_signal::scaleVariableBinHistograms(int selbin, int lepbin)
 {
 
   for(unsigned int j=0; j<jetmultnames.size()-(int)!fillAll; ++j){
-    h_AODCaloJetPt_forEff                      [selbin][j][lepbin].Scale(1, "width");
-    h_AODCaloJet_Tag0_Pt                       [selbin][j][lepbin].Scale(1, "width");
+    h_AODCaloJetPtVar                      [selbin][j][lepbin].Scale(1, "width");
+    h_AODCaloJetPtVar_Tag0                 [selbin][j][lepbin].Scale(1, "width");
   }
 }
 
@@ -687,8 +699,9 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     TString hname_AODCaloJetAvfVertexDeltaZtoPV           = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV";            
     TString hname_AODCaloJetAvfVertexDeltaZtoPV2          = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV2";           
 
-    TString hname_AODCaloJet_Tag0_Pt                      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJet_Tag0_Pt";                             
-    TString hname_AODCaloJetPt_forEff                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPt_forEff";
+    TString hname_AODCaloJetPtVar                         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPtVar";
+    TString hname_AODCaloJetPtVar_Tag0                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPtVar_Tag0";                             
+    TString hname_AODCaloJetNCleanMatchedTracks_Tag0      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetNCleanMatchedTracks_Tag0";            
 
     h_AODCaloJetPt                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
     h_AODCaloJetEta                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
@@ -725,7 +738,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetAvfBeamSpotRecoilPt            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotRecoilPt            , "AODCaloJetAvfBeamSpotRecoilPt           ", 30, -3, 3 ); 
     h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotMedianDeltaPhi      , "AODCaloJetAvfBeamSpotMedianDeltaPhi     ", 30, -3, 3 ); 
     h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi , "AODCaloJetAvfBeamSpotLog10MedianDeltaPhi", 30, -3, 3 ); 
-    h_AODCaloJetNCleanMatchedTracks            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks            , "AODCaloJetNCleanMatchedTracks           ", 30, -3, 3 ); 
+    h_AODCaloJetNCleanMatchedTracks            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks            , "AODCaloJetNCleanMatchedTracks           ", 20,  0, 20 ); 
     h_AODCaloJetSumHitsInFrontOfVert           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumHitsInFrontOfVert           , "AODCaloJetSumHitsInFrontOfVert          ", 30, -3, 3 ); 
     h_AODCaloJetSumMissHitsAfterVert           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumMissHitsAfterVert           , "AODCaloJetSumMissHitsAfterVert          ", 30, -3, 3 ); 
     h_AODCaloJetHitsInFrontOfVertPerTrack      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetHitsInFrontOfVertPerTrack      , "AODCaloJetHitsInFrontOfVertPerTrack     ", 30, -3, 3 ); 
@@ -737,8 +750,10 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     //For efficiencies
     const int Pt_n_xbins = 10;
     float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
-    h_AODCaloJet_Tag0_Pt                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJet_Tag0_Pt                       , "AODCaloJet_Tag0_Pt                      ",  Pt_n_xbins, Pt_xbins );
-    h_AODCaloJetPt_forEff                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt_forEff                      , "AODCaloJetPt_forEff                     ",  Pt_n_xbins, Pt_xbins );
+    h_AODCaloJetPtVar_Tag0                 [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar_Tag0                  , "AODCaloJetPtVar_Tag0                      ",  Pt_n_xbins, Pt_xbins );
+    h_AODCaloJetPtVar                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar                       , "AODCaloJetPtVar                           ",  Pt_n_xbins, Pt_xbins );
+
+    h_AODCaloJetNCleanMatchedTracks_Tag0   [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0    , "AODCaloJetNCleanMatchedTracks_Tag0        ", 20, 0, 20 ); 
 
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -855,7 +870,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
 //h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );// this vector isn't the same length I guess
 
   //For efficiencies
-  h_AODCaloJetPt_forEff                      [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );
+  h_AODCaloJetPtVar                          [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );
 
   //Preliminary tag.  Call it Tag0. 
   //Selection could also be done earlier to make a list like the kinematic and id selection on calo jets
@@ -863,8 +878,9 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
       AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 && 
       AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
 
-    h_AODCaloJet_Tag0_Pt                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
-    
+    h_AODCaloJetPtVar_Tag0                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
+    h_AODCaloJetNCleanMatchedTracks_Tag0       [selbin][incjetbin][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );      
+
   }//Tag0
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
@@ -922,10 +938,10 @@ Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Write(); 
  // h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Write(); 
 
-  h_AODCaloJetPt_forEff                      [selbin][j][lepbin].Write();
+  h_AODCaloJetPtVar                          [selbin][j][lepbin].Write();
 
-  h_AODCaloJet_Tag0_Pt                       [selbin][j][lepbin].Write(); 
-
+  h_AODCaloJetPtVar_Tag0                     [selbin][j][lepbin].Write(); 
+  h_AODCaloJetNCleanMatchedTracks_Tag0       [selbin][j][lepbin].Write(); 
  }
 
  return kTRUE;
@@ -1539,7 +1555,7 @@ void analyzer_signal::debug_printmuons()
 void analyzer_signal::debug_printelectrons()
 {
 
- // elecgron debug
+ // electron debug
  return;
 
 }

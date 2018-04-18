@@ -112,6 +112,8 @@ public :
  std::vector<int> electron_list;
  std::vector<int> muon_list ;
  std::vector<int> aodcalojet_list;
+
+ std::vector<float> aodcalojet_dR;
  
 
  // ID bits for collections
@@ -322,11 +324,12 @@ public :
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
- //For efficiency plots
- TH1F  h_AODCaloJetPt_forEff                      [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ //Extra versions for efficiency plots if needed (e.g. variable binning)
+ TH1F  h_AODCaloJetPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  //Tag0
- TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetPtVar_Tag0                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
 };
 
