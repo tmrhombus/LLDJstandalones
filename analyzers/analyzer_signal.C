@@ -106,6 +106,8 @@
    muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
    aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
 
+   passOneJet = aodcalojet_list.size() > 0;
+
    // make event weight in analyzerBase.C
    // colisions happen @LHC at a given rate, use event_weight
    // to make the simulation match the rate seen in data
