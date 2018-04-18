@@ -4,6 +4,7 @@
 # submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh
 mkdir -p "${rootdir}/${aversion}"
 mkdir -p "${plotdir}/${aversion}"
+mkdir -p "${plotdir}/${aversion}/log"
 
 samples=( \
  "DY50"                             \
