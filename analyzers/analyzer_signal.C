@@ -157,6 +157,7 @@
     htall += AOD_muPt->at(muindex);
    }
 
+   aodcalojet_dR.clear();
    for(int i=0; i<aodcalojet_list.size(); ++i){
      int aodcalojetindex = aodcalojet_list[i];
      htall  += AODCaloJetPt->at(aodcalojetindex);
@@ -452,6 +453,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    TString hname_nSelectedSlimmedJet      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedSlimmedJet";
    TString hname_nSelectedAODCaloJet      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_nSelectedAODCaloJet";
 
+   TString hname_DileptonMass             = "h_"+lepnames[k]+"_"+selbinnames[i]+"_DileptonMass      " ;
+
    // initalize histograms
    //h_nVtx                     [i][k] = initSingleHistogramTH1F( hname_nVtx                    , "nVtx                   ", 60,0,60) ; 
    //h_nGoodVtx                 [i][k] = initSingleHistogramTH1F( hname_nGoodVtx                , "nGoodVtx               ", 60,0,60) ;  
@@ -502,6 +505,8 @@ Bool_t analyzer_signal::initBasicHistograms(){
    h_nSelectedSlimmedJet      [i][k] = initSingleHistogramTH1F( hname_nSelectedSlimmedJet , "nSelectedSlimmedJet", 10,0,10);
    h_nSelectedAODCaloJet      [i][k] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet , "nSelectedAODCaloJet", 10,0,10);
 
+   h_DileptonMass             [i][k] = initSingleHistogramTH1F( hname_DileptonMass        , "DileptonMass"       , 40,30,150);
+
   }
  }
 
@@ -532,6 +537,8 @@ Bool_t analyzer_signal::fillBasicHistograms(Double_t weight, int selbin, int lep
  h_nSelectedMuo            [selbin][lepbin] .Fill( nSelectedMuo       , weight);
  h_nSelectedSlimmedJet     [selbin][lepbin] .Fill( nSelectedSlimmedJet, weight);
  h_nSelectedAODCaloJet     [selbin][lepbin] .Fill( nSelectedAODCaloJet, weight);
+
+ h_DileptonMass            [selbin][lepbin] .Fill( dilep_mass         , weight);
 
  // fill leading photon in vector
  if(photon_list.size() > 0){
@@ -613,6 +620,8 @@ Bool_t analyzer_signal::writeBasicHistograms(int selbin, int lepbin)
  h_nSelectedMuo            [selbin][lepbin] .Write(); 
  h_nSelectedSlimmedJet     [selbin][lepbin] .Write(); 
  h_nSelectedAODCaloJet     [selbin][lepbin] .Write(); 
+
+ h_DileptonMass            [selbin][lepbin] .Write();
 
  h_AOD_phoEn                   [selbin][lepbin] .Write(); 
  h_AOD_phoPt                   [selbin][lepbin] .Write(); 

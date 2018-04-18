@@ -15,7 +15,7 @@ void plotter_stacked()
  TString outpath = TString("../plots/");
  //TString aversion = TString(getenv("aversion"));
 
- TString aversion = "eff2" ;
+ TString aversion = "eff3" ;
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
@@ -26,18 +26,18 @@ void plotter_stacked()
  // phase space regions to plot
  std::vector<TString> regions;
  regions.clear();
- //regions.push_back("NoSel");
- //regions.push_back("Sig");
- //regions.push_back("ZH");
+ regions.push_back("NoSel");
+ regions.push_back("Sig");
+ regions.push_back("ZH");
  regions.push_back("DY");
- // regions.push_back("OffZ");
- // regions.push_back("NoPair"); 
+ regions.push_back("OffZ");
+ regions.push_back("NoPair"); 
 
  // lepton flavor
  std::vector<TString> leptons;
  leptons.clear();
  leptons.push_back("ele"); 
- //leptons.push_back("mu");  
+ leptons.push_back("mu");  
  //leptons.push_back("NoLepSel");
 
  // variables to plot
@@ -120,8 +120,12 @@ void plotter_stacked()
 //  variables.push_back("LeadingJet_jetMedianLogTrackAngle");     
 //  variables.push_back("LeadingJet_jetTotalTrackAngle");         
 //  variables.push_back("LeadingJet_jetNConstituents");           
- variables.push_back("AllJets_AODCaloJetPt_forEff");
- variables.push_back("AllJets_AODCaloJet_Tag0_Pt");
+ variables.push_back("AllJets_AODCaloJetPtVar");
+ variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+ variables.push_back("AllJets_AODCaloJetdR");
+ variables.push_back("AllJets_AODCaloJetdR_Tag0");
+ variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+ variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
 
  // make canvas and text
  TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
@@ -264,6 +268,8 @@ void plotter_stacked()
 // file_DY5to50_HT600ToInf                = new TFile( inpath + "DY5to50_HT600ToInf.root"               ) ; 
 // file_DY5to50_HT70To100                 = new TFile( inpath + "DY5to50_HT70To100.root"                ) ; 
  file_DY50                              = new TFile( inpath + "DY50.root"                             ) ;
+
+
 // file_ggZH_HToBB_ZToLL                  = new TFile( inpath + "ggZH_HToBB_ZToLL.root"                 ) ;
 // file_ggZH_HToSSTobbbb_MS40_ctauS0      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0.root"     ) ;
 // file_ggZH_HToSSTobbbb_MS40_ctauS0p05   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0p05.root"  ) ;
@@ -303,6 +309,8 @@ void plotter_stacked()
 // file_DoubleEG                          = new TFile( inpath + "DoubleEG.root"                         ) ;
 // file_DoubleMuon                        = new TFile( inpath + "DoubleMuon.root"                       ) ;
 // file_MuonEG                            = new TFile( inpath + "MuonEG.root"                           ) ;
+
+
 
  for(unsigned int i=0; i<regions.size(); ++i){
   TString region = regions[i];
@@ -440,7 +448,9 @@ void plotter_stacked()
 //     fprintf (outtable, "DY5to50_HT400To600                & %3.1f  \\\\\n", int_DY5to50_HT400To600               ) ; 
 //     fprintf (outtable, "DY5to50_HT600ToInf                & %3.1f  \\\\\n", int_DY5to50_HT600ToInf               ) ; 
 //     fprintf (outtable, "DY5to50_HT70To100                 & %3.1f  \\\\\n", int_DY5to50_HT70To100                ) ; 
+
      fprintf (outtable, "DY50                              & %3.1f  \\\\\n", int_DY50                             ) ;
+
 //     fprintf (outtable, "ggZH\\_HToBB\\_ZToLL              & %3.1f  \\\\\n", int_ggZH_HToBB_ZToLL                 ) ;
 //     fprintf (outtable, "GJets\\_HT40To100                 & %3.1f  \\\\\n", int_GJets_HT40To100                  ) ;
 //     fprintf (outtable, "GJets\\_HT100To200                & %3.1f  \\\\\n", int_GJets_HT100To200                 ) ;
@@ -489,6 +499,7 @@ void plotter_stacked()
      fprintf (outtable, "\\end{tabular}\n\n");
      fprintf (outtable, "\\end{document}\n\n");
     fclose (outtable);
+
 
 
     // merge some histograms

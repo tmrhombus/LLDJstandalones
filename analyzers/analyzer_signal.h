@@ -235,6 +235,8 @@ public :
  TH1F  h_nSelectedSlimmedJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
 
+ TH1F  h_DileptonMass             [SELBINNAMESIZE][LEPBINNAMESIZE];
+
  //TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  //TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  //TH1F  h_nTrksPV                  [SELBINNAMESIZE][LEPBINNAMESIZE];
