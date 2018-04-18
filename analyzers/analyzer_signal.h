@@ -323,6 +323,7 @@ public :
  TH1F  h_AODCaloJetAvfDistToPV                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetdR                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  //Extra versions for efficiency plots if needed (e.g. variable binning)
  TH1F  h_AODCaloJetPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -330,6 +331,7 @@ public :
  //Tag0
  TH1F  h_AODCaloJetPtVar_Tag0                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetdR_Tag0                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
 };
 

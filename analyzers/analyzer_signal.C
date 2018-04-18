@@ -698,10 +698,12 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     TString hname_AODCaloJetAvfDistToPV                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfDistToPV";                    
     TString hname_AODCaloJetAvfVertexDeltaZtoPV           = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV";            
     TString hname_AODCaloJetAvfVertexDeltaZtoPV2          = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVertexDeltaZtoPV2";           
+    TString hname_AODCaloJetdR                            = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetdR";
 
     TString hname_AODCaloJetPtVar                         = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPtVar";
     TString hname_AODCaloJetPtVar_Tag0                    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetPtVar_Tag0";                             
     TString hname_AODCaloJetNCleanMatchedTracks_Tag0      = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetNCleanMatchedTracks_Tag0";            
+    TString hname_AODCaloJetdR_Tag0                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetdR_Tag0";            
 
     h_AODCaloJetPt                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
     h_AODCaloJetEta                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
@@ -746,6 +748,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetAvfDistToPV                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfDistToPV                    , "AODCaloJetAvfDistToPV                   ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV            , "AODCaloJetAvfVertexDeltaZtoPV           ", 30, -3, 3 ); 
     h_AODCaloJetAvfVertexDeltaZtoPV2           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfVertexDeltaZtoPV2           , "AODCaloJetAvfVertexDeltaZtoPV2          ", 30, -3, 3 ); 
+    h_AODCaloJetdR                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR                             , "AODCaloJetdR                            ", 10,  0, 3.142 ); 
 
     //For efficiencies
     const int Pt_n_xbins = 10;
@@ -754,6 +757,7 @@ Bool_t analyzer_signal::initAODCaloJetHistograms()
     h_AODCaloJetPtVar                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar                       , "AODCaloJetPtVar                           ",  Pt_n_xbins, Pt_xbins );
 
     h_AODCaloJetNCleanMatchedTracks_Tag0   [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0    , "AODCaloJetNCleanMatchedTracks_Tag0        ", 20, 0, 20 ); 
+    h_AODCaloJetdR_Tag0                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetdR_Tag0                     , "AODCaloJetdR_Tag0                         ", 10,  0, 3.142 ); 
 
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
@@ -868,6 +872,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
   h_AODCaloJetAvfDistToPV                    [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfDistToPV                    ->at( aodcalojetindex ), weight );  
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV            ->at( aodcalojetindex ), weight );  
 //h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][incjetbin][lepbin].Fill( AODCaloJetAvfVertexDeltaZtoPV2           ->at( aodcalojetindex ), weight );// this vector isn't the same length I guess
+  h_AODCaloJetdR                             [selbin][incjetbin][lepbin].Fill( aodcalojet_dR[i], weight );  
 
   //For efficiencies
   h_AODCaloJetPtVar                          [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );
@@ -880,6 +885,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
 
     h_AODCaloJetPtVar_Tag0                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
     h_AODCaloJetNCleanMatchedTracks_Tag0       [selbin][incjetbin][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );      
+    h_AODCaloJetdR_Tag0                        [selbin][incjetbin][lepbin].Fill( aodcalojet_dR[i], weight );  
 
   }//Tag0
 
@@ -937,11 +943,13 @@ Bool_t analyzer_signal::writeAODCaloJetHistograms(int selbin, int lepbin)
   h_AODCaloJetAvfDistToPV                    [selbin][j][lepbin].Write(); 
   h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][j][lepbin].Write(); 
  // h_AODCaloJetAvfVertexDeltaZtoPV2           [selbin][j][lepbin].Write(); 
+  h_AODCaloJetdR                            [selbin][j][lepbin].Write(); 
 
   h_AODCaloJetPtVar                          [selbin][j][lepbin].Write();
 
   h_AODCaloJetPtVar_Tag0                     [selbin][j][lepbin].Write(); 
   h_AODCaloJetNCleanMatchedTracks_Tag0       [selbin][j][lepbin].Write(); 
+  h_AODCaloJetdR_Tag0                        [selbin][j][lepbin].Write(); 
  }
 
  return kTRUE;
