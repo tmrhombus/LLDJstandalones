@@ -1386,7 +1386,7 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
 	{                                                                
 	  for(int j=i+1; j<electron_list.size(); ++j)
 	    {
-	      if( AOD_eleCharge->at(i)*AOD_eleCharge->at(i)==-1 )                     
+	      if( AOD_eleCharge->at(electron_list[i])*AOD_eleCharge->at(electron_list[j])==-1 )                     
 		{                                                               
 		  TLorentzVector temp1, temp2, temp12;
 		  temp1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
@@ -1413,7 +1413,7 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
 	{                                           
 	  for(int j=i+1; j<muon_list.size(); ++j)
 	    {
-	      if( AOD_muCharge->at(0)*AOD_muCharge->at(i)==-1 ) 
+	      if( AOD_muCharge->at(muon_list[i])*AOD_muCharge->at(muon_list[j])==-1 ) 
 		{            
 		  TLorentzVector temp1, temp2, temp12;
 		  temp1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
