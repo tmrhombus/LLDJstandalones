@@ -1023,8 +1023,8 @@ Bool_t analyzer_signal::askPassZH()
 
  if( passGoodVtx
     && passZWindow
-    //&& passPTOSSFg50
-    //&& passOneJet
+    && passPTOSSFg50
+    && passOneJet
     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
    )
  { doespass = kTRUE; n_passZH++;
@@ -1041,7 +1041,7 @@ Bool_t analyzer_signal::askPassDY()
 if ( passGoodVtx
      && passZWindow
      && !passPTOSSFg50
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
     )
  { doespass = kTRUE; n_passDY++; 
@@ -1058,7 +1058,7 @@ Bool_t analyzer_signal::askPassOffZ()
  if ( passGoodVtx
      && !passZWindow
      && passOSSF
-     //&& passOneJet
+     && passOneJet
      && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu)
     )
  { doespass = kTRUE; n_passOffZ++;
@@ -1375,8 +1375,15 @@ std::vector<int> analyzer_signal::photon_passID( int bitnr, double AOD_phoPtCut,
    m1.SetPtEtaPhiE( 0,0,0,0 );                                       
    m2.SetPtEtaPhiE( 0,0,0,0 );                                       
                                                                      
-    // no pairs                                                    
-    if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
+   // no pairs                                                    
+   //if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
+
+   // Require exactly 2 electrons and no muons xor exactly 2 muons and no electrons
+   if ( !( (electron_list.size()==2 && muon_list.size()==0) || (electron_list.size()==0 && muon_list.size()==2) ) ) return;
+
+   //The following code selects the OSSF pair with mass closest to Z mass.  
+   //Previous cut on electron_list and muon_list sizes means there is at max one pair, so no real choice
+   //But we leave this code as is in case we want to use this feature at some point.  It works for the simple case, too.
 
     // electrons    
     double best_ee_mass = 9e9;
