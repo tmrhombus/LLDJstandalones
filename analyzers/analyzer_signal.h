@@ -30,6 +30,8 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
+				       int nbins, Float_t xbins[]);
  //option to turn on/off the "AllJets" histograms
  bool fillAll = true;
 
@@ -100,6 +102,8 @@ public :
  Bool_t        fillAODCaloJetHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeAODCaloJetHistograms(int selbin, int lepbin);
 
+ Bool_t        scaleVariableBinHistograms(int selbin, int lepbin);
+
  // vectors of ints
  // each int is an entry in vector
  // associated with object passing
@@ -108,6 +112,8 @@ public :
  std::vector<int> electron_list;
  std::vector<int> muon_list ;
  std::vector<int> aodcalojet_list;
+
+ std::vector<float> aodcalojet_dR;
  
 
  // ID bits for collections
@@ -229,6 +235,8 @@ public :
  TH1F  h_nSelectedSlimmedJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
 
+ TH1F  h_DileptonMass             [SELBINNAMESIZE][LEPBINNAMESIZE];
+
  //TH1F  h_nVtx                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  //TH1F  h_nGoodVtx                 [SELBINNAMESIZE][LEPBINNAMESIZE];
  //TH1F  h_nTrksPV                  [SELBINNAMESIZE][LEPBINNAMESIZE];
@@ -317,9 +325,15 @@ public :
  TH1F  h_AODCaloJetAvfDistToPV                    [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetdR                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+
+ //Extra versions for efficiency plots if needed (e.g. variable binning)
+ TH1F  h_AODCaloJetPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  //Tag0
- TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetPtVar_Tag0                     [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetdR_Tag0                        [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
 };
 
