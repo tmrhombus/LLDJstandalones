@@ -23,6 +23,13 @@
 # 'ggZH_HToSSTobbbb_MS55_ctauS100' \
 #'ggZH_HToSSTobbbb_MS55_ctauS1000' \
 
+# 'WJetsToLNu' \
+# 'TTtoLfromTbar' \
+# 'TTtoLfromT' \
+# 'TTtoLL' \
+# 'DY50' \
+
+
 # 'DY5to50_HT100To200' \
 # 'DY5to50_HT200To400' \
 # 'DY5to50_HT400To600' \
@@ -70,12 +77,44 @@
  #'ZH_HToSSTobbbb_MS15_ctauS1000' \
  #'ggZH_HToSSTobbbb_MS15_ctauS1000' \
 
+
+ 
+
+ #'ggZH_HToSSTobbbb_MS40_ctauS1000'
+ #'ggZH_HToSSTobbbb_MS40_ctauS100' \
+ #'ggZH_HToSSTobbbb_MS40_ctauS10' \
+ #'ggZH_HToSSTobbbb_MS40_ctauS1' \
+ #'ggZH_HToSSTobbbb_MS40_ctauS1000' \
+ #'ggZH_HToSSTobbbb_MS40_ctauS100' \
+ #'ggZH_HToSSTobbbb_MS40_ctauS10' \
+ #'WG' \
+ #'WWToLNuLNu' \
+ #'WWToLNuQQ' \
+ #'WZTo3LNu' \
+ #'WZToL3Nu' \
+ #'WZToLNu2QorQQ2L' \
+ #'ZG' \
+ #'ZZToLLLL' \
+ #'ZZToLLNuNu' \
+ #'ZZToLLQQ' \
+ #'ZZToNuNuQQ' \
+ #'WJetsToLNu' \
+ #'TTtoLfromTbar' \
+ #'TTtoLfromT' \
+ #'TTtoLL' \
+ #'DY50' \
+ #'ST_s' \
+ #'ST_t' \
+ #'ST_tW ' \
+ #'STbar_tW' \
+
 for sample in \
- 'ggZH_HToSSTobbbb_MS40_ctauS100'
+ 'DY50'
+
 do
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "-1" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
+ # ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "999999999" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "6000" -i "../lists" -o "junk" -n 1000 -a 1 -d -m
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "." -n 99999999 -a 1 -d -m
 
 done #for sample in DY50..
 

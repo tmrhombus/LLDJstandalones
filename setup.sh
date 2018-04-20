@@ -2,7 +2,7 @@
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export nversion="ttAOD"
-export aversion="t3dy_cutflowDY_loose"
+export aversion="Daniel_testZH"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
