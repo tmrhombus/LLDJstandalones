@@ -105,7 +105,6 @@ void analyzer_signal::Loop(TString outfilename,
   electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
   muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
   aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
-
   // make event weight in analyzerBase.C
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data
@@ -238,6 +237,7 @@ void analyzer_signal::Loop(TString outfilename,
   //printf("Event: %0.f  %0.llu weight: %0.4f \n",vars_EVENT,jentry,event_weight);
   
   //use if(eventSelection) here
+  //if(doesPassZH)std::cout<<aodcalojet_list.size()<<std::endl;
   if(doesPassZH)OPTtree->Fill();
  } // end loop over entries
 

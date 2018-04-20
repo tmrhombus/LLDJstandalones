@@ -2,8 +2,8 @@
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString lifetime){
 
 bool variable_cut = false;
-bool plot         = true; //plots scanning result
-TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/test/"+lifetime;
+bool plot         = false; //plots scanning result
+TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/newFW/"+lifetime;
 
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
@@ -17,44 +17,45 @@ else            {var = "AlphaMax";}
 vector<TString> SigFileList;
 vector<TString> BkgFileList;
 //Big-hitters
-//SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
-SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/tagroots/ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/tagroots/ZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
-BkgFileList.push_back("../roots/tagroots/DY50_OPT.root"); //kk=0
-BkgFileList.push_back("../roots/tagroots/TTtoLfromT_OPT.root"); //kk=1
-BkgFileList.push_back("../roots/tagroots/TTtoLfromTbar_OPT.root"); //kk=2
-BkgFileList.push_back("../roots/tagroots/WJetsToLNu_OPT.root"); //kk=3
-BkgFileList.push_back("../roots/tagroots/TTtoLL_OPT.root"); //kk=4
+//SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
+SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
+SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+//SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+
+BkgFileList.push_back("../roots/Daniel_testZH/DY50_OPT.root"); //kk=0
+BkgFileList.push_back("../roots/Daniel_testZH/TTtoLfromT_OPT.root"); //kk=1
+BkgFileList.push_back("../roots/Daniel_testZH/TTtoLfromTbar_OPT.root"); //kk=2
+BkgFileList.push_back("../roots/Daniel_testZH/WJetsToLNu_OPT.root"); //kk=3
+BkgFileList.push_back("../roots/Daniel_testZH/TTtoLL_OPT.root"); //kk=4
 //little-guys
 //single-top
-BkgFileList.push_back("../roots/tagroots/ST_s_OPT.root"); //kk=5
-BkgFileList.push_back("../roots/tagroots/ST_tW_OPT.root"); //kk=6
-BkgFileList.push_back("../roots/tagroots/ST_t_OPT.root"); //kk=7
-BkgFileList.push_back("../roots/tagroots/STbar_tW_OPT.root"); //kk=8
-BkgFileList.push_back("../roots/tagroots/STbar_t_OPT.root"); //kk=9
+BkgFileList.push_back("../roots/Daniel_testZH/ST_s_OPT.root"); //kk=5
+BkgFileList.push_back("../roots/Daniel_testZH/ST_tW_OPT.root"); //kk=6
+BkgFileList.push_back("../roots/Daniel_testZH/ST_t_OPT.root"); //kk=7
+//BkgFileList.push_back("../roots/Daniel_testZH/STbar_tW_OPT.root"); //kk=8
+//BkgFileList.push_back("../roots/Daniel_testZH/STbar_t_OPT.root"); //kk=9
 //diboson
-BkgFileList.push_back("../roots/tagroots/WG_OPT.root"); //kk=10
-//BkgFileList.push_back("../roots/tagroots/WWToLNuLNu_OPT.root");
-BkgFileList.push_back("../roots/tagroots/WWToLNuQQ_OPT.root"); //kk=11
-BkgFileList.push_back("../roots/tagroots/WZTo3LNu_OPT.root"); //kk=12
-BkgFileList.push_back("../roots/tagroots/WZToL3Nu_OPT.root"); //kk=13
-BkgFileList.push_back("../roots/tagroots/WZToLNu2QorQQ2L_OPT.root"); //kk=14
-BkgFileList.push_back("../roots/tagroots/ZG_OPT.root"); //kk=15
-BkgFileList.push_back("../roots/tagroots/ZH_HToBB_ZToLL_OPT.root"); //kk=16
-BkgFileList.push_back("../roots/tagroots/ZZToLLLL_OPT.root"); //kk=17
-BkgFileList.push_back("../roots/tagroots/ZZToLLNuNu_OPT.root"); //kk=18
-BkgFileList.push_back("../roots/tagroots/ZZToLLQQ_OPT.root"); //kk=19
-BkgFileList.push_back("../roots/tagroots/ZZToNuNuQQ_OPT.root"); //kk=20
-BkgFileList.push_back("../roots/tagroots/ggZH_HToBB_ZToLL_OPT.root"); //kk=21
+BkgFileList.push_back("../roots/Daniel_testZH/WG_OPT.root"); //kk=10
+BkgFileList.push_back("../roots/Daniel_testZH/WWToLNuLNu_OPT.root");//kk=11
+BkgFileList.push_back("../roots/Daniel_testZH/WWToLNuQQ_OPT.root"); //kk=12
+BkgFileList.push_back("../roots/Daniel_testZH/WZTo3LNu_OPT.root"); //kk=13
+BkgFileList.push_back("../roots/Daniel_testZH/WZToL3Nu_OPT.root"); //kk=14
+BkgFileList.push_back("../roots/Daniel_testZH/WZToLNu2QorQQ2L_OPT.root"); //kk=15
+BkgFileList.push_back("../roots/Daniel_testZH/ZG_OPT.root"); //kk=16
+//BkgFileList.push_back("../roots/Daniel_testZH/ZH_HToBB_ZToLL_OPT.root"); //kk=17
+BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLLL_OPT.root"); //kk=18
+BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLNuNu_OPT.root"); //kk=19
+BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLQQ_OPT.root"); //kk=20
+BkgFileList.push_back("../roots/Daniel_testZH/ZZToNuNuQQ_OPT.root"); //kk=21
+//BkgFileList.push_back("../roots/Daniel_testZH/ggZH_HToBB_ZToLL_OPT.root"); //kk=22
 //control Region
-///BkgFileList.push_back("../roots/tagroots/GJets_HT100To200_OPT.root");
-///BkgFileList.push_back("../roots/tagroots/GJets_HT200To400_OPT.root");
-///BkgFileList.push_back("../roots/tagroots/GJets_HT400To600_OPT.root");
-///BkgFileList.push_back("../roots/tagroots/GJets_HT40To100_OPT.root");
-///BkgFileList.push_back("../roots/tagroots/GJets_HT600ToInf_OPT.root");
+///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT100To200_OPT.root");
+///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT200To400_OPT.root");
+///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT400To600_OPT.root");
+///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT40To100_OPT.root");
+///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT600ToInf_OPT.root");
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -404,7 +405,7 @@ while (reader.Next()) {
       else if   (kk==2){ntTTL_Tbar = ntTTL_Tbar + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_Tbar<<endl;*/}
       else if   (kk==3){ntWJ = ntWJ + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: " <<ntWJ<<endl;*/}
       else if   (kk==4){ntTTtoLL = ntTTtoLL +1;}
-      else if   (kk>=10 && kk<=21){ntDiboson = ntDiboson + 1;}
+      else if   (kk>=10 && kk<=22){ntDiboson = ntDiboson + 1;}
       else if   (kk>=5  && kk<=9 ){ntST = ntST +1;}
       else      {i=i;}
       }
@@ -416,7 +417,7 @@ while (reader.Next()) {
     else if(kk==2)    {h_ntTTL_Tbar->Fill(ntTTL_Tbar, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
     else if(kk==3)    {h_ntWJ      ->Fill(ntWJ, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
     else if(kk==4)    {h_ntTTtoLL  ->Fill(ntTTtoLL, EventWeight->at(i)); }
-    else if(kk>=10 && kk<=21)    {h_ntDiboson  ->Fill(ntDiboson, EventWeight->at(i)); }
+    else if(kk>=10 && kk<=22)    {h_ntDiboson  ->Fill(ntDiboson, EventWeight->at(i)); }
     else if(kk>=5  && kk<=9 )    {h_ntST       ->Fill(ntST,      EventWeight->at(i)); }
     else {h_ntDY->Fill(-3); h_ntTTL_T->Fill(-3); h_ntTTL_Tbar->Fill(-3); h_ntWJ->Fill(-3);if(prnt){cout <<"ErrorFile: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
   }
@@ -537,8 +538,9 @@ if(plot){
   gPad->Update();
   gPad->RedrawAxis();
   
-  canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
-} //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
+ //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
+  //canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
+}// canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
 }//bkg non-var
 
 }
