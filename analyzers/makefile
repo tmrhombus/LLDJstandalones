@@ -5,7 +5,17 @@ CXXDEPFLAGS = -MMD -MP
 all: main
 
 #main:  analyzer_base.o analyzer_signal.o analyzer_AODjets.o main.C 
-main:  analyzer_base.o analyzer_signal.o main.C 
+#main:  analyzer_base.o analyzer_signal.o main.C 
+main:  analyzer_base.o \
+       analyzer_globalvalues.o \
+       analyzer_config.o \
+       analyzer_createobjects.o \
+       analyzer_selections.o \
+       analyzer_scalefactors.o \
+       analyzer_histograms.o \
+       analyzer_tree.o \
+       analyzer_signal.o \
+       main.C 
 	g++ --std=c++11 $^ -o runanalyzer.exe ${ROOTFLAGS} ${CXXDEPFLAGS}
 
 %.o: %.C  
