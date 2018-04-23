@@ -15,7 +15,7 @@ analyzer_signal::~analyzer_signal()
 
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts, TFile *optfile)
+                       Double_t crossSec, Int_t nevts)
 {
 
  if(makelog){

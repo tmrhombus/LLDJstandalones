@@ -225,7 +225,6 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
- TFile* optfile = new TFile(outfilename+"_OPT.root", "RECREATE");
  // make the analyzer, init some stuff
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
@@ -241,7 +240,7 @@ int main(int argc, char **argv){
 
  analyzer.init2DHistograms();
 
- analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile);
+ analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
 
  // end stopwatch
  sw.Stop();

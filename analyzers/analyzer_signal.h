@@ -19,7 +19,7 @@ public :
  virtual       ~analyzer_signal();
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec, Int_t nevts, TFile *optfile);
+                    Double_t crossSec, Int_t nevts);
  
  // debug options, printouts
  virtual void debug_printobjects();
