@@ -182,28 +182,9 @@ void analyzer_signal::debug_printobjects(){
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
   if(dilep_mass>0.){printf(" Dilep Found\n");}
 
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), AOD_phoEta->at(phoindex), AOD_phoPhi->at(phoindex));
-  }
-
-  for(int i=0; i<electron_list.size(); ++i){
-   int eleindex = electron_list[i];
-   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_elePt->at(eleindex), AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex));
-  }
-
-  for(int i=0; i<muon_list.size(); ++i){
-   int muindex = muon_list[i];
-   printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_muPt->at(muindex), AOD_muEta->at(muindex), AOD_muPhi->at(muindex));
-
-   //printf(" muonid %d    %d %d %d %d %d \n",i
-   //      ,muIDbit->at(i) >> 0 & 0x1 
-   //      ,muIDbit->at(i) >> 1 & 0x1 
-   //      ,muIDbit->at(i) >> 2 & 0x1 
-   //      ,muIDbit->at(i) >> 3 & 0x1 
-   //      ,muIDbit->at(i) >> 4 & 0x1 
-   //      );       
-  }
+  debug_printphotons();
+  debug_printmuons();
+  debug_printelectrons();
 
   printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
 
@@ -216,19 +197,7 @@ void analyzer_signal::debug_printobjects(){
       fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
   }
 
-  for(int i=0; i<aodcalojet_list.size(); ++i){
-   int jetindex = aodcalojet_list[i];
-   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
-   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
-  }
-
-  for(int i=0; i<taggedjet_list.size(); ++i){
-   int jetindex = taggedjet_list[i];
-   printf( "TAGGED\n");
-   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
-   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
-  }
-
+  debug_printjets();
 
   return;
 
@@ -238,16 +207,54 @@ void analyzer_signal::debug_printmuons()
 {
 
  // muon debug
- return;
+  for(int i=0; i<muon_list.size(); ++i){
+   int muindex = muon_list[i];
+   printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_muPt->at(muindex), AOD_muEta->at(muindex), AOD_muPhi->at(muindex));
 
+   //printf(" muonid %d    %d %d %d %d %d \n",i
+   //      ,muIDbit->at(i) >> 0 & 0x1 
+   //      ,muIDbit->at(i) >> 1 & 0x1 
+   //      ,muIDbit->at(i) >> 2 & 0x1 
+   //      ,muIDbit->at(i) >> 3 & 0x1 
+   //      ,muIDbit->at(i) >> 4 & 0x1 
+   //      );       
+  }
+ return;
 }
 
 void analyzer_signal::debug_printelectrons()
 {
-
- // elecgron debug
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_elePt->at(eleindex), AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex));
+  }
  return;
+}
 
+void analyzer_signal::debug_printphotons()
+{
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), AOD_phoEta->at(phoindex), AOD_phoPhi->at(phoindex));
+  }
+ return;
+}
+
+void analyzer_signal::debug_printjets()
+{
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+   int jetindex = aodcalojet_list[i];
+   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
+   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
+  }
+
+  for(int i=0; i<taggedjet_list.size(); ++i){
+   int jetindex = taggedjet_list[i];
+   printf( " TAGGED JET\n");
+   printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
+   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
+  }
+ return;
 }
 
 

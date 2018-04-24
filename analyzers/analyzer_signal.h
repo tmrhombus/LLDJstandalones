@@ -25,6 +25,8 @@ public :
  virtual void debug_printobjects();
  virtual void debug_printmuons();
  virtual void debug_printelectrons();
+ virtual void debug_printphotons();
+ virtual void debug_printjets();
  virtual void debug_printtriggers();
 
 };
