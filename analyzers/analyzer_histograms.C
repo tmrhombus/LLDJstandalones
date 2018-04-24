@@ -173,6 +173,7 @@ Bool_t analyzer_histograms::initEleHistograms(){
    h_AOD_eleCharge                [i][k] = initSingleHistogramTH1F( hname_AOD_eleCharge               , "AOD_eleCharge              ", 3, -1, 1); 
   }
  }
+ return kTRUE;
 }
 
 //----------------------------fillEleHistograms
@@ -189,6 +190,7 @@ Bool_t analyzer_histograms::fillEleHistograms(Double_t weight, int selbin, int l
    h_AOD_elePhi              [selbin][lepbin] .Fill( AOD_elePhi              ->at(eleindex), weight );  
    h_AOD_eleCharge           [selbin][lepbin] .Fill( AOD_eleCharge           ->at(eleindex), weight );  
   }
+ return kTRUE;
 }
 
 //----------------------------writeEleHistograms
@@ -201,6 +203,7 @@ Bool_t analyzer_histograms::writeEleHistograms(int selbin, int lepbin)
  h_AOD_eleEta          [selbin][lepbin] .Write();
  h_AOD_elePhi          [selbin][lepbin] .Write();
  h_AOD_eleCharge       [selbin][lepbin] .Write();
+ return kTRUE;
 }
 
 
@@ -228,6 +231,7 @@ Bool_t analyzer_histograms::initMuHistograms(){
    h_AOD_muPFdBetaIsolation       [i][k] = initSingleHistogramTH1F( hname_AOD_muPFdBetaIsolation      , "AOD_muPFdBetaIsolation     ", 30, -5, 5); 
   }
  }
+ return kTRUE;
 }
 
 //----------------------------fillMuHistograms
@@ -245,6 +249,7 @@ Bool_t analyzer_histograms::fillMuHistograms(Double_t weight, int selbin, int le
    h_AOD_muCharge           [selbin][lepbin] .Fill( AOD_muCharge           ->at(muindex), weight );  
    h_AOD_muPFdBetaIsolation [selbin][lepbin] .Fill( AOD_muPFdBetaIsolation ->at(muindex), weight );  
   }
+ return kTRUE;
 }
 
 //----------------------------writeMuHistograms
@@ -258,6 +263,7 @@ Bool_t analyzer_histograms::writeMuHistograms(int selbin, int lepbin)
  h_AOD_muPhi                   [selbin][lepbin] .Write(); 
  h_AOD_muCharge                [selbin][lepbin] .Write(); 
  h_AOD_muPFdBetaIsolation      [selbin][lepbin] .Write(); 
+ return kTRUE;
 }
 
 //----------------------------initPhoHistograms
@@ -280,6 +286,7 @@ Bool_t analyzer_histograms::initPhoHistograms(){
    h_AOD_phoPhi                   [i][k] = initSingleHistogramTH1F( hname_AOD_phoPhi                  , "AOD_phoPhi      ", 30, -5, 5); 
   }
  }
+ return kTRUE;
 }
 
 //----------------------------fillPhoHistograms
@@ -295,6 +302,7 @@ Bool_t analyzer_histograms::fillPhoHistograms(Double_t weight, int selbin, int l
    h_AOD_phoEta   [selbin][lepbin] .Fill( AOD_phoEta  ->at(phoindex), weight );  
    h_AOD_phoPhi   [selbin][lepbin] .Fill( AOD_phoPhi  ->at(phoindex), weight );  
   }
+ return kTRUE;
 }
 
 //----------------------------writePhoHistograms
@@ -306,6 +314,7 @@ Bool_t analyzer_histograms::writePhoHistograms(int selbin, int lepbin)
  h_AOD_phoPt             [selbin][lepbin] .Write(); 
  h_AOD_phoEta            [selbin][lepbin] .Write(); 
  h_AOD_phoPhi            [selbin][lepbin] .Write(); 
+ return kTRUE;
 }
 
 //----------------------------initMETHTHistograms
@@ -335,6 +344,7 @@ Bool_t analyzer_histograms::fillMETHTHistograms(Double_t weight, int selbin, int
  h_AOD_MET_pt              [selbin][lepbin] .Fill( themet         , weight);  
  h_htall                   [selbin][lepbin] .Fill( htall          , weight); 
  h_htaodcalojets           [selbin][lepbin] .Fill( htaodcalojets  , weight); 
+ return kTRUE;
 }
 
 //----------------------------writeMETHTHistograms
@@ -344,6 +354,7 @@ Bool_t analyzer_histograms::writeMETHTHistograms(int selbin, int lepbin)
  h_AOD_MET_pt              [selbin][lepbin] .Write(); 
  h_htall                   [selbin][lepbin] .Write(); 
  h_htaodcalojets           [selbin][lepbin] .Write(); 
+ return kTRUE;
 }
 
  ///// Jet Histograms
@@ -402,6 +413,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
    }
   }
  }
+ return kTRUE;
 }
 
 //----------------------------initAODCaloJetExtraHistograms
@@ -475,7 +487,7 @@ Bool_t analyzer_histograms::initAODCaloJetExtraHistograms()
    } //   for(unsigned int i=0; i<selbinnames.size(); ++i){
   } //  for(unsigned int j=0; j<jetmultnames.size(); ++j){
  } // for(unsigned int k=0; k<lepnames.size(); ++k){
-
+ return kTRUE;
 } //initAODCaloJetHistograms
 
 
@@ -637,4 +649,58 @@ Bool_t analyzer_histograms::writeAODCaloJetExtraHistograms(int selbin, int lepbi
  return kTRUE;
 }
 
+
+// Cutflow section
+
+//----------------------------initCutflowHistograms
+Bool_t analyzer_histograms::initCutflowHistograms(){
+
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+  for(unsigned int k=0; k<lepnames.size(); ++k){
+   TString hname_Cutflow    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_Cutflow"; 
+   TString hname_Onecut     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_Onecut"; 
+   TString hname_RawCutflow = "h_"+lepnames[k]+"_"+selbinnames[i]+"_RawCutflow"; 
+   TString hname_RawOnecut  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_RawOnecut"; 
+
+   h_Cutflow [i][k] = initSingleHistogramTH1F( hname_Cutflow , "Cutflow", 10,0,10);
+   h_Onecut  [i][k] = initSingleHistogramTH1F( hname_Onecut  , "Onecut ", 10,0,10);
+   h_RawCutflow [i][k] = initSingleHistogramTH1F( hname_RawCutflow , "RawCutflow", 10,0,10);
+   h_RawOnecut  [i][k] = initSingleHistogramTH1F( hname_RawOnecut  , "RawOnecut ", 10,0,10);
+  }
+ }
+}
+
+//----------------------------fillCutflowHistograms
+Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, std::vector<Bool_t> selvec)
+{
+ 
+ h_Cutflow[selbin][lepbin] .Fill( 1, weight );
+ h_Onecut[selbin][lepbin]  .Fill( 1, weight );
+ h_RawCutflow[selbin][lepbin] .Fill( 1 );
+ h_RawOnecut[selbin][lepbin]  .Fill( 1 );
+ Bool_t notdead = kTRUE;
+ for(unsigned int i=0; i<selvec.size(); ++i){
+  notdead = notdead && selvec[i];
+  if( notdead ){
+   h_Cutflow[selbin][lepbin] .Fill( 2+i, weight );
+   h_RawCutflow[selbin][lepbin] .Fill( 2+i );
+  }
+  if( selvec[i] ){
+   h_Onecut[selbin][lepbin] .Fill( 2+i, weight );
+   h_RawOnecut[selbin][lepbin] .Fill( 2+i );
+  }
+ }
+
+ return kTRUE;
+}
+
+//----------------------------writeCutflowHistograms
+Bool_t analyzer_histograms::writeCutflowHistograms(int selbin, int lepbin)
+{
+ h_Cutflow    [selbin][lepbin] .Write();
+ h_Onecut     [selbin][lepbin] .Write();
+ h_RawCutflow    [selbin][lepbin] .Write();
+ h_RawOnecut     [selbin][lepbin] .Write();
+ return kTRUE;
+}
 

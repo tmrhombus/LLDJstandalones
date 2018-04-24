@@ -30,7 +30,6 @@ void analyzer_signal::Loop(TString outfilename,
  }
  
  clearglobalcounters();
-  int testvar = 20;
 
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
@@ -104,6 +103,14 @@ void analyzer_signal::Loop(TString outfilename,
   doesPassOffZ   = askPassSelvec( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ   ) ; 
   doesPassNoPair = askPassSelvec( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair ) ; 
 
+  // put into array for looping in Cutflow histograms
+  selvec[0].push_back(kTRUE);
+  selvec[1] = selvecSignal ;
+  selvec[2] = selvecZH     ;
+  selvec[3] = selvecDY     ;
+  selvec[4] = selvecOffZ   ;
+  selvec[5] = selvecNoPair ;
+
   dofillselbin[0] = kTRUE         ;
   dofillselbin[1] = doesPassSig   ; 
   dofillselbin[2] = doesPassZH    ; 
@@ -111,16 +118,10 @@ void analyzer_signal::Loop(TString outfilename,
   dofillselbin[4] = doesPassOffZ  ; 
   dofillselbin[5] = doesPassNoPair; 
 
-  //std::cout<<"sig zh dy offz nopair"<<std::endl;
-  //std::cout<<doesPassSig   <<" "<<askPassSelvec( selvecSignal )<<std::endl;
-  //std::cout<<doesPassZH    <<" "<<askPassSelvec( selvecZH     )<<std::endl;
-  //std::cout<<doesPassDY    <<" "<<askPassSelvec( selvecDY     )<<std::endl;
-  //std::cout<<doesPassOffZ  <<" "<<askPassSelvec( selvecOffZ   )<<std::endl;
-  //std::cout<<doesPassNoPair<<" "<<askPassSelvec( selvecNoPair )<<std::endl;
-
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
+    fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
@@ -130,7 +131,7 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
-   debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  debug_printobjects();   // helpful printout (turn off when submitting!!!)
   // debug_printmuons();     // doesn't exist yet helpful printout (turn off when submitting!!!)
   // debug_printelectrons(); // doesn't exist yet helpful printout (turn off when submitting!!!)
   // debug_printtriggers();
@@ -159,6 +160,7 @@ void analyzer_signal::Loop(TString outfilename,
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<lepnames.size(); ++j){
     writeSelectedHistograms( i, j );
+    writeCutflowHistograms( i, j );
     for( unsigned int k=0; k<jetmultnames.size(); ++k){
      writeSelectedJetHistograms( i, j, k );
    }

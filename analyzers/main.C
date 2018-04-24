@@ -238,6 +238,8 @@ int main(int argc, char **argv){
  analyzer.initAODCaloJetBasicHistograms();
  analyzer.initAODCaloJetExtraHistograms(); 
 
+ analyzer.initCutflowHistograms();
+
  analyzer.init2DHistograms();
 
  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
