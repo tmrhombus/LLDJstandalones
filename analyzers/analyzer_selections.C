@@ -10,6 +10,62 @@ analyzer_selections::~analyzer_selections()
 {
 }
 
+void analyzer_selections::clearSelections()
+{
+ selvecSignal .clear(); 
+ selvecZH     .clear(); 
+ selvecDY     .clear(); 
+ selvecOffZ   .clear(); 
+ selvecNoPair .clear(); 
+}
+
+void analyzer_selections::setSelections()
+{
+ selvecSignal .push_back( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ) ;
+ selvecSignal .push_back( passGoodVtx   );
+ selvecSignal .push_back( passZWindow   );
+ selvecSignal .push_back( passPTOSSFg50 );
+ selvecSignal .push_back( passOneTag    );
+
+ selvecZH     .push_back( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ) ;
+ selvecZH     .push_back( passGoodVtx   );
+ selvecZH     .push_back( passZWindow   );
+ selvecZH     .push_back( passPTOSSFg50 );
+ selvecZH     .push_back( passOneJet    );
+
+ selvecDY     .push_back( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) );
+ selvecDY     .push_back( passGoodVtx    );
+ selvecDY     .push_back( passZWindow    );
+ selvecDY     .push_back( !passPTOSSFg50 );
+ selvecDY     .push_back( passOneJet     );
+
+ selvecOffZ   .push_back( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu) );
+ selvecOffZ   .push_back( passGoodVtx  );
+ selvecOffZ   .push_back( !passZWindow );
+ selvecOffZ   .push_back( passOSSF     );
+ selvecOffZ   .push_back( passOneJet   );
+
+ selvecNoPair .push_back( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu) );
+ selvecNoPair .push_back( passGoodVtx  );
+ selvecNoPair .push_back( !passZWindow );
+ selvecNoPair .push_back( !passOSSF    );
+ selvecNoPair .push_back( passOneJet   );
+}
+
+Bool_t analyzer_selections::askPassSelvec( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu)
+{
+ Bool_t doespass = kTRUE;
+ for(unsigned int i=0; i<selvec.size(); ++i){
+  if( !selvec[i] ) doespass = kFALSE;
+ }
+
+ if( doespass && lepvec[0] ) counterele++;
+ if( doespass && lepvec[1] ) countermu++;
+ if( doespass ) counter++;
+
+ return doespass;
+}
+
 // trigger ------------------------
 Bool_t analyzer_selections::askPassSingleEle()
 {
@@ -51,95 +107,3 @@ Bool_t analyzer_selections::askPassDoubleMu()
  return doespass;
 }
 
-
-
-//----------------------------analyzer_selections
-// signal/control region selections ------------------------
-Bool_t analyzer_selections::askPassSig()
-{
- Bool_t doespass = kFALSE;
- if( passGoodVtx
-    && passZWindow
-    && passPTOSSFg50
-    && passOneTag
-    && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
-   )
- {
-  doespass = kTRUE; n_passSig++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
- }
- return doespass;
-}
-
-
-Bool_t analyzer_selections::askPassZH()
-{
- Bool_t doespass = kFALSE;
- if( passGoodVtx
-    && passZWindow
-    && passPTOSSFg50
-    && passOneJet
-    && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
-   )
- {
-  doespass = kTRUE;
-  n_passZH++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passZH++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passZH++; }
- }
- return doespass;
-}
-
-
-Bool_t analyzer_selections::askPassDY()
-{
- Bool_t doespass = kFALSE;
-
- if ( passGoodVtx
-      && passZWindow
-      && !passPTOSSFg50
-      && passOneJet
-      && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
-     )
-  { doespass = kTRUE; n_passDY++; 
-   if( passSingleEle || passDoubleEle ) { n_ele_passDY++; } // printf("\n PASS SingleEle Event %lld\n", event); }
-   else if( passSingleMu  || passDoubleMu  ) { n_mu_passDY++;  }//  printf("\n PASS SingleMu Event %lld\n", event); }
-  }
-  return doespass;
-}
-
-
-Bool_t analyzer_selections::askPassOffZ()
-{
- Bool_t doespass = kFALSE;
-
- if ( passGoodVtx
-     && !passZWindow
-     && passOSSF
-     && passOneJet
-     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu)
-    )
- { doespass = kTRUE; n_passOffZ++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passOffZ++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passOffZ++; }
- }
- return doespass;
-}
-
-Bool_t analyzer_selections::askPassNoPair()
-{
- Bool_t doespass = kFALSE;
-
- if ( passGoodVtx
-     && !passZWindow
-     && !passOSSF
-     && passOneJet
-     && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu)
-    )
- { doespass = kTRUE; n_passNoPair++;
-  if( passSingleEle || passDoubleEle ) { n_ele_passNoPair++; }
-  else if( passSingleMu  || passDoubleMu  ) { n_mu_passNoPair++; }
- }
- return doespass;
-}

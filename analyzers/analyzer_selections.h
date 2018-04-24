@@ -12,16 +12,21 @@ public :
                   analyzer_selections();
    virtual        ~analyzer_selections(); 
 
+   virtual void  clearSelections();
+   virtual void  setSelections();
+
    // Selection functions
+   Bool_t        askPassSelvec( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu );
    Bool_t        askPassSingleEle();
    Bool_t        askPassSingleMu();
    Bool_t        askPassDoubleEle();
    Bool_t        askPassDoubleMu();
-   Bool_t        askPassSig();
-   Bool_t        askPassZH();
-   Bool_t        askPassDY();
-   Bool_t        askPassOffZ();
-   Bool_t        askPassNoPair();
+
+   std::vector<Bool_t> selvecSignal ;
+   std::vector<Bool_t> selvecZH     ;
+   std::vector<Bool_t> selvecDY     ;
+   std::vector<Bool_t> selvecOffZ   ;
+   std::vector<Bool_t> selvecNoPair ;
 
    // selection booleans
    Bool_t passSingleEle ;

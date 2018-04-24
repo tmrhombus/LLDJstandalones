@@ -17,6 +17,8 @@ public :
    virtual void setOPTtree();
 
    // output TTree to be filled (slimmed vars/selections)
+
+   TFile *outtreefile = new TFile("../roots/output_tree.root","RECREATE");
    TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
   
    // vectors to be filled in optional tree

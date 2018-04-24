@@ -30,6 +30,7 @@ void analyzer_signal::Loop(TString outfilename,
  }
  
  clearglobalcounters();
+  int testvar = 20;
 
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
@@ -87,23 +88,21 @@ void analyzer_signal::Loop(TString outfilename,
   passDoubleEle = askPassDoubleEle();
   passDoubleMu  = askPassDoubleMu();
 
+  // clear then reset selection vectors
+  clearSelections();
+  setSelections();
+
+  // set booleans if fall into lepton bin
   dofilllepbin[0] = ( passSingleEle || passDoubleEle ) ;
   dofilllepbin[1] = ( passSingleMu || passDoubleMu ) ;
   dofilllepbin[2] = kTRUE ;
 
-  //if( passZWindow && !(passDoubleEle||passDoubleMu||passSingleEle||passSingleMu) ){ // or whatever
-   debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  // debug_printmuons();     // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printelectrons(); // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printtriggers();
-  //}
-   
-  // set booleans if pass various selections
-  doesPassSig    = askPassSig   ();
-  doesPassZH     = askPassZH    ();
-  doesPassDY     = askPassDY    ();
-  doesPassOffZ   = askPassOffZ  ();
-  doesPassNoPair = askPassNoPair();
+  // set booleans if pass various selections, increment counters
+  doesPassSig    = askPassSelvec( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig    ) ; 
+  doesPassZH     = askPassSelvec( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH     ) ; 
+  doesPassDY     = askPassSelvec( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY     ) ; 
+  doesPassOffZ   = askPassSelvec( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ   ) ; 
+  doesPassNoPair = askPassSelvec( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair ) ; 
 
   dofillselbin[0] = kTRUE         ;
   dofillselbin[1] = doesPassSig   ; 
@@ -111,6 +110,13 @@ void analyzer_signal::Loop(TString outfilename,
   dofillselbin[3] = doesPassDY    ; 
   dofillselbin[4] = doesPassOffZ  ; 
   dofillselbin[5] = doesPassNoPair; 
+
+  //std::cout<<"sig zh dy offz nopair"<<std::endl;
+  //std::cout<<doesPassSig   <<" "<<askPassSelvec( selvecSignal )<<std::endl;
+  //std::cout<<doesPassZH    <<" "<<askPassSelvec( selvecZH     )<<std::endl;
+  //std::cout<<doesPassDY    <<" "<<askPassSelvec( selvecDY     )<<std::endl;
+  //std::cout<<doesPassOffZ  <<" "<<askPassSelvec( selvecOffZ   )<<std::endl;
+  //std::cout<<doesPassNoPair<<" "<<askPassSelvec( selvecNoPair )<<std::endl;
 
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -124,6 +130,11 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
+   debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  // debug_printmuons();     // doesn't exist yet helpful printout (turn off when submitting!!!)
+  // debug_printelectrons(); // doesn't exist yet helpful printout (turn off when submitting!!!)
+  // debug_printtriggers();
+
   //printf("make log: %0.i\n",makelog);
   
   if(doesPassSig){
@@ -132,7 +143,7 @@ void analyzer_signal::Loop(TString outfilename,
   }
  } // end loop over entries
 
- printf("\n\n Summary   dR=%0.1f\n",jetmatchdRcut);
+ printf("\n\n Summary   cleaning dR=%0.1f\n",objcleandRcut);
 
  printf("  ntot        %i \n",n_tot        ); 
  printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
@@ -141,7 +152,6 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
-
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+".root","RECREATE");
  outfile->cd();
@@ -157,7 +167,6 @@ void analyzer_signal::Loop(TString outfilename,
 
  outfile->Close();
 
- TFile *outtreefile = new TFile(outfilename+"_tree.root","RECREATE");
  outtreefile->cd();
  OPTtree->CloneTree()->Write();
  outtreefile->Close();
