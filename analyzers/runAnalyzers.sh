@@ -109,19 +109,18 @@
  #'STbar_tW' \
 
 for sample in \
- 'DY50'
 
 do
- # ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "999999999" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "6000" -i "../lists" -o "junk" -n 1000 -a 1 -d -m
+ #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "999999999" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
+ #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
+   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "junk" -n 10000 -a 1 -d -m
 
 done #for sample in DY50..
 
-#for sample in \
-# 'SingleMuon' \
-# 'SingleElectron' 
-#
-#do
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d
-#done # for datasample               
+for sample in \
+ 'SingleMuon' \
+ 'SingleElectron'
+do
+  ./runanalyzer.exe -s ${sample} -l "35900" -x "" -e "1000" -i "../lists" -o "junk" -n 1000 -a 1 -d
+
+done # for datasample               

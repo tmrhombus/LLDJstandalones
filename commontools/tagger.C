@@ -3,8 +3,8 @@ void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString life
 
 bool variable_cut = false;
 bool plot         = false; //plots scanning result
-TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/newFW/"+lifetime;
-
+TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/Daniel_ZH_goodVertexTrue/"+lifetime;
+TString inpath  = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/roots/Daniel_ZH_goodVertexTrue/";
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
 const float x     = 0.0; //for sys uncertainty
@@ -17,45 +17,46 @@ else            {var = "AlphaMax";}
 vector<TString> SigFileList;
 vector<TString> BkgFileList;
 //Big-hitters
-//SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
-SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/Daniel_testZH/ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
-//SigFileList.push_back("../roots/Daniel_testZH/ZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
+SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS15_"  +lifetime+"_OPT.root");
+//SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
+//SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_MS40_"  +lifetime+"_OPT.root");
+//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
+//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPT.root");
 
-BkgFileList.push_back("../roots/Daniel_testZH/DY50_OPT.root"); //kk=0
-BkgFileList.push_back("../roots/Daniel_testZH/TTtoLfromT_OPT.root"); //kk=1
-BkgFileList.push_back("../roots/Daniel_testZH/TTtoLfromTbar_OPT.root"); //kk=2
-BkgFileList.push_back("../roots/Daniel_testZH/WJetsToLNu_OPT.root"); //kk=3
-BkgFileList.push_back("../roots/Daniel_testZH/TTtoLL_OPT.root"); //kk=4
+BkgFileList.push_back( inpath+"DY50_OPT.root"         ); //kk=0
+BkgFileList.push_back( inpath+"TTtoLfromT_OPT.root"   ); //kk=1
+BkgFileList.push_back( inpath+"TTtoLfromTbar_OPT.root"); //kk=2
+BkgFileList.push_back( inpath+"WJetsToLNu_OPT.root"   ); //kk=3
+BkgFileList.push_back( inpath+"TTtoLL_OPT.root"       ); //kk=4
+
 //little-guys
 //single-top
-BkgFileList.push_back("../roots/Daniel_testZH/ST_s_OPT.root"); //kk=5
-BkgFileList.push_back("../roots/Daniel_testZH/ST_tW_OPT.root"); //kk=6
-BkgFileList.push_back("../roots/Daniel_testZH/ST_t_OPT.root"); //kk=7
-//BkgFileList.push_back("../roots/Daniel_testZH/STbar_tW_OPT.root"); //kk=8
-//BkgFileList.push_back("../roots/Daniel_testZH/STbar_t_OPT.root"); //kk=9
+BkgFileList.push_back( inpath+"ST_s_OPT.root"    ); //kk=5
+BkgFileList.push_back( inpath+"ST_tW_OPT.root"   ); //kk=6
+BkgFileList.push_back( inpath+"ST_t_OPT.root"    ); //kk=7
+BkgFileList.push_back( inpath+"STbar_tW_OPT.root"); //kk=8
+//BkgFileList.push_back( inpath+"STbar_t_OPT.root"); //kk=9
 //diboson
-BkgFileList.push_back("../roots/Daniel_testZH/WG_OPT.root"); //kk=10
-BkgFileList.push_back("../roots/Daniel_testZH/WWToLNuLNu_OPT.root");//kk=11
-BkgFileList.push_back("../roots/Daniel_testZH/WWToLNuQQ_OPT.root"); //kk=12
-BkgFileList.push_back("../roots/Daniel_testZH/WZTo3LNu_OPT.root"); //kk=13
-BkgFileList.push_back("../roots/Daniel_testZH/WZToL3Nu_OPT.root"); //kk=14
-BkgFileList.push_back("../roots/Daniel_testZH/WZToLNu2QorQQ2L_OPT.root"); //kk=15
-BkgFileList.push_back("../roots/Daniel_testZH/ZG_OPT.root"); //kk=16
-//BkgFileList.push_back("../roots/Daniel_testZH/ZH_HToBB_ZToLL_OPT.root"); //kk=17
-BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLLL_OPT.root"); //kk=18
-BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLNuNu_OPT.root"); //kk=19
-BkgFileList.push_back("../roots/Daniel_testZH/ZZToLLQQ_OPT.root"); //kk=20
-BkgFileList.push_back("../roots/Daniel_testZH/ZZToNuNuQQ_OPT.root"); //kk=21
-//BkgFileList.push_back("../roots/Daniel_testZH/ggZH_HToBB_ZToLL_OPT.root"); //kk=22
+BkgFileList.push_back( inpath+"WG_OPT.root"               ); //kk=10
+BkgFileList.push_back( inpath+"WWToLNuLNu_OPT.root"      );//kk=11
+BkgFileList.push_back( inpath+"WWToLNuQQ_OPT.root"        ); //kk=12
+BkgFileList.push_back( inpath+"WZTo3LNu_OPT.root"         ); //kk=13
+BkgFileList.push_back( inpath+"WZToL3Nu_OPT.root"         ); //kk=14
+BkgFileList.push_back( inpath+"WZToLNu2QorQQ2L_OPT.root"  ); //kk=15
+BkgFileList.push_back( inpath+"ZG_OPT.root"               ); //kk=16
+//BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPT.root"  ); //kk=17
+BkgFileList.push_back( inpath+"ZZToLLLL_OPT.root"         ); //kk=18
+BkgFileList.push_back( inpath+"ZZToLLNuNu_OPT.root"       ); //kk=19
+BkgFileList.push_back( inpath+"ZZToLLQQ_OPT.root"         ); //kk=20
+BkgFileList.push_back( inpath+"ZZToNuNuQQ_OPT.root"       ); //kk=21
+//BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPT.root"); //kk=22
 //control Region
-///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT100To200_OPT.root");
-///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT200To400_OPT.root");
-///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT400To600_OPT.root");
-///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT40To100_OPT.root");
-///BkgFileList.push_back("../roots/Daniel_testZH/GJets_HT600ToInf_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT100To200_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT200To400_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT400To600_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT40To100_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT600ToInf_OPT.root");
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);

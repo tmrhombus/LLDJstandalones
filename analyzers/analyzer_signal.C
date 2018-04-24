@@ -898,7 +898,7 @@ Bool_t analyzer_signal::fillAODCaloJetHistograms(Double_t weight, int selbin, in
     h_AODCaloJetPtVar_Tag0                     [selbin][incjetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
     h_AODCaloJetNCleanMatchedTracks_Tag0       [selbin][incjetbin][lepbin].Fill( AODCaloJetNCleanMatchedTracks            ->at( aodcalojetindex ), weight );      
     h_AODCaloJetdR_Tag0                        [selbin][incjetbin][lepbin].Fill( aodcalojet_dR[i], weight );  
-
+    n_test = n_test+1;
   }//Tag0
 
  } //  for(unsigned int i =0; i<jet_list.size(); i++)
@@ -1012,8 +1012,19 @@ Bool_t analyzer_signal::askPassDoubleMu()
 Bool_t analyzer_signal::askPassSig()
 {
  Bool_t doespass = kTRUE;
- if( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ){
+ /*if( (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) ){
   n_passSig++;
+  if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
+  else if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
+ }*/
+ if( passGoodVtx
+    && passZWindow
+    && passPTOSSFg50
+    && passOneJet
+    && n_test>0
+    && (passSingleEle || passSingleMu || passDoubleEle || passDoubleMu ) 
+   )
+ { doespass = kTRUE; n_passSig++;
   if( passSingleEle || passDoubleEle ) { n_ele_passSig++; }
   else if( passSingleMu  || passDoubleMu  ) { n_mu_passSig++; }
  }
@@ -1263,7 +1274,6 @@ void analyzer_signal::tagger(){
   OPT_Event.push_back(event);
   OPT_EventWeight.push_back(event_weight);
   if(aodcalojet_list.size()>0){
-    n_test = n_test + 1;
     for(int i = 0; i<aodcalojet_list.size(); i++){
       OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojet_list[i]));
       OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojet_list[i]));
@@ -1274,7 +1284,6 @@ void analyzer_signal::tagger(){
     OPT_AODCaloJetMedianLog10IPSig      .push_back(-5);
     OPT_AODCaloJetMedianLog10TrackAngle .push_back(-5);
     OPT_AODCaloJetAlphaMax              .push_back(-5);
-    n_test2 = n_test2 + 1;
   }
 }
 
