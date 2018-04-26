@@ -131,7 +131,7 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
-  debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
   //printf("make log: %0.i\n",makelog);
   
@@ -151,11 +151,10 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
  // make outfile and save histograms
- TFile *outfile = new TFile(outfilename+"_histograms.root","RECREATE");
- outfile->cd();
-
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
+  TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","RECREATE");
+  outfile->cd();
   for(unsigned int j=0; j<lepnames.size(); ++j){
     writeSelectedHistograms( i, j );
     writeCutflowHistograms( i, j );
@@ -163,9 +162,8 @@ void analyzer_signal::Loop(TString outfilename,
      writeSelectedJetHistograms( i, j, k );
    }
   }
+  outfile->Close();
  }
-
- outfile->Close();
 
  optfile->cd();
  OPTtree->CloneTree()->Write();
