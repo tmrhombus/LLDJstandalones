@@ -39,10 +39,10 @@ void analyzer_tree::clearOPTtree(){
 
   //clear optimization arrays each new event
   OPT_Event                           .clear();
-//  OPT_EventWeight                     .clear();
-//  OPT_AODCaloJetMedianLog10IPSig      .clear();
-//  OPT_AODCaloJetMedianLog10TrackAngle .clear();
-//  OPT_AODCaloJetAlphaMax              .clear();
+  OPT_EventWeight                     .clear();
+  OPT_AODCaloJetMedianLog10IPSig      .clear();
+  OPT_AODCaloJetMedianLog10TrackAngle .clear();
+  OPT_AODCaloJetAlphaMax              .clear();
 
 }
 
