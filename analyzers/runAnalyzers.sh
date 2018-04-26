@@ -75,8 +75,7 @@ for sample in \
 # 'ggZH_HToSSTobbbb_MS40_ctauS100'
 do
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "-1" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
-#  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 70 -d -m
-  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "6000" -i "../lists" -o "junk" -n 1000 -a 1 -d -m
+  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "100000" -i "../lists" -o "../roots" -n 10 -a 1 -d -m
 
 done #for sample in DY50..
 
