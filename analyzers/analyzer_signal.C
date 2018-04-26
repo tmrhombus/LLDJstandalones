@@ -15,7 +15,7 @@ analyzer_signal::~analyzer_signal()
 
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts)
+                       Double_t crossSec, Int_t nevts, TFile *optfile)
 {
 
  if(makelog){
@@ -132,9 +132,6 @@ void analyzer_signal::Loop(TString outfilename,
   }
 
   debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  // debug_printmuons();     // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printelectrons(); // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printtriggers();
 
   //printf("make log: %0.i\n",makelog);
   
@@ -154,7 +151,7 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
  // make outfile and save histograms
- TFile *outfile = new TFile(outfilename+".root","RECREATE");
+ TFile *outfile = new TFile(outfilename+"_histograms.root","RECREATE");
  outfile->cd();
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -169,9 +166,9 @@ void analyzer_signal::Loop(TString outfilename,
 
  outfile->Close();
 
- outtreefile->cd();
+ optfile->cd();
  OPTtree->CloneTree()->Write();
- outtreefile->Close();
+ optfile->Close();
 
 } // end analyzer_signal::Loop()
 
@@ -180,7 +177,7 @@ void analyzer_signal::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
-  if(dilep_mass>0.){printf(" Dilep Found\n");}
+  printf(" Pass Sig %d ZH %d DY %d OffZ %d NoPair %d \n", doesPassSig, doesPassZH, doesPassDY, doesPassOffZ, doesPassNoPair );
 
   debug_printphotons();
   debug_printmuons();
@@ -188,15 +185,7 @@ void analyzer_signal::debug_printobjects(){
 
   printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
 
-  if(dilep_mass>0.){
-   printf("  l1 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
-     fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
-   printf("  l2 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
-     fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
-   printf("  ll pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
-      fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
-  }
-
+  debug_printdilep();
   debug_printjets();
 
   return;
@@ -227,6 +216,21 @@ void analyzer_signal::debug_printelectrons()
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
    printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_elePt->at(eleindex), AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex));
+  }
+ return;
+}
+
+
+void analyzer_signal::debug_printdilep()
+{
+  if(dilep_mass>0.){
+   printf(" DILEP FOUND\n");
+   printf("  l1 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+     fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
+   printf("  l2 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+     fourVec_l2.Pt(), fourVec_l2.Eta(), fourVec_l2.Phi(), fourVec_l2.M() );
+   printf("  ll pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
+      fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
   }
  return;
 }
@@ -272,4 +276,5 @@ void analyzer_signal::debug_printtriggers()
  return;
 
 }
+
 

@@ -225,6 +225,10 @@ int main(int argc, char **argv){
 
  printf("  lumi: %f\n\n",lumi);
 
+ // file to be filled with slimmed tree
+ // must be created before TTree, put here to get name aligned
+ TFile* optfile = new TFile(outfilename+"_OPTtree.root", "RECREATE");
+
  // make the analyzer, init some stuff
  analyzer_signal analyzer;
  analyzer.Init(theChain, isMC, makelog);
@@ -242,7 +246,7 @@ int main(int argc, char **argv){
 
  analyzer.init2DHistograms();
 
- analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts);
+ analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile);
 
  // end stopwatch
  sw.Stop();
