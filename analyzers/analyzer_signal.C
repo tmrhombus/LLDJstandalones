@@ -153,6 +153,7 @@ void analyzer_signal::Loop(TString outfilename,
  // make outfile and save histograms
  TFile *outfile = new TFile(outfilename+"_histograms.root","RECREATE");
  outfile->cd();
+
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<lepnames.size(); ++j){
