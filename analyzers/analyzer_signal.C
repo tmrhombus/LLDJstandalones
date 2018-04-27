@@ -135,8 +135,8 @@ void analyzer_signal::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if(doesPassSig){
-   setOPTtree(); 
+  if(doesPassZH){
+   setOPTtree();
    OPTtree->Fill();
   }
  } // end loop over entries
