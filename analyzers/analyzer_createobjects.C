@@ -1,0 +1,399 @@
+#include "analyzer_createobjects.h"
+
+//----------------------------analyzer_createobjects
+analyzer_createobjects::analyzer_createobjects() 
+{
+}
+
+//----------------------------~analyzer_createobjects
+analyzer_createobjects::~analyzer_createobjects()
+{
+}
+
+
+//----------------------------analyzer_createobjects
+
+//-------------------------muon_passID
+std::vector<int> analyzer_createobjects::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
+{
+ std::vector<int> mulist;
+
+ // bool pass_loose  ;
+ // bool pass_medium ;
+ // bool pass_tight  ;
+ // bool pass_soft   ;
+ // bool pass_hipt   ;
+ //
+ // pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
+ // pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
+ // pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
+ // pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
+ // pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
+ //
+ //  printf(" Muon %i    %i %i %i %i %i \n\n",i
+ //        , pass_loose  
+ //        , pass_medium  
+ //        , pass_tight
+ //        , pass_soft
+ //        , pass_hipt
+ //        );       
+
+ for(int i = 0; i < AOD_muPt->size(); i++) 
+ {    
+  //  printf(" Muon %i    %i %i %i %i %i \n",i
+  //        ,muIDbit->at(i) >> 0 & 0x1 
+  //        ,muIDbit->at(i) >> 1 & 0x1 
+  //        ,muIDbit->at(i) >> 2 & 0x1 
+  //        ,muIDbit->at(i) >> 3 & 0x1 
+  //        ,muIDbit->at(i) >> 4 & 0x1 
+  //        );       
+
+  Float_t muonPt = getMuonPt(i,sysbinname);
+  bool pass_kin = muonPt > muPtCut && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
+
+  bool pass_bit = AOD_muPassLooseID->at(i);//muIDbit->at(i) >> bitnr & 0x1 == 1;<------need to add      
+
+  if (muoid = "Loose")  muoisoval = 0.25 ;
+  if (muoid = "Medium") muoisoval = 0.25 ;
+  if (muoid = "Tight")  muoisoval = 0.15 ;
+  bool pass_iso = AOD_muPFdBetaIsolation->at(i) < muoisoval ;
+
+  if( pass_bit && pass_kin && pass_iso )
+  {
+   //printf(" a selected muon\n");
+   nSelectedMuo++;
+   mulist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over muons
+ return mulist;
+}
+
+//-------------------------electron_passID
+std::vector<int> analyzer_createobjects::electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname)
+{
+
+ std::vector<int> elelist;
+ // veto loose medium tight heep hlt
+
+ for(int i = 0; i < nAODEle; i++) 
+ {    
+
+  Float_t electronPt = getElectronPt(i,sysbinname);
+
+  bool pass_kin = electronPt > elePtCut && ( fabs(AOD_eleEta->at(i)) < eleEtaCut ) ;
+
+  bool pass_convsersion_veto = (AOD_elePassConversionVeto->at(i) > 0); //could have been bool
+
+  bool pass_bit = AOD_eleIDbit->at(i) >> bitnr & 0x1 == 1;      
+
+  bool pass_overlap = true;
+/*
+  if(photon_list.size()>0){
+   for(int d=0; d<photon_list.size(); ++d){
+    int phoindex = photon_list[d];
+    if(phoindex<= (AOD_phoEta->size()-1) && phoindex<= (AOD_phoPhi->size()-1)){
+     if( dR( AOD_phoEta->at(phoindex),AOD_phoPhi->at(phoindex), AOD_eleEta->at(i),AOD_elePhi->at(i) ) < objcleandRcut )  pass_overlap=false;
+    }
+   }//end photons
+  } // if photons
+*/
+  //// isolation already in VID
+  //bool pass_iso = AOD_elePFdBetaIsolationRhoEA ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = AOD_elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+  //bool pass_iso = AOD_elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
+
+  if( pass_bit && pass_kin && pass_overlap && pass_convsersion_veto)
+  {
+   nSelectedEle++;
+   //printf(" a selected electron\n");
+   elelist.push_back(i);
+  } // if pass_bit && pass_kin
+ } // loop over electrons
+ return elelist;
+}
+ 
+
+//-------------------------jet_passTagger
+std::vector<int> analyzer_createobjects::jet_passTagger( ) {
+
+  std::vector<int> taglist;
+
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+   int aodcalojetindex = aodcalojet_list[i];
+   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 &&
+       AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 &&
+       AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
+    taglist.push_back(aodcalojetindex);
+   }
+  }
+  return taglist;
+}
+
+//-------------------------aodcalojet_passID
+std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
+
+  std::vector<int> jetlist;
+
+  for(int i = 0; i < AODnCaloJet; i++)
+  {
+
+   bool pass_overlap = true;
+/*
+   // check overlap with photons
+   if(photon_list.size()>0){
+    for(int d=0; d<photon_list.size(); ++d){
+     int phoindex = photon_list[d];
+     if(phoindex<= (AOD_phoEta->size()-1)&&phoindex<= (AOD_phoPhi->size()-1)){  //  <---- shouldn't be needed?
+      if( dR( AOD_phoEta->at(phoindex),AOD_phoPhi->at(phoindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut ){
+       pass_overlap=false;
+      } // if overlap
+     }
+    }//end photons
+   } // if photons
+*/
+   //check overlap with electrons
+   if(electron_list.size()>0){
+    for(int d=0; d<electron_list.size(); ++d){
+     //printf(" brgin looping over electrons\n");
+     int eleindex = electron_list[d];
+     if( dR( AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
+     {
+      pass_overlap=false; // printf(" OL w electron\n");
+     } // if overlap
+    }//end electrons
+   } // if electrons
+   //check overlap with muons
+   if(muon_list.size()>0){
+    for(int d=0; d<muon_list.size(); ++d){
+     int muindex = muon_list[d];
+     if(muindex<= (AOD_muEta->size()-1)&&muindex<= (AOD_muPhi->size()-1)){
+      if( dR( AOD_muEta->at(muindex),AOD_muPhi->at(muindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
+      {
+       pass_overlap=false; //printf(" OL w muon\n");
+      } // if overlap     }
+     }
+    }//end muons
+   } // if muons
+
+   bool pass_kin = AODCaloJetPt->at(i) > jetPtCut && ( fabs(AODCaloJetEta->at(i)) < jetEtaCut ) ;
+              
+   if( pass_kin && pass_overlap )
+   {
+    nSelectedAODCaloJet++;
+    jetlist.push_back(i);
+   } // if pass_bit && pass_kin
+  }// for(int i = 0; i < nJet; i++)
+
+  return jetlist;
+
+}
+
+
+//-------------------------photon_passLooseID
+std::vector<int> analyzer_createobjects::photon_passID( int bitnr, double AOD_phoPtCut, double phoEtaCut, TString sysbinname){
+
+ std::vector<int> pholist;
+ pholist.clear();
+
+ ////Loop over photons                   
+ for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
+ {    
+  Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
+  Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p);
+
+  bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
+  //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
+
+  bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
+  //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
+
+  if( kinematic && pass_bit){
+   nSelectedPho++;
+   //printf("selected aphoton\n");
+   pholist.push_back(p);
+  }    
+ }    
+
+ return pholist;
+
+}
+
+ //-------------------------makeDilep
+ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
+ {          
+                                                                     
+   TLorentzVector e1, e2, ee;                                        
+   TLorentzVector m1, m2, mm;                                        
+   e1.SetPtEtaPhiE( 0,0,0,0 );                                       
+   e2.SetPtEtaPhiE( 0,0,0,0 );                                       
+   m1.SetPtEtaPhiE( 0,0,0,0 );                                       
+   m2.SetPtEtaPhiE( 0,0,0,0 );                                       
+                                                                     
+    // no pairs                                                    
+    if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
+                                                                   
+     // electrons                                                      
+     if( electron_list.size()>1 ){                                           
+      for(int i=1; i<electron_list.size(); ++i)                              
+      {                                                                
+       if( AOD_eleCharge->at(0)*AOD_eleCharge->at(i)==-1 )                     
+       {                                                               
+        //printf(" --we have electrons ");                             
+        e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );  
+        e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );  
+        break;   
+       }         
+      }          
+     }           
+     //printf(": diele mass = %f", ee.M());  
+     ee = e1 + e2;                           
+                                             
+     // muons                                
+     if( muon_list.size()>1 ){                  
+      for(int i=1; i<muon_list.size(); ++i)     
+      {                                           
+        if( AOD_muCharge->at(0)*AOD_muCharge->at(i)==-1 ) 
+        {                                         
+         //printf(" --we have muons ");           
+         m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[0]), AOD_muEta->at(muon_list[0]), AOD_muPhi->at(muon_list[0]), AOD_muEn->at(muon_list[0]) );             
+         //printf(": charge pass ");    
+         m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );             
+         break;                                                                                           
+        } 
+      }   
+     }    
+     //printf(": dimu mass = %f", mm.M());  
+     mm = m1 + m2; 
+                   
+     *fv_ee = ee;  
+     *fv_mm = mm;  
+     // take highest mass dilepton pair 
+     if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
+     else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
+   return;                                                          
+                                                                    
+ } 
+
+
+//-------------------------dR
+double analyzer_createobjects::dR(double eta1, double phi1, double eta2, double phi2)
+{
+  double deltaeta = abs(eta1 - eta2);
+  double deltaphi = DeltaPhi(phi1, phi2);
+  double deltar = sqrt(deltaeta*deltaeta + deltaphi*deltaphi);
+  return deltar;
+}
+
+//-------------------------DeltaPhi
+double analyzer_createobjects::DeltaPhi(double phi1, double phi2)
+//Gives the (minimum) separation in phi between the specified phi values
+//Must return a positive value
+{
+  double pi = TMath::Pi();
+  double dphi = fabs(phi1-phi2);
+  if(dphi>pi) 
+    dphi = 2.0*pi - dphi;
+  return dphi;
+}
+
+//-------------------------getMuonPt
+Float_t analyzer_createobjects::getMuonPt(int i, TString sysbinname){
+
+      //Muon passes pt cut 
+      Float_t muonPt = AOD_muPt->at(i);
+      Float_t muonEnergy = muonPt*TMath::CosH( AOD_muEta->at(i) );
+      if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.015); }
+      if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.015); }
+
+      muonPt = muonEnergy/TMath::CosH( AOD_muEta->at(i) );
+  return muonPt;
+
+}
+
+//-------------------------getElectronPt
+Float_t analyzer_createobjects::getElectronPt(int i, TString sysbinname){
+
+      //Electron passes pt cut 
+      Float_t electronPt = AOD_elePt->at(i);
+      Float_t electronEnergy = electronPt*TMath::CosH( AOD_eleEta->at(i) );
+      if(sysbinname=="_EESUp"  ){ electronEnergy*=(1.0 + 0.015); }
+      if(sysbinname=="_EESDown"){ electronEnergy*=(1.0 - 0.015); }
+
+      electronPt = electronEnergy/TMath::CosH( AOD_eleEta->at(i) );
+
+  return electronPt;
+
+}
+
+//-------------------------getPhotonPt
+Float_t analyzer_createobjects::getPhotonPt(int idnr, TString sysbinname){
+
+      Float_t photonenergy = AOD_phoSCEn->at(idnr);
+      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
+      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+
+      Float_t AOD_phoPt = photonenergy/TMath::CosH( (*AOD_phoSCEta)[idnr] );
+
+  return AOD_phoPt;
+
+}
+
+
+//-------------------------getMET
+Float_t analyzer_createobjects::getMET(){
+ themet   = AOD_pfMET_pt; //AOD_pfChMET_pt;
+ themephi = AOD_pfMET_phi; // AOD_pfChMET_phi;
+}
+
+
+
+//-------------------------calculateHT
+void analyzer_createobjects::calculateHT(){
+  // calculate ht
+  htall  = 0.;
+  htaodcalojets = 0.;
+
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   htall += AOD_phoPt->at(phoindex);
+  }
+
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   htall += AOD_elePt->at(eleindex);
+  }
+
+  for(int i=0; i<muon_list.size(); ++i){
+   int muindex = muon_list[i];
+   htall += AOD_muPt->at(muindex);
+  }
+
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+   int aodcalojetindex = aodcalojet_list[i];
+   htall  += AODCaloJetPt->at(aodcalojetindex);
+   htaodcalojets += AODCaloJetPt->at(aodcalojetindex);
+  }
+
+  return;
+}
+
+
+//-------------------------makeDiLepton
+void analyzer_createobjects::makeDiLepton(){
+
+  // make dilepton pair
+  fourVec_l1.SetPtEtaPhiE(0,0,0,0);
+  fourVec_l2.SetPtEtaPhiE(0,0,0,0);
+
+  // get electrons and muons and put into 4vectors
+  bool passMM = false;
+  makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
+  // make dilepton object
+  fourVec_ll = fourVec_l1 + fourVec_l2;
+  dilep_mass = fourVec_ll.M();
+  dilep_pt   = fourVec_ll.Pt();
+
+}
+
+
+   Float_t         AOD_pfChMET_phi;
