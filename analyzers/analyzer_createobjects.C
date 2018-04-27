@@ -218,62 +218,6 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, double AOD_ph
 
 }
 
- //-------------------------makeDilep
- void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
- {          
-                                                                     
-   TLorentzVector e1, e2, ee;                                        
-   TLorentzVector m1, m2, mm;                                        
-   e1.SetPtEtaPhiE( 0,0,0,0 );                                       
-   e2.SetPtEtaPhiE( 0,0,0,0 );                                       
-   m1.SetPtEtaPhiE( 0,0,0,0 );                                       
-   m2.SetPtEtaPhiE( 0,0,0,0 );                                       
-                                                                     
-    // no pairs                                                    
-    if( electron_list.size()<2 && muon_list.size()<2 ){return;}             
-                                                                   
-     // electrons                                                      
-     if( electron_list.size()>1 ){                                           
-      for(int i=1; i<electron_list.size(); ++i)                              
-      {                                                                
-       if( AOD_eleCharge->at(0)*AOD_eleCharge->at(i)==-1 )                     
-       {                                                               
-        //printf(" --we have electrons ");                             
-        e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );  
-        e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );  
-        break;   
-       }         
-      }          
-     }           
-     //printf(": diele mass = %f", ee.M());  
-     ee = e1 + e2;                           
-                                             
-     // muons                                
-     if( muon_list.size()>1 ){                  
-      for(int i=1; i<muon_list.size(); ++i)     
-      {                                           
-        if( AOD_muCharge->at(0)*AOD_muCharge->at(i)==-1 ) 
-        {                                         
-         //printf(" --we have muons ");           
-         m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[0]), AOD_muEta->at(muon_list[0]), AOD_muPhi->at(muon_list[0]), AOD_muEn->at(muon_list[0]) );             
-         //printf(": charge pass ");    
-         m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );             
-         break;                                                                                           
-        } 
-      }   
-     }    
-     //printf(": dimu mass = %f", mm.M());  
-     mm = m1 + m2; 
-                   
-     *fv_ee = ee;  
-     *fv_mm = mm;  
-     // take highest mass dilepton pair 
-     if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
-     else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
-   return;                                                          
-                                                                    
- } 
-
 
 //-------------------------dR
 double analyzer_createobjects::dR(double eta1, double phi1, double eta2, double phi2)
@@ -395,5 +339,95 @@ void analyzer_createobjects::makeDiLepton(){
 
 }
 
+//-------------------------makeDilep
+void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
+{          
+                                                                    
+  TLorentzVector e1, e2, ee;                                        
+  TLorentzVector m1, m2, mm;                                        
+  e1.SetPtEtaPhiE( 0,0,0,0 );                                       
+  e2.SetPtEtaPhiE( 0,0,0,0 );                                       
+  m1.SetPtEtaPhiE( 0,0,0,0 );                                       
+  m2.SetPtEtaPhiE( 0,0,0,0 );                                       
 
-   Float_t         AOD_pfChMET_phi;
+  // Require exactly 2 electrons and no muons xor exactly 2 muons and no electrons
+  if ( !( (electron_list.size()==2 && muon_list.size()==0) || (electron_list.size()==0 && muon_list.size()==2) ) ) return;
+
+  //The following code selects the OSSF pair with mass closest to Z mass.  
+  //Previous cut on electron_list and muon_list sizes means there is at max one pair, so no real choice
+  //But we leave this code as is in case we want to use this feature at some point.  It works for the simple case, too.
+
+   // electrons    
+   double best_ee_mass = 9e9;
+   int best_ee_i=-1, best_ee_j=-1;
+   if( electron_list.size()>1 ){                                           
+     for(int i=0; i<electron_list.size(); ++i)                              
+       {                                                                
+         for(int j=i+1; j<electron_list.size(); ++j)
+           {
+             if( AOD_eleCharge->at(electron_list[i])*AOD_eleCharge->at(electron_list[j])==-1 )                     
+       	{                                                               
+       	  TLorentzVector temp1, temp2, temp12;
+       	  temp1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
+       	  temp2.SetPtEtaPhiE( AOD_elePt->at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
+       	  temp12 = temp1+temp2;
+       	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_ee_mass) ){
+       	    best_ee_mass = temp12.M();
+       	    best_ee_i=i;
+       	    best_ee_j=j;
+       	  }
+       	}         
+           }          
+       }           
+     e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_i]), AOD_eleEta->at(electron_list[best_ee_i]), AOD_elePhi->at(electron_list[best_ee_i]), AOD_eleEn->at(electron_list[best_ee_i]) );
+     e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_j]), AOD_eleEta->at(electron_list[best_ee_j]), AOD_elePhi->at(electron_list[best_ee_j]), AOD_eleEn->at(electron_list[best_ee_j]) );  
+     ee = e1 + e2;
+   }//electron size > 1
+
+   // muons                                
+   double best_mm_mass = 9e9;
+   int best_mm_i=-1, best_mm_j=-1;
+   if( muon_list.size()>1 ){                  
+     for(int i=0; i<muon_list.size(); ++i)     
+       {                                           
+         for(int j=i+1; j<muon_list.size(); ++j)
+           {
+             if( AOD_muCharge->at(muon_list[i])*AOD_muCharge->at(muon_list[j])==-1 ) 
+       	{            
+       	  TLorentzVector temp1, temp2, temp12;
+       	  temp1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
+       	  temp2.SetPtEtaPhiE( AOD_muPt->at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
+       	  temp12 = temp1+temp2;
+       	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_mm_mass) ){
+       	    best_mm_mass = temp12.M();
+       	    best_mm_i=i;
+       	    best_mm_j=j;                             
+       	  } 
+       	}   
+           }    
+       }
+     m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_i]), AOD_muEta->at(muon_list[best_mm_i]), AOD_muPhi->at(muon_list[best_mm_i]), AOD_muEn->at(muon_list[best_mm_i]) );
+     m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_j]), AOD_muEta->at(muon_list[best_mm_j]), AOD_muPhi->at(muon_list[best_mm_j]), AOD_muEn->at(muon_list[best_mm_j]) );  
+     mm = m1 + m2;      
+   }//muon size > 1
+
+   *fv_ee = ee;  
+   *fv_mm = mm;  
+   
+   // take highest mass dilepton pair 
+   //if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
+   //else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
+
+   // take pair closest to Z mass
+   if( fabs(91.1876-ee.M()) < fabs(91.1876-mm.M()) ){
+     *fv_1 = e1; 
+     *fv_2 = e2;
+   } 
+   else{
+     *fv_1 = m1; 
+     *fv_2 = m2;
+   }
+
+   return;                                                          
+                                                                   
+}

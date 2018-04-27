@@ -15,7 +15,7 @@ analyzer_signal::~analyzer_signal()
 
 void analyzer_signal::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts)
+                       Double_t crossSec, Int_t nevts, TFile *optfile)
 {
 
  if(makelog){
@@ -131,10 +131,7 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
-  // debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  // debug_printmuons();     // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printelectrons(); // doesn't exist yet helpful printout (turn off when submitting!!!)
-  // debug_printtriggers();
+  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
   //printf("make log: %0.i\n",makelog);
   
@@ -154,10 +151,10 @@ void analyzer_signal::Loop(TString outfilename,
  printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
  
  // make outfile and save histograms
- TFile *outfile = new TFile(outfilename+".root","RECREATE");
- outfile->cd();
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
+  TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","RECREATE");
+  outfile->cd();
   for(unsigned int j=0; j<lepnames.size(); ++j){
     writeSelectedHistograms( i, j );
     writeCutflowHistograms( i, j );
@@ -165,13 +162,12 @@ void analyzer_signal::Loop(TString outfilename,
      writeSelectedJetHistograms( i, j, k );
    }
   }
+  outfile->Close();
  }
 
- outfile->Close();
-
- outtreefile->cd();
+ optfile->cd();
  OPTtree->CloneTree()->Write();
- outtreefile->Close();
+ optfile->Close();
 
 } // end analyzer_signal::Loop()
 
@@ -180,18 +176,25 @@ void analyzer_signal::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
-  if(dilep_mass>0.){printf(" Dilep Found\n");}
+  printf(" Pass Sig %d ZH %d DY %d OffZ %d NoPair %d \n", doesPassSig, doesPassZH, doesPassDY, doesPassOffZ, doesPassNoPair );
 
-  for(int i=0; i<photon_list.size(); ++i){
-   int phoindex = photon_list[i];
-   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), AOD_phoEta->at(phoindex), AOD_phoPhi->at(phoindex));
-  }
+  debug_printphotons();
+  debug_printmuons();
+  debug_printelectrons();
 
-  for(int i=0; i<electron_list.size(); ++i){
-   int eleindex = electron_list[i];
-   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_elePt->at(eleindex), AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex));
-  }
+  printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
 
+  debug_printdilep();
+  debug_printjets();
+
+  return;
+
+ }
+
+void analyzer_signal::debug_printmuons()
+{
+
+ // muon debug
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
    printf( " muon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_muPt->at(muindex), AOD_muEta->at(muindex), AOD_muPhi->at(muindex));
@@ -204,10 +207,23 @@ void analyzer_signal::debug_printobjects(){
    //      ,muIDbit->at(i) >> 4 & 0x1 
    //      );       
   }
+ return;
+}
 
-  printf(" Pass SingleEle: %d SingleMu: %d\n", passSingleEle, passSingleMu);
+void analyzer_signal::debug_printelectrons()
+{
+  for(int i=0; i<electron_list.size(); ++i){
+   int eleindex = electron_list[i];
+   printf( " electron %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_elePt->at(eleindex), AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex));
+  }
+ return;
+}
 
+
+void analyzer_signal::debug_printdilep()
+{
   if(dilep_mass>0.){
+   printf(" DILEP FOUND\n");
    printf("  l1 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
      fourVec_l1.Pt(), fourVec_l1.Eta(), fourVec_l1.Phi(), fourVec_l1.M() );
    printf("  l2 pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
@@ -215,7 +231,20 @@ void analyzer_signal::debug_printobjects(){
    printf("  ll pt %.1f  eta %.1f  phi %.1f  mass %.1f \n",
       fourVec_ll.Pt(), fourVec_ll.Eta(), fourVec_ll.Phi(), fourVec_ll.M() );
   }
+ return;
+}
 
+void analyzer_signal::debug_printphotons()
+{
+  for(int i=0; i<photon_list.size(); ++i){
+   int phoindex = photon_list[i];
+   printf( " photon %d : pt %.1f eta %.1f phi %.1f\n", i, AOD_phoPt->at(phoindex), AOD_phoEta->at(phoindex), AOD_phoPhi->at(phoindex));
+  }
+ return;
+}
+
+void analyzer_signal::debug_printjets()
+{
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int jetindex = aodcalojet_list[i];
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
@@ -224,30 +253,11 @@ void analyzer_signal::debug_printobjects(){
 
   for(int i=0; i<taggedjet_list.size(); ++i){
    int jetindex = taggedjet_list[i];
-   printf( "TAGGED\n");
+   printf( " TAGGED JET\n");
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
    printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
   }
-
-
-  return;
-
- }
-
-void analyzer_signal::debug_printmuons()
-{
-
- // muon debug
  return;
-
-}
-
-void analyzer_signal::debug_printelectrons()
-{
-
- // elecgron debug
- return;
-
 }
 
 
@@ -265,4 +275,5 @@ void analyzer_signal::debug_printtriggers()
  return;
 
 }
+
 

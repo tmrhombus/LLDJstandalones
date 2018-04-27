@@ -19,14 +19,17 @@ public :
  virtual       ~analyzer_signal();
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec, Int_t nevts);
+                    Double_t crossSec, Int_t nevts,
+                    TFile *optfile);
  
  // debug options, printouts
  virtual void debug_printobjects();
+ virtual void debug_printdilep();
  virtual void debug_printmuons();
  virtual void debug_printelectrons();
+ virtual void debug_printphotons();
+ virtual void debug_printjets();
  virtual void debug_printtriggers();
-
 };
 
 #endif
