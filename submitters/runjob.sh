@@ -9,10 +9,7 @@ export CMS_PATH=/cvmfs/cms.cern.ch
 export SCRAM_ARCH=slc6_amd64_gcc530
 scramv1 project CMSSW CMSSW_8_0_26_patch1
 
-#mkdir CMSSW
-#tar -xzf $1.tar.gz -C CMSSW --strip-components 4
 cd CMSSW_8_0_26_patch1
-#mkdir -p src
 cd src
 printf "pwd\n"
 pwd
@@ -23,8 +20,7 @@ cp ../../egammaEffi_MoriondBH_eleMedium.root    .
 cp ../../egammaEffi_MoriondBH_eleLoose.root     .
 
 
-scramv1 build -j 20
-#scramv1 build ProjectRename
+scramv1 build -j 10
 eval `scramv1 runtime -sh` # cmsenv
 
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${PWD}
@@ -38,7 +34,7 @@ ls -lhrt ../
 printf "ls -lhrt ../../ \n"
 ls -lhrt ../../
 
-../../runanalyzer.exe -s $2 -l $3 -e $4  -i "../.." -o "../.." -n $5 -a $6 -x $7 $8
+../../runanalyzer.exe -s $1 -l $2 -e $3  -i "../.." -o "../.." -n $4 -a $5 -x $6 $7
 
 printf "ls -lhrt \n"
 ls -lhrt

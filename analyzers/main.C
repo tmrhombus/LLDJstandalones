@@ -176,7 +176,7 @@ int main(int argc, char **argv){
   }
 
   if( Tinputline.Contains("/store/group") ){
-       theChain->Add( "root://cmseos.fnal.gov/"+Tinputline );
+       theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
    printf(" Inputfile: %s\n",Tinputline.Data());
   }
 
