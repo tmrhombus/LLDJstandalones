@@ -36,6 +36,8 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
+ TH1F         initSingleHistogramTH1F(TString hname, TString htitle, 
+				      int nbins, Float_t xbins[]);
 
  // Cutflow histograms
  Bool_t        initCutflowHistograms();
@@ -75,6 +77,9 @@ public :
  Bool_t        initAODCaloJetTagHistograms();
  Bool_t        fillAODCaloJetTagHistograms(Double_t weight, int selbin, int lepbin, int tagbin);
  Bool_t        writeAODCaloJetTagHistograms(int selbin, int lepbin, int tagbin);
+
+ //For variable binning
+ Bool_t        scaleVariableBinHistograms(int selbin, int lepbin);
 
  // Set up which histograms to fill 
  Bool_t        fillSelectedHistograms(Double_t weight, int selbin, int lepbin);
@@ -138,6 +143,7 @@ public :
 
  // AODCaloJetBasicHistograms
  TH1F  h_AODCaloJetPt                             [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetEta                            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetPhi                            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAlphaMax                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -185,8 +191,9 @@ public :
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // AODCaloJetTagHistograms
- TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
- TH1F  h_AODCaloJet_Tag0_MinDR                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetPt_Tag0                       [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetPtVar_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetMinDR_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
 
 
  // // 2D

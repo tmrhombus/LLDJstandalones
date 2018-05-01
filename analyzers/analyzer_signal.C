@@ -5,6 +5,8 @@
 #include <TCanvas.h>
 #include <iostream>
 
+using namespace std;
+
 analyzer_signal::analyzer_signal()
 {
 }
@@ -166,6 +168,11 @@ void analyzer_signal::Loop(TString outfilename,
   TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","RECREATE");
   outfile->cd();
   for(unsigned int j=0; j<lepnames.size(); ++j){
+
+    //Normalize variable binned histograms by bin width
+    //Could put this in its own loop for clarity
+    scaleVariableBinHistograms( i, j );
+    
     writeSelectedHistograms( i, j );
     writeCutflowHistograms( i, j );
 
