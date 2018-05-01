@@ -19,6 +19,8 @@ public :
  std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
  std::vector<int>     jet_passTagger    ();
 
+ std::vector<float>     jet_minDR    ();
+
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
                             TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);

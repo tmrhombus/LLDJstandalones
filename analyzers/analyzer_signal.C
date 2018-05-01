@@ -57,6 +57,8 @@ void analyzer_signal::Loop(TString outfilename,
   aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
   taggedjet_list  = jet_passTagger   ();
 
+  aodcalojet_minDR_list = jet_minDR();
+
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data
   // = lum * cross-section / nrEvents generated
@@ -124,9 +126,17 @@ void analyzer_signal::Loop(TString outfilename,
     fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
+
+     //jets
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
       fillSelectedJetHistograms( event_weight, i, j, k );
      }
+
+     //tagged jets
+     for( unsigned int k=0; k<tagmultnames.size(); ++k){
+      fillSelectedTagHistograms( event_weight, i, j, k );
+     }
+
     }
    }
   }
@@ -158,9 +168,17 @@ void analyzer_signal::Loop(TString outfilename,
   for(unsigned int j=0; j<lepnames.size(); ++j){
     writeSelectedHistograms( i, j );
     writeCutflowHistograms( i, j );
+
+    //jet
     for( unsigned int k=0; k<jetmultnames.size(); ++k){
-     writeSelectedJetHistograms( i, j, k );
-   }
+      writeSelectedJetHistograms( i, j, k );
+    }
+
+    //tag
+    for( unsigned int k=0; k<tagmultnames.size(); ++k){
+      writeSelectedTagHistograms( i, j, k );
+    }
+
   }
   outfile->Close();
  }

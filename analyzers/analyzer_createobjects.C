@@ -129,6 +129,34 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
   return taglist;
 }
 
+
+//-------------------------jet_minDR
+// Finds Delta R of closest "good" jet
+std::vector<float> analyzer_createobjects::jet_minDR( ) {
+
+  std::vector<float> aodcalojet_minDR_list;
+  
+  for(int i = 0; i < AODnCaloJet; i++){//all jets
+
+    float min_dR = -1;
+    
+    for(int j=0; j<aodcalojet_list.size(); ++j){//good jets
+
+      if(i == aodcalojet_list[j]) continue;//don't allow check with itself
+      
+      float my_dR = dR(AODCaloJetEta->at(i), AODCaloJetPhi->at(i), AODCaloJetEta->at(aodcalojet_list[j]), AODCaloJetPhi->at(aodcalojet_list[j]));
+
+      if(my_dR < min_dR || min_dR<0){
+	min_dR = my_dR;
+      }
+
+    }//j   
+    aodcalojet_minDR_list.push_back(min_dR);
+  }//i
+  
+}
+
+
 //-------------------------aodcalojet_passID
 std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
 

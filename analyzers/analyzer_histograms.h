@@ -15,12 +15,14 @@ public :
  // bin names
  std::vector<TString> selbinnames;
  std::vector<TString> jetmultnames;
+ std::vector<TString> tagmultnames;
  std::vector<TString> lepnames;
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
  // jetmultnames = Leading, Subleading, Third, Fourth,allPFJets
  // lepbinname   = ele, mu, NoSel
  static const int SELBINNAMESIZE  = 6;
  static const int JETMULTNAMESIZE = 5; 
+ static const int TAGMULTNAMESIZE = 5; 
  static const int LEPBINNAMESIZE  = 3;
 
  void          initSelectionCategories();
@@ -69,12 +71,18 @@ public :
  Bool_t        initAODCaloJetExtraHistograms();
  Bool_t        fillAODCaloJetExtraHistograms(Double_t weight, int selbin, int lepbin, int jetbin);
  Bool_t        writeAODCaloJetExtraHistograms(int selbin, int lepbin, int jetbin);
+ // AODCaloJet Basic Variables
+ Bool_t        initAODCaloJetTagHistograms();
+ Bool_t        fillAODCaloJetTagHistograms(Double_t weight, int selbin, int lepbin, int tagbin);
+ Bool_t        writeAODCaloJetTagHistograms(int selbin, int lepbin, int tagbin);
 
  // Set up which histograms to fill 
  Bool_t        fillSelectedHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        fillSelectedJetHistograms(Double_t weight, int selbin, int lepbin, int jetbin);
+ Bool_t        fillSelectedTagHistograms(Double_t weight, int selbin, int lepbin, int tagbin);
  Bool_t        writeSelectedHistograms(int selbin, int lepbin);
  Bool_t        writeSelectedJetHistograms(int selbin, int lepbin, int jetbin);
+ Bool_t        writeSelectedTagHistograms(int selbin, int lepbin, int tagbin);
 
  Bool_t dofillselbin    [SELBINNAMESIZE];
  Bool_t dofilllepbin    [LEPBINNAMESIZE];
@@ -146,6 +154,7 @@ public :
  TH1F  h_AODCaloJetLogTrackAngle                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetMinDR                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // AODCaloJetExtraHistograms
  TH1F  h_AODCaloJetAvfVx                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -175,7 +184,9 @@ public :
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV            [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAvfVertexDeltaZtoPV2           [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
- TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ // AODCaloJetTagHistograms
+ TH1F  h_AODCaloJet_Tag0_Pt                       [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJet_Tag0_MinDR                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
 
 
  // // 2D
