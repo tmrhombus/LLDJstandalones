@@ -24,7 +24,7 @@ Long64_t analyzer_base::LoadTree(Long64_t entry)
 }
 
 //----------------------------Init
-void analyzer_base::Init(TTree *tree, Bool_t isitMC, Bool_t domakelog)
+void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
 {
 
    isMC = isitMC;
