@@ -435,6 +435,7 @@ Bool_t analyzer_histograms::writeMETHTHistograms(int selbin, int lepbin)
 Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
 {
   
+  //std::cout<<"Initting AODCaloJetBasicHisto jetmultnames.size() "<<jetmultnames.size()<std::endl;
   // loop through jets and selections to initialize histograms in parllel (series)
   for(unsigned int i=0; i<selbinnames.size(); ++i){
     for(unsigned int j=0; j<lepnames.size(); ++j){
@@ -448,6 +449,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
       h_nPFchsJet                [i][j] = initSingleHistogramTH1F( hname_nPFchsJet , "nPFchsJet", 10,0,10);
 
       for(unsigned int k=0; k<jetmultnames.size(); ++k){
+        std::cout<<" i "<<i<<" "<<selbinnames[i]<<" j "<<j<<" "<<lepnames[j]<<" k "<<k<<" "<<jetmultnames[k]<< std::endl;
 	TString hname_AODCaloJetPt                            = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPt";                             
 	TString hname_AODCaloJetPtVar                         = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPtVar";                             
 	TString hname_AODCaloJetEta                           = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetEta";                            
@@ -468,24 +470,24 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
 	TString hname_AODCaloJetTotalTrackAngle               = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetTotalTrackAngle";                
 	TString hname_AODCaloJetMinDR                         = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetMinDR";
 	
-	h_AODCaloJetPt                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
-	h_AODCaloJetEta                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
-	h_AODCaloJetPhi                            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPhi                            , "AODCaloJetPhi                           ", 30,-5,5   ); 
-	h_AODCaloJetAlphaMax                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax                       , "AODCaloJetAlphaMax                      ", 30, 0, 1  ); 
-	h_AODCaloJetAlphaMax2                      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax2                      , "AODCaloJetAlphaMax2                     ", 30, 0, 1  ); 
-	h_AODCaloJetAlphaMaxPrime                  [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime                  , "AODCaloJetAlphaMaxPrime                 ", 30, 0, 1  ); 
-	h_AODCaloJetAlphaMaxPrime2                 [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime2                 , "AODCaloJetAlphaMaxPrime2                ", 30, 0, 1  ); 
-	h_AODCaloJetBeta                           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta                           , "AODCaloJetBeta                          ", 30, 0, 1  ); 
-	h_AODCaloJetBeta2                          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetBeta2                          , "AODCaloJetBeta2                         ", 30, 0, 1  ); 
-	h_AODCaloJetSumIP                          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumIP                          , "AODCaloJetSumIP                         ", 30, -3, 3 ); 
-	h_AODCaloJetSumIPSig                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumIPSig                       , "AODCaloJetSumIPSig                      ", 30, -3, 3 ); 
-	h_AODCaloJetMedianIP                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianIP                       , "AODCaloJetMedianIP                      ", 30, -3, 3 ); 
-	h_AODCaloJetMedianLog10IPSig               [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10IPSig               , "AODCaloJetMedianLog10IPSig              ", 30, -3, 3 ); 
-	h_AODCaloJetTrackAngle                     [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetTrackAngle                     , "AODCaloJetTrackAngle                    ", 30, -3, 3 ); 
-	h_AODCaloJetLogTrackAngle                  [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetLogTrackAngle                  , "AODCaloJetLogTrackAngle                 ", 30, -3, 3 ); 
-	h_AODCaloJetMedianLog10TrackAngle          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10TrackAngle          , "AODCaloJetMedianLog10TrackAngle         ", 30, -5, 1 ); 
-	h_AODCaloJetTotalTrackAngle                [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetTotalTrackAngle                , "AODCaloJetTotalTrackAngle               ", 30, -3, 3 ); 
-	h_AODCaloJetMinDR                          [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMinDR                          , "AODCaloJetMinDR               ", 30, 0, 5 ); 
+	h_AODCaloJetPt                             [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
+	h_AODCaloJetEta                            [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
+	h_AODCaloJetPhi                            [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetPhi                            , "AODCaloJetPhi                           ", 30,-5,5   ); 
+	h_AODCaloJetAlphaMax                       [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax                       , "AODCaloJetAlphaMax                      ", 30, 0, 1  ); 
+	h_AODCaloJetAlphaMax2                      [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMax2                      , "AODCaloJetAlphaMax2                     ", 30, 0, 1  ); 
+	h_AODCaloJetAlphaMaxPrime                  [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime                  , "AODCaloJetAlphaMaxPrime                 ", 30, 0, 1  ); 
+	h_AODCaloJetAlphaMaxPrime2                 [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetAlphaMaxPrime2                 , "AODCaloJetAlphaMaxPrime2                ", 30, 0, 1  ); 
+	h_AODCaloJetBeta                           [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetBeta                           , "AODCaloJetBeta                          ", 30, 0, 1  ); 
+	h_AODCaloJetBeta2                          [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetBeta2                          , "AODCaloJetBeta2                         ", 30, 0, 1  ); 
+	h_AODCaloJetSumIP                          [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetSumIP                          , "AODCaloJetSumIP                         ", 30, -3, 3 ); 
+	h_AODCaloJetSumIPSig                       [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetSumIPSig                       , "AODCaloJetSumIPSig                      ", 30, -3, 3 ); 
+	h_AODCaloJetMedianIP                       [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetMedianIP                       , "AODCaloJetMedianIP                      ", 30, -3, 3 ); 
+	h_AODCaloJetMedianLog10IPSig               [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10IPSig               , "AODCaloJetMedianLog10IPSig              ", 30, -3, 3 ); 
+	h_AODCaloJetTrackAngle                     [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetTrackAngle                     , "AODCaloJetTrackAngle                    ", 30, -3, 3 ); 
+	h_AODCaloJetLogTrackAngle                  [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetLogTrackAngle                  , "AODCaloJetLogTrackAngle                 ", 30, -3, 3 ); 
+	h_AODCaloJetMedianLog10TrackAngle          [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10TrackAngle          , "AODCaloJetMedianLog10TrackAngle         ", 30, -5, 1 ); 
+	h_AODCaloJetTotalTrackAngle                [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetTotalTrackAngle                , "AODCaloJetTotalTrackAngle               ", 30, -3, 3 ); 
+	h_AODCaloJetMinDR                          [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetMinDR                          , "AODCaloJetMinDR               ", 30, 0, 5 ); 
 
 
 	const int Pt_n_xbins = 10;
@@ -601,16 +603,22 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms()
 //----------------------------fillAODCaloJetBasicHistograms
 Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int selbin, int lepbin, int jetbin)
 {
+  std::cout<<std::endl;
+  std::cout<<"fillAODCloJetBasicHistograms"<<weight<<" "<<selbin<<" "<<lepbin<<" "<<jetbin<<" "<<std::endl;
+
+  std::cout<<"aodcalojet_list.size() "<<(int)aodcalojet_list.size()<<std::endl;
 
   if(jetmultnames.at(jetbin) == "AllJets"){
+    std::cout<<" filling AllJets"<<std::endl;
     for(unsigned int i =0; i<aodcalojet_list.size(); i++){
       int aodcalojetindex = aodcalojet_list[i];
       //std::cout << "AllJets " << aodcalojetindex << std::endl;
-      std::cout << "AllJets: selbin " << selbin << ", jetbin " << jetbin << ", lepbin " << lepbin << ", aodcalojetindex " << aodcalojetindex << ", weight " << weight <<std::endl;
+      std::cout << " AllJets: selbin " << selbin << ", jetbin " << jetbin << ", lepbin " << lepbin << ", i "<<i<<", aodcalojetindex " << aodcalojetindex << ", weight " << weight <<std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
-      std::cout << "Fill: " << AODCaloJetPt                             ->at( aodcalojetindex ) << std::endl;
-      std::cout << "Int: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].Integral()<< std::endl;
-      std::cout << "Ent: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].GetEntries()<< std::endl;
+      std::cout << " nbins " << h_AODCaloJetPt[selbin][jetbin][lepbin].GetNbinsX()<< std::endl;
+      std::cout << " Fill: " << AODCaloJetPt                             ->at( aodcalojetindex ) << std::endl;
+      std::cout << " Int: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].Integral(-1,-1)<< std::endl;
+      std::cout << " Ent: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].GetEntries()<< std::endl;
       h_AODCaloJetPtVar                          [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetEta                            [selbin][jetbin][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
       h_AODCaloJetPhi                            [selbin][jetbin][lepbin].Fill( AODCaloJetPhi                            ->at( aodcalojetindex ), weight );  
@@ -634,6 +642,7 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
       int aodcalojetindex = aodcalojet_list[jetbin];
       std::cout << "OneJet: selbin " << selbin << ", jetbin " << jetbin << ", lepbin " << lepbin << ", aodcalojetindex " << aodcalojetindex << ", weight " << weight << std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
+      std::cout << "nbins " << h_AODCaloJetPt[selbin][jetbin][lepbin].GetNbinsX()<< std::endl;
       std::cout << "Fill: " << AODCaloJetPt                             ->at( aodcalojetindex ) << std::endl;
       std::cout << "Int: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].Integral() << std::endl;
       std::cout << "Ent: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].GetEntries()<< std::endl;
