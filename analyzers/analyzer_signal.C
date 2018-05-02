@@ -43,15 +43,13 @@ void analyzer_signal::Loop(TString outfilename,
   cleareventcounters();
   clearOPTtree(); 
 
-  printf(" \n\n-------------------------------------");
-  printf(" Event %lld\n", event);
+  //printf(" Event %lld\n", event);
   Long64_t ientry = LoadTree(jentry);
   if (ientry < 0) break;
   nb = fChain->GetEntry(jentry);   nbytes += nb;
   if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
 
   n_tot++;
-  printf(" ntot: %i\n",n_tot);
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
@@ -137,17 +135,16 @@ void analyzer_signal::Loop(TString outfilename,
       fillSelectedJetHistograms( event_weight, i, j, k );
      }
 
-     // //tagged jets
-     // for( unsigned int k=0; k<tagmultnames.size(); ++k){
-     //  fillSelectedTagHistograms( event_weight, i, j, k );
-     // }
+      //tagged jets
+      for( unsigned int k=0; k<tagmultnames.size(); ++k){
+       fillSelectedTagHistograms( event_weight, i, j, k );
+      }
 
     }
    }
   }
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  debug_printjets();
 
   //printf("make log: %0.i\n",makelog);
   

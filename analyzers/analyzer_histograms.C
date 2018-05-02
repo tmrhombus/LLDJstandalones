@@ -435,7 +435,6 @@ Bool_t analyzer_histograms::writeMETHTHistograms(int selbin, int lepbin)
 Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
 {
   
-  //std::cout<<"Initting AODCaloJetBasicHisto jetmultnames.size() "<<jetmultnames.size()<std::endl;
   // loop through jets and selections to initialize histograms in parllel (series)
   for(unsigned int i=0; i<selbinnames.size(); ++i){
     for(unsigned int j=0; j<lepnames.size(); ++j){
@@ -449,7 +448,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
       h_nPFchsJet                [i][j] = initSingleHistogramTH1F( hname_nPFchsJet , "nPFchsJet", 10,0,10);
 
       for(unsigned int k=0; k<jetmultnames.size(); ++k){
-        std::cout<<" i "<<i<<" "<<selbinnames[i]<<" j "<<j<<" "<<lepnames[j]<<" k "<<k<<" "<<jetmultnames[k]<< std::endl;
+        //std::cout<<" i "<<i<<" "<<selbinnames[i]<<" j "<<j<<" "<<lepnames[j]<<" k "<<k<<" "<<jetmultnames[k]<< std::endl;
 	TString hname_AODCaloJetPt                            = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPt";                             
 	TString hname_AODCaloJetPtVar                         = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPtVar";                             
 	TString hname_AODCaloJetEta                           = "h_"+lepnames[j]+"_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetEta";                            
@@ -603,22 +602,11 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms()
 //----------------------------fillAODCaloJetBasicHistograms
 Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int selbin, int lepbin, int jetbin)
 {
-  std::cout<<std::endl;
-  std::cout<<"fillAODCloJetBasicHistograms"<<weight<<" "<<selbin<<" "<<lepbin<<" "<<jetbin<<" "<<std::endl;
-
-  std::cout<<"aodcalojet_list.size() "<<(int)aodcalojet_list.size()<<std::endl;
 
   if(jetmultnames.at(jetbin) == "AllJets"){
-    std::cout<<" filling AllJets"<<std::endl;
     for(unsigned int i =0; i<aodcalojet_list.size(); i++){
       int aodcalojetindex = aodcalojet_list[i];
-      //std::cout << "AllJets " << aodcalojetindex << std::endl;
-      std::cout << " AllJets: selbin " << selbin << ", jetbin " << jetbin << ", lepbin " << lepbin << ", i "<<i<<", aodcalojetindex " << aodcalojetindex << ", weight " << weight <<std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
-      std::cout << " nbins " << h_AODCaloJetPt[selbin][jetbin][lepbin].GetNbinsX()<< std::endl;
-      std::cout << " Fill: " << AODCaloJetPt                             ->at( aodcalojetindex ) << std::endl;
-      std::cout << " Int: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].Integral(-1,-1)<< std::endl;
-      std::cout << " Ent: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].GetEntries()<< std::endl;
       h_AODCaloJetPtVar                          [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetEta                            [selbin][jetbin][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
       h_AODCaloJetPhi                            [selbin][jetbin][lepbin].Fill( AODCaloJetPhi                            ->at( aodcalojetindex ), weight );  
@@ -640,12 +628,7 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
   else{
     if( jetbin < (int)aodcalojet_list.size() ){
       int aodcalojetindex = aodcalojet_list[jetbin];
-      std::cout << "OneJet: selbin " << selbin << ", jetbin " << jetbin << ", lepbin " << lepbin << ", aodcalojetindex " << aodcalojetindex << ", weight " << weight << std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
-      std::cout << "nbins " << h_AODCaloJetPt[selbin][jetbin][lepbin].GetNbinsX()<< std::endl;
-      std::cout << "Fill: " << AODCaloJetPt                             ->at( aodcalojetindex ) << std::endl;
-      std::cout << "Int: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].Integral() << std::endl;
-      std::cout << "Ent: " << h_AODCaloJetPt                             [selbin][jetbin][lepbin].GetEntries()<< std::endl;
       h_AODCaloJetPtVar                          [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetEta                            [selbin][jetbin][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
       h_AODCaloJetPhi                            [selbin][jetbin][lepbin].Fill( AODCaloJetPhi                            ->at( aodcalojetindex ), weight );  
