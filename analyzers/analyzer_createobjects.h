@@ -13,10 +13,10 @@ public :
    virtual        ~analyzer_createobjects(); 
 
  // object IDs and selections
- std::vector<int>     photon_passID     ( int bitnr, double phoPtCut, double phoEtaCut, TString sysbinname="");
- std::vector<int>     electron_passID   ( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname="");
- std::vector<int>     muon_passID       ( int bitnr, double muPtCut , double muEtaCut , TString sysbinname="");
- std::vector<int>     aodcalojet_passID ( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname="");
+ std::vector<int>     photon_passID     ( int bitnr, Float_t phoPtCut, Float_t phoEtaCut, TString sysbinname="");
+ std::vector<int>     electron_passID   ( int bitnr, Float_t elePtCut1, Float_t elePtCut2, Float_t eleEtaCut, TString sysbinname="");
+ std::vector<int>     muon_passID       ( int bitnr, Float_t muPtCut1 , Float_t muPtCut2 , Float_t muEtaCut , TString sysbinname="");
+ std::vector<int>     aodcalojet_passID ( int bitnr, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname="");
  std::vector<int>     jet_passTagger    ();
 
  std::vector<float>     jet_minDR    ();

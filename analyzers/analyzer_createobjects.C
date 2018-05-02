@@ -14,7 +14,7 @@ analyzer_createobjects::~analyzer_createobjects()
 //----------------------------analyzer_createobjects
 
 //-------------------------muon_passID
-std::vector<int> analyzer_createobjects::muon_passID( int bitnr, double muPtCut, double muEtaCut, TString sysbinname)
+std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut1, Float_t muPtCut2, Float_t muEtaCut, TString sysbinname)
 {
  std::vector<int> mulist;
 
@@ -49,7 +49,9 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, double muPtCut,
   //        );       
 
   Float_t muonPt = getMuonPt(i,sysbinname);
-  bool pass_kin = muonPt > muPtCut && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
+  bool pass_kin = false;
+  if( i==0 ) pass_kin = (muonPt > muPtCut1) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
+  else       pass_kin = (muonPt > muPtCut2) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
 
   bool pass_bit = AOD_muPassLooseID->at(i);//muIDbit->at(i) >> bitnr & 0x1 == 1;<------need to add      
 
@@ -69,7 +71,7 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, double muPtCut,
 }
 
 //-------------------------electron_passID
-std::vector<int> analyzer_createobjects::electron_passID( int bitnr, double elePtCut, double eleEtaCut, TString sysbinname)
+std::vector<int> analyzer_createobjects::electron_passID( int bitnr, Float_t elePtCut1, Float_t elePtCut2, Float_t eleEtaCut, TString sysbinname)
 {
 
  std::vector<int> elelist;
@@ -80,7 +82,11 @@ std::vector<int> analyzer_createobjects::electron_passID( int bitnr, double eleP
 
   Float_t electronPt = getElectronPt(i,sysbinname);
 
-  bool pass_kin = electronPt > elePtCut && ( fabs(AOD_eleEta->at(i)) < eleEtaCut ) ;
+  bool pass_kin = false;
+  if( i==0 ) pass_kin =  (electronPt > elePtCut1) && ( fabs(AOD_eleEta->at(i)) < eleEtaCut ) ;
+  else       pass_kin =  (electronPt > elePtCut2) && ( fabs(AOD_eleEta->at(i)) < eleEtaCut ) ;
+  
+  
 
   bool pass_convsersion_veto = (AOD_elePassConversionVeto->at(i) > 0); //could have been bool
 
@@ -158,7 +164,7 @@ std::vector<float> analyzer_createobjects::jet_minDR( ) {
 
 
 //-------------------------aodcalojet_passID
-std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, double jetPtCut, double jetEtaCut, TString sysbinname) {
+std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname) {
 
   std::vector<int> jetlist;
 
@@ -218,7 +224,7 @@ std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, double je
 
 
 //-------------------------photon_passLooseID
-std::vector<int> analyzer_createobjects::photon_passID( int bitnr, double AOD_phoPtCut, double phoEtaCut, TString sysbinname){
+std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_phoPtCut, Float_t phoEtaCut, TString sysbinname){
 
  std::vector<int> pholist;
  pholist.clear();

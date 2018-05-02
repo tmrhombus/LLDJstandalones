@@ -53,10 +53,10 @@ void analyzer_signal::Loop(TString outfilename,
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
-  photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
-  electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
-  muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
-  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
+  photon_list     = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
+  electron_list   = electron_passID  ( eleidbit,        ele_minPt1, ele_minPt2, ele_maxEta, "");
+  muon_list       = muon_passID      ( muoidbit,        mu_minPt1,  mu_minPt2,  mu_maxEta,  ""); 
+  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
   taggedjet_list  = jet_passTagger   ();
 
   aodcalojet_minDR_list = jet_minDR();
