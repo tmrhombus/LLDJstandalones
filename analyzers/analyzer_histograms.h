@@ -56,6 +56,10 @@ public :
  Bool_t        initMuHistograms();
  Bool_t        fillMuHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeMuHistograms(int selbin, int lepbin);
+ // Lepton Variables
+ Bool_t        initLepHistograms();
+ Bool_t        fillLepHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeLepHistograms(int selbin, int lepbin);
  // Photon Variables
  Bool_t        initPhoHistograms();
  Bool_t        fillPhoHistograms(Double_t weight, int selbin, int lepbin);
@@ -121,6 +125,10 @@ public :
  TH1F  h_AOD_muCharge                [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_muPFdBetaIsolation      [SELBINNAMESIZE][LEPBINNAMESIZE];
  
+ // Generic Lepton
+ TH1F  h_AOD_dilepton_Mass           [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AOD_dilepton_Pt             [SELBINNAMESIZE][LEPBINNAMESIZE];
+
  // Photon
  TH1F  h_AOD_nPho                     [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AOD_nSelectedPho             [SELBINNAMESIZE][LEPBINNAMESIZE];

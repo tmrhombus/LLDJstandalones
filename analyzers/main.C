@@ -10,7 +10,7 @@
  
 #include <vector>
 #include <map>
- 
+
 int main(int argc, char **argv){
 
  // start stopwatch
@@ -237,6 +237,7 @@ int main(int argc, char **argv){
 
  analyzer.initEleHistograms();
  analyzer.initMuHistograms();
+ analyzer.initLepHistograms();
  analyzer.initPhoHistograms();
  analyzer.initMETHTHistograms();
  analyzer.initAODCaloJetBasicHistograms();

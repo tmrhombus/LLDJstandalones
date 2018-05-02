@@ -57,6 +57,7 @@ Bool_t analyzer_histograms::fillSelectedHistograms(Double_t weight, int selbin, 
  /// Decide here which histograms to get filled
  fillEleHistograms            ( weight, selbin, lepbin );
  fillMuHistograms             ( weight, selbin, lepbin );
+ fillLepHistograms            ( weight, selbin, lepbin );
  fillPhoHistograms            ( weight, selbin, lepbin );
  fillMETHTHistograms          ( weight, selbin, lepbin );
 }
@@ -67,6 +68,7 @@ Bool_t analyzer_histograms::writeSelectedHistograms(int selbin, int lepbin)
  /// Decide here which histograms to get written
  writeEleHistograms            ( selbin, lepbin );
  writeMuHistograms             ( selbin, lepbin );
+ writeLepHistograms            ( selbin, lepbin );
  writePhoHistograms            ( selbin, lepbin );
  writeMETHTHistograms          ( selbin, lepbin );
 }
@@ -269,6 +271,23 @@ Bool_t analyzer_histograms::initMuHistograms(){
  return kTRUE;
 }
 
+
+//----------------------------initLepHistograms
+Bool_t analyzer_histograms::initLepHistograms(){
+
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+  for(unsigned int k=0; k<lepnames.size(); ++k){
+   TString hname_AOD_dilepton_Mass                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Mass              "; 
+   TString hname_AOD_dilepton_Pt                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Pt                "; 
+
+   h_AOD_dilepton_Mass                      [i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Mass                     , "AOD_dilepton_Mass                    ", 30,  30, 150) ;  
+   h_AOD_dilepton_Pt                        [i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Pt                       , "AOD_dilepton_Pt                      ", 30,   0, 300) ;  
+  }
+ }
+ return kTRUE;
+}
+
+
 //----------------------------fillMuHistograms
 Bool_t analyzer_histograms::fillMuHistograms(Double_t weight, int selbin, int lepbin)
 {
@@ -300,6 +319,25 @@ Bool_t analyzer_histograms::writeMuHistograms(int selbin, int lepbin)
  h_AOD_muPFdBetaIsolation      [selbin][lepbin] .Write(); 
  return kTRUE;
 }
+
+
+//----------------------------fillLepHistograms
+Bool_t analyzer_histograms::fillLepHistograms(Double_t weight, int selbin, int lepbin)
+{
+  h_AOD_dilepton_Mass  [selbin][lepbin] .Fill( dilep_mass, weight );
+  h_AOD_dilepton_Pt    [selbin][lepbin] .Fill( dilep_pt, weight );
+  return kTRUE;
+}
+
+
+//----------------------------writeLepHistograms
+Bool_t analyzer_histograms::writeLepHistograms(int selbin, int lepbin)
+{
+ h_AOD_dilepton_Mass           [selbin][lepbin] .Write();
+ h_AOD_dilepton_Pt             [selbin][lepbin] .Write();
+ return kTRUE;
+}
+
 
 //----------------------------initPhoHistograms
 Bool_t analyzer_histograms::initPhoHistograms(){
@@ -567,6 +605,7 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
   if(jetmultnames.at(jetbin) == "AllJets"){
     for(unsigned int i =0; i<aodcalojet_list.size(); i++){
       int aodcalojetindex = aodcalojet_list[i];
+      //std::cout << "AllJets " << aodcalojetindex << std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetPtVar                          [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetEta                            [selbin][jetbin][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
@@ -589,6 +628,7 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
   else{
     if( jetbin < (int)aodcalojet_list.size() ){
       int aodcalojetindex = aodcalojet_list[jetbin];
+      //std::cout << "One jet, jet bin " << jetbin << ", index " << aodcalojetindex << std::endl;
       h_AODCaloJetPt                             [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetPtVar                          [selbin][jetbin][lepbin].Fill( AODCaloJetPt                             ->at( aodcalojetindex ), weight );  
       h_AODCaloJetEta                            [selbin][jetbin][lepbin].Fill( AODCaloJetEta                            ->at( aodcalojetindex ), weight );  
