@@ -18,7 +18,7 @@ public :
  std::vector<TString> tagmultnames;
  std::vector<TString> lepnames;
  // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
- // jetmultnames = Leading, Subleading, Third, Fourth,allPFJets
+ // jetmultnames = Leading, Subleading, Third, Fourth, All
  // lepbinname   = ele, mu, NoSel
  static const int SELBINNAMESIZE  = 6;
  static const int JETMULTNAMESIZE = 5; 
