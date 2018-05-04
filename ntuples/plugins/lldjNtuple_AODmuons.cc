@@ -114,7 +114,7 @@ void lldjNtuple::fillAODMuons(const edm::Event& e, reco::Vertex vtx) {
   Float_t eta = iMu->eta();
 
   if (pt < 2) continue;
-  if (fabs(eta) > 2.1) continue;
+  if (fabs(eta) > 2.4) continue;
   if (! (iMu->isPFMuon() || iMu->isGlobalMuon() || iMu->isTrackerMuon())) continue;
 
   nAODMu_++;

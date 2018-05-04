@@ -120,7 +120,8 @@ void lldjNtuple::fillAODElectrons(const edm::Event &e, const edm::EventSetup &es
  for (size_t i = 0; i < electrons->size(); ++i){
    const auto el = electrons->ptrAt(i);
 
-   if( el->pt() < 20 ) continue;
+   if( el->pt() < 5 ) continue;
+   if( fabs(el->eta()) > 2.5 ) continue;
    
    AOD_eleEn_  .push_back( el->energy() );
    AOD_elePt_  .push_back( el->pt() );
