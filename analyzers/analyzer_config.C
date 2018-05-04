@@ -15,6 +15,17 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setconfiguration() 
 {
 
+ pho_minPt  = 15.;
+ pho_maxEta = 1.4442;
+ ele_minPt1 = 17.;
+ ele_minPt2 = 12.;
+ ele_maxEta = 2.1;
+ mu_minPt1  = 17.;
+ mu_minPt2  = 8.;
+ mu_maxEta  = 2.1;
+ jet_minPt  = 25.;
+ jet_maxEta = 2.4;
+
  // set which collections
  phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
  eleid = "Loose"; // "Tight"; "Loose"; //Medium"; 

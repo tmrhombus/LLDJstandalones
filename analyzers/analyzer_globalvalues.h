@@ -24,6 +24,8 @@ public :
    std::vector<int> aodcalojet_list;
    std::vector<int> taggedjet_list;
 
+   std::vector<float> aodcalojet_minDR_list;
+
    // for dilepton
    TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
    TLorentzVector fourVec_l1, fourVec_l2;

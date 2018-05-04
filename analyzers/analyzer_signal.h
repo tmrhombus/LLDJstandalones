@@ -9,6 +9,7 @@
 #include <TGraph.h>
 #include <TMath.h>
 #include "TTree.h"
+#include "TChain.h"
 #include "TBranch.h"
 #include <stdlib.h> 
 class analyzer_signal : public analyzer_tree {

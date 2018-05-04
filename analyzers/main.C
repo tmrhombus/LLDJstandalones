@@ -10,7 +10,7 @@
  
 #include <vector>
 #include <map>
- 
+
 int main(int argc, char **argv){
 
  // start stopwatch
@@ -91,9 +91,9 @@ int main(int argc, char **argv){
    }
 
  for (index = optind; index < argc; index++)
-   printf ("Non-option argument %s\n", argv[index]);
+   std::cout << "Non-option argument " << argv[index] << std::endl;
 
- printf ("Running sample:   %s\n", sample);
+ std::cout << "Running sample: " << sample << std::endl;
 
  // easiest if we convert char to TString
  TString Tsample  = TString(sample);
@@ -111,12 +111,12 @@ int main(int argc, char **argv){
  // MC vs Data
  Bool_t isMC=bisMC;
 
- printf("Tsample:  %s\n",Tsample.Data());
- printf("Txname:   %s\n",Txname.Data());
- printf("TSlumi:   %s\n",TSlumi.Data());
- printf("TSevts:   %s\n",TSevts.Data());
- printf("TIatfile: %i\n",TIatfile);
- printf("TInfiles: %i\n",TInfiles);
+ std::cout << "Tsample: " << Tsample << std::endl;
+ std::cout << "Txname: " << Txname << std::endl;
+ std::cout << "TSlumi: " << TSlumi << std::endl;
+ std::cout << "TSevts: " << TSevts << std::endl;
+ std::cout << "TIatfile: " << TIatfile << std::endl;
+ std::cout << "TInfiles: " << TInfiles << std::endl;
 
  Bool_t makelog=kFALSE;
 
@@ -127,8 +127,8 @@ int main(int argc, char **argv){
  TChain *theChain = new TChain("lldjNtuple/EventTree");
  theChain->Reset();
 
- printf("Input List Name:  %s\n", inputListName.Data()) ; 
- printf("Output File Name: %s.root\n", outfilename.Data()  ) ; 
+ std::cout << "Input List Name: " << inputListName << std::endl;
+ std::cout << "Output File Name: " << outfilename << std::endl;
 
  // lines read from file variables
  std::string inputline = "";
@@ -157,27 +157,27 @@ int main(int argc, char **argv){
 
   // TChain needs a TString..
   Tinputline = inputline;
-  printf("raw inputline: %s\n",Tinputline.Data());
+  std::cout << "raw inputline: " << Tinputline << std::endl;
 
   // read input file names
   if( Tinputline.Contains("/home/rhombus") ){
    theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   std::cout << " Inputfile: " << Tinputline << std::endl;
   }
 
   if( Tinputline.Contains("/uscms/home") ){
    theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   std::cout << " Inputfile: " << Tinputline << std::endl;
   }
 
   if( Tinputline.Contains("/uscms_data/d3/tmperry") ){
    theChain->Add( Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   std::cout << " Inputfile: " << Tinputline << std::endl;
   }
 
   if( Tinputline.Contains("/store/group") ){
-       theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
-   printf(" Inputfile: %s\n",Tinputline.Data());
+   theChain->Add( "root://cmsxrootd.fnal.gov/"+Tinputline );
+   std::cout << " Inputfile: " << Tinputline << std::endl;
   }
 
   // if( dolocal ){
@@ -211,19 +211,19 @@ int main(int argc, char **argv){
   if( Tinputline.Contains("crosssection: ") ){  
    Tinputline.ReplaceAll("crosssection: ","");
    crosssection = Tinputline.Atof();
-   printf("  crosssection: %f\n",crosssection);
+   std::cout << "  crosssection: " << crosssection << std::endl;
   }
 
   // read nr events
   if( Tinputline.Contains("nrevents: ") ){  
    Tinputline.ReplaceAll("nrevents: ","");
    nrevents = Tinputline.Atof();
-   printf("  nrevents: %f\n",nrevents);
+   std::cout << "  nrevents: " << nrevents << std::endl;
   }
   inputline_dump.push_back(inputline);
  } //while !inputfile.eof()
 
- printf("  lumi: %f\n\n",lumi);
+ std::cout << "  lumi: " << lumi << std::endl;
 
  // file to be filled with slimmed tree
  // must be created before TTree, put here to get name aligned
@@ -237,10 +237,12 @@ int main(int argc, char **argv){
 
  analyzer.initEleHistograms();
  analyzer.initMuHistograms();
+ analyzer.initLepHistograms();
  analyzer.initPhoHistograms();
  analyzer.initMETHTHistograms();
  analyzer.initAODCaloJetBasicHistograms();
  analyzer.initAODCaloJetExtraHistograms(); 
+ analyzer.initAODCaloJetTagHistograms(); 
 
  analyzer.initCutflowHistograms();
 
@@ -250,9 +252,9 @@ int main(int argc, char **argv){
 
  // end stopwatch
  sw.Stop();
- printf("Real Time: %0.3f minutes\n",sw.RealTime()/60.0);
- printf("CPU Time: %0.3f minutes\n",sw.CpuTime()/60.0);
- printf("Done with %s\n\n\n",Tsample.Data());
+ std::cout << "Real Time: " << sw.RealTime()/60.0 << std::endl;
+ std::cout << "CPU Time: " << sw.CpuTime()/60.0 << std::endl;
+ std::cout << "Done with " << Tsample << std::endl;
 
  return 0;
 }

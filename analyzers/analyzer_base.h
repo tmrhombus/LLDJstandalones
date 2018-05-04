@@ -15,7 +15,7 @@
 
 class analyzer_base {
 public :
-   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+   TChain          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 
    // global variables
@@ -347,7 +347,7 @@ public :
    //analyzer_base(TTree *tree=0);
    analyzer_base();
    virtual ~analyzer_base();
-   virtual void     Init(TTree *tree, Bool_t isitMC, Bool_t domakelog);
+   virtual void     Init(TChain *tree, Bool_t isitMC, Bool_t domakelog);
    virtual Long64_t LoadTree(Long64_t entry);
   // Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
   //                                  Double_t nrEvents);
