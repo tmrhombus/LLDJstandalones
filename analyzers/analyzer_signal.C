@@ -47,7 +47,7 @@ void analyzer_signal::Loop(TString outfilename,
   Long64_t ientry = LoadTree(jentry);
   if (ientry < 0) break;
   nb = fChain->GetEntry(jentry);   nbytes += nb;
-  if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
+  if (jentry%10000 == 0){ std::cout << " entry " << jentry << std::endl; }
 
   n_tot++;
 
@@ -126,7 +126,7 @@ void analyzer_signal::Loop(TString outfilename,
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
-    fillCutflowHistograms( event_weight, i, j, selvec[i] );
+     //fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
 
@@ -154,14 +154,16 @@ void analyzer_signal::Loop(TString outfilename,
   }
  } // end loop over entries
 
- printf("\n\n Summary   cleaning dR=%0.1f\n",objcleandRcut);
+ std::cout << std::endl;
+ std::cout << std::endl;
+ std::cout << " Summary   cleaning dR=" << objcleandRcut << std::endl;
 
- printf("  ntot        %i \n",n_tot        ); 
- printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
- printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
- printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
- printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
- printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ std::cout << "  ntot        " << n_tot << std::endl;
+ std::cout << " npassSig    " << n_passSig << " " << n_ele_passSig << " " << n_mu_passSig << std::endl;
+ std::cout << " npassZH    " << n_passZH << " " << n_ele_passZH << " " << n_mu_passZH << std::endl;
+ std::cout << " npassDY    " << n_passDY << " " << n_ele_passDY << " " << n_mu_passDY << std::endl;
+ std::cout << " npassOffZ    " << n_passOffZ << " " << n_ele_passOffZ << " " << n_mu_passOffZ << std::endl;
+ std::cout << " npassNoPair    " << n_passNoPair << " " << n_ele_passNoPair << " " << n_mu_passNoPair << std::endl;
  
  // make outfile and save histograms
  // write the histograms

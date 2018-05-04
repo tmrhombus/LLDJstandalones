@@ -1,4 +1,5 @@
 #include "analyzer_scalefactors.h"
+#include <iostream>
 
 //----------------------------analyzer_scalefactors
 analyzer_scalefactors::analyzer_scalefactors() 
@@ -69,20 +70,20 @@ Double_t analyzer_scalefactors::makeElectronWeight( std::vector<int> &electron_l
 
 //----------------------------loadPUWeight
 void analyzer_scalefactors::loadPUWeight(){
- printf("loading PU weight \n");
+ std::cout << "loading PU weight" << std::endl;
  TString filename = "puWeights_69200_24jan2017.root" ;
  TFile* file_puweights = new TFile( filename ) ;
- printf(" filename: %s\n",filename.Data());
+ std::cout <<" filename: " << filename << std::endl;
  PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
  return ;
 }
 
 //----------------------------loadElectronWeight
 void analyzer_scalefactors::loadElectronWeight(TString eleid){
- printf("loading Electron weight \n");
+ std::cout << "loading Electron weight" << std::endl;
  TString filename = "egammaEffi_MoriondBH_ele"+eleid+".root" ;
  TFile* file_eleweights = new TFile( filename ) ;
- printf(" filename: %s\n",filename.Data());
+ std::cout << " filename: " << filename << std::endl;
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
  return ;
 }
