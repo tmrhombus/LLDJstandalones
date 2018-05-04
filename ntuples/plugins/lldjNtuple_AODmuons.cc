@@ -154,6 +154,10 @@ void lldjNtuple::fillAODMuons(const edm::Event& e, reco::Vertex vtx) {
     AOD_muDxy_.push_back( dxy );
     AOD_muDxyErr_.push_back( dxyErr );
   }
+  else{
+   AOD_muDxy_.push_back( -1 ) ;
+   AOD_muDxyErr_.push_back( -1 ) ;
+  }
  }//End muon collection loop
 
 }//End fillAODMuons
