@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
-export nversion="tt"
-export aversion="t3dy_cutflowDY_loose"
+export nversion="addpu"
+export aversion="fjuoe"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
