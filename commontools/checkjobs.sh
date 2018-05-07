@@ -122,7 +122,7 @@ do
  #sed -i -e 's/\.root/_OPT.root/g' ${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OPT.sh 
 
  printf "%40s %4s %4s \n" ${sample} ${lc}  ${left}
- #echo "${sample} ${lc}  ${left}"
+# echo "${sample} ${lc}  ${left}"
  
 done
  printf " --------------------------------------------------\n"
