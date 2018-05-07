@@ -52,34 +52,27 @@ mkdir -p "${plotdir}/${aversion}/logs"
  #"DY5to50_HT400To600"                 \
  #"DY5to50_HT600ToInf"                 \
 samples=( \
- "SingleMuon"                         \
- "SinglePhoton"                       \
+ "TTtoLL"                           \
 )
-# "DY5to50_HT70To100"                \
-# "DY5to50_HT100To200"               \
-# "DY5to50_HT200To400"               \
-# "DY5to50_HT400To600"               \
-# "DY5to50_HT600ToInf"               \
-# "ggZH_HToBB_ZToLL"                 \
-# "ggZH_HToSSTobbbb_MS40_ctauS0"     \
-# "ggZH_HToSSTobbbb_MS40_ctauS0p05"  \
-# "ggZH_HToSSTobbbb_MS40_ctauS1"     \
-# "ggZH_HToSSTobbbb_MS40_ctauS10"    \
-# "ggZH_HToSSTobbbb_MS40_ctauS100"   \
-# "ggZH_HToSSTobbbb_MS40_ctauS1000"  \
-# "ggZH_HToSSTobbbb_MS40_ctauS10000" \
-# "GJets_HT40To100"                  \
-# "GJets_HT100To200"                 \
-# "GJets_HT200To400"                 \
-# "GJets_HT400To600"                 \
-# "GJets_HT600ToInf"                 \
 
-#for sample in ${samples[@]}
-for sample in $(ls ${basedir}/submitters/gitignore/${aversion}/)
+#for sample in $(ls ${basedir}/submitters/gitignore/${aversion}/) # works but dangerous?
+for sample in ${samples[@]}
 do
- chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"
- chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OPT.sh"
- bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit.sh"
- bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OPT.sh"
- #bash "/nfs_scratch/tperry/gitignore/${aversion}/${sample}/haddit.sh"
+
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_DY_histograms.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_NoPair_histograms.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_NoSel_histograms.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OPTtree.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OffZ_histograms.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_Sig_histograms.sh"
+ chmod +x "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_ZH_histograms.sh"
+
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_DY_histograms.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_NoPair_histograms.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_NoSel_histograms.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OPTtree.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_OffZ_histograms.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_Sig_histograms.sh"
+ bash "${basedir}/submitters/gitignore/${aversion}/${sample}/haddit_ZH_histograms.sh"
+
 done

@@ -22,8 +22,8 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 # input files
 process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
-          #'file:data.root'
-         '/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
+          'file:2C315372-649F-E611-AEBF-FA163E028533.root'
+        #'/store/data/Run2016B/SingleElectron/AOD/23Sep2016-v3/00000/001009D1-DE99-E611-9DDB-90B11C1DBFB4.root'
  ),
 )
 
@@ -106,6 +106,7 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
  rhoCentralLabel           = cms.InputTag('fixedGridRhoFastjetCentralNeutral'),
  pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
+ AODpileupCollection       = cms.InputTag('addPileupInfo', '', 'HLT'),
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 

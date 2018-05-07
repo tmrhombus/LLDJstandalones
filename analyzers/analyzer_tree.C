@@ -19,10 +19,10 @@ void analyzer_tree::setOPTtree(){
   if(aodcalojet_list.size()>0){
     //n_test = n_test + 1;
     for(int i = 0; i<aodcalojet_list.size(); i++){
-      int jetindex = aodcalojet_list[i]; 
-      OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(jetindex));
-      OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(jetindex));
-      OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(jetindex));
+      int aodcalojetindex = aodcalojet_list[i]; 
+      OPT_AODCaloJetMedianLog10IPSig      .push_back(AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex));
+      OPT_AODCaloJetMedianLog10TrackAngle .push_back(AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex));
+      OPT_AODCaloJetAlphaMax              .push_back(AODCaloJetAlphaMax              ->at(aodcalojetindex));
       }
   }
   else{

@@ -131,6 +131,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   // global event
   edm::EDGetTokenT<double>                         rhoCentralLabel_;
   edm::EDGetTokenT<vector<PileupSummaryInfo> >     puCollection_;
+  edm::EDGetTokenT<vector<PileupSummaryInfo> >     AODpuCollection_;
   edm::EDGetTokenT<reco::VertexCollection>         vtxLabel_;
   edm::EDGetTokenT<edm::TriggerResults>            trgResultsLabel_;
   string                                           trgResultsProcess_;
@@ -145,6 +146,7 @@ class lldjNtuple : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::View<reco::PFJet>   >      AODak4PFJetsLabel_;     
   edm::EDGetTokenT<edm::View<reco::PFJet>   >      AODak4PFJetsCHSLabel_;  
 
+  //edm::EDGetTokenT<reco::VertexCollection>      AODVertexLabel_;
   edm::EDGetTokenT<edm::View<reco::Vertex>  >      AODVertexLabel_;
   edm::EDGetTokenT<edm::View<reco::Track>  >       AODTrackLabel_;
   const MagneticField*                             magneticField_;

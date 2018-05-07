@@ -46,9 +46,6 @@ using namespace std;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > LorentzVector;
 
 // AOD Collection Handles
-//edm::Handle<double>                 rhoHandle;
-//edm::Handle<reco::VertexCollection> vtxHandle;
-
 edm::Handle<edm::View<reco::CaloJet> >  AODak4CaloJetsHandle;   
 edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsHandle;     
 edm::Handle<edm::View<reco::PFJet>   >  AODak4PFJetsCHSHandle;  
@@ -66,7 +63,6 @@ VertexDistanceXY vertexDistanceXY_;
 VertexCompatibleWithBeam* vertexBeam_ = new VertexCompatibleWithBeam(vertexDistanceXY_,100);
 
 // AOD ---------------------------------------------
-// AOD variables
 // Calo Jets
 Int_t          AODnCaloJet_;
 vector<float>  AODCaloJetPt_;
@@ -108,6 +104,7 @@ vector<float>  AODCaloJetAvfBeamSpotDeltaPhi_;
 vector<float>  AODCaloJetAvfBeamSpotRecoilPt_;
 vector<float>  AODCaloJetAvfBeamSpotMedianDeltaPhi_;
 vector<float>  AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_;
+vector<int>    AODCaloJetNMatchedTracks_;
 vector<int>    AODCaloJetNCleanMatchedTracks_;
 vector<int>    AODCaloJetSumHitsInFrontOfVert_;
 vector<int>    AODCaloJetSumMissHitsAfterVert_;
@@ -227,6 +224,7 @@ void lldjNtuple::branchesAODJets(TTree* tree) {
   tree->Branch("AODCaloJetAvfBeamSpotMedianDeltaPhi", &AODCaloJetAvfBeamSpotMedianDeltaPhi_);
   tree->Branch("AODCaloJetAvfBeamSpotLog10MedianDeltaPhi", &AODCaloJetAvfBeamSpotLog10MedianDeltaPhi_);
   tree->Branch("AODCaloJetNCleanMatchedTracks", &AODCaloJetNCleanMatchedTracks_);
+  tree->Branch("AODCaloJetNMatchedTracks"      , &AODCaloJetNMatchedTracks_);
   tree->Branch("AODCaloJetSumHitsInFrontOfVert", &AODCaloJetSumHitsInFrontOfVert_);
   tree->Branch("AODCaloJetSumMissHitsAfterVert", &AODCaloJetSumMissHitsAfterVert_);
   tree->Branch("AODCaloJetHitsInFrontOfVertPerTrack", &AODCaloJetHitsInFrontOfVertPerTrack_);
@@ -289,6 +287,8 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
  AODCaloJetPt_.clear();
  AODCaloJetEta_.clear();
  AODCaloJetPhi_.clear();
+ //AODnTracksToCaloJet_.clear();
+ AODCaloJetNMatchedTracks_.clear();
 
  AODCaloJetAlphaMax_.clear();                               
  AODCaloJetAlphaMax2_.clear();                               
@@ -584,6 +584,8 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
   vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
+  AODCaloJetNMatchedTracks_.push_back( caloJetTrackIDs.size() );
+
   if(caloJetTrackIDs.size()<1) continue;
 
   if(verbose_AOD){
