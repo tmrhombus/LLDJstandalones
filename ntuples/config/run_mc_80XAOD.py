@@ -15,13 +15,14 @@ process.load("RecoTracker.TkNavigation.NavigationSchoolESProducer_cfi")
 
 # log output
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )  ## number of events -1 does all
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )  ## number of events -1 does all
 process.MessageLogger.cerr.FwkReport.reportEvery = 1
 
 # input files
 process.source = cms.Source('PoolSource',
                             fileNames = cms.untracked.vstring(
-'file:/uscms_data/d3/tmperry/aLLDJ_slc6_530_CMSSW_8_0_26_patch1/src/AOD_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_4A859964-FEC8-E611-B0B8-20CF3027A561.root'
+ 'file:/uscms_data/d3/tmperry/DHLLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/ntuples/config/AOD_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_4A859964-FEC8-E611-B0B8-20CF3027A561.root',
+#'file:/uscms_data/d3/tmperry/aLLDJ_slc6_530_CMSSW_8_0_26_patch1/src/AOD_ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_4A859964-FEC8-E611-B0B8-20CF3027A561.root'
 #'file:gjets400to600_20F153C7-E8BB-E611-BE31-0CC47A4C8E82.root' 
 #'file:D420E413-FDC8-E611-869C-00259021A342.root' 
  #'file:/uscms_data/d3/tmperry/LLDJ_slc6_530_CMSSW_8_0_26_patch2/src/LLDJstandalones/roots/AOD/ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_D6822833-FEC8-E611-8CD1-002590E7D7DE.root'
@@ -108,6 +109,7 @@ process.lldjNtuple = cms.EDAnalyzer('lldjNtuple',
 
  rhoCentralLabel           = cms.InputTag('fixedGridRhoFastjetCentralNeutral'),
  pileupCollection          = cms.InputTag('slimmedAddPileupInfo'),
+ AODpileupCollection       = cms.InputTag('addPileupInfo', '', 'HLT'),
  VtxLabel                  = cms.InputTag('offlineSlimmedPrimaryVertices'),
  triggerResults            = cms.InputTag('TriggerResults', '', 'HLT'),
 

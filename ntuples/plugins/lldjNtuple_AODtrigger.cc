@@ -15,6 +15,10 @@
 
 // (local) variables associated with tree branches
 
+// triggers used in VHbb
+// https://indico.cern.ch/event/655639/contributions/2670493/attachments/1497203/2337123/VHbb_Approval_28_07_17_v10.pdf#page=8
+
+// trigger fired variables
 ULong64_t   AOD_HLT_Ele23Loose_;
 ULong64_t   AOD_HLT_Ele27Tight_;
 ULong64_t   AOD_HLT_Ele17Ele12_;
@@ -25,8 +29,12 @@ ULong64_t   AOD_HLT_IsoTkMu22_;
 ULong64_t   AOD_HLT_Mu17Mu8_;
 ULong64_t   AOD_HLT_Mu17TkMu8_;
 
-ULong64_t   AOD_HLT_PFHT350PFMET100_isPS_;
+ULong64_t   AOD_HLT_Mu17Mu8_noDZ_;
+ULong64_t   AOD_HLT_Mu17TkMu8_noDZ_;
+ULong64_t   AOD_HLT_IsoMu24_;
+ULong64_t   AOD_HLT_IsoTkMu24_;
 
+// trigger is prescaled variables
 ULong64_t   AOD_HLT_Ele23Loose_isPS_;
 ULong64_t   AOD_HLT_Ele27Tight_isPS_;
 ULong64_t   AOD_HLT_Ele17Ele12_isPS_;
@@ -37,9 +45,10 @@ ULong64_t   AOD_HLT_IsoTkMu22_isPS_;
 ULong64_t   AOD_HLT_Mu17Mu8_isPS_;
 ULong64_t   AOD_HLT_Mu17TkMu8_isPS_;
 
-
-const int bitsize=8;
-
+ULong64_t   AOD_HLT_Mu17Mu8_noDZ_isPS_;
+ULong64_t   AOD_HLT_Mu17TkMu8_noDZ_isPS_;
+ULong64_t   AOD_HLT_IsoMu24_isPS_;
+ULong64_t   AOD_HLT_IsoTkMu24_isPS_;
 
 void lldjNtuple::branchesAODTrigger(TTree* tree){
   tree->Branch("AOD_HLT_Ele23Loose",       &AOD_HLT_Ele23Loose_) ;
@@ -51,6 +60,12 @@ void lldjNtuple::branchesAODTrigger(TTree* tree){
   tree->Branch("AOD_HLT_IsoTkMu22",        &AOD_HLT_IsoTkMu22_) ;
   tree->Branch("AOD_HLT_Mu17Mu8"  ,        &AOD_HLT_Mu17Mu8_)   ;
   tree->Branch("AOD_HLT_Mu17TkMu8",        &AOD_HLT_Mu17TkMu8_) ;
+
+  tree->Branch("AOD_HLT_Mu17Mu8_noDZ"  ,   &AOD_HLT_Mu17Mu8_noDZ_)   ;
+  tree->Branch("AOD_HLT_Mu17TkMu8_noDZ",   &AOD_HLT_Mu17TkMu8_noDZ_) ;
+  tree->Branch("AOD_HLT_IsoMu24"  ,        &AOD_HLT_IsoMu24_)   ;
+  tree->Branch("AOD_HLT_IsoTkMu24",        &AOD_HLT_IsoTkMu24_) ;
+
 }
 
 
@@ -65,11 +80,18 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
   AOD_HLT_IsoTkMu22_        = 0;
   AOD_HLT_Mu17Mu8_          = 0;
   AOD_HLT_Mu17TkMu8_        = 0;
+
+  AOD_HLT_Mu17Mu8_noDZ_     = 0;
+  AOD_HLT_Mu17TkMu8_noDZ_   = 0;
+  AOD_HLT_IsoMu24_          = 0;
+  AOD_HLT_IsoTkMu24_        = 0;
+
   
   if( !( e.getByToken(AODTriggerToken_, AODTriggerHandle_) && e.getByToken(AODTriggerEventToken_, AODTriggerEventHandle_) ) ){ return; }
   
   for(int i = 0; i < (int)hltConfig_.size(); i++){
     string name = hltConfig_.triggerName(i);
+    //std::cout<<name<<"\n";
     
     int bitEle23Loose = -1;
     if      (name.find("HLT_Ele23_WPLoose_Gsf_v1")  != string::npos) bitEle23Loose = 0  ;
@@ -142,6 +164,18 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     else if (name.find("HLT_IsoTkMu22_v8")  != string::npos) bitIsoTkMu22 = 7 ;
     else if (name.find("HLT_IsoTkMu22_v9")  != string::npos) bitIsoTkMu22 = 8 ;
     else if (name.find("HLT_IsoTkMu22_v10") != string::npos) bitIsoTkMu22 = 9 ;
+
+    int bitIsoMu24   = -1;
+    if      (name.find("HLT_IsoMu24_v1") != string::npos) bitIsoMu24 = 0 ;
+    else if (name.find("HLT_IsoMu24_v2") != string::npos) bitIsoMu24 = 1 ;
+    else if (name.find("HLT_IsoMu24_v3") != string::npos) bitIsoMu24 = 2 ;
+    else if (name.find("HLT_IsoMu24_v4") != string::npos) bitIsoMu24 = 3 ;
+    
+    int bitIsoTkMu24 = -1;
+    if      (name.find("HLT_IsoTkMu24_v1")  != string::npos) bitIsoTkMu24 = 0 ;
+    else if (name.find("HLT_IsoTkMu24_v2")  != string::npos) bitIsoTkMu24 = 1 ;
+    else if (name.find("HLT_IsoTkMu24_v3")  != string::npos) bitIsoTkMu24 = 2 ;
+    else if (name.find("HLT_IsoTkMu24_v4")  != string::npos) bitIsoTkMu24 = 3 ;
     
     // Double Iso Mu
     int bitMu17Mu8   = -1;
@@ -151,6 +185,7 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v4") != string::npos) bitMu17Mu8 = 3 ;
     else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v5") != string::npos) bitMu17Mu8 = 4 ;
     else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v6") != string::npos) bitMu17Mu8 = 5 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v7") != string::npos) bitMu17Mu8 = 6 ;
     
     int bitMu17TkMu8 = -1;
     if      (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v1") != string::npos) bitMu17TkMu8 = 0 ;                   
@@ -159,9 +194,23 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v4") != string::npos) bitMu17TkMu8 = 3 ;                   
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v5") != string::npos) bitMu17TkMu8 = 4 ;                   
     else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v6") != string::npos) bitMu17TkMu8 = 5 ;                   
+
+    int bitMu17Mu8_noDZ   = -1;
+    if      (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v1") != string::npos) bitMu17Mu8_noDZ = 0 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v2") != string::npos) bitMu17Mu8_noDZ = 1 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v3") != string::npos) bitMu17Mu8_noDZ = 2 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v4") != string::npos) bitMu17Mu8_noDZ = 3 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v5") != string::npos) bitMu17Mu8_noDZ = 4 ;
+    else if (name.find("HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v6") != string::npos) bitMu17Mu8_noDZ = 5 ;
+    
+    int bitMu17TkMu8_noDZ = -1;
+    if      (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v1") != string::npos) bitMu17TkMu8_noDZ = 0 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v2") != string::npos) bitMu17TkMu8_noDZ = 1 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v3") != string::npos) bitMu17TkMu8_noDZ = 2 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v4") != string::npos) bitMu17TkMu8_noDZ = 3 ;                   
+    else if (name.find("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_v5") != string::npos) bitMu17TkMu8_noDZ = 4 ;                   
     
     //printf(" Reading trigger: %s\n" , name.c_str()  );
-    //printf(" bitPFHT350PFMET100 %d \n", bitPFHT350PFMET100 ); 
     //printf(" bitEle23Loose      %d \n", bitEle23Loose      ); 
     //printf(" bitEle27Tight      %d \n", bitEle27Tight      ); 
     //printf(" bitEle17Ele12      %d \n", bitEle17Ele12      ); 
@@ -177,6 +226,8 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     unsigned int isFired     = AODTriggerHandle_->accept(triggerIndex);
     //cout << "was run " << AODTriggerHandle_->wasrun(triggerIndex) << endl;
     
+    // if statement checks if trigger was present (any version XXX_vN)
+    // set the bit N of our trigger variable to 1 or 0 based on isFired
     if ( bitEle23Loose      >= 0 ){
       AOD_HLT_Ele23Loose_            |= (isFired     << bitEle23Loose      );
       AOD_HLT_Ele23Loose_isPS_       |= (isPrescaled << bitEle23Loose      );
@@ -193,7 +244,6 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
       AOD_HLT_Ele23Ele12_            |= (isFired     << bitEle23Ele12      );
       AOD_HLT_Ele23Ele12_isPS_       |= (isPrescaled << bitEle23Ele12      );
     }
-    
     if ( bitIsoMu22         >= 0 ){   
       AOD_HLT_IsoMu22_               |= (isFired     << bitIsoMu22         );
       AOD_HLT_IsoMu22_isPS_          |= (isPrescaled << bitIsoMu22         );
@@ -201,6 +251,14 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     if ( bitIsoTkMu22       >= 0 ){     
       AOD_HLT_IsoTkMu22_             |= (isFired     << bitIsoTkMu22       );
       AOD_HLT_IsoTkMu22_isPS_        |= (isPrescaled << bitIsoTkMu22       );
+    }
+    if ( bitIsoMu24         >= 0 ){   
+      AOD_HLT_IsoMu24_               |= (isFired     << bitIsoMu24         );
+      AOD_HLT_IsoMu24_isPS_          |= (isPrescaled << bitIsoMu24         );
+    }
+    if ( bitIsoTkMu24       >= 0 ){     
+      AOD_HLT_IsoTkMu24_             |= (isFired     << bitIsoTkMu24       );
+      AOD_HLT_IsoTkMu24_isPS_        |= (isPrescaled << bitIsoTkMu24       );
     }
     if ( bitMu17Mu8         >= 0 ){   
       AOD_HLT_Mu17Mu8_               |= (isFired     << bitMu17Mu8         );
@@ -210,16 +268,14 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
       AOD_HLT_Mu17TkMu8_             |= (isFired     << bitMu17TkMu8       );
       AOD_HLT_Mu17TkMu8_isPS_        |= (isPrescaled << bitMu17TkMu8       );
     }
-    
-    //std::bitset<bitsize> AOD_HLT_PFHT350PFMET100_b(bitPFHT350PFMET100);
-    std::bitset<bitsize> AOD_HLT_Ele23Loose_b(bitEle23Loose);
-    std::bitset<bitsize> AOD_HLT_Ele27Tight_b(bitEle27Tight);
-    std::bitset<bitsize> AOD_HLT_Ele17Ele12_b(bitEle17Ele12);
-    std::bitset<bitsize> AOD_HLT_Ele23Ele12_b(bitEle23Ele12);
-    std::bitset<bitsize> AOD_HLT_IsoMu22_b(bitIsoMu22);
-    std::bitset<bitsize> AOD_HLT_IsoTkMu22_b(bitIsoTkMu22);
-    std::bitset<bitsize> AOD_HLT_Mu17Mu8_b(bitMu17Mu8);
-    std::bitset<bitsize> AOD_HLT_Mu17TkMu8_b(bitMu17TkMu8);
+    if ( bitMu17Mu8_noDZ         >= 0 ){   
+      AOD_HLT_Mu17Mu8_noDZ_          |= (isFired     << bitMu17Mu8_noDZ    );
+      AOD_HLT_Mu17Mu8_noDZ_isPS_     |= (isPrescaled << bitMu17Mu8_noDZ    );
+    }
+    if ( bitMu17TkMu8_noDZ       >= 0 ){     
+      AOD_HLT_Mu17TkMu8_noDZ_        |= (isFired     << bitMu17TkMu8_noDZ  );
+      AOD_HLT_Mu17TkMu8_noDZ_isPS_   |= (isPrescaled << bitMu17TkMu8_noDZ  );
+    }
     
   }//hltConfig loop
   

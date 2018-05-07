@@ -44,7 +44,9 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   // global event
   rhoCentralLabel_         = consumes<double>                        (ps.getParameter<InputTag>("rhoCentralLabel"));
   puCollection_            = consumes<vector<PileupSummaryInfo> >    (ps.getParameter<InputTag>("pileupCollection"));
+  AODpuCollection_         = consumes<vector<PileupSummaryInfo> >    (ps.getParameter<InputTag>("AODpileupCollection"));
   vtxLabel_                = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("VtxLabel"));
+  //AODVertexLabel_          = consumes<reco::VertexCollection>        (ps.getParameter<InputTag>("AODVertexSrc"));
   AODVertexLabel_          = consumes<edm::View<reco::Vertex> >      (ps.getParameter<InputTag>("AODVertexSrc"));
   trgResultsLabel_         = consumes<edm::TriggerResults>           (ps.getParameter<InputTag>("triggerResults"));
   trgResultsProcess_       =                                          ps.getParameter<InputTag>("triggerResults").process();

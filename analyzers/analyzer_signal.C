@@ -5,6 +5,8 @@
 #include <TCanvas.h>
 #include <iostream>
 
+using namespace std;
+
 analyzer_signal::analyzer_signal()
 {
 }
@@ -45,17 +47,19 @@ void analyzer_signal::Loop(TString outfilename,
   Long64_t ientry = LoadTree(jentry);
   if (ientry < 0) break;
   nb = fChain->GetEntry(jentry);   nbytes += nb;
-  if (jentry%10000 == 0){ printf(" entry %lli\n",jentry); }
+  if (jentry%10000 == 0){ std::cout << " entry " << jentry << std::endl; }
 
   n_tot++;
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
-  photon_list     = photon_passID    ( phoidbit,        30, 1.4442, ""); 
-  electron_list   = electron_passID  ( eleidbit,        30, 2.1,    "");
-  muon_list       = muon_passID      ( muoidbit,        30, 2.1,    ""); 
-  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, 25, 2.4,    ""); 
+  photon_list     = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
+  electron_list   = electron_passID  ( eleidbit,        ele_minPt1, ele_minPt2, ele_maxEta, "");
+  muon_list       = muon_passID      ( muoidbit,        mu_minPt1,  mu_minPt2,  mu_maxEta,  ""); 
+  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
   taggedjet_list  = jet_passTagger   ();
+
+  aodcalojet_minDR_list = jet_minDR();
 
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data
@@ -118,15 +122,24 @@ void analyzer_signal::Loop(TString outfilename,
   dofillselbin[4] = doesPassOffZ  ; 
   dofillselbin[5] = doesPassNoPair; 
 
+
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
-    fillCutflowHistograms( event_weight, i, j, selvec[i] );
+     //fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
+
+     //jets
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
       fillSelectedJetHistograms( event_weight, i, j, k );
      }
+
+      //tagged jets
+      for( unsigned int k=0; k<tagmultnames.size(); ++k){
+       fillSelectedTagHistograms( event_weight, i, j, k );
+      }
+
     }
    }
   }
@@ -141,14 +154,16 @@ void analyzer_signal::Loop(TString outfilename,
   }
  } // end loop over entries
 
- printf("\n\n Summary   cleaning dR=%0.1f\n",objcleandRcut);
+ std::cout << std::endl;
+ std::cout << std::endl;
+ std::cout << " Summary   cleaning dR=" << objcleandRcut << std::endl;
 
- printf("  ntot        %i \n",n_tot        ); 
- printf(" npassSig    %i %i %i \n",n_passSig    ,n_ele_passSig    ,n_mu_passSig    ); 
- printf(" npassZH     %i %i %i \n",n_passZH     ,n_ele_passZH     ,n_mu_passZH     ); 
- printf(" npassDY     %i %i %i \n",n_passDY     ,n_ele_passDY     ,n_mu_passDY     ); 
- printf(" npassOffZ   %i %i %i \n",n_passOffZ   ,n_ele_passOffZ   ,n_mu_passOffZ   ); 
- printf(" npassNoPair %i %i %i \n",n_passNoPair ,n_ele_passNoPair ,n_mu_passNoPair ); 
+ std::cout << "  ntot        " << n_tot << std::endl;
+ std::cout << " npassSig    " << n_passSig << " " << n_ele_passSig << " " << n_mu_passSig << std::endl;
+ std::cout << " npassZH    " << n_passZH << " " << n_ele_passZH << " " << n_mu_passZH << std::endl;
+ std::cout << " npassDY    " << n_passDY << " " << n_ele_passDY << " " << n_mu_passDY << std::endl;
+ std::cout << " npassOffZ    " << n_passOffZ << " " << n_ele_passOffZ << " " << n_mu_passOffZ << std::endl;
+ std::cout << " npassNoPair    " << n_passNoPair << " " << n_ele_passNoPair << " " << n_mu_passNoPair << std::endl;
  
  // make outfile and save histograms
  // write the histograms
@@ -156,11 +171,24 @@ void analyzer_signal::Loop(TString outfilename,
   TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","RECREATE");
   outfile->cd();
   for(unsigned int j=0; j<lepnames.size(); ++j){
+
+    //Normalize variable binned histograms by bin width
+    //Could put this in its own loop for clarity
+    scaleVariableBinHistograms( i, j );
+    
     writeSelectedHistograms( i, j );
     writeCutflowHistograms( i, j );
+
+    //jet
     for( unsigned int k=0; k<jetmultnames.size(); ++k){
-     writeSelectedJetHistograms( i, j, k );
-   }
+      writeSelectedJetHistograms( i, j, k );
+    }
+
+    //tag
+    for( unsigned int k=0; k<tagmultnames.size(); ++k){
+      writeSelectedTagHistograms( i, j, k );
+    }
+
   }
   outfile->Close();
  }
