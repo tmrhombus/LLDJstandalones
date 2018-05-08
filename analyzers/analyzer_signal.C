@@ -100,21 +100,12 @@ void analyzer_signal::Loop(TString outfilename,
   dofilllepbin[1] = ( passSingleMu || passDoubleMu ) ;
   dofilllepbin[2] = kTRUE ;
 
-  // set bits
+  // set bits if pass various selections, increment counters
   bitsPassSig    = setSelBits( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig     ) ;
   bitsPassZH     = setSelBits( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH      ) ; 
   bitsPassDY     = setSelBits( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY      ) ; 
   bitsPassOffZ   = setSelBits( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ    ) ; 
   bitsPassNoPair = setSelBits( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair  ) ; 
-
-
-
-  // set booleans if pass various selections, increment counters
-  doesPassSig    = askPassSelvec( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig    ) ; 
-  doesPassZH     = askPassSelvec( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH     ) ; 
-  doesPassDY     = askPassSelvec( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY     ) ; 
-  doesPassOffZ   = askPassSelvec( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ   ) ; 
-  doesPassNoPair = askPassSelvec( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair ) ; 
 
   // put into array for looping in Cutflow histograms
   selvec[0].push_back(kTRUE);
@@ -125,12 +116,11 @@ void analyzer_signal::Loop(TString outfilename,
   selvec[5] = selvecNoPair ;
 
   dofillselbin[0] = kTRUE         ;
-  dofillselbin[1] = doesPassSig   ; 
-  dofillselbin[2] = doesPassZH    ; 
-  dofillselbin[3] = doesPassDY    ; 
-  dofillselbin[4] = doesPassOffZ  ; 
-  dofillselbin[5] = doesPassNoPair; 
-
+  dofillselbin[1] = ( (bitsPassSig    >> 0) & 1) ; 
+  dofillselbin[2] = ( (bitsPassZH     >> 0) & 1) ; 
+  dofillselbin[3] = ( (bitsPassDY     >> 0) & 1) ; 
+  dofillselbin[4] = ( (bitsPassOffZ   >> 0) & 1) ; 
+  dofillselbin[5] = ( (bitsPassNoPair >> 0) & 1) ; 
 
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -158,7 +148,7 @@ void analyzer_signal::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if(doesPassSig){
+  if( ( (bitsPassSig >> 0) & 1) ){
    setOPTtree(); 
    OPTtree->Fill();
   }
@@ -214,7 +204,6 @@ void analyzer_signal::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
-  printf(" Pass Sig %d ZH %d DY %d OffZ %d NoPair %d \n", doesPassSig, doesPassZH, doesPassDY, doesPassOffZ, doesPassNoPair );
 
   debug_printbitset();
   debug_printphotons();
