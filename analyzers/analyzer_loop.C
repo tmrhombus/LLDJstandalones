@@ -1,5 +1,5 @@
-#define analyzer_signal_cxx
-#include "analyzer_signal.h"
+#define analyzer_loop_cxx
+#include "analyzer_loop.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -7,15 +7,15 @@
 
 using namespace std;
 
-analyzer_signal::analyzer_signal()
+analyzer_loop::analyzer_loop()
 {
 }
 
-analyzer_signal::~analyzer_signal()
+analyzer_loop::~analyzer_loop()
 {
 }
 
-void analyzer_signal::Loop(TString outfilename, 
+void analyzer_loop::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
                        Double_t crossSec, Int_t nevts, TFile *optfile)
 {
@@ -198,10 +198,10 @@ void analyzer_signal::Loop(TString outfilename,
  OPTtree->CloneTree()->Write();
  optfile->Close();
 
-} // end analyzer_signal::Loop()
+} // end analyzer_loop::Loop()
 
 
-void analyzer_signal::debug_printobjects(){
+void analyzer_loop::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
@@ -220,7 +220,7 @@ void analyzer_signal::debug_printobjects(){
 
  }
 
-void analyzer_signal::debug_printmuons()
+void analyzer_loop::debug_printmuons()
 {
 
  // muon debug
@@ -239,7 +239,7 @@ void analyzer_signal::debug_printmuons()
  return;
 }
 
-void analyzer_signal::debug_printelectrons()
+void analyzer_loop::debug_printelectrons()
 {
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -249,7 +249,7 @@ void analyzer_signal::debug_printelectrons()
 }
 
 
-void analyzer_signal::debug_printdilep()
+void analyzer_loop::debug_printdilep()
 {
   if(dilep_mass>0.){
    printf(" DILEP FOUND\n");
@@ -263,7 +263,7 @@ void analyzer_signal::debug_printdilep()
  return;
 }
 
-void analyzer_signal::debug_printphotons()
+void analyzer_loop::debug_printphotons()
 {
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
@@ -272,7 +272,7 @@ void analyzer_signal::debug_printphotons()
  return;
 }
 
-void analyzer_signal::debug_printjets()
+void analyzer_loop::debug_printjets()
 {
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int jetindex = aodcalojet_list[i];
@@ -290,7 +290,7 @@ void analyzer_signal::debug_printjets()
 }
 
 
-void analyzer_signal::debug_printtriggers()
+void analyzer_loop::debug_printtriggers()
 {
 
  printf("AOD_HLT_Ele23Loose %llu \n", AOD_HLT_Ele23Loose) ;
@@ -305,7 +305,7 @@ void analyzer_signal::debug_printtriggers()
 
 }
 
-void analyzer_signal::debug_printbitset()
+void analyzer_loop::debug_printbitset()
 {
 
   std::cout<<" bitsPassSig    "; 

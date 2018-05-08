@@ -1,5 +1,5 @@
-#ifndef analyzer_signal_h
-#define analyzer_signal_h
+#ifndef analyzer_loop_h
+#define analyzer_loop_h
 
 #include "analyzer_tree.h"
 #include <iostream>
@@ -12,12 +12,12 @@
 #include "TChain.h"
 #include "TBranch.h"
 #include <stdlib.h> 
-class analyzer_signal : public analyzer_tree {
+class analyzer_loop : public analyzer_tree {
 
 public :
  // basic functions
-               analyzer_signal();
- virtual       ~analyzer_signal();
+               analyzer_loop();
+ virtual       ~analyzer_loop();
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts,

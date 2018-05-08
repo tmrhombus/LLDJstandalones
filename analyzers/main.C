@@ -2,7 +2,7 @@
 #include <fstream>
 #include <unistd.h>
 
-#include "analyzer_signal.h"
+#include "analyzer_loop.h"
 #include "TROOT.h"
 #include <TChain.h>
 #include <TString.h>
@@ -230,7 +230,7 @@ int main(int argc, char **argv){
  TFile* optfile = new TFile(outfilename+"_OPTtree.root", "RECREATE");
 
  // make the analyzer, init some stuff
- analyzer_signal analyzer;
+ analyzer_loop analyzer;
  analyzer.Init(theChain, isMC, makelog);
  analyzer.setconfiguration();
  analyzer.initSelectionCategories();
