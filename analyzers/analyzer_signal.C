@@ -101,15 +101,11 @@ void analyzer_signal::Loop(TString outfilename,
   dofilllepbin[2] = kTRUE ;
 
   // set bits
-  bitsPassSig    = setSelBits( selvecSignal ) ;
-  bitsPassZH     = setSelBits( selvecZH     ) ; 
-  bitsPassDY     = setSelBits( selvecDY     ) ; 
-  bitsPassOffZ   = setSelBits( selvecOffZ   ) ; 
-  bitsPassNoPair = setSelBits( selvecNoPair ) ; 
-
-
-
-
+  bitsPassSig    = setSelBits( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig     ) ;
+  bitsPassZH     = setSelBits( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH      ) ; 
+  bitsPassDY     = setSelBits( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY      ) ; 
+  bitsPassOffZ   = setSelBits( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ    ) ; 
+  bitsPassNoPair = setSelBits( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair  ) ; 
 
 
 
@@ -157,8 +153,8 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
-  debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  std::cout<<"\n\n\n\n";
+  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  //std::cout<<"\n\n\n\n";
 
   //printf("make log: %0.i\n",makelog);
   

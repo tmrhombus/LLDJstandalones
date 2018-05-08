@@ -59,7 +59,7 @@ void analyzer_selections::setSelections()
  selvecNoPair .push_back( passOneJet   );
 }
 
-Int_t analyzer_selections::setSelBits( std::vector<Bool_t> selvec )
+Int_t analyzer_selections::setSelBits( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu )
 {
  
  ULong64_t bitset = 0;
@@ -71,6 +71,11 @@ Int_t analyzer_selections::setSelBits( std::vector<Bool_t> selvec )
  }
  // set first bit for pass all selections
  bitset |= passall << 0 ;
+
+ // increment counters
+ if( passall && lepvec[0] ) counterele++;
+ if( passall && lepvec[1] ) countermu++;
+ if( passall ) counter++;
 
  return bitset;
 }
