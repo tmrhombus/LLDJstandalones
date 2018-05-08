@@ -125,7 +125,7 @@ void analyzer_signal::Loop(TString outfilename,
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
-    //fillCutflowHistograms( event_weight, i, j, selvec[i] );
+    fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
 
@@ -144,7 +144,6 @@ void analyzer_signal::Loop(TString outfilename,
   }
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  //std::cout<<"\n\n\n\n";
 
   //printf("make log: %0.i\n",makelog);
   

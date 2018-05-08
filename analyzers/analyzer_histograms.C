@@ -846,7 +846,6 @@ Bool_t analyzer_histograms::initCutflowHistograms(){
 }
 
 //----------------------------fillCutflowHistograms
-//Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, std::vector<Bool_t> selvec)
 Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, Int_t selint)
 {
  
@@ -854,21 +853,36 @@ Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, i
  h_Onecut[selbin][lepbin]  .Fill( 1, weight );
  h_RawCutflow[selbin][lepbin] .Fill( 1 );
  h_RawOnecut[selbin][lepbin]  .Fill( 1 );
+
  Bool_t notdead = kTRUE;
 
+ // for now all selections are 5 long
+ // selection integers (bitset) start with 1/0 if pass all cuts
+ // then 1/0 for each individual cut
+ for( unsigned int i=1; i<6; ++i){
+  // ignore the first bit, then keep checking if we ever get 0
+  notdead = notdead && ( selint>>(i) & 1 ) ;
 
+  // bit i (and all preceding it) pass
+  if( notdead ){
+   h_Cutflow[selbin][lepbin]    .Fill( 1+i, weight );
+   h_RawCutflow[selbin][lepbin] .Fill( 1+i );
+  }
+  // just bit i passes
+  if( selint>>(i) & 1 ){
+   h_Onecut[selbin][lepbin]    .Fill( 1+i, weight );
+   h_RawOnecut[selbin][lepbin] .Fill( 1+i );
+  }
+  // everything other than bit i passes
+   // not implemented yet
+   // bit structure is (passAll)(sel1)(sel2)(sel3)(sel4)(sel5)000
+   // want to OR bits 2-6 with 11111 except not care about bit i
+  if( selint>>(i) & 1 ){
+   h_NMinus[selbin][lepbin]    .Fill( 1+i, weight );
+   h_RawNMinus[selbin][lepbin] .Fill( 1+i );
+  }
 
- // for(unsigned int i=0; i<selvec.size(); ++i){
- //  notdead = notdead && selvec[i];
- //  if( notdead ){
- //   h_Cutflow[selbin][lepbin] .Fill( 2+i, weight );
- //   h_RawCutflow[selbin][lepbin] .Fill( 2+i );
- //  }
- //  if( selvec[i] ){
- //   h_Onecut[selbin][lepbin] .Fill( 2+i, weight );
- //   h_RawOnecut[selbin][lepbin] .Fill( 2+i );
- //  }
- // }
+ }
 
  return kTRUE;
 }
