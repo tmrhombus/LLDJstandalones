@@ -31,6 +31,7 @@ public :
  virtual void debug_printphotons();
  virtual void debug_printjets();
  virtual void debug_printtriggers();
+ virtual void debug_printbitset();
 };
 
 #endif

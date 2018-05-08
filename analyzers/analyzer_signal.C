@@ -100,6 +100,19 @@ void analyzer_signal::Loop(TString outfilename,
   dofilllepbin[1] = ( passSingleMu || passDoubleMu ) ;
   dofilllepbin[2] = kTRUE ;
 
+  // set bits
+  bitsPassSig    = setSelBits( selvecSignal ) ;
+  bitsPassZH     = setSelBits( selvecZH     ) ; 
+  bitsPassDY     = setSelBits( selvecDY     ) ; 
+  bitsPassOffZ   = setSelBits( selvecOffZ   ) ; 
+  bitsPassNoPair = setSelBits( selvecNoPair ) ; 
+
+
+
+
+
+
+
   // set booleans if pass various selections, increment counters
   doesPassSig    = askPassSelvec( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig    ) ; 
   doesPassZH     = askPassSelvec( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH     ) ; 
@@ -126,7 +139,7 @@ void analyzer_signal::Loop(TString outfilename,
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
-     //fillCutflowHistograms( event_weight, i, j, selvec[i] );
+    //fillCutflowHistograms( event_weight, i, j, selvec[i] );
     if( dofillselbin[i] && dofilllepbin[j] ){
      fillSelectedHistograms( event_weight, i, j );
 
@@ -144,7 +157,8 @@ void analyzer_signal::Loop(TString outfilename,
    }
   }
 
-  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  debug_printobjects();   // helpful printout (turn off when submitting!!!)
+  std::cout<<"\n\n\n\n";
 
   //printf("make log: %0.i\n",makelog);
   
@@ -206,6 +220,7 @@ void analyzer_signal::debug_printobjects(){
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
   printf(" Pass Sig %d ZH %d DY %d OffZ %d NoPair %d \n", doesPassSig, doesPassZH, doesPassDY, doesPassOffZ, doesPassNoPair );
 
+  debug_printbitset();
   debug_printphotons();
   debug_printmuons();
   debug_printelectrons();
@@ -304,4 +319,35 @@ void analyzer_signal::debug_printtriggers()
 
 }
 
+void analyzer_signal::debug_printbitset()
+{
+
+  std::cout<<" bitsPassSig    "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassSig>>i)&1 );
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassZH     "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassZH    >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassDY     "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassDY    >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassOffZ   "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassOffZ  >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassNoPair "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassNoPair>>i) & 1); 
+  }
+  std::cout<<"\n";  
+ return;
+
+}
 
