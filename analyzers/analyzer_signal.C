@@ -108,12 +108,12 @@ void analyzer_signal::Loop(TString outfilename,
   bitsPassNoPair = setSelBits( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair  ) ; 
 
   // put into array for looping in Cutflow histograms
-  selvec[0].push_back(kTRUE);
-  selvec[1] = selvecSignal ;
-  selvec[2] = selvecZH     ;
-  selvec[3] = selvecDY     ;
-  selvec[4] = selvecOffZ   ;
-  selvec[5] = selvecNoPair ;
+  selvec[0] = 1;
+  selvec[1] = bitsPassSig    ;
+  selvec[2] = bitsPassZH     ;
+  selvec[3] = bitsPassDY     ;
+  selvec[4] = bitsPassOffZ   ;
+  selvec[5] = bitsPassNoPair ;
 
   dofillselbin[0] = kTRUE         ;
   dofillselbin[1] = ( (bitsPassSig    >> 0) & 1) ; 

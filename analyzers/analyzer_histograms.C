@@ -846,7 +846,8 @@ Bool_t analyzer_histograms::initCutflowHistograms(){
 }
 
 //----------------------------fillCutflowHistograms
-Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, std::vector<Bool_t> selvec)
+//Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, std::vector<Bool_t> selvec)
+Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, int lepbin, Int_t selint)
 {
  
  h_Cutflow[selbin][lepbin] .Fill( 1, weight );
@@ -854,17 +855,20 @@ Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, i
  h_RawCutflow[selbin][lepbin] .Fill( 1 );
  h_RawOnecut[selbin][lepbin]  .Fill( 1 );
  Bool_t notdead = kTRUE;
- for(unsigned int i=0; i<selvec.size(); ++i){
-  notdead = notdead && selvec[i];
-  if( notdead ){
-   h_Cutflow[selbin][lepbin] .Fill( 2+i, weight );
-   h_RawCutflow[selbin][lepbin] .Fill( 2+i );
-  }
-  if( selvec[i] ){
-   h_Onecut[selbin][lepbin] .Fill( 2+i, weight );
-   h_RawOnecut[selbin][lepbin] .Fill( 2+i );
-  }
- }
+
+
+
+ // for(unsigned int i=0; i<selvec.size(); ++i){
+ //  notdead = notdead && selvec[i];
+ //  if( notdead ){
+ //   h_Cutflow[selbin][lepbin] .Fill( 2+i, weight );
+ //   h_RawCutflow[selbin][lepbin] .Fill( 2+i );
+ //  }
+ //  if( selvec[i] ){
+ //   h_Onecut[selbin][lepbin] .Fill( 2+i, weight );
+ //   h_RawOnecut[selbin][lepbin] .Fill( 2+i );
+ //  }
+ // }
 
  return kTRUE;
 }

@@ -28,7 +28,7 @@ public :
    std::vector<Bool_t> selvecDY     ;
    std::vector<Bool_t> selvecOffZ   ;
    std::vector<Bool_t> selvecNoPair ;
-   std::vector<Bool_t> selvec[6];
+   Int_t selvec[6];
 
    // selection booleans
    Bool_t passSingleEle ;
