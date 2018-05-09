@@ -6,7 +6,7 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=24382  #20000   #20000     #35870
+lumi=2572.904  #20000   #20000     #35870
 nevents=-1
 maxfilesperjob=10   # 500=6h
 
@@ -125,7 +125,7 @@ maxfilesperjob=10   # 500=6h
 #  "DY5to50_HT600toInf_2" \
 
 samples=(  \
-  'SingleElectron'   
+  'SingleElectron_C'     
 )
 
 
