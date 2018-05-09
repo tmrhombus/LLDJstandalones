@@ -277,11 +277,11 @@ Bool_t analyzer_histograms::initLepHistograms(){
 
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int k=0; k<lepnames.size(); ++k){
-   TString hname_AOD_dilepton_Mass                   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Mass              "; 
-   TString hname_AOD_dilepton_Pt                     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Pt                "; 
+   TString hname_AOD_dilepton_Mass = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Mass"; 
+   TString hname_AOD_dilepton_Pt   = "h_"+lepnames[k]+"_"+selbinnames[i]+"_AOD_dilepton_Pt  "; 
 
-   h_AOD_dilepton_Mass                      [i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Mass                     , "AOD_dilepton_Mass                    ", 30,  30, 150) ;  
-   h_AOD_dilepton_Pt                        [i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Pt                       , "AOD_dilepton_Pt                      ", 30,   0, 300) ;  
+   h_AOD_dilepton_Mass[i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Mass, "AOD_dilepton_Mass", 30,  30, 150) ;  
+   h_AOD_dilepton_Pt  [i][k] = initSingleHistogramTH1F( hname_AOD_dilepton_Pt  , "AOD_dilepton_Pt  ", 30,   0, 300) ;  
   }
  }
  return kTRUE;
@@ -400,10 +400,10 @@ Bool_t analyzer_histograms::initMETHTHistograms(){
    TString hname_htall                       = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htall        " ;
    TString hname_htaodcalojets               = "h_"+lepnames[k]+"_"+selbinnames[i]+"_htaodcalojets" ;
 
-   h_AOD_MET_phi                  [i][k] = initSingleHistogramTH1F( hname_AOD_MET_phi         , "AOD_MET_phi  "      , 30, -5, 5); 
-   h_AOD_MET_pt                   [i][k] = initSingleHistogramTH1F( hname_AOD_MET_pt          , "AOD_MET_pt   "      , 50, 0, 500); 
-   h_htall                        [i][k] = initSingleHistogramTH1F( hname_htall               , "htall        "      , 50,0,1000) ; 
-   h_htaodcalojets                [i][k] = initSingleHistogramTH1F( hname_htaodcalojets       , "htaodcalojets"      , 50,0,1000) ; 
+   h_AOD_MET_phi                  [i][k] = initSingleHistogramTH1F( hname_AOD_MET_phi         , "AOD_MET_phi  " , 30, -5, 5); 
+   h_AOD_MET_pt                   [i][k] = initSingleHistogramTH1F( hname_AOD_MET_pt          , "AOD_MET_pt   " , 50, 0, 500); 
+   h_htall                        [i][k] = initSingleHistogramTH1F( hname_htall               , "htall        " , 50,0,1000) ; 
+   h_htaodcalojets                [i][k] = initSingleHistogramTH1F( hname_htaodcalojets       , "htaodcalojets" , 50,0,1000) ; 
   }
  }
 
@@ -834,13 +834,17 @@ Bool_t analyzer_histograms::initCutflowHistograms(){
   for(unsigned int k=0; k<lepnames.size(); ++k){
    TString hname_Cutflow    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_Cutflow"; 
    TString hname_Onecut     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_Onecut"; 
+   TString hname_NMinus     = "h_"+lepnames[k]+"_"+selbinnames[i]+"_NMinus"; 
    TString hname_RawCutflow = "h_"+lepnames[k]+"_"+selbinnames[i]+"_RawCutflow"; 
    TString hname_RawOnecut  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_RawOnecut"; 
+   TString hname_RawNMinus  = "h_"+lepnames[k]+"_"+selbinnames[i]+"_RawNMinus"; 
 
-   h_Cutflow [i][k] = initSingleHistogramTH1F( hname_Cutflow , "Cutflow", 10,0,10);
-   h_Onecut  [i][k] = initSingleHistogramTH1F( hname_Onecut  , "Onecut ", 10,0,10);
+   h_Cutflow    [i][k] = initSingleHistogramTH1F( hname_Cutflow , "Cutflow", 10,0,10);
+   h_Onecut     [i][k] = initSingleHistogramTH1F( hname_Onecut  , "Onecut ", 10,0,10);
+   h_NMinus     [i][k] = initSingleHistogramTH1F( hname_NMinus  , "NMinus ", 10,0,10); 
    h_RawCutflow [i][k] = initSingleHistogramTH1F( hname_RawCutflow , "RawCutflow", 10,0,10);
    h_RawOnecut  [i][k] = initSingleHistogramTH1F( hname_RawOnecut  , "RawOnecut ", 10,0,10);
+   h_RawNMinus  [i][k] = initSingleHistogramTH1F( hname_RawNMinus  , "RawNMinus ", 10,0,10); 
   }
  }
 }
@@ -851,10 +855,13 @@ Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, i
  
  h_Cutflow[selbin][lepbin] .Fill( 1, weight );
  h_Onecut[selbin][lepbin]  .Fill( 1, weight );
+ h_NMinus[selbin][lepbin]  .Fill( 1, weight );
  h_RawCutflow[selbin][lepbin] .Fill( 1 );
  h_RawOnecut[selbin][lepbin]  .Fill( 1 );
+ h_RawNMinus[selbin][lepbin]  .Fill( 1 );
 
  Bool_t notdead = kTRUE;
+ Int_t nmbits = 0;
 
  // for now all selections are 5 long
  // selection integers (bitset) start with 1/0 if pass all cuts
@@ -863,7 +870,7 @@ Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, i
   // ignore the first bit, then keep checking if we ever get 0
   notdead = notdead && ( selint>>(i) & 1 ) ;
 
-  // bit i (and all preceding it) pass
+  // bit i and all preceding bits it pass
   if( notdead ){
    h_Cutflow[selbin][lepbin]    .Fill( 1+i, weight );
    h_RawCutflow[selbin][lepbin] .Fill( 1+i );
@@ -874,10 +881,39 @@ Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, i
    h_RawOnecut[selbin][lepbin] .Fill( 1+i );
   }
   // everything other than bit i passes
-   // not implemented yet
    // bit structure is (passAll)(sel1)(sel2)(sel3)(sel4)(sel5)000
-   // want to OR bits 2-6 with 11111 except not care about bit i
-  if( selint>>(i) & 1 ){
+   // nmbits is 011111000 except flip bit i to 0
+   // then AND this with selection bitset to get comparison bitset
+   // then if comp bitset == nmbits we know
+   // selection bitset passed all cuts, ignoring cut i
+  nmbits = 0;
+  nmbits |= 0 << 0;
+  nmbits |= 1 << 1;
+  nmbits |= 1 << 2;
+  nmbits |= 1 << 3;
+  nmbits |= 1 << 4;
+  nmbits |= 1 << 5;
+  nmbits &= ~(1 << i);
+  Int_t compbits = selint & nmbits;
+
+  //std::cout<<"\n";
+  //std::cout<<" nmbits: "<<nmbits<<" =    "; 
+  //for(unsigned int i=0; i<8; ++i){
+  // std::cout<< ( (nmbits>>i)&1 );
+  //}
+  //std::cout<<"\n";
+  //std::cout<<" selint: "<<selint<<" =    "; 
+  //for(unsigned int i=0; i<8; ++i){
+  // std::cout<< ( (selint>>i)&1 );
+  //}
+  //std::cout<<"\n";
+  //std::cout<<" cmpbit: "<<compbits<<" =    "; 
+  //for(unsigned int i=0; i<8; ++i){
+  // std::cout<< ( (compbits>>i)&1 );
+  //}
+  //std::cout<<"\n";
+
+  if( nmbits==compbits ){
    h_NMinus[selbin][lepbin]    .Fill( 1+i, weight );
    h_RawNMinus[selbin][lepbin] .Fill( 1+i );
   }
@@ -892,8 +928,10 @@ Bool_t analyzer_histograms::writeCutflowHistograms(int selbin, int lepbin)
 {
  h_Cutflow    [selbin][lepbin] .Write();
  h_Onecut     [selbin][lepbin] .Write();
- h_RawCutflow    [selbin][lepbin] .Write();
- h_RawOnecut     [selbin][lepbin] .Write();
+ h_RawCutflow [selbin][lepbin] .Write();
+ h_RawOnecut  [selbin][lepbin] .Write();
+ h_NMinus     [selbin][lepbin] .Write();
+ h_RawNMinus  [selbin][lepbin] .Write();
  return kTRUE;
 }
 
