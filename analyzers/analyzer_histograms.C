@@ -491,7 +491,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms()
 
 	const int Pt_n_xbins = 10;
 	float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
-	h_AODCaloJetPtVar                             [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar                             , "AODCaloJetPtVar                            ",  Pt_n_xbins, Pt_xbins );
+	h_AODCaloJetPtVar                             [i][k][j] = initSingleHistogramTH1F( hname_AODCaloJetPtVar                             , "AODCaloJetPtVar                            ",  Pt_n_xbins, Pt_xbins );
 
 	
       }
@@ -554,7 +554,7 @@ Bool_t analyzer_histograms::initAODCaloJetExtraHistograms()
     h_AODCaloJetAvfBeamSpotRecoilPt            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotRecoilPt            , "AODCaloJetAvfBeamSpotRecoilPt           ", 30, -3, 3 ); 
     h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotMedianDeltaPhi      , "AODCaloJetAvfBeamSpotMedianDeltaPhi     ", 30, -3, 3 ); 
     h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi , "AODCaloJetAvfBeamSpotLog10MedianDeltaPhi", 30, -3, 3 ); 
-    h_AODCaloJetNCleanMatchedTracks            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks            , "AODCaloJetNCleanMatchedTracks           ", 30, -3, 3 ); 
+    h_AODCaloJetNCleanMatchedTracks            [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks            , "AODCaloJetNCleanMatchedTracks           ", 20, 0, 20 ); 
     h_AODCaloJetSumHitsInFrontOfVert           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumHitsInFrontOfVert           , "AODCaloJetSumHitsInFrontOfVert          ", 30, -3, 3 ); 
     h_AODCaloJetSumMissHitsAfterVert           [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetSumMissHitsAfterVert           , "AODCaloJetSumMissHitsAfterVert          ", 30, -3, 3 ); 
     h_AODCaloJetHitsInFrontOfVertPerTrack      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetHitsInFrontOfVertPerTrack      , "AODCaloJetHitsInFrontOfVertPerTrack     ", 30, -3, 3 ); 
@@ -574,7 +574,7 @@ Bool_t analyzer_histograms::initAODCaloJetExtraHistograms()
 Bool_t analyzer_histograms::initAODCaloJetTagHistograms()
 {
 
- // loop through jets and selections to initialize histograms in parllel (series)
+ // loop through jets and selections to initialize histograms in parallel (series)
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   for(unsigned int j=0; j<tagmultnames.size(); ++j){
    for(unsigned int k=0; k<lepnames.size(); ++k){
@@ -586,7 +586,7 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms()
 
     h_AODCaloJetPt_Tag0                       [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetPt_Tag0                       , "AODCaloJetPt_Tag0                      ", 50, 0, 500); 
     h_AODCaloJetMinDR_Tag0                    [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetMinDR_Tag0                    , "AODCaloJetMinDR_Tag0                   ", 30, 0, 5); 
-    h_AODCaloJetNCleanMatchedTracks_Tag0      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0         , "AODCaloJetNCleanMatchedTracks_Tag0                   ", 30, 0, 5); 
+    h_AODCaloJetNCleanMatchedTracks_Tag0      [i][j][k] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0         , "AODCaloJetNCleanMatchedTracks_Tag0                   ", 20, 0, 20); 
 
     const int Pt_n_xbins = 10;
     float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
