@@ -17,6 +17,13 @@ void analyzer_selections::clearSelections()
  selvecDY     .clear(); 
  selvecOffZ   .clear(); 
  selvecNoPair .clear(); 
+
+ bitsPassSig=0;
+ bitsPassZH=0;
+ bitsPassDY=0;
+ bitsPassOffZ=0;
+ bitsPassNoPair=0;
+
 }
 
 void analyzer_selections::setSelections()
@@ -50,6 +57,27 @@ void analyzer_selections::setSelections()
  selvecNoPair .push_back( !passZWindow );
  selvecNoPair .push_back( !passOSSF    );
  selvecNoPair .push_back( passOneJet   );
+}
+
+Int_t analyzer_selections::setSelBits( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu )
+{
+ 
+ ULong64_t bitset = 0;
+ Bool_t passall=kTRUE;
+ // individual selections
+ for(unsigned int i=0; i<selvec.size(); ++i){
+  if(selvec[i]==0) passall=kFALSE;
+  bitset |= (selvec[i] << i+1); 
+ }
+ // set first bit for pass all selections
+ bitset |= passall << 0 ;
+
+ // increment counters
+ if( passall && lepvec[0] ) counterele++;
+ if( passall && lepvec[1] ) countermu++;
+ if( passall ) counter++;
+
+ return bitset;
 }
 
 Bool_t analyzer_selections::askPassSelvec( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu)

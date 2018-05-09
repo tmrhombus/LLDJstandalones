@@ -12,7 +12,7 @@ main:  analyzer_base.o \
        analyzer_scalefactors.o \
        analyzer_histograms.o \
        analyzer_tree.o \
-       analyzer_signal.o \
+       analyzer_loop.o \
        main.C 
 	g++ --std=c++11 $^ -o runanalyzer.exe ${ROOTFLAGS} ${CXXDEPFLAGS}
 

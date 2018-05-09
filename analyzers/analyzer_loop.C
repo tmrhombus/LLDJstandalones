@@ -1,5 +1,5 @@
-#define analyzer_signal_cxx
-#include "analyzer_signal.h"
+#define analyzer_loop_cxx
+#include "analyzer_loop.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -7,15 +7,15 @@
 
 using namespace std;
 
-analyzer_signal::analyzer_signal()
+analyzer_loop::analyzer_loop()
 {
 }
 
-analyzer_signal::~analyzer_signal()
+analyzer_loop::~analyzer_loop()
 {
 }
 
-void analyzer_signal::Loop(TString outfilename, 
+void analyzer_loop::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
                        Double_t crossSec, Int_t nevts, TFile *optfile)
 {
@@ -100,56 +100,57 @@ void analyzer_signal::Loop(TString outfilename,
   dofilllepbin[1] = ( passSingleMu || passDoubleMu ) ;
   dofilllepbin[2] = kTRUE ;
 
-  // set booleans if pass various selections, increment counters
-  doesPassSig    = askPassSelvec( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig    ) ; 
-  doesPassZH     = askPassSelvec( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH     ) ; 
-  doesPassDY     = askPassSelvec( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY     ) ; 
-  doesPassOffZ   = askPassSelvec( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ   ) ; 
-  doesPassNoPair = askPassSelvec( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair ) ; 
+  // set bits if pass various selections, increment counters
+  bitsPassSig    = setSelBits( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig     ) ;
+  bitsPassZH     = setSelBits( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH      ) ; 
+  bitsPassDY     = setSelBits( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY      ) ; 
+  bitsPassOffZ   = setSelBits( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ    ) ; 
+  bitsPassNoPair = setSelBits( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair  ) ; 
 
   // put into array for looping in Cutflow histograms
-  selvec[0].push_back(kTRUE);
-  selvec[1] = selvecSignal ;
-  selvec[2] = selvecZH     ;
-  selvec[3] = selvecDY     ;
-  selvec[4] = selvecOffZ   ;
-  selvec[5] = selvecNoPair ;
+  selvec[0] = 1;
+  selvec[1] = bitsPassSig    ;
+  selvec[2] = bitsPassZH     ;
+  selvec[3] = bitsPassDY     ;
+  selvec[4] = bitsPassOffZ   ;
+  selvec[5] = bitsPassNoPair ;
 
   dofillselbin[0] = kTRUE         ;
-  dofillselbin[1] = doesPassSig   ; 
-  dofillselbin[2] = doesPassZH    ; 
-  dofillselbin[3] = doesPassDY    ; 
-  dofillselbin[4] = doesPassOffZ  ; 
-  dofillselbin[5] = doesPassNoPair; 
-
+  dofillselbin[1] = ( (bitsPassSig    >> 0) & 1) ; 
+  dofillselbin[2] = ( (bitsPassZH     >> 0) & 1) ; 
+  dofillselbin[3] = ( (bitsPassDY     >> 0) & 1) ; 
+  dofillselbin[4] = ( (bitsPassOffZ   >> 0) & 1) ; 
+  dofillselbin[5] = ( (bitsPassNoPair >> 0) & 1) ; 
 
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
-     //fillCutflowHistograms( event_weight, i, j, selvec[i] );
-    if( dofillselbin[i] && dofilllepbin[j] ){
-     fillSelectedHistograms( event_weight, i, j );
+    if (dofilllepbin[j]){
+     fillCutflowHistograms( event_weight, i, j, selvec[i] );
+     if( dofillselbin[i] ){
+      fillSelectedHistograms( event_weight, i, j );
 
-     //jets
-     for( unsigned int k=0; k<jetmultnames.size(); ++k){
-      fillSelectedJetHistograms( event_weight, i, j, k );
-     }
+      //jets
+      for( unsigned int k=0; k<jetmultnames.size(); ++k){
+       fillSelectedJetHistograms( event_weight, i, j, k );
+      }  
 
       //tagged jets
       for( unsigned int k=0; k<tagmultnames.size(); ++k){
        fillSelectedTagHistograms( event_weight, i, j, k );
-      }
+      }  
 
-    }
-   }
-  }
+     } // if( dofillselbin[i] ){
+    } // if (dofilllepbin[j]){
+   } // for(unsigned int j=0; j<lepnames.size(); ++j){
+  } // for(unsigned int i=0; i<selbinnames.size(); ++i){
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
   //printf("make log: %0.i\n",makelog);
   
-  if(doesPassZH){
-   setOPTtree();
+  if( ( (bitsPassSig >> 0) & 1) ){
+   setOPTtree(); 
    OPTtree->Fill();
   }
  } // end loop over entries
@@ -197,15 +198,15 @@ void analyzer_signal::Loop(TString outfilename,
  OPTtree->CloneTree()->Write();
  optfile->Close();
 
-} // end analyzer_signal::Loop()
+} // end analyzer_loop::Loop()
 
 
-void analyzer_signal::debug_printobjects(){
+void analyzer_loop::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
   printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
-  printf(" Pass Sig %d ZH %d DY %d OffZ %d NoPair %d \n", doesPassSig, doesPassZH, doesPassDY, doesPassOffZ, doesPassNoPair );
 
+  debug_printbitset();
   debug_printphotons();
   debug_printmuons();
   debug_printelectrons();
@@ -219,7 +220,7 @@ void analyzer_signal::debug_printobjects(){
 
  }
 
-void analyzer_signal::debug_printmuons()
+void analyzer_loop::debug_printmuons()
 {
 
  // muon debug
@@ -238,7 +239,7 @@ void analyzer_signal::debug_printmuons()
  return;
 }
 
-void analyzer_signal::debug_printelectrons()
+void analyzer_loop::debug_printelectrons()
 {
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
@@ -248,7 +249,7 @@ void analyzer_signal::debug_printelectrons()
 }
 
 
-void analyzer_signal::debug_printdilep()
+void analyzer_loop::debug_printdilep()
 {
   if(dilep_mass>0.){
    printf(" DILEP FOUND\n");
@@ -262,7 +263,7 @@ void analyzer_signal::debug_printdilep()
  return;
 }
 
-void analyzer_signal::debug_printphotons()
+void analyzer_loop::debug_printphotons()
 {
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
@@ -271,7 +272,7 @@ void analyzer_signal::debug_printphotons()
  return;
 }
 
-void analyzer_signal::debug_printjets()
+void analyzer_loop::debug_printjets()
 {
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int jetindex = aodcalojet_list[i];
@@ -289,7 +290,7 @@ void analyzer_signal::debug_printjets()
 }
 
 
-void analyzer_signal::debug_printtriggers()
+void analyzer_loop::debug_printtriggers()
 {
 
  printf("AOD_HLT_Ele23Loose %llu \n", AOD_HLT_Ele23Loose) ;
@@ -304,4 +305,35 @@ void analyzer_signal::debug_printtriggers()
 
 }
 
+void analyzer_loop::debug_printbitset()
+{
+
+  std::cout<<" bitsPassSig    "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassSig>>i)&1 );
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassZH     "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassZH    >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassDY     "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassDY    >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassOffZ   "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassOffZ  >>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassNoPair "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassNoPair>>i) & 1); 
+  }
+  std::cout<<"\n";  
+ return;
+
+}
 
