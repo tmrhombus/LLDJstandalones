@@ -7,7 +7,9 @@
 #include <TH1F.h>
 #include <TH2F.h>
 
-#include <stdlib.h>     /* getenv */
+#include <iostream>  /* cout */
+
+#include <stdlib.h>  /* getenv */
 
 #include "vector"
 

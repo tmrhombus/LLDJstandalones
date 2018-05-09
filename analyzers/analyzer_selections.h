@@ -17,6 +17,7 @@ public :
 
    // Selection functions
    Bool_t        askPassSelvec( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu );
+   Int_t         setSelBits( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu );
    Bool_t        askPassSingleEle();
    Bool_t        askPassSingleMu();
    Bool_t        askPassDoubleEle();
@@ -27,7 +28,7 @@ public :
    std::vector<Bool_t> selvecDY     ;
    std::vector<Bool_t> selvecOffZ   ;
    std::vector<Bool_t> selvecNoPair ;
-   std::vector<Bool_t> selvec[6];
+   Int_t selvec[6];
 
    // selection booleans
    Bool_t passSingleEle ;

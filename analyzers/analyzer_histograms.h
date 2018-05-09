@@ -41,7 +41,7 @@ public :
 
  // Cutflow histograms
  Bool_t        initCutflowHistograms();
- Bool_t        fillCutflowHistograms(Double_t weight, int selbin, int lepbin, std::vector<Bool_t> selvec);
+ Bool_t        fillCutflowHistograms(Double_t weight, int selbin, int lepbin, Int_t selint);
  Bool_t        writeCutflowHistograms(int selbin, int lepbin);
 
  // 2D Histograms 
@@ -103,8 +103,10 @@ public :
  // Cutflow histograms
  TH1F h_Cutflow                       [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F h_Onecut                        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_NMinus                        [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F h_RawCutflow                    [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F h_RawOnecut                     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F h_RawNMinus                     [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  // Electron
  TH1F  h_AOD_nEle                     [SELBINNAMESIZE][LEPBINNAMESIZE];

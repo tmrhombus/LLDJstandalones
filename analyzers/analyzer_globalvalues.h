@@ -62,6 +62,13 @@ public :
    Bool_t doesPassOffZ;
    Bool_t doesPassNoPair;
 
+   // full cut bitsets
+   Int_t bitsPassSig;
+   Int_t bitsPassZH;
+   Int_t bitsPassDY;
+   Int_t bitsPassOffZ;
+   Int_t bitsPassNoPair;
+
    // selection counters (how many events pass)
    Int_t n_tot;
    Int_t n_test;
