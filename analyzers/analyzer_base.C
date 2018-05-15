@@ -82,6 +82,7 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    AODCaloJetAvfBeamSpotMedianDeltaPhi = 0;
    AODCaloJetAvfBeamSpotLog10MedianDeltaPhi = 0;
    AODCaloJetNCleanMatchedTracks = 0;
+   AODCaloJetNMatchedTracks = 0;
    AODCaloJetSumHitsInFrontOfVert = 0;
    AODCaloJetSumMissHitsAfterVert = 0;
    AODCaloJetHitsInFrontOfVertPerTrack = 0;
@@ -149,6 +150,8 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    AOD_phoSCEn = 0;
    AOD_phoSCEta = 0;
    AOD_phoSCPhi = 0;
+   AOD_phoPassElectronVeto = 0;
+   AOD_phoHasPixelSeed = 0;
    AOD_phoIDbit = 0;
    AOD_phoObjPFChIso = 0;
    AOD_phoObjPFPhoIso = 0;
@@ -176,6 +179,11 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("lumis", &lumis, &b_lumis);
    fChain->SetBranchAddress("isData", &isData, &b_isData);
+   fChain->SetBranchAddress("AODnTruePU", &AODnTruePU, &b_AODnTruePU);
+   fChain->SetBranchAddress("AODnVtx", &AODnVtx, &b_AODnVtx);
+   fChain->SetBranchAddress("AODnGoodVtx", &AODnGoodVtx, &b_AODnGoodVtx);
+   fChain->SetBranchAddress("AODnTrksPV", &AODnTrksPV, &b_AODnTrksPV);
+   fChain->SetBranchAddress("AODisPVGood", &AODisPVGood, &b_AODisPVGood);
    fChain->SetBranchAddress("llpId", &llpId, &b_llpId);
    fChain->SetBranchAddress("llpStatus", &llpStatus, &b_llpStatus);
    fChain->SetBranchAddress("llpPt", &llpPt, &b_llpPt);
@@ -196,6 +204,10 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("AOD_HLT_IsoTkMu22", &AOD_HLT_IsoTkMu22, &b_AOD_HLT_IsoTkMu22);
    fChain->SetBranchAddress("AOD_HLT_Mu17Mu8", &AOD_HLT_Mu17Mu8, &b_AOD_HLT_Mu17Mu8);
    fChain->SetBranchAddress("AOD_HLT_Mu17TkMu8", &AOD_HLT_Mu17TkMu8, &b_AOD_HLT_Mu17TkMu8);
+   fChain->SetBranchAddress("AOD_HLT_Mu17Mu8_noDZ", &AOD_HLT_Mu17Mu8_noDZ, &b_AOD_HLT_Mu17Mu8_noDZ);
+   fChain->SetBranchAddress("AOD_HLT_Mu17TkMu8_noDZ", &AOD_HLT_Mu17TkMu8_noDZ, &b_AOD_HLT_Mu17TkMu8_noDZ);
+   fChain->SetBranchAddress("AOD_HLT_IsoMu24", &AOD_HLT_IsoMu24, &b_AOD_HLT_IsoMu24);
+   fChain->SetBranchAddress("AOD_HLT_IsoTkMu24", &AOD_HLT_IsoTkMu24, &b_AOD_HLT_IsoTkMu24);
    fChain->SetBranchAddress("AODnCaloJet", &AODnCaloJet, &b_AODnCaloJet);
    fChain->SetBranchAddress("AODCaloJetPt", &AODCaloJetPt, &b_AODCaloJetPt);
    fChain->SetBranchAddress("AODCaloJetEta", &AODCaloJetEta, &b_AODCaloJetEta);
@@ -233,6 +245,7 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("AODCaloJetAvfBeamSpotMedianDeltaPhi", &AODCaloJetAvfBeamSpotMedianDeltaPhi, &b_AODCaloJetAvfBeamSpotMedianDeltaPhi);
    fChain->SetBranchAddress("AODCaloJetAvfBeamSpotLog10MedianDeltaPhi", &AODCaloJetAvfBeamSpotLog10MedianDeltaPhi, &b_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi);
    fChain->SetBranchAddress("AODCaloJetNCleanMatchedTracks", &AODCaloJetNCleanMatchedTracks, &b_AODCaloJetNCleanMatchedTracks);
+   fChain->SetBranchAddress("AODCaloJetNMatchedTracks", &AODCaloJetNMatchedTracks, &b_AODCaloJetNMatchedTracks);
    fChain->SetBranchAddress("AODCaloJetSumHitsInFrontOfVert", &AODCaloJetSumHitsInFrontOfVert, &b_AODCaloJetSumHitsInFrontOfVert);
    fChain->SetBranchAddress("AODCaloJetSumMissHitsAfterVert", &AODCaloJetSumMissHitsAfterVert, &b_AODCaloJetSumMissHitsAfterVert);
    fChain->SetBranchAddress("AODCaloJetHitsInFrontOfVertPerTrack", &AODCaloJetHitsInFrontOfVertPerTrack, &b_AODCaloJetHitsInFrontOfVertPerTrack);
@@ -304,6 +317,8 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("AOD_phoSCEn", &AOD_phoSCEn, &b_AOD_phoSCEn);
    fChain->SetBranchAddress("AOD_phoSCEta", &AOD_phoSCEta, &b_AOD_phoSCEta);
    fChain->SetBranchAddress("AOD_phoSCPhi", &AOD_phoSCPhi, &b_AOD_phoSCPhi);
+   fChain->SetBranchAddress("AOD_phoPassElectronVeto", &AOD_phoPassElectronVeto, &b_AOD_phoPassElectronVeto);
+   fChain->SetBranchAddress("AOD_phoHasPixelSeed", &AOD_phoHasPixelSeed, &b_AOD_phoHasPixelSeed);
    fChain->SetBranchAddress("AOD_phoIDbit", &AOD_phoIDbit, &b_AOD_phoIDbit);
    fChain->SetBranchAddress("AOD_phoObjPFChIso", &AOD_phoObjPFChIso, &b_AOD_phoObjPFChIso);
    fChain->SetBranchAddress("AOD_phoObjPFPhoIso", &AOD_phoObjPFPhoIso, &b_AOD_phoObjPFPhoIso);
