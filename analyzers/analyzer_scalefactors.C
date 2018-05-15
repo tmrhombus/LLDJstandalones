@@ -28,10 +28,9 @@ Double_t analyzer_scalefactors::makeEventWeight(Double_t crossSec,
 
 //----------------------------makePUWeight
 Double_t analyzer_scalefactors::makePUWeight(){
-// Int_t tmpbin = PUWeights->GetBin(nTruePU);
-// Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
+ Int_t tmpbin = PUWeights->GetBin(AODnTruePU);
+ Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
  //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
- Double_t tmpweight=1.; /// FIXME
  return tmpweight;
 }
 
