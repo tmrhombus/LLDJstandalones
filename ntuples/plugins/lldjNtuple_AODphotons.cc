@@ -43,8 +43,6 @@ void lldjNtuple::branchesAODPhotons(TTree* tree) {
  tree->Branch("AOD_phoSCEta",           &AOD_phoSCEta_             );             
  tree->Branch("AOD_phoSCPhi",           &AOD_phoSCPhi_             );             
 
- tree->Branch("AOD_phoSCPhi",           &AOD_phoSCPhi_             );             
-
  tree->Branch("AOD_phoPassElectronVeto", &AOD_phoPassElectronVeto_ );
  tree->Branch("AOD_phoHasPixelSeed",     &AOD_phoHasPixelSeed_     );
 
