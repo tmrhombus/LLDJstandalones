@@ -80,8 +80,7 @@ do
 done #for sample in DY50..
 
 #for sample in \
-# 'SingleMuon' \
-# 'SinglePhoton' 
+# 'SinglePhoton_E' 
 #
 #do
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "1000" -i "../lists" -o "junk" -n 10 -a 1 -d

@@ -3,8 +3,8 @@ void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString life
 
 bool variable_cut = false;
 bool plot         = false; //plots scanning result
-TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/Daniel_ZH_goodVertexTrue/"+lifetime;
-TString inpath  = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/roots/Daniel_ZH_goodVertexTrue/";
+TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
+TString inpath  = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/roots/BarrelVEndcap/";
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
 const float x     = 0.0; //for sys uncertainty
@@ -17,46 +17,46 @@ else            {var = "AlphaMax";}
 vector<TString> SigFileList;
 vector<TString> BkgFileList;
 //Big-hitters
-SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPT.root");
-SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS15_"  +lifetime+"_OPT.root");
-//SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPT.root");
-//SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_MS40_"  +lifetime+"_OPT.root");
-//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPT.root");
-//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPT.root");
+//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPTtree.root");
+//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS15_"  +lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_MS40_"  +lifetime+"_OPTtree.root");
+//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPTtree.root");
+//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPTtree.root");
 
-BkgFileList.push_back( inpath+"DY50_OPT.root"         ); //kk=0
-BkgFileList.push_back( inpath+"TTtoLfromT_OPT.root"   ); //kk=1
-BkgFileList.push_back( inpath+"TTtoLfromTbar_OPT.root"); //kk=2
-BkgFileList.push_back( inpath+"WJetsToLNu_OPT.root"   ); //kk=3
-BkgFileList.push_back( inpath+"TTtoLL_OPT.root"       ); //kk=4
+BkgFileList.push_back( inpath+"DY50_OPTtree.root"         ); //kk=0
+BkgFileList.push_back( inpath+"TTtoLfromT_OPTtree.root"   ); //kk=1
+BkgFileList.push_back( inpath+"TTtoLfromTbar_OPTtree.root"); //kk=2
+BkgFileList.push_back( inpath+"WJetsToLNu_OPTtree.root"   ); //kk=3
+BkgFileList.push_back( inpath+"TTtoLL_OPTtree.root"       ); //kk=4
 
 //little-guys
 //single-top
-BkgFileList.push_back( inpath+"ST_s_OPT.root"    ); //kk=5
-BkgFileList.push_back( inpath+"ST_tW_OPT.root"   ); //kk=6
-BkgFileList.push_back( inpath+"ST_t_OPT.root"    ); //kk=7
-BkgFileList.push_back( inpath+"STbar_tW_OPT.root"); //kk=8
-//BkgFileList.push_back( inpath+"STbar_t_OPT.root"); //kk=9
+BkgFileList.push_back( inpath+"ST_s_OPTtree.root"    ); //kk=5
+BkgFileList.push_back( inpath+"ST_tW_OPTtree.root"   ); //kk=6
+BkgFileList.push_back( inpath+"ST_t_OPTtree.root"    ); //kk=7
+BkgFileList.push_back( inpath+"STbar_tW_OPTtree.root"); //kk=8
+//BkgFileList.push_back( inpath+"STbar_t_OPTtree.root"); //kk=9
 //diboson
-BkgFileList.push_back( inpath+"WG_OPT.root"               ); //kk=10
-BkgFileList.push_back( inpath+"WWToLNuLNu_OPT.root"      );//kk=11
-BkgFileList.push_back( inpath+"WWToLNuQQ_OPT.root"        ); //kk=12
-BkgFileList.push_back( inpath+"WZTo3LNu_OPT.root"         ); //kk=13
-BkgFileList.push_back( inpath+"WZToL3Nu_OPT.root"         ); //kk=14
-BkgFileList.push_back( inpath+"WZToLNu2QorQQ2L_OPT.root"  ); //kk=15
-BkgFileList.push_back( inpath+"ZG_OPT.root"               ); //kk=16
-//BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPT.root"  ); //kk=17
-BkgFileList.push_back( inpath+"ZZToLLLL_OPT.root"         ); //kk=18
-BkgFileList.push_back( inpath+"ZZToLLNuNu_OPT.root"       ); //kk=19
-BkgFileList.push_back( inpath+"ZZToLLQQ_OPT.root"         ); //kk=20
-BkgFileList.push_back( inpath+"ZZToNuNuQQ_OPT.root"       ); //kk=21
-//BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPT.root"); //kk=22
+BkgFileList.push_back( inpath+"WG_OPTtree.root"               ); //kk=10
+BkgFileList.push_back( inpath+"WWToLNuLNu_OPTtree.root"      );//kk=11
+BkgFileList.push_back( inpath+"WWToLNuQQ_OPTtree.root"        ); //kk=12
+BkgFileList.push_back( inpath+"WZTo3LNu_OPTtree.root"         ); //kk=13
+BkgFileList.push_back( inpath+"WZToL3Nu_OPTtree.root"         ); //kk=14
+BkgFileList.push_back( inpath+"WZToLNu2QorQQ2L_OPTtree.root"  ); //kk=15
+BkgFileList.push_back( inpath+"ZG_OPTtree.root"               ); //kk=16
+//BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPTtree.root"  ); //kk=17
+BkgFileList.push_back( inpath+"ZZToLLLL_OPTtree.root"         ); //kk=18
+BkgFileList.push_back( inpath+"ZZToLLNuNu_OPTtree.root"       ); //kk=19
+BkgFileList.push_back( inpath+"ZZToLLQQ_OPTtree.root"         ); //kk=20
+BkgFileList.push_back( inpath+"ZZToNuNuQQ_OPTtree.root"       ); //kk=21
+//BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPTtree.root"); //kk=22
 //control Region
-///BkgFileList.push_back( inpath+"GJets_HT100To200_OPT.root");
-///BkgFileList.push_back( inpath+"GJets_HT200To400_OPT.root");
-///BkgFileList.push_back( inpath+"GJets_HT400To600_OPT.root");
-///BkgFileList.push_back( inpath+"GJets_HT40To100_OPT.root");
-///BkgFileList.push_back( inpath+"GJets_HT600ToInf_OPT.root");
+///BkgFileList.push_back( inpath+"GJets_HT100To200_OPTtree.root");
+///BkgFileList.push_back( inpath+"GJets_HT200To400_OPTtree.root");
+///BkgFileList.push_back( inpath+"GJets_HT400To600_OPTtree.root");
+///BkgFileList.push_back( inpath+"GJets_HT40To100_OPTtree.root");
+///BkgFileList.push_back( inpath+"GJets_HT600ToInf_OPTtree.root");
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -112,9 +112,11 @@ TFile file(SigFileList[ii]);
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
+TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
 TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
 TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
@@ -179,9 +181,11 @@ TFile file(BkgFileList[jj]);
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
+TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
 TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
 TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
@@ -336,6 +340,8 @@ TH1F* h_ntWJ       = new TH1F("h_ntWJ", "h_ntWJ", 7, -0.5, 6.5);
 TH1F* h_ntTTtoLL   = new TH1F("h_ntTTtoLL", "h_ntTTtoLL", 7, -0.5, 6.5);
 TH1F* h_ntDiboson  = new TH1F("h_ntDiboson", "h_ntDiboson", 7, -0.5, 6.5);
 TH1F* h_ntST       = new TH1F("h_ntSingleTop's", "h_ntSingleTop's", 7, -0.5, 6.5);
+
+TH1F* h_Test       = new TH1F("h_Test", "h_Test", 50, 0, 500);
 std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ, h_ntTTtoLL, h_ntDiboson, h_ntST};
 //loop over sig files
 for(int jj = 0; jj <SigFileList.size(); jj++){
@@ -346,9 +352,11 @@ cout <<"Processing file: "<< SigFileList[jj]<<endl;
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
+TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
 TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
 TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
@@ -357,7 +365,7 @@ while (reader.Next()) {
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
     for (int j=0; j<TA->size(); j++){
       			if(prnt)cout<<IP->at(j)<<"     "<<TA->at(j)<<"     "<<Alpha->at(j)<<endl;
-      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 ){
+      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 && fabs(Eta->at(j))<=1.5){
       tags = tags + 1;
       }
     }
@@ -381,9 +389,11 @@ cout <<"Processing file: "<< BkgFileList[kk]<<endl;
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
+TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
 TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
 TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
@@ -399,7 +409,8 @@ while (reader.Next()) {
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
     for (int j=0; j<TA->size(); j++){
       			if(prnt)cout<<IP->at(j)<<"     "<<TA->at(j)<<"     "<<Alpha->at(j)<<endl;
-      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 ){
+      h_Test->Fill(Pt->at(j));
+      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 &&fabs(Eta->at(j))<=1.5 ){
       tags = tags + 1;
       if        (kk==0){ntDY = ntDY + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntDY<<endl;*/}
       else if   (kk==1){ntTTL_T = ntTTL_T + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_T<<endl;*/}
@@ -512,9 +523,11 @@ if(plot){
   h_ntTTtoLL  ->SetLineWidth(3);
   h_ntDiboson ->SetLineWidth(3);
   h_ntST      ->SetLineWidth(3);
-  hs->Draw("hist");
-  hs->SetMinimum(0.001);
-  h_ntags     ->Draw   ("hist same");
+  
+  h_Test->Draw("hist");
+  //hs->Draw("hist");
+  //hs->SetMinimum(0.001);
+  //h_ntags     ->Draw   ("hist same");
   hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":N tags,"+lifetime);
   title2->DrawTextNDC(0.06,0.91,"CMS");
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
@@ -538,7 +551,7 @@ if(plot){
   //gStyle->SetOptStat(11);
   gPad->Update();
   gPad->RedrawAxis();
-  
+   canvas2->SaveAs(outpath+"h_Test.pdf"); 
  //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
   //canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
 }// canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");

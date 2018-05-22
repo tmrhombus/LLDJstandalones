@@ -51,6 +51,26 @@ printf "Files that are not done in condor: \n"
  #"DY5to50_HT200To400"                 \
  #"DY5to50_HT400To600"                 \
  #"DY5to50_HT600ToInf"                 \
+ #"SingleElectron_B_2"   \
+ #"SingleElectron_C"     \
+ #"SingleElectron_D"     \
+ #"SingleElectron_E"     \
+ #"SingleElectron_G"     \
+ #"SingleElectron_H_3"   \
+ #"SingleMuon_B_2"       \
+ #"SingleMuon_C"         \
+ #"SingleMuon_D"         \
+ #"SingleMuon_E"         \
+ #"SingleMuon_F"         \
+ #"SingleMuon_G"         \
+ #"SingleMuon_H"         \
+ #"SinglePhoton_B_2"     \
+ #"SinglePhoton_C"       \
+ #"SinglePhoton_D"       \
+ #"SinglePhoton_E"       \
+ #"SinglePhoton_F"       \
+ #"SinglePhoton_G"       \
+ #"SinglePhoton_H"       \
 samples=( \
  "ggZH_HToSSTobbbb_MS40_ctauS1"       \
  "ggZH_HToSSTobbbb_MS40_ctauS10"      \
