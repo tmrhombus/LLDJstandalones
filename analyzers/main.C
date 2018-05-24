@@ -248,6 +248,8 @@ int main(int argc, char **argv){
 
  analyzer.init2DHistograms();
 
+ analyzer.initBackgroundEstimateHistograms();
+
  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile);
 
  // end stopwatch
