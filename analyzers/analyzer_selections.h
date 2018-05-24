@@ -28,6 +28,8 @@ public :
    std::vector<Bool_t> selvecDY     ;
    std::vector<Bool_t> selvecOffZ   ;
    std::vector<Bool_t> selvecNoPair ;
+   std::vector<Bool_t> selvecCRHeavy;
+   std::vector<Bool_t> selvecCRLight;
    Int_t selvec[6];
 
    // selection booleans
@@ -36,6 +38,7 @@ public :
    Bool_t passDoubleEle ;
    Bool_t passDoubleMu  ;
    Bool_t passOSSF      ;   
+   Bool_t passOSOF      ;   
    Bool_t passZWindow   ;   
    Bool_t passGoodVtx   ;   
    Bool_t passPTOSSFg50 ; 

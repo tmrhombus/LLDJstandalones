@@ -27,11 +27,11 @@ public :
    std::vector<float> aodcalojet_minDR_list;
 
    // for dilepton
-   TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
+   TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
    TLorentzVector fourVec_l1, fourVec_l2;
    TLorentzVector fourVec_met;
-   Double_t dilep_mass;
-   Double_t dilep_pt;
+   Double_t dilep_mass, OSOF_mass;
+   Double_t dilep_pt, OSOF_pt;
 
    // personal variables
    Double_t themet;

@@ -79,6 +79,7 @@ void analyzer_loop::Loop(TString outfilename,
 
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
+  passOSOF = (OSOF_mass>0.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passPTOSSFg50 = (dilep_pt>100.); //too lazy to change variable name yet
   passGoodVtx = true; // = nVtx>0; FIXME put in ntuples
