@@ -4,6 +4,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -81,7 +82,7 @@ void analyzer_loop::Loop(TString outfilename,
   passOSSF = (dilep_mass>20.);
   passOSOF = (OSOF_mass>0.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
-  passPTOSSFg50 = (dilep_pt>100.); //too lazy to change variable name yet
+  passPTOSSFg50 = (dilep_pt>50.); //too lazy to change variable name yet
   passGoodVtx = true; // = nVtx>0; FIXME put in ntuples
   passOneJet = false; if (aodcalojet_list.size()>0) passOneJet=true;  
   passOneTag = false; if (taggedjet_list.size()>0) passOneTag=true;  
@@ -155,17 +156,16 @@ void analyzer_loop::Loop(TString outfilename,
    OPTtree->Fill();
   }
  } // end loop over entries
-
  std::cout << std::endl;
  std::cout << std::endl;
- std::cout << " Summary   cleaning dR=" << objcleandRcut << std::endl;
+ std::cout << " Summary     cleaning dR=" << objcleandRcut << std::endl;
 
- std::cout << "  ntot        " << n_tot << std::endl;
- std::cout << " npassSig    " << n_passSig << " " << n_ele_passSig << " " << n_mu_passSig << std::endl;
- std::cout << " npassZH    " << n_passZH << " " << n_ele_passZH << " " << n_mu_passZH << std::endl;
- std::cout << " npassDY    " << n_passDY << " " << n_ele_passDY << " " << n_mu_passDY << std::endl;
- std::cout << " npassOffZ    " << n_passOffZ << " " << n_ele_passOffZ << " " << n_mu_passOffZ << std::endl;
- std::cout << " npassNoPair    " << n_passNoPair << " " << n_ele_passNoPair << " " << n_mu_passNoPair << std::endl;
+ std::cout << " ntot        " << n_tot << std::endl;
+ std::cout << " npassSig    " << setw(width) << left << n_passSig    << setw(width) << left << n_ele_passSig    << setw(width) << left <<n_mu_passSig << std::endl;
+ std::cout << " npassZH     " << setw(width) << left << n_passZH     << setw(width) << left << n_ele_passZH     << setw(width) << left <<n_mu_passZH << std::endl;
+ std::cout << " npassDY     " << setw(width) << left << n_passDY     << setw(width) << left << n_ele_passDY     << setw(width) << left << n_mu_passDY << std::endl;
+ std::cout << " npassOffZ   " << setw(width) << left << n_passOffZ   << setw(width) << left << n_ele_passOffZ   << setw(width) << left << n_mu_passOffZ << std::endl;
+ std::cout << " npassNoPair " << setw(width) << left << n_passNoPair << setw(width) << left << n_ele_passNoPair << setw(width) << left << n_mu_passNoPair << std::endl;
  
  // make outfile and save histograms
  // write the histograms
