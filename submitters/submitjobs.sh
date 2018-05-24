@@ -8,7 +8,7 @@
 doSubmit=true
 lumi=35870
 nevents=-1
-maxfilesperjob=10   # 500=6h
+maxfilesperjob=200   # 500=6h
 
 # Signal Samples
 #  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
@@ -125,33 +125,33 @@ maxfilesperjob=10   # 500=6h
 #  "DY5to50_HT600toInf_2" \
 
 samples=(  \
-  "ZH_HToSSTobbbb_MS55_ctauS1"      \
-  "ZH_HToSSTobbbb_MS55_ctauS10"     \
-  "ZH_HToSSTobbbb_MS55_ctauS100"    \
-  "ZH_HToSSTobbbb_MS55_ctauS1000"   \
-  "ZH_HToSSTobbbb_MS40_ctauS1"      \
-  "ZH_HToSSTobbbb_MS40_ctauS10"     \
-  "ZH_HToSSTobbbb_MS40_ctauS100"    \
-  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
-  "ZH_HToSSTobbbb_MS15_ctauS1"      \
-  "ZH_HToSSTobbbb_MS15_ctauS10"     \
-  "ZH_HToSSTobbbb_MS15_ctauS100"    \
-  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
-  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS55_ctauS1000" \
-  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
-  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
+#  "ZH_HToSSTobbbb_MS55_ctauS1"      \
+#  "ZH_HToSSTobbbb_MS55_ctauS10"     \
+#  "ZH_HToSSTobbbb_MS55_ctauS100"    \
+#  "ZH_HToSSTobbbb_MS55_ctauS1000"   \
+#  "ZH_HToSSTobbbb_MS40_ctauS1"      \
+#  "ZH_HToSSTobbbb_MS40_ctauS10"     \
+#  "ZH_HToSSTobbbb_MS40_ctauS100"    \
+#  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
+#  "ZH_HToSSTobbbb_MS15_ctauS1"      \
+#  "ZH_HToSSTobbbb_MS15_ctauS10"     \
+#  "ZH_HToSSTobbbb_MS15_ctauS100"    \
+#  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
+#  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
+#  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
+#  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
+#  "ggZH_HToSSTobbbb_MS55_ctauS1000" \
+#  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
+#  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
+#  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
+#  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
+#  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
+#  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
+#  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
+#  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
   "DY50"               \
-  "TTtoLL"             \
-  "WJetsToLNu"         \
+#  "TTtoLL"             \
+#  "WJetsToLNu"         \
 )
 
 
@@ -173,7 +173,7 @@ makeasubmitdir () {
  printf "Executable = ${CMSSW_BASE}/src/LLDJstandalones/submitters/runjob.sh\n" >> submitfile
  printf "Should_Transfer_Files = YES \n" >> submitfile
  printf "WhenToTransferOutput = ON_EXIT\n" >> submitfile
- printf "Transfer_Input_Files = ${CMSSW_BASE}/src/LLDJstandalones/analyzers/runanalyzer.exe,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.info,${CMSSW_BASE}/src/LLDJstandalones/analyzers/puWeights_69200_24jan2017.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleTight.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleMedium.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleLoose.root\n" >> submitfile
+ printf "Transfer_Input_Files = ${CMSSW_BASE}/src/LLDJstandalones/analyzers/runanalyzer.exe,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.info,${CMSSW_BASE}/src/LLDJstandalones/analyzers/puWeights_69200_24jan2017.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleTight.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleMedium.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleLoose.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/feff_ZH.root\n" >> submitfile
 
  printf "notify_user = $(whoami)@cern.ch\n" >> submitfile
  printf "x509userproxy = $X509_USER_PROXY\n" >> submitfile
