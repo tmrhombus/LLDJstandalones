@@ -22,6 +22,7 @@ public :
    Bool_t        askPassSingleMu();
    Bool_t        askPassDoubleEle();
    Bool_t        askPassDoubleMu();
+   Bool_t        askPassSinglePho();
 
    std::vector<Bool_t> selvecSignal ;
    std::vector<Bool_t> selvecZH     ;
@@ -30,18 +31,20 @@ public :
    std::vector<Bool_t> selvecNoPair ;
    std::vector<Bool_t> selvecCRHeavy;
    std::vector<Bool_t> selvecCRLight;
-   Int_t selvec[6];
+   Int_t selvec[8];
 
    // selection booleans
    Bool_t passSingleEle ;
    Bool_t passSingleMu  ;
    Bool_t passDoubleEle ;
    Bool_t passDoubleMu  ;
+   Bool_t passSinglePho ;
    Bool_t passOSSF      ;   
    Bool_t passOSOF      ;   
    Bool_t passZWindow   ;   
+   Bool_t passZWinOSOF  ;
    Bool_t passGoodVtx   ;   
-   Bool_t passPTOSSFg50 ; 
+   Bool_t passPTOSSF    ; 
    Bool_t passOneJet    ; 
    Bool_t passOneTag    ;
    Bool_t passTwoTag    ;
