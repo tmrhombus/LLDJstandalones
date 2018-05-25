@@ -36,7 +36,7 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
 
- bool doBkgEst = false;
+ bool doBkgEst = true;
  if( doBkgEst ) loadMistagRate();
 
  // start looping over entries
@@ -131,7 +131,7 @@ void analyzer_loop::Loop(TString outfilename,
     if( dofilllepbin[1] && dofillselbin[2] ){//mu ZH
       fillBackgroundEstimateHistograms(event_weight);
     }
-    continue;//don't do rest loop
+    //continue;//don't do rest loop
   }
   
 
@@ -181,10 +181,11 @@ void analyzer_loop::Loop(TString outfilename,
  
  if(doBkgEst){
    //Can choose more regions here
-   TFile *outfile = new TFile(outfilename+"_"+selbinnames[2]+"_BkgEst.root","RECREATE");
+   TFile *outfile = new TFile(outfilename+"_BkgEst.root","RECREATE");
    outfile->cd();
    writeBackgroundEstimateHistograms();
-   return;//don't do more of this function
+   outfile->Close();
+   //return;//don't do more of this function
  }
 
  // make outfile and save histograms
