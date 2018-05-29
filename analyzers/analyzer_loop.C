@@ -129,6 +129,8 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[3] = ( (bitsPassDY     >> 0) & 1) ; 
   dofillselbin[4] = ( (bitsPassOffZ   >> 0) & 1) ; 
   dofillselbin[5] = ( (bitsPassNoPair >> 0) & 1) ; 
+  dofillselbin[6] = ( (bitsPassCRHeavy>> 0) & 1) ; 
+  dofillselbin[7] = ( (bitsPassCRLight>> 0) & 1) ; 
 
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -157,7 +159,7 @@ void analyzer_loop::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if( ( (bitsPassZH >> 0) & 1) ){
+  if( ( (bitsPassCRHeavy >> 0) & 1) ){
    setOPTtree(); 
    OPTtree->Fill();
   }

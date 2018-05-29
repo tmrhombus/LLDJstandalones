@@ -126,9 +126,9 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
 
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int aodcalojetindex = aodcalojet_list[i];
-   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.0 &&
+   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.15 &&
        AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 &&
-       AODCaloJetAlphaMax->at(aodcalojetindex)<0.5) {
+       AODCaloJetAlphaMax->at(aodcalojetindex)<0.35) {
     taglist.push_back(aodcalojetindex);
    }
   }
