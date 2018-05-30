@@ -23,7 +23,8 @@ public :
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
-                            TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM);
+                            TLorentzVector *fv_ee, TLorentzVector *fv_mm);
+ virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_em);
  // I like because I don't want to rely on CMSSW here
  double               dR(double eta1, double phi1, double eta2, double phi2);
  double               DeltaPhi(double phi1, double phi2);

@@ -6,9 +6,9 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=35870
+lumi=20000  #20000   #20000     #35870
 nevents=-1
-maxfilesperjob=10   # 500=6h
+maxfilesperjob=200   # 500=6h
 
 # Signal Samples
 #  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
@@ -125,33 +125,7 @@ maxfilesperjob=10   # 500=6h
 #  "DY5to50_HT600toInf_2" \
 
 samples=(  \
-  "ZH_HToSSTobbbb_MS55_ctauS1"      \
-  "ZH_HToSSTobbbb_MS55_ctauS10"     \
-  "ZH_HToSSTobbbb_MS55_ctauS100"    \
-  "ZH_HToSSTobbbb_MS55_ctauS1000"   \
-  "ZH_HToSSTobbbb_MS40_ctauS1"      \
-  "ZH_HToSSTobbbb_MS40_ctauS10"     \
-  "ZH_HToSSTobbbb_MS40_ctauS100"    \
-  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
-  "ZH_HToSSTobbbb_MS15_ctauS1"      \
-  "ZH_HToSSTobbbb_MS15_ctauS10"     \
-  "ZH_HToSSTobbbb_MS15_ctauS100"    \
-  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
-  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS55_ctauS1000" \
-  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
-  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
-  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
-  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
-  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
-  "DY50"               \
-  "TTtoLL"             \
-  "WJetsToLNu"         \
+ # "samplename"                 
 )
 
 
@@ -173,7 +147,7 @@ makeasubmitdir () {
  printf "Executable = ${CMSSW_BASE}/src/LLDJstandalones/submitters/runjob.sh\n" >> submitfile
  printf "Should_Transfer_Files = YES \n" >> submitfile
  printf "WhenToTransferOutput = ON_EXIT\n" >> submitfile
- printf "Transfer_Input_Files = ${CMSSW_BASE}/src/LLDJstandalones/analyzers/runanalyzer.exe,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.info,${CMSSW_BASE}/src/LLDJstandalones/analyzers/puWeights_69200_24jan2017.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleTight.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleMedium.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleLoose.root\n" >> submitfile
+ printf "Transfer_Input_Files = ${CMSSW_BASE}/src/LLDJstandalones/analyzers/runanalyzer.exe,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list,${CMSSW_BASE}/src/LLDJstandalones/lists/$1.info,${CMSSW_BASE}/src/LLDJstandalones/analyzers/puWeights_69200_24jan2017.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleTight.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleMedium.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/egammaEffi_MoriondBH_eleLoose.root,${CMSSW_BASE}/src/LLDJstandalones/analyzers/feff_ZH.root\n" >> submitfile
 
  printf "notify_user = $(whoami)@cern.ch\n" >> submitfile
  printf "x509userproxy = $X509_USER_PROXY\n" >> submitfile
@@ -191,6 +165,7 @@ makeasubmitdir () {
  haddfile_OffZ_histograms="./haddit_OffZ_histograms.sh"
  haddfile_NoPair_histograms="./haddit_NoPair_histograms.sh"
  haddfile_OPTtree="./haddit_OPTtree.sh"
+ haddfile_BkgEst="./haddit_BkgEst.sh"
 
  hadddir="${rootdir}/${aversion}"
  mkdir -p ${hadddir}
@@ -201,6 +176,7 @@ makeasubmitdir () {
  printf "#!/bin/bash\n\n" > ${haddfile_OffZ_histograms}  
  printf "#!/bin/bash\n\n" > ${haddfile_NoPair_histograms}
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
+ printf "#!/bin/bash\n\n" > ${haddfile_BkgEst}
 
  # make checker
  checkfile="./checker.sh"
@@ -215,6 +191,7 @@ makeasubmitdir () {
  printf "hadd ${hadddir}/$1_OffZ_histograms.root"   >> ${haddfile_OffZ_histograms}   
  printf "hadd ${hadddir}/$1_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
  printf "hadd ${hadddir}/$1_OPTtree.root"           >> ${haddfile_OPTtree}           
+ printf "hadd ${hadddir}/$1_BkgEst.root"            >> ${haddfile_BkgEst}           
 
  # breaking up input file list
  nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
@@ -238,6 +215,7 @@ makeasubmitdir () {
   printf "\\" >> ${haddfile_OffZ_histograms}   
   printf "\\" >> ${haddfile_NoPair_histograms} 
   printf "\\" >> ${haddfile_OPTtree}           
+  printf "\\" >> ${haddfile_BkgEst}
 
   printf "\n $(pwd)/$1_${jobfilenr}_NoSel_histograms.root" >> ${haddfile_NoSel_histograms}  
   printf "\n $(pwd)/$1_${jobfilenr}_Sig_histograms.root" >> ${haddfile_Sig_histograms}    
@@ -246,6 +224,7 @@ makeasubmitdir () {
   printf "\n $(pwd)/$1_${jobfilenr}_OffZ_histograms.root" >> ${haddfile_OffZ_histograms}   
   printf "\n $(pwd)/$1_${jobfilenr}_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
   printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root" >> ${haddfile_OPTtree}           
+  printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root" >> ${haddfile_BkgEst}
 
   # add file to checker, all histos are made at the same time, so only check one
   printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_OPTtree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_OPTtree.root \\n\"; fi " >> ${checkfile}
@@ -264,6 +243,7 @@ makeasubmitdir () {
  printf "\n\n" >> ${haddfile_OffZ_histograms}   
  printf "\n\n" >> ${haddfile_NoPair_histograms} 
  printf "\n\n" >> ${haddfile_OPTtree}           
+ printf "\n\n" >> ${haddfile_BkgEst}
 
  if [ ${doSubmit} = true ]
  then

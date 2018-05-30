@@ -17,10 +17,10 @@ public :
  std::vector<TString> jetmultnames;
  std::vector<TString> tagmultnames;
  std::vector<TString> lepnames;
- // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair
+ // selbinnames  = NoSel, Sig, ZH, DY, OffZ, NoPair CRHeavy, CRLight
  // jetmultnames = Leading, Subleading, Third, Fourth, All
  // lepbinname   = ele, mu, NoSel
- static const int SELBINNAMESIZE  = 6;
+ static const int SELBINNAMESIZE  = 8;
  static const int JETMULTNAMESIZE = 5; 
  static const int TAGMULTNAMESIZE = 5; 
  static const int LEPBINNAMESIZE  = 3;
@@ -77,10 +77,17 @@ public :
  Bool_t        initAODCaloJetExtraHistograms();
  Bool_t        fillAODCaloJetExtraHistograms(Double_t weight, int selbin, int lepbin, int jetbin);
  Bool_t        writeAODCaloJetExtraHistograms(int selbin, int lepbin, int jetbin);
- // AODCaloJet Basic Variables
+ // AODCaloJetTag Basic Variables
  Bool_t        initAODCaloJetTagHistograms();
  Bool_t        fillAODCaloJetTagHistograms(Double_t weight, int selbin, int lepbin, int tagbin);
  Bool_t        writeAODCaloJetTagHistograms(int selbin, int lepbin, int tagbin);
+ // Jet Multiplicity
+ Bool_t        initAODCaloJetMultHistograms();
+ Bool_t        fillAODCaloJetMultHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeAODCaloJetMultHistograms(int selbin, int lepbin);
+ Bool_t        initAODCaloJetTagMultHistograms();
+ Bool_t        fillAODCaloJetTagMultHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeAODCaloJetTagMultHistograms(int selbin, int lepbin);
 
  //For variable binning
  Bool_t        scaleVariableBinHistograms(int selbin, int lepbin);
@@ -147,6 +154,7 @@ public :
 
  // nJets
  TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag   [SELBINNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_nCaloJet                 [SELBINNAMESIZE][LEPBINNAMESIZE]; // AODnCaloJet; 
  TH1F  h_nPFJet                   [SELBINNAMESIZE][LEPBINNAMESIZE]; // AODnPFJet; 
  TH1F  h_nPFchsJet                [SELBINNAMESIZE][LEPBINNAMESIZE]; // AODnPFchsJet; 
@@ -171,6 +179,7 @@ public :
  TH1F  h_AODCaloJetMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetMinDR                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // AODCaloJetExtraHistograms
  TH1F  h_AODCaloJetAvfVx                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -204,6 +213,7 @@ public :
  TH1F  h_AODCaloJetPt_Tag0                       [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetPtVar_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetMinDR_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_AODCaloJetAbsEta_Tag0                   [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0      [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
 
 
@@ -211,6 +221,13 @@ public :
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH2F h_IpVjetPt                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH2F h_AlphaVjetPt               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+
+ // Background Estimate
+ void comb(int n, int r, int *arr, int sz, Double_t weight);
+ TH1F h_bkgest;//for now only one
+ Bool_t initBackgroundEstimateHistograms();
+ Bool_t fillBackgroundEstimateHistograms(Double_t weight);
+ Bool_t writeBackgroundEstimateHistograms();
 
 };
 

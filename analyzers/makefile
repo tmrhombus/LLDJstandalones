@@ -19,3 +19,5 @@ main:  analyzer_base.o \
 %.o: %.C  
 	g++ --std=c++11 -c $^ -o $@ ${ROOTFLAGS} ${CXXDEPFLAGS} 
 
+clean:
+	rm -f  *.{o,d,exe}

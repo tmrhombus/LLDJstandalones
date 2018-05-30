@@ -109,7 +109,6 @@ countalist () {
  printf "Making %s\n" $1
  root -l -b -q 'countevents.cxx("'$1'")'
  printf "crosssection: %s\n" $2 >> ${listdir}/$1.info
-}
 
  countalist "DY10to50"                            ${xcDY10to50}
  countalist "DY50"                                ${xcDY50}
@@ -169,6 +168,4 @@ countalist () {
  countalist "DoubleEG"                            ${xcData}
  countalist "DoubleMuon"                          ${xcData}
  countalist "MuonEG"                              ${xcData}
-
-
-
+ 
