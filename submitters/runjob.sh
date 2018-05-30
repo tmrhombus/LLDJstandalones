@@ -18,6 +18,7 @@ cp ../../puWeights_69200_24jan2017.root         .
 cp ../../egammaEffi_MoriondBH_eleTight.root     .
 cp ../../egammaEffi_MoriondBH_eleMedium.root    .
 cp ../../egammaEffi_MoriondBH_eleLoose.root     .
+cp ../../feff_ZH.root                           .
 
 
 scramv1 build -j 10
