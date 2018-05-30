@@ -37,6 +37,9 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
 
+ bool doBkgEst = true;
+ if( doBkgEst ) loadMistagRate();
+
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -132,6 +135,16 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[6] = ( (bitsPassCRHeavy>> 0) & 1) ; 
   dofillselbin[7] = ( (bitsPassCRLight>> 0) & 1) ; 
 
+  
+  if(doBkgEst){
+    //Can choose more regions here
+    if( dofilllepbin[1] && dofillselbin[2] ){//mu ZH
+      fillBackgroundEstimateHistograms(event_weight);
+    }
+    //continue;//don't do rest loop
+  }
+  
+
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
    for(unsigned int j=0; j<lepnames.size(); ++j){
@@ -178,6 +191,15 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout << " npassCRLight " << setw(width) << left << n_passCRLight << setw(width) << left << n_ele_passCRLight << setw(width) << left << n_mu_passCRLight << std::endl;
  std::cout << std::endl;
  
+ if(doBkgEst){
+   //Can choose more regions here
+   TFile *outfile = new TFile(outfilename+"_BkgEst.root","RECREATE");
+   outfile->cd();
+   writeBackgroundEstimateHistograms();
+   outfile->Close();
+   //return;//don't do more of this function
+ }
+
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
