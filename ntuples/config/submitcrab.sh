@@ -10,9 +10,9 @@ domakeMiniAOD=false
 START=$(date +%s);
 printf "Started at ${START}\n\n"
 
-if [ ${doAOD} = true ]
+if [ ${dominiAOD} = true ]
 then
- nversion="${nversion}AOD"
+ nversion="${nversion}MiniAOD"
 elif [ ${domakeMiniAOD} = true ]
 then
  nversion="${nversion}MakeMiniAOD"
@@ -54,36 +54,7 @@ cp "${subdir}/${msubmitconfig}"  ${thesubdir}
 
 # sample names to run over
 samples=( \
-  "Data_SingleEle_H_3"   \
-  "Data_SingleEle_H_2"   \
-  "Data_SingleEle_G"     \
-  "Data_SingleEle_F"     \
-  "Data_SingleEle_E"     \
-  "Data_SingleEle_D"     \
-  "Data_SingleEle_C"     \
-  "Data_SingleEle_B_2"   \
-  "Data_SingleEle_B_1"   \
-
-  "Data_SingleMu_H_3"    \
-  "Data_SingleMu_H_2"    \
-  "Data_SingleMu_G"      \
-  "Data_SingleMu_F"      \
-  "Data_SingleMu_E"      \
-  "Data_SingleMu_D"      \
-  "Data_SingleMu_C"      \
-  "Data_SingleMu_B_2"    \
-  "Data_SingleMu_B_1"    \
-
-  "Data_SinglePhoton_H_3"    \
-  "Data_SinglePhoton_H_2"    \
-  "Data_SinglePhoton_G"      \
-  "Data_SinglePhoton_F"      \
-  "Data_SinglePhoton_E"      \
-  "Data_SinglePhoton_D"      \
-  "Data_SinglePhoton_C"      \
-  "Data_SinglePhoton_B_2"    \
-  "Data_SinglePhoton_B_1"    \
-  "DY50_1"               \
+# put your samples here, copy from below
 )
 
 # Signal Samples
@@ -121,7 +92,6 @@ samples=( \
 #  "Data_SingleEle_D"     \
 #  "Data_SingleEle_C"     \
 #  "Data_SingleEle_B_2"   \
-#  "Data_SingleEle_B_1"   \
 
 #  "Data_SingleMu_H_3"    \
 #  "Data_SingleMu_H_2"    \
@@ -131,7 +101,24 @@ samples=( \
 #  "Data_SingleMu_D"      \
 #  "Data_SingleMu_C"      \
 #  "Data_SingleMu_B_2"    \
-#  "Data_SingleMu_B_1"    \
+
+#  "Data_DoubleMu_H_3"    \
+#  "Data_DoubleMu_H_2"    \
+#  "Data_DoubleMu_G"      \
+#  "Data_DoubleMu_F"      \
+#  "Data_DoubleMu_E"      \
+#  "Data_DoubleMu_D"      \
+#  "Data_DoubleMu_C"      \
+#  "Data_DoubleMu_B_2"    \
+
+#  "Data_DoubleEG_H_3"    \
+#  "Data_DoubleEG_H_2"    \
+#  "Data_DoubleEG_G"      \
+#  "Data_DoubleEG_F"      \
+#  "Data_DoubleEG_E"      \
+#  "Data_DoubleEG_D"      \
+#  "Data_DoubleEG_C"      \
+#  "Data_DoubleEG_B_2"    \
 
 #  "Data_SinglePhoton_H_3"    \
 #  "Data_SinglePhoton_H_2"    \
@@ -141,7 +128,6 @@ samples=( \
 #  "Data_SinglePhoton_D"      \
 #  "Data_SinglePhoton_C"      \
 #  "Data_SinglePhoton_B_2"    \
-#  "Data_SinglePhoton_B_1"    \
 
 # Main Backgrounds
 #  "DY50_1"               \

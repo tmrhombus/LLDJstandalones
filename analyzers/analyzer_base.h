@@ -35,6 +35,11 @@ public :
    Long64_t        event;
    Int_t           lumis;
    Bool_t          isData;
+   Int_t           AODnTruePU;
+   Int_t           AODnVtx;
+   Int_t           AODnGoodVtx;
+   Int_t           AODnTrksPV;
+   Bool_t          AODisPVGood;
    std::vector<int>     *llpId;
    std::vector<int>     *llpStatus;
    std::vector<float>   *llpPt;
@@ -55,6 +60,10 @@ public :
    ULong64_t       AOD_HLT_IsoTkMu22;
    ULong64_t       AOD_HLT_Mu17Mu8;
    ULong64_t       AOD_HLT_Mu17TkMu8;
+   ULong64_t       AOD_HLT_Mu17Mu8_noDZ;
+   ULong64_t       AOD_HLT_Mu17TkMu8_noDZ;
+   ULong64_t       AOD_HLT_IsoMu24;
+   ULong64_t       AOD_HLT_IsoTkMu24;
    Int_t           AODnCaloJet;
    std::vector<float>   *AODCaloJetPt;
    std::vector<float>   *AODCaloJetEta;
@@ -92,6 +101,7 @@ public :
    std::vector<float>   *AODCaloJetAvfBeamSpotMedianDeltaPhi;
    std::vector<float>   *AODCaloJetAvfBeamSpotLog10MedianDeltaPhi;
    std::vector<int>     *AODCaloJetNCleanMatchedTracks;
+   std::vector<int>     *AODCaloJetNMatchedTracks;
    std::vector<int>     *AODCaloJetSumHitsInFrontOfVert;
    std::vector<int>     *AODCaloJetSumMissHitsAfterVert;
    std::vector<int>     *AODCaloJetHitsInFrontOfVertPerTrack;
@@ -163,6 +173,8 @@ public :
    std::vector<float>   *AOD_phoSCEn;
    std::vector<float>   *AOD_phoSCEta;
    std::vector<float>   *AOD_phoSCPhi;
+   std::vector<float>   *AOD_phoPassElectronVeto;
+   std::vector<float>   *AOD_phoHasPixelSeed;
    std::vector<unsigned short> *AOD_phoIDbit;
    std::vector<float>   *AOD_phoObjPFChIso;
    std::vector<float>   *AOD_phoObjPFPhoIso;
@@ -193,6 +205,11 @@ public :
    TBranch        *b_event;   //!
    TBranch        *b_lumis;   //!
    TBranch        *b_isData;   //!
+   TBranch        *b_AODnTruePU;   //!
+   TBranch        *b_AODnVtx;   //!
+   TBranch        *b_AODnGoodVtx;   //!
+   TBranch        *b_AODnTrksPV;   //!
+   TBranch        *b_AODisPVGood;   //!
    TBranch        *b_llpId;   //!
    TBranch        *b_llpStatus;   //!
    TBranch        *b_llpPt;   //!
@@ -213,6 +230,10 @@ public :
    TBranch        *b_AOD_HLT_IsoTkMu22;   //!
    TBranch        *b_AOD_HLT_Mu17Mu8;   //!
    TBranch        *b_AOD_HLT_Mu17TkMu8;   //!
+   TBranch        *b_AOD_HLT_Mu17Mu8_noDZ;   //!
+   TBranch        *b_AOD_HLT_Mu17TkMu8_noDZ;   //!
+   TBranch        *b_AOD_HLT_IsoMu24;   //!
+   TBranch        *b_AOD_HLT_IsoTkMu24;   //!
    TBranch        *b_AODnCaloJet;   //!
    TBranch        *b_AODCaloJetPt;   //!
    TBranch        *b_AODCaloJetEta;   //!
@@ -250,6 +271,7 @@ public :
    TBranch        *b_AODCaloJetAvfBeamSpotMedianDeltaPhi;   //!
    TBranch        *b_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi;   //!
    TBranch        *b_AODCaloJetNCleanMatchedTracks;   //!
+   TBranch        *b_AODCaloJetNMatchedTracks;   //!
    TBranch        *b_AODCaloJetSumHitsInFrontOfVert;   //!
    TBranch        *b_AODCaloJetSumMissHitsAfterVert;   //!
    TBranch        *b_AODCaloJetHitsInFrontOfVertPerTrack;   //!
@@ -321,6 +343,8 @@ public :
    TBranch        *b_AOD_phoSCEn;   //!
    TBranch        *b_AOD_phoSCEta;   //!
    TBranch        *b_AOD_phoSCPhi;   //!
+   TBranch        *b_AOD_phoPassElectronVeto;   //!
+   TBranch        *b_AOD_phoHasPixelSeed;   //!
    TBranch        *b_AOD_phoIDbit;   //!
    TBranch        *b_AOD_phoObjPFChIso;   //!
    TBranch        *b_AOD_phoObjPFPhoIso;   //!
