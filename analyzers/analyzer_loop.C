@@ -4,6 +4,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -82,17 +83,20 @@ void analyzer_loop::Loop(TString outfilename,
 
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
+  passOSOF = (OSOF_mass>0.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
-  passPTOSSFg50 = (dilep_pt>50.);
+  passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
+  passPTOSSF  = (dilep_pt>100.);
   passGoodVtx = true; // = nVtx>0; FIXME put in ntuples
-  passOneJet = false; if (aodcalojet_list.size()>0) passOneJet=true;  
-  passOneTag = false; if (taggedjet_list.size()>0) passOneTag=true;  
-  passTwoTag = false; if (taggedjet_list.size()>1) passTwoTag=true;  
+  passOneJet  = false; if (aodcalojet_list.size()>0) passOneJet=true;  
+  passOneTag  = false; if (taggedjet_list.size()>0) passOneTag=true;  
+  passTwoTag  = false; if (taggedjet_list.size()>1) passTwoTag=true;  
   
   passSingleEle = askPassSingleEle();
   passSingleMu  = askPassSingleMu();
   passDoubleEle = askPassDoubleEle();
   passDoubleMu  = askPassDoubleMu();
+  passSinglePho = askPassSinglePho();
 
   // clear then reset selection vectors
   clearSelections();
@@ -104,19 +108,23 @@ void analyzer_loop::Loop(TString outfilename,
   dofilllepbin[2] = kTRUE ;
 
   // set bits if pass various selections, increment counters
-  bitsPassSig    = setSelBits( selvecSignal, dofilllepbin, n_passSig   , n_ele_passSig   , n_mu_passSig     ) ;
-  bitsPassZH     = setSelBits( selvecZH    , dofilllepbin, n_passZH    , n_ele_passZH    , n_mu_passZH      ) ; 
-  bitsPassDY     = setSelBits( selvecDY    , dofilllepbin, n_passDY    , n_ele_passDY    , n_mu_passDY      ) ; 
-  bitsPassOffZ   = setSelBits( selvecOffZ  , dofilllepbin, n_passOffZ  , n_ele_passOffZ  , n_mu_passOffZ    ) ; 
-  bitsPassNoPair = setSelBits( selvecNoPair, dofilllepbin, n_passNoPair, n_ele_passNoPair, n_mu_passNoPair  ) ; 
+  bitsPassSig     = setSelBits( selvecSignal , dofilllepbin, n_passSig    , n_ele_passSig    , n_mu_passSig      ) ;
+  bitsPassZH      = setSelBits( selvecZH     , dofilllepbin, n_passZH     , n_ele_passZH     , n_mu_passZH       ) ; 
+  bitsPassDY      = setSelBits( selvecDY     , dofilllepbin, n_passDY     , n_ele_passDY     , n_mu_passDY       ) ; 
+  bitsPassOffZ    = setSelBits( selvecOffZ   , dofilllepbin, n_passOffZ   , n_ele_passOffZ   , n_mu_passOffZ     ) ; 
+  bitsPassNoPair  = setSelBits( selvecNoPair , dofilllepbin, n_passNoPair , n_ele_passNoPair , n_mu_passNoPair   ) ; 
+  bitsPassCRHeavy = setSelBits( selvecCRHeavy, dofilllepbin, n_passCRHeavy, n_ele_passCRHeavy, n_mu_passCRHeavy  ) ; 
+  bitsPassCRLight = setSelBits( selvecCRLight, dofilllepbin, n_passCRLight, n_ele_passCRLight, n_mu_passCRLight  ) ; 
 
   // put into array for looping in Cutflow histograms
   selvec[0] = 1;
-  selvec[1] = bitsPassSig    ;
-  selvec[2] = bitsPassZH     ;
-  selvec[3] = bitsPassDY     ;
-  selvec[4] = bitsPassOffZ   ;
-  selvec[5] = bitsPassNoPair ;
+  selvec[1] = bitsPassSig     ;
+  selvec[2] = bitsPassZH      ;
+  selvec[3] = bitsPassDY      ;
+  selvec[4] = bitsPassOffZ    ;
+  selvec[5] = bitsPassNoPair  ;
+  selvec[6] = bitsPassCRHeavy ;
+  selvec[7] = bitsPassCRLight ;
 
   dofillselbin[0] = kTRUE         ;
   dofillselbin[1] = ( (bitsPassSig    >> 0) & 1) ; 
@@ -124,6 +132,8 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[3] = ( (bitsPassDY     >> 0) & 1) ; 
   dofillselbin[4] = ( (bitsPassOffZ   >> 0) & 1) ; 
   dofillselbin[5] = ( (bitsPassNoPair >> 0) & 1) ; 
+  dofillselbin[6] = ( (bitsPassCRHeavy>> 0) & 1) ; 
+  dofillselbin[7] = ( (bitsPassCRLight>> 0) & 1) ; 
 
   
   if(doBkgEst){
@@ -162,22 +172,24 @@ void analyzer_loop::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if( ( (bitsPassSig >> 0) & 1) ){
+  if( ( (bitsPassCRHeavy >> 0) & 1) ){
    setOPTtree(); 
    OPTtree->Fill();
   }
  } // end loop over entries
-
  std::cout << std::endl;
  std::cout << std::endl;
- std::cout << " Summary   cleaning dR=" << objcleandRcut << std::endl;
+ std::cout << " Summary     cleaning dR=" << objcleandRcut << std::endl;
 
- std::cout << "  ntot        " << n_tot << std::endl;
- std::cout << " npassSig    " << n_passSig << " " << n_ele_passSig << " " << n_mu_passSig << std::endl;
- std::cout << " npassZH    " << n_passZH << " " << n_ele_passZH << " " << n_mu_passZH << std::endl;
- std::cout << " npassDY    " << n_passDY << " " << n_ele_passDY << " " << n_mu_passDY << std::endl;
- std::cout << " npassOffZ    " << n_passOffZ << " " << n_ele_passOffZ << " " << n_mu_passOffZ << std::endl;
- std::cout << " npassNoPair    " << n_passNoPair << " " << n_ele_passNoPair << " " << n_mu_passNoPair << std::endl;
+ std::cout << " ntot         " << n_tot << std::endl;
+ std::cout << " npassSig     " << setw(width) << left << n_passSig     << setw(width) << left << n_ele_passSig     << setw(width) << left << n_mu_passSig     << std::endl;
+ std::cout << " npassZH      " << setw(width) << left << n_passZH      << setw(width) << left << n_ele_passZH      << setw(width) << left << n_mu_passZH      << std::endl;
+ std::cout << " npassDY      " << setw(width) << left << n_passDY      << setw(width) << left << n_ele_passDY      << setw(width) << left << n_mu_passDY      << std::endl;
+ std::cout << " npassOffZ    " << setw(width) << left << n_passOffZ    << setw(width) << left << n_ele_passOffZ    << setw(width) << left << n_mu_passOffZ    << std::endl;
+ std::cout << " npassNoPair  " << setw(width) << left << n_passNoPair  << setw(width) << left << n_ele_passNoPair  << setw(width) << left << n_mu_passNoPair  << std::endl;
+ std::cout << " npassCRHeavy " << setw(width) << left << n_passCRHeavy << setw(width) << left << n_ele_passCRHeavy << setw(width) << left << n_mu_passCRHeavy << std::endl;
+ std::cout << " npassCRLight " << setw(width) << left << n_passCRLight << setw(width) << left << n_ele_passCRLight << setw(width) << left << n_mu_passCRLight << std::endl;
+ std::cout << std::endl;
  
  if(doBkgEst){
    //Can choose more regions here
@@ -226,7 +238,7 @@ void analyzer_loop::Loop(TString outfilename,
 void analyzer_loop::debug_printobjects(){
 
   printf("\n Event %lld\n", event);
-  printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSFg50, passOneJet, passGoodVtx);
+  printf(" Pass ossf %d zwind %d ptg50 %d 1jet %d vtx %d \n", passOSSF, passZWindow, passPTOSSF, passOneJet, passGoodVtx);
 
   debug_printbitset();
   debug_printphotons();
@@ -353,6 +365,16 @@ void analyzer_loop::debug_printbitset()
   std::cout<<" bitsPassNoPair "; 
   for(unsigned int i=0; i<8; ++i){
    std::cout<< ( (bitsPassNoPair>>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassCRHeavy "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassCRHeavy>>i) & 1); 
+  }
+  std::cout<<"\n";  
+  std::cout<<" bitsPassCRLight "; 
+  for(unsigned int i=0; i<8; ++i){
+   std::cout<< ( (bitsPassCRLight>>i) & 1); 
   }
   std::cout<<"\n";  
  return;

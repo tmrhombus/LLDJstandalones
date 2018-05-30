@@ -46,6 +46,8 @@ void analyzer_histograms::initSelectionCategories(){
   selbinnames.push_back("DY");
   selbinnames.push_back("OffZ");
   selbinnames.push_back("NoPair");
+  selbinnames.push_back("CRHeavy");
+  selbinnames.push_back("CRLight");
 
 }
 

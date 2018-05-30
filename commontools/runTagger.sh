@@ -1,8 +1,8 @@
-lifetime="ctauS1000"
+lifetime="ctauS10"
 ntags=2
 name=$lifetime'_nt'$ntags
 lifetime2='"'$lifetime'"'
-outpath=taggerResults/MS55
+outpath=taggerResults/MS40
 c_al=(0.01 0.025 0.05 0.075 0.1 0.15 0.175 0.2 0.35 0.5 0.75)
 c_ip=(0.5 0.75 0.9 1.0 1.15 1.25 1.5 1.75 2.0 2.5 2.75)
 c_ta=(-3.0 -2.5 -2.25 -2.10 -2.0 -1.9 -1.75 -1.5 -1.25 -1.0 -0.75)
@@ -37,88 +37,8 @@ awk 'BEGIN {printf("%-9s %-9s %-9s %-13s %-13s %-15s  %-18s %-18s %-18s %-18s\n"
 
 (head -n 1 $name.txt && tail -n +2 $name.txt | sort -k6 -nr) > $name_s.txt 
 mv $name_s.txt $outpath/$name.txt
+rm $name.txt
 rm temp.txt
 rm temp2.txt
 rm temp3.txt
 rm temp4.txt
-
-
-##1 nt 1
-##c_al=(0.05 0.1 0.15)
-##c_ip=(0.84 1.2 0.7)
-##c_ta=(-1.86 -2.0 -2.22)
-##1 nt2
-##c_al=(0.1 0.2 0.15)
-##c_ip=(0.72 1.0 0.5)
-##c_ta=(-2.22 -1.9 -1.65)
-
-##10 nt 1
-##c_al=(0.06 0.1 0.2)
-##c_ip=(1.5 1.0 1.75)
-##c_ta=(-1.5 -1.0 -2.0)
-##10 nt 2
-##c_al=(0.09 0.15 0.2)
-##c_ip=(1.26 1.65 1.0)
-##c_ta=(-1.5 -1.0 -1.8)
-
-##100 nt 1
-##c_al=(0.06 0.10 0.20)
-##c_ip=(1.62 0.5 2.10)
-##c_ta=(-1.44 -2.0 -0.75)
-##100 nt 2
-##c_al=(0.10 0.20 0.35)
-##c_ip=(0.0 1.2 1.62)
-##c_ta=(-1.2 -1.5 -2.0)
-
-##1000 nt 1
-##c_al=(0.12 0.7 0.2)
-##c_ip=(1.68 1.4 1.2)
-##c_ta=(-1.44 -1.6 -1.2)
-##1000 nt2
-##c_al=(0.12 0.7 0.2)
-##c_ip=(1.44 1.25 -0.6)
-##c_ta=(-2.76 -1.6 -2.2)
-##if [$lifetime -eq ctauS1 && $ntags -eq 1]
-##then
-##c_al=(0.07 0.1 0.2)
-##c_ip=(0.72 1.0 0.5)
-##c_ta=(-2.04 -1.75 -2.25)
-##elif [$lifetime == "ctauS1" && $ntags == 2]
-##then
-##c_al=(0.1 0.08 0.12)
-##c_ip=(0.66 1.0 0.5)
-##c_ta=(-2.16 -2.5 -2.0)
-##elif [$lifetime == "ctauS10" && $ntags == 1]
-##then
-##c_al=(0.06 0.07 0.08)
-##c_ip=(1.50 1.30 1.20)
-##c_ta=(-1.5 -1.25 -1.75)
-##elif [$lifetime == "ctauS10" && $ntags == 2]
-##then
-##c_al=(0.08 0.06 0.1)
-##c_ip=(1.26 1.4 1.6)
-##c_ta=(-1.5 -1.2 -1.4)
-##elif [$lifetime == "ctauS100" && $ntags == 1]
-##then
-##c_al=(0.07 0.1 0.05)
-##c_ip=(1.62 1.4 1.2)
-##c_ta=(-1.38 -1.2 -1.5)
-##elif [$lifetime == "ctauS100" && $ntags == 2]
-##then
-##c_al=(0.1 0.062 0.12)
-##c_ip=(1.62 1.2 1.35)
-##c_ta=(-1.5 -1.1 -1.2)
-##elif [$lifetime == "ctauS1000" && $ntags == 1]
-##then
-##c_al=(0.06 0.1 0.15)
-##c_ip=(1.68 1.15 1.8)
-##c_ta=(-1.44 -1.85 -1.2)
-##elif [$lifetime == "ctauS1000" && $ntags == 2]
-##then
-##c_al=(0.08 0.2 0.7)
-##c_ip=(1.62 1.3 1.2)
-##c_ta=(-1.08 -1.5 -1.25)
-##else
-##echo "error"
-##exit
-##fi

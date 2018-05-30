@@ -27,11 +27,11 @@ public :
    std::vector<float> aodcalojet_minDR_list;
 
    // for dilepton
-   TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll;
+   TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
    TLorentzVector fourVec_l1, fourVec_l2;
    TLorentzVector fourVec_met;
-   Double_t dilep_mass;
-   Double_t dilep_pt;
+   Double_t dilep_mass, OSOF_mass;
+   Double_t dilep_pt, OSOF_pt;
 
    // personal variables
    Double_t themet;
@@ -61,6 +61,8 @@ public :
    Bool_t doesPassDY;
    Bool_t doesPassOffZ;
    Bool_t doesPassNoPair;
+   Bool_t doesPassCRHeavy;
+   Bool_t doesPassCRLight;
 
    // full cut bitsets
    Int_t bitsPassSig;
@@ -68,6 +70,8 @@ public :
    Int_t bitsPassDY;
    Int_t bitsPassOffZ;
    Int_t bitsPassNoPair;
+   Int_t bitsPassCRHeavy;
+   Int_t bitsPassCRLight;
 
    // selection counters (how many events pass)
    Int_t n_tot;
@@ -79,18 +83,24 @@ public :
    Int_t n_passDY;
    Int_t n_passOffZ;
    Int_t n_passNoPair;
+   Int_t n_passCRHeavy;
+   Int_t n_passCRLight;
 
    Int_t n_ele_passSig;
    Int_t n_ele_passZH;
    Int_t n_ele_passDY;
    Int_t n_ele_passOffZ;
    Int_t n_ele_passNoPair;
+   Int_t n_ele_passCRHeavy;
+   Int_t n_ele_passCRLight;
 
    Int_t n_mu_passSig;
    Int_t n_mu_passZH;
    Int_t n_mu_passDY;
    Int_t n_mu_passOffZ;
    Int_t n_mu_passNoPair;
+   Int_t n_mu_passCRHeavy;
+   Int_t n_mu_passCRLight;
 
    Int_t nSelectedPho;
    Int_t nSelectedEle;
