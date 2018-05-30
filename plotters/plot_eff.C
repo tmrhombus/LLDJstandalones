@@ -3,6 +3,7 @@
 #include "TFile.h"
 #include "TH1F.h"
 #include "TH1D.h"
+#include "TH2F.h"
 #include "TGraph.h"
 #include "TGraphErrors.h"
 #include "TGraphAsymmErrors.h"
@@ -10,7 +11,7 @@
 #include "TMath.h"
 
 
-void plot_a_eff(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_out){
+void plot_a_eff_1d(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_out){
 
   TGraphAsymmErrors* gr_eff = new TGraphAsymmErrors();
   gr_eff->SetName("gr_eff_"+name);
@@ -45,6 +46,44 @@ void plot_a_eff(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_out)
 }
 
 
+void plot_a_eff_2d(TH2F* h_num, TH2F* h_den, float max, TString name, TFile* f_out){
+
+  TH2F* h_eff = (TH2F*)h_num->Clone();
+  h_eff->Divide(h_den);
+  h_eff->SetName("h_eff_"+name);
+
+  //Need to unroll
+  /*
+  TGraphAsymmErrors* gr_eff = new TGraphAsymmErrors();
+  gr_eff->SetName("gr_eff_"+name);
+  gr_eff->Divide(h_num, h_den, "cl=0.683 b(1,1) mode");
+
+  gr_eff->SetLineWidth(2);
+  gr_eff->SetMarkerSize(1);
+  gr_eff->SetMarkerStyle(8);
+  gr_eff->SetMarkerColor(kGreen+1);
+  gr_eff->SetLineColor(kGreen+1);
+
+  gr_eff->SetTitle("Mistag rate " + name);
+  gr_eff->GetXaxis()->SetTitle("");
+  gr_eff->GetYaxis()->SetTitle("Mistag rate");
+
+  TCanvas* c_eff = new TCanvas("c_eff_"+name, "c_eff_"+name, 640, 480);
+  gr_eff->Draw("AP");
+  gr_eff->GetYaxis()->SetRangeUser(0, max);
+  gPad->Update();
+  c_eff->Print("gr_eff_"+name+".pdf");
+  */
+
+  f_out->cd();
+  //gr_eff->Write();
+  h_num->Write();
+  h_den->Write();
+  h_eff->Write();
+  
+}
+
+
 void plot_eff(TString region){
 
   //Note: this needs to be generalized to multidimensional histograms
@@ -57,11 +96,13 @@ void plot_eff(TString region){
   std::vector<TString> name;
   std::vector<float> max;
 
+
   //Pt
-  num_name.push_back("h_Totbkg_mu_"+region+"_AllTags_AODCaloJetPtVar_Tag0");
-  den_name.push_back("h_Totbkg_mu_"+region+"_AllJets_AODCaloJetPtVar");
+  num_name.push_back("h_mu_"+region+"_AllTags_AODCaloJetPtVar_Tag0");
+  den_name.push_back("h_mu_"+region+"_AllJets_AODCaloJetPtVar");
   name.push_back("mu_"+region+"_AllJets_AODCaloJetPtVar");
   max.push_back(0.006);
+
 
   /*
   //dR
@@ -69,13 +110,17 @@ void plot_eff(TString region){
   den_name.push_back("h_Totbkg_mu_"+region+"_AllJets_AODCaloJetMinDR");
   name.push_back("mu_"+region+"_AllJets_AODCaloJetMinDR");
   max.push_back(0.01);
+  */
 
+  /*
   //Eta
   num_name.push_back("h_Totbkg_mu_"+region+"_AllTags_AODCaloJetAbsEta_Tag0");
   den_name.push_back("h_Totbkg_mu_"+region+"_AllJets_AODCaloJetAbsEta");
   name.push_back("mu_"+region+"_AllJets_AODCaloJetAbsEta");
   max.push_back(0.01);
+  */
 
+  /*
   //Nt
   num_name.push_back("h_Totbkg_mu_"+region+"_AllTags_AODCaloJetNCleanMatchedTracks_Tag0");
   den_name.push_back("h_Totbkg_mu_"+region+"_AllJets_AODCaloJetNCleanMatchedTracks");
@@ -88,10 +133,34 @@ void plot_eff(TString region){
     TH1F* h_num = (TH1F*)f_in->Get(num_name.at(i));
     TH1F* h_den = (TH1F*)f_in->Get(den_name.at(i));
     
-    plot_a_eff(h_num, h_den, max.at(i), name.at(i), f_out);
+    plot_a_eff_1d(h_num, h_den, max.at(i), name.at(i), f_out);
 
   }
   
+
+  //////////////
+  // 2D
+  //////////////
+  num_name.clear();
+  den_name.clear();
+  name.clear();
+  max.clear();
+
+  
+  num_name.push_back("h_mu_"+region+"_AllTags_AODCaloJetPtVarAbsEtaVar_Tag0");
+  den_name.push_back("h_mu_"+region+"_AllJets_AODCaloJetPtVarAbsEtaVar");
+  name.push_back("mu_"+region+"_AllJets_AODCaloJetPtVarAbsEtaVar");
+  max.push_back(0.006);
+
+  for(unsigned int i=0; i<num_name.size(); i++){
+    
+    TH2F* h_num = (TH2F*)f_in->Get(num_name.at(i));
+    TH2F* h_den = (TH2F*)f_in->Get(den_name.at(i));
+    
+    plot_a_eff_2d(h_num, h_den, max.at(i), name.at(i), f_out);
+
+  }
+
   f_in->Close();
   f_out->Close();
 

@@ -23,7 +23,8 @@ public :
  TH2F*            EleWeights;
 
  void             loadMistagRate();
- TH1F*            h_MistagRate;
+ TH1F*            h_MistagRate_pt;
+ TH1F*            h_MistagRate_pteta;
 
 };
 

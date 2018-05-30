@@ -93,7 +93,8 @@ void analyzer_scalefactors::loadElectronWeight(TString eleid){
 void analyzer_scalefactors::loadMistagRate(){
 
   TFile* fMistagRate = new TFile("feff_ZH.root");
-  h_MistagRate = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVar");
+  h_MistagRate_pt = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVar");
+  h_MistagRate_pteta = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar");
 
   return;
 }

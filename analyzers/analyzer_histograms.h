@@ -33,6 +33,9 @@ public :
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
                                    Int_t nbinsx, Double_t xmin, Double_t xmax,
                                    Int_t nbinsy, Double_t ymin, Double_t ymax);
+ TH2F           initSingleHistogramTH2F(TString hname, TString htitle,
+					int nbinsx, Float_t xbins[],
+					int nbinsy, Float_t ybins[]);
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
@@ -180,6 +183,7 @@ public :
  TH1F  h_AODCaloJetTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetMinDR                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_AODCaloJetPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // AODCaloJetExtraHistograms
  TH1F  h_AODCaloJetAvfVx                          [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -215,7 +219,7 @@ public :
  TH1F  h_AODCaloJetMinDR_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAbsEta_Tag0                   [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0      [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
-
+ TH2F  h_AODCaloJetPtVarAbsEtaVar_Tag0           [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
@@ -223,8 +227,10 @@ public :
  TH2F h_AlphaVjetPt               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // Background Estimate
- void comb(int n, int r, int *arr, int sz, Double_t weight);
- TH1F h_bkgest;//for now only one
+ float getMistagRate(int j, TString mistag_name);
+ void comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name);
+ TH1F h_bkgest_pt;
+ TH1F h_bkgest_pteta;
  Bool_t initBackgroundEstimateHistograms();
  Bool_t fillBackgroundEstimateHistograms(Double_t weight);
  Bool_t writeBackgroundEstimateHistograms();
