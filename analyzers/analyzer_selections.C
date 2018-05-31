@@ -64,15 +64,15 @@ void analyzer_selections::setSelections()
 
  selvecCRHeavy .push_back( (passSingleEle && passSingleMu) );
  selvecCRHeavy .push_back( passGoodVtx  );
- selvecCRHeavy .push_back( passZWinOSOF );
+ selvecCRHeavy .push_back( passOneJet   );
  selvecCRHeavy .push_back( passOSOF     );
- selvecCRHeavy .push_back( passOneTag   );
+ selvecCRHeavy .push_back( true         );
 
  selvecCRLight .push_back( passSinglePho);
  selvecCRLight .push_back( passGoodVtx  );
- selvecCRLight .push_back( true         );
- selvecCRLight .push_back( passOneTag   );
  selvecCRLight .push_back( passOneJet   );
+ selvecCRLight .push_back( true         );
+ selvecCRLight .push_back( true         );
 }
 
 Int_t analyzer_selections::setSelBits( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu )
