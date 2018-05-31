@@ -124,8 +124,7 @@
  Data_DoubleMu_F    /DoubleMuon/Run2016F-23Sep2016-v1/AOD
  Data_DoubleMu_E    /DoubleMuon/Run2016E-23Sep2016-v1/AOD
  Data_DoubleMu_D    /DoubleMuon/Run2016D-23Sep2016-v1/AOD
- Data_DoubleMu_C_1    /DoubleMuon/Run2016C-23Sep2016-v1/AOD
- Data_DoubleMu_C_2    /DoubleMuon/Run2016C-23Sep2016-v1/AOD
+ Data_DoubleMu_C    /DoubleMuon/Run2016C-23Sep2016-v1/AOD
  Data_DoubleMu_B_2    /DoubleMuon/Run2016B-23Sep2016-v3/AOD
  Data_DoubleMu_B_1    /DoubleMuon/Run2016B-23Sep2016-v1/AOD
 

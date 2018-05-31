@@ -28,10 +28,9 @@ Double_t analyzer_scalefactors::makeEventWeight(Double_t crossSec,
 
 //----------------------------makePUWeight
 Double_t analyzer_scalefactors::makePUWeight(){
-// Int_t tmpbin = PUWeights->GetBin(nTruePU);
-// Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
+ Int_t tmpbin = PUWeights->GetBin(AODnTruePU);
+ Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
  //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
- Double_t tmpweight=1.; /// FIXME
  return tmpweight;
 }
 
@@ -87,4 +86,15 @@ void analyzer_scalefactors::loadElectronWeight(TString eleid){
  EleWeights = (TH2F*)file_eleweights->Get("EGamma_SF2D")->Clone("EleWeights");
  return ;
 }
+
+
+//----------------------------loadMistagRate
+void analyzer_scalefactors::loadMistagRate(){
+
+  TFile* fMistagRate = new TFile("feff_ZH.root");
+  h_MistagRate = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVar");
+
+  return;
+}
+
 
