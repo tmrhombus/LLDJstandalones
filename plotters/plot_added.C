@@ -141,6 +141,12 @@ void plot_added(bool drawBkgEst = false){
   std::vector<TString> variables;
   if(drawBkgEst){
     variables.push_back("h_bkgest_pt");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_0");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_1");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_2");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_3");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_4");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVar_sys_5");
     variables.push_back("h_bkgest_pteta");
   }  
   else{

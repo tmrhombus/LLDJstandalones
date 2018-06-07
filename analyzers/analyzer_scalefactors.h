@@ -22,9 +22,10 @@ public :
  Double_t         makeElectronWeight( std::vector<int> &electron_list );
  TH2F*            EleWeights;
 
- void             loadMistagRate();
- TH1F*            h_MistagRate_pt;
- TH1F*            h_MistagRate_pteta;
+ void               loadMistagRate();
+ TH1F*              h_MistagRate_pt;
+ std::vector<TH1F*> h_MistagRate_pt_sys;
+ TH1F*              h_MistagRate_pteta;
 
 };
 

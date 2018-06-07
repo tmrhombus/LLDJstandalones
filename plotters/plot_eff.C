@@ -13,36 +13,59 @@
 
 void plot_a_eff_1d(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_out){
 
+  //Graph of mistag rate
   TGraphAsymmErrors* gr_eff = new TGraphAsymmErrors();
   gr_eff->SetName("gr_eff_"+name);
   gr_eff->Divide(h_num, h_den, "cl=0.683 b(1,1) mode");
+  int n_gr = gr_eff->GetN();
 
+  //Save asymmetric errors
+  TH1F* h_up = (TH1F*)h_num->Clone();
+  h_up->Reset();
+  h_up->SetName("h_UpError_"+name);
+  TH1F* h_down = (TH1F*)h_num->Clone();
+  h_down->Reset();
+  h_down->SetName("h_DownError_"+name);
+  h_up->SetBinContent(5,5);
+  for(int i=0; i<n_gr; i++){
+    double x, y;
+    gr_eff->GetPoint(i, x, y);
+    int bin = h_down->FindBin(x);
+    h_up->SetBinContent(bin, gr_eff->GetErrorYhigh(i));
+    h_down->SetBinContent(bin, gr_eff->GetErrorYlow(i));
+  }
+
+  //Histogram of mistag rate
   TH1F* h_eff = (TH1F*)h_num->Clone();
   h_eff->Divide(h_den);
   h_eff->SetName("h_eff_"+name);
 
+  //Style
   gr_eff->SetLineWidth(2);
   gr_eff->SetMarkerSize(1);
   gr_eff->SetMarkerStyle(8);
   gr_eff->SetMarkerColor(kGreen+1);
   gr_eff->SetLineColor(kGreen+1);
-
   gr_eff->SetTitle("Mistag rate " + name);
   gr_eff->GetXaxis()->SetTitle("");
   gr_eff->GetYaxis()->SetTitle("Mistag rate");
 
+  //Draw graph
   TCanvas* c_eff = new TCanvas("c_eff_"+name, "c_eff_"+name, 640, 480);
   gr_eff->Draw("AP");
   gr_eff->GetYaxis()->SetRangeUser(0, max);
   gPad->Update();
+  //h_up->Draw("HIST E");
   c_eff->Print("gr_eff_"+name+".pdf");
 
+  //Write output
   f_out->cd();
   gr_eff->Write();
   h_num->Write();
   h_den->Write();
   h_eff->Write();
-  
+  h_up->Write();
+  h_down->Write();
 }
 
 

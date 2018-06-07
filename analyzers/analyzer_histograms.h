@@ -2,6 +2,8 @@
 #ifndef analyzer_histograms_h
 #define analyzer_histograms_h
 
+#include "TMath.h"
+
 #include "analyzer_scalefactors.h"
 
 class analyzer_histograms : public analyzer_scalefactors {
@@ -227,6 +229,8 @@ public :
  TH2F h_AlphaVjetPt               [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
 
  // Background Estimate
+ int getMistagRateBin(int j, TString mistag_name);
+ float getMistagRateByBin(int j, TString mistag_name);
  float getMistagRate(int j, TString mistag_name);
  void comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name);
  TH1F h_bkgest_pt;
