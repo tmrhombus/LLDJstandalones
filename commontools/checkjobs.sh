@@ -158,8 +158,7 @@ samples=( \
   "Data_DoubleMu_G"                 \
   "Data_DoubleMu_E"                 \
   "Data_DoubleMu_D"                 \
-  "Data_DoubleMu_C_2"               \
-  "Data_DoubleMu_C_1"               \
+  "Data_DoubleMu_C"                 \
   "Data_DoubleMu_B_2"               \
   "Data_DoubleEG_H_3"               \
   "Data_DoubleEG_H_2"               \
