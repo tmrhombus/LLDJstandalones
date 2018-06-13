@@ -232,12 +232,13 @@ public :
  int getMistagRateBin(int j, TString mistag_name);
  float getMistagRateByBin(int j, TString mistag_name);
  float getMistagRate(int j, TString mistag_name);
+ float computeTerm(int b, std::vector<int> mistagBins_tagged, std::vector<int> mistagBins_untagged, TString mistag_name);
  void comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name);
  TH1F h_bkgest_pt;
  TH1F h_bkgest_pteta;
  Bool_t initBackgroundEstimateHistograms();
  Bool_t fillBackgroundEstimateHistograms(Double_t weight);
- Bool_t writeBackgroundEstimateHistograms();
+ Bool_t writeBackgroundEstimateHistograms(TFile* outfile);
 
 };
 

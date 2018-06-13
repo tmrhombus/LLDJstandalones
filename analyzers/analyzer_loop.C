@@ -36,8 +36,12 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
 
+ TFile *outfile_bkgest = 0;
  bool doBkgEst = true;
- if( doBkgEst ) loadMistagRate();
+ if( doBkgEst ){
+   outfile_bkgest = new TFile(outfilename+"_BkgEst.root","RECREATE");
+   loadMistagRate();
+ }
 
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
@@ -181,10 +185,10 @@ void analyzer_loop::Loop(TString outfilename,
  
  if(doBkgEst){
    //Can choose more regions here
-   TFile *outfile = new TFile(outfilename+"_BkgEst.root","RECREATE");
-   outfile->cd();
-   writeBackgroundEstimateHistograms();
-   outfile->Close();
+   //TFile *outfile_bkgest = new TFile(outfilename+"_BkgEst.root","RECREATE");
+   outfile_bkgest->cd();
+   writeBackgroundEstimateHistograms(outfile_bkgest);
+   //outfile->Close();
    //return;//don't do more of this function
  }
 

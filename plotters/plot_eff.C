@@ -26,7 +26,7 @@ void plot_a_eff_1d(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_o
   TH1F* h_down = (TH1F*)h_num->Clone();
   h_down->Reset();
   h_down->SetName("h_DownError_"+name);
-  h_up->SetBinContent(5,5);
+
   for(int i=0; i<n_gr; i++){
     double x, y;
     gr_eff->GetPoint(i, x, y);
@@ -70,40 +70,54 @@ void plot_a_eff_1d(TH1F* h_num, TH1F* h_den, float max, TString name, TFile* f_o
 
 
 void plot_a_eff_2d(TH2F* h_num, TH2F* h_den, float max, TString name, TFile* f_out){
+  
+  TH1F* h_up = (TH1F*)h_num->Clone();
+  h_up->Reset();
+  h_up->SetName("h_UpError_"+name);
+  TH1F* h_down = (TH1F*)h_num->Clone();
+  h_down->Reset();
+  h_down->SetName("h_DownError_"+name);
 
-  TH2F* h_eff = (TH2F*)h_num->Clone();
+  for(int b=0; b<h_num->GetSize(); b++){
+
+    if(h_num->IsBinUnderflow(b) || h_num->IsBinOverflow(b)) continue;
+
+    int xbin, ybin, zbin;
+    h_num->GetBinXYZ(b, xbin, ybin, zbin);
+
+    //Get errors with dumb trick, using one bin hists and TGraphAsymmErrors
+    TH1F h_num_onebin("h_num_onebin", "h_num_onebin", 1, 0, 1);
+    h_num_onebin.SetBinContent(1, h_num->GetBinContent(b));
+    h_num_onebin.SetBinError(1, h_num->GetBinError(b));
+    TH1F h_den_onebin("h_den_onebin", "h_den_onebin", 1, 0, 1);
+    h_den_onebin.SetBinContent(1, h_den->GetBinContent(b));
+    h_den_onebin.SetBinError(1, h_den->GetBinError(b));
+    TGraphAsymmErrors* gr_eff = new TGraphAsymmErrors();
+    gr_eff->SetName("gr_eff_"+name);
+    gr_eff->Divide(&h_num_onebin, &h_den_onebin, "cl=0.683 b(1,1) mode");
+
+    h_up->SetBinContent(xbin, ybin, gr_eff->GetErrorYhigh(0));
+    h_down->SetBinContent(xbin, ybin, gr_eff->GetErrorYlow(0));
+  }
+
+  //Histogram of mistag rate
+  TH1F* h_eff = (TH1F*)h_num->Clone();
   h_eff->Divide(h_den);
   h_eff->SetName("h_eff_"+name);
 
-  //Need to unroll
-  /*
-  TGraphAsymmErrors* gr_eff = new TGraphAsymmErrors();
-  gr_eff->SetName("gr_eff_"+name);
-  gr_eff->Divide(h_num, h_den, "cl=0.683 b(1,1) mode");
-
-  gr_eff->SetLineWidth(2);
-  gr_eff->SetMarkerSize(1);
-  gr_eff->SetMarkerStyle(8);
-  gr_eff->SetMarkerColor(kGreen+1);
-  gr_eff->SetLineColor(kGreen+1);
-
-  gr_eff->SetTitle("Mistag rate " + name);
-  gr_eff->GetXaxis()->SetTitle("");
-  gr_eff->GetYaxis()->SetTitle("Mistag rate");
-
+  //Draw graph
   TCanvas* c_eff = new TCanvas("c_eff_"+name, "c_eff_"+name, 640, 480);
-  gr_eff->Draw("AP");
-  gr_eff->GetYaxis()->SetRangeUser(0, max);
-  gPad->Update();
+  h_eff->Draw("COLZ");
   c_eff->Print("gr_eff_"+name+".pdf");
-  */
 
+  //Write output
   f_out->cd();
-  //gr_eff->Write();
   h_num->Write();
   h_den->Write();
   h_eff->Write();
-  
+  h_up->Write();
+  h_down->Write();
+
 }
 
 

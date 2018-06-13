@@ -1103,6 +1103,57 @@ float analyzer_histograms::getMistagRate(int j, TString mistag_name){
 }
 
 
+float analyzer_histograms::computeTerm(int b, std::vector<int> mistagBins_tagged, std::vector<int> mistagBins_untagged, TString mistag_name){
+
+  float full_probability=1;
+  float partial_probability=1;
+  int n_t=0, n_ut=0;
+  for(int t=0; t<mistagBins_tagged.size(); t++){
+    float jetprob = getMistagRateByBin( mistagBins_tagged.at(t), mistag_name);
+    //std::cout << "JETPROB: " << mistagBins_tagged.at(t) << " " <<  jetprob << std::endl;
+    full_probability *= jetprob;
+    if(mistagBins_tagged.at(t)==b){
+      n_t++;
+    }
+    else{
+      partial_probability *= jetprob;
+    }
+  }
+  for(int t=0; t<mistagBins_untagged.size(); t++){
+    float jetprob = getMistagRateByBin( mistagBins_untagged.at(t), mistag_name);
+    //std::cout << "JETPROB: " << mistagBins_untagged.at(t) << " " <<  jetprob << std::endl;
+    full_probability *= (1-jetprob);
+    if(mistagBins_untagged.at(t)==b){
+      n_ut++;
+    }
+    else{
+      partial_probability *= (1-jetprob);
+    }
+  }
+  
+  //Uncertainty term from this mistag rate bin
+  float float_n_t = (float) n_t;
+  float float_n_ut = (float) n_ut;
+  float this_prob = getMistagRateByBin(b, mistag_name);
+  
+  float term  = partial_probability;
+  if(n_t==0 && n_ut>0){
+    term *= -float_n_ut*TMath::Power(1-this_prob, n_ut-1);
+  }
+  else if(n_t>0 && n_ut==0){
+    term *= float_n_t*TMath::Power(this_prob, n_t-1);
+  }
+  else if (n_t==0 && n_ut==0){
+    term = 0;
+  }
+  else{
+    term *= (float_n_t*TMath::Power(this_prob, n_t-1) -float_n_ut*TMath::Power(1-this_prob, n_ut-1)) ;
+  }
+  
+  return term;
+}
+
+
 //https://helloacm.com/cc-coding-exercise-recursive-combination-algorithm-implementation/
 void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name) {
 
@@ -1119,7 +1170,7 @@ void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, 
       //*********************//
       // have one combo here 
       //*********************//
-      bool debug=true;
+      bool debug=false;
 
       if(debug){
 	std::cout << "    " << mistag_name << std::endl;
@@ -1166,67 +1217,38 @@ void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, 
       //Uncertainy
       if(mistag_name == "PT"){
 	for(int b=1; b<=h_MistagRate_pt->GetNbinsX(); b++){
-	  float full_probability=1;
-	  float partial_probability=1;
-	  int n_t=0, n_ut=0;
-	  for(int t=0; t<mistagBins_tagged.size(); t++){
-	    float jetprob = getMistagRateByBin( mistagBins_tagged.at(t), "PT");
-	    //std::cout << "JETPROB: " << mistagBins_tagged.at(t) << " " <<  jetprob << std::endl;
-	    full_probability *= jetprob;
-	    if(mistagBins_tagged.at(t)==b){
-	      n_t++;
-	    }
-	    else{
-	      partial_probability *= jetprob;
-	    }
-	  }
-	  for(int t=0; t<mistagBins_untagged.size(); t++){
-	    float jetprob = getMistagRateByBin( mistagBins_untagged.at(t), "PT");
-	    //std::cout << "JETPROB: " << mistagBins_untagged.at(t) << " " <<  jetprob << std::endl;
-	    full_probability *= (1-jetprob);
-	    if(mistagBins_untagged.at(t)==b){
-	      n_ut++;
-	    }
-	    else{
-	      partial_probability *= (1-jetprob);
-	    }
-	  }
 	  
-	  //Uncertainty term from this mistag rate bin
-	  float float_n_t = (float) n_t;
-	  float float_n_ut = (float) n_ut;
-	  float this_prob = getMistagRateByBin(b, "PT");
-	  std::cout << "this_prob: " << this_prob << std::endl;
-	  std::cout << "partial prob: " << partial_probability << std::endl;
-	  std::cout << "n_t " << n_t << " " << float_n_t << std::endl;
-	  std::cout << "n_ut " << n_ut << " " << float_n_ut << std::endl;
-	  
-	  float term  = partial_probability;
-	  if(n_t==0 && n_ut>0){
-	    term *= -float_n_ut*TMath::Power(1-this_prob, n_ut-1);
-	  }
-	  else if(n_t>0 && n_ut==0){
-	    term *= float_n_t*TMath::Power(this_prob, n_t-1);
-	  }
-	  else if (n_t==0 && n_ut==0){
-	    term = 0;
-	  }
-	  else{
-	    term *= (float_n_t*TMath::Power(this_prob, n_t-1) -float_n_ut*TMath::Power(1-this_prob, n_ut-1)) ;
-	  }
-	  
+	  float term;
+	  term = computeTerm(b, mistagBins_tagged, mistagBins_untagged, mistag_name);
+
 	  //this is the derivative part.  leave multiplication by error in bin b for later.
-	  std::cout << "BEN: " << term << std::endl;
 	  h_MistagRate_pt_sys.at(sz)->Fill(h_MistagRate_pt_sys.at(sz)->GetBinCenter(b), weight*term);
-	  
-	  if(debug && b==1) std::cout << "      Final prob redone in uncertainty calculation: " << full_probability << std::endl;
 	  
 	}//end bin
       }
       else if(mistag_name == "PT-ETA"){
-	
-      }
+	for(int b=1; b<=h_MistagRate_pteta->GetSize(); b++){
+	  
+	  if(h_MistagRate_pteta->IsBinUnderflow(b) || h_MistagRate_pteta->IsBinOverflow(b)) continue;
+	  
+	  float term;
+	  term = computeTerm(b, mistagBins_tagged, mistagBins_untagged, mistag_name);
+	  //this is the derivative part.  leave multiplication by error in bin b for later.
+	  
+	  //Get bin location
+	  int xbin, ybin, zbin;
+	  h_MistagRate_pteta->GetBinXYZ(b, xbin, ybin, zbin);
 
+	  float x, y;
+	  x = h_MistagRate_pteta->GetXaxis()->GetBinCenter(xbin);
+	  y = h_MistagRate_pteta->GetYaxis()->GetBinCenter(ybin);
+
+	  //std::cout << "b: " << b << ", xbin: " << xbin << ", ybin: " << ybin << ", term: " << term << std::endl;
+
+	  h_MistagRate_pteta_sys.at(sz)->Fill(x, y, weight*term);
+	  
+	}//b
+      }
 
       //Fill estimate from p already calculated 
       if(mistag_name == "PT"){
@@ -1255,7 +1277,7 @@ Bool_t analyzer_histograms::initBackgroundEstimateHistograms()
 
 Bool_t analyzer_histograms::fillBackgroundEstimateHistograms(Double_t weight)
 {
-  bool debug=true;
+  bool debug=false;
 
   //number of jets
   const int N = aodcalojet_list.size();
@@ -1275,14 +1297,18 @@ Bool_t analyzer_histograms::fillBackgroundEstimateHistograms(Double_t weight)
 }
 
 
-Bool_t analyzer_histograms::writeBackgroundEstimateHistograms()
+Bool_t analyzer_histograms::writeBackgroundEstimateHistograms(TFile* outfile)
 {
+  outfile->cd();
+
   h_bkgest_pt.Write();
+  h_bkgest_pteta.Write();
+
   for(int i=0; i<6; i++){
     h_MistagRate_pt_sys.at(i)->Write();
+    h_MistagRate_pteta_sys.at(i)->Write();
   }
 
-  h_bkgest_pteta.Write();
   return kTRUE;
 }
 

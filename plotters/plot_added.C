@@ -47,8 +47,7 @@ void plot_added_1d(TString variable){
   fout->cd();
   hadd->Write();
 
-
-}
+}//plot_added_1d
 
 
 void plot_stacked_1d(TString variable){
@@ -161,6 +160,12 @@ void plot_added(bool drawBkgEst = false){
   //2D
   variables.clear();
   if(drawBkgEst){
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_0");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_1");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_2");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_3");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_4");
+    variables.push_back("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar_sys_5");
   }
   else{
     variables.push_back("h_mu_ZH_AllTags_AODCaloJetPtVarAbsEtaVar_Tag0");

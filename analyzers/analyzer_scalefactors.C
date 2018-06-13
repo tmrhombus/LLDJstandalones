@@ -105,8 +105,16 @@ void analyzer_scalefactors::loadMistagRate(){
     h_MistagRate_pt_sys.push_back( temp );
   }
 
-  h_MistagRate_pteta = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar");
-
+  h_MistagRate_pteta = (TH2F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVarAbsEtaVar");
+  //Systematics
+  for(int i=0; i<6; i++){
+    TString num = ""; num+= i;
+    TString name = h_MistagRate_pteta->GetName(); name+= "_sys_"; name += num;
+    TH2F* temp = (TH2F*)h_MistagRate_pteta->Clone();
+    temp->SetName( name );
+    temp->Reset();
+    h_MistagRate_pteta_sys.push_back( temp );
+  }
   return;
 }
 

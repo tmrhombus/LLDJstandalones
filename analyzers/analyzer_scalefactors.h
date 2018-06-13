@@ -25,7 +25,8 @@ public :
  void               loadMistagRate();
  TH1F*              h_MistagRate_pt;
  std::vector<TH1F*> h_MistagRate_pt_sys;
- TH1F*              h_MistagRate_pteta;
+ TH2F*              h_MistagRate_pteta;
+ std::vector<TH2F*> h_MistagRate_pteta_sys;
 
 };
 
