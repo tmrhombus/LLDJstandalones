@@ -39,7 +39,7 @@ void analyzer_loop::Loop(TString outfilename,
  TFile *outfile_bkgest = 0;
  bool doBkgEst = true;
  if( doBkgEst ){
-   outfile_bkgest = new TFile(outfilename+"_BkgEst.root","RECREATE");
+   outfile_bkgest = TFile::Open(outfilename+"_BkgEst.root","RECREATE");
    loadMistagRate();
  }
 

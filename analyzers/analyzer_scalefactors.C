@@ -92,7 +92,7 @@ void analyzer_scalefactors::loadElectronWeight(TString eleid){
 //----------------------------loadMistagRate
 void analyzer_scalefactors::loadMistagRate(){
 
-  TFile* fMistagRate = new TFile("feff_ZH.root");
+  TFile* fMistagRate = TFile::Open("feff_ZH.root", "READ");
 
   h_MistagRate_pt = (TH1F*)fMistagRate->Get("h_eff_mu_ZH_AllJets_AODCaloJetPtVar");
   //Systematics
@@ -110,9 +110,19 @@ void analyzer_scalefactors::loadMistagRate(){
   for(int i=0; i<6; i++){
     TString num = ""; num+= i;
     TString name = h_MistagRate_pteta->GetName(); name+= "_sys_"; name += num;
-    TH2F* temp = (TH2F*)h_MistagRate_pteta->Clone();
-    temp->SetName( name );
-    temp->Reset();
+
+    //TH2F* temp = (TH2F*)h_MistagRate_pteta->Clone();
+    //temp->SetName( name );
+    //temp->Reset();
+
+    //For some reason the normal way leads to bizarre seg faults.  
+    //Recreate from scratch:
+    const int Pt_n_xbins = 10;
+    float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
+    const int AbsEta_n_bins = 2;
+    float AbsEta_bins[AbsEta_n_bins+1] = {0, 1.5, 2.4};
+    TH2F* temp = new TH2F(name, name, Pt_n_xbins, Pt_xbins, AbsEta_n_bins, AbsEta_bins);
+
     h_MistagRate_pteta_sys.push_back( temp );
   }
   return;
