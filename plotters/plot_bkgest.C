@@ -149,11 +149,12 @@ void plot_bkgest_1d(){
 
     double sum_up=0;
     double sum_down=0;
-    for(int b=1; b<=h_UpError->GetNbinsX(); b++){
+    for(int b=0; b<=h_UpError->GetNbinsX()+1; b++){//include underflow overflow
       double term_to_square_up = h_UpError->GetBinContent(b)*h_sys.at(i)->GetBinContent(b);
       sum_up += term_to_square_up*term_to_square_up;
       double term_to_square_down = h_DownError->GetBinContent(b)*h_sys.at(i)->GetBinContent(b);
       sum_down += term_to_square_down*term_to_square_down;
+      //std::cout << "1D -- sum_up: " << sum_up << ", sum_down: " << sum_down << std::endl;
     }
     x.push_back(i);
     xl.push_back(0);
@@ -229,14 +230,16 @@ void plot_bkgest_2d(){
 
     double sum_up=0;
     double sum_down=0;
-    for(int b=1; b<=h_UpError->GetSize(); b++){
+    for(int b=0; b<h_UpError->GetSize(); b++){
       
-      if(h_UpError->IsBinUnderflow(b) || h_UpError->IsBinOverflow(b)) continue;
-      
+      //if(h_UpError->IsBinUnderflow(b) || h_UpError->IsBinOverflow(b)) continue;
+      //include underflow/overflow
+
       double term_to_square_up = h_UpError->GetBinContent(b)*h_sys.at(i)->GetBinContent(b);
       sum_up += term_to_square_up*term_to_square_up;
       double term_to_square_down = h_DownError->GetBinContent(b)*h_sys.at(i)->GetBinContent(b);
       sum_down += term_to_square_down*term_to_square_down;
+      //std::cout << "2D -- " << sum_up << " " << sum_down << std::endl;
     }
     x.push_back(i);
     xl.push_back(0);
