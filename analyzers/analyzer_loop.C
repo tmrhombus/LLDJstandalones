@@ -74,7 +74,7 @@ void analyzer_loop::Loop(TString outfilename,
   if(isMC) event_weight *= makePUWeight(); //<-----need nTruePU
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight( electron_list );
-
+  //cout << "Base Weight: "<<makeEventWeight(crossSec,lumi,nrEvents)<<"  Electorn Weight:  "<<makeElectronWeight( electron_list )<<"  PUWeight: "<<makePUWeight()<<endl; 
   getMET();
 
   calculateHT();

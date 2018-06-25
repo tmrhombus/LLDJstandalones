@@ -140,6 +140,8 @@ samples=( \
   "Data_SingleMu_C"                 \
   "Data_SingleMu_B_2"               \
   "Data_SingleEle_H_3"              \
+  "Data_SingleEle_H_2"              \
+  "Data_SingleEle_G"                \
   "Data_SingleEle_F"                \
   "Data_SingleEle_E"                \
   "Data_SingleEle_D"                \
@@ -153,24 +155,24 @@ samples=( \
   "Data_SinglePhoton_D"             \
   "Data_SinglePhoton_C"             \
   "Data_SinglePhoton_B_2"           \
-  "Data_DoubleMu_H_3"               \
-  "Data_DoubleMu_H_2"               \
-  "Data_DoubleMu_G"                 \
-  "Data_DoubleMu_E"                 \
-  "Data_DoubleMu_D"                 \
-  "Data_DoubleMu_C"                 \
-  "Data_DoubleMu_B_2"               \
-  "Data_DoubleEG_H_3"               \
-  "Data_DoubleEG_H_2"               \
-  "Data_DoubleEG_F"                 \
-  "Data_DoubleEG_E"                 \
-  "Data_DoubleEG_D"                 \
-  "Data_DoubleEG_C"                 \
-  "Data_DoubleEG_B_2"               \
 )
 # "DoubleEG"                            \
 # "DoubleMuon"                          \
 # "MuonEG"                              \
+#  "Data_DoubleMu_H_3"               \
+#  "Data_DoubleMu_H_2"               \
+#  "Data_DoubleMu_G"                 \
+#  "Data_DoubleMu_E"                 \
+#  "Data_DoubleMu_D"                 \
+#  "Data_DoubleMu_C"                 \
+#  "Data_DoubleMu_B_2"               \
+#  "Data_DoubleEG_H_3"               \
+#  "Data_DoubleEG_H_2"               \
+#  "Data_DoubleEG_F"                 \
+#  "Data_DoubleEG_E"                 \
+#  "Data_DoubleEG_D"                 \
+#  "Data_DoubleEG_C"                 \
+#  "Data_DoubleEG_B_2"               \
 
 totin=0
 totleft=0

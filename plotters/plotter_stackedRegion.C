@@ -30,9 +30,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  // path to_"+region+"histograms.root files
  TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
- //TString aversion = TString(getenv("aversion"));
+ TString aversion = TString(getenv("aversion"));
 
- TString aversion = "addpuAOD" ;
+ //TString aversion = "addpuAOD" ;
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
@@ -136,50 +136,19 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
   //variables.push_back("AllJets_AODCaloJetdR_Tag0");
   //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
   //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
-  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
-  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
-  variables.push_back("AllJets_AODCaloJetAlphaMax");
-  variables.push_back("AllJets_AODCaloJetPt");                      
   //variables.push_back("AllJets_AODCaloJetEn");                      
-  variables.push_back("AllJets_AODCaloJetEta");                     
-  variables.push_back("AllJets_AODCaloJetPhi");                     
-
- // make canvas and text
- TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
- gStyle->SetOptStat(0);
- gPad->SetLogy(dolog);
- gPad->SetTickx();
- gPad->SetTicky();
- gStyle->SetLineWidth(3);
- gStyle->SetPalette(kBird);
- //gStyle->InvertPalette();
- //TColor::InvertPalette();
-
- TText* title = new TText(1,1,"") ;
- title->SetTextSize(0.04);
- title->SetTextColor(kBlack);
- title->SetTextAlign(11);
- title->SetTextFont(62);
- 
- TText* extra = new TText(1,1,"") ;
- extra->SetTextSize(0.04);
- extra->SetTextColor(kBlack);
- extra->SetTextAlign(11);
- //extra->SetTextAlign(13);
- extra->SetTextFont(52);
- 
- TText* extra2 = new TText(1,1,"") ;
- extra2->SetTextSize(0.04);
- extra2->SetTextColor(kBlack);
- extra2->SetTextAlign(11);
- //extra2->SetTextAlign(13);
- extra2->SetTextFont(62);
- 
- TText* lumi = new TText(1,1,"") ;
- lumi->SetTextSize(0.03);
- lumi->SetTextColor(kBlack);
- lumi->SetTextAlign(31);
- lumi->SetTextFont(42);
+//  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+//  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+//  variables.push_back("AllJets_AODCaloJetAlphaMax");
+//  variables.push_back("AllJets_AODCaloJetPt");                      
+//  variables.push_back("AllJets_AODCaloJetEta");                     
+//  variables.push_back("AllJets_AODCaloJetPhi");                     
+  variables.push_back("Cutflow");                     
+//  variables.push_back("Onecut");                     
+//  variables.push_back("NMinus");                     
+//  variables.push_back("AOD_dilepton_Mass");                     
+//  variables.push_back("AOD_elePt");                     
+//  variables.push_back("AOD_muPt");                     
 
  // initialize histogram files 
 
@@ -295,6 +264,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_Totbkg ;
 
  TH1F* h_Data   ;
+ TH1F* h_ratio  ;
  //cout << "IN path: "<< inpath<<endl;
  // load histogram files
  file_DY5to50_HT100To200                = new TFile( inpath + "DY5to50_HT100To200_"+region+"_histograms.root"               ) ; 
@@ -356,6 +326,49 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
    TString variable = variables[j];
    for(unsigned int k=0; k<leptons.size(); ++k){
     TString lepton = leptons[k];
+ // make canvas and text
+ TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
+ canvas->Clear();
+ canvas->cd();
+ TPad *pad1  = new TPad("pad1", "pad1", 0, 0.35, 1, 1.0);
+ gStyle->SetOptStat(0);
+ pad1->SetLogy(dolog);
+ pad1->SetTickx();
+ pad1->SetTicky();
+ pad1->SetGrid();
+ pad1->Draw();
+ pad1->cd();
+ gStyle->SetLineWidth(3);
+ gStyle->SetPalette(kBird);
+ //gStyle->InvertPalette();
+ //TColor::InvertPalette();
+
+ TText* title = new TText(1,1,"") ;
+ title->SetTextSize(0.04);
+ title->SetTextColor(kBlack);
+ title->SetTextAlign(11);
+ title->SetTextFont(62);
+ 
+ TText* extra = new TText(1,1,"") ;
+ extra->SetTextSize(0.04);
+ extra->SetTextColor(kBlack);
+ extra->SetTextAlign(11);
+ //extra->SetTextAlign(13);
+ extra->SetTextFont(52);
+ 
+ TText* extra2 = new TText(1,1,"") ;
+ extra2->SetTextSize(0.04);
+ extra2->SetTextColor(kBlack);
+ extra2->SetTextAlign(11);
+ //extra2->SetTextAlign(13);
+ extra2->SetTextFont(62);
+ 
+ TText* lumi = new TText(1,1,"") ;
+ lumi->SetTextSize(0.03);
+ lumi->SetTextColor(kBlack);
+ lumi->SetTextAlign(31);
+ lumi->SetTextFont(42);
+
 
     TString varname = lepton+"_"+region+"_"+variable;
 
@@ -363,6 +376,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     TString outname = outpath+varname+extraname; 
     TString logname = outpath+"logs/"+varname+extraname; 
     //cout << "logname: " << logname << endl;
+    //cout << "outname: " << outname << endl;
+    //cout << "inpath: "  << inpath << endl;
 
     // get histograms from files
     h_DY10to50                          = (TH1F*)file_DY10to50                         ->Get("h_"+varname)->Clone( "DY10to50"                         ) ;
@@ -459,8 +474,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //h_DoubleEG                          = (TH1F*)file_DoubleEG                         ->Get("h_"+varname)->Clone( "DoubleEG"                         ) ;
     //h_DoubleMuon                        = (TH1F*)file_DoubleMuon                       ->Get("h_"+varname)->Clone( "DoubleMuon"                       ) ;
     //h_MuonEG                            = (TH1F*)file_MuonEG                           ->Get("h_"+varname)->Clone( "MuonEG"                           ) ;
-
-//cout<<"test"<<endl;
     // integrals of histograms
     Double_t int_DY5to50_HT100To200                = h_DY5to50_HT100To200               ->Integral(0,-1) ; 
     Double_t int_DY5to50_HT200To400                = h_DY5to50_HT200To400               ->Integral(0,-1) ; 
@@ -469,13 +482,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Double_t int_DY10to50                          = h_DY10to50                         ->Integral(0,-1) ; 
     Double_t int_DY50                              = h_DY50                             ->Integral(0,-1) ;
     Double_t int_ggZH_HToBB_ZToLL                  = h_ggZH_HToBB_ZToLL                 ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
     Double_t int_GJets_HT40To100                   = h_GJets_HT40To100                  ->Integral(0,-1) ;
     Double_t int_GJets_HT100To200                  = h_GJets_HT100To200                 ->Integral(0,-1) ;
     Double_t int_GJets_HT200To400                  = h_GJets_HT200To400                 ->Integral(0,-1) ;
@@ -513,10 +526,10 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //Double_t int_DoubleMuon                        = h_DoubleMuon                       ->Integral(0,-1) ;
     //Double_t int_MuonEG                            = h_MuonEG                           ->Integral(0,-1) ;
 
-    cout <<"DataEg: "<<int_SingleElectronGood<<endl;
-    cout <<"DataEH: "<<int_SingleElectronHIP<<endl;
-    cout <<"DataMg: "<<int_SingleMuonGood<<endl;
-    cout <<"DataMh: "<<int_SingleMuonHIP<<endl;
+    //    cout <<"DataEg: "<<int_SingleElectronGood<<endl;
+    //    cout <<"DataEH: "<<int_SingleElectronHIP<<endl;
+    //    cout <<"DataMg: "<<int_SingleMuonGood<<endl;
+    //    cout <<"DataMh: "<<int_SingleMuonHIP<<endl;
 
     FILE * outtable;
     outtable = fopen (logname+".tex","w");
@@ -595,7 +608,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_DY->Add(h_DY5to50_HT200To400); 
      h_DY->Add(h_DY5to50_HT400To600); 
      h_DY->Add(h_DY5to50_HT600ToInf); 
-     h_DY->Add(h_DY10to50           ); 
+     //h_DY->Add(h_DY10to50           ); 
 
     h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
      h_GJets->Add(h_GJets_HT100To200);
@@ -644,7 +657,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Totbkg->Add(h_DY5to50_HT200To400) ; 
      h_Totbkg->Add(h_DY5to50_HT400To600) ; 
      h_Totbkg->Add(h_DY5to50_HT600ToInf) ; 
-     h_Totbkg->Add(h_DY10to50          ) ; 
+     //h_Totbkg->Add(h_DY10to50          ) ; 
      h_Totbkg->Add(h_ggZH_HToBB_ZToLL) ;
      h_Totbkg->Add(h_GJets_HT40To100 ) ;
      h_Totbkg->Add(h_GJets_HT100To200) ;
@@ -656,25 +669,25 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Totbkg->Add(h_ST_t            ) ;
      h_Totbkg->Add(h_STbar_tW        ) ;
      h_Totbkg->Add(h_ST_tW           ) ;
-     h_Totbkg->Add(h_TTtoLL          ) ;
+    // h_Totbkg->Add(h_TTtoLL          ) ;
      h_Totbkg->Add(h_TTJets          ) ;
-     h_Totbkg->Add(h_TTtoLfromTbar   ) ;
-     h_Totbkg->Add(h_TTtoLfromT      ) ;
+    // h_Totbkg->Add(h_TTtoLfromTbar   ) ;
+    // h_Totbkg->Add(h_TTtoLfromT      ) ;
      h_Totbkg->Add(h_WW              ) ;
      h_Totbkg->Add(h_WG              ) ;
      h_Totbkg->Add(h_WJetsToLNu      ) ;
-     h_Totbkg->Add(h_WWToLNuLNu      ) ;
-     h_Totbkg->Add(h_WWToLNuQQ       ) ;
+    // h_Totbkg->Add(h_WWToLNuLNu      ) ;
+    // h_Totbkg->Add(h_WWToLNuQQ       ) ;
      h_Totbkg->Add(h_WZToL3Nu        ) ;
      h_Totbkg->Add(h_WZTo3LNu        ) ;
      h_Totbkg->Add(h_WZToLNu2QorQQ2L ) ;
      h_Totbkg->Add(h_ZG              ) ;
      h_Totbkg->Add(h_ZZ              ) ;
      h_Totbkg->Add(h_ZH_HToBB_ZToLL  ) ;
-     h_Totbkg->Add(h_ZZToLLNuNu      ) ;
-     h_Totbkg->Add(h_ZZToLLQQ        ) ;
-     h_Totbkg->Add(h_ZZToNuNuQQ      ) ;
-     h_Totbkg->Add(h_ZZToLLLL        ) ;
+    // h_Totbkg->Add(h_ZZToLLNuNu      ) ;
+    // h_Totbkg->Add(h_ZZToLLQQ        ) ;
+    // h_Totbkg->Add(h_ZZToNuNuQQ      ) ;
+    // h_Totbkg->Add(h_ZZToLLLL        ) ;
 
      //cout<<"test2"<<endl;
      h_Data = (TH1F*)h_DY50->Clone("h_Data");
@@ -695,15 +708,15 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     }
 
     // count + ratio
-    Double_t int_DY     = h_DY     ->Integral(0,-1) ; cout <<"DY: "<<int_DY<<endl; 
-    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; cout <<"GJets: "<<int_GJets<<endl;
-    Double_t int_ST     = h_ST     ->Integral(0,-1) ; cout <<"ST: "<<int_ST<<endl;
-    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; cout <<"ZH: "<<int_ZH<<endl; 
-    Double_t int_VV     = h_VV     ->Integral(0,-1) ; cout <<"VV: "<<int_VV<<endl;
-    Double_t int_TT     = h_TT     ->Integral(0,-1) ; cout <<"TT: "<<int_TT<<endl;
-    Double_t int_VG     = h_VG     ->Integral(0,-1) ; cout <<"VG: "<<int_VG<<endl;
-    Double_t int_Totbkg = h_Totbkg ->Integral(0,-1) ; cout <<"Totbkg: "<<int_Totbkg<<endl;
-    Double_t int_Data   = h_Data   ->Integral(0,-1);  cout <<"Data: "<<int_Data<<endl;
+    Double_t int_DY     = h_DY     ->Integral(0,-1) ; //cout <<"DY: "<<int_DY<<endl; 
+    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; //cout <<"GJets: "<<int_GJets<<endl;
+    Double_t int_ST     = h_ST     ->Integral(0,-1) ; //cout <<"ST: "<<int_ST<<endl;
+    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; //cout <<"ZH: "<<int_ZH<<endl; 
+    Double_t int_VV     = h_VV     ->Integral(0,-1) ; //cout <<"VV: "<<int_VV<<endl;
+    Double_t int_TT     = h_TT     ->Integral(0,-1) ; //cout <<"TT: "<<int_TT<<endl;
+    Double_t int_VG     = h_VG     ->Integral(0,-1) ; //cout <<"VG: "<<int_VG<<endl;
+    Double_t int_Totbkg = h_Totbkg ->Integral(0,-1) ; //cout <<"Totbkg: "<<int_Totbkg<<endl;
+    Double_t int_Data   = h_Data   ->Integral(0,-1);  //cout <<"Data: "<<int_Data<<endl;
     Double_t int_bkgOnData = int_Totbkg/int_Data;
 
     FILE * summarytable;
@@ -763,6 +776,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_Data  -> SetMarkerStyle(8);
     h_Data  -> SetMarkerSize(1);
     h_Data  -> SetLineWidth(3);
+    for(int i = 0; i<7; i++){
+    cout <<"BinContent("<<i<<"):  "<<h_TTJets  -> GetBinContent(i)<<endl;
+    }
 
     h_DY        ->SetFillStyle(1001);
     h_GJets     ->SetFillStyle(1001);
@@ -811,7 +827,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  
     double maxs[] = {h_DY->GetMaximum(), h_GJets->GetMaximum(), h_ST->GetMaximum(), h_TT->GetMaximum(), h_WJetsToLNu->GetMaximum(), h_VV->GetMaximum(), h_VG->GetMaximum(), h_ZH->GetMaximum()};
     //for (int i = 0; i<8; i++){cout<<"Max: "<<maxs[i]<<endl;}
-    double plot_max = *max_element(maxs,maxs+8);//cout<<"maximum: "<<plot_max<<endl;
+    //double plot_max = *max_element(maxs,maxs+8);//cout<<"maximum: "<<plot_max<<endl;
+    double plot_max = h_Totbkg->GetMaximum();
     //if(dolog) bgstack->SetMinimum(1e-3);
 
 //    if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
@@ -842,6 +859,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     else leg = new TLegend(0.6,0.6,0.85,0.85);
     leg->SetBorderSize(0);
     leg->SetFillColor(kWhite);
+    leg->SetNColumns(2);
     if( lepton=="ele"){
       leg->AddEntry(h_Data      , "Data SingleEle", "lpe"); 
     }
@@ -881,12 +899,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Double_t logmax = plot_max; //v[v.size()-1]->GetMaximum(); //was Data
     
     if(dolog){
-    //h_Data->SetMaximum(50000*logmax); //was Data
+    //h_Data ->SetMaximum(50000*logmax); //was Data
     bgstack->SetMaximum(50000*logmax); //was Data
     bgstack->SetMinimum(1.0);
     } 
     else {
-    //h_Data->SetMaximum(ymax*0.2 + ymax); //was Data
+    //h_Data ->SetMaximum(ymax*1.2); //was Data
     bgstack->SetMaximum(ymax*1.2); //was Data
     }
     //h_Data->Draw("E");
@@ -933,6 +951,60 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     // cout << "test" << endl;
     gPad->Update();
     gPad->RedrawAxis();
+
+    canvas->Update();
+    canvas->cd();
+    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.025, 1, 0.35);
+    pad2->SetTopMargin(0);
+    pad2->SetBottomMargin(0.1);
+    pad2->SetGrid();
+    pad2->Draw();
+    pad2->cd();
+    //(Data-MC)/MC
+    h_ratio = (TH1F*)h_DY50->Clone("h_ratio");
+    h_ratio->Reset();
+    h_ratio = (TH1F*)h_Data->Clone("h_ratio");
+    h_ratio->Add(h_Totbkg,-1);
+    h_ratio->Divide(h_Totbkg);
+    /*
+    double rmax = fabs(h_ratio->GetMaximum());
+    double rmin = fabs(h_ratio->GetMinimum());
+    double bound;
+    if(rmax>rmin) bound = rmax;
+    else bound = rmin;
+    cout<<"rmax: "<<rmax<<" rmin: "<<rmin<<" bound: "<<bound <<" max: "<<h_ratio->GetMaximum()<<" min: "<<h_ratio->GetMinimum()<<endl;
+    h_ratio->SetMaximum(bound);
+    h_ratio->SetMinimum(-1.0*bound);
+    cout <<"New Max: "<< h_ratio->GetMaximum()<<"  New Min: "<<h_ratio->GetMinimum()<<endl;
+    */
+    h_ratio->Draw("ep");
+    h_ratio->SetTitle(" ");
+    //Y axis
+    h_ratio->GetYaxis()->SetNdivisions(505);
+    h_ratio->GetYaxis()->SetTitleSize(10);
+    h_ratio->GetYaxis()->SetTitleFont(43);
+    h_ratio->GetYaxis()->SetTitleOffset(1.55);
+    h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    h_ratio->GetYaxis()->SetLabelSize(10);
+    h_ratio->GetYaxis()->SetTitle("#frac{Data-MC}{MC}");
+
+    // X axis ratio plot settings
+    h_ratio->GetXaxis()->SetTitleSize(10);
+    h_ratio->GetXaxis()->SetTitleFont(25);
+    h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+    h_ratio->GetXaxis()->SetTitleOffset(4.0);
+    h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+    h_ratio->GetXaxis()->SetLabelSize(10);//20
+    h_ratio->SetMarkerStyle(20);
+    h_ratio->SetMarkerColor(kRed);
+    h_ratio->SetMarkerSize(1);
+    pad1->Modified();
+    pad1->Update();
+    pad2->Modified();
+    pad2->Update();
+    gPad->Update();
+    gPad->RedrawAxis();
+    canvas->Update();
 
     // save canvas
     //canvas->SaveAs(outname+".pdf");

@@ -5,10 +5,76 @@
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
-doSubmit=true
-lumi=8651 #20000   #20000     #35870
+doSubmit=false
+lumi=35917.4 #20000   #20000     #35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
+
+
+samples=(  \
+  "DY5to50_HT100To200"              \
+  "DY5to50_HT200To400"              \
+  "DY5to50_HT400To600"              \
+  "DY5to50_HT600ToInf"              \
+  "DY10to50"                        \
+  "DY50"                            \
+  "ggZH_HToBB_ZToLL"                \
+  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
+  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
+  "ZH_HToSSTobbbb_MS15_ctauS1"      \
+  "ZH_HToSSTobbbb_MS15_ctauS10"     \
+  "ZH_HToSSTobbbb_MS15_ctauS100"    \
+  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
+  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
+  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
+  "ZH_HToSSTobbbb_MS40_ctauS1"      \
+  "ZH_HToSSTobbbb_MS40_ctauS10"     \
+  "ZH_HToSSTobbbb_MS40_ctauS100"    \
+  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
+  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
+  "ZH_HToSSTobbbb_MS55_ctauS1"      \
+  "ZH_HToSSTobbbb_MS55_ctauS10"     \
+  "ZH_HToSSTobbbb_MS55_ctauS100"    \
+  "GJets_HT40To100"                 \
+  "GJets_HT100To200"                \
+  "GJets_HT200To400"                \
+  "GJets_HT400To600"                \
+  "GJets_HT600ToInf"                \
+  "ST_s"                            \
+  "STbar_t"                         \
+  "ST_t"                            \
+  "STbar_tW"                        \
+  "ST_tW"                           \
+  "TTtoLL"                          \
+  "TTJets"                          \
+  "TTtoLfromTbar"                   \
+  "TTtoLfromT"                      \
+  "WG"                              \
+  "WJetsToLNu"                      \
+  "WW"                              \
+  "WWToLNuLNu"                      \
+  "WWToLNuQQ"                       \
+  "WZ"                              \
+  "WZToL3Nu"                        \
+  "WZTo3LNu"                        \
+  "WZToLNu2QorQQ2L"                 \
+  "ZG"                              \
+  "ZH_HToBB_ZToLL"                  \
+  "ZZ"                              \
+  "ZZToLLNuNu"                      \
+  "ZZToLLQQ"                        \
+  "ZZToNuNuQQ"                      \
+  "ZZToLLLL"                        \
+)
+#  "Data_SingleEle_H_3"              \
+#  "Data_SingleMu_H_2"               \
+#  "Data_SinglePhoton_H_2"           \
 
 # Signal Samples
 #  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
@@ -123,11 +189,6 @@ maxfilesperjob=200   # 500=6h
 #  "DY5to50_HT400to600_2" \
 #  "DY5to50_HT600toInf_1" \
 #  "DY5to50_HT600toInf_2" \
-
-samples=(  \
-  "lldj"  \
-)
-
 
 printf "Version: ${aversion}\n"
 
@@ -274,6 +335,9 @@ do
  then
   mc=""
  elif [[ ${sample} == "Double"* ]]
+ then
+  mc=""
+ elif [[ ${sample} == "Data"* ]]
  then
   mc=""
  elif [[ ${sample} == "MuonEG"* ]]
