@@ -37,7 +37,7 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadPUWeight();
  if(isMC) loadElectronWeight( eleid );
 
- bool doBkgEst = true;
+ bool doBkgEst = false;
  if( doBkgEst ) loadMistagRate();
 
  // start looping over entries
@@ -57,8 +57,8 @@ void analyzer_loop::Loop(TString outfilename,
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
-  photon_list     = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
   electron_list   = electron_passID  ( eleidbit,        ele_minPt1, ele_minPt2, ele_maxEta, "");
+  photon_list     = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
   muon_list       = muon_passID      ( muoidbit,        mu_minPt1,  mu_minPt2,  mu_maxEta,  ""); 
   aodcalojet_list = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
   taggedjet_list  = jet_passTagger   ();
@@ -74,7 +74,7 @@ void analyzer_loop::Loop(TString outfilename,
   if(isMC) event_weight *= makePUWeight(); //<-----need nTruePU
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight( electron_list );
-
+  //cout << "Base Weight: "<<makeEventWeight(crossSec,lumi,nrEvents)<<"  Electorn Weight:  "<<makeElectronWeight( electron_list )<<"  PUWeight: "<<makePUWeight()<<endl; 
   getMET();
 
   calculateHT();
@@ -87,7 +87,7 @@ void analyzer_loop::Loop(TString outfilename,
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
   passPTOSSF  = (dilep_pt>100.);
-  passGoodVtx = true; // = nVtx>0; FIXME put in ntuples
+  passGoodVtx = AODnGoodVtx>0; 
   passOneJet  = false; if (aodcalojet_list.size()>0) passOneJet=true;  
   passOneTag  = false; if (taggedjet_list.size()>0) passOneTag=true;  
   passTwoTag  = false; if (taggedjet_list.size()>1) passTwoTag=true;  
@@ -172,7 +172,7 @@ void analyzer_loop::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if( ( (bitsPassCRHeavy >> 0) & 1) ){
+  if( ( (bitsPassZH >> 0) & 1) ){
    setOPTtree(); 
    OPTtree->Fill();
   }
@@ -182,6 +182,7 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout << " Summary     cleaning dR=" << objcleandRcut << std::endl;
 
  std::cout << " ntot         " << n_tot << std::endl;
+ std::cout << "              " << setw(width) << left << "tot"         << setw(width) << left << "ele"             << setw(width) << left << "mu"             << std::endl;
  std::cout << " npassSig     " << setw(width) << left << n_passSig     << setw(width) << left << n_ele_passSig     << setw(width) << left << n_mu_passSig     << std::endl;
  std::cout << " npassZH      " << setw(width) << left << n_passZH      << setw(width) << left << n_ele_passZH      << setw(width) << left << n_mu_passZH      << std::endl;
  std::cout << " npassDY      " << setw(width) << left << n_passDY      << setw(width) << left << n_ele_passDY      << setw(width) << left << n_mu_passDY      << std::endl;

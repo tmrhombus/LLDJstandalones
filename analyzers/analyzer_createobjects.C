@@ -229,19 +229,35 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
  std::vector<int> pholist;
  pholist.clear();
 
+ bool pass_overlap = true;
  ////Loop over photons                   
  for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
-  Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p);
+  //Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p); doesn't seem to be used unless someone objects, will delete after next PR 5/6/2018
 
   bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
   //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
+  
+   //check overlap with electrons
+   if(electron_list.size()>0){
+    for(int d=0; d<electron_list.size(); ++d){
+     //printf(" brgin looping over electrons\n");
+     int eleindex = electron_list[d];
+     //std::cout << eleindex <<"      size: "<<electron_list.size()<<"     Eta:  "<<AOD_eleEta->size()<<std::endl;
+     if( dR( AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex), AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex) ) < objcleandRcut )
+     {
+      pass_overlap=false; // printf(" OL w electron\n");
+     } // if overlap
+    }//end electrons
+   } // if electrons
+
+
 
   bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
   //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-  if( kinematic && pass_bit){
+  if( kinematic && pass_bit && pass_overlap ){
    nSelectedPho++;
    //printf("selected aphoton\n");
    pholist.push_back(p);

@@ -1,7 +1,19 @@
+#include <iostream>
+#include "TString.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+#include "THStack.h"
+#include "TLegend.h"
+#include "TPad.h"
+#include "TStyle.h"
+#include "TText.h"
+#include "TFile.h"
 
 #include <stdlib.h>     /* getenv */
 
-void plotter_stacked()
+//using namespace std;
+
+void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 {
 
  // Draw signal as lines
@@ -9,34 +21,28 @@ void plotter_stacked()
  //Bool_t drawRatio = kFALSE;
  Bool_t drawRatio = kTRUE;
  // y axis plots as log
- Bool_t dolog = kFALSE;
+ //Bool_t dolog = kFALSE;
  //Bool_t dolog = kTRUE;
+ //Bool_t HIP = kTRUE;
+ //Bool_t HIP = kFALSE;
+ 
 
- // path to root files
+ // path to_"+region+"histograms.root files
  TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
 
- //TString aversion = "Daniel_ZH_goodVertexTrue" ;
+ //TString aversion = "addpuAOD" ;
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/";
 
  TString extraname = "";
+ if(HIP){extraname+="_HIP";}
+ if(!HIP){extraname+="_Good";}
+ 
+ //TString extraname = "";
  if(dolog){extraname+="_log";}
  if(drawSignal){extraname+="_wsig";}
-
- // phase space regions to plot
- std::vector<TString> regions;
- regions.clear();
- regions.push_back("NoSel");
- i//regions.push_back("Sig");
- regions.push_back("ZH");
- regions.push_back("DY");
- regions.push_back("OffZ");
- regions.push_back("NoPair"); 
- regions.push_back("CRHeavy"); 
- regions.push_back("CRLight"); 
-
  // lepton flavor
  std::vector<TString> leptons;
  leptons.clear();
@@ -48,125 +54,101 @@ void plotter_stacked()
  std::vector<TString> variables;
  variables.clear();
 
- //variables.push_back("nVtx");                   
- // variables.push_back("nGoodVtx");               
- // variables.push_back("nTrksPV");                
-//  variables.push_back("rho");                    
+  //variables.push_back("nVtx");                   
+  //variables.push_back("nGoodVtx");               
+  //variables.push_back("nTrksPV");                
+  //variables.push_back("rho");                    
   //variables.push_back("pfMET");                  
   //variables.push_back("pfMETPhi");               
-//  variables.push_back("pfMETsumEt");             
+  //variables.push_back("pfMETsumEt");             
   //variables.push_back("nPho");                   
-//  variables.push_back("phoE");                   
-//  variables.push_back("phoEt");                  
-//  variables.push_back("phoEta");                 
-//  variables.push_back("phoPhi");                 
-//  variables.push_back("phoCalibE");              
-//  variables.push_back("phoCalibEt");             
-//  variables.push_back("phoSCE");                 
-//  variables.push_back("phoSCRawE");              
-//  variables.push_back("phoSCPhi");               
-//  variables.push_back("phoSCEta");               
-//  variables.push_back("nEle");                   
- // variables.push_back("elePt");                  
-//  variables.push_back("eleEta");                 
-//  variables.push_back("elePhi");                 
-//  variables.push_back("eleSCEn");                
-//  variables.push_back("eleSCEta");               
-//  variables.push_back("eleSCPhi");               
-//  variables.push_back("eleCalibPt");             
-//  variables.push_back("eleCalibEn");             
-//  variables.push_back("nMu");                    
-//  variables.push_back("muPt");                   
-//  variables.push_back("muEn");                   
-//  variables.push_back("muEta");                  
-//  variables.push_back("muPhi");                  
-//  variables.push_back("nJet");                   
-//  variables.push_back("htall"); 
-//  variables.push_back("htjets");
-//  variables.push_back("nSelectedPho");
-//  variables.push_back("nSelectedEle");
-//  variables.push_back("nSelectedMuo");
-//  variables.push_back("nSelectedJet");
-//  variables.push_back("LeadingJet_jetPt");                      
-//  variables.push_back("LeadingJet_jetEn");                      
-//  variables.push_back("LeadingJet_jetEta");                     
-//  variables.push_back("LeadingJet_jetPhi");                     
-//  variables.push_back("LeadingJet_jetArea");                    
-//  variables.push_back("LeadingJet_jetLeadTrackPt");             
-//  variables.push_back("LeadingJet_jetLeadTrackEta");            
-//  variables.push_back("LeadingJet_jetLeadTrackPhi");            
-//  variables.push_back("LeadingJet_jetCSV2BJetTags");            
-//  variables.push_back("LeadingJet_jetJetProbabilityBJetTags");  
-//  variables.push_back("LeadingJet_jetpfCombinedMVAV2BJetTags"); 
-//  variables.push_back("LeadingJet_jetAlphaMax");                
-//  variables.push_back("LeadingJet_jetAlphaMax2");               
-//  variables.push_back("LeadingJet_jetAlphaMaxP");               
-//  variables.push_back("LeadingJet_jetAlphaMaxP2");              
-//  variables.push_back("LeadingJet_alphaMax_jetDauVertex_r");    
-//  variables.push_back("LeadingJet_jetAlphaMax_PV3onPV2");       
-//  variables.push_back("LeadingJet_jetAlphaMax_PV3onNeu");       
-//  variables.push_back("LeadingJet_jetAlphaMax_PV3onAll");       
-//  variables.push_back("LeadingJet_jetAlphaMax_PV2onNeu");       
-//  variables.push_back("LeadingJet_jetAlphaMax_PV2onAll");       
-//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onPV2");      
-//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onNeu");      
-//  variables.push_back("LeadingJet_jetAlpha2Max_PV3onAll");      
-//  variables.push_back("LeadingJet_jetAlpha2Max_PV2onNeu");      
-//  variables.push_back("LeadingJet_jetAlpha2Max_PV2onAll");      
-//  variables.push_back("LeadingJet_jetAlphaD");                  
-//  variables.push_back("LeadingJet_jetAlphaMaxD");               
-//  variables.push_back("LeadingJet_jetLog10IPSig");              
-//  variables.push_back("LeadingJet_jetMedianLog10IPSig");        
-//  variables.push_back("LeadingJet_jetSumIP");                   
-//  variables.push_back("LeadingJet_jetSumIPSig");                
-//  variables.push_back("LeadingJet_jetTrackAngle");              
-//  variables.push_back("LeadingJet_jetLogTrackAngle");           
-//  variables.push_back("LeadingJet_jetMedianLogTrackAngle");     
-//  variables.push_back("LeadingJet_jetTotalTrackAngle");         
-//  variables.push_back("LeadingJet_jetNConstituents");           
-//  variables.push_back("AllJets_AODCaloJetPtVar");
-//  variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
-//  variables.push_back("AllJets_AODCaloJetdR");
-//  variables.push_back("AllJets_AODCaloJetdR_Tag0");
-//  variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
-//  variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
- variables.push_back("AllJets_AODCaloJetPt");                      
- //variables.push_back("AllJets_AODCaloJetEn");                      
- variables.push_back("AllJets_AODCaloJetEta");                     
- variables.push_back("AllJets_AODCaloJetPhi");                     
-
- // make canvas and text
- TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
- gStyle->SetOptStat(0);
- gPad->SetLogy(dolog);
- gPad->SetTickx();
- gPad->SetTicky();
- gStyle->SetLineWidth(3);
- gStyle->SetPalette(kBird);
- //gStyle->InvertPalette();
- //TColor::InvertPalette();
-
- TText* title = new TText(1,1,"") ;
- title->SetTextSize(0.04);
- title->SetTextColor(kBlack);
- title->SetTextAlign(11);
- title->SetTextFont(62);
- 
- TText* extra = new TText(1,1,"") ;
- extra->SetTextSize(0.04);
- extra->SetTextColor(kBlack);
- extra->SetTextAlign(11);
- //extra->SetTextAlign(13);
- extra->SetTextFont(52);
- 
- TText* lumi = new TText(1,1,"") ;
- lumi->SetTextSize(0.03);
- lumi->SetTextColor(kBlack);
- lumi->SetTextAlign(31);
- lumi->SetTextFont(42);
+  //variables.push_back("phoE");                   
+  //variables.push_back("phoEt");                  
+  //variables.push_back("phoEta");                 
+  //variables.push_back("phoPhi");                 
+  //variables.push_back("phoCalibE");              
+  //variables.push_back("phoCalibEt");             
+  //variables.push_back("phoSCE");                 
+  //variables.push_back("phoSCRawE");              
+  //variables.push_back("phoSCPhi");               
+  //variables.push_back("phoSCEta");               
+  //variables.push_back("nEle");                   
+  //variables.push_back("elePt");                  
+  //variables.push_back("eleEta");                 
+  //variables.push_back("elePhi");                 
+  //variables.push_back("eleSCEn");                
+  //variables.push_back("eleSCEta");               
+  //variables.push_back("eleSCPhi");               
+  //variables.push_back("eleCalibPt");             
+  //variables.push_back("eleCalibEn");             
+  //variables.push_back("nMu");                    
+  //variables.push_back("muPt");                   
+  //variables.push_back("muEn");                   
+  //variables.push_back("muEta");                  
+  //variables.push_back("muPhi");                  
+  //variables.push_back("nJet");                   
+  //variables.push_back("htall"); 
+  //variables.push_back("htjets");
+  //variables.push_back("nSelectedPho");
+  //variables.push_back("nSelectedEle");
+  //variables.push_back("nSelectedMuo");
+  //variables.push_back("nSelectedJet");
+  //variables.push_back("LeadingJet_jetPt");                      
+  //variables.push_back("LeadingJet_jetEn");                      
+  //variables.push_back("LeadingJet_jetEta");                     
+  //variables.push_back("LeadingJet_jetPhi");                     
+  //variables.push_back("LeadingJet_jetArea");                    
+  //variables.push_back("LeadingJet_jetLeadTrackPt");             
+  //variables.push_back("LeadingJet_jetLeadTrackEta");            
+  //variables.push_back("LeadingJet_jetLeadTrackPhi");            
+  //variables.push_back("LeadingJet_jetCSV2BJetTags");            
+  //variables.push_back("LeadingJet_jetJetProbabilityBJetTags");  
+  //variables.push_back("LeadingJet_jetpfCombinedMVAV2BJetTags"); 
+  //variables.push_back("LeadingJet_jetAlphaMax");                
+  //variables.push_back("LeadingJet_jetAlphaMax2");               
+  //variables.push_back("LeadingJet_jetAlphaMaxP");               
+  //variables.push_back("LeadingJet_jetAlphaMaxP2");              
+  //variables.push_back("LeadingJet_alphaMax_jetDauVertex_r");    
+  //variables.push_back("LeadingJet_jetAlphaMax_PV3onPV2");       
+  //variables.push_back("LeadingJet_jetAlphaMax_PV3onNeu");       
+  //variables.push_back("LeadingJet_jetAlphaMax_PV3onAll");       
+  //variables.push_back("LeadingJet_jetAlphaMax_PV2onNeu");       
+  //variables.push_back("LeadingJet_jetAlphaMax_PV2onAll");       
+  //variables.push_back("LeadingJet_jetAlpha2Max_PV3onPV2");      
+  //variables.push_back("LeadingJet_jetAlpha2Max_PV3onNeu");      
+  //variables.push_back("LeadingJet_jetAlpha2Max_PV3onAll");      
+  //variables.push_back("LeadingJet_jetAlpha2Max_PV2onNeu");      
+  //variables.push_back("LeadingJet_jetAlpha2Max_PV2onAll");      
+  //variables.push_back("LeadingJet_jetAlphaD");                  
+  //variables.push_back("LeadingJet_jetAlphaMaxD");               
+  //variables.push_back("LeadingJet_jetLog10IPSig");              
+  //variables.push_back("LeadingJet_jetMedianLog10IPSig");        
+  //variables.push_back("LeadingJet_jetSumIP");                   
+  //variables.push_back("LeadingJet_jetSumIPSig");                
+  //variables.push_back("LeadingJet_jetTrackAngle");              
+  //variables.push_back("LeadingJet_jetLogTrackAngle");           
+  //variables.push_back("LeadingJet_jetMedianLogTrackAngle");     
+  //variables.push_back("LeadingJet_jetTotalTrackAngle");         
+  //variables.push_back("LeadingJet_jetNConstituents");           
+  //variables.push_back("AllJets_AODCaloJetPtVar");
+  //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+  //variables.push_back("AllJets_AODCaloJetdR");
+  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
+  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
+  //variables.push_back("AllJets_AODCaloJetEn");                      
+//  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+//  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+//  variables.push_back("AllJets_AODCaloJetAlphaMax");
+  variables.push_back("AllJets_AODCaloJetPt");                      
+//  variables.push_back("AllJets_AODCaloJetEta");                     
+//  variables.push_back("AllJets_AODCaloJetPhi");                     
+//  variables.push_back("Cutflow");                     
+//  variables.push_back("Onecut");                     
+//  variables.push_back("NMinus");                     
+//  variables.push_back("AOD_dilepton_Mass");                     
+//  variables.push_back("AOD_elePt");                     
+//  variables.push_back("AOD_muPt");                     
 
  // initialize histogram files 
 
@@ -174,6 +156,10 @@ void plotter_stacked()
  TFile* file_SingleMuonHIP                       ; 
  TFile* file_SingleElectronGood                  ; 
  TFile* file_SingleMuonGood                      ; 
+// TFile* file_DoubleEGHIP                         ; 
+// TFile* file_DoubleMuHIP                         ; 
+ TFile* file_DoubleEGGood                        ; 
+ TFile* file_DoubleMuGood                        ; 
  TFile* file_DY50                                ;
  TFile* file_DY5to50_HT100To200                  ; 
  TFile* file_DY5to50_HT200To400                  ; 
@@ -217,8 +203,8 @@ void plotter_stacked()
  TFile* file_ZZToLLQQ                            ;
  TFile* file_ZZToNuNuQQ                          ;
  TFile* file_ZZToLLLL                            ;
-
  // initialize histos
+ 
  TH1F* h_DY50                                ;
  TH1F* h_DY5to50_HT100To200                  ; 
  TH1F* h_DY5to50_HT200To400                  ; 
@@ -262,10 +248,14 @@ void plotter_stacked()
  TH1F* h_ZZToLLQQ                            ;
  TH1F* h_ZZToNuNuQQ                          ;
  TH1F* h_ZZToLLLL                            ;
- //TH1F* h_SingleElectronHIP                  ;
- //TH1F* h_SingleMuonHIP                      ;
- //TH1F* h_SingleElectronGood                 ;
+ TH1F* h_SingleElectronHIP                   ;
+ TH1F* h_SingleMuonHIP                       ;
+ TH1F* h_SingleElectronGood                  ;
  TH1F* h_SingleMuonGood                      ;
+ TH1F* h_DoubleEGHIP                         ;
+ TH1F* h_DoubleMuHIP                         ;
+ TH1F* h_DoubleEGGood                        ;
+ TH1F* h_DoubleMuGood                        ;
  //TH1F* h_SinglePhoton                        ;
 // TH1F* h_DoubleEG                            ;
 // TH1F* h_DoubleMuon                          ;
@@ -282,76 +272,124 @@ void plotter_stacked()
  TH1F* h_Totbkg ;
 
  TH1F* h_Data   ;
-
+ TH1F* h_ratio  ;
+ //cout << "IN path: "<< inpath<<endl;
  // load histogram files
- file_DY5to50_HT100To200                = new TFile( inpath + "DY5to50_HT100To200.root"               ) ; 
- file_DY5to50_HT200To400                = new TFile( inpath + "DY5to50_HT200To400.root"               ) ; 
- file_DY5to50_HT400To600                = new TFile( inpath + "DY5to50_HT400To600.root"               ) ; 
- file_DY5to50_HT600ToInf                = new TFile( inpath + "DY5to50_HT600ToInf.root"               ) ; 
- file_DY10to50                          = new TFile( inpath + "DY10to50"                              ) ; 
- file_DY50                              = new TFile( inpath + "DY50.root"                             ) ;
+ file_DY5to50_HT100To200                = new TFile( inpath + "DY5to50_HT100To200_"+region+"_histograms.root"               ) ; 
+ file_DY5to50_HT200To400                = new TFile( inpath + "DY5to50_HT200To400_"+region+"_histograms.root"               ) ; 
+ file_DY5to50_HT400To600                = new TFile( inpath + "DY5to50_HT400To600_"+region+"_histograms.root"               ) ; 
+ file_DY5to50_HT600ToInf                = new TFile( inpath + "DY5to50_HT600ToInf_"+region+"_histograms.root"               ) ; 
+ file_DY10to50                          = new TFile( inpath + "DY10to50_"+region+"_histograms.root"                          ) ; 
+ file_DY50                              = new TFile( inpath + "DY50_"+region+"_histograms.root"                             ) ;
 
 
- file_ggZH_HToBB_ZToLL                  = new TFile( inpath + "ggZH_HToBB_ZToLL.root"                 ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS0      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0.root"     ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS0p05   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0p05.root"  ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS1      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1.root"     ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS10     = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10.root"    ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS100    = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS100.root"   ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS1000   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1000.root"  ) ;
-// file_ggZH_HToSSTobbbb_MS40_ctauS10000  = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10000.root" ) ;
- file_GJets_HT40To100                   = new TFile( inpath + "GJets_HT40To100.root"                  ) ;
- file_GJets_HT100To200                  = new TFile( inpath + "GJets_HT100To200.root"                 ) ;
- file_GJets_HT200To400                  = new TFile( inpath + "GJets_HT200To400.root"                 ) ;
- file_GJets_HT400To600                  = new TFile( inpath + "GJets_HT400To600.root"                 ) ;
- file_GJets_HT600ToInf                  = new TFile( inpath + "GJets_HT600ToInf.root"                 ) ;
- file_ST_s                              = new TFile( inpath + "ST_s.root"                             ) ;
- file_STbar_t                           = new TFile( inpath + "STbar_t.root"                          ) ;
- file_ST_t                              = new TFile( inpath + "ST_t.root"                             ) ;
- file_STbar_tW                          = new TFile( inpath + "STbar_tW.root"                         ) ;
- file_ST_tW                             = new TFile( inpath + "ST_tW.root"                            ) ;
- file_TTtoLL                            = new TFile( inpath + "TTtoLL.root"                           ) ;
- file_TTJets                            = new TFile( inpath + "TTJets.root"                           ) ;
- file_TTtoLfromTbar                     = new TFile( inpath + "TTtoLfromTbar.root"                    ) ;
- file_TTtoLfromT                        = new TFile( inpath + "TTtoLfromT.root"                       ) ;
- file_WG                                = new TFile( inpath + "WG.root"                               ) ;
- file_WJetsToLNu                        = new TFile( inpath + "WJetsToLNu.root"                       ) ;
- file_WW                                = new TFile( inpath + "WW.root"                               ) ;
- file_WWToLNuLNu                        = new TFile( inpath + "WWToLNuLNu.root"                       ) ;
- file_WWToLNuQQ                         = new TFile( inpath + "WWToLNuQQ.root"                        ) ;
- file_WZToL3Nu                          = new TFile( inpath + "WZToL3Nu.root"                         ) ;
- file_WZTo3LNu                          = new TFile( inpath + "WZTo3LNu.root"                         ) ;
- file_WZToLNu2QorQQ2L                   = new TFile( inpath + "WZToLNu2QorQQ2L.root"                  ) ;
- file_ZG                                = new TFile( inpath + "ZG.root"                               ) ;
- file_ZH_HToBB_ZToLL                    = new TFile( inpath + "ZH_HToBB_ZToLL.root"                   ) ;
- file_ZZ                                = new TFile( inpath + "ZZ.root"                               ) ;
- file_ZZToLLNuNu                        = new TFile( inpath + "ZZToLLNuNu.root"                       ) ;
- file_ZZToLLQQ                          = new TFile( inpath + "ZZToLLQQ.root"                         ) ;
- file_ZZToNuNuQQ                        = new TFile( inpath + "ZZToNuNuQQ.root"                       ) ;
- file_ZZToLLLL                          = new TFile( inpath + "ZZToLLLL.root"                         ) ;
- //file_SingleElectronGood                    = new TFile( inpath + "SingleElectron.root"                   ) ;
- file_SingleMuonGood                    = new TFile( inpath + "SingleMuon.root"                       ) ;
- //file_SingleElectronHIP                 = new TFile( inpath + "SingleElectron.root"                   ) ;
- //file_SingleMuonHIP                     = new TFile( inpath + "SingleMuon.root"                       ) ;
-// file_DoubleEG                          = new TFile( inpath + "DoubleEG.root"                         ) ;
-// file_DoubleMuon                        = new TFile( inpath + "DoubleMuon.root"                       ) ;
-// file_MuonEG                            = new TFile( inpath + "MuonEG.root"                           ) ;
+ file_ggZH_HToBB_ZToLL                  = new TFile( inpath + "ggZH_HToBB_ZToLL_"+region+"_histograms.root"                 ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS0      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0_"+region+"_histograms.root"     ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS0p05   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS0p05_"+region+"_histograms.root"  ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS1      = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1_"+region+"_histograms.root"     ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS10     = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10_"+region+"_histograms.root"    ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS100    = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS100_"+region+"_histograms.root"   ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS1000   = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS1000_"+region+"_histograms.root"  ) ;
+// file_ggZH_HToSSTobbbb_MS40_ctauS10000  = new TFile( inpath + "ggZH_HToSSTobbbb_MS40_ctauS10000_"+region+"_histograms.root" ) ;
+ file_GJets_HT40To100                   = new TFile( inpath + "GJets_HT40To100_"+region+"_histograms.root"                  ) ;
+ file_GJets_HT100To200                  = new TFile( inpath + "GJets_HT100To200_"+region+"_histograms.root"                 ) ;
+ file_GJets_HT200To400                  = new TFile( inpath + "GJets_HT200To400_"+region+"_histograms.root"                 ) ;
+ file_GJets_HT400To600                  = new TFile( inpath + "GJets_HT400To600_"+region+"_histograms.root"                 ) ;
+ file_GJets_HT600ToInf                  = new TFile( inpath + "GJets_HT600ToInf_"+region+"_histograms.root"                 ) ;
+ file_ST_s                              = new TFile( inpath + "ST_s_"+region+"_histograms.root"                             ) ;
+ file_STbar_t                           = new TFile( inpath + "STbar_t_"+region+"_histograms.root"                          ) ;
+ file_ST_t                              = new TFile( inpath + "ST_t_"+region+"_histograms.root"                             ) ;
+ file_STbar_tW                          = new TFile( inpath + "STbar_tW_"+region+"_histograms.root"                         ) ;
+ file_ST_tW                             = new TFile( inpath + "ST_tW_"+region+"_histograms.root"                            ) ;
+ file_TTtoLL                            = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"                           ) ;
+ file_TTJets                            = new TFile( inpath + "TTJets_"+region+"_histograms.root"                           ) ;
+ file_TTtoLfromTbar                     = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"                    ) ;
+ file_TTtoLfromT                        = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"                       ) ;
+ file_WG                                = new TFile( inpath + "WG_"+region+"_histograms.root"                               ) ;
+ file_WJetsToLNu                        = new TFile( inpath + "WJetsToLNu_"+region+"_histograms.root"                       ) ;
+ file_WW                                = new TFile( inpath + "WW_"+region+"_histograms.root"                               ) ;
+ file_WWToLNuLNu                        = new TFile( inpath + "WWToLNuLNu_"+region+"_histograms.root"                       ) ;
+ file_WWToLNuQQ                         = new TFile( inpath + "WWToLNuQQ_"+region+"_histograms.root"                        ) ;
+ file_WZToL3Nu                          = new TFile( inpath + "WZToL3Nu_"+region+"_histograms.root"                         ) ;
+ file_WZTo3LNu                          = new TFile( inpath + "WZTo3LNu_"+region+"_histograms.root"                         ) ;
+ file_WZToLNu2QorQQ2L                   = new TFile( inpath + "WZToLNu2QorQQ2L_"+region+"_histograms.root"                  ) ;
+ file_ZG                                = new TFile( inpath + "ZG_"+region+"_histograms.root"                               ) ;
+ file_ZH_HToBB_ZToLL                    = new TFile( inpath + "ZH_HToBB_ZToLL_"+region+"_histograms.root"                   ) ;
+ file_ZZ                                = new TFile( inpath + "ZZ_"+region+"_histograms.root"                               ) ;
+ file_ZZToLLNuNu                        = new TFile( inpath + "ZZToLLNuNu_"+region+"_histograms.root"                       ) ;
+ file_ZZToLLQQ                          = new TFile( inpath + "ZZToLLQQ_"+region+"_histograms.root"                         ) ;
+ file_ZZToNuNuQQ                        = new TFile( inpath + "ZZToNuNuQQ_"+region+"_histograms.root"                       ) ;
+ file_ZZToLLLL                          = new TFile( inpath + "ZZToLLLL_"+region+"_histograms.root"                         ) ;
+ file_SingleElectronGood                = new TFile( inpath + "Data_SingleEle_Good_"+region+"_histograms.root"              ) ;
+ file_SingleMuonGood                    = new TFile( inpath + "Data_SingleMu_Good_"+region+"_histograms.root"               ) ;
+ file_SingleElectronHIP                 = new TFile( inpath + "Data_SingleEle_HIP_"+region+"_histograms.root"               ) ;
+ file_SingleMuonHIP                     = new TFile( inpath + "Data_SingleMu_HIP_"+region+"_histograms.root"                ) ;
+ file_DoubleEGGood                      = new TFile( inpath + "Data_DoubleEG_Good_"+region+"_histograms.root"               ) ;
+ file_DoubleMuGood                      = new TFile( inpath + "Data_DoubleMu_Good_"+region+"_histograms.root"               ) ;
+// file_DoubleEGHIP                       = new TFile( inpath + "Data_DoubleEG_HIP_"+region+"_histograms.root"                ) ;
+// file_DoubleMuHIP                       = new TFile( inpath + "Data_DoubleMu_HIP_"+region+"_histograms.root"                ) ;
+// file_DoubleEG                          = new TFile( inpath + "DoubleEG_"+region+"_histograms.root"                         ) ;
+// file_DoubleMuon                        = new TFile( inpath + "DoubleMuon_"+region+"_histograms.root"                       ) ;
+// file_MuonEG                            = new TFile( inpath + "MuonEG_"+region+"_histograms.root"                           ) ;
 
+//cout<<inpath + "Data_DoubleEG_Good_"+region+"_histograms.root"<<endl;
 
-
- for(unsigned int i=0; i<regions.size(); ++i){
-  TString region = regions[i];
   for(unsigned int j=0; j<variables.size(); ++j){
    TString variable = variables[j];
-   for(unsigned int k=1; k<leptons.size(); ++k){
+   for(unsigned int k=0; k<leptons.size(); ++k){
     TString lepton = leptons[k];
+ // make canvas and text
+ TCanvas* canvas = new TCanvas("canvas","canvas",900,100,500,500); 
+ canvas->Clear();
+ canvas->cd();
+ TPad *pad1  = new TPad("pad1", "pad1", 0, 0.35, 1, 1.0);
+ gStyle->SetOptStat(0);
+ pad1->SetLogy(dolog);
+ pad1->SetTickx();
+ pad1->SetTicky();
+ pad1->SetGrid();
+ pad1->Draw();
+ pad1->cd();
+ gStyle->SetLineWidth(3);
+ gStyle->SetPalette(kBird);
+ //gStyle->InvertPalette();
+ //TColor::InvertPalette();
+
+ TText* title = new TText(1,1,"") ;
+ title->SetTextSize(0.04);
+ title->SetTextColor(kBlack);
+ title->SetTextAlign(11);
+ title->SetTextFont(62);
+ 
+ TText* extra = new TText(1,1,"") ;
+ extra->SetTextSize(0.04);
+ extra->SetTextColor(kBlack);
+ extra->SetTextAlign(11);
+ //extra->SetTextAlign(13);
+ extra->SetTextFont(52);
+ 
+ TText* extra2 = new TText(1,1,"") ;
+ extra2->SetTextSize(0.04);
+ extra2->SetTextColor(kBlack);
+ extra2->SetTextAlign(11);
+ //extra2->SetTextAlign(13);
+ extra2->SetTextFont(62);
+ 
+ TText* lumi = new TText(1,1,"") ;
+ lumi->SetTextSize(0.03);
+ lumi->SetTextColor(kBlack);
+ lumi->SetTextAlign(31);
+ lumi->SetTextFont(42);
+
 
     TString varname = lepton+"_"+region+"_"+variable;
 
     printf("plotting  h_%s \n",varname.Data());
     TString outname = outpath+varname+extraname; 
     TString logname = outpath+"logs/"+varname+extraname; 
-    cout << "logname: " << logname << endl;
+    //cout << "logname: " << logname << endl;
+    //cout << "outname: " << outname << endl;
+    //cout << "inpath: "  << inpath << endl;
 
     // get histograms from files
     h_DY10to50                          = (TH1F*)file_DY10to50                         ->Get("h_"+varname)->Clone( "DY10to50"                         ) ;
@@ -363,20 +401,20 @@ void plotter_stacked()
     h_DY50                              = (TH1F*)file_DY50                             ->Get("h_"+varname)->Clone( "DY50"                             ) ;
     //h_DY50->Scale(35900.0/20000.0); 
     h_ggZH_HToBB_ZToLL                  = (TH1F*)file_ggZH_HToBB_ZToLL                 ->Get("h_"+varname)->Clone( "ggZH_HToBB_ZToLL"                 ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0"     ) ;
-    h_ggZH_HToSSTobbbb_MS40_ctauS0p05   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0p05"  ) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1"     ) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10     = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10    ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10"    ) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS100    = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS100   ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS100"   ) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1000   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1000"  ) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10000  = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10000" ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0"     ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0p05   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS0p05"  ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1      = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1     ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1"     ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10     = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10    ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10"    ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS100    = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS100   ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS100"   ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1000   = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS1000"  ) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10000  = (TH1F*)file_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Get("h_"+varname)->Clone( "ggZH_HToSSTobbbb_MS40_ctauS10000" ) ;
     h_GJets_HT40To100                   = (TH1F*)file_GJets_HT40To100                  ->Get("h_"+varname)->Clone( "GJets_HT40To100"                  ) ;
     h_GJets_HT100To200                  = (TH1F*)file_GJets_HT100To200                 ->Get("h_"+varname)->Clone( "GJets_HT100To200"                 ) ;
     h_GJets_HT200To400                  = (TH1F*)file_GJets_HT200To400                 ->Get("h_"+varname)->Clone( "GJets_HT200To400"                 ) ;
     h_GJets_HT400To600                  = (TH1F*)file_GJets_HT400To600                 ->Get("h_"+varname)->Clone( "GJets_HT400To600"                 ) ;
     h_GJets_HT600ToInf                  = (TH1F*)file_GJets_HT600ToInf                 ->Get("h_"+varname)->Clone( "GJets_HT600ToInf"                 ) ;
     h_ST_s                              = (TH1F*)file_ST_s                             ->Get("h_"+varname)->Clone( "ST_s"                             ) ;
-//    h_ST_s->Scale(35900.0/20000.0); 
+    //h_ST_s->Scale(35900.0/20000.0); 
 
     h_STbar_t                           = (TH1F*)file_STbar_t                          ->Get("h_"+varname)->Clone( "STbar_t"                          ) ;
     h_ST_t                              = (TH1F*)file_ST_t                             ->Get("h_"+varname)->Clone( "ST_t"                             ) ;
@@ -421,9 +459,9 @@ void plotter_stacked()
     h_WZToLNu2QorQQ2L                   = (TH1F*)file_WZToLNu2QorQQ2L                  ->Get("h_"+varname)->Clone( "WZToLNu2QorQQ2L"                  ) ;
     //h_WZToLNu2QorQQ2L->Scale(35900.0/20000.0); 
     
-    h_ZG                                = (TH1F*)file_ZG                               ->Get("h_"+varname)->Clone( "ZG"                               ) ;
+    h_ZG                               = (TH1F*)file_ZG                               ->Get("h_"+varname)->Clone( "ZG"                               ) ;
     //h_ZG->Scale(35900.0/20000.0); 
-    //h_ZH_HToBB_ZToLL                    = (TH1F*)file_ZH_HToBB_ZToLL                   ->Get("h_"+varname)->Clone( "ZH_HToBB_ZToLL"                   ) ;
+    h_ZH_HToBB_ZToLL                    = (TH1F*)file_ZH_HToBB_ZToLL                   ->Get("h_"+varname)->Clone( "ZH_HToBB_ZToLL"                   ) ;
     h_ZZ                                = (TH1F*)file_ZZ                               ->Get("h_"+varname)->Clone( "ZZ"                               ) ;
     h_ZZToLLNuNu                        = (TH1F*)file_ZZToLLNuNu                       ->Get("h_"+varname)->Clone( "ZZToLLNuNu"                       ) ;
     //h_ZZToLLNuNu->Scale(35900.0/20000.0); 
@@ -436,13 +474,27 @@ void plotter_stacked()
     
     h_ZZToLLLL                          = (TH1F*)file_ZZToLLLL                         ->Get("h_"+varname)->Clone( "ZZToLLLL"                         ) ;
     //h_ZZToLLLL->Scale(35900.0/20000.0); 
-    //h_SingleElectron                    = (TH1F*)file_SingleElectron                   ->Get("h_"+varname)->Clone( "SingleElectron"                   ) ;
-    h_SingleMuon                        = (TH1F*)file_SingleMuon                       ->Get("h_"+varname)->Clone( "SingleMuon"                       ) ;
+    h_SingleElectronGood                = (TH1F*)file_SingleElectronGood               ->Get("h_"+varname)->Clone( "SingleElectronGood"               ) ;
+    h_SingleElectronGood->Scale(35917.4/16203.725);
+    h_SingleMuonGood                    = (TH1F*)file_SingleMuonGood                   ->Get("h_"+varname)->Clone( "SingleMuonGood"                   ) ;
+    h_SingleMuonGood->Scale(35917.4/16226.445);
+    h_SingleElectronHIP                 = (TH1F*)file_SingleElectronHIP                ->Get("h_"+varname)->Clone( "SingleElectronHIP"                ) ;
+    h_SingleElectronHIP->Scale(35917.4/19695.05);
+    h_SingleMuonHIP                     = (TH1F*)file_SingleMuonHIP                    ->Get("h_"+varname)->Clone( "SingleMuonHIP"                    ) ;
+    h_SingleMuonHIP->Scale(35917.4/19690.94);
+    
+//cout<<"test"<<endl;
+    h_DoubleEGGood                      = (TH1F*)file_DoubleEGGood                     ->Get("h_"+varname)->Clone( "DoubleEGGood"                     ) ;
+//    h_DoubleEGGood->Scale(35917.4/16226.445); 
+    h_DoubleMuGood                      = (TH1F*)file_DoubleMuGood                     ->Get("h_"+varname)->Clone( "DoubleMuGood"                     ) ;
+//    h_DoubleMuGood->Scale(35917.4/16226.445);
+//    h_DoubleEGHIP                       = (TH1F*)file_DoubleEGHIP                      ->Get("h_"+varname)->Clone( "DoubleEGHIP"                      ) ;
+    //h_DoubleEGHIP->Scale(35917.4/19695.0);
+//    h_DoubleMuHIP                       = (TH1F*)file_DoubleMuHIP                      ->Get("h_"+varname)->Clone( "DoubleMuHIP"                      ) ;
+    //h_DoubleMuHIP->Scale(35917.4/19690.94);
     //h_DoubleEG                          = (TH1F*)file_DoubleEG                         ->Get("h_"+varname)->Clone( "DoubleEG"                         ) ;
     //h_DoubleMuon                        = (TH1F*)file_DoubleMuon                       ->Get("h_"+varname)->Clone( "DoubleMuon"                       ) ;
     //h_MuonEG                            = (TH1F*)file_MuonEG                           ->Get("h_"+varname)->Clone( "MuonEG"                           ) ;
-
-
     // integrals of histograms
     Double_t int_DY5to50_HT100To200                = h_DY5to50_HT100To200               ->Integral(0,-1) ; 
     Double_t int_DY5to50_HT200To400                = h_DY5to50_HT200To400               ->Integral(0,-1) ; 
@@ -451,13 +503,13 @@ void plotter_stacked()
     Double_t int_DY10to50                          = h_DY10to50                         ->Integral(0,-1) ; 
     Double_t int_DY50                              = h_DY50                             ->Integral(0,-1) ;
     Double_t int_ggZH_HToBB_ZToLL                  = h_ggZH_HToBB_ZToLL                 ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
-//    Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0      = h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS0p05   = h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1      = h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10     = h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS100    = h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS1000   = h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Integral(0,-1) ;
+    //Double_t int_ggZH_HToSSTobbbb_MS40_ctauS10000  = h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Integral(0,-1) ;
     Double_t int_GJets_HT40To100                   = h_GJets_HT40To100                  ->Integral(0,-1) ;
     Double_t int_GJets_HT100To200                  = h_GJets_HT100To200                 ->Integral(0,-1) ;
     Double_t int_GJets_HT200To400                  = h_GJets_HT200To400                 ->Integral(0,-1) ;
@@ -487,12 +539,18 @@ void plotter_stacked()
     Double_t int_ZZToLLQQ                          = h_ZZToLLQQ                         ->Integral(0,-1) ;
     Double_t int_ZZToNuNuQQ                        = h_ZZToNuNuQQ                       ->Integral(0,-1) ;
     Double_t int_ZZToLLLL                          = h_ZZToLLLL                         ->Integral(0,-1) ;
-    //Double_t int_SingleElectron                    = h_SingleElectron                   ->Integral(0,-1) ;
-    Double_t int_SingleMuon                        = h_SingleMuon                       ->Integral(0,-1) ;
+    Double_t int_SingleElectronGood                = h_SingleElectronGood               ->Integral(0,-1) ;
+    Double_t int_SingleMuonGood                    = h_SingleMuonGood                   ->Integral(0,-1) ;
+    Double_t int_SingleElectronHIP                 = h_SingleElectronHIP                ->Integral(0,-1) ;
+    Double_t int_SingleMuonHIP                     = h_SingleMuonHIP                    ->Integral(0,-1) ;
     //Double_t int_DoubleEG                          = h_DoubleEG                         ->Integral(0,-1) ;
     //Double_t int_DoubleMuon                        = h_DoubleMuon                       ->Integral(0,-1) ;
     //Double_t int_MuonEG                            = h_MuonEG                           ->Integral(0,-1) ;
 
+    //    cout <<"DataEg: "<<int_SingleElectronGood<<endl;
+    //    cout <<"DataEH: "<<int_SingleElectronHIP<<endl;
+    //    cout <<"DataMg: "<<int_SingleMuonGood<<endl;
+    //    cout <<"DataMh: "<<int_SingleMuonHIP<<endl;
 
     FILE * outtable;
     outtable = fopen (logname+".tex","w");
@@ -546,20 +604,20 @@ void plotter_stacked()
      fprintf (outtable, " \\Large Data \\\\\n");
      fprintf (outtable, " \\hline \n");
      //fprintf (outtable, "SingleElectron                    & %3.1f  \\\\\n", int_SingleElectron                   ) ;
-     fprintf (outtable, "SingleMuon                        & %3.1f  \\\\\n", int_SingleMuon                       ) ;
+     //fprintf (outtable, "SingleMuon                        & %3.1f  \\\\\n", int_SingleMuon                       ) ;
      //fprintf (outtable, "DoubleEG                          & %3.1f  \\\\\n", int_DoubleEG                         ) ;
      //fprintf (outtable, "DoubleMuon                        & %3.1f  \\\\\n", int_DoubleMuon                       ) ;
      //fprintf (outtable, "MuonEG                            & %3.1f  \\\\\n", int_MuonEG                           ) ;
      fprintf (outtable, " \\hline \n");
-//     fprintf (outtable, "Signal (only relative matters (xc = 1 ) \\\\\n");
-//     fprintf (outtable, " \\hline \n");
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
-//     fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
+     //fprintf (outtable, "Signal (only relative matters (xc = 1 ) \\\\\n");
+     //fprintf (outtable, " \\hline \n");
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
+     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
      fprintf (outtable, "\\end{tabular}\n\n");
      fprintf (outtable, "\\end{document}\n\n");
     fclose (outtable);
@@ -571,7 +629,7 @@ void plotter_stacked()
      h_DY->Add(h_DY5to50_HT200To400); 
      h_DY->Add(h_DY5to50_HT400To600); 
      h_DY->Add(h_DY5to50_HT600ToInf); 
-     h_DY->Add(h_DY10to50           ); 
+     //h_DY->Add(h_DY10to50           ); 
 
     h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
      h_GJets->Add(h_GJets_HT100To200);
@@ -588,30 +646,28 @@ void plotter_stacked()
     h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
      h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
-    h_VV = (TH1F*)h_WWToLNuLNu->Clone("h_VV");
-     h_VV->Add(h_WW             ) ;
-//     h_VV->Add(h_WG             ) ;
-     h_VV->Add(h_WWToLNuLNu     ) ;
-     h_VV->Add(h_WWToLNuQQ      ) ;
+    h_VV = (TH1F*)h_WW->Clone("h_VV");
+     //h_VV->Add(h_WW             ) ;
+     //h_VV->Add(h_WWToLNuLNu     ) ;
+     //h_VV->Add(h_WWToLNuQQ      ) ;
      h_VV->Add(h_WZToL3Nu       ) ;
      h_VV->Add(h_WZTo3LNu       ) ;
      h_VV->Add(h_WZToLNu2QorQQ2L) ;
-//     h_VV->Add(h_ZG             ) ;
      h_VV->Add(h_ZZ             ) ;
-     h_VV->Add(h_ZZToLLNuNu     ) ;
-     h_VV->Add(h_ZZToLLQQ       ) ;
-     h_VV->Add(h_ZZToNuNuQQ     ) ;
-     h_VV->Add(h_ZZToLLLL       ) ;
+     //h_VV->Add(h_ZZToLLNuNu     ) ;
+     //h_VV->Add(h_ZZToLLQQ       ) ;
+     //h_VV->Add(h_ZZToNuNuQQ     ) ;
+     //h_VV->Add(h_ZZToLLLL       ) ;
 
-    h_TT = (TH1F*)h_TTtoLL->Clone("h_TT");
-     h_TT->Add(h_TTtoLfromTbar );
-     h_TT->Add(h_TTtoLfromT    );
-     h_TT->Add(h_TTJets        );
-     cout << "h_TT: " << h_TT->GetMaximum()<< endl;
+    h_TT = (TH1F*)h_TTJets->Clone("h_TT");
+     //h_TT->Add(h_TTtoLfromTbar );
+     //h_TT->Add(h_TTtoLfromT    );
+     //h_TT->Add(h_TTtoLL        );
+     //cout << "h_TT: " << h_TT->GetMaximum()<< endl;
 
-     cout << "h_TTtoLL: " << h_TTtoLL->Integral()<< endl;
-     cout << "h_TTtoLfromTbar: " << h_TTtoLfromTbar->Integral() << endl;
-     cout << "h_TTtoLfromT: " << h_TTtoLfromT->Integral() << endl;
+     //cout << "h_TTtoLL: " << h_TTtoLL->Integral()<< endl;
+     //cout << "h_TTtoLfromTbar: " << h_TTtoLfromTbar->Integral() << endl;
+     //cout << "h_TTtoLfromT: " << h_TTtoLfromT->Integral() << endl;
    
 
     h_VG = (TH1F*)h_WG->Clone("h_VG");
@@ -622,7 +678,7 @@ void plotter_stacked()
      h_Totbkg->Add(h_DY5to50_HT200To400) ; 
      h_Totbkg->Add(h_DY5to50_HT400To600) ; 
      h_Totbkg->Add(h_DY5to50_HT600ToInf) ; 
-     h_Totbkg->Add(h_DY10to50          ) ; 
+     //h_Totbkg->Add(h_DY10to50          ) ; 
      h_Totbkg->Add(h_ggZH_HToBB_ZToLL) ;
      h_Totbkg->Add(h_GJets_HT40To100 ) ;
      h_Totbkg->Add(h_GJets_HT100To200) ;
@@ -634,35 +690,42 @@ void plotter_stacked()
      h_Totbkg->Add(h_ST_t            ) ;
      h_Totbkg->Add(h_STbar_tW        ) ;
      h_Totbkg->Add(h_ST_tW           ) ;
-     h_Totbkg->Add(h_TTtoLL          ) ;
+    // h_Totbkg->Add(h_TTtoLL          ) ;
      h_Totbkg->Add(h_TTJets          ) ;
-     h_Totbkg->Add(h_TTtoLfromTbar   ) ;
-     h_Totbkg->Add(h_TTtoLfromT      ) ;
+    // h_Totbkg->Add(h_TTtoLfromTbar   ) ;
+    // h_Totbkg->Add(h_TTtoLfromT      ) ;
      h_Totbkg->Add(h_WW              ) ;
      h_Totbkg->Add(h_WG              ) ;
      h_Totbkg->Add(h_WJetsToLNu      ) ;
-     h_Totbkg->Add(h_WWToLNuLNu      ) ;
-     h_Totbkg->Add(h_WWToLNuQQ       ) ;
+    // h_Totbkg->Add(h_WWToLNuLNu      ) ;
+    // h_Totbkg->Add(h_WWToLNuQQ       ) ;
      h_Totbkg->Add(h_WZToL3Nu        ) ;
      h_Totbkg->Add(h_WZTo3LNu        ) ;
      h_Totbkg->Add(h_WZToLNu2QorQQ2L ) ;
      h_Totbkg->Add(h_ZG              ) ;
      h_Totbkg->Add(h_ZZ              ) ;
      h_Totbkg->Add(h_ZH_HToBB_ZToLL  ) ;
-     h_Totbkg->Add(h_ZZToLLNuNu      ) ;
-     h_Totbkg->Add(h_ZZToLLQQ        ) ;
-     h_Totbkg->Add(h_ZZToNuNuQQ      ) ;
-     h_Totbkg->Add(h_ZZToLLLL        ) ;
+    // h_Totbkg->Add(h_ZZToLLNuNu      ) ;
+    // h_Totbkg->Add(h_ZZToLLQQ        ) ;
+    // h_Totbkg->Add(h_ZZToNuNuQQ      ) ;
+    // h_Totbkg->Add(h_ZZToLLLL        ) ;
 
+     //cout<<"test2"<<endl;
      h_Data = (TH1F*)h_DY50->Clone("h_Data");
      h_Data->Reset();
-
+     //cout<<"test3"<<endl;
     // set data set(s) to use
     if( lepton=="ele"){
-      //h_Data = (TH1F*)h_SingleElectron->Clone("h_Data");
+      if(HIP) h_Data = (TH1F*)h_DoubleEGHIP->Clone("h_Data");
+      else h_Data = (TH1F*)h_DoubleEGGood->Clone("h_Data");
+      //if(HIP) h_Data = (TH1F*)h_SingleElectronHIP->Clone("h_Data");
+      //else h_Data = (TH1F*)h_SingleElectronGood->Clone("h_Data");
     }
     else if( lepton=="mu"){
-      h_Data = (TH1F*)h_SingleMuon->Clone("h_Data");
+     if(HIP) h_Data = (TH1F*)h_DoubleMuHIP->Clone("h_Data");
+     else    h_Data = (TH1F*)h_DoubleMuGood->Clone("h_Data");
+     //if(HIP) h_Data = (TH1F*)h_SingleMuonHIP->Clone("h_Data");
+     //else    h_Data = (TH1F*)h_SingleMuonGood->Clone("h_Data");
     }
     else{
       //h_Data = (TH1F*)h_SingleElectron->Clone("h_Data");
@@ -670,15 +733,15 @@ void plotter_stacked()
     }
 
     // count + ratio
-    Double_t int_DY     = h_DY     ->Integral(0,-1) ; 
-    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; 
-    Double_t int_ST     = h_ST     ->Integral(0,-1) ; 
-    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; 
-    Double_t int_VV     = h_VV     ->Integral(0,-1) ; 
-    Double_t int_TT     = h_TT     ->Integral(0,-1) ; 
-    Double_t int_VG     = h_VG     ->Integral(0,-1) ; 
-    Double_t int_Totbkg = h_Totbkg ->Integral(0,-1) ; 
-    Double_t int_Data   = h_Data   ->Integral(0,-1);
+    Double_t int_DY     = h_DY     ->Integral(0,-1) ; //cout <<"DY: "<<int_DY<<endl; 
+    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; //cout <<"GJets: "<<int_GJets<<endl;
+    Double_t int_ST     = h_ST     ->Integral(0,-1) ; //cout <<"ST: "<<int_ST<<endl;
+    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; //cout <<"ZH: "<<int_ZH<<endl; 
+    Double_t int_VV     = h_VV     ->Integral(0,-1) ; //cout <<"VV: "<<int_VV<<endl;
+    Double_t int_TT     = h_TT     ->Integral(0,-1) ; //cout <<"TT: "<<int_TT<<endl;
+    Double_t int_VG     = h_VG     ->Integral(0,-1) ; //cout <<"VG: "<<int_VG<<endl;
+    Double_t int_Totbkg = h_Totbkg ->Integral(0,-1) ; //cout <<"Totbkg: "<<int_Totbkg<<endl;
+    Double_t int_Data   = h_Data   ->Integral(0,-1);  //cout <<"Data: "<<int_Data<<endl;
     Double_t int_bkgOnData = int_Totbkg/int_Data;
 
     FILE * summarytable;
@@ -718,26 +781,29 @@ void plotter_stacked()
     h_VG         -> SetLineColor(kBlack); 
     h_ZH         -> SetLineColor(kBlack);
 
-//    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
-//
-//    h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
-//    h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
+
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
+    //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
 
     h_Data  -> SetLineColor(kBlack);
     h_Data  -> SetMarkerStyle(8);
     h_Data  -> SetMarkerSize(1);
     h_Data  -> SetLineWidth(3);
+    for(int i = 0; i<7; i++){
+    cout <<"BinContent("<<i<<"):  "<<h_TTJets  -> GetBinContent(i)<<endl;
+    }
 
     h_DY        ->SetFillStyle(1001);
     h_GJets     ->SetFillStyle(1001);
@@ -753,9 +819,9 @@ void plotter_stacked()
     h_ST        ->SetFillColor(kOrange+8);
     h_TT        ->SetFillColor(kGreen+1);
     h_WJetsToLNu->SetFillColor(kViolet-3);
-    h_VV        ->SetFillColor(kMagenta-31);
+    h_VV        ->SetFillColor(kRed);
     h_VG        ->SetFillColor(kPink+9);
-    h_ZH        ->SetFillColor(kMagenta+1);
+    h_ZH        ->SetFillColor(kCyan);
 
     std::vector<TH1F *> v = {h_DY, h_GJets, h_ST, h_TT, h_WJetsToLNu, h_VV, h_VG, h_ZH};
 
@@ -780,10 +846,14 @@ void plotter_stacked()
     bgstack->Add(h_VG         );
     bgstack->Add(h_ZH         );
     }
-    cout << "h_DY max " << h_DY->GetMaximum() << endl;
-    cout << "h_TT max " << h_TT->GetMaximum() << endl;
-    cout << "bgstack max "  << bgstack->GetMaximum() << endl;
-
+    //cout << "h_DY max " << h_DY->GetMaximum() << endl;
+    //cout << "h_TT max " << h_TT->GetMaximum() << endl;
+    //cout << "bgstack max "  << bgstack->GetMaximum() << endl;
+ 
+    double maxs[] = {h_DY->GetMaximum(), h_GJets->GetMaximum(), h_ST->GetMaximum(), h_TT->GetMaximum(), h_WJetsToLNu->GetMaximum(), h_VV->GetMaximum(), h_VG->GetMaximum(), h_ZH->GetMaximum()};
+    //for (int i = 0; i<8; i++){cout<<"Max: "<<maxs[i]<<endl;}
+    //double plot_max = *max_element(maxs,maxs+8);//cout<<"maximum: "<<plot_max<<endl;
+    double plot_max = h_Totbkg->GetMaximum();
     //if(dolog) bgstack->SetMinimum(1e-3);
 
 //    if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
@@ -809,14 +879,19 @@ void plotter_stacked()
 //    }
 
     // make legend
-    TLegend *leg = new TLegend(0.6,0.6,0.85,0.85);
+    TLegend *leg;
+    if(variable =="AllJets_AODCaloJetAlphaMax") leg = new TLegend(0.2,0.6,0.45,0.85);
+    else leg = new TLegend(0.6,0.6,0.85,0.85);
     leg->SetBorderSize(0);
     leg->SetFillColor(kWhite);
+    leg->SetNColumns(2);
     if( lepton=="ele"){
       //leg->AddEntry(h_Data      , "Data SingleEle", "lpe"); 
+      leg->AddEntry(h_Data      , "Data DoubleEG", "lpe"); 
     }
     else if( lepton=="mu"){
-      leg->AddEntry(h_Data      , "Data SingleMu", "lpe"); 
+      //leg->AddEntry(h_Data      , "Data SingleMu", "lpe"); 
+      leg->AddEntry(h_Data      , "Data DoubleMu", "lpe"); 
     }
     else{
       //leg->AddEntry(h_Data      , "Data Single Ele+Mu", "lpe");
@@ -831,32 +906,33 @@ void plotter_stacked()
     leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
 
      TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
-//    if(drawSignal){
-//     sigleg->SetBorderSize(0);
-//     sigleg->SetFillColor(kWhite);
-//     sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
-//     sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
-//    }
+   //if(drawSignal){
+     //sigleg->SetBorderSize(0);
+     //sigleg->SetFillColor(kWhite);
+     //sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
+     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
+    //}
 
     // set max and draw
-     
-    Double_t ymax = h_Data->GetMaximum(); //was Data
-    Double_t logmax = v[v.size()-1]->GetMaximum(); //was Data
+    Double_t ymax;
+    if(variable == "AllJets_AODCaloJetPhi" ||variable =="AllJets_AODCaloJetEta" || variable == "AllJets_AODCaloJetAlphaMax") ymax = 1.5*plot_max; 
+    else  ymax = plot_max;  //h_Data->GetMaximum(); //was Data
+    Double_t logmax = plot_max; //v[v.size()-1]->GetMaximum(); //was Data
     
     if(dolog){
-    //h_Data->SetMaximum(50000*logmax); //was Data
-    bgstack->SetMaximum(10000*logmax); //was Data
+    //h_Data ->SetMaximum(50000*logmax); //was Data
+    bgstack->SetMaximum(50000*logmax); //was Data
     bgstack->SetMinimum(1.0);
     } 
     else {
-    //h_Data->SetMaximum(ymax*0.2 + ymax); //was Data
-    bgstack->SetMaximum(ymax*2.0); //was Data
+    //h_Data ->SetMaximum(ymax*1.2); //was Data
+    bgstack->SetMaximum(ymax*1.2); //was Data
     }
     //h_Data->Draw("E");
      
@@ -887,27 +963,83 @@ void plotter_stacked()
     leg->Draw();
 
     // add titles
-    title->DrawTextNDC(0.23,0.91,"CMS");
-    extra->DrawTextNDC(0.33,0.91,"Preliminary");
+    title->DrawTextNDC(0.2,0.91,"CMS");
+    extra->DrawTextNDC(0.3,0.91,"Preliminary");
+    if(HIP)extra2->DrawTextNDC(0.51,0.91,"Eras B-F");
+    else extra2->DrawTextNDC(0.51,0.91,"Eras G, H");
     //lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
-    lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
+//    lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
+    lumi->DrawTextNDC(0.9,0.91,"16.23 /fb (13 TeV)");
     /*
    h_Data->GetXaxis()->SetTitle(h_Data->GetTitle());
     h_Data->GetYaxis()->SetTitle("Events / bin");
     h_Data->GetYaxis()->SetTitleOffset(1.5);
     h_Data->SetTitle("");
     */
-     cout << "test" << endl;
+    // cout << "test" << endl;
     gPad->Update();
     gPad->RedrawAxis();
 
+    canvas->Update();
+    canvas->cd();
+    TPad *pad2 = new TPad("pad2", "pad2", 0, 0.025, 1, 0.35);
+    pad2->SetTopMargin(0);
+    pad2->SetBottomMargin(0.1);
+    pad2->SetGrid();
+    pad2->Draw();
+    pad2->cd();
+    //(Data-MC)/MC
+    h_ratio = (TH1F*)h_DY50->Clone("h_ratio");
+    h_ratio->Reset();
+    h_ratio = (TH1F*)h_Data->Clone("h_ratio");
+    h_ratio->Add(h_Totbkg,-1);
+    h_ratio->Divide(h_Totbkg);
+    /*
+    double rmax = fabs(h_ratio->GetMaximum());
+    double rmin = fabs(h_ratio->GetMinimum());
+    double bound;
+    if(rmax>rmin) bound = rmax;
+    else bound = rmin;
+    cout<<"rmax: "<<rmax<<" rmin: "<<rmin<<" bound: "<<bound <<" max: "<<h_ratio->GetMaximum()<<" min: "<<h_ratio->GetMinimum()<<endl;
+    h_ratio->SetMaximum(bound);
+    h_ratio->SetMinimum(-1.0*bound);
+    cout <<"New Max: "<< h_ratio->GetMaximum()<<"  New Min: "<<h_ratio->GetMinimum()<<endl;
+    */
+    h_ratio->Draw("ep");
+    h_ratio->SetTitle(" ");
+    //Y axis
+    h_ratio->GetYaxis()->SetNdivisions(505);
+    h_ratio->GetYaxis()->SetTitleSize(10);
+    h_ratio->GetYaxis()->SetTitleFont(43);
+    h_ratio->GetYaxis()->SetTitleOffset(1.55);
+    h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+    h_ratio->GetYaxis()->SetLabelSize(10);
+    h_ratio->GetYaxis()->SetTitle("#frac{Data-MC}{MC}");
+
+    // X axis ratio plot settings
+    h_ratio->GetXaxis()->SetTitleSize(10);
+    h_ratio->GetXaxis()->SetTitleFont(25);
+    h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+    h_ratio->GetXaxis()->SetTitleOffset(4.0);
+    h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+    h_ratio->GetXaxis()->SetLabelSize(10);//20
+    h_ratio->SetMarkerStyle(20);
+    h_ratio->SetMarkerColor(kRed);
+    h_ratio->SetMarkerSize(1);
+    pad1->Modified();
+    pad1->Update();
+    pad2->Modified();
+    pad2->Update();
+    gPad->Update();
+    gPad->RedrawAxis();
+    canvas->Update();
+
     // save canvas
     //canvas->SaveAs(outname+".pdf");
-    canvas->SaveAs(outname+".png");
+    //canvas->SaveAs(outname+".png");
     canvas->SaveAs(outname+".pdf");
     //canvas->SaveAs(outpath+jettype+"_"+varname+extraname+".pdf");
 
    } 
   }
- }
 }

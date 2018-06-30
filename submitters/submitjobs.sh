@@ -5,10 +5,76 @@
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
-doSubmit=true
-lumi=20000  #20000   #20000     #35870
+doSubmit=false
+lumi=35917.4 #20000   #20000     #35870
 nevents=-1
 maxfilesperjob=200   # 500=6h
+
+
+samples=(  \
+  "DY5to50_HT100To200"              \
+  "DY5to50_HT200To400"              \
+  "DY5to50_HT400To600"              \
+  "DY5to50_HT600ToInf"              \
+  "DY10to50"                        \
+  "DY50"                            \
+  "ggZH_HToBB_ZToLL"                \
+  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
+  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
+  "ZH_HToSSTobbbb_MS15_ctauS1"      \
+  "ZH_HToSSTobbbb_MS15_ctauS10"     \
+  "ZH_HToSSTobbbb_MS15_ctauS100"    \
+  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
+  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
+  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
+  "ZH_HToSSTobbbb_MS40_ctauS1"      \
+  "ZH_HToSSTobbbb_MS40_ctauS10"     \
+  "ZH_HToSSTobbbb_MS40_ctauS100"    \
+  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
+  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
+  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
+  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
+  "ZH_HToSSTobbbb_MS55_ctauS1"      \
+  "ZH_HToSSTobbbb_MS55_ctauS10"     \
+  "ZH_HToSSTobbbb_MS55_ctauS100"    \
+  "GJets_HT40To100"                 \
+  "GJets_HT100To200"                \
+  "GJets_HT200To400"                \
+  "GJets_HT400To600"                \
+  "GJets_HT600ToInf"                \
+  "ST_s"                            \
+  "STbar_t"                         \
+  "ST_t"                            \
+  "STbar_tW"                        \
+  "ST_tW"                           \
+  "TTtoLL"                          \
+  "TTJets"                          \
+  "TTtoLfromTbar"                   \
+  "TTtoLfromT"                      \
+  "WG"                              \
+  "WJetsToLNu"                      \
+  "WW"                              \
+  "WWToLNuLNu"                      \
+  "WWToLNuQQ"                       \
+  "WZ"                              \
+  "WZToL3Nu"                        \
+  "WZTo3LNu"                        \
+  "WZToLNu2QorQQ2L"                 \
+  "ZG"                              \
+  "ZH_HToBB_ZToLL"                  \
+  "ZZ"                              \
+  "ZZToLLNuNu"                      \
+  "ZZToLLQQ"                        \
+  "ZZToNuNuQQ"                      \
+  "ZZToLLLL"                        \
+)
+#  "Data_SingleEle_H_3"              \
+#  "Data_SingleMu_H_2"               \
+#  "Data_SinglePhoton_H_2"           \
 
 # Signal Samples
 #  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
@@ -124,11 +190,6 @@ maxfilesperjob=200   # 500=6h
 #  "DY5to50_HT600toInf_1" \
 #  "DY5to50_HT600toInf_2" \
 
-samples=(  \
- # "samplename"                 
-)
-
-
 printf "Version: ${aversion}\n"
 
 makeasubmitdir () {
@@ -164,6 +225,8 @@ makeasubmitdir () {
  haddfile_DY_histograms="./haddit_DY_histograms.sh"
  haddfile_OffZ_histograms="./haddit_OffZ_histograms.sh"
  haddfile_NoPair_histograms="./haddit_NoPair_histograms.sh"
+ haddfile_CRHeavy_histograms="./haddit_CRHeavy_histograms.sh"
+ haddfile_CRLight_histograms="./haddit_CRLight_histograms.sh"
  haddfile_OPTtree="./haddit_OPTtree.sh"
  haddfile_BkgEst="./haddit_BkgEst.sh"
 
@@ -175,6 +238,8 @@ makeasubmitdir () {
  printf "#!/bin/bash\n\n" > ${haddfile_DY_histograms}    
  printf "#!/bin/bash\n\n" > ${haddfile_OffZ_histograms}  
  printf "#!/bin/bash\n\n" > ${haddfile_NoPair_histograms}
+ printf "#!/bin/bash\n\n" > ${haddfile_CRHeavy_histograms}
+ printf "#!/bin/bash\n\n" > ${haddfile_CRLight_histograms}
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
  printf "#!/bin/bash\n\n" > ${haddfile_BkgEst}
 
@@ -190,6 +255,8 @@ makeasubmitdir () {
  printf "hadd ${hadddir}/$1_DY_histograms.root"     >> ${haddfile_DY_histograms}     
  printf "hadd ${hadddir}/$1_OffZ_histograms.root"   >> ${haddfile_OffZ_histograms}   
  printf "hadd ${hadddir}/$1_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
+ printf "hadd ${hadddir}/$1_CRHeavy_histograms.root">> ${haddfile_CRHeavy_histograms} 
+ printf "hadd ${hadddir}/$1_CRLight_histograms.root">> ${haddfile_CRLight_histograms} 
  printf "hadd ${hadddir}/$1_OPTtree.root"           >> ${haddfile_OPTtree}           
  printf "hadd ${hadddir}/$1_BkgEst.root"            >> ${haddfile_BkgEst}           
 
@@ -214,6 +281,8 @@ makeasubmitdir () {
   printf "\\" >> ${haddfile_DY_histograms}     
   printf "\\" >> ${haddfile_OffZ_histograms}   
   printf "\\" >> ${haddfile_NoPair_histograms} 
+  printf "\\" >> ${haddfile_CRHeavy_histograms} 
+  printf "\\" >> ${haddfile_CRLight_histograms} 
   printf "\\" >> ${haddfile_OPTtree}           
   printf "\\" >> ${haddfile_BkgEst}
 
@@ -223,6 +292,8 @@ makeasubmitdir () {
   printf "\n $(pwd)/$1_${jobfilenr}_DY_histograms.root" >> ${haddfile_DY_histograms}     
   printf "\n $(pwd)/$1_${jobfilenr}_OffZ_histograms.root" >> ${haddfile_OffZ_histograms}   
   printf "\n $(pwd)/$1_${jobfilenr}_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
+  printf "\n $(pwd)/$1_${jobfilenr}_CRHeavy_histograms.root" >> ${haddfile_CRHeavy_histograms} 
+  printf "\n $(pwd)/$1_${jobfilenr}_CRLight_histograms.root" >> ${haddfile_CRLight_histograms} 
   printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root" >> ${haddfile_OPTtree}           
   printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root" >> ${haddfile_BkgEst}
 
@@ -242,6 +313,8 @@ makeasubmitdir () {
  printf "\n\n" >> ${haddfile_DY_histograms}     
  printf "\n\n" >> ${haddfile_OffZ_histograms}   
  printf "\n\n" >> ${haddfile_NoPair_histograms} 
+ printf "\n\n" >> ${haddfile_CRHeavy_histograms} 
+ printf "\n\n" >> ${haddfile_CRLight_histograms} 
  printf "\n\n" >> ${haddfile_OPTtree}           
  printf "\n\n" >> ${haddfile_BkgEst}
 
@@ -262,6 +335,9 @@ do
  then
   mc=""
  elif [[ ${sample} == "Double"* ]]
+ then
+  mc=""
+ elif [[ ${sample} == "Data"* ]]
  then
   mc=""
  elif [[ ${sample} == "MuonEG"* ]]
