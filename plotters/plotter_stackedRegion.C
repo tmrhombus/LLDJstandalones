@@ -140,7 +140,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 //  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
 //  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
 //  variables.push_back("AllJets_AODCaloJetAlphaMax");
-  variables.push_back("AllJets_AODCaloJetPt");                      
+//  variables.push_back("AllJets_AODCaloJetPt");                      
 //  variables.push_back("AllJets_AODCaloJetEta");                     
 //  variables.push_back("AllJets_AODCaloJetPhi");                     
 //  variables.push_back("Cutflow");                     
@@ -149,6 +149,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 //  variables.push_back("AOD_dilepton_Mass");                     
 //  variables.push_back("AOD_elePt");                     
 //  variables.push_back("AOD_muPt");                     
+  variables.push_back("AOD_eleEta");                     
+  variables.push_back("AOD_muEta");                     
 
  // initialize histogram files 
 
@@ -156,8 +158,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TFile* file_SingleMuonHIP                       ; 
  TFile* file_SingleElectronGood                  ; 
  TFile* file_SingleMuonGood                      ; 
-// TFile* file_DoubleEGHIP                         ; 
-// TFile* file_DoubleMuHIP                         ; 
+ TFile* file_DoubleEGHIP                         ; 
+ TFile* file_DoubleMuHIP                         ; 
  TFile* file_DoubleEGGood                        ; 
  TFile* file_DoubleMuGood                        ; 
  TFile* file_DY50                                ;
@@ -326,8 +328,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_SingleMuonHIP                     = new TFile( inpath + "Data_SingleMu_HIP_"+region+"_histograms.root"                ) ;
  file_DoubleEGGood                      = new TFile( inpath + "Data_DoubleEG_Good_"+region+"_histograms.root"               ) ;
  file_DoubleMuGood                      = new TFile( inpath + "Data_DoubleMu_Good_"+region+"_histograms.root"               ) ;
-// file_DoubleEGHIP                       = new TFile( inpath + "Data_DoubleEG_HIP_"+region+"_histograms.root"                ) ;
-// file_DoubleMuHIP                       = new TFile( inpath + "Data_DoubleMu_HIP_"+region+"_histograms.root"                ) ;
+ file_DoubleEGHIP                       = new TFile( inpath + "Data_DoubleEG_HIP_"+region+"_histograms.root"                ) ;
+ file_DoubleMuHIP                       = new TFile( inpath + "Data_DoubleMu_HIP_"+region+"_histograms.root"                ) ;
 // file_DoubleEG                          = new TFile( inpath + "DoubleEG_"+region+"_histograms.root"                         ) ;
 // file_DoubleMuon                        = new TFile( inpath + "DoubleMuon_"+region+"_histograms.root"                       ) ;
 // file_MuonEG                            = new TFile( inpath + "MuonEG_"+region+"_histograms.root"                           ) ;
@@ -483,15 +485,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_SingleMuonHIP                     = (TH1F*)file_SingleMuonHIP                    ->Get("h_"+varname)->Clone( "SingleMuonHIP"                    ) ;
     h_SingleMuonHIP->Scale(35917.4/19690.94);
     
-//cout<<"test"<<endl;
     h_DoubleEGGood                      = (TH1F*)file_DoubleEGGood                     ->Get("h_"+varname)->Clone( "DoubleEGGood"                     ) ;
 //    h_DoubleEGGood->Scale(35917.4/16226.445); 
     h_DoubleMuGood                      = (TH1F*)file_DoubleMuGood                     ->Get("h_"+varname)->Clone( "DoubleMuGood"                     ) ;
 //    h_DoubleMuGood->Scale(35917.4/16226.445);
-//    h_DoubleEGHIP                       = (TH1F*)file_DoubleEGHIP                      ->Get("h_"+varname)->Clone( "DoubleEGHIP"                      ) ;
-    //h_DoubleEGHIP->Scale(35917.4/19695.0);
-//    h_DoubleMuHIP                       = (TH1F*)file_DoubleMuHIP                      ->Get("h_"+varname)->Clone( "DoubleMuHIP"                      ) ;
-    //h_DoubleMuHIP->Scale(35917.4/19690.94);
+    h_DoubleEGHIP                       = (TH1F*)file_DoubleEGHIP                      ->Get("h_"+varname)->Clone( "DoubleEGHIP"                      ) ;
+//    h_DoubleEGHIP->Scale(35917.4/19695.0);
+    h_DoubleMuHIP                       = (TH1F*)file_DoubleMuHIP                      ->Get("h_"+varname)->Clone( "DoubleMuHIP"                      ) ;
+//    h_DoubleMuHIP->Scale(35917.4/19690.94);
     //h_DoubleEG                          = (TH1F*)file_DoubleEG                         ->Get("h_"+varname)->Clone( "DoubleEG"                         ) ;
     //h_DoubleMuon                        = (TH1F*)file_DoubleMuon                       ->Get("h_"+varname)->Clone( "DoubleMuon"                       ) ;
     //h_MuonEG                            = (TH1F*)file_MuonEG                           ->Get("h_"+varname)->Clone( "MuonEG"                           ) ;
@@ -713,7 +714,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      //cout<<"test2"<<endl;
      h_Data = (TH1F*)h_DY50->Clone("h_Data");
      h_Data->Reset();
-     //cout<<"test3"<<endl;
+    
     // set data set(s) to use
     if( lepton=="ele"){
       if(HIP) h_Data = (TH1F*)h_DoubleEGHIP->Clone("h_Data");
