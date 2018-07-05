@@ -57,6 +57,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
  TString mdcommand = (TString)"mkdir -p "+outpath.Data();
  const int dir_err = system(mdcommand);
+ TString mdcommandtable = (TString)"mkdir -p "+outpath.Data()+"tables/";
+ const int dir_err2 = system(mdcommandtable);
 
  //if(drawSignal){extraname+="_wsig";}
  // lepton flavor
@@ -436,6 +438,19 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_altVV ;
  TH1F* h_altTT ;
 
+ TH1F* h_Sig_MS15ct1000 ;
+ TH1F* h_Sig_MS15ct100  ;
+ TH1F* h_Sig_MS15ct10   ;
+ TH1F* h_Sig_MS15ct1    ;
+ TH1F* h_Sig_MS40ct1000 ;
+ TH1F* h_Sig_MS40ct100  ;
+ TH1F* h_Sig_MS40ct10   ;
+ TH1F* h_Sig_MS40ct1    ;
+ TH1F* h_Sig_MS55ct1000 ;
+ TH1F* h_Sig_MS55ct100  ;
+ TH1F* h_Sig_MS55ct10   ;
+ TH1F* h_Sig_MS55ct1    ;
+
  TH1F* h_Data   ;
 
  // load histogram files
@@ -557,7 +572,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     printf("plotting  h_%s \n",varname.Data());
 
     TString outname = outpath+varname+extraname; 
-    TString logname = outpath+"logs/"+varname+extraname; 
+    TString fulllogname = outpath+"tables/full_"+varname+extraname; 
+    TString smalllogname = outpath+"tables/small_"+varname+extraname; 
+    TString tinylogname = outpath+"tables/tiny_"+varname+extraname; 
     //cout << "logname: " << logname << endl;
 
     // get histograms from files
@@ -809,32 +826,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     // Integrals
     Float_t  int_DY5to50_HT100To200       = h_DY5to50_HT100To200              ->Integral(0,-1); 
@@ -905,6 +896,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Float_t  int_Sig_ggZH_MS55ct10        = h_Sig_ggZH_MS55ct10               ->Integral(0,-1);                   
     Float_t  int_Sig_ggZH_MS55ct1         = h_Sig_ggZH_MS55ct1                ->Integral(0,-1);                   
 
+    // integrals of summed histograms
     Float_t int_DY        = h_DY       ->Integral(0,-1); 
     Float_t int_altDY     = h_altDY    ->Integral(0,-1); 
     Float_t int_GJets     = h_GJets    ->Integral(0,-1); 
@@ -916,6 +908,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Float_t int_altTT     = h_altTT    ->Integral(0,-1); 
     Float_t int_VG        = h_VG       ->Integral(0,-1); 
     Float_t int_bkgtotal  = h_bkgtotal ->Integral(0,-1); 
+    Float_t int_Data      = h_Data     ->Integral(0,-1); 
+    Float_t int_bkgOnData = (double)int_bkgtotal / int_Data ;
     Float_t int_Sig_MS15ct1000 = h_Sig_MS15ct1000 ->Integral(0,-1);
     Float_t int_Sig_MS15ct100  = h_Sig_MS15ct100  ->Integral(0,-1);
     Float_t int_Sig_MS15ct10   = h_Sig_MS15ct10   ->Integral(0,-1);
@@ -953,7 +947,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     // Float_t  int_Data_SinglePhoton_D      = h_Data_SinglePhoton_D             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_C      = h_Data_SinglePhoton_C             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_B_2    = h_Data_SinglePhoton_B_2           ->Integral(0,-1);                     
-    // Float_t  int_Data_DoubleMu_H_3        = h_Data_DoubleMu_H_3               ->Integral(0,-1);                     
+    Float_t  int_Data_DoubleMu_H_3        = h_Data_DoubleMu_H_3               ->Integral(0,-1);                     
     Float_t  int_Data_DoubleMu_H_2        = h_Data_DoubleMu_H_2               ->Integral(0,-1);                     
     Float_t  int_Data_DoubleMu_G          = h_Data_DoubleMu_G                 ->Integral(0,-1);                     
     Float_t  int_Data_DoubleMu_F          = h_Data_DoubleMu_F                 ->Integral(0,-1);                     
@@ -974,239 +968,262 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
 
     
-//    // Math
-    Float_t int_testDY
+    // Math
 
-    Float_t int_Data_SingleEleBCDEF =
-             int_Data_SingleEle_B_2 +
-             int_Data_SingleEle_C   +
-             int_Data_SingleEle_D   +
-             int_Data_SingleEle_E   +
-             int_Data_SingleEle_F   ;
-//    Float_t  int_DY5to50_HT100To200       = h_DY5to50_HT100To200              ->Integral(0,-1); 
-//    Float_t  int_DY5to50_HT200To400       = h_DY5to50_HT200To400              ->Integral(0,-1); 
-//    Float_t  int_DY5to50_HT400To600       = h_DY5to50_HT400To600              ->Integral(0,-1); 
-//    Float_t  int_DY5to50_HT600ToInf       = h_DY5to50_HT600ToInf              ->Integral(0,-1); 
-//    Float_t  int_DY10to50                 = h_DY10to50                        ->Integral(0,-1); 
-//    Float_t  int_DY50                     = h_DY50                            ->Integral(0,-1); 
-//
-//    Float_t  int_ggZH_HToBB_ZToLL         = h_ggZH_HToBB_ZToLL                ->Integral(0,-1); 
-//    Float_t  int_ZH_HToBB_ZToLL           = h_ZH_HToBB_ZToLL                  ->Integral(0,-1); 
-//
-//    Float_t  int_GJets_HT40To100          = h_GJets_HT40To100                 ->Integral(0,-1); 
-//    Float_t  int_GJets_HT100To200         = h_GJets_HT100To200                ->Integral(0,-1); 
-//    Float_t  int_GJets_HT200To400         = h_GJets_HT200To400                ->Integral(0,-1); 
-//    Float_t  int_GJets_HT400To600         = h_GJets_HT400To600                ->Integral(0,-1); 
-//    Float_t  int_GJets_HT600ToInf         = h_GJets_HT600ToInf                ->Integral(0,-1); 
-//
-//    Float_t  int_ST_s                     = h_ST_s                            ->Integral(0,-1); 
-//    Float_t  int_STbar_t                  = h_STbar_t                         ->Integral(0,-1); 
-//    Float_t  int_ST_t                     = h_ST_t                            ->Integral(0,-1); 
-//    Float_t  int_STbar_tW                 = h_STbar_tW                        ->Integral(0,-1); 
-//    Float_t  int_ST_tW                    = h_ST_tW                           ->Integral(0,-1); 
-//
-//    Float_t  int_TTJets                   = h_TTJets                          ->Integral(0,-1); 
-//    Float_t  int_TTtoLL                   = h_TTtoLL                          ->Integral(0,-1); 
-//    Float_t  int_TTtoLfromTbar            = h_TTtoLfromTbar                   ->Integral(0,-1); 
-//    Float_t  int_TTtoLfromT               = h_TTtoLfromT                      ->Integral(0,-1); 
-//    Float_t  int_WJetsToLNu               = h_WJetsToLNu                      ->Integral(0,-1); 
-//    Float_t  int_WG                       = h_WG                              ->Integral(0,-1); 
-//    Float_t  int_ZG                       = h_ZG                              ->Integral(0,-1); 
-//    Float_t  int_WW                       = h_WW                              ->Integral(0,-1); 
-//    Float_t  int_WZ                       = h_WZ                              ->Integral(0,-1); 
-//    Float_t  int_ZZ                       = h_ZZ                              ->Integral(0,-1); 
-//    Float_t  int_WWTo2L2Nu                = h_WWTo2L2Nu                       ->Integral(0,-1); 
-//    Float_t  int_WWToLNuQQ                = h_WWToLNuQQ                       ->Integral(0,-1); 
-//    Float_t  int_WZTo1L3Nu                = h_WZTo1L3Nu                       ->Integral(0,-1); 
-//    Float_t  int_WZTo3LNu                 = h_WZTo3LNu                        ->Integral(0,-1); 
-//    Float_t  int_WZToLNu2QorQQ2L          = h_WZToLNu2QorQQ2L                 ->Integral(0,-1); 
-//    Float_t  int_ZZTo2L2Nu                = h_ZZTo2L2Nu                       ->Integral(0,-1); 
-//    Float_t  int_ZZTo2L2Q                 = h_ZZTo2L2Q                        ->Integral(0,-1); 
-//    Float_t  int_ZZTo2Q2Nu                = h_ZZTo2Q2Nu                       ->Integral(0,-1); 
-//    Float_t  int_ZZTo4L                   = h_ZZTo4L                          ->Integral(0,-1); 
-//                              
-//    Float_t  int_Sig_ZH_MS15ct1000        = h_Sig_ZH_MS15ct1000               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS15ct100         = h_Sig_ZH_MS15ct100                ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS15ct10          = h_Sig_ZH_MS15ct10                 ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS15ct1           = h_Sig_ZH_MS15ct1                  ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS40ct1000        = h_Sig_ZH_MS40ct1000               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS40ct100         = h_Sig_ZH_MS40ct100                ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS40ct10          = h_Sig_ZH_MS40ct10                 ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS40ct1           = h_Sig_ZH_MS40ct1                  ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS55ct1000        = h_Sig_ZH_MS55ct1000               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS55ct100         = h_Sig_ZH_MS55ct100                ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS55ct10          = h_Sig_ZH_MS55ct10                 ->Integral(0,-1);                   
-//    Float_t  int_Sig_ZH_MS55ct1           = h_Sig_ZH_MS55ct1                  ->Integral(0,-1);                     
-//
-//    Float_t  int_Sig_ggZH_MS15ct1000      = h_Sig_ggZH_MS15ct1000             ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS15ct100       = h_Sig_ggZH_MS15ct100              ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS15ct10        = h_Sig_ggZH_MS15ct10               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS15ct1         = h_Sig_ggZH_MS15ct1                ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS40ct1000      = h_Sig_ggZH_MS40ct1000             ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS40ct100       = h_Sig_ggZH_MS40ct100              ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS40ct10        = h_Sig_ggZH_MS40ct10               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS40ct1         = h_Sig_ggZH_MS40ct1                ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS55ct1000      = h_Sig_ggZH_MS55ct1000             ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS55ct100       = h_Sig_ggZH_MS55ct100              ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS55ct10        = h_Sig_ggZH_MS55ct10               ->Integral(0,-1);                   
-//    Float_t  int_Sig_ggZH_MS55ct1         = h_Sig_ggZH_MS55ct1                ->Integral(0,-1);                   
-//
-// // Float_t  int_Data_SingleMu_H_3        = h_Data_SingleMu_H_3               ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_H_2        = h_Data_SingleMu_H_2               ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_G          = h_Data_SingleMu_G                 ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_F          = h_Data_SingleMu_F                 ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_E          = h_Data_SingleMu_E                 ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_D          = h_Data_SingleMu_D                 ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_C          = h_Data_SingleMu_C                 ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleMu_B_2        = h_Data_SingleMu_B_2               ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_H_3       = h_Data_SingleEle_H_3              ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_H_2       = h_Data_SingleEle_H_2              ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_G         = h_Data_SingleEle_G                ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_F         = h_Data_SingleEle_F                ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_E         = h_Data_SingleEle_E                ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_D         = h_Data_SingleEle_D                ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_C         = h_Data_SingleEle_C                ->Integral(0,-1);                   
-// // Float_t  int_Data_SingleEle_B_2       = h_Data_SingleEle_B_2              ->Integral(0,-1);                   
-// // Float_t  int_Data_SinglePhoton_H_3    = h_Data_SinglePhoton_H_3           ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_H_2    = h_Data_SinglePhoton_H_2           ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_G      = h_Data_SinglePhoton_G             ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_F      = h_Data_SinglePhoton_F             ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_E      = h_Data_SinglePhoton_E             ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_D      = h_Data_SinglePhoton_D             ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_C      = h_Data_SinglePhoton_C             ->Integral(0,-1);                     
-// // Float_t  int_Data_SinglePhoton_B_2    = h_Data_SinglePhoton_B_2           ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_H_3        = h_Data_DoubleMu_H_3               ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_H_2        = h_Data_DoubleMu_H_2               ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_G          = h_Data_DoubleMu_G                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_F          = h_Data_DoubleMu_F                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_E          = h_Data_DoubleMu_E                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_D          = h_Data_DoubleMu_D                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_C          = h_Data_DoubleMu_C                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleMu_B_2        = h_Data_DoubleMu_B_2               ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_H_3        = h_Data_DoubleEG_H_3               ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_H_2        = h_Data_DoubleEG_H_2               ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_G          = h_Data_DoubleEG_G                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_F          = h_Data_DoubleEG_F                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_E          = h_Data_DoubleEG_E                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_D          = h_Data_DoubleEG_D                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_C          = h_Data_DoubleEG_C                 ->Integral(0,-1);                     
-//    Float_t  int_Data_DoubleEG_B_2        = h_Data_DoubleEG_B_2               ->Integral(0,-1);                 
+    // Float_t int_Data_SingleEleBCDEF =
+    //          int_Data_SingleEle_B_2 +
+    //          int_Data_SingleEle_C   +
+    //          int_Data_SingleEle_D   +
+    //          int_Data_SingleEle_E   +
+    //          int_Data_SingleEle_F   ;
+
+    // Float_t int_Data_SingleMuBCDEF =
+    //          int_Data_SingleMu_B_2 +
+    //          int_Data_SingleMu_C   +
+    //          int_Data_SingleMu_D   +
+    //          int_Data_SingleMu_E   +
+    //          int_Data_SingleMu_F   ;
+
+    // Float_t int_Data_SingleEleGH =
+    //          int_Data_SingleEle_G   +
+    //          int_Data_SingleEle_H_2 +
+    //          int_Data_SingleEle_H_3 ;
+
+    // Float_t int_Data_SingleMuGH =
+    //          int_Data_SingleMu_G   +
+    //          int_Data_SingleMu_H_2 +
+    //          int_Data_SingleMu_H_3 ;
+
+    Float_t int_Data_DoubleEGBCDEF =
+             int_Data_DoubleEG_B_2 +
+             int_Data_DoubleEG_C   +
+             int_Data_DoubleEG_D   +
+             int_Data_DoubleEG_E   +
+             int_Data_DoubleEG_F   ;
+
+    Float_t int_Data_DoubleMuBCDEF =
+             int_Data_DoubleMu_B_2 +
+             int_Data_DoubleMu_C   +
+             int_Data_DoubleMu_D   +
+             int_Data_DoubleMu_E   +
+             int_Data_DoubleMu_F   ;
+
+    Float_t int_Data_DoubleEGGH =
+             int_Data_DoubleEG_G   +
+             int_Data_DoubleEG_H_2 +
+             int_Data_DoubleEG_H_3 ;
+
+    Float_t int_Data_DoubleMuGH =
+             int_Data_DoubleMu_G   +
+             int_Data_DoubleMu_H_2 +
+             int_Data_DoubleMu_H_3 ;
 
 
+    // output tables
+    FILE * outfulltable;
+    outfulltable = fopen (fulllogname+".tex","w");
+     fprintf (outfulltable, "\\documentclass{standalone}\n\n");
+     fprintf (outfulltable, "\\begin{document}\n\n");
+     fprintf (outfulltable, "\\begin{tabular}{rl}\n\n");
+     fprintf (outfulltable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "\\Large  Backgrounds \\\\\n");
+     fprintf (outfulltable, " \\hline \n");
 
+     fprintf (outfulltable, "DY5to50 HT100To200      & %3.1f \\\\\n", int_DY5to50_HT100To200     ) ; 
+     fprintf (outfulltable, "DY5to50 HT200To400      & %3.1f \\\\\n", int_DY5to50_HT200To400     ) ; 
+     fprintf (outfulltable, "DY5to50 HT400To600      & %3.1f \\\\\n", int_DY5to50_HT400To600     ) ; 
+     fprintf (outfulltable, "DY5to50 HT600ToInf      & %3.1f \\\\\n", int_DY5to50_HT600ToInf     ) ; 
+     fprintf (outfulltable, "DY10to50                & %3.1f \\\\\n", int_DY10to50               ) ; 
+     fprintf (outfulltable, "DY50                    & %3.1f \\\\\n", int_DY50                   ) ; 
 
-/// //
-/// //    FILE * outtable;
-/// //    outtable = fopen (logname+".tex","w");
-/// //     fprintf (outtable, "\\documentclass{standalone}\n\n");
-/// //     fprintf (outtable, "\\begin{document}\n\n");
-/// //     fprintf (outtable, "\\begin{tabular}{rl}\n\n");
-/// //     fprintf (outtable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
-/// //     fprintf (outtable, " \\hline \n");
-/// //     fprintf (outtable, "\\Large  Backgrounds \\\\\n");
-/// //     fprintf (outtable, " \\hline \n");
-/// //     fprintf (outtable, "DY10to50                          & %3.1f  \\\\\n", int_DY10to50                         ) ;
-/// //     fprintf (outtable, "DY5to50_HT100To200                & %3.1f  \\\\\n", int_DY5to50_HT100To200               ) ; 
-/// //     fprintf (outtable, "DY5to50_HT200To400                & %3.1f  \\\\\n", int_DY5to50_HT200To400               ) ; 
-/// //     fprintf (outtable, "DY5to50_HT400To600                & %3.1f  \\\\\n", int_DY5to50_HT400To600               ) ; 
-/// //     fprintf (outtable, "DY5to50_HT600ToInf                & %3.1f  \\\\\n", int_DY5to50_HT600ToInf               ) ; 
-/// ////     fprintf (outtable, "DY5to50_HT70To100                 & %3.1f  \\\\\n", int_DY5to50_HT70To100                ) ; 
-/// //
-/// //     fprintf (outtable, "DY50                              & %3.1f  \\\\\n", int_DY50                             ) ;
-/// //
-/// //     fprintf (outtable, "ggZH\\_HToBB\\_ZToLL              & %3.1f  \\\\\n", int_ggZH_HToBB_ZToLL                 ) ;
-/// //     fprintf (outtable, "GJets\\_HT40To100                 & %3.1f  \\\\\n", int_GJets_HT40To100                  ) ;
-/// //     fprintf (outtable, "GJets\\_HT100To200                & %3.1f  \\\\\n", int_GJets_HT100To200                 ) ;
-/// //     fprintf (outtable, "GJets\\_HT200To400                & %3.1f  \\\\\n", int_GJets_HT200To400                 ) ;
-/// //     fprintf (outtable, "GJets\\_HT400To600                & %3.1f  \\\\\n", int_GJets_HT400To600                 ) ;
-/// //     fprintf (outtable, "GJets\\_HT600ToInf                & %3.1f  \\\\\n", int_GJets_HT600ToInf                 ) ;
-/// //     fprintf (outtable, "ST\\_s                            & %3.1f  \\\\\n", int_ST_s                             ) ;
-/// //     fprintf (outtable, "STbar\\_t                         & %3.1f  \\\\\n", int_STbar_t                          ) ;
-/// //     fprintf (outtable, "ST\\_t                            & %3.1f  \\\\\n", int_ST_t                             ) ;
-/// //     fprintf (outtable, "STbar\\_tW                        & %3.1f  \\\\\n", int_STbar_tW                         ) ;
-/// //     fprintf (outtable, "ST\\_tW                           & %3.1f  \\\\\n", int_ST_tW                            ) ;
-/// //     fprintf (outtable, "TTtoLL                            & %3.1f  \\\\\n", int_TTtoLL                           ) ;
-/// //     fprintf (outtable, "TTJets                            & %3.1f  \\\\\n", int_TTJets                           ) ;
-/// //     fprintf (outtable, "TTtoLfromTbar                     & %3.1f  \\\\\n", int_TTtoLfromTbar                    ) ;
-/// //     fprintf (outtable, "TTtoLfromT                        & %3.1f  \\\\\n", int_TTtoLfromT                       ) ;
-/// //     fprintf (outtable, "WG                                & %3.1f  \\\\\n", int_WG                               ) ;
-/// //     fprintf (outtable, "WJetsToLNu                        & %3.1f  \\\\\n", int_WJetsToLNu                       ) ;
-/// //     fprintf (outtable, "WW                                & %3.1f  \\\\\n", int_WW                               ) ;
-/// //     fprintf (outtable, "WWTo2L2Nu                        & %3.1f  \\\\\n", int_WWTo2L2Nu                       ) ;
-/// //     fprintf (outtable, "WWToLNuQQ                         & %3.1f  \\\\\n", int_WWToLNuQQ                        ) ;
-/// //     fprintf (outtable, "WZTo1L3Nu                          & %3.1f  \\\\\n", int_WZTo1L3Nu                         ) ;
-/// //     fprintf (outtable, "WZTo3LNu                          & %3.1f  \\\\\n", int_WZTo3LNu                         ) ;
-/// //     fprintf (outtable, "WZToLNu2QorQQ2L                   & %3.1f  \\\\\n", int_WZToLNu2QorQQ2L                  ) ;
-/// //     fprintf (outtable, "ZG                                & %3.1f  \\\\\n", int_ZG                               ) ;
-/// //     fprintf (outtable, "ZH\\_HToBB\\_ZToLL                    & %3.1f  \\\\\n", int_ZH_HToBB_ZToLL                   ) ;
-/// //     fprintf (outtable, "ZZ                                & %3.1f  \\\\\n", int_ZZ                               ) ;
-/// //     fprintf (outtable, "ZZTo2L2Nu                        & %3.1f  \\\\\n", int_ZZTo2L2Nu                       ) ;
-/// //     fprintf (outtable, "ZZTo2L2Q                          & %3.1f  \\\\\n", int_ZZTo2L2Q                         ) ;
-/// //     fprintf (outtable, "ZZTo2Q2Nu                        & %3.1f  \\\\\n", int_ZZTo2Q2Nu                       ) ;
-/// //     fprintf (outtable, "ZZTo4L                          & %3.1f  \\\\\n", int_ZZTo4L                         ) ;
-/// //     fprintf (outtable, " \\hline \n");
-/// //     fprintf (outtable, " \\Large Data \\\\\n");
-/// //     fprintf (outtable, " \\hline \n");
-/// //     //fprintf (outtable, "SingleElectron                    & %3.1f  \\\\\n", int_SingleElectron                   ) ;
-/// //     //fprintf (outtable, "SingleMuon                        & %3.1f  \\\\\n", int_SingleMuon                       ) ;
-/// //     //fprintf (outtable, "DoubleEG                          & %3.1f  \\\\\n", int_DoubleEG                         ) ;
-/// //     //fprintf (outtable, "DoubleMuon                        & %3.1f  \\\\\n", int_DoubleMuon                       ) ;
-/// //     //fprintf (outtable, "MuonEG                            & %3.1f  \\\\\n", int_MuonEG                           ) ;
-/// //     fprintf (outtable, " \\hline \n");
-/// //     //fprintf (outtable, "Signal (only relative matters (xc = 1 ) \\\\\n");
-/// //     //fprintf (outtable, " \\hline \n");
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0     ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS0p05   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS0p05  ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1      & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1     ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10     & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10    ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS100    & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS100   ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS1000   & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS1000  ) ;
-/// //     //fprintf (outtable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
-/// //     fprintf (outtable, "\\end{tabular}\n\n");
-/// //     fprintf (outtable, "\\end{document}\n\n");
-/// //    fclose (outtable);
-/// //
-/// //
-/// //
-/// //    // count + ratio
-/// //    Double_t int_DY     = h_DY     ->Integral(0,-1) ; cout <<"DY: "<<int_DY<<endl; 
-/// //    Double_t int_GJets  = h_GJets  ->Integral(0,-1) ; cout <<"GJets: "<<int_GJets<<endl;
-/// //    Double_t int_ST     = h_ST     ->Integral(0,-1) ; cout <<"ST: "<<int_ST<<endl;
-/// //    Double_t int_ZH     = h_ZH     ->Integral(0,-1) ; cout <<"ZH: "<<int_ZH<<endl; 
-/// //    Double_t int_VV     = h_VV     ->Integral(0,-1) ; cout <<"VV: "<<int_VV<<endl;
-/// //    Double_t int_TT     = h_TT     ->Integral(0,-1) ; cout <<"TT: "<<int_TT<<endl;
-/// //    Double_t int_VG     = h_VG     ->Integral(0,-1) ; cout <<"VG: "<<int_VG<<endl;
-/// //    Double_t int_bkgtotal = h_bkgtotal ->Integral(0,-1) ; cout <<"bkgtotal: "<<int_bkgtotal<<endl;
-/// //    Double_t int_Data   = h_Data   ->Integral(0,-1);  cout <<"Data: "<<int_Data<<endl;
-/// //    Double_t int_bkgOnData = int_bkgtotal/int_Data;
-/// //
-/// //    FILE * summarytable;
-/// //    summarytable = fopen (logname+"_summary.tex","w");
-/// //     fprintf (summarytable, "\\documentclass{standalone}\n\n");
-/// //     fprintf (summarytable, "\\begin{document}\n\n");
-/// //     fprintf (summarytable, "\\begin{tabular}{rl}\n\n");
-/// //     fprintf (summarytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
-/// //     fprintf (summarytable, " \\hline \n");
-/// //     fprintf (summarytable, "\\Large  Backgrounds \\\\\n");
-/// //     fprintf (summarytable, " \\hline \n");
-/// //     fprintf (summarytable, "DY      & %3.1f \\\\\n", int_DY     ) ; 
-/// //     fprintf (summarytable, "GJets   & %3.1f \\\\\n", int_GJets  ) ; 
-/// //     fprintf (summarytable, "ST      & %3.1f \\\\\n", int_ST     ) ; 
-/// //     fprintf (summarytable, "ZH      & %3.1f \\\\\n", int_ZH     ) ; 
-/// //     fprintf (summarytable, "VV      & %3.1f \\\\\n", int_VV     ) ; 
-/// //     fprintf (summarytable, "TT      & %3.1f \\\\\n", int_TT     ) ; 
-/// //     fprintf (summarytable, "VG      & %3.1f \\\\\n", int_VG     ) ; 
-/// //     fprintf (summarytable, "WJetsToLNu                        & %3.1f  \\\\\n", int_WJetsToLNu                       ) ;
-/// //     fprintf (summarytable, " \\hline \n");
-/// //     fprintf (summarytable, "Total Backgrouns     & %3.1f \\\\\n", int_bkgtotal ) ; 
-/// //     fprintf (summarytable, " \\hline \n");
-/// //     fprintf (summarytable, "Data                 & %3.1f  \\\\\n", int_Data   ) ;
-/// //     fprintf (summarytable, " \\hline \n");
-/// //     fprintf (summarytable, "Backgrounds / Data   & %3.1f  \\\\\n", int_bkgOnData   ) ;
-/// //     fprintf (summarytable, "\\end{tabular}\n\n");
-/// //     fprintf (summarytable, "\\end{document}\n\n");
-/// //    fclose (summarytable);
-/// //
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "ggZH HToBB ZToLL        & %3.1f \\\\\n", int_ggZH_HToBB_ZToLL       ) ; 
+     fprintf (outfulltable, "ZH HToBB ZToLL          & %3.1f \\\\\n", int_ZH_HToBB_ZToLL         ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     fprintf (outfulltable, "GJets HT40To100         & %3.1f \\\\\n", int_GJets_HT40To100        ) ; 
+     fprintf (outfulltable, "GJets HT100To200        & %3.1f \\\\\n", int_GJets_HT100To200       ) ; 
+     fprintf (outfulltable, "GJets HT200To400        & %3.1f \\\\\n", int_GJets_HT200To400       ) ; 
+     fprintf (outfulltable, "GJets HT400To600        & %3.1f \\\\\n", int_GJets_HT400To600       ) ; 
+     fprintf (outfulltable, "GJets HT600ToInf        & %3.1f \\\\\n", int_GJets_HT600ToInf       ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     fprintf (outfulltable, "ST s                    & %3.1f \\\\\n", int_ST_s                   ) ; 
+     fprintf (outfulltable, "STbar t                 & %3.1f \\\\\n", int_STbar_t                ) ; 
+     fprintf (outfulltable, "ST t                    & %3.1f \\\\\n", int_ST_t                   ) ; 
+     fprintf (outfulltable, "STbar tW                & %3.1f \\\\\n", int_STbar_tW               ) ; 
+     fprintf (outfulltable, "ST tW                   & %3.1f \\\\\n", int_ST_tW                  ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     fprintf (outfulltable, "TTJets                  & %3.1f \\\\\n", int_TTJets                 ) ; 
+     fprintf (outfulltable, "TTtoLL                  & %3.1f \\\\\n", int_TTtoLL                 ) ; 
+     fprintf (outfulltable, "TTtoLfromTbar           & %3.1f \\\\\n", int_TTtoLfromTbar          ) ; 
+     fprintf (outfulltable, "TTtoLfromT              & %3.1f \\\\\n", int_TTtoLfromT             ) ; 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "WJetsToLNu              & %3.1f \\\\\n", int_WJetsToLNu             ) ; 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "WG                      & %3.1f \\\\\n", int_WG                     ) ; 
+     fprintf (outfulltable, "ZG                      & %3.1f \\\\\n", int_ZG                     ) ; 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "WW                      & %3.1f \\\\\n", int_WW                     ) ; 
+     fprintf (outfulltable, "WZ                      & %3.1f \\\\\n", int_WZ                     ) ; 
+     fprintf (outfulltable, "ZZ                      & %3.1f \\\\\n", int_ZZ                     ) ; 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "WWTo2L2Nu               & %3.1f \\\\\n", int_WWTo2L2Nu              ) ; 
+     fprintf (outfulltable, "WWToLNuQQ               & %3.1f \\\\\n", int_WWToLNuQQ              ) ; 
+     fprintf (outfulltable, "WZTo1L3Nu               & %3.1f \\\\\n", int_WZTo1L3Nu              ) ; 
+     fprintf (outfulltable, "WZTo3LNu                & %3.1f \\\\\n", int_WZTo3LNu               ) ; 
+     fprintf (outfulltable, "WZToLNu2QorQQ2L         & %3.1f \\\\\n", int_WZToLNu2QorQQ2L        ) ; 
+     fprintf (outfulltable, "ZZTo2L2Nu               & %3.1f \\\\\n", int_ZZTo2L2Nu              ) ; 
+     fprintf (outfulltable, "ZZTo2L2Q                & %3.1f \\\\\n", int_ZZTo2L2Q               ) ; 
+     fprintf (outfulltable, "ZZTo2Q2Nu               & %3.1f \\\\\n", int_ZZTo2Q2Nu              ) ; 
+     fprintf (outfulltable, "ZZTo4L                  & %3.1f \\\\\n", int_ZZTo4L                 ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     fprintf (outfulltable, "Sig ZH MS15ct1000       & %3.1f \\\\\n", int_Sig_ZH_MS15ct1000      ) ; 
+     fprintf (outfulltable, "Sig ZH MS15ct100        & %3.1f \\\\\n", int_Sig_ZH_MS15ct100       ) ; 
+     fprintf (outfulltable, "Sig ZH MS15ct10         & %3.1f \\\\\n", int_Sig_ZH_MS15ct10        ) ; 
+     fprintf (outfulltable, "Sig ZH MS15ct1          & %3.1f \\\\\n", int_Sig_ZH_MS15ct1         ) ; 
+     fprintf (outfulltable, "Sig ZH MS40ct1000       & %3.1f \\\\\n", int_Sig_ZH_MS40ct1000      ) ; 
+     fprintf (outfulltable, "Sig ZH MS40ct100        & %3.1f \\\\\n", int_Sig_ZH_MS40ct100       ) ; 
+     fprintf (outfulltable, "Sig ZH MS40ct10         & %3.1f \\\\\n", int_Sig_ZH_MS40ct10        ) ; 
+     fprintf (outfulltable, "Sig ZH MS40ct1          & %3.1f \\\\\n", int_Sig_ZH_MS40ct1         ) ; 
+     fprintf (outfulltable, "Sig ZH MS55ct1000       & %3.1f \\\\\n", int_Sig_ZH_MS55ct1000      ) ; 
+     fprintf (outfulltable, "Sig ZH MS55ct100        & %3.1f \\\\\n", int_Sig_ZH_MS55ct100       ) ; 
+     fprintf (outfulltable, "Sig ZH MS55ct10         & %3.1f \\\\\n", int_Sig_ZH_MS55ct10        ) ; 
+     fprintf (outfulltable, "Sig ZH MS55ct1          & %3.1f \\\\\n", int_Sig_ZH_MS55ct1         ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     fprintf (outfulltable, "Sig ggZH MS15ct1000     & %3.1f \\\\\n", int_Sig_ggZH_MS15ct1000    ) ; 
+     fprintf (outfulltable, "Sig ggZH MS15ct100      & %3.1f \\\\\n", int_Sig_ggZH_MS15ct100     ) ; 
+     fprintf (outfulltable, "Sig ggZH MS15ct10       & %3.1f \\\\\n", int_Sig_ggZH_MS15ct10      ) ; 
+     fprintf (outfulltable, "Sig ggZH MS15ct1        & %3.1f \\\\\n", int_Sig_ggZH_MS15ct1       ) ; 
+     fprintf (outfulltable, "Sig ggZH MS40ct1000     & %3.1f \\\\\n", int_Sig_ggZH_MS40ct1000    ) ; 
+     fprintf (outfulltable, "Sig ggZH MS40ct100      & %3.1f \\\\\n", int_Sig_ggZH_MS40ct100     ) ; 
+     fprintf (outfulltable, "Sig ggZH MS40ct10       & %3.1f \\\\\n", int_Sig_ggZH_MS40ct10      ) ; 
+     fprintf (outfulltable, "Sig ggZH MS40ct1        & %3.1f \\\\\n", int_Sig_ggZH_MS40ct1       ) ; 
+     fprintf (outfulltable, "Sig ggZH MS55ct1000     & %3.1f \\\\\n", int_Sig_ggZH_MS55ct1000    ) ; 
+     fprintf (outfulltable, "Sig ggZH MS55ct100      & %3.1f \\\\\n", int_Sig_ggZH_MS55ct100     ) ; 
+     fprintf (outfulltable, "Sig ggZH MS55ct10       & %3.1f \\\\\n", int_Sig_ggZH_MS55ct10      ) ; 
+     fprintf (outfulltable, "Sig ggZH MS55ct1        & %3.1f \\\\\n", int_Sig_ggZH_MS55ct1       ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+ //  fprintf (outfulltable, "Data SingleMu H 3       & %3.1f \\\\\n", int_Data_SingleMu_H_3      ) ; 
+ //  fprintf (outfulltable, "Data SingleMu H 2       & %3.1f \\\\\n", int_Data_SingleMu_H_2      ) ; 
+ //  fprintf (outfulltable, "Data SingleMu G         & %3.1f \\\\\n", int_Data_SingleMu_G        ) ; 
+ //  fprintf (outfulltable, "Data SingleMu F         & %3.1f \\\\\n", int_Data_SingleMu_F        ) ; 
+ //  fprintf (outfulltable, "Data SingleMu E         & %3.1f \\\\\n", int_Data_SingleMu_E        ) ; 
+ //  fprintf (outfulltable, "Data SingleMu D         & %3.1f \\\\\n", int_Data_SingleMu_D        ) ; 
+ //  fprintf (outfulltable, "Data SingleMu C         & %3.1f \\\\\n", int_Data_SingleMu_C        ) ; 
+ //  fprintf (outfulltable, "Data SingleMu B 2       & %3.1f \\\\\n", int_Data_SingleMu_B_2      ) ; 
+ //  fprintf (outfulltable, "Data SingleEle H 3      & %3.1f \\\\\n", int_Data_SingleEle_H_3     ) ; 
+ //  fprintf (outfulltable, "Data SingleEle H 2      & %3.1f \\\\\n", int_Data_SingleEle_H_2     ) ; 
+ //  fprintf (outfulltable, "Data SingleEle G        & %3.1f \\\\\n", int_Data_SingleEle_G       ) ; 
+ //  fprintf (outfulltable, "Data SingleEle F        & %3.1f \\\\\n", int_Data_SingleEle_F       ) ; 
+ //  fprintf (outfulltable, "Data SingleEle E        & %3.1f \\\\\n", int_Data_SingleEle_E       ) ; 
+ //  fprintf (outfulltable, "Data SingleEle D        & %3.1f \\\\\n", int_Data_SingleEle_D       ) ; 
+ //  fprintf (outfulltable, "Data SingleEle C        & %3.1f \\\\\n", int_Data_SingleEle_C       ) ; 
+ //  fprintf (outfulltable, "Data SingleEle B 2      & %3.1f \\\\\n", int_Data_SingleEle_B_2     ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton H 3   & %3.1f \\\\\n", int_Data_SinglePhoton_H_3  ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton H 2   & %3.1f \\\\\n", int_Data_SinglePhoton_H_2  ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton G     & %3.1f \\\\\n", int_Data_SinglePhoton_G    ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton F     & %3.1f \\\\\n", int_Data_SinglePhoton_F    ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton E     & %3.1f \\\\\n", int_Data_SinglePhoton_E    ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton D     & %3.1f \\\\\n", int_Data_SinglePhoton_D    ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton C     & %3.1f \\\\\n", int_Data_SinglePhoton_C    ) ; 
+ //  fprintf (outfulltable, "Data SinglePhoton B 2   & %3.1f \\\\\n", int_Data_SinglePhoton_B_2  ) ; 
+     fprintf (outfulltable, "Data DoubleMu H 3       & %3.1f \\\\\n", int_Data_DoubleMu_H_3      ) ; 
+     fprintf (outfulltable, "Data DoubleMu H 2       & %3.1f \\\\\n", int_Data_DoubleMu_H_2      ) ; 
+     fprintf (outfulltable, "Data DoubleMu G         & %3.1f \\\\\n", int_Data_DoubleMu_G        ) ; 
+     fprintf (outfulltable, "Data DoubleMu F         & %3.1f \\\\\n", int_Data_DoubleMu_F        ) ; 
+     fprintf (outfulltable, "Data DoubleMu E         & %3.1f \\\\\n", int_Data_DoubleMu_E        ) ; 
+     fprintf (outfulltable, "Data DoubleMu D         & %3.1f \\\\\n", int_Data_DoubleMu_D        ) ; 
+     fprintf (outfulltable, "Data DoubleMu C         & %3.1f \\\\\n", int_Data_DoubleMu_C        ) ; 
+     fprintf (outfulltable, "Data DoubleMu B 2       & %3.1f \\\\\n", int_Data_DoubleMu_B_2      ) ; 
+     fprintf (outfulltable, " \\hline \n");
+     fprintf (outfulltable, "Data DoubleEG H 3       & %3.1f \\\\\n", int_Data_DoubleEG_H_3      ) ; 
+     fprintf (outfulltable, "Data DoubleEG H 2       & %3.1f \\\\\n", int_Data_DoubleEG_H_2      ) ; 
+     fprintf (outfulltable, "Data DoubleEG G         & %3.1f \\\\\n", int_Data_DoubleEG_G        ) ; 
+     fprintf (outfulltable, "Data DoubleEG F         & %3.1f \\\\\n", int_Data_DoubleEG_F        ) ; 
+     fprintf (outfulltable, "Data DoubleEG E         & %3.1f \\\\\n", int_Data_DoubleEG_E        ) ; 
+     fprintf (outfulltable, "Data DoubleEG D         & %3.1f \\\\\n", int_Data_DoubleEG_D        ) ; 
+     fprintf (outfulltable, "Data DoubleEG C         & %3.1f \\\\\n", int_Data_DoubleEG_C        ) ; 
+     fprintf (outfulltable, "Data DoubleEG B 2       & %3.1f \\\\\n", int_Data_DoubleEG_B_2      ) ; 
+     fprintf (outfulltable, " \\hline \n");
+
+     //fprintf (outfulltable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
+     fprintf (outfulltable, "\\end{tabular}\n\n");
+     fprintf (outfulltable, "\\end{document}\n\n");
+    fclose (outfulltable);
+
+    FILE * summarytable;
+    summarytable = fopen (smalllogname+".tex","w");
+     fprintf (summarytable, "\\documentclass{standalone}\n\n");
+     fprintf (summarytable, "\\begin{document}\n\n");
+     fprintf (summarytable, "\\begin{tabular}{rl}\n\n");
+     fprintf (summarytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "\\Large  Backgrounds \\\\\n");
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "DY              & %3.1f \\\\\n", int_DY             ) ; 
+     fprintf (summarytable, "altDY           & %3.1f \\\\\n", int_altDY          ) ; 
+     fprintf (summarytable, "GJets           & %3.1f \\\\\n", int_GJets          ) ; 
+     fprintf (summarytable, "ST              & %3.1f \\\\\n", int_ST             ) ; 
+     fprintf (summarytable, "ZH              & %3.1f \\\\\n", int_ZH             ) ; 
+     fprintf (summarytable, "VV              & %3.1f \\\\\n", int_VV             ) ; 
+     fprintf (summarytable, "altVV           & %3.1f \\\\\n", int_altVV          ) ; 
+     fprintf (summarytable, "TT              & %3.1f \\\\\n", int_TT             ) ; 
+     fprintf (summarytable, "altTT           & %3.1f \\\\\n", int_altTT          ) ; 
+     fprintf (summarytable, "VG              & %3.1f \\\\\n", int_VG             ) ; 
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Sig MS15ct1000  & %3.1f \\\\\n", int_Sig_MS15ct1000 ) ; 
+     fprintf (summarytable, "Sig MS15ct100   & %3.1f \\\\\n", int_Sig_MS15ct100  ) ; 
+     fprintf (summarytable, "Sig MS15ct10    & %3.1f \\\\\n", int_Sig_MS15ct10   ) ; 
+     fprintf (summarytable, "Sig MS15ct1     & %3.1f \\\\\n", int_Sig_MS15ct1    ) ; 
+     fprintf (summarytable, "Sig MS40ct1000  & %3.1f \\\\\n", int_Sig_MS40ct1000 ) ; 
+     fprintf (summarytable, "Sig MS40ct100   & %3.1f \\\\\n", int_Sig_MS40ct100  ) ; 
+     fprintf (summarytable, "Sig MS40ct10    & %3.1f \\\\\n", int_Sig_MS40ct10   ) ; 
+     fprintf (summarytable, "Sig MS40ct1     & %3.1f \\\\\n", int_Sig_MS40ct1    ) ; 
+     fprintf (summarytable, "Sig MS55ct1000  & %3.1f \\\\\n", int_Sig_MS55ct1000 ) ; 
+     fprintf (summarytable, "Sig MS55ct100   & %3.1f \\\\\n", int_Sig_MS55ct100  ) ; 
+     fprintf (summarytable, "Sig MS55ct10    & %3.1f \\\\\n", int_Sig_MS55ct10   ) ; 
+     fprintf (summarytable, "Sig MS55ct1     & %3.1f \\\\\n", int_Sig_MS55ct1    ) ; 
+     fprintf (summarytable, "Total Backgrounds    & %3.1f \\\\\n", int_bkgtotal ) ; 
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Data                 & %3.1f  \\\\\n", int_Data   ) ;
+     fprintf (summarytable, " \\hline \n");
+     fprintf (summarytable, "Backgrounds / Data   & %3.4f  \\\\\n", int_bkgOnData   ) ;
+     fprintf (summarytable, "\\end{tabular}\n\n");
+     fprintf (summarytable, "\\end{document}\n\n");
+    fclose (summarytable);
+
+    FILE * tinytable;
+    tinytable = fopen (tinylogname+".tex","w");
+     fprintf (tinytable, "\\documentclass{standalone}\n\n");
+     fprintf (tinytable, "\\begin{document}\n\n");
+     fprintf (tinytable, "\\begin{tabular}{rl}\n\n");
+     fprintf (tinytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
+     fprintf (tinytable, " \\hline \n");
+     fprintf (tinytable, "\\Large  Backgrounds \\\\\n");
+     fprintf (tinytable, " \\hline \n");
+     fprintf (tinytable, "Drell-Yan       & %3.1f \\\\\n", int_DY             ) ; 
+     fprintf (tinytable, "$\\gamma$+jets     & %3.1f \\\\\n", int_GJets          ) ; 
+     fprintf (tinytable, "single top      & %3.1f \\\\\n", int_ST             ) ; 
+     fprintf (tinytable, "ZH(bb)          & %3.1f \\\\\n", int_ZH             ) ; 
+     fprintf (tinytable, "WW,WZ,ZZ & %3.1f \\\\\n", int_VV             ) ; 
+     fprintf (tinytable, "$t\\bar{t}$      & %3.1f \\\\\n", int_TT             ) ; 
+     fprintf (tinytable, "V$\\gamma$              & %3.1f \\\\\n", int_VG             ) ; 
+     fprintf (tinytable, " \\hline \n");
+     fprintf (tinytable, "Total Backgrounds    & %3.1f \\\\\n", int_bkgtotal ) ; 
+     fprintf (tinytable, " \\hline \n");
+     fprintf (tinytable, "Data                 & %3.1f  \\\\\n", int_Data   ) ;
+     fprintf (tinytable, " \\hline \n");
+     fprintf (tinytable, "Backgrounds / Data   & %3.4f  \\\\\n", int_bkgOnData   ) ;
+     fprintf (tinytable, "\\end{tabular}\n\n");
+     fprintf (tinytable, "\\end{document}\n\n");
+    fclose (tinytable);
+
     // set attributes
     h_DY         -> SetLineColor(kBlack); 
     h_GJets      -> SetLineColor(kBlack);
