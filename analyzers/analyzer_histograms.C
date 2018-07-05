@@ -62,6 +62,7 @@ Bool_t analyzer_histograms::fillSelectedHistograms(Double_t weight, int selbin, 
  fillLepHistograms               ( weight, selbin, lepbin );
  fillPhoHistograms               ( weight, selbin, lepbin );
  fillMETHTHistograms             ( weight, selbin, lepbin );
+ fillExtraHistograms             ( weight, selbin, lepbin );
  fillAODCaloJetMultHistograms    ( weight, selbin, lepbin );
  fillAODCaloJetTagMultHistograms ( weight, selbin, lepbin );
 }
@@ -75,6 +76,7 @@ Bool_t analyzer_histograms::writeSelectedHistograms(int selbin, int lepbin)
  writeLepHistograms               ( selbin, lepbin );
  writePhoHistograms               ( selbin, lepbin );
  writeMETHTHistograms             ( selbin, lepbin );
+ writeExtraHistograms             ( selbin, lepbin );
  writeAODCaloJetMultHistograms    ( selbin, lepbin );
  writeAODCaloJetTagMultHistograms ( selbin, lepbin );
 }
@@ -948,6 +950,58 @@ Bool_t analyzer_histograms::writeCutflowHistograms(int selbin, int lepbin)
 }
 
 
+//----------------------------initExtraHistograms
+Bool_t analyzer_histograms::initExtraHistograms(){
+
+ for(unsigned int i=0; i<selbinnames.size(); ++i){
+  for(unsigned int k=0; k<lepnames.size(); ++k){
+   TString hname_TTOCMu1Pt           = "h_"+lepnames[k]+"_"+selbinnames[i]+"_TTOCMu1Pt"; 
+   TString hname_TTOCMu2Pt           = "h_"+lepnames[k]+"_"+selbinnames[i]+"_TTOCMu2Pt"; 
+   TString hname_TTOCTriggerMu1Pt    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_TTOCMuTriggerMu1Pt"; 
+   TString hname_TTOCTriggerMu2Pt    = "h_"+lepnames[k]+"_"+selbinnames[i]+"_TTOCMuTriggerMu2Pt"; 
+
+   h_TTOCMu1Pt           [i][k] = initSingleHistogramTH1F( hname_TTOCMu1Pt , "TTOCMu1Pt", 50,0,500);
+   h_TTOCMu2Pt           [i][k] = initSingleHistogramTH1F( hname_TTOCMu2Pt , "TTOCMu2Pt", 50,0,500);
+   h_TTOCTriggerMu1Pt    [i][k] = initSingleHistogramTH1F( hname_TTOCTriggerMu1Pt , "TTOCTriggerMu1Pt", 50,0,500);
+   h_TTOCTriggerMu2Pt    [i][k] = initSingleHistogramTH1F( hname_TTOCTriggerMu2Pt , "TTOCTriggerMu2Pt", 50,0,500);
+  }
+ }
+}
+
+//----------------------------fillExtraHistograms
+Bool_t analyzer_histograms::fillExtraHistograms(Double_t weight, int selbin, int lepbin)
+{
+//For AOD_HLT_Mu17TkMu8
+  int lead;
+  int subLead;
+  if(muon_list.size()>0) lead    = muon_list[0];
+  if(muon_list.size()>1) subLead = muon_list[1];
+  // fill leading muon in vector
+  if(muon_list.size() > 1){
+   h_TTOCMu1Pt               [selbin][lepbin] .Fill( AOD_muPt               ->at(lead), weight );  
+  }
+  // fill for sub-leading muon in vector
+  if(muon_list.size() > 1){
+   h_TTOCMu2Pt               [selbin][lepbin] .Fill( AOD_muPt               ->at(subLead), weight );  
+  }
+  // fill for passing trigger
+  if( (Bool_t)AOD_HLT_Mu17TkMu8 && muon_list.size() > 1){
+   h_TTOCTriggerMu1Pt               [selbin][lepbin] .Fill( AOD_muPt               ->at(lead), weight );  
+   h_TTOCTriggerMu2Pt               [selbin][lepbin] .Fill( AOD_muPt               ->at(subLead), weight );  
+  }
+//done AOD_HLT_Mu17TkMu8
+ return kTRUE;
+}
+
+//----------------------------writeExtraHistograms
+Bool_t analyzer_histograms::writeExtraHistograms(int selbin, int lepbin)
+{
+ h_TTOCMu1Pt           [selbin][lepbin] .Write();
+ h_TTOCMu2Pt           [selbin][lepbin] .Write();
+ h_TTOCTriggerMu1Pt    [selbin][lepbin] .Write();
+ h_TTOCTriggerMu2Pt    [selbin][lepbin] .Write();
+ return kTRUE;
+}
 
 //---------------------------scaleVariableBinHistograms
 Bool_t analyzer_histograms::scaleVariableBinHistograms(int selbin, int lepbin)

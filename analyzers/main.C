@@ -240,6 +240,7 @@ int main(int argc, char **argv){
  analyzer.initLepHistograms();
  analyzer.initPhoHistograms();
  analyzer.initMETHTHistograms();
+ analyzer.initExtraHistograms();
  analyzer.initAODCaloJetBasicHistograms();
  analyzer.initAODCaloJetExtraHistograms(); 
  analyzer.initAODCaloJetTagHistograms(); 

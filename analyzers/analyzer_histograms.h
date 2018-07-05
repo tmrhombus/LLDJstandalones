@@ -36,7 +36,7 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
- TH1F         initSingleHistogramTH1F(TString hname, TString htitle, 
+ TH1F          initSingleHistogramTH1F(TString hname, TString htitle, 
 				      int nbins, Float_t xbins[]);
 
  // Cutflow histograms
@@ -88,6 +88,11 @@ public :
  Bool_t        initAODCaloJetTagMultHistograms();
  Bool_t        fillAODCaloJetTagMultHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeAODCaloJetTagMultHistograms(int selbin, int lepbin);
+ 
+ // Extra histograms
+ Bool_t        initExtraHistograms();
+ Bool_t        fillExtraHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeExtraHistograms(int selbin, int lepbin);
 
  //For variable binning
  Bool_t        scaleVariableBinHistograms(int selbin, int lepbin);
@@ -215,7 +220,12 @@ public :
  TH1F  h_AODCaloJetMinDR_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetAbsEta_Tag0                   [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0      [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
-
+ 
+ //Trigger turn on curve
+ TH1F  h_TTOCMu1Pt             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCMu2Pt             [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTriggerMu1Pt      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTriggerMu2Pt      [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];
