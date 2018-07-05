@@ -34,12 +34,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
  TString extraname = "";
  if(HIP){
-  extraname+="_HIP";
-  outpath = outpath+"HIP/";
+  extraname+="_BCDEF";
+  outpath = outpath+"BCDEF/";
  }
  if(!HIP){
-  outpath = outpath+"Good/";
-  extraname+="_Good";
+  outpath = outpath+"GH/";
+  extraname+="_GH";
  }
 
  // lumi scaling by era
