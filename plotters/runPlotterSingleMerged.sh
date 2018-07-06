@@ -2,41 +2,50 @@
 
  # region, lepname, varname, dolog, HIP
 
-root -l -b -q  'plotter_singleMerged.C("ZH", "ele", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
-root -l -b -q  'plotter_singleMerged.C("ZH", "mu", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
+regions=( \
+ "ZH"   \
+ "DY"   \
+ "OffZ" \
+)
 
-root -l -b -q  'plotter_singleMerged.C("OffZ", "ele", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
-root -l -b -q  'plotter_singleMerged.C("OffZ", "mu", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
+leptons=( \
+ "ele"  \
+ "mu"   \
+)
 
-root -l -b -q  'plotter_singleMerged.C("DY", "ele", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
-root -l -b -q  'plotter_singleMerged.C("DY", "mu", "AllJets_AODCaloJetPt", kFALSE, kFALSE)'
+variables=( \
+ "AOD_elePt"                                  \     
+# "AOD_eleEta"                                 \     
+# "AOD_elePhi"                                 \     
+# "AOD_muPt"                                   \     
+# "AOD_muEta"                                  \     
+# "AOD_muPhi"                                  \     
+# "htall"                                      \ 
+# "htaodcalojets"                              \
+# "AOD_nSelectedEle"                           \
+# "AOD_nSelectedMu"                            \
+# "nSelectedAODCaloJet"                        \
+# "nSelectedAODCaloJetTag"                     \
+# "LeadingJet_AODCaloJetPt"                    \     
+# "LeadingJet_AODCaloJetEta"                   \     
+# "LeadingJet_AODCaloJetPhi"                   \     
+# "AllJets_AODCaloJetMedianLog10IPSig"         \
+# "AllJets_AODCaloJetMedianLog10TrackAngle"    \
+# "AllJets_AODCaloJetAlphaMax"                 \
+# "AllJets_AODCaloJetPt"                       \     
+# "AllJets_AODCaloJetEta"                      \     
+# "AllJets_AODCaloJetPhi"                      \  
+)
 
-#root -l -b -q  'plotter_singleMerged.C("ZH", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("ZH", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("ZH", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("ZH", kFALSE, kFALSE)'
-#
-#root -l -b -q  'plotter_singleMerged.C("NoSel", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("NoSel", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("NoSel", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("NoSel", kFALSE, kFALSE)'
-#
-#root -l -b -q  'plotter_singleMerged.C("NoPair", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("NoPair", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("NoPair", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("NoPair", kFALSE, kFALSE)'
-#
-#root -l -b -q  'plotter_singleMerged.C("OffZ", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("OffZ", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("OffZ", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("OffZ", kFALSE, kFALSE)'
-#
-#root -l -b -q  'plotter_singleMerged.C("CRHeavy", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("CRHeavy", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("CRHeavy", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("CRHeavy", kFALSE, kFALSE)'
-#
-#root -l -b -q  'plotter_singleMerged.C("CRLight", kTRUE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("CRLight", kTRUE, kFALSE)'
-#root -l -b -q  'plotter_singleMerged.C("CRLight", kFALSE, kTRUE)'
-#root -l -b -q  'plotter_singleMerged.C("CRLight", kFALSE, kFALSE)'
+for region in ${regions[@]}
+do
+ for lepton in ${leptons[@]}
+ do
+  for variable in ${variables[@]}
+  do
+   root -l -b -q  'plotter_singleMerged.C('\""${region}"\"', '\""${lepton}"\"' , '\""${variable}"\"' , kFALSE, kFALSE)'
+
+  done
+ done
+done
+
