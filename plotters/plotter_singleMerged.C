@@ -236,6 +236,7 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
     h_VV        ->SetLineColor(kBlack); 
     h_VG        ->SetLineColor(kBlack); 
     h_ZH        ->SetLineColor(kBlack); 
+    h_bkgtotal  ->SetLineColor(kBlack);
 
     h_DY        ->SetLineWidth(2);
     h_GJets     ->SetLineWidth(2);
