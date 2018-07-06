@@ -578,7 +578,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //cout << "logname: " << logname << endl;
 
     // get histograms from files
-    //h_DY5to50_HT70To100               = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "DY5to50_HT70To100"                ) ; 
+    //h_DY5to50_HT70To100               = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "h_DY5to50_HT70To100"                ) ; 
     h_DY5to50_HT100To200              = (TH1F*)file_DY5to50_HT100To200               ->Get("h_"+varname)->Clone( "DY5to50_HT100To200"               ) ; 
     h_DY5to50_HT200To400              = (TH1F*)file_DY5to50_HT200To400               ->Get("h_"+varname)->Clone( "DY5to50_HT200To400"               ) ; 
     h_DY5to50_HT400To600              = (TH1F*)file_DY5to50_HT400To600               ->Get("h_"+varname)->Clone( "DY5to50_HT400To600"               ) ; 
@@ -690,35 +690,35 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_Data_DoubleEG_B_2     = (TH1F*) file_Data_DoubleEG_B_2     -> Get("h_"+varname)->Clone( "Data_DoubleEG_B_2"      ) ; 
 
     // merge histograms
-    h_DY = (TH1F*)h_DY50->Clone("h_DY");
+    h_DY = (TH1F*)h_DY50->Clone("DY");
      h_DY->Add(h_DY10to50           ); 
 
-    h_altDY = (TH1F*)h_DY50->Clone("h_altDY");
+    h_altDY = (TH1F*)h_DY50->Clone("altDY");
      h_altDY->Add(h_DY5to50_HT100To200); 
      h_altDY->Add(h_DY5to50_HT200To400); 
      h_altDY->Add(h_DY5to50_HT400To600); 
      h_altDY->Add(h_DY5to50_HT600ToInf); 
 
-    h_GJets = (TH1F*)h_GJets_HT40To100->Clone("h_GJets");
+    h_GJets = (TH1F*)h_GJets_HT40To100->Clone("GJets");
      h_GJets->Add(h_GJets_HT100To200);
      h_GJets->Add(h_GJets_HT200To400);
      h_GJets->Add(h_GJets_HT400To600);
      h_GJets->Add(h_GJets_HT600ToInf);
 
-    h_ST = (TH1F*)h_ST_s->Clone("h_ST");
+    h_ST = (TH1F*)h_ST_s->Clone("ST");
      h_ST->Add(h_STbar_t);
      h_ST->Add(h_ST_t);
      h_ST->Add(h_STbar_tW);
      h_ST->Add(h_ST_tW);
 
-    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("h_ZH");
+    h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("ZH");
      h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
-    h_VV = (TH1F*)h_WW->Clone("h_VV");
+    h_VV = (TH1F*)h_WW->Clone("VV");
      h_VV->Add(h_WZ             ) ;
      h_VV->Add(h_ZZ             ) ;
 
-    h_altVV = (TH1F*)h_WWTo2L2Nu->Clone("h_altVV");
+    h_altVV = (TH1F*)h_WWTo2L2Nu->Clone("altVV");
      h_altVV->Add(h_WWToLNuQQ       ) ;
      h_altVV->Add(h_WZTo1L3Nu       ) ;
      h_altVV->Add(h_WZTo3LNu        ) ;
@@ -728,13 +728,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_altVV->Add(h_ZZTo2Q2Nu       ) ;
      h_altVV->Add(h_ZZTo4L          ) ;
 
-    h_TT = (TH1F*)h_TTJets->Clone("h_TT");
+    h_TT = (TH1F*)h_TTJets->Clone("TT");
 
-    h_altTT = (TH1F*)h_TTtoLfromTbar->Clone("h_altTT");
+    h_altTT = (TH1F*)h_TTtoLfromTbar->Clone("altTT");
      h_altTT->Add(h_TTtoLfromT    );
      h_altTT->Add(h_TTtoLL        );
    
-    h_VG = (TH1F*)h_WG->Clone("h_VG");
+    h_VG = (TH1F*)h_WG->Clone("VG");
      h_VG->Add(h_ZG);
 
     h_Sig_MS15ct1000  = (TH1F*) h_Sig_ZH_MS15ct1000   ->Clone( "Sig_MS15ct1000" ) ;
@@ -789,7 +789,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_Sig_MS55ct1    ->Scale(MCSF);
 
 
-    h_bkgtotal= (TH1F*)h_DY->Clone("h_bkgtotal");
+    h_bkgtotal= (TH1F*)h_DY->Clone("bkgtotal");
      h_bkgtotal->Add(h_GJets ) ;
      h_bkgtotal->Add(h_ST    ) ;
      h_bkgtotal->Add(h_ZH    ) ;
@@ -800,28 +800,28 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
     if( lepton=="ele"){
       if(HIP){
-       h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("h_Data");
+       h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("Data");
        h_Data->Add( h_Data_DoubleEG_F   )     ; 
        h_Data->Add( h_Data_DoubleEG_E   )     ; 
        h_Data->Add( h_Data_DoubleEG_D   )     ; 
        h_Data->Add( h_Data_DoubleEG_C   )     ; 
       }
       else{
-       h_Data = (TH1F*)h_Data_DoubleEG_G->Clone("h_Data");
+       h_Data = (TH1F*)h_Data_DoubleEG_G->Clone("Data");
        h_Data->Add( h_Data_DoubleEG_H_3 )     ; 
        h_Data->Add( h_Data_DoubleEG_H_2 )     ; 
       }
     }
     else if( lepton=="mu"){
       if(HIP){
-       h_Data = (TH1F*)h_Data_DoubleMu_B_2->Clone("h_Data");
+       h_Data = (TH1F*)h_Data_DoubleMu_B_2->Clone("Data");
        h_Data->Add( h_Data_DoubleMu_F   )     ; 
        h_Data->Add( h_Data_DoubleMu_E   )     ; 
        h_Data->Add( h_Data_DoubleMu_D   )     ; 
        h_Data->Add( h_Data_DoubleMu_C   )     ; 
       }
       else{
-       h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("h_Data");
+       h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("Data");
        h_Data->Add( h_Data_DoubleMu_H_3 )     ; 
        h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
       }
@@ -1424,7 +1424,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
 
      ratiopad->cd();
-     h_ratio = (TH1F*)h_Data->Clone("h_ratio");
+     h_ratio = (TH1F*)h_Data->Clone("ratio");
      if(h_Data->Integral(-1,-1)>0){
       h_ratio->Divide(h_bkgtotal);
      }
@@ -1450,7 +1450,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_ratio->GetYaxis()->SetRangeUser(0,2);
      h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
 
-     h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("h_ratiostaterr");
+     h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
      h_ratiostaterr->Divide(h_bkgtotal);
 
      ratiopad->Update();       // need to update pad to get X min/max
@@ -1481,6 +1481,23 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_ratio       ->Write();
      h_ratiostaterr->Write();
      bgstack       ->Write();
+
+     h_altDY          ->Write(); 
+     h_altVV          ->Write(); 
+     h_altTT          ->Write(); 
+     h_Sig_MS15ct1000 ->Write(); 
+     h_Sig_MS15ct100  ->Write(); 
+     h_Sig_MS15ct10   ->Write(); 
+     h_Sig_MS15ct1    ->Write(); 
+     h_Sig_MS40ct1000 ->Write(); 
+     h_Sig_MS40ct100  ->Write(); 
+     h_Sig_MS40ct10   ->Write(); 
+     h_Sig_MS40ct1    ->Write(); 
+     h_Sig_MS55ct1000 ->Write(); 
+     h_Sig_MS55ct100  ->Write(); 
+     h_Sig_MS55ct10   ->Write(); 
+     h_Sig_MS55ct1    ->Write(); 
+
      outfile->Close();
   
    } 
