@@ -206,7 +206,6 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
   fillAODTrigger(e, es);
   fillAODJets(e, es);
   fillAODPhotons(e, es);
-  fillAODElectrons(e, es);
 
   //Vertex for Muon 
   edm::Handle<edm::View<reco::Vertex> > vtxHandle;
@@ -218,7 +217,8 @@ void lldjNtuple::analyze(const edm::Event& e, const edm::EventSetup& es) {
       break;
     }   
   }
-  fillAODMuons(e, vtx); //muons use vtx for isolation
+  fillAODElectrons(e, es, vtx);
+  fillAODMuons(e, vtx); 
   fillAODMET(e, es);
 
  }
