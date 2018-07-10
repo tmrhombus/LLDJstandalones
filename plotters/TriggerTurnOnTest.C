@@ -23,7 +23,7 @@ void TriggerTurnOnTest( )
  TString region = "DY";
  TString lep = "mu";
  TString Nname = "Mu1Pt";
- TStrind Dname = "DMu1Pt";
+ TString Dname = "DMu1Pt";
  
  ////TString aversion = "addpuAOD" ;
  inpath = inpath+aversion+"/";
