@@ -22,7 +22,7 @@ public :
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts,
                     TFile *optfile);
- 
+ static const int  width = 8;
  // debug options, printouts
  virtual void debug_printobjects();
  virtual void debug_printdilep();

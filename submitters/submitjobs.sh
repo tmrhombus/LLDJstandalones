@@ -5,155 +5,151 @@
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
-doSubmit=true
-lumi=35870
+doSubmit=false
+lumi=10000
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
-# Signal Samples
-#  "ZH_HToSSTobbbb_MS-55_ctauS-1"      \
-#  "ZH_HToSSTobbbb_MS-55_ctauS-10"     \
-#  "ZH_HToSSTobbbb_MS-55_ctauS-100"    \
-#  "ZH_HToSSTobbbb_MS-55_ctauS-1000"   \
-#  "ZH_HToSSTobbbb_MS-40_ctauS-1"      \
-#  "ZH_HToSSTobbbb_MS-40_ctauS-10"     \
-#  "ZH_HToSSTobbbb_MS-40_ctauS-100"    \
-#  "ZH_HToSSTobbbb_MS-40_ctauS-1000"   \
-#  "ZH_HToSSTobbbb_MS-15_ctauS-1"      \
-#  "ZH_HToSSTobbbb_MS-15_ctauS-10"     \
-#  "ZH_HToSSTobbbb_MS-15_ctauS-100"    \
-#  "ZH_HToSSTobbbb_MS-15_ctauS-1000"   \
-#  "ggZH_HToSSTobbbb_MS-55_ctauS-1"    \
-#  "ggZH_HToSSTobbbb_MS-55_ctauS-10"   \
-#  "ggZH_HToSSTobbbb_MS-55_ctauS-100"  \
-#  "ggZH_HToSSTobbbb_MS-55_ctauS-1000" \
-#  "ggZH_HToSSTobbbb_MS-40_ctauS-1"    \
-#  "ggZH_HToSSTobbbb_MS-40_ctauS-10"   \
-#  "ggZH_HToSSTobbbb_MS-40_ctauS-100"  \
-#  "ggZH_HToSSTobbbb_MS-40_ctauS-1000" \
-#  "ggZH_HToSSTobbbb_MS-15_ctauS-1"    \
-#  "ggZH_HToSSTobbbb_MS-15_ctauS-10"   \
-#  "ggZH_HToSSTobbbb_MS-15_ctauS-100"  \
-#  "ggZH_HToSSTobbbb_MS-15_ctauS-1000" \
-
-# Datasets
-#  "Data_SingleEle_H_3"   \
-#  "Data_SingleEle_H_2"   \
-#  "Data_SingleEle_G"     \
-#  "Data_SingleEle_F"     \
-#  "Data_SingleEle_E"     \
-#  "Data_SingleEle_D"     \
-#  "Data_SingleEle_C"     \
-#  "Data_SingleEle_B_2"   \
-#  "Data_SingleEle_B_1"   \
-
-#  "Data_SingleMu_H_3"    \
-#  "Data_SingleMu_H_2"    \
-#  "Data_SingleMu_G"      \
-#  "Data_SingleMu_F"      \
-#  "Data_SingleMu_E"      \
-#  "Data_SingleMu_D"      \
-#  "Data_SingleMu_C"      \
-#  "Data_SingleMu_B_2"    \
-#  "Data_SingleMu_B_1"    \
-
-#  "Data_SinglePhoton_H_3"    \
-#  "Data_SinglePhoton_H_2"    \
-#  "Data_SinglePhoton_G"      \
-#  "Data_SinglePhoton_F"      \
-#  "Data_SinglePhoton_E"      \
-#  "Data_SinglePhoton_D"      \
-#  "Data_SinglePhoton_C"      \
-#  "Data_SinglePhoton_B_2"    \
-#  "Data_SinglePhoton_B_1"    \
-
-# Main Backgrounds
-#  "DY50_1"               \
-#  "DY50_2"               \
-#  "TTtoLL_1"             \
-#  "TTtoLL_2"             \
-#  "WJets_1"              \
-#  "WJets_2"              \
-
-# Other Backgrounds
-#  "TTtoLfromT_1"         \
-#  "TTtoLfromT_2"         \
-#  "TTtoLfromTbar_1"      \
-#  "TTtoLfromTbar_2"      \
-#  "STs"                  \
-#  "STtbar"               \
-#  "STt"                  \
-#  "STtbarW_1"            \
-#  "STtbarW_2"            \
-#  "STtW_1"               \
-#  "STtW_2"               \
-#  "WWToLNuLNu"           \
-#  "WWToLNuQQ_1"          \
-#  "WWToLNuQQ_2"          \
-#  "WZToLNu2QorQQ2L"      \
-#  "WZToLNuNuNu"          \
-#  "WZToLLLNu"            \
-#  "ZZToNuNuQQ"           \
-#  "ZZToLLQQ"             \
-#  "ZZToLLNuNu"           \
-#  "ZZToLLLL"             \
-#  "WG"                   \
-#  "ZG"                   \
-#  "ZH_Hbb_1"             \
-#  "ZH_Hbb_2"             \
-#  "ggZH_Hbb_1"           \
-#  "ggZH_Hbb_2"           \
-#  "ggZH_Hbb_3"           \
-#  "GJets_HT40to100_1"    \
-#  "GJets_HT40to100_2"    \
-#  "GJets_HT100to200_1"   \
-#  "GJets_HT100to200_2"   \
-#  "GJets_HT200to400_1"   \
-#  "GJets_HT200to400_2"   \
-#  "GJets_HT400to600_1"   \
-#  "GJets_HT400to600_2"   \
-#  "GJets_HT600toInf_1"   \
-#  "GJets_HT600toInf_2"   \
-#  "DY5to50_HT70to100"    \
-#  "DY5to50_HT100to200_1" \
-#  "DY5to50_HT100to200_2" \
-#  "DY5to50_HT200to400_1" \
-#  "DY5to50_HT200to400_2" \
-#  "DY5to50_HT400to600_1" \
-#  "DY5to50_HT400to600_2" \
-#  "DY5to50_HT600toInf_1" \
-#  "DY5to50_HT600toInf_2" \
+### Data
+# "Data_SingleMu_H_3"      \
+# "Data_SingleMu_H_2"      \
+# "Data_SingleMu_G"        \
+# "Data_SingleMu_F"        \
+# "Data_SingleMu_E"        \
+# "Data_SingleMu_D"        \
+# "Data_SingleMu_C"        \
+# "Data_SingleMu_B_2"      \
+#
+# "Data_SingleEle_H_3"     \
+# "Data_SingleEle_H_2"     \
+# "Data_SingleEle_G"       \
+# "Data_SingleEle_F"       \
+# "Data_SingleEle_E"       \
+# "Data_SingleEle_D"       \
+# "Data_SingleEle_C"       \
+# "Data_SingleEle_B_2"     \
+#
+# "Data_DoubleMu_H_3"      \
+# "Data_DoubleMu_H_2"      \
+# "Data_DoubleMu_G"        \
+# "Data_DoubleMu_F"        \
+# "Data_DoubleMu_E"        \
+# "Data_DoubleMu_D"        \
+# "Data_DoubleMu_C"        \
+# "Data_DoubleMu_B_2"      \
+#
+# "Data_DoubleEG_H_3"      \
+# "Data_DoubleEG_H_2"      \
+# "Data_DoubleEG_G"        \
+# "Data_DoubleEG_F"        \
+# "Data_DoubleEG_E"        \
+# "Data_DoubleEG_D"        \
+# "Data_DoubleEG_C"        \
+# "Data_DoubleEG_B_2"      \
+#
+# "Data_MuonEG_B_2"        \
+# "Data_MuonEG_C"          \
+# "Data_MuonEG_D"          \
+# "Data_MuonEG_E"          \
+# "Data_MuonEG_F"          \
+# "Data_MuonEG_G"          \
+# "Data_MuonEG_H_2"        \
+# "Data_MuonEG_H_3"        \
+#
+# "Data_SinglePhoton_H_3"  \
+# "Data_SinglePhoton_H_2"  \
+# "Data_SinglePhoton_G"    \
+# "Data_SinglePhoton_F"    \
+# "Data_SinglePhoton_E"    \
+# "Data_SinglePhoton_D"    \
+# "Data_SinglePhoton_C"    \
+# "Data_SinglePhoton_B_2"  \
+#
+### MC backgrounds
+#
+## DY
+# "DYJetsToLL_M-5to50_HT-70to100"   \
+# "DYJetsToLL_M-5to50_HT-100to200"  \
+# "DYJetsToLL_M-5to50_HT-200to400"  \
+# "DYJetsToLL_M-5to50_HT-400to600"  \
+# "DYJetsToLL_M-5to50_HT-600toInf"  \
+# "DYJetsToLL_M-10to50"             \
+# "DYJetsToLL_M-50"                 \
+#
+## WJets
+# "WJetsToLNu"     \
+#
+## TTbar
+# "TTJets"         \
+# "TTtoLL"         \
+# "TTtoLfromTbar"  \
+# "TTtoLfromT"     \
+#
+## Single Top
+# "ST_s-channel_4f_leptonDecays"             \
+# "ST_t-channel_antitop_4f_inclusiveDecays"  \
+# "ST_t-channel_top_4f_inclusiveDecays"      \
+# "ST_tW_antitop_5f_NoFullyHadronicDecays"   \
+# "ST_tW_top_5f_NoFullyHadronicDecays"       \
+#
+## GJets
+# "GJets_HT-40To100"   \
+# "GJets_HT-100To200"  \
+# "GJets_HT-200To400"  \
+# "GJets_HT-400To600"  \
+# "GJets_HT-600ToInf"  \
+#
+## Diboson
+# "WW"               \
+# "WZ"               \
+# "ZZ"               \
+# "WWTo2L2Nu"        \
+# "WWToLNuQQ"        \
+# "WZTo1L3Nu"        \
+# "WZTo3LNu"         \
+# "WZToLNu2QorQQ2L"  \
+# "ZZTo2L2Nu"        \
+# "ZZTo2L2Q"         \
+# "ZZTo2Q2Nu"        \
+# "ZZTo4L"           \
+#
+## VGamma
+# "ZGTo2LG"  \
+# "WGToLNuG" \
+#
+## ZH
+# "ggZH_HToBB_ZToLL"  \
+# "ZH_HToBB_ZToLL"    \
+#
+## Signal Samples
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"    \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"   \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"        \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"       \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"      \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"     \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"      \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"     \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"    \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"   \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"        \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"       \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"      \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"     \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"      \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"     \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"    \
+# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"   \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"        \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"       \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"      \
+# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"     \
 
 samples=(  \
-#  "ZH_HToSSTobbbb_MS55_ctauS1"      \
-#  "ZH_HToSSTobbbb_MS55_ctauS10"     \
-#  "ZH_HToSSTobbbb_MS55_ctauS100"    \
-#  "ZH_HToSSTobbbb_MS55_ctauS1000"   \
-#  "ZH_HToSSTobbbb_MS40_ctauS1"      \
-#  "ZH_HToSSTobbbb_MS40_ctauS10"     \
-#  "ZH_HToSSTobbbb_MS40_ctauS100"    \
-#  "ZH_HToSSTobbbb_MS40_ctauS1000"   \
-#  "ZH_HToSSTobbbb_MS15_ctauS1"      \
-#  "ZH_HToSSTobbbb_MS15_ctauS10"     \
-#  "ZH_HToSSTobbbb_MS15_ctauS100"    \
-#  "ZH_HToSSTobbbb_MS15_ctauS1000"   \
-#  "ggZH_HToSSTobbbb_MS55_ctauS1"    \
-#  "ggZH_HToSSTobbbb_MS55_ctauS10"   \
-#  "ggZH_HToSSTobbbb_MS55_ctauS100"  \
-#  "ggZH_HToSSTobbbb_MS55_ctauS1000" \
-#  "ggZH_HToSSTobbbb_MS40_ctauS1"    \
-#  "ggZH_HToSSTobbbb_MS40_ctauS10"   \
-#  "ggZH_HToSSTobbbb_MS40_ctauS100"  \
-#  "ggZH_HToSSTobbbb_MS40_ctauS1000" \
-#  "ggZH_HToSSTobbbb_MS15_ctauS1"    \
-#  "ggZH_HToSSTobbbb_MS15_ctauS10"   \
-#  "ggZH_HToSSTobbbb_MS15_ctauS100"  \
-#  "ggZH_HToSSTobbbb_MS15_ctauS1000" \
-  "DY50"               \
-#  "TTtoLL"             \
-#  "WJetsToLNu"         \
+ # samples from above to be submitted
 )
-
 
 printf "Version: ${aversion}\n"
 
@@ -190,6 +186,8 @@ makeasubmitdir () {
  haddfile_DY_histograms="./haddit_DY_histograms.sh"
  haddfile_OffZ_histograms="./haddit_OffZ_histograms.sh"
  haddfile_NoPair_histograms="./haddit_NoPair_histograms.sh"
+ haddfile_CRHeavy_histograms="./haddit_CRHeavy_histograms.sh"
+ haddfile_CRLight_histograms="./haddit_CRLight_histograms.sh"
  haddfile_OPTtree="./haddit_OPTtree.sh"
  haddfile_BkgEst="./haddit_BkgEst.sh"
 
@@ -201,6 +199,8 @@ makeasubmitdir () {
  printf "#!/bin/bash\n\n" > ${haddfile_DY_histograms}    
  printf "#!/bin/bash\n\n" > ${haddfile_OffZ_histograms}  
  printf "#!/bin/bash\n\n" > ${haddfile_NoPair_histograms}
+ printf "#!/bin/bash\n\n" > ${haddfile_CRHeavy_histograms}
+ printf "#!/bin/bash\n\n" > ${haddfile_CRLight_histograms}
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
  printf "#!/bin/bash\n\n" > ${haddfile_BkgEst}
 
@@ -216,6 +216,8 @@ makeasubmitdir () {
  printf "hadd ${hadddir}/$1_DY_histograms.root"     >> ${haddfile_DY_histograms}     
  printf "hadd ${hadddir}/$1_OffZ_histograms.root"   >> ${haddfile_OffZ_histograms}   
  printf "hadd ${hadddir}/$1_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
+ printf "hadd ${hadddir}/$1_CRHeavy_histograms.root">> ${haddfile_CRHeavy_histograms} 
+ printf "hadd ${hadddir}/$1_CRLight_histograms.root">> ${haddfile_CRLight_histograms} 
  printf "hadd ${hadddir}/$1_OPTtree.root"           >> ${haddfile_OPTtree}           
  printf "hadd ${hadddir}/$1_BkgEst.root"            >> ${haddfile_BkgEst}           
 
@@ -240,6 +242,8 @@ makeasubmitdir () {
   printf "\\" >> ${haddfile_DY_histograms}     
   printf "\\" >> ${haddfile_OffZ_histograms}   
   printf "\\" >> ${haddfile_NoPair_histograms} 
+  printf "\\" >> ${haddfile_CRHeavy_histograms} 
+  printf "\\" >> ${haddfile_CRLight_histograms} 
   printf "\\" >> ${haddfile_OPTtree}           
   printf "\\" >> ${haddfile_BkgEst}
 
@@ -249,6 +253,8 @@ makeasubmitdir () {
   printf "\n $(pwd)/$1_${jobfilenr}_DY_histograms.root" >> ${haddfile_DY_histograms}     
   printf "\n $(pwd)/$1_${jobfilenr}_OffZ_histograms.root" >> ${haddfile_OffZ_histograms}   
   printf "\n $(pwd)/$1_${jobfilenr}_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
+  printf "\n $(pwd)/$1_${jobfilenr}_CRHeavy_histograms.root" >> ${haddfile_CRHeavy_histograms} 
+  printf "\n $(pwd)/$1_${jobfilenr}_CRLight_histograms.root" >> ${haddfile_CRLight_histograms} 
   printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root" >> ${haddfile_OPTtree}           
   printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root" >> ${haddfile_BkgEst}
 
@@ -268,6 +274,8 @@ makeasubmitdir () {
  printf "\n\n" >> ${haddfile_DY_histograms}     
  printf "\n\n" >> ${haddfile_OffZ_histograms}   
  printf "\n\n" >> ${haddfile_NoPair_histograms} 
+ printf "\n\n" >> ${haddfile_CRHeavy_histograms} 
+ printf "\n\n" >> ${haddfile_CRLight_histograms} 
  printf "\n\n" >> ${haddfile_OPTtree}           
  printf "\n\n" >> ${haddfile_BkgEst}
 
@@ -284,13 +292,7 @@ makeasubmitdir () {
 for sample in ${samples[@]} 
 do
  # set isMC flag if MC
- if [[ ${sample} == "Single"* ]]
- then
-  mc=""
- elif [[ ${sample} == "Double"* ]]
- then
-  mc=""
- elif [[ ${sample} == "MuonEG"* ]]
+ if [[ ${sample} == "Data"* ]]
  then
   mc=""
  else

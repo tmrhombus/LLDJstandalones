@@ -125,12 +125,12 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
   std::vector<int> taglist;
 
   for(int i=0; i<aodcalojet_list.size(); ++i){
-    int aodcalojetindex = aodcalojet_list[i];
-    if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.15 &&
-	AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 &&
-	AODCaloJetAlphaMax->at(aodcalojetindex)<0.35) {
-      taglist.push_back(aodcalojetindex);
-    }
+   int aodcalojetindex = aodcalojet_list[i];
+   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.15 &&
+       AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 &&
+       AODCaloJetAlphaMax->at(aodcalojetindex)<0.35) {
+    taglist.push_back(aodcalojetindex);
+   }
   }
   return taglist;
 }
@@ -229,19 +229,35 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
  std::vector<int> pholist;
  pholist.clear();
 
+ bool pass_overlap = true;
  ////Loop over photons                   
  for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
-  Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p);
+  //Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p); doesn't seem to be used unless someone objects, will delete after next PR 5/6/2018
 
   bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
   //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
+  
+   //check overlap with electrons
+   if(electron_list.size()>0){
+    for(int d=0; d<electron_list.size(); ++d){
+     //printf(" brgin looping over electrons\n");
+     int eleindex = electron_list[d];
+     //std::cout << eleindex <<"      size: "<<electron_list.size()<<"     Eta:  "<<AOD_eleEta->size()<<std::endl;
+     if( dR( AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex), AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex) ) < objcleandRcut )
+     {
+      pass_overlap=false; // printf(" OL w electron\n");
+     } // if overlap
+    }//end electrons
+   } // if electrons
+
+
 
   bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
   //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-  if( kinematic && pass_bit){
+  if( kinematic && pass_bit && pass_overlap ){
    nSelectedPho++;
    //printf("selected aphoton\n");
    pholist.push_back(p);
@@ -364,17 +380,46 @@ void analyzer_createobjects::makeDiLepton(){
   fourVec_l2.SetPtEtaPhiE(0,0,0,0);
 
   // get electrons and muons and put into 4vectors
-  bool passMM = false;
-  makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm, &passMM);
+  makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_ee, &fourVec_mm);
   // make dilepton object
   fourVec_ll = fourVec_l1 + fourVec_l2;
   dilep_mass = fourVec_ll.M();
   dilep_pt   = fourVec_ll.Pt();
+ 
+  // So it looks like these are only used for this calculation, so I will recycle for OSOF
+  fourVec_l1.SetPtEtaPhiE(0,0,0,0);
+  fourVec_l2.SetPtEtaPhiE(0,0,0,0);
+  
+  makeDilep(&fourVec_l1, &fourVec_l2, &fourVec_em);
+  OSOF_mass = fourVec_em.M();
+  OSOF_pt   = fourVec_em.Pt();
+  
+}
 
+void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_em)
+{
+  TLorentzVector e, m;
+  e.SetPtEtaPhiE( 0,0,0,0 );
+  m.SetPtEtaPhiE( 0,0,0,0 ); 
+  
+  // Require exactly 1 electron and 1 muon
+  if ( !( (electron_list.size()==1 && muon_list.size()==1) ) ) return;
+
+  //Set the electron and muon fourvectors if they have opposite sign otherwise we will use the dummy vectors.
+  if(AOD_eleCharge->at(electron_list[0])*AOD_muCharge->at(muon_list[0])==-1)
+  {
+    e.SetPtEtaPhiE( AOD_elePt->at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );
+    m.SetPtEtaPhiE( AOD_muPt ->at(    muon_list[0]), AOD_muEta ->at(    muon_list[0]), AOD_muPhi ->at(    muon_list[0]), AOD_muEn ->at(    muon_list[0]) );
+  }
+ 
+  *fv_1  = e;
+  *fv_2  = m;
+  *fv_em = e+m; 
+  return; 
 }
 
 //-------------------------makeDilep
-void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm, bool *passMM)
+void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_ee, TLorentzVector *fv_mm)
 {          
                                                                     
   TLorentzVector e1, e2, ee;                                        
@@ -393,7 +438,6 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
 
    // electrons    
    double best_ee_mass = 9e9;
-   int best_ee_i=-1, best_ee_j=-1;
    if( electron_list.size()>1 ){                                           
      for(int i=0; i<electron_list.size(); ++i)                              
        {                                                                
@@ -407,14 +451,12 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
        	  temp12 = temp1+temp2;
        	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_ee_mass) ){
        	    best_ee_mass = temp12.M();
-       	    best_ee_i=i;
-       	    best_ee_j=j;
+            e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
+            e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
        	  }
        	}         
            }          
        }           
-     e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_i]), AOD_eleEta->at(electron_list[best_ee_i]), AOD_elePhi->at(electron_list[best_ee_i]), AOD_eleEn->at(electron_list[best_ee_i]) );
-     e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[best_ee_j]), AOD_eleEta->at(electron_list[best_ee_j]), AOD_elePhi->at(electron_list[best_ee_j]), AOD_eleEn->at(electron_list[best_ee_j]) );  
      ee = e1 + e2;
    }//electron size > 1
 
@@ -434,23 +476,17 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
        	  temp12 = temp1+temp2;
        	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_mm_mass) ){
        	    best_mm_mass = temp12.M();
-       	    best_mm_i=i;
-       	    best_mm_j=j;                             
+            m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
+            m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
        	  } 
        	}   
            }    
        }
-     m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_i]), AOD_muEta->at(muon_list[best_mm_i]), AOD_muPhi->at(muon_list[best_mm_i]), AOD_muEn->at(muon_list[best_mm_i]) );
-     m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[best_mm_j]), AOD_muEta->at(muon_list[best_mm_j]), AOD_muPhi->at(muon_list[best_mm_j]), AOD_muEn->at(muon_list[best_mm_j]) );  
      mm = m1 + m2;      
    }//muon size > 1
 
    *fv_ee = ee;  
    *fv_mm = mm;  
-   
-   // take highest mass dilepton pair 
-   //if( mm.M()>ee.M() ){ *fv_1 = m1; *fv_2 = m2; *passMM = true; } 
-   //else               { *fv_1 = e1; *fv_2 = e2; *passMM = false; }
 
    // take pair closest to Z mass
    if( fabs(91.1876-ee.M()) < fabs(91.1876-mm.M()) ){
@@ -465,5 +501,3 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
    return;                                                          
                                                                    
 }
-
-
