@@ -120,6 +120,10 @@ void plot_added(bool drawBkgEst = false){
   samples.push_back("ZZTo2L2Q");
   samples.push_back("ZZTo2Q2Nu");
   samples.push_back("ZZTo4L");
+  samples.push_back("ZGTo2LG");
+  samples.push_back("WGToLNuG");
+  samples.push_back("ggZH_HToBB_ZToLL");
+  samples.push_back("ZH_HToBB_ZToLL");
   
   //Open files
   if(drawBkgEst){
