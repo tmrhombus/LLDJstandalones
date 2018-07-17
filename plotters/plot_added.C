@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 #include "TFile.h"
 #include "TH1F.h"
@@ -97,26 +98,28 @@ void plot_added_2d(TString variable){
 
 void plot_added(bool drawBkgEst = false){
 
+  TString aversion = TString(getenv("aversion"));
+  
   //Samples
-  samples.push_back("DY50");
-  samples.push_back("ST_s");
-  samples.push_back("STbar_t");
-  samples.push_back("ST_t");
-  samples.push_back("STbar_tW");
-  samples.push_back("ST_tW");
+  samples.push_back("DYJetsToLL_M-50");
+  samples.push_back("ST_s-channel_4f_leptonDecays");
+  samples.push_back("ST_t-channel_antitop_4f_inclusiveDecays");
+  samples.push_back("ST_t-channel_top_4f_inclusiveDecays");
+  samples.push_back("ST_tW_antitop_5f_NoFullyHadronicDecays");
+  samples.push_back("ST_tW_top_5f_NoFullyHadronicDecays");
   samples.push_back("TTtoLL");
   samples.push_back("TTtoLfromTbar");
   samples.push_back("TTtoLfromT");
   samples.push_back("WJetsToLNu");
-  samples.push_back("WWToLNuLNu");
+  samples.push_back("WWTo2L2Nu");
   samples.push_back("WWToLNuQQ");
-  samples.push_back("WZToL3Nu");
+  samples.push_back("WZTo1L3Nu");
   samples.push_back("WZTo3LNu");
   samples.push_back("WZToLNu2QorQQ2L");
-  samples.push_back("ZZToLLNuNu");
-  samples.push_back("ZZToLLQQ");
-  samples.push_back("ZZToNuNuQQ");
-  samples.push_back("ZZToLLLL");
+  samples.push_back("ZZTo2L2Nu");
+  samples.push_back("ZZTo2L2Q");
+  samples.push_back("ZZTo2Q2Nu");
+  samples.push_back("ZZTo4L");
   
   //Open files
   if(drawBkgEst){
@@ -128,10 +131,10 @@ void plot_added(bool drawBkgEst = false){
   for(unsigned int s=0; s< samples.size(); s++){
     TFile* f;
     if(drawBkgEst){
-      f = TFile::Open("../roots/est/"+samples[s]+"_BkgEst.root", "READ");
+      f = TFile::Open("../roots/"+aversion+"/"+samples[s]+"_BkgEst.root", "READ");
     }
     else{
-      f = TFile::Open("../roots/est/"+samples[s]+"_ZH_histograms.root", "READ");
+      f = TFile::Open("../roots/"+aversion+"/"+samples[s]+"_ZH_histograms.root", "READ");
     }
     files.push_back(f);
   }
