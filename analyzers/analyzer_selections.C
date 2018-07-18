@@ -32,25 +32,29 @@ void analyzer_selections::clearSelections()
 
 void analyzer_selections::setSelections()
 {
- selvecSignal  .push_back( (/*passSingleEle || passSingleMu ||*/ passDoubleEle || passDoubleMu ) ) ;
+ selvecSignal  .push_back( ( passDoubleEle || passDoubleMu ) ) ;
+ //selvecSignal  .push_back( (passSingleEle || passSingleMu /*|| passDoubleEle || passDoubleMu*/ ) ) ;
  selvecSignal  .push_back( passGoodVtx   );
  selvecSignal  .push_back( passZWindow   );
  selvecSignal  .push_back( passPTOSSF    );
  selvecSignal  .push_back( passOneTag    );
 
- selvecZH      .push_back( (/*passSingleEle || passSingleMu ||*/ passDoubleEle || passDoubleMu ) ) ;
+ selvecZH      .push_back( ( passDoubleEle || passDoubleMu ) ) ;
+ //selvecZH      .push_back( (passSingleEle || passSingleMu /*|| passDoubleEle || passDoubleMu*/ ) ) ;
  selvecZH      .push_back( passGoodVtx   );
  selvecZH      .push_back( passZWindow   );
  selvecZH      .push_back( passPTOSSF    );
  selvecZH      .push_back( passOneJet    );
 
- selvecDY      .push_back( (/*passSingleEle || passSingleMu ||*/ passDoubleEle || passDoubleMu ) );
+ selvecDY      .push_back( (passDoubleEle || passDoubleMu ) );
+ //selvecDY      .push_back( (passSingleEle || passSingleMu /*|| passDoubleEle || passDoubleMu*/ ) );
  selvecDY      .push_back( passGoodVtx    );
  selvecDY      .push_back( passZWindow    );
  selvecDY      .push_back( !passPTOSSF    );
  selvecDY      .push_back( passOneJet     );
 
- selvecOffZ    .push_back( (/*passSingleEle || passSingleMu ||*/ passDoubleEle || passDoubleMu) );
+ selvecOffZ    .push_back( ( passDoubleEle || passDoubleMu ) );
+ //selvecOffZ    .push_back( (passSingleEle || passSingleMu /*|| passDoubleEle || passDoubleMu*/) );
  selvecOffZ    .push_back( passGoodVtx  );
  selvecOffZ    .push_back( !passZWindow );
  selvecOffZ    .push_back( passOSSF     );
@@ -62,6 +66,7 @@ void analyzer_selections::setSelections()
  selvecNoPair  .push_back( !passOSSF    );
  selvecNoPair  .push_back( passOneJet   );
 
+ //selvecCRHeavy .push_back( (passDoubleEle && passDoubleMu) );
  selvecCRHeavy .push_back( (passSingleEle && passSingleMu) );
  selvecCRHeavy .push_back( passGoodVtx  );
  selvecCRHeavy .push_back( passOneJet   );
