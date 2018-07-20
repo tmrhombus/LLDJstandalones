@@ -1533,7 +1533,7 @@ void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, 
 	  //this is the derivative part.  leave multiplication by error in bin b for later.
 	  h_MistagRate_pt_sys.at(sz)->Fill(h_MistagRate_pt_sys.at(sz)->GetBinCenter(b), weight*term);
 	  
-	  //std::cout << "b: " << b << ", term: " << term << std::endl;
+	  if(debug) std::cout << "b: " << b << ", term: " << term << std::endl;
 
 	}//end bin
       }
@@ -1555,7 +1555,7 @@ void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, 
 	  x = h_MistagRate_pteta->GetXaxis()->GetBinCenter(xbin);
 	  y = h_MistagRate_pteta->GetYaxis()->GetBinCenter(ybin);
 
-	  std::cout << "b: " << b << ", xbin: " << xbin << ", ybin: " << ybin << ", term: " << term << std::endl;
+	  //std::cout << "b: " << b << ", xbin: " << xbin << ", ybin: " << ybin << ", term: " << term << std::endl;
 
 	  h_MistagRate_pteta_sys.at(sz)->Fill(x, y, weight*term);
 	  
