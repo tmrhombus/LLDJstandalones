@@ -17,12 +17,12 @@ void analyzer_config::setconfiguration()
 
  pho_minPt  = 15.;
  pho_maxEta = 1.4442;
- ele_minPt1 = 30.;
- ele_minPt2 = 20.;
- ele_maxEta = 2.1;
+ ele_minPt1 = 25.;
+ ele_minPt2 = 15.;
+ ele_maxEta = 2.5;
  mu_minPt1  = 25.;
- mu_minPt2  = 15.;
- mu_maxEta  = 2.1;
+ mu_minPt2  = 12.;
+ mu_maxEta  = 2.4;
  jet_minPt  = 25.;
  jet_maxEta = 2.4;
 
