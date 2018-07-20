@@ -3,9 +3,9 @@
  # region, lepname, varname, dolog, HIP
 
 regions=( \
-# "ZH"   \
+ "ZH"   \
  "DY"   \
-# "OffZ" \
+ "OffZ" \
 )
 
 leptons=( \
@@ -29,8 +29,8 @@ variables=( \
 # "LeadingJet_AODCaloJetPt"                    \     
 # "LeadingJet_AODCaloJetEta"                   \     
 # "LeadingJet_AODCaloJetPhi"                   \     
-# "AllJets_AODCaloJetMedianLog10IPSig"         \
-# "AllJets_AODCaloJetMedianLog10TrackAngle"    \
+ "AllJets_AODCaloJetMedianLog10IPSig"         \
+ "AllJets_AODCaloJetMedianLog10TrackAngle"    \
  "AllJets_AODCaloJetAlphaMax"                 \
 # "AllJets_AODCaloJetPt"                       \     
 # "AllJets_AODCaloJetEta"                      \     

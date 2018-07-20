@@ -141,8 +141,12 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
  TH1F* h_Data   ;
  THStack* bgstack;
 
+ TH1F* h_DataNorm;
+ TH1F* h_MCNorm;
  TH1F* h_DataInt;
  TH1F* h_MCInt;
+ TH1F* h_DataInt2;
+ TH1F* h_MCInt2;
 
  // load common histogram files / histograms
  file_input = new TFile( inpath + infilename + ".root"               ) ; 
@@ -232,8 +236,26 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    else {
     bgstack->SetMaximum(ymax*1.4);
    }
+
     
+
    plotpad->cd();
+
+   h_Data->Draw();
+   TString xtitle = h_Data->GetTitle();
+   TString xtstrp(xtitle.Strip(TString::kTrailing,' '));
+   Float_t cutval=-999;
+    // if we cut < or > doesn't actually matter
+   if(xtstrp=="AODCaloJetAlphaMax"){
+     cutval = 0.35; // Amax < 0.35
+   }
+   if(xtstrp=="AODCaloJetMedianLog10TrackAngle"){
+     cutval = -1.5; // AODCaloJetMedianLog10TrackAngle > -1.5
+   }
+   if(xtstrp=="AODCaloJetMedianLog10IPSig"){
+     cutval = 1.15; // AODCaloJetMedianLog10IPSig > 1.15
+   }
+
    bgstack->Draw("hist");
    //bgstack->Draw("hist e");
    bgstack->GetYaxis()->SetTitle("Events");
@@ -247,6 +269,11 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    h_Sig40->Draw("sames hist");
    h_Data->Draw("sames E"); 
    leg->Draw();
+   if(cutval > -990){
+    TLine *lcut = new TLine(cutval,0,cutval,h_bkgtotal->GetMaximum());
+    lcut->SetLineColor(kRed);
+    lcut ->Draw();
+   }
   
    char lumistring [50];
    int dummy; 
@@ -285,8 +312,11 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
     h_MCInt->SetBinContent(j,mcsum);
    }
 
-   h_DataInt->Scale( 1.0/h_Data->Integral(0,-1));
-   h_MCInt->Scale( 1.0/h_bkgtotal->Integral(0,-1));
+   h_DataInt->Scale( 1.0/h_Data->Integral());
+   h_MCInt->Scale( 1.0/h_bkgtotal->Integral());
+
+//   h_DataInt->Scale( 1.0/h_Data->Integral(0,-1));
+//   h_MCInt->Scale( 1.0/h_bkgtotal->Integral(0,-1));
 
    h_DataInt->SetLineColor(kBlack);
    h_MCInt->SetLineColor(kOrange+8);
@@ -295,7 +325,7 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    h_DataInt->SetFillStyle(0);
    h_MCInt->SetFillStyle(0);
 
-   // make leg2end
+   // make legend
    TLegend *leg2;
    leg2 = new TLegend(0.2,0.6,0.4,0.88);
    leg2->SetBorderSize(2);
@@ -314,14 +344,18 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    // X axis ratio plot settings
    h_DataInt->GetXaxis()->SetTitleSize(40);
    h_DataInt->GetXaxis()->SetTitleFont(43);
-   h_DataInt->GetXaxis()->SetTitle(h_DataInt->GetTitle());
+//   TString xtitle = h_DataInt->GetTitle();
+//   TString xtstrp(xtitle.Strip(TString::kTrailing,' '));
+//   //xtitle.Strip(s=kTrailing,c=" ");
+   h_DataInt->GetXaxis()->SetTitle(xtstrp);
+   //h_DataInt->GetXaxis()->SetTitle(h_DataInt->GetTitle());
    h_DataInt->GetXaxis()->SetTitleOffset(4.0);
    h_DataInt->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
    h_DataInt->GetXaxis()->SetLabelSize(20);//20
    h_DataInt->GetYaxis()->SetRangeUser(0,1.1);
    h_DataInt->SetTitle(" ");
    h_DataInt->Draw("ep");  // draw first to get ranges set internally inside root
-  
+
    ratiopad->Update();       // need to update pad to get X min/max
    TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
    line->SetLineColor(kBlue);
@@ -336,6 +370,136 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    //canvas->SaveAs(outname+".png");
    canvas->SaveAs(outname+".pdf");
   
+
+   // draw integral plots on large canvas
+   //////////////////////////////////////////////
+
+   TCanvas* can2 = new TCanvas("can2","can2",canx,cany); 
+  
+   can2->Clear();
+   can2->cd();
+  
+   TPad *pp2  = new TPad("pp2", "pp2", 0, 0.25, 1, 1);
+   //pp2->SetBottomMargin(0.04);
+   pp2->SetBottomMargin(0.1);
+   pp2->SetLeftMargin(lmarg);
+   pp2->SetRightMargin(rmarg);
+   pp2->SetFrameLineWidth(3);
+   pp2->SetLogy(dolog);
+   pp2->Draw();
+  
+   can2->cd();
+   //TPad *rp2 = new TPad("rp2", "rp2", 0, 0, 1, 0.25);
+   //rp2->SetTopMargin(0.04);
+   //rp2->SetBottomMargin(0.4);
+   //rp2->SetFrameLineWidth(3);
+   //rp2->SetLeftMargin(lmarg);
+   //rp2->SetRightMargin(rmarg);
+   //rp2->SetLogy(0);
+   //rp2->SetGrid();
+   //rp2->Draw();
+
+   pp2->cd();
+
+   h_DataInt2  = (TH1F*)h_DataInt->Clone("DataInt2" );
+   h_MCInt2    = (TH1F*)h_MCInt->Clone("MCInt2"    );
+   
+   // make legend
+   TLegend *lg2;
+   lg2 = new TLegend(0.2,0.5,0.4,0.7);
+   lg2->SetBorderSize(2);
+   lg2->SetFillColor(kWhite);
+   lg2->AddEntry(h_DataInt2 , "Data", "l"); 
+   lg2->AddEntry(h_MCInt2   , "MC", "l"); 
+  
+   h_DataInt2->GetYaxis()->SetTitle("Normalized Integral");
+   h_DataInt2->GetXaxis()->SetTitle(xtstrp);
+   h_DataInt2->GetXaxis()->SetTitleOffset(1.2);
+   h_DataInt2->GetXaxis()->SetLabelSize(35);//20
+   h_DataInt2->GetYaxis()->SetLabelSize(35);//20
+   //std::cout<<" xtstrp: "<<xtstrp<<"----"<<std::endl;
+   h_DataInt2->Draw("ep");  // draw first to get ranges set internally inside root
+  
+   pp2->Update();       // need to update pad to get X min/max
+   TLine *l2 = new TLine(pp2->GetUxmin(),1,pp2->GetUxmax(),1);
+   l2->SetLineColor(kBlue);
+   l2->SetLineWidth(3);
+   l2->SetLineStyle(9);
+   l2->Draw();
+   h_MCInt2->Draw("hist same");
+   h_DataInt2->Draw("hist same"); // draw points above l2
+   lg2->Draw();
+
+   if(cutval > -990){
+    // draw line at original cut value
+    TLine *lcut2 = new TLine(cutval,0,cutval,1.05);
+    lcut2->SetLineColor(kRed);
+    lcut2 ->Draw();
+
+    // only for tagging variables
+    //std::cout<<" cutval: "<<cutval<<" var: "<<xtstrp<<std::endl;
+    h_DataNorm  = (TH1F*)h_Data->Clone("DataNorm"     );
+    h_MCNorm    = (TH1F*)h_bkgtotal->Clone("MCNorm" );
+    h_DataNorm ->Scale( 1.0/h_DataNorm->Integral() ); 
+    h_MCNorm   ->Scale( 1.0/h_MCNorm  ->Integral() ); 
+
+    //std::cout<<" !!!!cutval: "<<cutval<<" var: "<<xtstrp<<std::endl;
+    Int_t binAtCut;
+    binAtCut = h_DataNorm->GetXaxis()->FindBin(cutval);
+    Float_t dataIntToCut = h_DataNorm->Integral(0,binAtCut);
+    Float_t mcIntToCut = h_MCNorm->Integral(0,binAtCut);
+
+    //std::cout<<" bin "<<binAtCut<<" data: "<<dataIntToCut<<" mc: "<<mcIntToCut<<std::endl;
+    Float_t datamcdiffToCut = dataIntToCut - mcIntToCut ;
+    int mcbinup = -1;
+    int mcbindown = -1;
+    //std::cout<<" datamcdiffToCut "<<datamcdiffToCut<<std::endl;
+
+    int bins = h_DataNorm->GetNbinsX();
+    //std::cout<<" nbins data "<<nbins<<" mc"<<h_MCInt->GetNbinsX()<<std::endl;
+    Int_t binMCequiv = 0;
+    float tmpmcsum=0.;
+    for( binMCequiv=1; binMCequiv<nbins+1; ++binMCequiv){
+     tmpmcsum   += h_MCNorm->GetBinContent(binMCequiv); 
+
+     if( tmpmcsum > dataIntToCut) break;
+
+    }
+    Float_t MCcutval = 0;
+    MCcutval = h_MCNorm->GetXaxis()->GetBinLowEdge(binMCequiv+1); 
+    // binMCequiv+1 because it should be GetBinHighEdge
+      //MCcutval = h_MCNorm->GetXaxis()->GetBinCenter(binMCequiv);
+    //printf(" CHECK: tmpmcsum %10.5f dataIntToCut %10.5f check(n) %10.5f check(n-1) %10.5f MCbin %i Databin %i \n",tmpmcsum,dataIntToCut,h_MCNorm->Integral(0,binMCequiv),h_MCNorm->Integral(0,binMCequiv-1),binMCequiv,binAtCut );
+    printf(" old cut: %5.3f  new cut: %5.3f\n", cutval, MCcutval);
+
+    // draw line at new cutvalue
+    TLine *lnewcut2 = new TLine(MCcutval,0,MCcutval,1.05);
+    lnewcut2->SetLineColor(kBlue);
+    lnewcut2->SetLineWidth(1);
+    lnewcut2 ->Draw();
+   }
+
+
+   title->DrawTextNDC(0.2,0.91,"CMS");
+   extra->DrawTextNDC(0.3,0.91,"Preliminary");
+   lumi->DrawTextNDC(0.9,0.91,(TString)lumistring+" /fb (13 TeV)");
+   if(HIP){
+    extra2->DrawTextNDC(0.51,0.91,"Eras B-F");
+    dummy=sprintf (lumistring, "%0.1f", lumiBCDEF/1000.);
+   }
+   else{
+    extra2->DrawTextNDC(0.51,0.91,"Eras GH");
+    dummy=sprintf (lumistring, "%0.1f", lumiGH/1000.);
+   }
+
+   can2->SaveAs(outname+"_2.pdf");
+
+
+  ////////////////////////////////
+
+
+
+
    //// save histograms into single root file
    //TFile *outfile = TFile::Open(outname+".root","RECREATE");
    //h_Data        ->Write();
