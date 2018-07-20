@@ -108,7 +108,9 @@ std::vector<int> analyzer_createobjects::electron_passID( int bitnr, Float_t ele
   //bool pass_iso = AOD_elePFdBetaIsolationCHS   ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
   //bool pass_iso = AOD_elePFdBetaIsolationDiff  ->at(i) <  [SELBINNAMESIZE][LEPBINNAMESIZE];
 
-  if( pass_bit && pass_kin && pass_overlap && pass_convsersion_veto)
+  bool pass_crack = (fabs(AOD_eleEta->at(i))<1.442) ||  (fabs(AOD_eleEta->at(i))>1.566);
+
+  if( pass_bit && pass_kin && pass_overlap && pass_convsersion_veto && pass_crack )
   {
    nSelectedEle++;
    //printf(" a selected electron\n");
