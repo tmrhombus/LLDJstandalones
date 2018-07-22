@@ -409,7 +409,7 @@ void lldjNtuple::fillAODTrigger(const edm::Event &e, const edm::EventSetup &es){
     //printf(" bitMu17TkMu8       %d \n", bitMu17TkMu8       ); 
     
     // indicates prescaling and whether trigger was fired or not
-    unsigned int isPrescaled = hltPrescale_.prescaleValue(e,es,name);
+    unsigned int isPrescaled = (hltPrescale_.prescaleValue(e,es,name)) != 1;
     const unsigned int triggerIndex = hltConfig_.triggerIndex(name);
     unsigned int isFired     = AODTriggerHandle_->accept(triggerIndex);
     //cout << "was run " << AODTriggerHandle_->wasrun(triggerIndex) << endl;
