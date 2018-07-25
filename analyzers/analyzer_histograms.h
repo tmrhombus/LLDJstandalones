@@ -27,6 +27,19 @@ public :
  static const int TAGMULTNAMESIZE = 5; 
  static const int LEPBINNAMESIZE  = 3;
 
+ static const int MuPtBin      = 33;
+ static const int ElePtBin     = 33;
+ static const int MuPtBinMax   = 99;
+ static const int ElePtBinMax  = 99;
+ static const int MuPtBinMin   = 0;
+ static const int ElePtBinMin  = 0;
+ static const int MuEtaBin      = 30;
+ static const int EleEtaBin     = 30;
+ static const int MuEtaBinMax   = 5;
+ static const int EleEtaBinMax  = 5;
+ static const int MuEtaBinMin   = -5;
+ static const int EleEtaBinMin  = -5;
+ 
  void          initSelectionCategories();
 
  // Histograms
@@ -41,7 +54,7 @@ public :
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
                                    Int_t nbins, Double_t xmin,
                                    Double_t xmax);
- TH1F         initSingleHistogramTH1F(TString hname, TString htitle, 
+ TH1F          initSingleHistogramTH1F(TString hname, TString htitle, 
 				      int nbins, Float_t xbins[]);
 
  // Cutflow histograms
@@ -93,6 +106,11 @@ public :
  Bool_t        initAODCaloJetTagMultHistograms();
  Bool_t        fillAODCaloJetTagMultHistograms(Double_t weight, int selbin, int lepbin);
  Bool_t        writeAODCaloJetTagMultHistograms(int selbin, int lepbin);
+ 
+ // Extra histograms
+ Bool_t        initExtraHistograms();
+ Bool_t        fillExtraHistograms(Double_t weight, int selbin, int lepbin);
+ Bool_t        writeExtraHistograms(int selbin, int lepbin);
 
  //For variable binning
  Bool_t        scaleVariableBinHistograms(int selbin, int lepbin);
@@ -222,6 +240,65 @@ public :
  TH1F  h_AODCaloJetAbsEta_Tag0                   [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0      [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
  TH2F  h_AODCaloJetPtVarAbsEtaVar_Tag0           [SELBINNAMESIZE][TAGMULTNAMESIZE][LEPBINNAMESIZE];
+ 
+ //------------------Trigger turn on curve
+ //basic histograms
+ TH1F  h_TTOCMu1Pt                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCMu2Pt                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCMuPt                 [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCMu1Eta               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCMu2Eta               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCMuEta                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCEle1Pt               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCEle2Pt               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCElePt                [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCEle1Eta              [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCEle2Eta              [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCEleEta               [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //--Double Muon
+ TH1F  h_TTOCTriggerDMu1Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTriggerDMu2Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCTriggerDMuPt         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTriggerDMu1Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTriggerDMu2Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCTriggerDMuEta        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerDTkMu1Eta     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerDTkMu2Eta     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerDTkMu1Pt      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerDTkMu2Pt      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZMu1Eta    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZMu2Eta    [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZMu1Pt     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZMu2Pt     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZTkMu1Eta  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZTkMu2Eta  [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZTkMu1Pt   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTriggerNoDZTkMu2Pt   [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //--Single Muon
+ TH1F  h_TTOCTrigger22MuEta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger22MuPt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger22TkMuEta     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger22TkMuPt      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger24MuEta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger24MuPt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger24TkMuEta     [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger24TkMuPt      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //Double Electron
+ TH1F  h_TTOCTrigger23DEle1Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle2Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCTrigger23DEleEta        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle1Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle2Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH2F  h_TTOCTrigger23DElePt         [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTrigger17DEle1Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTrigger17DEle2Eta       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTrigger17DEle1Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //TH1F  h_TTOCTrigger17DEle2Pt        [SELBINNAMESIZE][LEPBINNAMESIZE];
+ //Single Electron
+ TH1F  h_TTOCTrigger23EleEta      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger23ElePt       [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger27EleEta      [SELBINNAMESIZE][LEPBINNAMESIZE];
+ TH1F  h_TTOCTrigger27ElePt       [SELBINNAMESIZE][LEPBINNAMESIZE];
 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE][LEPBINNAMESIZE];

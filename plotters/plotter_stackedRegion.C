@@ -72,52 +72,52 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  std::vector<TString> variables;
  variables.clear();
 
-// //variables.push_back("nVtx");                   
-// //variables.push_back("nGoodVtx");               
-// //variables.push_back("nTrksPV");                
-// //variables.push_back("rho");                    
-// //variables.push_back("pfMET");                  
-// //variables.push_back("pfMETPhi");               
-// //variables.push_back("pfMETsumEt");             
-// //variables.push_back("nPho");                   
-// //variables.push_back("phoE");                   
-// //variables.push_back("phoEt");                  
-// //variables.push_back("phoEta");                 
-// //variables.push_back("phoPhi");                 
-// //variables.push_back("nEle");                   
-// variables.push_back("AOD_elePt");                  
-// variables.push_back("AOD_eleEta");                 
-// variables.push_back("AOD_elePhi");                 
-// //variables.push_back("nMu");                    
-// variables.push_back("AOD_muPt");                   
-// //variables.push_back("muEn");                   
-// variables.push_back("AOD_muEta");                  
-// variables.push_back("AOD_muPhi");                  
-// //variables.push_back("nJet");                   
-// variables.push_back("htall"); 
-// variables.push_back("htaodcalojets");
-// //variables.push_back("nSelectedPho");
-// variables.push_back("AOD_nSelectedEle");
-// variables.push_back("AOD_nSelectedMu");
-// variables.push_back("nSelectedAODCaloJet");
-// variables.push_back("nSelectedAODCaloJetTag");
-// variables.push_back("LeadingJet_AODCaloJetPt");                      
-// //variables.push_back("LeadingJet_jetEn");                      
-// variables.push_back("LeadingJet_AODCaloJetEta");                     
-// variables.push_back("LeadingJet_AODCaloJetPhi");                     
-// //variables.push_back("AllJets_AODCaloJetPtVar");
-// //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
-// //variables.push_back("AllJets_AODCaloJetdR");
-// //variables.push_back("AllJets_AODCaloJetdR_Tag0");
-// //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
-// //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
+ //variables.push_back("nVtx");                   
+ //variables.push_back("nGoodVtx");               
+ //variables.push_back("nTrksPV");                
+ //variables.push_back("rho");                    
+ //variables.push_back("pfMET");                  
+ //variables.push_back("pfMETPhi");               
+ //variables.push_back("pfMETsumEt");             
+ //variables.push_back("nPho");                   
+ //variables.push_back("phoE");                   
+ //variables.push_back("phoEt");                  
+ //variables.push_back("phoEta");                 
+ //variables.push_back("phoPhi");                 
+ //variables.push_back("nEle");                   
+ variables.push_back("AOD_elePt");                  
+ variables.push_back("AOD_eleEta");                 
+ variables.push_back("AOD_elePhi");                 
+ //variables.push_back("nMu");                    
+ variables.push_back("AOD_muPt");                   
+ //variables.push_back("muEn");                   
+ variables.push_back("AOD_muEta");                  
+ variables.push_back("AOD_muPhi");                  
+ //variables.push_back("nJet");                   
+ variables.push_back("htall"); 
+ variables.push_back("htaodcalojets");
+ //variables.push_back("nSelectedPho");
+ variables.push_back("AOD_nSelectedEle");
+ variables.push_back("AOD_nSelectedMu");
+ variables.push_back("nSelectedAODCaloJet");
+ variables.push_back("nSelectedAODCaloJetTag");
+ variables.push_back("LeadingJet_AODCaloJetPt");                      
+ //variables.push_back("LeadingJet_jetEn");                      
+ variables.push_back("LeadingJet_AODCaloJetEta");                     
+ variables.push_back("LeadingJet_AODCaloJetPhi");                     
+ //variables.push_back("AllJets_AODCaloJetPtVar");
+ //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+ //variables.push_back("AllJets_AODCaloJetdR");
+ //variables.push_back("AllJets_AODCaloJetdR_Tag0");
+ //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+ //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
  variables.push_back("AllJets_AODCaloJetAlphaMax");
  variables.push_back("AllJets_AODCaloJetPt");                      
-// //variables.push_back("AllJets_AODCaloJetEn");                      
-// variables.push_back("AllJets_AODCaloJetEta");                     
-// variables.push_back("AllJets_AODCaloJetPhi");                     
+ //variables.push_back("AllJets_AODCaloJetEn");                      
+ variables.push_back("AllJets_AODCaloJetEta");                     
+ variables.push_back("AllJets_AODCaloJetPhi");                     
 
  // canvas and text attributes
  int canx = 1100;
@@ -419,7 +419,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_Sig_MS55ct1    ;
 
  TH1F* h_Data   ;
-
  // load histogram files
  file_DY5to50_HT100To200      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-100to200_"+region+"_histograms.root"               ) ; 
  file_DY5to50_HT200To400      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-200to400_"+region+"_histograms.root"               ) ; 
@@ -1245,8 +1244,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_ZH        ->SetLineWidth(2);
 
     h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
-    h_bkgtotal->SetLineColor(kBlack);
-    h_bkgtotal->SetLineWidth(2);
     h_bkgtotal->SetFillStyle(1001);
 
     std::vector<TH1F *> v = {h_DY, h_GJets, h_ST, h_TT, h_WJetsToLNu, h_VV, h_VG, h_ZH};
@@ -1377,82 +1374,83 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
     lumi->DrawTextNDC(0.9,0.91,(TString)lumistring+" /fb (13 TeV)");
 
-    ratiopad->cd();
-    h_ratio = (TH1F*)h_Data->Clone("ratio");
-    if(h_Data->Integral(-1,-1)>0){
-     h_ratio->Divide(h_bkgtotal);
-    }
-    h_ratio->SetTitle(" ");
-    // Y axis ratio plot settings
-    h_ratio->GetYaxis()->SetTitleSize(40);
-    h_ratio->GetYaxis()->SetTitleFont(43);
-    h_ratio->GetYaxis()->SetTitleOffset(1.55);
-    h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-    h_ratio->GetYaxis()->SetLabelSize(20);
-    h_ratio->GetYaxis()->SetNdivisions(-105);
-    h_ratio->GetYaxis()->SetTitle("Data/MC");
-    // X axis ratio plot settings
-    h_ratio->GetXaxis()->SetTitleSize(40);
-    h_ratio->GetXaxis()->SetTitleFont(43);
-    h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
-    h_ratio->GetXaxis()->SetTitleOffset(4.0);
-    h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-    h_ratio->GetXaxis()->SetLabelSize(20);//20
-    h_ratio->SetMarkerStyle(20);
-    h_ratio->SetMarkerColor(kRed);
-    h_ratio->SetMarkerSize(1);
-    h_ratio->GetYaxis()->SetRangeUser(0,2);
-    h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
 
-    h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
-    h_ratiostaterr->Divide(h_bkgtotal);
+     ratiopad->cd();
+     h_ratio = (TH1F*)h_Data->Clone("ratio");
+     if(h_Data->Integral(-1,-1)>0){
+      h_ratio->Divide(h_bkgtotal);
+     }
+     h_ratio->SetTitle(" ");
+     // Y axis ratio plot settings
+     h_ratio->GetYaxis()->SetTitleSize(40);
+     h_ratio->GetYaxis()->SetTitleFont(43);
+     h_ratio->GetYaxis()->SetTitleOffset(1.55);
+     h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+     h_ratio->GetYaxis()->SetLabelSize(20);
+     h_ratio->GetYaxis()->SetNdivisions(-105);
+     h_ratio->GetYaxis()->SetTitle("Data/MC");
+     // X axis ratio plot settings
+     h_ratio->GetXaxis()->SetTitleSize(40);
+     h_ratio->GetXaxis()->SetTitleFont(43);
+     h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+     h_ratio->GetXaxis()->SetTitleOffset(4.0);
+     h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+     h_ratio->GetXaxis()->SetLabelSize(20);//20
+     h_ratio->SetMarkerStyle(20);
+     h_ratio->SetMarkerColor(kRed);
+     h_ratio->SetMarkerSize(1);
+     h_ratio->GetYaxis()->SetRangeUser(0,2);
+     h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
 
-    ratiopad->Update();       // need to update pad to get X min/max
-    TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
-    line->SetLineColor(kBlue);
-    line->SetLineWidth(3);
-    line->SetLineStyle(9);
-    h_ratiostaterr->Draw("e2 same");
-    line->Draw();
-    h_ratio->Draw("ep same"); // draw points above line
+     h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
+     h_ratiostaterr->Divide(h_bkgtotal);
+
+     ratiopad->Update();       // need to update pad to get X min/max
+     TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
+     line->SetLineColor(kBlue);
+     line->SetLineWidth(3);
+     line->SetLineStyle(9);
+     h_ratiostaterr->Draw("e2 same");
+     line->Draw();
+     h_ratio->Draw("ep same"); // draw points above line
  
-    // save canvas
-    //canvas->SaveAs(outname+".png");
-    canvas->SaveAs(outname+".pdf");
+     // save canvas
+     //canvas->SaveAs(outname+".png");
+     canvas->SaveAs(outname+".pdf");
 
-    // save histograms into single root file
-    TFile *outfile = TFile::Open(outname+".root","RECREATE");
-    h_Data        ->Write();
-    h_DY          ->Write();
-    h_GJets       ->Write();
-    h_ST          ->Write();
-    h_TT          ->Write();
-    h_WJetsToLNu  ->Write();
-    h_VV          ->Write();
-    h_VG          ->Write();
-    h_ZH          ->Write();
-    h_bkgtotal    ->Write();
-    h_ratio       ->Write();
-    h_ratiostaterr->Write();
-    bgstack       ->Write();
+     // save histograms into single root file
+     TFile *outfile = TFile::Open(outname+".root","RECREATE");
+     h_Data        ->Write();
+     h_DY          ->Write();
+     h_GJets       ->Write();
+     h_ST          ->Write();
+     h_TT          ->Write();
+     h_WJetsToLNu  ->Write();
+     h_VV          ->Write();
+     h_VG          ->Write();
+     h_ZH          ->Write();
+     h_bkgtotal    ->Write();
+     h_ratio       ->Write();
+     h_ratiostaterr->Write();
+     bgstack       ->Write();
 
-    h_altDY          ->Write(); 
-    h_altVV          ->Write(); 
-    h_altTT          ->Write(); 
-    h_Sig_MS15ct1000 ->Write(); 
-    h_Sig_MS15ct100  ->Write(); 
-    h_Sig_MS15ct10   ->Write(); 
-    h_Sig_MS15ct1    ->Write(); 
-    h_Sig_MS40ct1000 ->Write(); 
-    h_Sig_MS40ct100  ->Write(); 
-    h_Sig_MS40ct10   ->Write(); 
-    h_Sig_MS40ct1    ->Write(); 
-    h_Sig_MS55ct1000 ->Write(); 
-    h_Sig_MS55ct100  ->Write(); 
-    h_Sig_MS55ct10   ->Write(); 
-    h_Sig_MS55ct1    ->Write(); 
+     h_altDY          ->Write(); 
+     h_altVV          ->Write(); 
+     h_altTT          ->Write(); 
+     h_Sig_MS15ct1000 ->Write(); 
+     h_Sig_MS15ct100  ->Write(); 
+     h_Sig_MS15ct10   ->Write(); 
+     h_Sig_MS15ct1    ->Write(); 
+     h_Sig_MS40ct1000 ->Write(); 
+     h_Sig_MS40ct100  ->Write(); 
+     h_Sig_MS40ct10   ->Write(); 
+     h_Sig_MS40ct1    ->Write(); 
+     h_Sig_MS55ct1000 ->Write(); 
+     h_Sig_MS55ct100  ->Write(); 
+     h_Sig_MS55ct10   ->Write(); 
+     h_Sig_MS55ct1    ->Write(); 
 
-    outfile->Close();
+     outfile->Close();
   
    } 
   }

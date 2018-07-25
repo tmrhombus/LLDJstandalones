@@ -14,7 +14,7 @@ leptons=( \
 )
 
 variables=( \
-# "AOD_elePt"                                  \     
+ "AOD_elePt"                                  \     
 # "AOD_eleEta"                                 \     
 # "AOD_elePhi"                                 \     
 # "AOD_muPt"                                   \     
@@ -29,10 +29,10 @@ variables=( \
 # "LeadingJet_AODCaloJetPt"                    \     
 # "LeadingJet_AODCaloJetEta"                   \     
 # "LeadingJet_AODCaloJetPhi"                   \     
- "AllJets_AODCaloJetMedianLog10IPSig"         \
- "AllJets_AODCaloJetMedianLog10TrackAngle"    \
- "AllJets_AODCaloJetAlphaMax"                 \
- "AllJets_AODCaloJetPt"                       \     
+# "AllJets_AODCaloJetMedianLog10IPSig"         \
+# "AllJets_AODCaloJetMedianLog10TrackAngle"    \
+# "AllJets_AODCaloJetAlphaMax"                 \
+# "AllJets_AODCaloJetPt"                       \     
 # "AllJets_AODCaloJetEta"                      \     
 # "AllJets_AODCaloJetPhi"                      \  
 )
