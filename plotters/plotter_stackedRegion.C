@@ -66,7 +66,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  leptons.clear();
  leptons.push_back("ele"); 
  leptons.push_back("mu");  
- //leptons.push_back("NoLepSel");
+ leptons.push_back("NoLepSel");
 
  // variables to plot
  std::vector<TString> variables;
@@ -82,8 +82,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  //variables.push_back("phoE");                   
  //variables.push_back("phoEt");                  
- //variables.push_back("phoEta");                 
- //variables.push_back("phoPhi");                 
+ variables.push_back("AOD_phoPt");                 
+ variables.push_back("AOD_phoEta");                 
+ variables.push_back("AOD_phoPhi");                 
  //variables.push_back("nEle");                   
  variables.push_back("AOD_elePt");                  
  variables.push_back("AOD_eleEta");                 
@@ -95,16 +96,16 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  variables.push_back("AOD_muPhi");                  
  //variables.push_back("nJet");                   
  variables.push_back("htall"); 
- variables.push_back("htaodcalojets");
+// variables.push_back("htaodcalojets");
  //variables.push_back("nSelectedPho");
- variables.push_back("AOD_nSelectedEle");
- variables.push_back("AOD_nSelectedMu");
- variables.push_back("nSelectedAODCaloJet");
- variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("LeadingJet_AODCaloJetPt");                      
+// variables.push_back("AOD_nSelectedEle");
+// variables.push_back("AOD_nSelectedMu");
+// variables.push_back("nSelectedAODCaloJet");
+// variables.push_back("nSelectedAODCaloJetTag");
+ //variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
- variables.push_back("LeadingJet_AODCaloJetEta");                     
- variables.push_back("LeadingJet_AODCaloJetPhi");                     
+ //variables.push_back("LeadingJet_AODCaloJetEta");                     
+ //variables.push_back("LeadingJet_AODCaloJetPhi");                     
  //variables.push_back("AllJets_AODCaloJetPtVar");
  //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
  //variables.push_back("AllJets_AODCaloJetdR");
@@ -200,6 +201,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TFile* file_Data_SingleEle_D        ; 
  TFile* file_Data_SingleEle_C        ; 
  TFile* file_Data_SingleEle_B_2      ; 
+ TFile* file_Data_MuonEG_H_3         ; 
+ TFile* file_Data_MuonEG_H_2         ; 
+ TFile* file_Data_MuonEG_G           ; 
+ TFile* file_Data_MuonEG_F           ; 
+ TFile* file_Data_MuonEG_E           ; 
+ TFile* file_Data_MuonEG_D           ; 
+ TFile* file_Data_MuonEG_C           ; 
+ TFile* file_Data_MuonEG_B_2         ; 
  TFile* file_Data_SinglePhoton_H_3   ; 
  TFile* file_Data_SinglePhoton_H_2   ; 
  TFile* file_Data_SinglePhoton_G     ; 
@@ -364,6 +373,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_Data_SingleEle_D      ;
  TH1F* h_Data_SingleEle_C      ;
  TH1F* h_Data_SingleEle_B_2    ;
+ TH1F* h_Data_MuonEG_H_3       ;
+ TH1F* h_Data_MuonEG_H_2       ;
+ TH1F* h_Data_MuonEG_G         ;
+ TH1F* h_Data_MuonEG_F         ;
+ TH1F* h_Data_MuonEG_E         ;
+ TH1F* h_Data_MuonEG_D         ;
+ TH1F* h_Data_MuonEG_C         ;
+ TH1F* h_Data_MuonEG_B_2       ;
  TH1F* h_Data_SinglePhoton_H_3 ;
  TH1F* h_Data_SinglePhoton_H_2 ;
  TH1F* h_Data_SinglePhoton_G   ;
@@ -501,14 +518,22 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 // file_Data_SingleEle_D              =  new TFile( inpath + "Data_SingleEle_D_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_C              =  new TFile( inpath + "Data_SingleEle_C_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_B_2            =  new TFile( inpath + "Data_SingleEle_B_2_"+region+"_histograms.root"    ) ; 
-// file_Data_SinglePhoton_H_3         =  new TFile( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
-// file_Data_SinglePhoton_H_2         =  new TFile( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
-// file_Data_SinglePhoton_G           =  new TFile( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_F           =  new TFile( inpath + "Data_SinglePhoton_F_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_E           =  new TFile( inpath + "Data_SinglePhoton_E_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_D           =  new TFile( inpath + "Data_SinglePhoton_D_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_C           =  new TFile( inpath + "Data_SinglePhoton_C_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_B_2         =  new TFile( inpath + "Data_SinglePhoton_B_2_"+region+"_histograms.root" ) ; 
+ file_Data_SinglePhoton_H_3         =  new TFile( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
+ file_Data_SinglePhoton_H_2         =  new TFile( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
+ file_Data_SinglePhoton_G           =  new TFile( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
+ //file_Data_SinglePhoton_F           =  new TFile( inpath + "Data_SinglePhoton_F_"+region+"_histograms.root"   ) ; 
+ //file_Data_SinglePhoton_E           =  new TFile( inpath + "Data_SinglePhoton_E_"+region+"_histograms.root"   ) ; 
+ //file_Data_SinglePhoton_D           =  new TFile( inpath + "Data_SinglePhoton_D_"+region+"_histograms.root"   ) ; 
+ //file_Data_SinglePhoton_C           =  new TFile( inpath + "Data_SinglePhoton_C_"+region+"_histograms.root"   ) ; 
+ //file_Data_SinglePhoton_B_2         =  new TFile( inpath + "Data_SinglePhoton_B_2_"+region+"_histograms.root" ) ; 
+ file_Data_MuonEG_H_3               =  new TFile( inpath + "Data_MuonEG_H_3_"+region+"_histograms.root" ) ; 
+ file_Data_MuonEG_H_2               =  new TFile( inpath + "Data_MuonEG_H_2_"+region+"_histograms.root" ) ; 
+ file_Data_MuonEG_G                 =  new TFile( inpath + "Data_MuonEG_G_"+region+"_histograms.root" ) ; 
+ //file_Data_MuonEG_F                 =  new TFile( inpath + "Data_MuonEG_F_"+region+"_histograms.root" ) ; 
+ //file_Data_MuonEG_E                 =  new TFile( inpath + "Data_MuonEG_E_"+region+"_histograms.root"   ) ; 
+ //file_Data_MuonEG_D                 =  new TFile( inpath + "Data_MuonEG_D_"+region+"_histograms.root"   ) ; 
+ //file_Data_MuonEG_c                 =  new TFile( inpath + "Data_MuonEG_C_"+region+"_histograms.root"   ) ; 
+ //file_Data_MuonEG_B_2               =  new TFile( inpath + "Data_MuonEG_B_2_"+region+"_histograms.root"   ) ; 
 
  file_Data_DoubleMu_H_3             =  new TFile( inpath + "Data_DoubleMu_H_3_"+region+"_histograms.root"     ) ; 
  file_Data_DoubleMu_H_2             =  new TFile( inpath + "Data_DoubleMu_H_2_"+region+"_histograms.root"     ) ; 
@@ -634,14 +659,23 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
    // h_Data_SingleEle_D      = (TH1F*) file_Data_SingleEle_D      -> Get("h_"+varname)->Clone( "Data_SingleEle_D"       ) ; 
    // h_Data_SingleEle_C      = (TH1F*) file_Data_SingleEle_C      -> Get("h_"+varname)->Clone( "Data_SingleEle_C"       ) ; 
    // h_Data_SingleEle_B_2    = (TH1F*) file_Data_SingleEle_B_2    -> Get("h_"+varname)->Clone( "Data_SingleEle_B_2"     ) ; 
-   // h_Data_SinglePhoton_H_3 = (TH1F*) file_Data_SinglePhoton_H_3 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_3"  ) ; 
-   // h_Data_SinglePhoton_H_2 = (TH1F*) file_Data_SinglePhoton_H_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_2"  ) ; 
-   // h_Data_SinglePhoton_G   = (TH1F*) file_Data_SinglePhoton_G   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_G"    ) ; 
-   // h_Data_SinglePhoton_F   = (TH1F*) file_Data_SinglePhoton_F   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_F"    ) ; 
-   // h_Data_SinglePhoton_E   = (TH1F*) file_Data_SinglePhoton_E   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_E"    ) ; 
-   // h_Data_SinglePhoton_D   = (TH1F*) file_Data_SinglePhoton_D   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_D"    ) ; 
-   // h_Data_SinglePhoton_C   = (TH1F*) file_Data_SinglePhoton_C   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_C"    ) ; 
-   // h_Data_SinglePhoton_B_2 = (TH1F*) file_Data_SinglePhoton_B_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_B_2"  ) ; 
+    h_Data_SinglePhoton_H_3 = (TH1F*) file_Data_SinglePhoton_H_3 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_3"  ) ; 
+    h_Data_SinglePhoton_H_2 = (TH1F*) file_Data_SinglePhoton_H_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_2"  ) ; 
+    h_Data_SinglePhoton_G   = (TH1F*) file_Data_SinglePhoton_G   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_G"    ) ; 
+    //h_Data_SinglePhoton_F   = (TH1F*) file_Data_SinglePhoton_F   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_F"    ) ; 
+    //h_Data_SinglePhoton_E   = (TH1F*) file_Data_SinglePhoton_E   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_E"    ) ; 
+    //h_Data_SinglePhoton_D   = (TH1F*) file_Data_SinglePhoton_D   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_D"    ) ; 
+    //h_Data_SinglePhoton_C   = (TH1F*) file_Data_SinglePhoton_C   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_C"    ) ; 
+    //h_Data_SinglePhoton_B_2 = (TH1F*) file_Data_SinglePhoton_B_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_B_2"  ) ; 
+    h_Data_MuonEG_H_3       = (TH1F*) file_Data_MuonEG_H_3       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_3"  ) ; 
+    h_Data_MuonEG_H_2       = (TH1F*) file_Data_MuonEG_H_2       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_2"  ) ; 
+    h_Data_MuonEG_G         = (TH1F*) file_Data_MuonEG_G         -> Get("h_"+varname)->Clone( "Data_MuonEG_G"    ) ; 
+    //h_Data_MuonEG_F         = (TH1F*) file_Data_MuonEG_F         -> Get("h_"+varname)->Clone( "Data_MuonEG_F"    ) ; 
+    //h_Data_MuonEG_E         = (TH1F*) file_Data_MuonEG_E         -> Get("h_"+varname)->Clone( "Data_MuonEG_E"    ) ; 
+    //h_Data_MuonEG_D         = (TH1F*) file_Data_MuonEG_D         -> Get("h_"+varname)->Clone( "Data_MuonEG_D"    ) ; 
+    //h_Data_MuonEG_C         = (TH1F*) file_Data_MuonEG_C         -> Get("h_"+varname)->Clone( "Data_MuonEG_C"    ) ; 
+    //h_Data_MuonEG_B_2       = (TH1F*) file_Data_MuonEG_B_2       -> Get("h_"+varname)->Clone( "Data_MuonEG_B_2"  ) ; 
+    
     h_Data_DoubleMu_H_3     = (TH1F*) file_Data_DoubleMu_H_3     -> Get("h_"+varname)->Clone( "Data_DoubleMu_H_3"      ) ; 
     h_Data_DoubleMu_H_2     = (TH1F*) file_Data_DoubleMu_H_2     -> Get("h_"+varname)->Clone( "Data_DoubleMu_H_2"      ) ; 
     h_Data_DoubleMu_G       = (TH1F*) file_Data_DoubleMu_G       -> Get("h_"+varname)->Clone( "Data_DoubleMu_G"        ) ; 
@@ -768,33 +802,119 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_bkgtotal->Add(h_VG    ) ;
      h_bkgtotal->Add(h_WJetsToLNu      ) ;
 
-    if( lepton=="ele"){
-      if(HIP){
-       h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("Data");
-       h_Data->Add( h_Data_DoubleEG_F   )     ; 
-       h_Data->Add( h_Data_DoubleEG_E   )     ; 
-       h_Data->Add( h_Data_DoubleEG_D   )     ; 
-       h_Data->Add( h_Data_DoubleEG_C   )     ; 
+
+    if (region == "CRHeavy"){
+       cout<<"Heavy"<<endl;
+      if( lepton=="ele"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_MuonEG_B_2->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_F   )     ; 
+         h_Data->Add( h_Data_MuonEG_E   )     ; 
+         h_Data->Add( h_Data_MuonEG_D   )     ; 
+         h_Data->Add( h_Data_MuonEG_C   )     ; 
+       }
+        else{
+         h_Data = (TH1F*)h_Data_MuonEG_G->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_H_3 )     ; 
+         h_Data->Add( h_Data_MuonEG_H_2 )     ; 
+       }
       }
-      else{
-       h_Data = (TH1F*)h_Data_DoubleEG_G->Clone("Data");
-       h_Data->Add( h_Data_DoubleEG_H_3 )     ; 
-       h_Data->Add( h_Data_DoubleEG_H_2 )     ; 
-      }
+      else if( lepton=="mu"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_MuonEG_B_2->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_F   )     ; 
+         h_Data->Add( h_Data_MuonEG_E   )     ; 
+         h_Data->Add( h_Data_MuonEG_D   )     ; 
+         h_Data->Add( h_Data_MuonEG_C   )     ; 
+        }
+        else{
+         h_Data = (TH1F*)h_Data_MuonEG_G->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_H_3 )     ; 
+         h_Data->Add( h_Data_MuonEG_H_2 )     ; 
+        }
+       }
+       else{
+        if(HIP){
+         h_Data = (TH1F*)h_Data_MuonEG_B_2->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_F   )     ; 
+         h_Data->Add( h_Data_MuonEG_E   )     ; 
+         h_Data->Add( h_Data_MuonEG_D   )     ; 
+         h_Data->Add( h_Data_MuonEG_C   )     ; 
+        }
+        else{
+         h_Data = (TH1F*)h_Data_MuonEG_G->Clone("Data");
+         h_Data->Add( h_Data_MuonEG_H_3 )     ; 
+         h_Data->Add( h_Data_MuonEG_H_2 )     ; 
+        }
+      
+       } 
     }
-    else if( lepton=="mu"){
-      if(HIP){
-       h_Data = (TH1F*)h_Data_DoubleMu_B_2->Clone("Data");
-       h_Data->Add( h_Data_DoubleMu_F   )     ; 
-       h_Data->Add( h_Data_DoubleMu_E   )     ; 
-       h_Data->Add( h_Data_DoubleMu_D   )     ; 
-       h_Data->Add( h_Data_DoubleMu_C   )     ; 
+    else if(region == "CRLight"){
+       cout<<"light"<<endl;
+      if( lepton=="ele"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_SinglePhoton_B_2->Clone("Data");
+         h_Data->Add( h_Data_SinglePhoton_F   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_E   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_D   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_C   )     ; 
+       }
+        else{
+         h_Data = (TH1F*)h_Data_SinglePhoton_G->Clone("Data");
+         h_Data->Add( h_Data_SinglePhoton_H_3 )     ; 
+         h_Data->Add( h_Data_SinglePhoton_H_2 )     ; 
+       }
       }
-      else{
-       h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("Data");
-       h_Data->Add( h_Data_DoubleMu_H_3 )     ; 
-       h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
+      else if( lepton=="mu"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_SinglePhoton_B_2->Clone("Data");
+         h_Data->Add( h_Data_SinglePhoton_F   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_E   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_D   )     ; 
+         h_Data->Add( h_Data_SinglePhoton_C   )     ; 
+        }
+        else{
+         h_Data = (TH1F*)h_Data_SinglePhoton_G->Clone("Data");
+         h_Data->Add( h_Data_SinglePhoton_H_3 )     ; 
+         h_Data->Add( h_Data_SinglePhoton_H_2 )     ; 
+        }
+       }
+       else{
+	continue;
+       } 
+    }
+    else{
+      if( lepton=="ele"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("Data");
+         h_Data->Add( h_Data_DoubleEG_F   )     ; 
+         h_Data->Add( h_Data_DoubleEG_E   )     ; 
+         h_Data->Add( h_Data_DoubleEG_D   )     ; 
+         h_Data->Add( h_Data_DoubleEG_C   )     ; 
+       }
+        else{
+         h_Data = (TH1F*)h_Data_DoubleEG_G->Clone("Data");
+         h_Data->Add( h_Data_DoubleEG_H_3 )     ; 
+         h_Data->Add( h_Data_DoubleEG_H_2 )     ; 
+       }
       }
+      else if( lepton=="mu"){
+        if(HIP){
+         h_Data = (TH1F*)h_Data_DoubleMu_B_2->Clone("Data");
+         h_Data->Add( h_Data_DoubleMu_F   )     ; 
+         h_Data->Add( h_Data_DoubleMu_E   )     ; 
+         h_Data->Add( h_Data_DoubleMu_D   )     ; 
+         h_Data->Add( h_Data_DoubleMu_C   )     ; 
+        }
+        else{
+         h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("Data");
+         h_Data->Add( h_Data_DoubleMu_H_3 )     ; 
+         h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
+        }
+       }
+       else{
+        continue;
+       } 
     }
     
     // Integrals
@@ -909,14 +1029,18 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     // Float_t  int_Data_SingleEle_D         = h_Data_SingleEle_D                ->Integral(0,-1);                   
     // Float_t  int_Data_SingleEle_C         = h_Data_SingleEle_C                ->Integral(0,-1);                   
     // Float_t  int_Data_SingleEle_B_2       = h_Data_SingleEle_B_2              ->Integral(0,-1);                   
-    // Float_t  int_Data_SinglePhoton_H_3    = h_Data_SinglePhoton_H_3           ->Integral(0,-1);                     
-    // Float_t  int_Data_SinglePhoton_H_2    = h_Data_SinglePhoton_H_2           ->Integral(0,-1);                     
-    // Float_t  int_Data_SinglePhoton_G      = h_Data_SinglePhoton_G             ->Integral(0,-1);                     
+     Float_t  int_Data_SinglePhoton_H_3    = h_Data_SinglePhoton_H_3           ->Integral(0,-1);                     
+     Float_t  int_Data_SinglePhoton_H_2    = h_Data_SinglePhoton_H_2           ->Integral(0,-1);                     
+     Float_t  int_Data_SinglePhoton_G      = h_Data_SinglePhoton_G             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_F      = h_Data_SinglePhoton_F             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_E      = h_Data_SinglePhoton_E             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_D      = h_Data_SinglePhoton_D             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_C      = h_Data_SinglePhoton_C             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_B_2    = h_Data_SinglePhoton_B_2           ->Integral(0,-1);                     
+     Float_t  int_Data_MuonEG_H_3          = h_Data_MuonEG_H_3                 ->Integral(0,-1);                     
+     Float_t  int_Data_MuonEG_H_2          = h_Data_MuonEG_H_2                 ->Integral(0,-1);                     
+     Float_t  int_Data_MuonEG_G            = h_Data_MuonEG_G                   ->Integral(0,-1);                     
+
     Float_t  int_Data_DoubleMu_H_3        = h_Data_DoubleMu_H_3               ->Integral(0,-1);                     
     Float_t  int_Data_DoubleMu_H_2        = h_Data_DoubleMu_H_2               ->Integral(0,-1);                     
     Float_t  int_Data_DoubleMu_G          = h_Data_DoubleMu_G                 ->Integral(0,-1);                     
@@ -1092,14 +1216,17 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //   fprintf (outfulltable, "Data SingleEle D        & %3.1f \\\\\n", int_Data_SingleEle_D       ) ; 
  //   fprintf (outfulltable, "Data SingleEle C        & %3.1f \\\\\n", int_Data_SingleEle_C       ) ; 
  //   fprintf (outfulltable, "Data SingleEle B 2      & %3.1f \\\\\n", int_Data_SingleEle_B_2     ) ; 
- //   fprintf (outfulltable, "Data SinglePhoton H 3   & %3.1f \\\\\n", int_Data_SinglePhoton_H_3  ) ; 
- //   fprintf (outfulltable, "Data SinglePhoton H 2   & %3.1f \\\\\n", int_Data_SinglePhoton_H_2  ) ; 
- //   fprintf (outfulltable, "Data SinglePhoton G     & %3.1f \\\\\n", int_Data_SinglePhoton_G    ) ; 
+    fprintf (outfulltable, "Data SinglePhoton H 3   & %3.1f \\\\\n", int_Data_SinglePhoton_H_3  ) ; 
+    fprintf (outfulltable, "Data SinglePhoton H 2   & %3.1f \\\\\n", int_Data_SinglePhoton_H_2  ) ; 
+    fprintf (outfulltable, "Data SinglePhoton G     & %3.1f \\\\\n", int_Data_SinglePhoton_G    ) ; 
  //   fprintf (outfulltable, "Data SinglePhoton F     & %3.1f \\\\\n", int_Data_SinglePhoton_F    ) ; 
  //   fprintf (outfulltable, "Data SinglePhoton E     & %3.1f \\\\\n", int_Data_SinglePhoton_E    ) ; 
  //   fprintf (outfulltable, "Data SinglePhoton D     & %3.1f \\\\\n", int_Data_SinglePhoton_D    ) ; 
  //   fprintf (outfulltable, "Data SinglePhoton C     & %3.1f \\\\\n", int_Data_SinglePhoton_C    ) ; 
  //   fprintf (outfulltable, "Data SinglePhoton B 2   & %3.1f \\\\\n", int_Data_SinglePhoton_B_2  ) ; 
+    fprintf (outfulltable, "Data MuonEG H 3           & %3.1f \\\\\n", int_Data_MuonEG_H_3        ) ; 
+    fprintf (outfulltable, "Data MuonEG H 2           & %3.1f \\\\\n", int_Data_MuonEG_H_2        ) ; 
+    fprintf (outfulltable, "Data MuonEG G             & %3.1f \\\\\n", int_Data_MuonEG_G          ) ; 
       fprintf (outfulltable, "Data DoubleMu H 3       & %3.1f \\\\\n", int_Data_DoubleMu_H_3      ) ; 
       fprintf (outfulltable, "Data DoubleMu H 2       & %3.1f \\\\\n", int_Data_DoubleMu_H_2      ) ; 
       fprintf (outfulltable, "Data DoubleMu G         & %3.1f \\\\\n", int_Data_DoubleMu_G        ) ; 
