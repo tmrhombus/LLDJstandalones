@@ -1112,12 +1112,16 @@ Bool_t analyzer_histograms::fillExtraHistograms(Double_t weight, int selbin, int
 //For AOD_HLT_Mu17TkMu8
   int leadMu;
   int subLeadMu;
-  if(muon_list.size()>0) leadMu    = muon_list[0];
-  if(muon_list.size()>1) subLeadMu = muon_list[1];
+//std::cout<<"*****************************************************************"<<std::endl;
+  if(muon_list.size()>0) {leadMu    = muon_list[0]; }//std::cout<<"LeadMuPt: "<<AOD_muPt->at(leadMu)<<std::endl;}
+  if(muon_list.size()>1) {subLeadMu = muon_list[1]; }//std::cout<<"subLeadMuPt: "<<AOD_muPt->at(subLeadMu)<<std::endl;}
+//std::cout<<"*****************************************************************"<<std::endl;
   int leadEle;
   int subLeadEle;
-  if(electron_list.size()>0) leadEle    = electron_list[0];
-  if(electron_list.size()>1) subLeadEle = electron_list[1];
+//std::cout<<"*****************************************************************"<<std::endl;
+  if(electron_list.size()>0) {leadEle    = electron_list[0];} //std::cout<<"LeadElePt: "<<AOD_elePt->at(leadEle)<<std::endl;}
+  if(electron_list.size()>1) {subLeadEle = electron_list[1];} //std::cout<<"SubLeadElePt: "<<AOD_elePt->at(subLeadEle)<<std::endl;}
+//std::cout<<"*****************************************************************"<<std::endl;
   Bool_t doesPassDMu = (Bool_t)( (AOD_HLT_IsoMu22 > 0) || (AOD_HLT_IsoTkMu22 > 0) || (AOD_HLT_IsoMu24 > 0) || (AOD_HLT_IsoTkMu24 > 0) );
 
   /*  if(muon_list.size() > 0){

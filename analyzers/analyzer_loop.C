@@ -101,6 +101,7 @@ void analyzer_loop::Loop(TString outfilename,
   passDoubleEle = askPassDoubleEle();
   passDoubleMu  = askPassDoubleMu();
   passSinglePho = askPassSinglePho();
+  passMuEG      = askPassMuEG();
 
   // clear then reset selection vectors
   clearSelections();
@@ -340,6 +341,14 @@ void analyzer_loop::debug_printtriggers()
  printf("AOD_HLT_IsoTkMu22  %llu \n", AOD_HLT_IsoTkMu22 ) ;
  printf("AOD_HLT_Mu17Mu8    %llu \n", AOD_HLT_Mu17Mu8   ) ;
  printf("AOD_HLT_Mu17TkMu8  %llu \n", AOD_HLT_Mu17TkMu8 ) ;
+ printf("AOD_HLT_Photon90 %llu \n", AOD_HLT_Photon90) ;
+ printf("AOD_HLT_Photon120 %llu \n", AOD_HLT_Photon120) ;
+ printf("AOD_HLT_Photon175 %llu \n", AOD_HLT_Photon175) ;
+ printf("AOD_HLT_Photon165_HE10 %llu \n", AOD_HLT_Photon165_HE10) ;
+ printf("AOD_HLT_Mu8Ele23 %llu \n", AOD_HLT_Mu8Ele23) ;
+ printf("AOD_HLT_Mu23Ele12 %llu \n", AOD_HLT_Mu23Ele12) ;
+ printf("AOD_HLT_Mu12Ele23_DZ %llu \n", AOD_HLT_Mu12Ele23_DZ) ;
+ printf("AOD_HLT_Mu23Ele12_DZ %llu \n", AOD_HLT_Mu23Ele12_DZ) ;
  return;
 
 }
