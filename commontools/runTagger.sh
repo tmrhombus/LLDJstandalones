@@ -3,9 +3,9 @@ ntags=2
 name=$lifetime'_nt'$ntags
 lifetime2='"'$lifetime'"'
 
-mkdir -p "${plotdir}"/"${aversion}"/tagger"taggerResults"
-mkdir -p "${plotdir}"/"${aversion}"/tagger+$lifetime
-outpath="${plotdir}"/"${aversion}"/tagger"taggerResults"
+mkdir -p "${plotdir}"/"${aversion}"/tagger/"taggerResults"
+mkdir -p "${plotdir}"/"${aversion}"/tagger/$lifetime
+outpath="${plotdir}"/"${aversion}"/tagger/"taggerResults"
 c_al=(0.01) # 0.025 0.05 0.075 0.1 0.15 0.175 0.2 0.35 0.5 0.75)
 c_ip=(0.5) #0.75 0.9 1.0 1.15 1.25 1.5 1.75 2.0 2.5 2.75)
 c_ta=(-3.0) # -2.5 -2.25 -2.10 -2.0 -1.9 -1.75 -1.5 -1.25 -1.0 -0.75)
