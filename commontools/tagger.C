@@ -1,10 +1,29 @@
-///can do variable cuts or specified cuts
-void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, int ntags, TString lifetime){
+#include <iostream>
+#include "TString.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+#include "THStack.h"
+#include "TLegend.h"
+#include "TPad.h"
+#include "TStyle.h"
+#include "TText.h"
+#include "TFile.h"
+#include <stdio.h>
+#include <cstdlib> /* mkdir */
 
+#include <stdlib.h>     /* getenv */
+
+//using namespace std;
+///can do variable cuts or specified cuts
+void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime){
+cout <<"Test"<<endl;
 bool variable_cut = false;
 bool plot         = false; //plots scanning result
 TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
-TString inpath  = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/roots/BarrelVEndcap/";
+TString inpath  = "../roots/";
+TString aversion = TString(getenv("aversion"));
+inpath = inpath+aversion+"/";
+cout <<"inpath: "<< inpath<<endl;
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
 const float x     = 0.0; //for sys uncertainty
@@ -19,44 +38,41 @@ vector<TString> BkgFileList;
 //Big-hitters
 //SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPTtree.root");
 //SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS15_"  +lifetime+"_OPTtree.root");
-SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_MS40_"+lifetime+"_OPTtree.root");
-SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_MS40_"  +lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_"+lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_"  +lifetime+"_OPTtree.root");
 //SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPTtree.root");
 //SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPTtree.root");
 
-BkgFileList.push_back( inpath+"DY50_OPTtree.root"         ); //kk=0
-BkgFileList.push_back( inpath+"TTtoLfromT_OPTtree.root"   ); //kk=1
-BkgFileList.push_back( inpath+"TTtoLfromTbar_OPTtree.root"); //kk=2
-BkgFileList.push_back( inpath+"WJetsToLNu_OPTtree.root"   ); //kk=3
-BkgFileList.push_back( inpath+"TTtoLL_OPTtree.root"       ); //kk=4
-
-//little-guys
+BkgFileList.push_back( inpath+"DYJetsToLL_M-50_OPTtree.root"                    ); //kk=0
+BkgFileList.push_back( inpath+"DYJetsToLL_M-10to50_OPTtree.root"                ); //kk=1
+BkgFileList.push_back( inpath+"TTJets_OPTtree.root"                             ); //kk=2
+BkgFileList.push_back( inpath+"WJetsToLNu_OPTtree.root"                         ); //kk=3
 //single-top
-BkgFileList.push_back( inpath+"ST_s_OPTtree.root"    ); //kk=5
-BkgFileList.push_back( inpath+"ST_tW_OPTtree.root"   ); //kk=6
-BkgFileList.push_back( inpath+"ST_t_OPTtree.root"    ); //kk=7
-BkgFileList.push_back( inpath+"STbar_tW_OPTtree.root"); //kk=8
-//BkgFileList.push_back( inpath+"STbar_t_OPTtree.root"); //kk=9
+BkgFileList.push_back( inpath+"ST_s-channel_4f_leptonDecays_OPTtree.root"       ); //kk=4
+BkgFileList.push_back( inpath+"ST_tW_top_5f_NoFullyHadronicDecays_OPTtree.root" ); //kk=5
+BkgFileList.push_back( inpath+"ST_t-channel_top_4f_inclusiveDecays_OPTtree.root"); //kk=6
+BkgFileList.push_back( inpath+"ST_tW_antitop_5f_NoFullyHadronicDecays.root"     ); //kk=7
+BkgFileList.push_back( inpath+"ST_t-channel_antitop_4f_inclusiveDecays"         ); //kk=8
 //diboson
-BkgFileList.push_back( inpath+"WG_OPTtree.root"               ); //kk=10
-BkgFileList.push_back( inpath+"WWToLNuLNu_OPTtree.root"      );//kk=11
-BkgFileList.push_back( inpath+"WWToLNuQQ_OPTtree.root"        ); //kk=12
-BkgFileList.push_back( inpath+"WZTo3LNu_OPTtree.root"         ); //kk=13
-BkgFileList.push_back( inpath+"WZToL3Nu_OPTtree.root"         ); //kk=14
-BkgFileList.push_back( inpath+"WZToLNu2QorQQ2L_OPTtree.root"  ); //kk=15
-BkgFileList.push_back( inpath+"ZG_OPTtree.root"               ); //kk=16
-//BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPTtree.root"  ); //kk=17
-BkgFileList.push_back( inpath+"ZZToLLLL_OPTtree.root"         ); //kk=18
-BkgFileList.push_back( inpath+"ZZToLLNuNu_OPTtree.root"       ); //kk=19
-BkgFileList.push_back( inpath+"ZZToLLQQ_OPTtree.root"         ); //kk=20
-BkgFileList.push_back( inpath+"ZZToNuNuQQ_OPTtree.root"       ); //kk=21
-//BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPTtree.root"); //kk=22
-//control Region
-///BkgFileList.push_back( inpath+"GJets_HT100To200_OPTtree.root");
-///BkgFileList.push_back( inpath+"GJets_HT200To400_OPTtree.root");
-///BkgFileList.push_back( inpath+"GJets_HT400To600_OPTtree.root");
-///BkgFileList.push_back( inpath+"GJets_HT40To100_OPTtree.root");
-///BkgFileList.push_back( inpath+"GJets_HT600ToInf_OPTtree.root");
+BkgFileList.push_back( inpath+"WW_OPTtree.root"                                 );//kk=9
+BkgFileList.push_back( inpath+"WZ_OPTtree.root"                                 ); //kk=10
+BkgFileList.push_back( inpath+"ZZ_OPTtree.root"                                 ); //kk=11
+//VG
+BkgFileList.push_back( inpath+"WGToLNuG_OPTtree.root"                           ); //kk=12
+BkgFileList.push_back( inpath+"ZGTo2LG_OPTtree.root"                            ); //kk=13
+//SM Higgs decays
+BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPTtree.root"                   ); //kk=14
+BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPTtree.root"                     ); //kk=15
+//CRLight
+BkgFileList.push_back( inpath+"GJets_HT-40To100_OPTtree.root"                   ); //kk=16
+BkgFileList.push_back( inpath+"GJets_HT-100To200_OPTtree.root"                  ); //kk=17
+BkgFileList.push_back( inpath+"GJets_HT-200To400_OPTtree.root"                  ); //kk=18
+BkgFileList.push_back( inpath+"GJets_HT-400To600_OPTtree.root"                  ); //kk=19
+BkgFileList.push_back( inpath+"GJets_HT-600ToInf_OPTtree.root"                  ); //kk=20
+//Data
+BkgFileList.push_back( inpath+"Data_MuonEG_G_OPTtree.root"                      ); //kk=21
+BkgFileList.push_back( inpath+"Data_MuonEG_H_2_OPTtree.root"                    ); //kk=22
+BkgFileList.push_back( inpath+"Data_MuonEG_H_3_OPTtree.root"                    ); //kk=23
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -332,17 +348,19 @@ float tags, ntDY, ntTTL_T, ntTTL_Tbar, ntWJ, ntTTtoLL, ntDiboson, ntST;
 float num_sig = 0.0;
 float num_bkg = 0.0;
 
-TH1F* h_ntags      = new TH1F("h_ntags", "h_ntags", 7, -0.5, 6.5);
-TH1F* h_ntDY       = new TH1F("h_ntDY", "h_ntDY", 7, -0.5, 6.5);
-TH1F* h_ntTTL_T    = new TH1F("h_ntTTL_T", "h_ntTTL_T", 7, -0.5, 6.5);
-TH1F* h_ntTTL_Tbar = new TH1F("h_ntTTL_Tbar", "h_ntTTL_Tbar", 7, -0.5, 6.5);
-TH1F* h_ntWJ       = new TH1F("h_ntWJ", "h_ntWJ", 7, -0.5, 6.5);
-TH1F* h_ntTTtoLL   = new TH1F("h_ntTTtoLL", "h_ntTTtoLL", 7, -0.5, 6.5);
-TH1F* h_ntDiboson  = new TH1F("h_ntDiboson", "h_ntDiboson", 7, -0.5, 6.5);
-TH1F* h_ntST       = new TH1F("h_ntSingleTop's", "h_ntSingleTop's", 7, -0.5, 6.5);
+TH1F* h_ntags      = new TH1F("h_ntags"      , "h_ntags"      , 7, -0.5, 6.5);
+TH1F* h_ntDY       = new TH1F("h_ntDY"       , "h_ntDY"       , 7, -0.5, 6.5);
+TH1F* h_ntTTJets   = new TH1F("h_ntTTJets"   , "h_ntTTJets"   , 7, -0.5, 6.5);
+TH1F* h_ntWJ       = new TH1F("h_ntWJ"       , "h_ntWJ"       , 7, -0.5, 6.5);
+TH1F* h_ntST       = new TH1F("h_ntSingleTop", "h_ntSingleTop", 7, -0.5, 6.5);
+TH1F* h_ntVV       = new TH1F("h_ntDiboson"  , "h_ntDiboson"  , 7, -0.5, 6.5);
+TH1F* h_ntVG       = new TH1F("h_ntVG"       , "h_ntVG"       , 7, -0.5, 6.5);
+TH1F* h_ntZH       = new TH1F("h_ntZH"       , "h_ntZH"       , 7, -0.5, 6.5);
+TH1F* h_ntGJets    = new TH1F("h_ntGJets"    , "h_ntGJets"    , 7, -0.5, 6.5);
+TH1F* h_ntData     = new TH1F("h_ntData"     , "h_ntData"     , 7, -0.5, 6.5);
 
 TH1F* h_Test       = new TH1F("h_Test", "h_Test", 50, 0, 500);
-std::vector<TH1F *> v = {h_ntDY, h_ntTTL_T, h_ntTTL_Tbar, h_ntWJ, h_ntTTtoLL, h_ntDiboson, h_ntST};
+std::vector<TH1F *> v = {h_ntDY, h_ntTTJets, h_ntWJ, h_ntST, h_ntVV, h_ntVG, h_ntZH, h_ntGJets};
 //loop over sig files
 for(int jj = 0; jj <SigFileList.size(); jj++){
 TFile file(SigFileList[jj]);
@@ -350,13 +368,13 @@ TFile file(SigFileList[jj]);
 cout <<"Processing file: "<< SigFileList[jj]<<endl;
 
 TTreeReader reader("OPTtree", &file);
-TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
+TTreeReaderValue<vector<int>>    Event(reader,       "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
-TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
-TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
-TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
-TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
-TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
+TTreeReaderValue<vector<float>>  Pt(reader,          "OPT_AODCaloJetPt");
+TTreeReaderValue<vector<float>>  IP(reader,          "OPT_AODCaloJetMedianLog10IPSig");
+TTreeReaderValue<vector<float>>  TA(reader,          "OPT_AODCaloJetMedianLog10TrackAngle");
+TTreeReaderValue<vector<float>>  Alpha(reader,       "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader,         "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
@@ -387,24 +405,26 @@ TFile file(BkgFileList[kk]);
 cout <<"Processing file: "<< BkgFileList[kk]<<endl;
 
 TTreeReader reader("OPTtree", &file);
-TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
+TTreeReaderValue<vector<int>>    Event(reader,       "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname
-TTreeReaderValue<vector<float>>  Pt(reader, "OPT_AODCaloJetPt");
-TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
-TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
-TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
-TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
+TTreeReaderValue<vector<float>>  Pt(reader,          "OPT_AODCaloJetPt");
+TTreeReaderValue<vector<float>>  IP(reader,          "OPT_AODCaloJetMedianLog10IPSig");
+TTreeReaderValue<vector<float>>  TA(reader,          "OPT_AODCaloJetMedianLog10TrackAngle");
+TTreeReaderValue<vector<float>>  Alpha(reader,       "OPT_AODCaloJetAlphaMax");
+TTreeReaderValue<vector<float>>  Eta(reader,         "OPT_AODCaloJetEta");
 
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
     tags       = 0;
     ntDY       = 0;
-    ntTTL_T    = 0;
-    ntTTL_Tbar = 0;
+    ntTTJets   = 0;
     ntWJ       = 0;
-    ntTTtoLL   = 0;
-    ntDiboson  = 0;
     ntST       = 0;
+    ntVV       = 0;
+    ntVG       = 0;
+    ntZH       = 0;
+    ntGJets    = 0;
+    ntData     = 0;
     			if(prnt)cout<<"Event: "<<Event->at(i)<< " EventWeight: " << EventWeight->at(i)<<std::endl;
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
     for (int j=0; j<TA->size(); j++){
@@ -412,26 +432,31 @@ while (reader.Next()) {
       h_Test->Fill(Pt->at(j));
       if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 &&fabs(Eta->at(j))<=1.5 ){
       tags = tags + 1;
-      if        (kk==0){ntDY = ntDY + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntDY<<endl;*/}
-      else if   (kk==1){ntTTL_T = ntTTL_T + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_T<<endl;*/}
-      else if   (kk==2){ntTTL_Tbar = ntTTL_Tbar + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_Tbar<<endl;*/}
-      else if   (kk==3){ntWJ = ntWJ + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: " <<ntWJ<<endl;*/}
-      else if   (kk==4){ntTTtoLL = ntTTtoLL +1;}
-      else if   (kk>=10 && kk<=22){ntDiboson = ntDiboson + 1;}
-      else if   (kk>=5  && kk<=9 ){ntST = ntST +1;}
+      if        (kk>=0 && kk <=1) {ntDY    = ntDY     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntDY<<endl;*/}
+      else if   (kk==2)           {ntTTJets = ntTTJets + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_T<<endl;*/}
+      else if   (kk==3)           {ntWJ     = ntWJ     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_Tbar<<endl;*/}
+      else if   (kk>=4  && kk<=8) {ntST     = ntST     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: " <<ntWJ<<endl;*/}
+      else if   (kk>=9  && kk<=11){ntVV     = ntVV     + 1;}
+      else if   (kk>=12 && kk<=13){ntVG     = ntVG     + 1;}
+      else if   (kk>=14 && kk<=15){ntZH     = ntZH     + 1;}
+      else if   (kk>=16 && kk<=20){ntGJets  = ntGJets  + 1;}
+      else if   (kk>=21 && kk<=23){ntData   = ntData   + 1;}
       else      {i=i;}
       }
     }
     if(tags >=ntags){num_bkg = num_bkg + EventWeight->at(i);}
     			if(prnt)cout<<endl;
-    if(kk==0)         {h_ntDY      ->Fill(ntDY, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
-    else if(kk==1)    {h_ntTTL_T   ->Fill(ntTTL_T, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
-    else if(kk==2)    {h_ntTTL_Tbar->Fill(ntTTL_Tbar, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
-    else if(kk==3)    {h_ntWJ      ->Fill(ntWJ, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
-    else if(kk==4)    {h_ntTTtoLL  ->Fill(ntTTtoLL, EventWeight->at(i)); }
-    else if(kk>=10 && kk<=22)    {h_ntDiboson  ->Fill(ntDiboson, EventWeight->at(i)); }
-    else if(kk>=5  && kk<=9 )    {h_ntST       ->Fill(ntST,      EventWeight->at(i)); }
-    else {h_ntDY->Fill(-3); h_ntTTL_T->Fill(-3); h_ntTTL_Tbar->Fill(-3); h_ntWJ->Fill(-3);if(prnt){cout <<"ErrorFile: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+
+    if     (kk>=0 && kk<=1)  {h_ntDY    ->Fill(ntDY    , EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+    else if(kk==2)           {h_ntTTJets->Fill(ntTTJets, EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+    else if(kk==3)           {h_ntWJ    ->Fill(ntWJ    , EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+    else if(kk>=4  && kk<=8) {h_ntST    ->Fill(ntST    , EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
+    else if(kk>=9  && kk<=11){h_ntVV    ->Fill(ntVV    , EventWeight->at(i)); }
+    else if(kk>=12 && kk<=13){h_ntVG    ->Fill(ntVG    , EventWeight->at(i)); }
+    else if(kk>=14 && kk<=15){h_ntZH    ->Fill(ntZH    , EventWeight->at(i)); }
+    else if(kk>=16 && kk<=20){h_ntGJets ->Fill(ntGJets , EventWeight->at(i)); }
+    else if(kk>=21 && kk<=23){h_ntData  ->Fill(ntData  , EventWeight->at(i)); }
+    else {h_ntDY->Fill(-3);if(prnt){cout <<"ErrorFile: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
   }
 if(prnt)cout<<"Event Size: "          <<Event->size()<<endl;
 if(prnt)cout<<"EventWeight Size: "    <<EventWeight->size()<<endl;
@@ -483,12 +508,12 @@ if(plot){
 
   canvas2->Update(); 
   h_ntags->GetXaxis()->SetTitle("Number of tags");
-  gPad->SetLeftMargin(0.15);
+  gPad   ->SetLeftMargin(0.15);
   h_ntags->GetYaxis()->SetTitleOffset(2.0);
   h_ntags->GetXaxis()->CenterTitle();
   h_ntags->GetYaxis()->CenterTitle();
   h_ntags->SetLineWidth(3);
-  h_ntags      ->SetLineColor(1);
+  h_ntags->SetLineColor(1);
   THStack *hs = new THStack("hs","Number of tags");
   
   std::sort(v.begin(), v.end(),
@@ -502,36 +527,45 @@ if(plot){
   //h_ntTTL_T   ->Draw   ("hist same");
   //h_ntTTL_Tbar->Draw   ("hist same");
   //h_ntWJ      ->Draw   ("hist same");
-  h_ntDY      ->SetFillColor(8);
-  h_ntTTL_T   ->SetFillColor(9);
-  h_ntTTL_Tbar->SetFillColor(41);
-  h_ntWJ      ->SetFillColor(46);
-  h_ntTTtoLL  ->SetFillColor(48);
-  h_ntDiboson ->SetFillColor(42);
-  h_ntST      ->SetFillColor(14);
-  h_ntDY      ->SetLineColor(8);
-  h_ntTTL_T   ->SetLineColor(9);
-  h_ntTTL_Tbar->SetLineColor(41);
-  h_ntWJ      ->SetLineColor(46);
-  h_ntTTtoLL  ->SetLineColor(48);
-  h_ntDiboson ->SetLineColor(42);
-  h_ntST      ->SetLineColor(14);
+  h_ntDY      ->SetFillColor(kAzure-3);
+  h_ntTTJets  ->SetFillColor(kGreen+1);
+  h_ntWJ      ->SetFillColor(kViolet-3);
+  h_ntST      ->SetFillColor(kOrange+1);
+  h_ntVV      ->SetFillColor(kRed);
+  h_ntVG      ->SetFillColor(kPink+9);
+  h_ntZH      ->SetFillColor(kCyan);
+  h_ntGJets   ->SetFillColor(kViolet+3);
+  h_ntData    ->SetFillColor(1);
+
+  h_ntDY      ->SetLineColor(kAzure-3);
+  h_ntTTJets  ->SetLineColor(kGreen+1);
+  h_ntWJ      ->SetLineColor(kViolet-3);
+  h_ntST      ->SetLineColor(kOrange+1);
+  h_ntVV      ->SetLineColor(kRed);
+  h_ntVG      ->SetLineColor(kPink+9);
+  h_ntZH      ->SetLineColor(kCyan);
+  h_ntGJets   ->SetLineColor(kViolet+3);
+  h_ntData    ->SetLineColor(1);
+
   h_ntDY      ->SetLineWidth(3);
-  h_ntTTL_T   ->SetLineWidth(3);
-  h_ntTTL_Tbar->SetLineWidth(3);
+  h_ntTTJets  ->SetLineWidth(3);
   h_ntWJ      ->SetLineWidth(3);
-  h_ntTTtoLL  ->SetLineWidth(3);
-  h_ntDiboson ->SetLineWidth(3);
   h_ntST      ->SetLineWidth(3);
+  h_ntVV      ->SetLineWidth(3);
+  h_ntVG      ->SetLineWidth(3);
+  h_ntZH      ->SetLineWidth(3);
+  h_ntGJets   ->SetLineWidth(3);
+  h_ntData    ->SetLineWidth(4);
   
-  h_Test->Draw("hist");
-  //hs->Draw("hist");
-  //hs->SetMinimum(0.001);
-  //h_ntags     ->Draw   ("hist same");
+  //h_Test->Draw("hist");
+  hs->Draw("hist");
+  hs->SetMinimum(0.001);
+  h_ntags     ->Draw   ("hist same");
+  h_ntData    ->Draw   ("hist same");
   hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":N tags,"+lifetime);
   title2->DrawTextNDC(0.06,0.91,"CMS");
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
-  lumi2->DrawTextNDC(0.9,0.91,"xx /fb (13 TeV)");
+  lumi2->DrawTextNDC(0.9,0.91,"16.23/fb (13 TeV)");
   TLegend *leg2 = new TLegend(0.6,0.6,0.9,0.85);
   leg2->SetNColumns(2);
   leg2->SetBorderSize(1);
@@ -539,21 +573,23 @@ if(plot){
   TString entries;
   entries.Form("%1.0f",h_ntags->GetEntries());
   //leg2->AddEntry(h_ntags,   entries+" entries", "l");
-  leg2->AddEntry(h_ntags,     "Signal", "l");
-  leg2->AddEntry(h_ntDY,      "DY", "l");
-  leg2->AddEntry(h_ntTTL_T,   "TTL_T", "l");
-  leg2->AddEntry(h_ntTTL_Tbar,"TTL_Tbar", "l");
-  leg2->AddEntry(h_ntWJ,      "WJ", "l");
-  leg2->AddEntry(h_ntTTtoLL,  "TTtoLL", "l");
-  leg2->AddEntry(h_ntDiboson, "Diboson", "l");
-  leg2->AddEntry(h_ntST,      "ST", "l");
+  leg2->AddEntry(h_ntags,   "Signal"           , "l");
+  leg2->AddEntry(h_ntDY,    "Drell-Yan"        , "l");
+  leg2->AddEntry(h_ntTTJets,"t#bar{t}+Jets"    , "l");
+  leg2->AddEntry(h_ntWJ,    "W+Jets"           , "l");
+  leg2->AddEntry(h_ntST,    "Single Top"       , "l");
+  leg2->AddEntry(h_ntVV,    "Diboson"          , "l");
+  leg2->AddEntry(h_ntVG,    "V#gamma"          , "l");
+  leg2->AddEntry(h_ntZH,    "ZH#rightarrowLLbb", "l");
+  leg2->AddEntry(h_ntGJets, "#gamma+Jets"      , "l");
+  leg2->AddEntry(h_ntData,  "Data"             , "l");
   leg2->Draw();
   //gStyle->SetOptStat(11);
   gPad->Update();
   gPad->RedrawAxis();
-   canvas2->SaveAs(outpath+"h_Test.pdf"); 
+   //canvas2->SaveAs(outpath+"h_Test.pdf"); 
  //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
-  //canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
+  canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
 }// canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
 }//bkg non-var
 
