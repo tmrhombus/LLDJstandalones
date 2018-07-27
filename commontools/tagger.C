@@ -74,7 +74,7 @@ BkgFileList.push_back( inpath+"GJets_HT-600ToInf_OPTtree.root"                  
 BkgFileList.push_back( inpath+"Data_"+DataName+"_G_OPTtree.root"                          ); //kk=21
 BkgFileList.push_back( inpath+"Data_"+DataName+"_H_2_OPTtree.root"                        ); //kk=22
 BkgFileList.push_back( inpath+"Data_"+DataName+"_H_3_OPTtree.root"                        ); //kk=23
-
+int nData = 3; //number of data files to avoind counting as background
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
 s_c_ip.Form("%1.2f",c_ip);
@@ -188,8 +188,8 @@ else{
 			if(prnt)cout<<"*********************************************************************************"<<endl;
 }
 }//Loop over sig files
-//loop over bkg files
-for(int jj = 0; jj <BkgFileList.size(); jj++){
+//loop over bkg files avoid the data files
+for(int jj = 0; jj <BkgFileList.size()-nData; jj++){
 tags_b.clear();
 TFile file(BkgFileList[jj]);
 			if(prnt)cout<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
@@ -344,8 +344,10 @@ if(plot){
 //non variable cut
 else{
 
-float tags, ntDY, ntTTL_T, ntTTL_Tbar, ntWJ, ntTTtoLL, ntDiboson, ntST;
+//float tags; 
+//ntDY, ntTTL_T, ntTTL_Tbar, ntWJ, ntTTtoLL, ntDiboson, ntST;
 //float nt
+float tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntData;
 float num_sig = 0.0;
 float num_bkg = 0.0;
 
@@ -413,7 +415,6 @@ TTreeReaderValue<vector<float>>  IP(reader,          "OPT_AODCaloJetMedianLog10I
 TTreeReaderValue<vector<float>>  TA(reader,          "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader,       "OPT_AODCaloJetAlphaMax");
 TTreeReaderValue<vector<float>>  Eta(reader,         "OPT_AODCaloJetEta");
-int tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntData;
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
     tags       = 0;
@@ -445,7 +446,7 @@ while (reader.Next()) {
       else      {i=i;}
       }
     }
-    if(tags >=ntags){num_bkg = num_bkg + EventWeight->at(i);}
+    if(tags >=ntags && kk<21){num_bkg = num_bkg + EventWeight->at(i);}
     			if(prnt)cout<<endl;
 
     if     (kk>=0 && kk<=1)  {h_ntDY    ->Fill(ntDY    , EventWeight->at(i)); if(prnt){cout <<"File: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
@@ -569,11 +570,13 @@ if(plot){
   hs->SetMinimum(0.001);
   h_ntags     ->Draw   ("hist same");
   h_ntData    ->Draw   ("sames E");
-  hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":N tags,"+lifetime);
+  hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":  N tags,  "+lifetime);
+  hs->GetXaxis()->SetTitle("Number of Tags");
+  hs->GetYaxis()->SetTitle("Entries    ");
   title2->DrawTextNDC(0.06,0.91,"CMS");
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
   lumi2->DrawTextNDC(0.9,0.91,"16.23/fb (13 TeV)");
-  TLegend *leg2 = new TLegend(0.6,0.6,0.9,0.85);
+  TLegend *leg2 = new TLegend(0.55,0.6,0.85,0.85);
   leg2->SetNColumns(2);
   leg2->SetBorderSize(1);
   leg2->SetTextSize(.03);
