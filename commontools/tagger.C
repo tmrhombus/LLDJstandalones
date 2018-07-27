@@ -13,17 +13,18 @@
 
 #include <stdlib.h>     /* getenv */
 
-//using namespace std;
+//std::cout <<"Test"<<std::endl;
 ///can do variable cuts or specified cuts
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime){
-cout <<"Test"<<endl;
 bool variable_cut = false;
-bool plot         = false; //plots scanning result
-TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
-TString inpath  = "../roots/";
+bool plot         = true; //plots scanning result
+TString plots = TString(getenv("plotdir"));
 TString aversion = TString(getenv("aversion"));
+TString DataName = "MuonEG";
+//TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
+TString outpath = plots+"/"+aversion+"/tagger/"+lifetime;
+TString inpath  = "../roots/";
 inpath = inpath+aversion+"/";
-cout <<"inpath: "<< inpath<<endl;
 //1=IP, 2=TA, 3/default=Alpha
 int  sel          = 3;
 const float x     = 0.0; //for sys uncertainty
@@ -43,36 +44,36 @@ SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_"  +lifetime+
 //SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPTtree.root");
 //SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPTtree.root");
 
-BkgFileList.push_back( inpath+"DYJetsToLL_M-50_OPTtree.root"                    ); //kk=0
-BkgFileList.push_back( inpath+"DYJetsToLL_M-10to50_OPTtree.root"                ); //kk=1
-BkgFileList.push_back( inpath+"TTJets_OPTtree.root"                             ); //kk=2
-BkgFileList.push_back( inpath+"WJetsToLNu_OPTtree.root"                         ); //kk=3
+BkgFileList.push_back( inpath+"DYJetsToLL_M-50_OPTtree.root"                        ); //kk=0
+BkgFileList.push_back( inpath+"DYJetsToLL_M-10to50_OPTtree.root"                    ); //kk=1
+BkgFileList.push_back( inpath+"TTJets_OPTtree.root"                                 ); //kk=2
+BkgFileList.push_back( inpath+"WJetsToLNu_OPTtree.root"                             ); //kk=3
 //single-top
-BkgFileList.push_back( inpath+"ST_s-channel_4f_leptonDecays_OPTtree.root"       ); //kk=4
-BkgFileList.push_back( inpath+"ST_tW_top_5f_NoFullyHadronicDecays_OPTtree.root" ); //kk=5
-BkgFileList.push_back( inpath+"ST_t-channel_top_4f_inclusiveDecays_OPTtree.root"); //kk=6
-BkgFileList.push_back( inpath+"ST_tW_antitop_5f_NoFullyHadronicDecays.root"     ); //kk=7
-BkgFileList.push_back( inpath+"ST_t-channel_antitop_4f_inclusiveDecays"         ); //kk=8
+BkgFileList.push_back( inpath+"ST_s-channel_4f_leptonDecays_OPTtree.root"           ); //kk=4
+BkgFileList.push_back( inpath+"ST_tW_top_5f_NoFullyHadronicDecays_OPTtree.root"     ); //kk=5
+BkgFileList.push_back( inpath+"ST_t-channel_top_4f_inclusiveDecays_OPTtree.root"    ); //kk=6
+BkgFileList.push_back( inpath+"ST_tW_antitop_5f_NoFullyHadronicDecays_OPTtree.root" ); //kk=7
+BkgFileList.push_back( inpath+"ST_t-channel_antitop_4f_inclusiveDecays_OPTtree.root"); //kk=8
 //diboson
-BkgFileList.push_back( inpath+"WW_OPTtree.root"                                 );//kk=9
-BkgFileList.push_back( inpath+"WZ_OPTtree.root"                                 ); //kk=10
-BkgFileList.push_back( inpath+"ZZ_OPTtree.root"                                 ); //kk=11
+BkgFileList.push_back( inpath+"WW_OPTtree.root"                                     );//kk=9
+BkgFileList.push_back( inpath+"WZ_OPTtree.root"                                     ); //kk=10
+BkgFileList.push_back( inpath+"ZZ_OPTtree.root"                                     ); //kk=11
 //VG
-BkgFileList.push_back( inpath+"WGToLNuG_OPTtree.root"                           ); //kk=12
-BkgFileList.push_back( inpath+"ZGTo2LG_OPTtree.root"                            ); //kk=13
+BkgFileList.push_back( inpath+"WGToLNuG_OPTtree.root"                               ); //kk=12
+BkgFileList.push_back( inpath+"ZGTo2LG_OPTtree.root"                                ); //kk=13
 //SM Higgs decays
-BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPTtree.root"                   ); //kk=14
-BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPTtree.root"                     ); //kk=15
+BkgFileList.push_back( inpath+"ggZH_HToBB_ZToLL_OPTtree.root"                       ); //kk=14
+BkgFileList.push_back( inpath+"ZH_HToBB_ZToLL_OPTtree.root"                         ); //kk=15
 //CRLight
-BkgFileList.push_back( inpath+"GJets_HT-40To100_OPTtree.root"                   ); //kk=16
-BkgFileList.push_back( inpath+"GJets_HT-100To200_OPTtree.root"                  ); //kk=17
-BkgFileList.push_back( inpath+"GJets_HT-200To400_OPTtree.root"                  ); //kk=18
-BkgFileList.push_back( inpath+"GJets_HT-400To600_OPTtree.root"                  ); //kk=19
-BkgFileList.push_back( inpath+"GJets_HT-600ToInf_OPTtree.root"                  ); //kk=20
+BkgFileList.push_back( inpath+"GJets_HT-40To100_OPTtree.root"                       ); //kk=16
+BkgFileList.push_back( inpath+"GJets_HT-100To200_OPTtree.root"                      ); //kk=17
+BkgFileList.push_back( inpath+"GJets_HT-200To400_OPTtree.root"                      ); //kk=18
+BkgFileList.push_back( inpath+"GJets_HT-400To600_OPTtree.root"                      ); //kk=19
+BkgFileList.push_back( inpath+"GJets_HT-600ToInf_OPTtree.root"                      ); //kk=20
 //Data
-BkgFileList.push_back( inpath+"Data_MuonEG_G_OPTtree.root"                      ); //kk=21
-BkgFileList.push_back( inpath+"Data_MuonEG_H_2_OPTtree.root"                    ); //kk=22
-BkgFileList.push_back( inpath+"Data_MuonEG_H_3_OPTtree.root"                    ); //kk=23
+BkgFileList.push_back( inpath+"Data_"+DataName+"_G_OPTtree.root"                          ); //kk=21
+BkgFileList.push_back( inpath+"Data_"+DataName+"_H_2_OPTtree.root"                        ); //kk=22
+BkgFileList.push_back( inpath+"Data_"+DataName+"_H_3_OPTtree.root"                        ); //kk=23
 
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -412,7 +413,7 @@ TTreeReaderValue<vector<float>>  IP(reader,          "OPT_AODCaloJetMedianLog10I
 TTreeReaderValue<vector<float>>  TA(reader,          "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader,       "OPT_AODCaloJetAlphaMax");
 TTreeReaderValue<vector<float>>  Eta(reader,         "OPT_AODCaloJetEta");
-
+int tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntData;
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
     tags       = 0;
@@ -527,6 +528,12 @@ if(plot){
   //h_ntTTL_T   ->Draw   ("hist same");
   //h_ntTTL_Tbar->Draw   ("hist same");
   //h_ntWJ      ->Draw   ("hist same");
+
+  h_ntData    -> SetLineColor(kBlack);
+  h_ntData    -> SetMarkerStyle(8);
+  h_ntData    -> SetMarkerSize(2);
+  h_ntData    -> SetLineWidth(3);
+
   h_ntDY      ->SetFillColor(kAzure-3);
   h_ntTTJets  ->SetFillColor(kGreen+1);
   h_ntWJ      ->SetFillColor(kViolet-3);
@@ -535,7 +542,7 @@ if(plot){
   h_ntVG      ->SetFillColor(kPink+9);
   h_ntZH      ->SetFillColor(kCyan);
   h_ntGJets   ->SetFillColor(kViolet+3);
-  h_ntData    ->SetFillColor(1);
+  //h_ntData    ->SetFillColor(1);
 
   h_ntDY      ->SetLineColor(kAzure-3);
   h_ntTTJets  ->SetLineColor(kGreen+1);
@@ -545,7 +552,7 @@ if(plot){
   h_ntVG      ->SetLineColor(kPink+9);
   h_ntZH      ->SetLineColor(kCyan);
   h_ntGJets   ->SetLineColor(kViolet+3);
-  h_ntData    ->SetLineColor(1);
+  //h_ntData    ->SetLineColor(1);
 
   h_ntDY      ->SetLineWidth(3);
   h_ntTTJets  ->SetLineWidth(3);
@@ -555,13 +562,13 @@ if(plot){
   h_ntVG      ->SetLineWidth(3);
   h_ntZH      ->SetLineWidth(3);
   h_ntGJets   ->SetLineWidth(3);
-  h_ntData    ->SetLineWidth(4);
+  //h_ntData    ->SetLineWidth(4);
   
   //h_Test->Draw("hist");
   hs->Draw("hist");
   hs->SetMinimum(0.001);
   h_ntags     ->Draw   ("hist same");
-  h_ntData    ->Draw   ("hist same");
+  h_ntData    ->Draw   ("sames E");
   hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":N tags,"+lifetime);
   title2->DrawTextNDC(0.06,0.91,"CMS");
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
@@ -582,7 +589,7 @@ if(plot){
   leg2->AddEntry(h_ntVG,    "V#gamma"          , "l");
   leg2->AddEntry(h_ntZH,    "ZH#rightarrowLLbb", "l");
   leg2->AddEntry(h_ntGJets, "#gamma+Jets"      , "l");
-  leg2->AddEntry(h_ntData,  "Data"             , "l");
+  leg2->AddEntry(h_ntData,  DataName           , "lpe");
   leg2->Draw();
   //gStyle->SetOptStat(11);
   gPad->Update();
