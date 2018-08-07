@@ -8,17 +8,6 @@ mkdir -p "${plotdir}/${aversion}/logs"
 
 samples=( \
  # samples go here
- "Data_SinglePhoton_F"     \
- "Data_SinglePhoton_E"     \
- "Data_SinglePhoton_D"     \
- "Data_SinglePhoton_C"     \
- "Data_SinglePhoton_B_2"   \
-
- "Data_MuonEG_F"     \
- "Data_MuonEG_E"     \
- "Data_MuonEG_D"     \
- "Data_MuonEG_C"     \
- "Data_MuonEG_B_2"   \
 )
 
 ### Data

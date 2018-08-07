@@ -46,8 +46,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  Float_t MCSF = 1.;
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
- if(HIP){ MCSF=lumiBCDEF/10000.; }
- else{ MCSF=lumiGH/10000.; }
+// if(HIP){ MCSF=lumiBCDEF/10000.; }
+// else{ MCSF=lumiGH/10000.; }
  
  //TString extraname = "";
  if(dolog){
@@ -100,8 +100,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nSelectedPho");
 // variables.push_back("AOD_nSelectedEle");
 // variables.push_back("AOD_nSelectedMu");
-// variables.push_back("nSelectedAODCaloJet");
-// variables.push_back("nSelectedAODCaloJetTag");
+ variables.push_back("nSelectedAODCaloJet");
+ variables.push_back("nSelectedAODCaloJetTag");
  //variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
  //variables.push_back("LeadingJet_AODCaloJetEta");                     
@@ -833,7 +833,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          h_Data->Add( h_Data_MuonEG_H_2 )     ; 
         }
        }
-       else{
+       else{ //NoLepSel
         if(HIP){
          h_Data = (TH1F*)h_Data_MuonEG_B_2->Clone("Data");
          h_Data->Add( h_Data_MuonEG_F   )     ; 
@@ -841,7 +841,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          h_Data->Add( h_Data_MuonEG_D   )     ; 
          h_Data->Add( h_Data_MuonEG_C   )     ; 
         }
-        else{
+        else{ 
          h_Data = (TH1F*)h_Data_MuonEG_G->Clone("Data");
          h_Data->Add( h_Data_MuonEG_H_3 )     ; 
          h_Data->Add( h_Data_MuonEG_H_2 )     ; 
@@ -879,7 +879,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          h_Data->Add( h_Data_SinglePhoton_H_2 )     ; 
         }
        }
-       else{
+       else{ //NoLepSel
 	continue;
        } 
     }
@@ -906,13 +906,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          h_Data->Add( h_Data_DoubleMu_D   )     ; 
          h_Data->Add( h_Data_DoubleMu_C   )     ; 
         }
-        else{
+        else{ 
          h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("Data");
          h_Data->Add( h_Data_DoubleMu_H_3 )     ; 
          h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
         }
        }
-       else{
+       else{ //NoLepSel
         continue;
        } 
     }
