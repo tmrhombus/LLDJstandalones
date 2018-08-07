@@ -120,8 +120,8 @@ Bool_t analyzer_selections::askPassSingleEle()
 {
  Bool_t doespass = kFALSE;
  if(electron_list.size()>0){ 
-  // if(isMC) doespass = kTRUE;
-  // else doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
+   //if(isMC) doespass = kTRUE;
+   //else doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
    doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
  } 
  return doespass;
@@ -165,7 +165,7 @@ Bool_t analyzer_selections::askPassSinglePho()
  Bool_t doespass = kFALSE;
  if(photon_list.size()>0){ 
   if(isMC) doespass = kTRUE;
-  else doespass = (Bool_t)( (AOD_HLT_Photon90 > 0) || (AOD_HLT_Photon120)  || (AOD_HLT_Photon175)  || (AOD_HLT_Photon165_HE10) );
+  else doespass = (Bool_t)( (AOD_HLT_Photon165_HE10) );
  } 
  return doespass;
 }
