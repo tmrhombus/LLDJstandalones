@@ -10,17 +10,19 @@
 #include "TFile.h"
 #include <stdio.h>
 #include <cstdlib> /* mkdir */
-
 #include <stdlib.h>     /* getenv */
 
 //std::cout <<"Test"<<std::endl;
 ///can do variable cuts or specified cuts
-void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime){
+void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime, TString mass){
+
 bool variable_cut = false;
-bool plot         = true; //plots scanning result
+bool plot         = true; //plots scanning result/ntags
 TString plots = TString(getenv("plotdir"));
-TString aversion = TString(getenv("aversion"));
-TString DataName = "MuonEG";
+//TString aversion = TString(getenv("aversion"));
+TString aversion = "CRLightOPT";
+//TString DataName = "MuonEG";
+TString DataName = "SinglePhoton";
 //TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
 TString outpath = plots+"/"+aversion+"/tagger/"+lifetime;
 TString inpath  = "../roots/";
@@ -37,12 +39,8 @@ else            {var = "AlphaMax";}
 vector<TString> SigFileList;
 vector<TString> BkgFileList;
 //Big-hitters
-//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS15_"+lifetime+"_OPTtree.root");
-//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS15_"  +lifetime+"_OPTtree.root");
-SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_"+lifetime+"_OPTtree.root");
-SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_"  +lifetime+"_OPTtree.root");
-//SigFileList.push_back( inpath+"ggZH_HToSSTobbbb_MS55_"+lifetime+"_OPTtree.root");
-//SigFileList.push_back( inpath+"ZH_HToSSTobbbb_MS55_"  +lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ggZH_HToSSTobbbb_ZToLL_MH-125_"+mass+"_"+lifetime+"_OPTtree.root");
+SigFileList.push_back  ( inpath+"ZH_HToSSTobbbb_ZToLL_MH-125_"+mass+"_"  +lifetime+"_OPTtree.root");
 
 BkgFileList.push_back( inpath+"DYJetsToLL_M-50_OPTtree.root"                        ); //kk=0
 BkgFileList.push_back( inpath+"DYJetsToLL_M-10to50_OPTtree.root"                    ); //kk=1
@@ -351,19 +349,23 @@ float tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntData;
 float num_sig = 0.0;
 float num_bkg = 0.0;
 
-TH1F* h_ntags      = new TH1F("h_ntags"      , "h_ntags"      , 7, -0.5, 6.5);
-TH1F* h_ntDY       = new TH1F("h_ntDY"       , "h_ntDY"       , 7, -0.5, 6.5);
-TH1F* h_ntTTJets   = new TH1F("h_ntTTJets"   , "h_ntTTJets"   , 7, -0.5, 6.5);
-TH1F* h_ntWJ       = new TH1F("h_ntWJ"       , "h_ntWJ"       , 7, -0.5, 6.5);
-TH1F* h_ntST       = new TH1F("h_ntSingleTop", "h_ntSingleTop", 7, -0.5, 6.5);
-TH1F* h_ntVV       = new TH1F("h_ntDiboson"  , "h_ntDiboson"  , 7, -0.5, 6.5);
-TH1F* h_ntVG       = new TH1F("h_ntVG"       , "h_ntVG"       , 7, -0.5, 6.5);
-TH1F* h_ntZH       = new TH1F("h_ntZH"       , "h_ntZH"       , 7, -0.5, 6.5);
-TH1F* h_ntGJets    = new TH1F("h_ntGJets"    , "h_ntGJets"    , 7, -0.5, 6.5);
-TH1F* h_ntData     = new TH1F("h_ntData"     , "h_ntData"     , 7, -0.5, 6.5);
+int Nbins = 6;
+TH1F* h_ntags      = new TH1F("h_ntags"      , "h_ntags"      , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntDY       = new TH1F("h_ntDY"       , "h_ntDY"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntTTJets   = new TH1F("h_ntTTJets"   , "h_ntTTJets"   , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntWJ       = new TH1F("h_ntWJ"       , "h_ntWJ"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntST       = new TH1F("h_ntSingleTop", "h_ntSingleTop", Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntVV       = new TH1F("h_ntDiboson"  , "h_ntDiboson"  , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntVG       = new TH1F("h_ntVG"       , "h_ntVG"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntZH       = new TH1F("h_ntZH"       , "h_ntZH"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntGJets    = new TH1F("h_ntGJets"    , "h_ntGJets"    , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntData     = new TH1F("h_ntData"     , "h_ntData"     , Nbins, -0.5, (float)(Nbins)-0.5);
 
 TH1F* h_Test       = new TH1F("h_Test", "h_Test", 50, 0, 500);
 std::vector<TH1F *> v = {h_ntDY, h_ntTTJets, h_ntWJ, h_ntST, h_ntVV, h_ntVG, h_ntZH, h_ntGJets};
+for (int p =0; p<v.size(); p++){ v[p]->Sumw2();}
+h_ntags->Sumw2();
+h_ntData->Sumw2();
 //loop over sig files
 for(int jj = 0; jj <SigFileList.size(); jj++){
 TFile file(SigFileList[jj]);
@@ -386,7 +388,7 @@ while (reader.Next()) {
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
     for (int j=0; j<TA->size(); j++){
       			if(prnt)cout<<IP->at(j)<<"     "<<TA->at(j)<<"     "<<Alpha->at(j)<<endl;
-      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 && fabs(Eta->at(j))<=1.5){
+      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 /*&& fabs(Eta->at(j))<=1.5 */){
       tags = tags + 1;
       }
     }
@@ -432,9 +434,9 @@ while (reader.Next()) {
     for (int j=0; j<TA->size(); j++){
       			if(prnt)cout<<IP->at(j)<<"     "<<TA->at(j)<<"     "<<Alpha->at(j)<<endl;
       h_Test->Fill(Pt->at(j));
-      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 &&fabs(Eta->at(j))<=1.5 ){
+      if(Alpha->at(j)<=c_al && IP->at(j)>=c_ip && TA->at(j)>=c_ta && Alpha->at(j)>=0.0 /*&&fabs(Eta->at(j))<=1.5 */ ){
       tags = tags + 1;
-      if        (kk>=0 && kk <=1) {ntDY    = ntDY     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntDY<<endl;*/}
+      if        (kk>=0 && kk <=1) {ntDY     = ntDY     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntDY<<endl;*/}
       else if   (kk==2)           {ntTTJets = ntTTJets + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_T<<endl;*/}
       else if   (kk==3)           {ntWJ     = ntWJ     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: "<< ntTTL_Tbar<<endl;*/}
       else if   (kk>=4  && kk<=8) {ntST     = ntST     + 1; /*cout <<"j: "<<j<<" "<<"   File: "<<BkgFileList[j]<<"  nt: " <<ntWJ<<endl;*/}
@@ -474,22 +476,28 @@ if(plot){
   Bool_t dolog = kTRUE;
   //TString extraname = "";
   //if(dolog){extraname+="_log";}
-  TCanvas* canvas2 = new TCanvas("canvas2","canvas2",1280,1024);
+  TCanvas* canvas2 = new TCanvas("canvas2","canvas2",1100,1200);//1280,1024);
   canvas2->Clear();
   canvas2->cd();
   canvas2->SetGrid();
-  TPad *pad2  = new TPad("pad2", "pad2", 0, 0.0, 1, 1);
+  TPad *pad2  = new TPad("pad2", "pad2", 0, 0.25, 1, 1);
   gStyle->SetOptStat(0);
   pad2->SetLogy(dolog);
   pad2->SetTickx();
   pad2->SetTicky(); 
   pad2->Draw();
   pad2->SetGrid();
-  pad2->SetFillStyle(4000);
+  //pad2->SetFillStyle(4000);
   pad2->cd();
-  gStyle->SetLineWidth(2);
-  gStyle->SetPalette(71);
-
+  //gStyle->SetLineWidth(2);
+  //gStyle->SetPalette(71);
+  
+  canvas2->cd();
+  TPad *rpad = new TPad("ratiopad","ratiopad", 0, 0 ,1, 0.25);
+  rpad->SetGrid();
+  rpad->Draw(); 
+  canvas2->cd();
+ 
   TText* title2 = new TText(1,1,"") ; 
   title2->SetTextSize(0.04);
   title2->SetTextColor(kBlack);
@@ -524,17 +532,32 @@ if(plot){
   for(int zz=0; zz<v.size(); zz++)
   {
   hs->Add(v[zz]);
-   }
+  }
   //h_ntDY      ->Draw   ("hist same");
   //h_ntTTL_T   ->Draw   ("hist same");
   //h_ntTTL_Tbar->Draw   ("hist same");
   //h_ntWJ      ->Draw   ("hist same");
+  TH1F* h_ntTotBkg;
+  //h_ntTotBkg->Sumw2();
+  h_ntTotBkg = (TH1F*) v[0]->Clone("h_ntTotBkg");
+  for(int l=1; l<v.size(); l++){
+  h_ntTotBkg->Add(v[l]);
+  }
 
   h_ntData    -> SetLineColor(kBlack);
   h_ntData    -> SetMarkerStyle(8);
   h_ntData    -> SetMarkerSize(2);
   h_ntData    -> SetLineWidth(3);
 
+  h_ntDY      ->SetFillStyle(1001);
+  h_ntTTJets  ->SetFillStyle(1001);
+  h_ntWJ      ->SetFillStyle(1001);
+  h_ntST      ->SetFillStyle(1001);
+  h_ntVV      ->SetFillStyle(1001);
+  h_ntVG      ->SetFillStyle(1001);
+  h_ntZH      ->SetFillStyle(1001);
+  h_ntGJets   ->SetFillStyle(1001);
+  
   h_ntDY      ->SetFillColor(kAzure-3);
   h_ntTTJets  ->SetFillColor(kGreen+1);
   h_ntWJ      ->SetFillColor(kViolet-3);
@@ -564,19 +587,40 @@ if(plot){
   h_ntZH      ->SetLineWidth(3);
   h_ntGJets   ->SetLineWidth(3);
   //h_ntData    ->SetLineWidth(4);
-  
+  h_ntDY      ->SetLineColor(kBlack);
+  h_ntTTJets  ->SetLineColor(kBlack);
+  h_ntWJ      ->SetLineColor(kBlack);
+  h_ntST      ->SetLineColor(kBlack);
+  h_ntVV      ->SetLineColor(kBlack);
+  h_ntVG      ->SetLineColor(kBlack);
+  h_ntZH      ->SetLineColor(kBlack);
+  h_ntGJets   ->SetLineColor(kBlack);
+ 
+  h_ntTotBkg->SetFillColorAlpha(kYellow, 0.99);
+  h_ntTotBkg->SetFillStyle(3001);
+
+  //h_ntTotBkg->SetBinError(2, 100000);
+  //h_ntTotBkg->SetBinError(3, 1000);
+  //for(int o = 0; o <7; o++){cout<<h_ntTTJets->GetBinContent(o)<<"     "<<h_ntTotBkg->GetBinError(o)<<endl;}
+  pad2->cd();
   //h_Test->Draw("hist");
-  hs->Draw("hist");
   hs->SetMinimum(0.001);
-  h_ntags     ->Draw   ("hist same");
-  h_ntData    ->Draw   ("sames E");
-  hs->SetTitle("cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+":  N tags,  "+lifetime);
+  //hs->SetMaximum(1000000);//0.001);
+  hs          ->Draw("hist");
+  h_ntTotBkg  ->Draw("E2 same");
+  h_ntData    ->Draw("E same");
+  h_ntags     ->Draw("hist same");
+  hs->SetTitle("N tags   cip:"+s_c_ip+" cta:"+s_c_ta+" cal:"+s_c_al+", "+lifetime+", "+mass);
   hs->GetXaxis()->SetTitle("Number of Tags");
+  //hs->GetXaxis()->SetTitleSize(20);
   hs->GetYaxis()->SetTitle("Entries    ");
+  hs->GetYaxis()->SetTitleOffset(1.5);
+  
   title2->DrawTextNDC(0.06,0.91,"CMS");
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
   lumi2->DrawTextNDC(0.9,0.91,"16.23/fb (13 TeV)");
-  TLegend *leg2 = new TLegend(0.55,0.6,0.85,0.85);
+  
+  TLegend *leg2 = new TLegend(0.48,0.6,0.88,0.85);
   leg2->SetNColumns(2);
   leg2->SetBorderSize(1);
   leg2->SetTextSize(.03);
@@ -584,22 +628,67 @@ if(plot){
   entries.Form("%1.0f",h_ntags->GetEntries());
   //leg2->AddEntry(h_ntags,   entries+" entries", "l");
   leg2->AddEntry(h_ntags,   "Signal"           , "l");
-  leg2->AddEntry(h_ntDY,    "Drell-Yan"        , "l");
-  leg2->AddEntry(h_ntTTJets,"t#bar{t}+Jets"    , "l");
-  leg2->AddEntry(h_ntWJ,    "W+Jets"           , "l");
-  leg2->AddEntry(h_ntST,    "Single Top"       , "l");
-  leg2->AddEntry(h_ntVV,    "Diboson"          , "l");
-  leg2->AddEntry(h_ntVG,    "V#gamma"          , "l");
-  leg2->AddEntry(h_ntZH,    "ZH#rightarrowLLbb", "l");
-  leg2->AddEntry(h_ntGJets, "#gamma+Jets"      , "l");
+  leg2->AddEntry(h_ntDY,    "Drell-Yan"        , "f");
+  leg2->AddEntry(h_ntTTJets,"t#bar{t}+Jets"    , "f");
+  leg2->AddEntry(h_ntWJ,    "W+Jets"           , "f");
+  leg2->AddEntry(h_ntST,    "Single Top"       , "f");
+  leg2->AddEntry(h_ntVV,    "Diboson"          , "f");
+  leg2->AddEntry(h_ntVG,    "V#gamma"          , "f");
+  leg2->AddEntry(h_ntZH,    "ZH#rightarrowLLbb", "f");
+  leg2->AddEntry(h_ntGJets, "#gamma+Jets"      , "f");
   leg2->AddEntry(h_ntData,  DataName           , "lpe");
+  leg2->AddEntry(h_ntTotBkg, "MC bkg. stat. err." , "f" );
   leg2->Draw();
   //gStyle->SetOptStat(11);
   gPad->Update();
   gPad->RedrawAxis();
-   //canvas2->SaveAs(outpath+"h_Test.pdf"); 
+  
+  rpad->cd();
+
+  TH1F* h_ntRatio;
+  TH1F* h_ntRatiostaterr;
+  //h_ntRatio->Sumw2();
+  //h_ntRatiostaterr->Sumw2();
+  h_ntRatio = (TH1F*) h_ntData->Clone("h_ntRatio");
+  h_ntRatio->Divide(h_ntTotBkg);
+  h_ntRatio->SetTitle(" ");
+  h_ntRatio->SetTitle(" ");
+  // Y axis ratio plot settings
+  h_ntRatio->GetYaxis()->SetTitleSize(35);
+  h_ntRatio->GetYaxis()->SetTitleFont(43);
+  h_ntRatio->GetYaxis()->SetTitleOffset(1.55);
+  h_ntRatio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+  h_ntRatio->GetYaxis()->SetLabelSize(20);
+  //h_ntRatio->GetYaxis()->SetNdivisions(-105);
+  h_ntRatio->GetYaxis()->SetTitle("Data/MC");
+  // X axis ratio plot settings
+  h_ntRatio->GetXaxis()->SetTitleSize(40);
+  h_ntRatio->GetXaxis()->SetTitleFont(43);
+  h_ntRatio->GetXaxis()->SetTitle(h_ntData->GetTitle());
+  h_ntRatio->GetXaxis()->SetTitleOffset(4.0);
+  h_ntRatio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+  h_ntRatio->GetXaxis()->SetLabelSize(20);//20
+  h_ntRatio->SetMarkerStyle(20);
+  h_ntRatio->SetMarkerColor(kRed);
+  h_ntRatio->SetMarkerSize(1);
+  h_ntRatio->GetYaxis()->SetRangeUser(0,2);
+
+  h_ntRatiostaterr = (TH1F*)h_ntTotBkg->Clone("ntRatiostaterr");
+  h_ntRatiostaterr->Divide(h_ntTotBkg);
+  h_ntRatio->Draw("ep"); 
+  rpad->Update();
+  TLine *line = new TLine(rpad->GetUxmin(), 1, rpad->GetUxmax(), 1);
+  line->SetLineWidth(3);
+  line->SetLineStyle(9);
+  line->SetLineColor(kBlue);
+  line->Draw("sames");
+  h_ntRatiostaterr->Draw("e2 same");
+  
+  rpad->Update();
+
+  //canvas2->SaveAs(outpath+"h_Test.pdf"); 
  //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
-  canvas2->SaveAs(outpath+"/tags"+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
+  canvas2->SaveAs(outpath+"/tags"+"_"+mass+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
 }// canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
 }//bkg non-var
 
