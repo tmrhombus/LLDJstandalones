@@ -317,14 +317,14 @@ void analyzer_loop::debug_printjets()
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int jetindex = aodcalojet_list[i];
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
-   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
+   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n",  AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
   }
 
   for(int i=0; i<taggedjet_list.size(); ++i){
    int jetindex = taggedjet_list[i];
    printf( " TAGGED JET\n");
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
-   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", i, AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
+   printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
   }
  return;
 }
