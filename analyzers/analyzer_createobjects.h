@@ -1,11 +1,9 @@
-
 #ifndef analyzer_createobjects_h
 #define analyzer_createobjects_h
 
 #include "analyzer_config.h"
 
 class analyzer_createobjects : public analyzer_config {
-
 
 public :
 
@@ -20,6 +18,8 @@ public :
  std::vector<int>     jet_passTagger    ();
 
  std::vector<float>     jet_minDR    ();
+
+ virtual void shiftCollections(TString uncbin);
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
@@ -38,9 +38,6 @@ public :
 
  virtual void     calculateHT();
  virtual void     makeDiLepton();
-
-
-
 
 };
 

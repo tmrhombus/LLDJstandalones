@@ -38,7 +38,7 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut
  //        , pass_hipt
  //        );       
 
- for(int i = 0; i < AOD_muPt->size(); i++) 
+ for(int i = 0; i < Shifted_muPt.size(); i++) 
  {    
   //  printf(" Muon %i    %i %i %i %i %i \n",i
   //        ,muIDbit->at(i) >> 0 & 0x1 
@@ -128,11 +128,12 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
 
   for(int i=0; i<aodcalojet_list.size(); ++i){
    int aodcalojetindex = aodcalojet_list[i];
-   if( AODCaloJetMedianLog10IPSig->at(aodcalojetindex)>1.15 &&
-       AODCaloJetMedianLog10TrackAngle->at(aodcalojetindex)>-1.5 &&
-       AODCaloJetAlphaMax->at(aodcalojetindex)<0.35) {
-    taglist.push_back(aodcalojetindex);
-   }
+   if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      >  tag_minIPsig  &&
+       Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) >  tag_minTA     &&
+       Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
+    {
+     taglist.push_back(aodcalojetindex);
+    }
   }
   return taglist;
 }
@@ -233,7 +234,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
 
  bool pass_overlap = true;
  ////Loop over photons                   
- for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
+ for(int p=0;p<Shifted_phoPt.size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
   //Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p); doesn't seem to be used unless someone objects, will delete after next PR 5/6/2018
@@ -296,10 +297,10 @@ double analyzer_createobjects::DeltaPhi(double phi1, double phi2)
 Float_t analyzer_createobjects::getMuonPt(int i, TString sysbinname){
 
       //Muon passes pt cut 
-      Float_t muonPt = AOD_muPt->at(i);
+      Float_t muonPt = Shifted_muPt.at(i);
       Float_t muonEnergy = muonPt*TMath::CosH( AOD_muEta->at(i) );
-      if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.015); }
-      if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.015); }
+      if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.020); }
+      if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.020); }
 
       muonPt = muonEnergy/TMath::CosH( AOD_muEta->at(i) );
   return muonPt;
@@ -310,10 +311,10 @@ Float_t analyzer_createobjects::getMuonPt(int i, TString sysbinname){
 Float_t analyzer_createobjects::getElectronPt(int i, TString sysbinname){
 
       //Electron passes pt cut 
-      Float_t electronPt = AOD_elePt->at(i);
+      Float_t electronPt = Shifted_elePt.at(i);
       Float_t electronEnergy = electronPt*TMath::CosH( AOD_eleEta->at(i) );
-      if(sysbinname=="_EESUp"  ){ electronEnergy*=(1.0 + 0.015); }
-      if(sysbinname=="_EESDown"){ electronEnergy*=(1.0 - 0.015); }
+      if(sysbinname=="_EGSUp"  ){ electronEnergy*=(1.0 + 0.020); }
+      if(sysbinname=="_EGSDown"){ electronEnergy*=(1.0 - 0.020); }
 
       electronPt = electronEnergy/TMath::CosH( AOD_eleEta->at(i) );
 
@@ -325,8 +326,8 @@ Float_t analyzer_createobjects::getElectronPt(int i, TString sysbinname){
 Float_t analyzer_createobjects::getPhotonPt(int idnr, TString sysbinname){
 
       Float_t photonenergy = AOD_phoSCEn->at(idnr);
-      if(sysbinname=="_PESUp"  ){ photonenergy*=(1. + 0.015); }
-      if(sysbinname=="_PESDown"){ photonenergy*=(1. - 0.015); }
+      if(sysbinname=="_EGSUp"  ){ photonenergy*=(1. + 0.020); }
+      if(sysbinname=="_EGSDown"){ photonenergy*=(1. - 0.020); }
 
       Float_t AOD_phoPt = photonenergy/TMath::CosH( (*AOD_phoSCEta)[idnr] );
 
@@ -351,17 +352,17 @@ void analyzer_createobjects::calculateHT(){
 
   for(int i=0; i<photon_list.size(); ++i){
    int phoindex = photon_list[i];
-   htall += AOD_phoPt->at(phoindex);
+   htall += Shifted_phoPt.at(phoindex);
   }
 
   for(int i=0; i<electron_list.size(); ++i){
    int eleindex = electron_list[i];
-   htall += AOD_elePt->at(eleindex);
+   htall += Shifted_elePt.at(eleindex);
   }
 
   for(int i=0; i<muon_list.size(); ++i){
    int muindex = muon_list[i];
-   htall += AOD_muPt->at(muindex);
+   htall += Shifted_muPt.at(muindex);
   }
 
   for(int i=0; i<aodcalojet_list.size(); ++i){
@@ -410,8 +411,8 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
   //Set the electron and muon fourvectors if they have opposite sign otherwise we will use the dummy vectors.
   if(AOD_eleCharge->at(electron_list[0])*AOD_muCharge->at(muon_list[0])==-1)
   {
-    e.SetPtEtaPhiE( AOD_elePt->at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );
-    m.SetPtEtaPhiE( AOD_muPt ->at(    muon_list[0]), AOD_muEta ->at(    muon_list[0]), AOD_muPhi ->at(    muon_list[0]), AOD_muEn ->at(    muon_list[0]) );
+    e.SetPtEtaPhiE( Shifted_elePt.at(electron_list[0]), AOD_eleEta->at(electron_list[0]), AOD_elePhi->at(electron_list[0]), AOD_eleEn->at(electron_list[0]) );
+    m.SetPtEtaPhiE( Shifted_muPt.at(    muon_list[0]), AOD_muEta ->at(    muon_list[0]), AOD_muPhi ->at(    muon_list[0]), AOD_muEn ->at(    muon_list[0]) );
   }
  
   *fv_1  = e;
@@ -448,13 +449,13 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
              if( AOD_eleCharge->at(electron_list[i])*AOD_eleCharge->at(electron_list[j])==-1 )                     
        	{                                                               
        	  TLorentzVector temp1, temp2, temp12;
-       	  temp1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
-       	  temp2.SetPtEtaPhiE( AOD_elePt->at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
+       	  temp1.SetPtEtaPhiE( Shifted_elePt.at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
+       	  temp2.SetPtEtaPhiE( Shifted_elePt.at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
        	  temp12 = temp1+temp2;
        	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_ee_mass) ){
        	    best_ee_mass = temp12.M();
-            e1.SetPtEtaPhiE( AOD_elePt->at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
-            e2.SetPtEtaPhiE( AOD_elePt->at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
+            e1.SetPtEtaPhiE( Shifted_elePt.at(electron_list[i]), AOD_eleEta->at(electron_list[i]), AOD_elePhi->at(electron_list[i]), AOD_eleEn->at(electron_list[i]) );
+            e2.SetPtEtaPhiE( Shifted_elePt.at(electron_list[j]), AOD_eleEta->at(electron_list[j]), AOD_elePhi->at(electron_list[j]), AOD_eleEn->at(electron_list[j]) );  
        	  }
        	}         
            }          
@@ -473,13 +474,13 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
              if( AOD_muCharge->at(muon_list[i])*AOD_muCharge->at(muon_list[j])==-1 ) 
        	{            
        	  TLorentzVector temp1, temp2, temp12;
-       	  temp1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
-       	  temp2.SetPtEtaPhiE( AOD_muPt->at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
+       	  temp1.SetPtEtaPhiE( Shifted_muPt.at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
+       	  temp2.SetPtEtaPhiE( Shifted_muPt.at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
        	  temp12 = temp1+temp2;
        	  if( fabs(91.1876-temp12.M()) < fabs(91.1876 - best_mm_mass) ){
        	    best_mm_mass = temp12.M();
-            m1.SetPtEtaPhiE( AOD_muPt->at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
-            m2.SetPtEtaPhiE( AOD_muPt->at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
+            m1.SetPtEtaPhiE( Shifted_muPt.at(muon_list[i]), AOD_muEta->at(muon_list[i]), AOD_muPhi->at(muon_list[i]), AOD_muEn->at(muon_list[i]) );
+            m2.SetPtEtaPhiE( Shifted_muPt.at(muon_list[j]), AOD_muEta->at(muon_list[j]), AOD_muPhi->at(muon_list[j]), AOD_muEn->at(muon_list[j]) );  
        	  } 
        	}   
            }    
@@ -503,3 +504,90 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
    return;                                                          
                                                                    
 }
+
+
+void analyzer_createobjects::shiftCollections( TString uncbin )
+{
+
+  Shifted_elePt                       .clear();  
+  Shifted_phoPt                       .clear();  
+  Shifted_muPt                        .clear();  
+  Shifted_CaloJetPt                   .clear();  
+  Shifted_CaloJetAlphaMax             .clear();  
+  Shifted_CaloJetMedianLog10IPSig     .clear();  
+  Shifted_CaloJetMedianLog10TrackAngle.clear();  
+
+ for(unsigned int i=0; i<AOD_elePt->size(); ++i){
+  Shifted_elePt.push_back( AOD_elePt->at(i));
+ }
+ for(unsigned int i=0; i<AOD_phoPt->size(); ++i){
+  Shifted_phoPt.push_back( AOD_phoPt->at(i));
+ }
+ for(unsigned int i=0; i<AOD_muPt->size(); ++i){
+  Shifted_muPt.push_back( AOD_muPt->at(i));
+ }
+ for(unsigned int i=0; i<AODCaloJetPt->size(); ++i){
+  Shifted_CaloJetPt.push_back( AODCaloJetPt->at(i));
+ }
+ for(unsigned int i=0; i<AODCaloJetAlphaMax->size(); ++i){
+  Shifted_CaloJetAlphaMax.push_back( AODCaloJetAlphaMax->at(i));
+ }
+ for(unsigned int i=0; i<AODCaloJetMedianLog10IPSig->size(); ++i){
+  Shifted_CaloJetMedianLog10IPSig.push_back( AODCaloJetMedianLog10IPSig->at(i));
+ }
+ for(unsigned int i=0; i<AODCaloJetMedianLog10TrackAngle->size(); ++i){
+  Shifted_CaloJetMedianLog10TrackAngle.push_back( AODCaloJetMedianLog10TrackAngle->at(i));
+ }
+
+// for(unsigned int i=0; i<AOD_elePt->size(); ++i){
+//  std::cout<<" AOD_elePt->at(i) "<< AOD_elePt->at(i)<<" Shifted_elePt.at(i) "<< Shifted_elePt.at(i) <<std::endl;
+// }
+
+ for(unsigned int i=0; i<Shifted_elePt.size(); ++i){
+  Shifted_elePt.at(i) = getElectronPt(i,uncbin);
+ }
+ for(unsigned int i=0; i<Shifted_phoPt.size(); ++i){
+  Shifted_phoPt.at(i) = getPhotonPt(i,uncbin);
+ }
+ for(unsigned int i=0; i<Shifted_muPt.size(); ++i){
+  Shifted_muPt.at(i) = getMuonPt(i,uncbin);
+ }
+
+ float deltaAmax  = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
+ float deltaIPsig = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
+ float deltaTA    = (tag_shiftminTA/tag_minTA) - 1.        ;
+ if(uncbin.EqualTo( "_AMaxUp") || uncbin.EqualTo( "_TagVarsUp") ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+   Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
+  }
+ }
+ if(uncbin.EqualTo( "_AMaxDown") || uncbin.EqualTo( "_TagVarsDown") ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+   Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1-deltaAmax) ;
+  }
+ }
+ if(uncbin.EqualTo( "_IPSigUp")   || uncbin.EqualTo( "_TagVarsUp")    ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
+   Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
+  }
+ }
+ if(uncbin.EqualTo( "_IPSigDown") || uncbin.EqualTo( "_TagVarsDown")  ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
+   Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1-deltaIPsig) ;
+  }
+ }
+ if(uncbin.EqualTo( "_TAUp")      || uncbin.EqualTo( "_TagVarsUp")    ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
+   Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
+  }
+ }
+ if(uncbin.EqualTo( "_TADown")    || uncbin.EqualTo( "_TagVarsDown")  ){ 
+  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
+   Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1-deltaTA) ;
+  }
+ }
+
+ return;
+
+}
+

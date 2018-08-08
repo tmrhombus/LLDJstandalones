@@ -225,35 +225,58 @@ int main(int argc, char **argv){
 
  std::cout << "  lumi: " << lumi << std::endl;
 
- // file to be filled with slimmed tree
- // must be created before TTree, put here to get name aligned
- TFile* optfile = new TFile(outfilename+"_OPTtree.root", "RECREATE");
+ std::vector<TString> unccategories;
+ //unccategories.push_back("Signal");
+ unccategories.push_back("");
+ if( isMC ){
+  unccategories.push_back("_EGSUp");
+  unccategories.push_back("_EGSDown");
+  unccategories.push_back("_MESUp");
+  unccategories.push_back("_MESDown");
+  //unccategories.push_back("_JESUp");
+  //unccategories.push_back("_JESDown");
+  unccategories.push_back("_AMaxUp");
+  unccategories.push_back("_AMaxDown");
+  unccategories.push_back("_IPSigUp");
+  unccategories.push_back("_IPSigDown");
+  unccategories.push_back("_TAUp");
+  unccategories.push_back("_TADown");
+  unccategories.push_back("_TagVarsUp");
+  unccategories.push_back("_TagVarsDown");
+ }
 
  // make the analyzer, init some stuff
  analyzer_loop analyzer;
  analyzer.Init(theChain, isMC, makelog);
- analyzer.setconfiguration();
- analyzer.initSelectionCategories();
+ analyzer.setConfiguration();
 
- analyzer.initEleHistograms();
- analyzer.initMuHistograms();
- analyzer.initLepHistograms();
- analyzer.initPhoHistograms();
- analyzer.initMETHTHistograms();
- analyzer.initExtraHistograms();
- analyzer.initAODCaloJetBasicHistograms();
- analyzer.initAODCaloJetExtraHistograms(); 
- analyzer.initAODCaloJetTagHistograms(); 
- analyzer.initAODCaloJetTagMultHistograms();
- analyzer.initAODCaloJetMultHistograms();
+ // file to be filled with slimmed tree
+ // must be created before TTree, put here to get name aligned
+ TFile* optfile = new TFile(outfilename+"_OPTtree.root", "RECREATE");
 
- analyzer.initCutflowHistograms();
+ TString outfilenamebase = outfilename;
+ for(unsigned int i=0; i<unccategories.size(); ++i){
+  TString unccategory = unccategories.at(i);
+  //outfilename = outfilenamebase + unccategory;
 
- analyzer.init2DHistograms();
+  analyzer.initSelectionCategories( );
+  analyzer.initEleHistograms( unccategory );
+  analyzer.initMuHistograms( unccategory );
+  analyzer.initLepHistograms( unccategory );
+  analyzer.initPhoHistograms( unccategory );
+  analyzer.initMETHTHistograms( unccategory );
+  analyzer.initExtraHistograms( unccategory );
+  analyzer.initAODCaloJetBasicHistograms( unccategory );
+  analyzer.initAODCaloJetExtraHistograms( unccategory ); 
+  analyzer.initAODCaloJetTagHistograms( unccategory ); 
+  analyzer.initAODCaloJetTagMultHistograms( unccategory );
+  analyzer.initAODCaloJetMultHistograms( unccategory );
+  analyzer.initCutflowHistograms( unccategory );
+  analyzer.init2DHistograms( unccategory );
+  analyzer.initBackgroundEstimateHistograms();	
 
- analyzer.initBackgroundEstimateHistograms();
-
- analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile);
+  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile, unccategory);
+ }
 
  // end stopwatch
  sw.Stop();

@@ -11,7 +11,22 @@ public :
 
                   analyzer_config();
    virtual        ~analyzer_config(); 
-   virtual void   setconfiguration();
+   virtual void   setConfiguration();
+   //void           initSelectionCategories( TString selcategory );
+   void           initSelectionCategories();
+
+   // bin names
+   std::vector<TString> selbinnames;
+   std::vector<TString> jetmultnames;
+   std::vector<TString> tagmultnames;
+   std::vector<TString> uncbinnames;
+   //std::vector<TString> lepnames;
+   // jetmultnames = Leading, Subleading, Third, Fourth, All
+   //static const int SELBINNAMESIZE  = 8;        
+   static const int SELBINNAMESIZE  = 20;  
+   static const int JETMULTNAMESIZE = 5;  
+   static const int TAGMULTNAMESIZE = 5;  
+   static const int UNCBINNAMESIZE  = 3;
 
    Float_t pho_minPt;
    Float_t pho_maxEta;
@@ -23,6 +38,13 @@ public :
    Float_t mu_maxEta;
    Float_t jet_minPt;
    Float_t jet_maxEta;
+
+   Float_t tag_minIPsig;
+   Float_t tag_minTA;
+   Float_t tag_maxAmax;
+   Float_t tag_shiftminIPsig;
+   Float_t tag_shiftminTA;
+   Float_t tag_shiftmaxAmax;
 
 };
 

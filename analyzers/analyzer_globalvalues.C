@@ -15,32 +15,27 @@ void analyzer_globalvalues::clearglobalcounters()
 {
 
  n_tot   = 0;
- n_test  = 0;
- n_test2 = 0;
 
- n_passSig     = 0;
- n_passZH      = 0;
- n_passDY      = 0;
- n_passOffZ    = 0;
- n_passNoPair  = 0;
- n_passCRHeavy = 0;
- n_passCRLight = 0;
-
- n_ele_passSig     = 0;
- n_ele_passZH      = 0;
- n_ele_passDY      = 0;
- n_ele_passOffZ    = 0;
- n_ele_passNoPair  = 0;
- n_ele_passCRHeavy = 0;
- n_ele_passCRLight = 0;
-
- n_mu_passSig     = 0;
- n_mu_passZH      = 0;
- n_mu_passDY      = 0;
- n_mu_passOffZ    = 0;
- n_mu_passNoPair  = 0;
- n_mu_passCRHeavy = 0;
- n_mu_passCRLight = 0;
+ n_passOneEleSig    = 0;
+ n_passTwoEleSig    = 0;
+ n_passOneMuSig     = 0;
+ n_passTwoMuSig     = 0;
+ n_passOneEleDY     = 0;
+ n_passTwoEleDY     = 0;
+ n_passOneMuDY      = 0;
+ n_passTwoMuDY      = 0;
+ n_passOneEleZH     = 0;
+ n_passTwoEleZH     = 0;
+ n_passOneMuZH      = 0;
+ n_passTwoMuZH      = 0;
+ n_passOneEleOffZ   = 0;
+ n_passTwoEleOffZ   = 0;
+ n_passOneMuOffZ    = 0;
+ n_passTwoMuOffZ    = 0;
+ n_passOneEleNoPair = 0;
+ n_passOneMuNoPair  = 0;
+ n_passEleMuOSOF    = 0;
+ n_passOnePho       = 0;
 
 }
 
