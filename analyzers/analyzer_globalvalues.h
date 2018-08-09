@@ -26,6 +26,11 @@ public :
    std::vector<int> aodpfchsjet_list;
    std::vector<int> taggedjet_list;
 
+   std::vector<int> calomatchedPF_list;
+   std::vector<int> PFmatchedCalo_list;
+   std::vector<int> calomatchedPFchs_list;
+   std::vector<int> PFchsmatchedCalo_list;
+
    std::vector<float> aodcalojet_minDR_list;
 
    // for dilepton
@@ -139,6 +144,12 @@ public :
    Int_t nSelectedMuo;
    Int_t nSelectedSlimmedJet;
    Int_t nSelectedAODCaloJet;
+
+   Int_t n_totalPF;
+   Int_t n_totalPFchs;
+   Int_t n_totalCalo;
+   Int_t n_matchedPFCalo;
+   Int_t n_matchedPFchsCalo;
 
 
 };
