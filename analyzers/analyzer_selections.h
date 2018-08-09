@@ -16,23 +16,44 @@ public :
    virtual void  setSelections();
 
    // Selection functions
-   Bool_t        askPassSelvec( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu );
-   Int_t         setSelBits( std::vector<Bool_t> selvec, Bool_t lepvec[3], int &counter, int &counterele, int &countermu );
+   Int_t         setSelBits( std::vector<Bool_t> selvec, int &counter );
+   Int_t         setSelKey ( std::vector<Bool_t> selvec );
    Bool_t        askPassSingleEle();
    Bool_t        askPassSingleMu();
    Bool_t        askPassDoubleEle();
    Bool_t        askPassDoubleMu();
-   Bool_t        askPassSinglePho();
    Bool_t        askPassMuEG();
+   Bool_t        askPassSinglePho();
 
-   std::vector<Bool_t> selvecSignal ;
-   std::vector<Bool_t> selvecZH     ;
-   std::vector<Bool_t> selvecDY     ;
-   std::vector<Bool_t> selvecOffZ   ;
-   std::vector<Bool_t> selvecNoPair ;
-   std::vector<Bool_t> selvecCRHeavy;
-   std::vector<Bool_t> selvecCRLight;
-   Int_t selvec[8];
+   std::vector<Bool_t> selvecBaseSig    ;
+   std::vector<Bool_t> selvecBaseZH     ;
+   std::vector<Bool_t> selvecBaseDY     ;
+   std::vector<Bool_t> selvecBaseOffZ   ;
+   std::vector<Bool_t> selvecBaseNoPair ;
+
+   std::vector<Bool_t> selvecOneEleSig    ; 
+   std::vector<Bool_t> selvecTwoEleSig    ; 
+   std::vector<Bool_t> selvecOneMuSig     ; 
+   std::vector<Bool_t> selvecTwoMuSig     ; 
+   std::vector<Bool_t> selvecOneEleDY     ; 
+   std::vector<Bool_t> selvecTwoEleDY     ; 
+   std::vector<Bool_t> selvecOneMuDY      ; 
+   std::vector<Bool_t> selvecTwoMuDY      ; 
+   std::vector<Bool_t> selvecOneEleZH     ; 
+   std::vector<Bool_t> selvecTwoEleZH     ; 
+   std::vector<Bool_t> selvecOneMuZH      ; 
+   std::vector<Bool_t> selvecTwoMuZH      ; 
+   std::vector<Bool_t> selvecOneEleOffZ   ; 
+   std::vector<Bool_t> selvecTwoEleOffZ   ; 
+   std::vector<Bool_t> selvecOneMuOffZ    ; 
+   std::vector<Bool_t> selvecTwoMuOffZ    ; 
+   std::vector<Bool_t> selvecOneEleNoPair ; 
+   std::vector<Bool_t> selvecOneMuNoPair  ; 
+   std::vector<Bool_t> selvecEleMuOSOF    ; 
+   std::vector<Bool_t> selvecOnePho       ; 
+   Int_t selvec[SELBINNAMESIZE];
+   Int_t selkey[SELBINNAMESIZE];
+
 
    // selection booleans
    Bool_t passSingleEle ;

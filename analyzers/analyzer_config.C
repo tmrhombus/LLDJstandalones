@@ -12,7 +12,7 @@ analyzer_config::~analyzer_config()
 
 
 //----------------------------analyzer_config
-void analyzer_config::setconfiguration() 
+void analyzer_config::setConfiguration() 
 {
 
  pho_minPt  = 165.;
@@ -25,6 +25,15 @@ void analyzer_config::setconfiguration()
  mu_maxEta  = 2.4;
  jet_minPt  = 25.;
  jet_maxEta = 2.4;
+
+ // tagging variables
+ tag_minIPsig = 1.15;
+ tag_minTA    = -1.5;
+ tag_maxAmax  = 0.35;
+ // shifted tagging variables
+ tag_shiftminIPsig = 1.2;
+ tag_shiftminTA    = -1.4;
+ tag_shiftmaxAmax  = 0.4;
 
  // set which collections
  phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
@@ -51,5 +60,78 @@ void analyzer_config::setconfiguration()
  if (jetid = "Tight")  aodcalojetidbit=1;
 
  //printf("setting config\n");
+
+}
+
+void analyzer_config::initSelectionCategories( ){
+
+  // Make sure that the numbers in here  match
+  // static const int SELBINNAMESIZE  = 20;
+  // static const int JETMULTNAMESIZE = 5; 
+  // static const int LEPBINNAMESIZE  = 3;
+  // initialize names
+  jetmultnames.clear();
+  jetmultnames.push_back("LeadingJet");
+  jetmultnames.push_back("SubleadingJet");
+  jetmultnames.push_back("ThirdJet");
+  jetmultnames.push_back("FourthJet");
+  jetmultnames.push_back("AllJets");
+
+  tagmultnames.clear();
+  tagmultnames.push_back("LeadingTag");
+  tagmultnames.push_back("SubleadingTag");
+  tagmultnames.push_back("ThirdTag");
+  tagmultnames.push_back("FourthTag");
+  tagmultnames.push_back("AllTags");
+
+  selbinnames.clear();
+  selbinnames.push_back("OneEleSig");
+  selbinnames.push_back("TwoEleSig");
+  selbinnames.push_back("OneMuSig");
+  selbinnames.push_back("TwoMuSig");
+  selbinnames.push_back("OneEleDY");
+  selbinnames.push_back("TwoEleDY");
+  selbinnames.push_back("OneMuDY");
+  selbinnames.push_back("TwoMuDY");
+  selbinnames.push_back("OneEleZH");
+  selbinnames.push_back("TwoEleZH");
+  selbinnames.push_back("OneMuZH");
+  selbinnames.push_back("TwoMuZH");
+  selbinnames.push_back("OneEleOffZ");
+  selbinnames.push_back("TwoEleOffZ");
+  selbinnames.push_back("OneMuOffZ");
+  selbinnames.push_back("TwoMuOffZ");
+  selbinnames.push_back("OneEleNoPair");
+  selbinnames.push_back("OneMuNoPair");
+  selbinnames.push_back("EleMuOSOF");
+  selbinnames.push_back("OnePho");
+
+  //std::cout<<" Selection category: "<<selcategory<<"\n";
+  //if ( selcategory.EqualTo("Signal") ){
+  // selbinnames.push_back("OneEleSig");
+  // selbinnames.push_back("TwoEleSig");
+  // selbinnames.push_back("OneMuSig");
+  // selbinnames.push_back("TwoMuSig");
+  //} else if ( selcategory.EqualTo("DY") ){
+  // selbinnames.push_back("OneEleDY");
+  // selbinnames.push_back("TwoEleDY");
+  // selbinnames.push_back("OneMuDY");
+  // selbinnames.push_back("TwoMuDY");
+  //} else if ( selcategory.EqualTo("ZH") ){
+  // selbinnames.push_back("OneEleZH");
+  // selbinnames.push_back("TwoEleZH");
+  // selbinnames.push_back("OneMuZH");
+  // selbinnames.push_back("TwoMuZH");
+  //} else if ( selcategory.EqualTo("OffZ") ){
+  // selbinnames.push_back("OneEleOffZ");
+  // selbinnames.push_back("TwoEleOffZ");
+  // selbinnames.push_back("OneMuOffZ");
+  // selbinnames.push_back("TwoMuOffZ");
+  //} else if ( selcategory.EqualTo("MiscCR") ){
+  // selbinnames.push_back("OneEleNoPair");
+  // selbinnames.push_back("OneMuNoPair");
+  // selbinnames.push_back("EleMuOSOF");
+  // selbinnames.push_back("OnePho");
+  //} 
 
 }
