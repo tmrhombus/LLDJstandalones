@@ -22,6 +22,8 @@ public :
    std::vector<int> electron_list;
    std::vector<int> muon_list ;
    std::vector<int> aodcalojet_list;
+   std::vector<int> aodpfjet_list;
+   std::vector<int> aodpfchsjet_list;
    std::vector<int> taggedjet_list;
 
    std::vector<float> aodcalojet_minDR_list;
@@ -137,6 +139,7 @@ public :
    Int_t nSelectedMuo;
    Int_t nSelectedSlimmedJet;
    Int_t nSelectedAODCaloJet;
+
 
 };
 

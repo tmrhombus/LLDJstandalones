@@ -45,7 +45,6 @@ public :
    Float_t tag_shiftminIPsig;
    Float_t tag_shiftminTA;
    Float_t tag_shiftmaxAmax;
-
 };
 
 #endif

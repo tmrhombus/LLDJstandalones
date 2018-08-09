@@ -15,8 +15,7 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setConfiguration() 
 {
 
- // object selection thresholds
- pho_minPt  = 15.;
+ pho_minPt  = 165.;
  pho_maxEta = 1.4442;
  ele_minPt1 = 25.;
  ele_minPt2 = 15.;

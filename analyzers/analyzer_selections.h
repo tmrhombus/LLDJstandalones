@@ -54,13 +54,14 @@ public :
    Int_t selvec[SELBINNAMESIZE];
    Int_t selkey[SELBINNAMESIZE];
 
+
    // selection booleans
    Bool_t passSingleEle ;
    Bool_t passSingleMu  ;
    Bool_t passDoubleEle ;
    Bool_t passDoubleMu  ;
-   Bool_t passMuEG      ;
    Bool_t passSinglePho ;
+   Bool_t passMuEG ;
    Bool_t passOSSF      ;   
    Bool_t passOSOF      ;   
    Bool_t passZWindow   ;   

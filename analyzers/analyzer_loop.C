@@ -67,13 +67,29 @@ void analyzer_loop::Loop(TString outfilename,
 
   // get lists of "good" electrons, photons, jets
   // idbit, pt, eta, sysbinname
-  electron_list   = electron_passID  ( eleidbit,        ele_minPt1, ele_minPt2, ele_maxEta, "");
-  photon_list     = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
-  muon_list       = muon_passID      ( muoidbit,        mu_minPt1,  mu_minPt2,  mu_maxEta,  ""); 
-  aodcalojet_list = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
-  //aodpfjet_list    = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
-  //aodpfchsjet_list = aodcalojet_passID( aodcalojetidbit, jet_minPt, jet_maxEta, ""); 
-  taggedjet_list  = jet_passTagger   ();
+  electron_list    = electron_passID  ( eleidbit,        ele_minPt1, ele_minPt2, ele_maxEta, "");
+  photon_list      = photon_passID    ( phoidbit,        pho_minPt, pho_maxEta, ""); 
+  muon_list        = muon_passID      ( muoidbit,        mu_minPt1,  mu_minPt2,  mu_maxEta,  ""); 
+  aodcalojet_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
+  aodpfjet_list    = jet_passID       ( aodcalojetidbit, "pf",    jet_minPt, jet_maxEta, ""); 
+  aodpfchsjet_list = jet_passID       ( aodcalojetidbit, "pfchs", jet_minPt, jet_maxEta, ""); 
+  taggedjet_list   = jet_passTagger   ();
+  //matchPFCalojets();
+
+  // for(unsigned int k=0; k< aodcalojet_list.size(); ++k){
+  //  std::cout<<" calojet "<<k<<"  "<<AODCaloJetPt->at(aodcalojet_list[k])<<std::endl;
+  // }
+  // std::cout<<"\n"<<std::endl;
+  // for(unsigned int k=0; k< aodpfjet_list.size(); ++k){
+  //  std::cout<<" pfjet "<<k<<"  "<<AODPFJetPt->at(aodpfjet_list[k])<<std::endl;
+  // }
+  // std::cout<<"\n"<<std::endl;
+  // for(unsigned int k=0; k< aodpfchsjet_list.size(); ++k){
+  //  std::cout<<" pfchsjet "<<k<<"  "<<AODPFchsJetPt->at(aodpfchsjet_list[k])<<std::endl;
+  // }
+  // std::cout<<"\n"<<std::endl;
+  // std::cout<<"\n"<<std::endl;
+
 
   aodcalojet_minDR_list = jet_minDR();
 
@@ -257,10 +273,10 @@ void analyzer_loop::Loop(TString outfilename,
    } // if( dofillselbin[i] ){
   } // for(unsigned int i=0; i<selbinnames.size(); ++i){
 
-  //  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
-  //
-  //  //printf("make log: %0.i\n",makelog);
+  //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
+  //printf("make log: %0.i\n",makelog);
+  
  } // end loop over entries
  std::cout << std::endl;
  std::cout << std::endl;
@@ -432,6 +448,14 @@ void analyzer_loop::debug_printtriggers()
  printf("AOD_HLT_IsoTkMu22  %llu \n", AOD_HLT_IsoTkMu22 ) ;
  printf("AOD_HLT_Mu17Mu8    %llu \n", AOD_HLT_Mu17Mu8   ) ;
  printf("AOD_HLT_Mu17TkMu8  %llu \n", AOD_HLT_Mu17TkMu8 ) ;
+ //printf("AOD_HLT_Photon90 %llu \n", AOD_HLT_Photon90) ;
+ //printf("AOD_HLT_Photon120 %llu \n", AOD_HLT_Photon120) ;
+ //printf("AOD_HLT_Photon175 %llu \n", AOD_HLT_Photon175) ;
+ //printf("AOD_HLT_Photon165_HE10 %llu \n", AOD_HLT_Photon165_HE10) ;
+ //printf("AOD_HLT_Mu8Ele23 %llu \n", AOD_HLT_Mu8Ele23) ;
+ //printf("AOD_HLT_Mu23Ele12 %llu \n", AOD_HLT_Mu23Ele12) ;
+ //printf("AOD_HLT_Mu12Ele23_DZ %llu \n", AOD_HLT_Mu12Ele23_DZ) ;
+ //printf("AOD_HLT_Mu23Ele12_DZ %llu \n", AOD_HLT_Mu23Ele12_DZ) ;
  return;
 
 }
@@ -528,7 +552,6 @@ void analyzer_loop::debug_printbitkeys()
  std::cout<<std::endl;
  std::cout<<" keyPassOnePho       "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassOnePho       >>i)&1 ); } 
  std::cout<<std::endl;
-
  return;
 
 }

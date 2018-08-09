@@ -1,9 +1,11 @@
+
 #ifndef analyzer_createobjects_h
 #define analyzer_createobjects_h
 
 #include "analyzer_config.h"
 
 class analyzer_createobjects : public analyzer_config {
+
 
 public :
 
@@ -14,7 +16,7 @@ public :
  std::vector<int>     photon_passID     ( int bitnr, Float_t phoPtCut, Float_t phoEtaCut, TString sysbinname="");
  std::vector<int>     electron_passID   ( int bitnr, Float_t elePtCut1, Float_t elePtCut2, Float_t eleEtaCut, TString sysbinname="");
  std::vector<int>     muon_passID       ( int bitnr, Float_t muPtCut1 , Float_t muPtCut2 , Float_t muEtaCut , TString sysbinname="");
- std::vector<int>     aodcalojet_passID ( int bitnr, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname="");
+ std::vector<int>     jet_passID        ( int bitnr, TString jettype, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname="");
  std::vector<int>     jet_passTagger    ();
 
  std::vector<float>     jet_minDR    ();
@@ -38,6 +40,9 @@ public :
 
  virtual void     calculateHT();
  virtual void     makeDiLepton();
+
+
+
 
 };
 

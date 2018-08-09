@@ -117,6 +117,29 @@ std::vector<int> analyzer_createobjects::electron_passID( int bitnr, Float_t ele
    elelist.push_back(i);
   } // if pass_bit && pass_kin
  } // loop over electrons
+
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************" <<std::endl;
+ //if(elelist.size()>1){for(int ii=0; ii<elelist.size(); ii++){std::cout<<"Before sort: index: "<<ii<<", Pt: "<<getElectronPt(elelist[ii], sysbinname)<<"  Eta: "<<AOD_eleEta->at(elelist[ii])<<std::endl;}}
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************"<<std::endl;
+ 
+  std::sort(elelist.begin(),elelist.end(), 
+           [&]( int a, int b ) { return AOD_elePt->at(a) > AOD_elePt->at(b); });
+   
+  /* for (int ii = (elelist.size() - 1); ii >= 0; ii--)
+   {
+     for (int jj = 1; jj <=ii; jj++)
+     {
+       if( getElectronPt(elelist[jj-1], sysbinname) < getElectronPt(elelist[jj],sysbinname) )
+       {
+        int temp = elelist[jj-1];
+        elelist[jj-1] = elelist[jj];
+        elelist[jj] = temp;
+    } } } 
+  */
+   
+   //if(elelist.size()>1)std::cout<<"*********************************************************************************" <<std::endl;
+   //if(elelist.size()>1){for(int ii=0; ii<elelist.size(); ii++){std::cout<<"After sort: index: "<<ii<<", Pt:  "<<getElectronPt(elelist[ii], sysbinname)<<"  Eta: "<<AOD_eleEta->at(elelist[ii])<<std::endl;}}
+   //if(elelist.size()>1)std::cout<<"*********************************************************************************"<<std::endl;
  return elelist;
 }
  
@@ -166,14 +189,44 @@ std::vector<float> analyzer_createobjects::jet_minDR( ) {
 }
 
 
-//-------------------------aodcalojet_passID
-std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname) {
+//-------------------------jet_passID
+std::vector<int> analyzer_createobjects::jet_passID( int bitnr, TString jettype, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname ) {
 
   std::vector<int> jetlist;
 
-  for(int i = 0; i < AODnCaloJet; i++)
+  // set parameters based on jet collection
+  int njets;
+  if(jettype.EqualTo("calo")){
+   njets = AODnCaloJet;
+  }
+  if(jettype.EqualTo("pf")){
+   njets = AODnPFJet;
+  }
+  if(jettype.EqualTo("pfchs")){
+   njets = AODnPFchsJet;
+  }
+
+  for(int i = 0; i < njets; i++)
   {
 
+   float jetpt;
+   float jeteta;
+   float jetphi;
+   if(jettype.EqualTo("calo")){
+    jetpt  = AODCaloJetPt->at(i) ;       
+    jeteta = AODCaloJetEta->at(i);       
+    jetphi = AODCaloJetPhi->at(i);              
+   }
+   if(jettype.EqualTo("pf")){
+    jetpt  = AODPFJetPt->at(i) ;       
+    jeteta = AODPFJetEta->at(i);       
+    jetphi = AODPFJetPhi->at(i);              
+   }
+   if(jettype.EqualTo("pfchs")){
+    jetpt  = AODPFchsJetPt->at(i) ;       
+    jeteta = AODPFchsJetEta->at(i);       
+    jetphi = AODPFchsJetPhi->at(i);              
+   }
    bool pass_overlap = true;
 /*
    // check overlap with photons
@@ -193,7 +246,7 @@ std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, Float_t j
     for(int d=0; d<electron_list.size(); ++d){
      //printf(" brgin looping over electrons\n");
      int eleindex = electron_list[d];
-     if( dR( AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
+     if( dR( AOD_eleEta->at(eleindex), AOD_elePhi->at(eleindex), jeteta, jetphi ) < objcleandRcut )
      {
       pass_overlap=false; // printf(" OL w electron\n");
      } // if overlap
@@ -204,7 +257,7 @@ std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, Float_t j
     for(int d=0; d<muon_list.size(); ++d){
      int muindex = muon_list[d];
      if(muindex<= (AOD_muEta->size()-1)&&muindex<= (AOD_muPhi->size()-1)){
-      if( dR( AOD_muEta->at(muindex),AOD_muPhi->at(muindex), AODCaloJetEta->at(i),AODCaloJetPhi->at(i) ) < objcleandRcut )
+      if( dR( AOD_muEta->at(muindex),AOD_muPhi->at(muindex), jeteta, jetphi ) < objcleandRcut )
       {
        pass_overlap=false; //printf(" OL w muon\n");
       } // if overlap     }
@@ -212,11 +265,11 @@ std::vector<int> analyzer_createobjects::aodcalojet_passID( int bitnr, Float_t j
     }//end muons
    } // if muons
 
-   bool pass_kin = AODCaloJetPt->at(i) > jetPtCut && ( fabs(AODCaloJetEta->at(i)) < jetEtaCut ) ;
+   // WHAT ABOUT JET ID?
+   bool pass_kin = jetpt > jetPtCut && ( fabs(jeteta) < jetEtaCut ) ;
               
    if( pass_kin && pass_overlap )
    {
-    nSelectedAODCaloJet++;
     jetlist.push_back(i);
    } // if pass_bit && pass_kin
   }// for(int i = 0; i < nJet; i++)
@@ -504,7 +557,6 @@ void analyzer_createobjects::makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_
    return;                                                          
                                                                    
 }
-
 
 void analyzer_createobjects::shiftCollections( TString uncbin )
 {
