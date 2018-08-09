@@ -1,8 +1,10 @@
 #!/bin/bash
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
-export nversion="addpuAOD"
-export aversion="addpuAODPassSingle"
+export nversion="addpuAOD_eled0dz_trig"
+export aversion="Elesort_PhoPt165_OPTLightFixed2" #"addpuAODPassSingle"
+#export aversion="CRHeavyOPT" #"addpuAODPassSingle"
+#export aversion="CRLightOPT" #"addpuAODPassSingle"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`

@@ -67,7 +67,7 @@ void analyzer_selections::setSelections()
  selvecNoPair  .push_back( passOneJet   );
 
  //selvecCRHeavy .push_back( (passDoubleEle && passDoubleMu) );
- selvecCRHeavy .push_back( (passSingleEle && passSingleMu) );
+ selvecCRHeavy .push_back( passMuEG     );
  selvecCRHeavy .push_back( passGoodVtx  );
  selvecCRHeavy .push_back( passOneJet   );
  selvecCRHeavy .push_back( passOSOF     );
@@ -120,9 +120,9 @@ Bool_t analyzer_selections::askPassSingleEle()
 {
  Bool_t doespass = kFALSE;
  if(electron_list.size()>0){ 
-   if(isMC) doespass = kTRUE;
-   else doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
-   //doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
+   //if(isMC) doespass = kTRUE;
+   //else doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
+   doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
  } 
  return doespass;
 }
@@ -131,9 +131,9 @@ Bool_t analyzer_selections::askPassDoubleEle()
 {
  Bool_t doespass = kFALSE;
  if(electron_list.size()>1){ 
-  if(isMC) doespass = kTRUE;
-  else doespass = (Bool_t)((AOD_HLT_Ele23Ele12 > 0) );
-  //doespass = (Bool_t)( (AOD_HLT_Ele23Ele12 > 0) ); 
+  //if(isMC) doespass = kTRUE;
+  //else doespass = (Bool_t)((AOD_HLT_Ele23Ele12 > 0) );
+  doespass = (Bool_t)( (AOD_HLT_Ele23Ele12 > 0) ); 
  } 
  return doespass;
 }
@@ -142,9 +142,9 @@ Bool_t analyzer_selections::askPassSingleMu()
 {
  Bool_t doespass = kFALSE;
  if(muon_list.size()>0){ 
-  if(isMC) doespass = kTRUE;
-  else doespass =(Bool_t)( (AOD_HLT_IsoMu22 > 0) || (AOD_HLT_IsoTkMu22 > 0) || (AOD_HLT_IsoMu24 > 0) || (AOD_HLT_IsoTkMu24 > 0) );
-  //doespass = (Bool_t)( (AOD_HLT_IsoMu22 > 0) || (AOD_HLT_IsoTkMu22 > 0) || (AOD_HLT_IsoMu24 > 0) || (AOD_HLT_IsoTkMu24 > 0) );
+  //if(isMC) doespass = kTRUE;
+  //else doespass =(Bool_t)( (AOD_HLT_IsoMu22 > 0) || (AOD_HLT_IsoTkMu22 > 0) || (AOD_HLT_IsoMu24 > 0) || (AOD_HLT_IsoTkMu24 > 0) );
+  doespass = (Bool_t)( (AOD_HLT_IsoMu22 > 0) || (AOD_HLT_IsoTkMu22 > 0) || (AOD_HLT_IsoMu24 > 0) || (AOD_HLT_IsoTkMu24 > 0) );
  } 
  return doespass;
 }
@@ -153,9 +153,9 @@ Bool_t analyzer_selections::askPassDoubleMu()
 {
  Bool_t doespass = kFALSE;
  if(muon_list.size()>1){ 
-  if(isMC) doespass = kTRUE;
-  else doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
-  //doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
+  //if(isMC) doespass = kTRUE;
+  //else doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
+  doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
  } 
  return doespass;
 }
@@ -164,10 +164,18 @@ Bool_t analyzer_selections::askPassSinglePho()
 {
  Bool_t doespass = kFALSE;
  if(photon_list.size()>0){ 
-  //if(isMC) doespass = kTRUE;
-  //else doespass = (Bool_t)( (AOD_HLT_Ele23Loose > 0) || (AOD_HLT_Ele27Tight > 0) );
-  doespass = kTRUE;
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (AOD_HLT_Photon165_HE10) );
  } 
  return doespass;
 }
 
+Bool_t analyzer_selections::askPassMuEG()
+{
+ Bool_t doespass = kFALSE;
+ if(muon_list.size()>0 && electron_list.size()>0){ 
+  if(isMC) doespass = kTRUE;
+  else doespass = (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12)  || (AOD_HLT_Mu12Ele23_DZ)  || (AOD_HLT_Mu23Ele12_DZ) );
+ } 
+ return doespass;
+}

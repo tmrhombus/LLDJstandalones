@@ -159,7 +159,6 @@ maxfilesperjob=200   # 500=6h
 # "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"     \
 
 samples=(  \
- # samples from above to be submitted
 ### Data
  "Data_SingleMu_H_3"      \
  "Data_SingleMu_H_2"      \

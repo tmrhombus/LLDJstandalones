@@ -117,6 +117,29 @@ std::vector<int> analyzer_createobjects::electron_passID( int bitnr, Float_t ele
    elelist.push_back(i);
   } // if pass_bit && pass_kin
  } // loop over electrons
+ // Leaving this (the printing stuff) here for now in case anyone wants to check it out. will erase next update 
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************" <<std::endl;
+ //if(elelist.size()>1){for(int ii=0; ii<elelist.size(); ii++){std::cout<<"Before sort: index: "<<ii<<", Pt: "<<getElectronPt(elelist[ii], sysbinname)<<"  Eta: "<<AOD_eleEta->at(elelist[ii])<<std::endl;}}
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************"<<std::endl;
+ 
+std::sort(elelist.begin(),elelist.end(), 
+         [&]( int a, int b ) { return AOD_elePt->at(a) > AOD_elePt->at(b); });
+ 
+/* for (int ii = (elelist.size() - 1); ii >= 0; ii--)
+ {
+   for (int jj = 1; jj <=ii; jj++)
+   {
+     if( getElectronPt(elelist[jj-1], sysbinname) < getElectronPt(elelist[jj],sysbinname) )
+     {
+      int temp = elelist[jj-1];
+      elelist[jj-1] = elelist[jj];
+      elelist[jj] = temp;
+  } } } 
+*/
+ 
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************" <<std::endl;
+ //if(elelist.size()>1){for(int ii=0; ii<elelist.size(); ii++){std::cout<<"After sort: index: "<<ii<<", Pt:  "<<getElectronPt(elelist[ii], sysbinname)<<"  Eta: "<<AOD_eleEta->at(elelist[ii])<<std::endl;}}
+ //if(elelist.size()>1)std::cout<<"*********************************************************************************"<<std::endl;
  return elelist;
 }
  

@@ -208,6 +208,14 @@ void analyzer_base::Init(TChain *tree, Bool_t isitMC, Bool_t domakelog)
    fChain->SetBranchAddress("AOD_HLT_Mu17TkMu8_noDZ", &AOD_HLT_Mu17TkMu8_noDZ, &b_AOD_HLT_Mu17TkMu8_noDZ);
    fChain->SetBranchAddress("AOD_HLT_IsoMu24", &AOD_HLT_IsoMu24, &b_AOD_HLT_IsoMu24);
    fChain->SetBranchAddress("AOD_HLT_IsoTkMu24", &AOD_HLT_IsoTkMu24, &b_AOD_HLT_IsoTkMu24);
+   fChain->SetBranchAddress("AOD_HLT_Photon90", &AOD_HLT_Photon90, &b_AOD_HLT_Photon90);
+   fChain->SetBranchAddress("AOD_HLT_Photon120", &AOD_HLT_Photon120, &b_AOD_HLT_Photon120);
+   fChain->SetBranchAddress("AOD_HLT_Photon175", &AOD_HLT_Photon175, &b_AOD_HLT_Photon175);
+   fChain->SetBranchAddress("AOD_HLT_Photon165_HE10", &AOD_HLT_Photon165_HE10, &b_AOD_HLT_Photon165_HE10);
+   fChain->SetBranchAddress("AOD_HLT_Mu8Ele23", &AOD_HLT_Mu8Ele23, &b_AOD_HLT_Mu8Ele23);
+   fChain->SetBranchAddress("AOD_HLT_Mu23Ele12", &AOD_HLT_Mu23Ele12, &b_AOD_HLT_Mu23Ele12);
+   fChain->SetBranchAddress("AOD_HLT_Mu12Ele23_DZ", &AOD_HLT_Mu12Ele23_DZ, &b_AOD_HLT_Mu12Ele23_DZ);
+   fChain->SetBranchAddress("AOD_HLT_Mu23Ele12_DZ", &AOD_HLT_Mu23Ele12_DZ, &b_AOD_HLT_Mu23Ele12_DZ);
    fChain->SetBranchAddress("AODnCaloJet", &AODnCaloJet, &b_AODnCaloJet);
    fChain->SetBranchAddress("AODCaloJetPt", &AODCaloJetPt, &b_AODCaloJetPt);
    fChain->SetBranchAddress("AODCaloJetEta", &AODCaloJetEta, &b_AODCaloJetEta);

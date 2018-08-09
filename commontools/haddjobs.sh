@@ -198,13 +198,14 @@ samples=( \
 # "Data_MuonEG_D"           \
 # "Data_MuonEG_E"           \
 # "Data_MuonEG_F"           \
+# "MuonEG"                  \
 # "Data_MuonEG_G"           \
 # "Data_MuonEG_H_2"         \
 # "Data_MuonEG_H_3"         \
-#
 # "Data_SinglePhoton_H_3"   \
 # "Data_SinglePhoton_H_2"   \
 # "Data_SinglePhoton_G"     \
+# "SinglePhoton"            \
 # "Data_SinglePhoton_F"     \
 # "Data_SinglePhoton_E"     \
 # "Data_SinglePhoton_D"     \

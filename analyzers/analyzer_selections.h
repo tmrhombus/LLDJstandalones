@@ -23,6 +23,7 @@ public :
    Bool_t        askPassDoubleEle();
    Bool_t        askPassDoubleMu();
    Bool_t        askPassSinglePho();
+   Bool_t        askPassMuEG();
 
    std::vector<Bool_t> selvecSignal ;
    std::vector<Bool_t> selvecZH     ;
@@ -39,6 +40,7 @@ public :
    Bool_t passDoubleEle ;
    Bool_t passDoubleMu  ;
    Bool_t passSinglePho ;
+   Bool_t passMuEG ;
    Bool_t passOSSF      ;   
    Bool_t passOSOF      ;   
    Bool_t passZWindow   ;   
