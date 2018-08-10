@@ -74,6 +74,7 @@ void analyzer_loop::Loop(TString outfilename,
   aodpfjet_list    = jet_passID       ( aodcalojetidbit, "pf",    jet_minPt, jet_maxEta, ""); 
   aodpfchsjet_list = jet_passID       ( aodcalojetidbit, "pfchs", jet_minPt, jet_maxEta, ""); 
   taggedjet_list   = jet_passTagger   ();
+
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
   matchPFCalojets( "PFchs" );
@@ -275,6 +276,7 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout << " Summary     cleaning dR=" << objcleandRcut << std::endl;
 
  std::cout << " Total events processed  " << n_tot << std::endl;
+
  std::cout<<" n_passOneEleSig    " << setw(width) << left << n_passOneEleSig    << setw(width) << left << (float) n_passOneEleSig   / (float) n_tot << std::endl;   
  std::cout<<" n_passTwoEleSig    " << setw(width) << left << n_passTwoEleSig    << setw(width) << left << (float) n_passTwoEleSig   / (float) n_tot << std::endl;   
  std::cout<<" n_passOneMuSig     " << setw(width) << left << n_passOneMuSig     << setw(width) << left << (float) n_passOneMuSig    / (float) n_tot << std::endl;   
@@ -295,7 +297,7 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout<<" n_passOneMuNoPair  " << setw(width) << left << n_passOneMuNoPair  << setw(width) << left << (float) n_passOneMuNoPair / (float) n_tot << std::endl;   
  std::cout<<" n_passEleMuOSOF    " << setw(width) << left << n_passEleMuOSOF    << setw(width) << left << (float) n_passEleMuOSOF   / (float) n_tot << std::endl;   
  std::cout<<" n_passOnePho       " << setw(width) << left << n_passOnePho       << setw(width) << left << (float) n_passOnePho      / (float) n_tot << std::endl;   
- std::cout<<std::endl<<std::endl;
+ std::cout<<std::endl;
 
  std::cout<<" Jet Matching "<<std::endl;
  std::cout<<"  n_totalPF          "<< n_totalPF          <<std::endl;
@@ -306,7 +308,6 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout<<"   Percent calo matched to PF: "<<(float)n_matchedPFCalo/(float)n_totalCalo<<std::endl;
  std::cout<<"   Percent calo matched to PFchs: "<<(float)n_matchedPFchsCalo/(float)n_totalCalo<<std::endl;
  std::cout<<std::endl<<std::endl;
-
 
  if(doBkgEst && uncbin.EqualTo("")){
    //Can choose more regions here

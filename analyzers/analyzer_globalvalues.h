@@ -151,7 +151,6 @@ public :
    Int_t n_matchedPFCalo;
    Int_t n_matchedPFchsCalo;
 
-
 };
 
 #endif

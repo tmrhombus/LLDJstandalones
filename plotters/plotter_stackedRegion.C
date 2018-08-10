@@ -49,8 +49,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  Float_t MCSF = 1.;
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
- //if(HIP){ MCSF=lumiBCDEF/10000.; }
- //else{ MCSF=lumiGH/10000.; }
+
+// if(HIP){ MCSF=lumiBCDEF/10000.; }
+// else{ MCSF=lumiGH/10000.; }
  
  //TString extraname = "";
  if(dolog){
@@ -94,42 +95,46 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  //variables.push_back("phoE");                   
  //variables.push_back("phoEt");                  
- //variables.push_back("phoEta");                 
- //variables.push_back("phoPhi");                 
+ variables.push_back("AOD_phoPt");                 
+ variables.push_back("AOD_phoEta");                 
+ variables.push_back("AOD_phoPhi");                 
  //variables.push_back("nEle");                   
- variables.push_back("AOD_elePt");                  
- variables.push_back("AOD_eleEta");                 
- variables.push_back("AOD_elePhi");                 
+ // variables.push_back("AOD_elePt");                  
+ // variables.push_back("AOD_eleEta");                 
+ // variables.push_back("AOD_elePhi");                 
  //variables.push_back("nMu");                    
- variables.push_back("AOD_muPt");                   
+ // variables.push_back("AOD_muPt");                   
  //variables.push_back("muEn");                   
- variables.push_back("AOD_muEta");                  
- variables.push_back("AOD_muPhi");                  
+ // variables.push_back("AOD_muEta");                  
+ // variables.push_back("AOD_muPhi");                  
  //variables.push_back("nJet");                   
- variables.push_back("htall"); 
- variables.push_back("htaodcalojets");
+
+ // variables.push_back("htall"); 
+ // variables.push_back("htaodcalojets");
  //variables.push_back("nSelectedPho");
- variables.push_back("AOD_nSelectedEle");
- variables.push_back("AOD_nSelectedMu");
+ // variables.push_back("AOD_nSelectedEle");
+ // variables.push_back("AOD_nSelectedMu");
  variables.push_back("nSelectedAODCaloJet");
  variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("LeadingJet_AODCaloJetPt");                      
+  variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
- variables.push_back("LeadingJet_AODCaloJetEta");                     
- variables.push_back("LeadingJet_AODCaloJetPhi");                     
+  // variables.push_back("LeadingJet_AODCaloJetEta");                     
+  // variables.push_back("LeadingJet_AODCaloJetPhi");                     
  //variables.push_back("AllJets_AODCaloJetPtVar");
  //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
  //variables.push_back("AllJets_AODCaloJetdR");
  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
- variables.push_back("AllJets_AODCaloJetPt");                      
+  // variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+  // variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+  // variables.push_back("AllJets_AODCaloJetAlphaMax");
+  // variables.push_back("AllJets_AODCaloJetPt");                      
  //variables.push_back("AllJets_AODCaloJetEn");                      
  variables.push_back("AllJets_AODCaloJetEta");                     
 // variables.push_back("AllJets_AODCaloJetPhi");                     
+  // variables.push_back("AllJets_AODCaloJetEta");                     
+  // variables.push_back("AllJets_AODCaloJetPhi");                     
 
  // canvas and text attributes
  int canx = 1100;
@@ -212,6 +217,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TFile* file_Data_SingleEle_D        ; 
  TFile* file_Data_SingleEle_C        ; 
  TFile* file_Data_SingleEle_B_2      ; 
+ TFile* file_Data_MuonEG_H_3         ; 
+ TFile* file_Data_MuonEG_H_2         ; 
+ TFile* file_Data_MuonEG_G           ; 
+ TFile* file_Data_MuonEG_F           ; 
+ TFile* file_Data_MuonEG_E           ; 
+ TFile* file_Data_MuonEG_D           ; 
+ TFile* file_Data_MuonEG_C           ; 
+ TFile* file_Data_MuonEG_B_2         ; 
  TFile* file_Data_SinglePhoton_H_3   ; 
  TFile* file_Data_SinglePhoton_H_2   ; 
  TFile* file_Data_SinglePhoton_G     ; 
@@ -400,6 +413,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_Data_SingleEle_D      ;
  TH1F* h_Data_SingleEle_C      ;
  TH1F* h_Data_SingleEle_B_2    ;
+ TH1F* h_Data_MuonEG_H_3       ;
+ TH1F* h_Data_MuonEG_H_2       ;
+ TH1F* h_Data_MuonEG_G         ;
+ TH1F* h_Data_MuonEG_F         ;
+ TH1F* h_Data_MuonEG_E         ;
+ TH1F* h_Data_MuonEG_D         ;
+ TH1F* h_Data_MuonEG_C         ;
+ TH1F* h_Data_MuonEG_B_2       ;
  TH1F* h_Data_SinglePhoton_H_3 ;
  TH1F* h_Data_SinglePhoton_H_2 ;
  TH1F* h_Data_SinglePhoton_G   ;
@@ -503,6 +524,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_ZZTo2L2Q                = new TFile( inpath + "ZZTo2L2Q_"+region+"_histograms.root"         ) ;
  file_ZZTo2Q2Nu               = new TFile( inpath + "ZZTo2Q2Nu_"+region+"_histograms.root"        ) ;
  file_ZZTo4L                  = new TFile( inpath + "ZZTo4L_"+region+"_histograms.root"           ) ;
+  
 // file_QCD_HT100to200          = new TFile( inpath + "QCD_HT100to200_"+region+"_histograms.root"   ) ;
 // file_QCD_HT200to300          = new TFile( inpath + "QCD_HT200to300_"+region+"_histograms.root"   ) ;
 // file_QCD_HT300to500          = new TFile( inpath + "QCD_HT300to500_"+region+"_histograms.root"   ) ;
@@ -1654,4 +1676,5 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
    
     } 
  }
+
 }
