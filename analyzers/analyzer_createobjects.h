@@ -21,6 +21,7 @@ public :
 
  std::vector<float>     jet_minDR    ();
 
+ virtual void shiftCollections(TString uncbin);
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
