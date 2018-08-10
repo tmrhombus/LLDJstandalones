@@ -12,56 +12,56 @@ samples=( \
  "Data_SingleMu_H_3"      \
  "Data_SingleMu_H_2"      \
  "Data_SingleMu_G"        \
- "Data_SingleMu_F"        \
- "Data_SingleMu_E"        \
- "Data_SingleMu_D"        \
- "Data_SingleMu_C"        \
- "Data_SingleMu_B_2"      \
+# "Data_SingleMu_F"        \
+# "Data_SingleMu_E"        \
+# "Data_SingleMu_D"        \
+# "Data_SingleMu_C"        \
+# "Data_SingleMu_B_2"      \
 # SingleEle
  "Data_SingleEle_H_3"     \
  "Data_SingleEle_H_2"     \
  "Data_SingleEle_G"       \
- "Data_SingleEle_F"       \
- "Data_SingleEle_E"       \
- "Data_SingleEle_D"       \
- "Data_SingleEle_C"       \
- "Data_SingleEle_B_2"     \
+# "Data_SingleEle_F"       \
+# "Data_SingleEle_E"       \
+# "Data_SingleEle_D"       \
+# "Data_SingleEle_C"       \
+# "Data_SingleEle_B_2"     \
 # DoubleMu
  "Data_DoubleMu_H_3"      \
  "Data_DoubleMu_H_2"      \
  "Data_DoubleMu_G"        \
- "Data_DoubleMu_F"        \
- "Data_DoubleMu_E"        \
- "Data_DoubleMu_D"        \
- "Data_DoubleMu_C"        \
- "Data_DoubleMu_B_2"      \
+# "Data_DoubleMu_F"        \
+# "Data_DoubleMu_E"        \
+# "Data_DoubleMu_D"        \
+# "Data_DoubleMu_C"        \
+# "Data_DoubleMu_B_2"      \
 # DoubleEG
  "Data_DoubleEG_H_3"      \
  "Data_DoubleEG_H_2"      \
  "Data_DoubleEG_G"        \
- "Data_DoubleEG_F"        \
- "Data_DoubleEG_E"        \
- "Data_DoubleEG_D"        \
- "Data_DoubleEG_C"        \
- "Data_DoubleEG_B_2"      \
+# "Data_DoubleEG_F"        \
+# "Data_DoubleEG_E"        \
+# "Data_DoubleEG_D"        \
+# "Data_DoubleEG_C"        \
+# "Data_DoubleEG_B_2"      \
 # MuonEG
- "Data_MuonEG_B_2"        \
- "Data_MuonEG_C"          \
- "Data_MuonEG_D"          \
- "Data_MuonEG_E"          \
- "Data_MuonEG_F"          \
- "Data_MuonEG_G"          \
- "Data_MuonEG_H_2"        \
  "Data_MuonEG_H_3"        \
+ "Data_MuonEG_H_2"        \
+ "Data_MuonEG_G"          \
+# "Data_MuonEG_F"          \
+# "Data_MuonEG_E"          \
+# "Data_MuonEG_D"          \
+# "Data_MuonEG_C"          \
+# "Data_MuonEG_B_2"        \
 # SinglePhoton
  "Data_SinglePhoton_H_3"  \
  "Data_SinglePhoton_H_2"  \
  "Data_SinglePhoton_G"    \
- "Data_SinglePhoton_F"    \
- "Data_SinglePhoton_E"    \
- "Data_SinglePhoton_D"    \
- "Data_SinglePhoton_C"    \
- "Data_SinglePhoton_B_2"  \
+# "Data_SinglePhoton_F"    \
+# "Data_SinglePhoton_E"    \
+# "Data_SinglePhoton_D"    \
+# "Data_SinglePhoton_C"    \
+# "Data_SinglePhoton_B_2"  \
 ## MC backgrounds
 # DY
  "DYJetsToLL_M-5to50_HT-70to100"   \

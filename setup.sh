@@ -2,7 +2,8 @@
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export nversion="addpuAOD"
-export aversion="addpuAODPassSingle"
+export aversion="thoro"
+#export aversion="svinam"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
