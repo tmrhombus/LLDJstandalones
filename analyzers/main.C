@@ -242,7 +242,7 @@ int main(int argc, char **argv){
   unccategories.push_back("_TAUp");
   unccategories.push_back("_TADown");
   unccategories.push_back("_TagVarsUp");
- //  unccategories.push_back("_TagVarsDown");
+  unccategories.push_back("_TagVarsDown");
   }
 
  // make the analyzer, init some stuff
