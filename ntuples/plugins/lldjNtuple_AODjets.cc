@@ -120,7 +120,7 @@ vector<float>  AODCaloJetAvfVertexDeltaZtoPV2_;
 
 // PAT Jets
 Int_t          AODnPATJet_;
-vector<int>    AODnPATJetPartonFlavour_;
+vector<int>    AODPATJetPartonFlavour_;
 vector<float>  AODPATJetPt_;
 vector<float>  AODPATJetEta_;
 vector<float>  AODPATJetPhi_;
@@ -247,7 +247,7 @@ void lldjNtuple::branchesAODJets(TTree* tree) {
   tree->Branch("AODCaloJetAvfVertexDeltaZtoPV2", &AODCaloJetAvfVertexDeltaZtoPV2_);
 
   tree->Branch("AODnPATJet",              &AODnPATJet_);
-  tree->Branch("AODnPATJetPartonFlavour", &AODnPATJetPartonFlavour_);
+  tree->Branch("AODPATJetPartonFlavour",  &AODPATJetPartonFlavour_);
   tree->Branch("AODPATJetPt",             &AODPATJetPt_);
   tree->Branch("AODPATJetEta",            &AODPATJetEta_);
   tree->Branch("AODPATJetPhi",            &AODPATJetPhi_);
@@ -356,7 +356,7 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
 
  // PAT Jets
  AODnPATJet_ = 0;
- AODnPATJetPartonFlavour_.clear();
+ AODPATJetPartonFlavour_.clear();
  AODPATJetPt_.clear();
  AODPATJetEta_.clear();
  AODPATJetPhi_.clear();
@@ -704,7 +704,7 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
    AODPATJetPt_.push_back(iJet->pt());
    AODPATJetEta_.push_back(iJet->eta());
    AODPATJetPhi_.push_back(iJet->phi());
-   AODnPATJetPartonFlavour_.push_back(iJet->partonFlavour()); 
+   AODPATJetPartonFlavour_.push_back(iJet->partonFlavour()); 
    AODPATJetCSV_.push_back(iJet->bDiscriminator("pfCombinedSecondaryVertexV2BJetTags"));
    AODPATJetMVA_.push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
  }
