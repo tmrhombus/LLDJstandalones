@@ -2,7 +2,8 @@
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export nversion="addpuAOD_eled0dz_trig"
-export aversion="Elesort_PhoPt165_OPTLightFixed2" #"addpuAODPassSingle"
+export aversion="NMinus1TaggingPlots"
+#"Elesort_PhoPt175_OPTLight" #"addpuAODPassSingle"
 #export aversion="CRHeavyOPT" #"addpuAODPassSingle"
 #export aversion="CRLightOPT" #"addpuAODPassSingle"
 

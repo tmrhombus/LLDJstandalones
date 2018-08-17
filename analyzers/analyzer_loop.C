@@ -177,7 +177,7 @@ void analyzer_loop::Loop(TString outfilename,
 
   //printf("make log: %0.i\n",makelog);
   
-  if( ( (bitsPassZH >> 0) & 1) ){
+  if(true){//( (bitsPassCRLight >> 0) & 1) ){
    setOPTtree(); 
    OPTtree->Fill();
   }

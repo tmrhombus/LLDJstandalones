@@ -15,7 +15,7 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setconfiguration() 
 {
 
- pho_minPt  = 165.;
+ pho_minPt  = 175.;
  pho_maxEta = 1.4442;
  ele_minPt1 = 25.;
  ele_minPt2 = 15.;
