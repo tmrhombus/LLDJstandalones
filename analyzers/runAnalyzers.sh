@@ -71,7 +71,7 @@
  #'ggZH_HToSSTobbbb_MS15_ctauS1000' \
 
 for sample in \
- 'Sample Here'
+ 'ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100'
 do
 #  ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "-1" -i "../lists" -o "../roots/tagroots" -n 999999999 -a 1 -d -m
   ./runanalyzer.exe -s ${sample} -l "20000" -x "" -e "10000" -i "../lists" -o "junk" -n 100 -a 1 -d -m
