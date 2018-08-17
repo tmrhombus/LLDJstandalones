@@ -64,6 +64,14 @@ public :
    ULong64_t       AOD_HLT_Mu17TkMu8_noDZ;
    ULong64_t       AOD_HLT_IsoMu24;
    ULong64_t       AOD_HLT_IsoTkMu24;
+   //ULong64_t       AOD_HLT_Photon90;
+   //ULong64_t       AOD_HLT_Photon120;
+   //ULong64_t       AOD_HLT_Photon175;
+   //ULong64_t       AOD_HLT_Photon165_HE10;
+   //ULong64_t       AOD_HLT_Mu8Ele23;
+   //ULong64_t       AOD_HLT_Mu23Ele12;
+   //ULong64_t       AOD_HLT_Mu12Ele23_DZ;
+   //ULong64_t       AOD_HLT_Mu23Ele12_DZ;
    Int_t           AODnCaloJet;
    std::vector<float>   *AODCaloJetPt;
    std::vector<float>   *AODCaloJetEta;
@@ -234,6 +242,14 @@ public :
    TBranch        *b_AOD_HLT_Mu17TkMu8_noDZ;   //!
    TBranch        *b_AOD_HLT_IsoMu24;   //!
    TBranch        *b_AOD_HLT_IsoTkMu24;   //!
+   //TBranch        *b_AOD_HLT_Photon90;   //!
+   //TBranch        *b_AOD_HLT_Photon120;   //!
+   //TBranch        *b_AOD_HLT_Photon175;   //!
+   //TBranch        *b_AOD_HLT_Photon165_HE10;   //!
+   //TBranch        *b_AOD_HLT_Mu8Ele23;   //!
+   //TBranch        *b_AOD_HLT_Mu23Ele12;   //!
+   //TBranch        *b_AOD_HLT_Mu12Ele23_DZ;   //!
+   //TBranch        *b_AOD_HLT_Mu23Ele12_DZ;   //!
    TBranch        *b_AODnCaloJet;   //!
    TBranch        *b_AODCaloJetPt;   //!
    TBranch        *b_AODCaloJetEta;   //!
