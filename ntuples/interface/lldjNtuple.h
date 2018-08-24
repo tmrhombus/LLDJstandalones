@@ -141,6 +141,7 @@ class lldjNtuple : public edm::EDAnalyzer {
 
   // jets
   edm::EDGetTokenT<edm::View<pat::Jet> >           jetsAK4Label_;
+  edm::EDGetTokenT<edm::View<pat::Jet> >           selectedPatJetsLabel_;
    // AOD Jets
   edm::EDGetTokenT<edm::View<reco::CaloJet> >      AODak4CaloJetsLabel_;   
   edm::EDGetTokenT<edm::View<reco::PFJet>   >      AODak4PFJetsLabel_;     
