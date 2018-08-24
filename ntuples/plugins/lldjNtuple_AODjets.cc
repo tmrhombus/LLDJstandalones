@@ -709,29 +709,12 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
    AODPATJetMVA_.push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
  }
   
- int jetnr=0;
+	
  // AOD PF Jets -------------------------------------------
  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
-
-
-     // https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideCMSPhysicsObjectSchoolVertBTag#Accessing_b_tag_information_from
-     ///////////////////////////////
-     //const pat::Jet &patJet = dynamic_cast<const pat::Jet &>(*iJet);
-     const pat::Jet& pat_jet = AODak4PFJetsHandle->at(jetnr);
-     jetnr++;
-     std::cout<<"Jet "<<jetnr<<std::endl;
-     std::cout<<"pat_jet.partonFlavour()                                             "<< pat_jet.partonFlavour()                                             <<std::endl; 
-     std::cout<<"pat_jet.hadronFlavour()                                             "<< pat_jet.hadronFlavour()                                             <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('jetBProbabilityBJetTags')                   "<< pat_jet.bDiscriminator("jetBProbabilityBJetTags")                   <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('jetProbabilityBJetTags')                    "<< pat_jet.bDiscriminator("jetProbabilityBJetTags")                    <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('trackCountingHighPurBJetTags')              "<< pat_jet.bDiscriminator("trackCountingHighPurBJetTags")              <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('trackCountingHighEffBJetTags')              "<< pat_jet.bDiscriminator("trackCountingHighEffBJetTags")              <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('simpleSecondaryVertexHighEffBJetTags')      "<< pat_jet.bDiscriminator("simpleSecondaryVertexHighEffBJetTags")      <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('simpleSecondaryVertexHighPurBJetTags')      "<< pat_jet.bDiscriminator("simpleSecondaryVertexHighPurBJetTags")      <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('pfCombinedSecondaryVertexBJetTags')         "<< pat_jet.bDiscriminator("pfCombinedSecondaryVertexBJetTags")         <<std::endl;
-     std::cout<<"pat_jet.bDiscriminator('combinedInclusiveSecondaryVertexV2BJetTags')"<< pat_jet.bDiscriminator("combinedInclusiveSecondaryVertexV2BJetTags")<<std::endl;
-
-
+	 
+// Remove code casting reco jet as PAT jet, because these will not have btag or partonFlavour
+//
 // if TagInfo present
 //  if( patJet.hasTagInfo("pfInclusiveSecondaryVertexFinder") ) // need to omit 'TagInfos' from the label since PAT strips it away
 //  {
