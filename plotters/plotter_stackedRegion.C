@@ -249,14 +249,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TFile* file_Data_DoubleEG_D         ; 
  TFile* file_Data_DoubleEG_C         ; 
  TFile* file_Data_DoubleEG_B_2       ; 
- TFile* file_Data_MuonEG_H_3       ; 
- TFile* file_Data_MuonEG_H_2       ; 
- TFile* file_Data_MuonEG_G         ; 
- TFile* file_Data_MuonEG_F         ; 
- TFile* file_Data_MuonEG_E         ; 
- TFile* file_Data_MuonEG_D         ; 
- TFile* file_Data_MuonEG_C         ; 
- TFile* file_Data_MuonEG_B_2       ; 
  TFile* file_DY50                                ;
  TFile* file_DY5to50_HT100To200                  ; 
  TFile* file_DY5to50_HT200To400                  ; 
@@ -445,14 +437,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_Data_DoubleEG_D       ;
  TH1F* h_Data_DoubleEG_C       ;
  TH1F* h_Data_DoubleEG_B_2     ;
- TH1F* h_Data_MuonEG_H_3     ;
- TH1F* h_Data_MuonEG_H_2     ;
- TH1F* h_Data_MuonEG_G       ;
- TH1F* h_Data_MuonEG_F       ;
- TH1F* h_Data_MuonEG_E       ;
- TH1F* h_Data_MuonEG_D       ;
- TH1F* h_Data_MuonEG_C       ;
- TH1F* h_Data_MuonEG_B_2     ;
  TH1F* h_ratio ;
  TH1F* h_ratiostaterr ;
 
