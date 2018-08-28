@@ -286,14 +286,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TFile* file_ZZTo2L2Q                          ;
  TFile* file_ZZTo2Q2Nu                         ;
  TFile* file_ZZTo4L                            ;
-// TFile* file_QCD_HT100to200                    ;
-// TFile* file_QCD_HT200to300                    ;
-// TFile* file_QCD_HT300to500                    ;
-// TFile* file_QCD_HT500to700                    ;
-// TFile* file_QCD_HT700to1000                   ;
-// TFile* file_QCD_HT1000to1500                  ;
-// TFile* file_QCD_HT1500to2000                  ;
-// TFile* file_QCD_HT2000toInf                   ;
+ TFile* file_QCD_HT100to200                    ;
+ TFile* file_QCD_HT200to300                    ;
+ TFile* file_QCD_HT300to500                    ;
+ TFile* file_QCD_HT500to700                    ;
+ TFile* file_QCD_HT700to1000                   ;
+ TFile* file_QCD_HT1000to1500                  ;
+ TFile* file_QCD_HT1500to2000                  ;
+ TFile* file_QCD_HT2000toInf                   ;
  TFile* file_Sig_ZH_MS15ct1000     ;
  TFile* file_Sig_ZH_MS15ct100      ;
  TFile* file_Sig_ZH_MS15ct10       ;
@@ -357,14 +357,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TH1F* h_ZZTo2L2Q                            ;
  TH1F* h_ZZTo2Q2Nu                           ;
  TH1F* h_ZZTo4L                              ;
-// TH1F* h_QCD_HT100to200                      ;
-// TH1F* h_QCD_HT200to300                      ;
-// TH1F* h_QCD_HT300to500                      ;
-// TH1F* h_QCD_HT500to700                      ;
-// TH1F* h_QCD_HT700to1000                     ;
-// TH1F* h_QCD_HT1000to1500                    ;
-// TH1F* h_QCD_HT1500to2000                    ;
-// TH1F* h_QCD_HT2000toInf                     ;
+ TH1F* h_QCD_HT100to200                      ;
+ TH1F* h_QCD_HT200to300                      ;
+ TH1F* h_QCD_HT300to500                      ;
+ TH1F* h_QCD_HT500to700                      ;
+ TH1F* h_QCD_HT700to1000                     ;
+ TH1F* h_QCD_HT1000to1500                    ;
+ TH1F* h_QCD_HT1500to2000                    ;
+ TH1F* h_QCD_HT2000toInf                     ;
  TH1F* h_Sig_ZH_MS15ct1000     ;
  TH1F* h_Sig_ZH_MS15ct100      ;
  TH1F* h_Sig_ZH_MS15ct10       ;
@@ -509,14 +509,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_ZZTo2Q2Nu               = new TFile( inpath + "ZZTo2Q2Nu_"+region+"_histograms.root"        ) ;
  file_ZZTo4L                  = new TFile( inpath + "ZZTo4L_"+region+"_histograms.root"           ) ;
   
-// file_QCD_HT100to200          = new TFile( inpath + "QCD_HT100to200_"+region+"_histograms.root"   ) ;
-// file_QCD_HT200to300          = new TFile( inpath + "QCD_HT200to300_"+region+"_histograms.root"   ) ;
-// file_QCD_HT300to500          = new TFile( inpath + "QCD_HT300to500_"+region+"_histograms.root"   ) ;
-// file_QCD_HT500to700          = new TFile( inpath + "QCD_HT500to700_"+region+"_histograms.root"   ) ;
-// file_QCD_HT700to1000         = new TFile( inpath + "QCD_HT700to1000_"+region+"_histograms.root"  ) ;
-// file_QCD_HT1000to1500        = new TFile( inpath + "QCD_HT1000to1500_"+region+"_histograms.root" ) ;
-// file_QCD_HT1500to2000        = new TFile( inpath + "QCD_HT1500to2000_"+region+"_histograms.root" ) ;
-// file_QCD_HT2000toInf         = new TFile( inpath + "QCD_HT2000toInf_"+region+"_histograms.root"  ) ;
+ file_QCD_HT100to200          = new TFile( inpath + "QCD_HT100to200_"+region+"_histograms.root"   ) ;
+ file_QCD_HT200to300          = new TFile( inpath + "QCD_HT200to300_"+region+"_histograms.root"   ) ;
+ file_QCD_HT300to500          = new TFile( inpath + "QCD_HT300to500_"+region+"_histograms.root"   ) ;
+ file_QCD_HT500to700          = new TFile( inpath + "QCD_HT500to700_"+region+"_histograms.root"   ) ;
+ file_QCD_HT700to1000         = new TFile( inpath + "QCD_HT700to1000_"+region+"_histograms.root"  ) ;
+ file_QCD_HT1000to1500        = new TFile( inpath + "QCD_HT1000to1500_"+region+"_histograms.root" ) ;
+ file_QCD_HT1500to2000        = new TFile( inpath + "QCD_HT1500to2000_"+region+"_histograms.root" ) ;
+ file_QCD_HT2000toInf         = new TFile( inpath + "QCD_HT2000toInf_"+region+"_histograms.root"  ) ;
 
  file_Sig_ZH_MS15ct1000  = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_"+region+"_histograms.root"   ) ; 
  file_Sig_ZH_MS15ct100   = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_"+region+"_histograms.root"   ) ; 
@@ -671,14 +671,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_ZZTo2L2Q                        = (TH1F*)file_ZZTo2L2Q                         ->Get("h_"+varname+uncbin)->Clone( "ZZTo2L2Q"                        +uncbin ) ;
      h_ZZTo2Q2Nu                       = (TH1F*)file_ZZTo2Q2Nu                        ->Get("h_"+varname+uncbin)->Clone( "ZZTo2Q2Nu"                       +uncbin ) ;
      h_ZZTo4L                          = (TH1F*)file_ZZTo4L                           ->Get("h_"+varname+uncbin)->Clone( "ZZTo4L"                          +uncbin ) ;
-     //h_QCD_HT100to200                  = (TH1F*)file_QCD_HT100to200                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT100to200"                +uncbin   ) ;
-     //h_QCD_HT200to300                  = (TH1F*)file_QCD_HT200to300                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT200to300"                +uncbin   ) ;
-     //h_QCD_HT300to500                  = (TH1F*)file_QCD_HT300to500                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT300to500"                +uncbin   ) ;
-     //h_QCD_HT500to700                  = (TH1F*)file_QCD_HT500to700                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT500to700"                +uncbin   ) ;
-     //h_QCD_HT700to1000                 = (TH1F*)file_QCD_HT700to1000                  ->Get("h_"+varname+uncbin)->Clone( "QCD_HT700to1000"               +uncbin   ) ;
-     //h_QCD_HT1000to1500                = (TH1F*)file_QCD_HT1000to1500                 ->Get("h_"+varname+uncbin)->Clone( "QCD_HT1000to1500"              +uncbin   ) ;
-     //h_QCD_HT1500to2000                = (TH1F*)file_QCD_HT1500to2000                 ->Get("h_"+varname+uncbin)->Clone( "QCD_HT1500to2000"              +uncbin   ) ;
-     //h_QCD_HT2000toInf                 = (TH1F*)file_QCD_HT2000toInf                  ->Get("h_"+varname+uncbin)->Clone( "QCD_HT2000toInf"               +uncbin   ) ;
+     h_QCD_HT100to200                  = (TH1F*)file_QCD_HT100to200                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT100to200"                +uncbin   ) ;
+     h_QCD_HT200to300                  = (TH1F*)file_QCD_HT200to300                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT200to300"                +uncbin   ) ;
+     h_QCD_HT300to500                  = (TH1F*)file_QCD_HT300to500                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT300to500"                +uncbin   ) ;
+     h_QCD_HT500to700                  = (TH1F*)file_QCD_HT500to700                   ->Get("h_"+varname+uncbin)->Clone( "QCD_HT500to700"                +uncbin   ) ;
+     h_QCD_HT700to1000                 = (TH1F*)file_QCD_HT700to1000                  ->Get("h_"+varname+uncbin)->Clone( "QCD_HT700to1000"               +uncbin   ) ;
+     h_QCD_HT1000to1500                = (TH1F*)file_QCD_HT1000to1500                 ->Get("h_"+varname+uncbin)->Clone( "QCD_HT1000to1500"              +uncbin   ) ;
+     h_QCD_HT1500to2000                = (TH1F*)file_QCD_HT1500to2000                 ->Get("h_"+varname+uncbin)->Clone( "QCD_HT1500to2000"              +uncbin   ) ;
+     h_QCD_HT2000toInf                 = (TH1F*)file_QCD_HT2000toInf                  ->Get("h_"+varname+uncbin)->Clone( "QCD_HT2000toInf"               +uncbin   ) ;
 
      h_Sig_ZH_MS15ct1000   = (TH1F*)file_Sig_ZH_MS15ct1000   ->Get("h_"+varname+uncbin )->Clone( "Sig_ZH_MS15ct1000"+uncbin ) ;
      h_Sig_ZH_MS15ct100    = (TH1F*)file_Sig_ZH_MS15ct100    ->Get("h_"+varname+uncbin )->Clone( "Sig_ZH_MS15ct100" +uncbin ) ;
@@ -804,14 +804,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VG = (TH1F*)h_WG->Clone("VG");
       h_VG->Add(h_ZG);
 
-     //h_QCD = (TH1F*)h_QCD_HT100to200->Clone("QCD");
-     // h_QCD->Add(h_QCD_HT200to300   );
-     // h_QCD->Add(h_QCD_HT300to500   );
-     // h_QCD->Add(h_QCD_HT500to700   );
-     // h_QCD->Add(h_QCD_HT700to1000  );
-     // h_QCD->Add(h_QCD_HT1000to1500 );
-     // h_QCD->Add(h_QCD_HT1500to2000 );
-     // h_QCD->Add(h_QCD_HT2000toInf  );
+     h_QCD = (TH1F*)h_QCD_HT100to200->Clone("QCD");
+      h_QCD->Add(h_QCD_HT200to300   );
+      h_QCD->Add(h_QCD_HT300to500   );
+      h_QCD->Add(h_QCD_HT500to700   );
+      h_QCD->Add(h_QCD_HT700to1000  );
+      h_QCD->Add(h_QCD_HT1000to1500 );
+      h_QCD->Add(h_QCD_HT1500to2000 );
+      h_QCD->Add(h_QCD_HT2000toInf  );
 
      h_Sig_MS15ct1000  = (TH1F*) h_Sig_ZH_MS15ct1000   ->Clone( "Sig_MS15ct1000" ) ;
      h_Sig_MS15ct100   = (TH1F*) h_Sig_ZH_MS15ct100    ->Clone( "Sig_MS15ct100 " ) ;
@@ -847,7 +847,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV         ->Scale(MCSF); 
      h_TT         ->Scale(MCSF); 
      h_VG         ->Scale(MCSF); 
-     //h_QCD        ->Scale(MCSF); 
+     h_QCD        ->Scale(MCSF); 
      h_WJetsToLNu ->Scale(MCSF); 
      h_altDY      ->Scale(MCSF);
      h_altVV      ->Scale(MCSF);
@@ -873,7 +873,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
       h_bkgtotal->Add(h_VV    ) ;
       h_bkgtotal->Add(h_TT    ) ;
       h_bkgtotal->Add(h_VG    ) ;
-      //h_bkgtotal->Add(h_QCD   ) ;
+      h_bkgtotal->Add(h_QCD   ) ;
       h_bkgtotal->Add(h_WJetsToLNu      ) ;
 
      if( region.Contains("OneEle") ){
@@ -996,7 +996,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Float_t int_TT        = h_TT       ->Integral(0,-1); 
      Float_t int_altTT     = h_altTT    ->Integral(0,-1); 
      Float_t int_VG        = h_VG       ->Integral(0,-1); 
-     //Float_t int_QCD       = h_QCD      ->Integral(0,-1); 
+     Float_t int_QCD       = h_QCD      ->Integral(0,-1); 
      Float_t int_bkgtotal  = h_bkgtotal ->Integral(0,-1); 
      Float_t int_Data      = h_Data     ->Integral(0,-1); 
      Float_t int_bkgOnData = (double)int_bkgtotal / int_Data ;
@@ -1265,7 +1265,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        fprintf (summarytable, "TT              & %3.1f \\\\\n", int_TT             ) ; 
        fprintf (summarytable, "altTT           & %3.1f \\\\\n", int_altTT          ) ; 
        fprintf (summarytable, "VG              & %3.1f \\\\\n", int_VG             ) ; 
-       //fprintf (summarytable, "QCD             & %3.1f \\\\\n", int_QCD            ) ; 
+       fprintf (summarytable, "QCD             & %3.1f \\\\\n", int_QCD            ) ; 
        fprintf (summarytable, " \\hline \n");
        fprintf (summarytable, "Sig MS15ct1000  & %3.1f \\\\\n", int_Sig_MS15ct1000 ) ; 
        fprintf (summarytable, "Sig MS15ct100   & %3.1f \\\\\n", int_Sig_MS15ct100  ) ; 
@@ -1305,7 +1305,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        fprintf (tinytable, "WW,WZ,ZZ & %3.1f \\\\\n", int_VV             ) ; 
        fprintf (tinytable, "$t\\bar{t}$      & %3.1f \\\\\n", int_TT             ) ; 
        fprintf (tinytable, "V$\\gamma$              & %3.1f \\\\\n", int_VG             ) ; 
-       //fprintf (tinytable, "QCD              & %3.1f \\\\\n", int_QCD             ) ; 
+       fprintf (tinytable, "QCD              & %3.1f \\\\\n", int_QCD             ) ; 
        fprintf (tinytable, " \\hline \n");
        fprintf (tinytable, "Total Backgrounds    & %3.1f \\\\\n", int_bkgtotal ) ; 
        fprintf (tinytable, " \\hline \n");
@@ -1328,7 +1328,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV         -> SetLineColor(kBlack); 
      h_altVV      -> SetLineColor(kBlack); 
      h_VG         -> SetLineColor(kBlack); 
-     //h_QCD        -> SetLineColor(kBlack); 
+     h_QCD        -> SetLineColor(kBlack); 
      h_ZH         -> SetLineColor(kBlack);
 
      h_Data  -> SetLineColor(kBlack);
@@ -1346,7 +1346,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV        ->SetFillStyle(1001);
      h_altVV     ->SetFillStyle(1001);
      h_VG        ->SetFillStyle(1001);
-     //h_QCD       ->SetFillStyle(1001);
+     h_QCD       ->SetFillStyle(1001);
      h_ZH        ->SetFillStyle(1001);
 
      h_DY        ->SetFillColor(kAzure-3);
@@ -1359,7 +1359,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV        ->SetFillColor(kRed);
      h_altVV     ->SetFillColor(kRed);
      h_VG        ->SetFillColor(kPink+9);
-     //h_QCD       ->SetFillColor(kGray+1);
+     h_QCD       ->SetFillColor(kGray+1);
      h_ZH        ->SetFillColor(kCyan);
 
      h_DY        ->SetLineColor(kBlack); 
@@ -1372,7 +1372,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV        ->SetLineColor(kBlack); 
      h_altVV     ->SetLineColor(kBlack); 
      h_VG        ->SetLineColor(kBlack); 
-     //h_QCD       ->SetLineColor(kBlack); 
+     h_QCD       ->SetLineColor(kBlack); 
      h_ZH        ->SetLineColor(kBlack); 
 
      h_DY        ->SetLineWidth(2);
@@ -1385,7 +1385,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_VV        ->SetLineWidth(2);
      h_altVV     ->SetLineWidth(2);
      h_VG        ->SetLineWidth(2);
-     //h_QCD       ->SetLineWidth(2);
+     h_QCD       ->SetLineWidth(2);
      h_ZH        ->SetLineWidth(2);
 
      h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
@@ -1400,7 +1400,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        v.push_back(h_WJetsToLNu);
        v.push_back(h_altVV);
        v.push_back(h_VG); 
-       //v.push_back(h_QCD); 
+       v.push_back(h_QCD); 
        v.push_back(h_ZH);
      }
      else {
@@ -1411,7 +1411,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        v.push_back(h_WJetsToLNu);
        v.push_back(h_VV);
        v.push_back(h_VG); 
-       //v.push_back(h_QCD); 
+       v.push_back(h_QCD); 
        v.push_back(h_ZH);
      }
 
@@ -1435,7 +1435,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          bgstack->Add(h_WJetsToLNu ); 
          bgstack->Add(h_altVV      ); 
          bgstack->Add(h_VG         );
-         //bgstack->Add(h_QCD        );
+         bgstack->Add(h_QCD        );
          bgstack->Add(h_ZH         );
        }
        else {
@@ -1446,7 +1446,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
          bgstack->Add(h_WJetsToLNu ); 
          bgstack->Add(h_VV         ); 
          bgstack->Add(h_VG         );
-         //bgstack->Add(h_QCD        );
+         bgstack->Add(h_QCD        );
          bgstack->Add(h_ZH         );
        }
      }
@@ -1488,7 +1488,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
        leg->AddEntry(h_altVV        , "(Alt.) Diboson", "f"); 
        leg->AddEntry(h_VG           , "V#gamma", "f");
-       //leg->AddEntry(h_QCD          , "QCD", "f");
+       leg->AddEntry(h_QCD          , "QCD", "f");
        leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
@@ -1501,7 +1501,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
        leg->AddEntry(h_VV           , "Diboson", "f"); 
        leg->AddEntry(h_VG           , "V#gamma", "f");
-       //leg->AddEntry(h_QCD          , "QCD", "f");
+       leg->AddEntry(h_QCD          , "QCD", "f");
        leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
@@ -1633,7 +1633,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
       h_WJetsToLNu  ->Write();
       h_VV          ->Write();
       h_VG          ->Write();
-      //h_QCD         ->Write();
+      h_QCD         ->Write();
       h_ZH          ->Write();
       h_bkgtotal    ->Write();
       h_ratio       ->Write();
