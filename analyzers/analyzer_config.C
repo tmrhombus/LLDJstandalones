@@ -15,7 +15,7 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setConfiguration() 
 {
 
- pho_minPt  = 165.;
+ pho_minPt  = 175.;
  pho_maxEta = 1.4442;
  ele_minPt1 = 25.;
  ele_minPt2 = 15.;
@@ -28,8 +28,8 @@ void analyzer_config::setConfiguration()
 
  // tagging variables
  tag_minIPsig = 1.15;
- tag_minTA    = -1.5;
- tag_maxAmax  = 0.35;
+ tag_minTA    = -1.75;
+ tag_maxAmax  = 0.2;
  // shifted tagging variables
  tag_shiftminIPsig = 1.2;
  tag_shiftminTA    = -1.4;

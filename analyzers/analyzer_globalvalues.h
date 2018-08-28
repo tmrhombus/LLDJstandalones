@@ -32,6 +32,8 @@ public :
    std::vector<int> PFchsmatchedCalo_list;
 
    std::vector<float> aodcalojet_minDR_list;
+   std::vector<float> aodcalojet_matchedCSV_list;
+   std::vector<int>   aodcalojet_matchedPartonFlavour_list;
 
    // for dilepton
    TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
