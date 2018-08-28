@@ -708,9 +708,24 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
    AODPATJetCSV_.push_back(iJet->bDiscriminator("pfCombinedSecondaryVertexV2BJetTags"));
    AODPATJetMVA_.push_back(iJet->bDiscriminator("pfCombinedMVAV2BJetTags"));
  }
-
+  
+	
  // AOD PF Jets -------------------------------------------
  for (edm::View<reco::PFJet>::const_iterator iJet = AODak4PFJetsHandle->begin(); iJet != AODak4PFJetsHandle->end(); ++iJet) {
+	 
+// Remove code casting reco jet as PAT jet, because these will not have btag or partonFlavour
+//
+// if TagInfo present
+//  if( patJet.hasTagInfo("pfInclusiveSecondaryVertexFinder") ) // need to omit 'TagInfos' from the label since PAT strips it away
+//  {
+//     std::cout<<" PF jet has Tag info"<<std::endl;
+//    //const reco::CandSecondaryVertexTagInfo *candSVTagInfo = jet->tagInfoCandSecondaryVertex("pfInclusiveSecondaryVertexFinder");
+//    //// if there is at least one reconstructed SV
+//    //if( candSVTagInfo->nVertices() >= 1 ) 
+//    //{
+//    //  std::cout << "Found secondary vertex with a flight distance of " << candSVTagInfo->flightDistance(0).value() << " cm" << std::endl;
+//    //}
+//  }
 
   if(verbose_AOD) printf("PF %f \n",iJet->pt());
   

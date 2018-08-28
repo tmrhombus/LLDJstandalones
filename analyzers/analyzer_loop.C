@@ -74,22 +74,15 @@ void analyzer_loop::Loop(TString outfilename,
   aodpfjet_list    = jet_passID       ( aodcalojetidbit, "pf",    jet_minPt, jet_maxEta, ""); 
   aodpfchsjet_list = jet_passID       ( aodcalojetidbit, "pfchs", jet_minPt, jet_maxEta, ""); 
   taggedjet_list   = jet_passTagger   ();
-  //matchPFCalojets();
 
-  // for(unsigned int k=0; k< aodcalojet_list.size(); ++k){
-  //  std::cout<<" calojet "<<k<<"  "<<AODCaloJetPt->at(aodcalojet_list[k])<<std::endl;
-  // }
-  // std::cout<<"\n"<<std::endl;
-  // for(unsigned int k=0; k< aodpfjet_list.size(); ++k){
-  //  std::cout<<" pfjet "<<k<<"  "<<AODPFJetPt->at(aodpfjet_list[k])<<std::endl;
-  // }
-  // std::cout<<"\n"<<std::endl;
-  // for(unsigned int k=0; k< aodpfchsjet_list.size(); ++k){
-  //  std::cout<<" pfchsjet "<<k<<"  "<<AODPFchsJetPt->at(aodpfchsjet_list[k])<<std::endl;
-  // }
-  // std::cout<<"\n"<<std::endl;
-  // std::cout<<"\n"<<std::endl;
-
+  // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
+  matchPFCalojets( "PF" );
+  matchPFCalojets( "PFchs" );
+  n_totalPF          += aodpfjet_list.size()         ; 
+  n_totalPFchs       += aodpfchsjet_list.size()      ; 
+  n_totalCalo        += aodcalojet_list.size()        ; 
+  n_matchedPFCalo    += calomatchedPF_list.size()    ; 
+  n_matchedPFchsCalo += calomatchedPFchs_list.size() ; 
 
   aodcalojet_minDR_list = jet_minDR();
 
@@ -283,7 +276,6 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout << " Summary     cleaning dR=" << objcleandRcut << std::endl;
 
  std::cout << " Total events processed  " << n_tot << std::endl;
- //std::cout << "              " << setw(width) << left << "tot"         << setw(width) << left << "ele"             << setw(width) << left << "mu"             << std::endl;
 
  std::cout<<" n_passOneEleSig    " << setw(width) << left << n_passOneEleSig    << setw(width) << left << (float) n_passOneEleSig   / (float) n_tot << std::endl;   
  std::cout<<" n_passTwoEleSig    " << setw(width) << left << n_passTwoEleSig    << setw(width) << left << (float) n_passTwoEleSig   / (float) n_tot << std::endl;   
@@ -305,6 +297,16 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout<<" n_passOneMuNoPair  " << setw(width) << left << n_passOneMuNoPair  << setw(width) << left << (float) n_passOneMuNoPair / (float) n_tot << std::endl;   
  std::cout<<" n_passEleMuOSOF    " << setw(width) << left << n_passEleMuOSOF    << setw(width) << left << (float) n_passEleMuOSOF   / (float) n_tot << std::endl;   
  std::cout<<" n_passOnePho       " << setw(width) << left << n_passOnePho       << setw(width) << left << (float) n_passOnePho      / (float) n_tot << std::endl;   
+ std::cout<<std::endl;
+
+ std::cout<<" Jet Matching "<<std::endl;
+ std::cout<<"  n_totalPF          "<< n_totalPF          <<std::endl;
+ std::cout<<"  n_totalPFchs       "<< n_totalPFchs       <<std::endl;
+ std::cout<<"  n_totalCalo        "<< n_totalCalo        <<std::endl;
+ std::cout<<"  n_matchedPFCalo    "<< n_matchedPFCalo    <<std::endl;
+ std::cout<<"  n_matchedPFchsCalo "<< n_matchedPFchsCalo <<std::endl;
+ std::cout<<"   Percent calo matched to PF: "<<(float)n_matchedPFCalo/(float)n_totalCalo<<std::endl;
+ std::cout<<"   Percent calo matched to PFchs: "<<(float)n_matchedPFchsCalo/(float)n_totalCalo<<std::endl;
  std::cout<<std::endl<<std::endl;
 
  if(doBkgEst && uncbin.EqualTo("")){
@@ -433,6 +435,58 @@ void analyzer_loop::debug_printjets()
    printf( " jet %d : pt %.1f eta %.1f phi %.1f\n", i, AODCaloJetPt->at(jetindex), AODCaloJetEta->at(jetindex), AODCaloJetPhi->at(jetindex));
    printf( "  tagvars amax %.1f TA %.1f IP %.1f\n", AODCaloJetAlphaMax->at(jetindex), AODCaloJetMedianLog10TrackAngle->at(jetindex), AODCaloJetMedianLog10IPSig->at(jetindex));
   }
+
+
+// matching
+//  for(unsigned int k=0; k< aodcalojet_list.size(); ++k){
+//   std::cout<<" calojet "<<k<<"  "<<AODCaloJetPt->at(aodcalojet_list[k])<<std::endl;
+//  }
+//  std::cout<<"\n"<<std::endl;
+//  for(unsigned int k=0; k< aodpfjet_list.size(); ++k){
+//   std::cout<<" pfjet "<<k<<"  "<<AODPFJetPt->at(aodpfjet_list[k])<<std::endl;
+//  }
+//  std::cout<<"\n"<<std::endl;
+//  for(unsigned int k=0; k< aodpfchsjet_list.size(); ++k){
+//   std::cout<<" pfchsjet "<<k<<"  "<<AODPFchsJetPt->at(aodpfchsjet_list[k])<<std::endl;
+//  }
+//  std::cout<<"\n"<<std::endl;
+//  std::cout<<"\n"<<std::endl;
+// 
+//   // check to make sure both lists are always the same size
+//   if( calomatchedPF_list.size()!=PFmatchedCalo_list.size() ){
+//   std::cout<<" sizes: calo: "<<calomatchedPF_list.size()<<" pf: "<<PFmatchedCalo_list.size()<<std::endl;
+//   }
+//   if( calomatchedPFchs_list.size()!=PFchsmatchedCalo_list.size() ){
+//   std::cout<<" sizes: calo: "<<calomatchedPFchs_list.size()<<" pfchs: "<<PFchsmatchedCalo_list.size()<<std::endl;
+//   
+//   }
+// for(unsigned int k=0; k< calomatchedPF_list.size(); ++k){
+//  std::cout<<" calomatchdedPF "<<k<<"  "<<calomatchedPF_list[k]<<" Pt "<<AODCaloJetPt->at(calomatchedPF_list[k])<<"  "<<AODCaloJetEta->at(calomatchedPF_list[k])<<"  "<<AODCaloJetPhi->at(calomatchedPF_list[k])<<std::endl;
+// }
+// for(unsigned int k=0; k< PFmatchedCalo_list.size(); ++k){
+//  std::cout<<" PFmatchedCalo "<<k<<"  "<<PFmatchedCalo_list[k]<<" Pt "<<AODPFJetPt->at(PFmatchedCalo_list[k])<<"  "<<AODPFJetEta->at(PFmatchedCalo_list[k])<<"  "<<AODPFJetPhi->at(PFmatchedCalo_list[k])<<std::endl;
+// }
+// for(unsigned int k=0; k< calomatchedPFchs_list.size(); ++k){
+//  std::cout<<" calomatchedPFchs "<<k<<calomatchedPFchs_list[k]<<" Pt "<<"  "<<AODCaloJetPt->at(calomatchedPFchs_list[k])<<AODCaloJetEta->at(calomatchedPFchs_list[k])<<AODCaloJetPhi->at(calomatchedPFchs_list[k])<<std::endl;
+// }
+// for(unsigned int k=0; k< PFchsmatchedCalo_list.size(); ++k){
+//  std::cout<<" PFchsmatchedCalo "<<k<<PFchsmatchedCalo_list[k]<<" Pt "<<"  "<<AODPFchsJetPt->at(PFchsmatchedCalo_list[k])<<"  "<<AODPFchsJetEta->at(PFchsmatchedCalo_list[k])<<"  "<<AODPFchsJetPhi->at(PFchsmatchedCalo_list[k])<<std::endl;
+// }
+//
+//
+//  std::cout<<" calosize "<<aodcalojet_list.size()<<std::endl;
+//  std::cout<<" calomatchedPF ";
+//  for(unsigned int k=0; k< calomatchedPF_list.size(); ++k){
+//   std::cout<<k<<" "<<calomatchedPF_list[k]<<"  ";
+//  }
+//  std::cout<<std::endl;
+//
+//  std::cout<<"\n"<<std::endl;
+//  std::cout<<"\n"<<std::endl;
+
+
+
+
  return;
 }
 

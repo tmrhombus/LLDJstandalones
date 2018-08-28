@@ -2,16 +2,28 @@
 
  # region, lepname, varname, dolog, HIP
 
-regions=( \
- "ZH"   \
- "DY"   \
- "OffZ" \
-)
-
-leptons=( \
- "ele"  \
- "mu"   \
-)
+regions=( \ 
+# "EleMuOSOF"     \
+ "OneEleDY"      \
+# "OneEleNoPair"  \
+# "OneEleOffZ"    \
+# "OneEleSig"     \
+# "OneEleZH"      \
+# "OneMuDY"       \
+# "OneMuNoPair"   \
+# "OneMuOffZ"     \
+# "OneMuSig"      \
+# "OneMuZH"       \
+# "OnePho"        \
+# "TwoEleDY"      \
+# "TwoEleOffZ"    \
+# "TwoEleSig"     \
+# "TwoEleZH"      \
+# "TwoMuDY"       \
+# "TwoMuOffZ"     \
+# "TwoMuSig"      \
+# "TwoMuZH"       \
+) 
 
 variables=( \
  "AOD_elePt"                                  \     
@@ -39,13 +51,9 @@ variables=( \
 
 for region in ${regions[@]}
 do
- for lepton in ${leptons[@]}
- do
   for variable in ${variables[@]}
   do
-   root -l -b -q  'plotter_singleMerged.C('\""${region}"\"', '\""${lepton}"\"' , '\""${variable}"\"' , kFALSE, kFALSE)'
-
+   root -l -b -q  'plotter_singleMerged.C('\""${region}"\"', '\""${variable}"\"' , kFALSE, kFALSE)'
   done
- done
 done
 

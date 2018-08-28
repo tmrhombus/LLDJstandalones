@@ -21,28 +21,25 @@ public :
 
  std::vector<float>     jet_minDR    ();
 
- virtual void shiftCollections(TString uncbin);
-
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
                             TLorentzVector *fv_ee, TLorentzVector *fv_mm);
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2, TLorentzVector *fv_em);
  // I like because I don't want to rely on CMSSW here
- double               dR(double eta1, double phi1, double eta2, double phi2);
- double               DeltaPhi(double phi1, double phi2);
+ double        dR(double eta1, double phi1, double eta2, double phi2);
+ double        DeltaPhi(double phi1, double phi2);
 
  // get (smeared) object pt
- Float_t          getPhotonPt(int idnr, TString sysbinname);
- Float_t          getElectronPt(int i, TString sysbinname);
- Float_t          getMuonPt(int i, TString sysbinname);
+ Float_t       getPhotonPt(int idnr, TString sysbinname);
+ Float_t       getElectronPt(int i, TString sysbinname);
+ Float_t       getMuonPt(int i, TString sysbinname);
 
- Float_t          getMET();
+ Float_t       getMET();
 
- virtual void     calculateHT();
- virtual void     makeDiLepton();
-
-
-
+ virtual void  shiftCollections(TString uncbin);
+ virtual void  calculateHT();
+ virtual void  makeDiLepton();
+ virtual void  matchPFCalojets( TString pftype );
 
 };
 

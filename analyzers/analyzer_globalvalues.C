@@ -36,6 +36,11 @@ void analyzer_globalvalues::clearglobalcounters()
  n_passOneMuNoPair  = 0;
  n_passEleMuOSOF    = 0;
  n_passOnePho       = 0;
+ n_totalPF          = 0;
+ n_totalPFchs       = 0;
+ n_totalCalo        = 0;
+ n_matchedPFCalo    = 0;
+ n_matchedPFchsCalo = 0;
 
 }
 
@@ -43,12 +48,23 @@ void analyzer_globalvalues::clearglobalcounters()
 //----------------------------~cleareventcounters
 void analyzer_globalvalues::cleareventcounters(){
 
-  // clear counters for event variables
-  nSelectedPho=0;
-  nSelectedEle=0;
-  nSelectedMuo=0;
-  nSelectedAODCaloJet=0;
+ // clear counters for event variables
+ nSelectedPho=0;
+ nSelectedEle=0;
+ nSelectedMuo=0;
+ nSelectedAODCaloJet=0;
 
+ electron_list         .clear(); 
+ photon_list           .clear(); 
+ muon_list             .clear(); 
+ aodcalojet_list       .clear(); 
+ aodpfjet_list         .clear(); 
+ aodpfchsjet_list      .clear(); 
+ taggedjet_list        .clear(); 
+ calomatchedPF_list    .clear();
+ PFmatchedCalo_list    .clear();
+ calomatchedPFchs_list .clear();
+ PFchsmatchedCalo_list .clear();
 
 }
 
