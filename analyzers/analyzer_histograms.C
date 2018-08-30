@@ -929,27 +929,27 @@ Bool_t analyzer_histograms::fillAODCaloJetTagHistograms(Double_t weight, int sel
   if(tagmultnames.at(tagbin) == "AllTags"){
     for(unsigned int i =0; i<taggedjet_list.size(); i++){
       int tagindex = taggedjet_list[i];
-      h_AODCaloJetPt_Tag0   [selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetPtVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetMinDR_Tag0[selbin][tagbin].Fill( aodcalojet_minDR_list.at( tagindex ), weight );  
-      h_AODCaloJetCSV_Tag0[selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at( tagindex ), weight );  
-      h_AODCaloJetPartonFlavour_Tag0[selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
-      h_AODCaloJetAbsEta_Tag0[selbin][tagbin].Fill( fabs(AODCaloJetEta->at( tagindex )), weight );
-      h_AODCaloJetNCleanMatchedTracks_Tag0[selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at( tagindex ), weight );  
-      h_AODCaloJetPtVarAbsEtaVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
+      h_AODCaloJetPt_Tag0                            [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetPtVar_Tag0                         [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetMinDR_Tag0                         [selbin][tagbin].Fill( aodcalojet_minDR_list.at(                tagindex ), weight );  
+      h_AODCaloJetCSV_Tag0                           [selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at(           tagindex ), weight );  
+      h_AODCaloJetPartonFlavour_Tag0                 [selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
+      h_AODCaloJetAbsEta_Tag0                        [selbin][tagbin].Fill( fabs(AODCaloJetEta->at(                  tagindex )), weight );
+      h_AODCaloJetNCleanMatchedTracks_Tag0           [selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at(       tagindex ), weight );  
+      h_AODCaloJetPtVarAbsEtaVar_Tag0                [selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
     }
   }
   else {
     if( tagbin < (int)taggedjet_list.size() ){
       int tagindex = taggedjet_list[tagbin];
-      h_AODCaloJetPt_Tag0   [selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetPtVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetMinDR_Tag0[selbin][tagbin].Fill( aodcalojet_minDR_list.at( tagindex ), weight );  
-      h_AODCaloJetCSV_Tag0[selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at( tagindex ), weight );  
-      h_AODCaloJetPartonFlavour_Tag0[selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
-      h_AODCaloJetAbsEta_Tag0[selbin][tagbin].Fill( fabs( AODCaloJetEta->at( tagindex ) ), weight );
-      h_AODCaloJetNCleanMatchedTracks_Tag0[selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at( tagindex ), weight );  
-      h_AODCaloJetPtVarAbsEtaVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
+      h_AODCaloJetPt_Tag0                            [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetPtVar_Tag0                         [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetMinDR_Tag0                         [selbin][tagbin].Fill( aodcalojet_minDR_list.at(                tagindex ), weight );  
+      h_AODCaloJetCSV_Tag0                           [selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at(           tagindex ), weight );  
+      h_AODCaloJetPartonFlavour_Tag0                 [selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
+      h_AODCaloJetAbsEta_Tag0                        [selbin][tagbin].Fill( fabs( AODCaloJetEta->at(                 tagindex ) ), weight );
+      h_AODCaloJetNCleanMatchedTracks_Tag0           [selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at(       tagindex ), weight );  
+      h_AODCaloJetPtVarAbsEtaVar_Tag0                [selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
     }
   }
   

@@ -195,13 +195,13 @@ std::vector<float> analyzer_createobjects::jet_matchCSV(){
   const float drcut = 0.4; 
   std::vector<float> csv;
 
-  for(int i=0; i<aodcalojet_list.size(); ++i){//good calo jets   
-    
+  for(int i=0; i<AODnCaloJet; ++i){//all calo jets   
+
     float mycsv = -10;
     float bestdr = 0.4;
     for(int j = 0; j < AODnPATJet; j++){//all PAT jets
       
-      float mydr = dR( AODCaloJetEta->at(aodcalojet_list[i]), AODCaloJetPhi->at(aodcalojet_list[i]), AODPATJetEta->at(j), AODPATJetPhi->at(j) );
+      float mydr = dR( AODCaloJetEta->at(i), AODCaloJetPhi->at(i), AODPATJetEta->at(j), AODPATJetPhi->at(j) );
       if( (mydr < drcut) && (mydr < bestdr) ){
 	mycsv = AODPATJetCSV->at(j);
 	bestdr = mydr; 
@@ -223,13 +223,13 @@ std::vector<int> analyzer_createobjects::jet_matchPartonFlavour(){
   const float drcut = 0.4; 
   std::vector<int> partonFlavour;
   
-  for(int i=0; i<aodcalojet_list.size(); ++i){//good calo jets   
+  for(int i=0; i<AODnCaloJet; ++i){//all calo jets   
     
     float mypartonFlavour = 0;
     float bestdr = 0.4;
     for(int j = 0; j < AODnPATJet; j++){//all PAT jets
       
-      float mydr = dR( AODCaloJetEta->at(aodcalojet_list[i]), AODCaloJetPhi->at(aodcalojet_list[i]), AODPATJetEta->at(j), AODPATJetPhi->at(j) );
+      float mydr = dR( AODCaloJetEta->at(i), AODCaloJetPhi->at(i), AODPATJetEta->at(j), AODPATJetPhi->at(j) );
       if( (mydr < drcut) && (mydr < bestdr) ){
 	mypartonFlavour = AODPATJetPartonFlavour->at(j);
 	bestdr = mydr; 
@@ -241,6 +241,7 @@ std::vector<int> analyzer_createobjects::jet_matchPartonFlavour(){
   }//good calo jets
 
   return partonFlavour;
+
 }
 
 
