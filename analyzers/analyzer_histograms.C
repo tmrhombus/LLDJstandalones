@@ -498,6 +498,8 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 	TString hname_AODCaloJetMedianLog10TrackAngle         = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetMedianLog10TrackAngle"+uncbin;                                      
 	TString hname_AODCaloJetTotalTrackAngle               = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetTotalTrackAngle"      +uncbin;                                      
 	TString hname_AODCaloJetMinDR                         = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetMinDR"                +uncbin;            
+	TString hname_AODCaloJetCSV                           = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetCSV"                  +uncbin;            
+	TString hname_AODCaloJetPartonFlavour                 = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPartonFlavour"        +uncbin;            
         TString hname_AODCaloJetAbsEta                        = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetAbsEta"               +uncbin;             
 	TString hname_AODCaloJetPtVarAbsEtaVar                = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPtVarAbsEtaVar"       +uncbin;                                                  
 	
@@ -519,6 +521,8 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 	h_AODCaloJetMedianLog10TrackAngle          [i][k] = initSingleHistogramTH1F( hname_AODCaloJetMedianLog10TrackAngle          , "AODCaloJetMedianLog10TrackAngle         ", 250, -5, 1 ); 
 	h_AODCaloJetTotalTrackAngle                [i][k] = initSingleHistogramTH1F( hname_AODCaloJetTotalTrackAngle                , "AODCaloJetTotalTrackAngle               ", 250, -3, 3 ); 
 	h_AODCaloJetMinDR                          [i][k] = initSingleHistogramTH1F( hname_AODCaloJetMinDR                          , "AODCaloJetMinDR                         ", 30, 0, 5 ); 
+	h_AODCaloJetCSV                            [i][k] = initSingleHistogramTH1F( hname_AODCaloJetCSV                            , "AODCaloJetCSV                           ", 24, -.1, 1.1 ); 
+	h_AODCaloJetPartonFlavour                  [i][k] = initSingleHistogramTH1F( hname_AODCaloJetPartonFlavour                  , "AODCaloJetPartonFlavour                 ", 35, -10, 25 ); 
         h_AODCaloJetAbsEta                         [i][k] = initSingleHistogramTH1F( hname_AODCaloJetAbsEta                         , "AODCaloJetAbsEta                        ", 4, 0, 3 );
 
 	const int Pt_n_xbins = 10;
@@ -562,6 +566,8 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
       h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin].Fill( Shifted_CaloJetMedianLog10TrackAngle      .at( aodcalojetindex ), weight );  
       h_AODCaloJetTotalTrackAngle                [selbin][jetbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
       h_AODCaloJetMinDR                          [selbin][jetbin].Fill( aodcalojet_minDR_list                     .at( aodcalojetindex ), weight );  
+      h_AODCaloJetCSV                            [selbin][jetbin].Fill( aodcalojet_matchedCSV_list                .at( aodcalojetindex ), weight );  
+      h_AODCaloJetPartonFlavour                  [selbin][jetbin].Fill( aodcalojet_matchedPartonFlavour_list      .at( aodcalojetindex ), weight );  
       h_AODCaloJetAbsEta                         [selbin][jetbin].Fill( fabs(AODCaloJetEta                       ->at( aodcalojetindex )), weight );
       h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin].Fill( AODCaloJetPt->at(aodcalojetindex), fabs(AODCaloJetEta->at(aodcalojetindex)), weight );  
     }    
@@ -586,6 +592,8 @@ Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int s
       h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin].Fill( Shifted_CaloJetMedianLog10TrackAngle      .at( aodcalojetindex ), weight );  
       h_AODCaloJetTotalTrackAngle                [selbin][jetbin].Fill( AODCaloJetTotalTrackAngle                ->at( aodcalojetindex ), weight );  
       h_AODCaloJetMinDR                          [selbin][jetbin].Fill( aodcalojet_minDR_list                     .at( aodcalojetindex ), weight );  
+      h_AODCaloJetCSV                            [selbin][jetbin].Fill( aodcalojet_matchedCSV_list                .at( aodcalojetindex ), weight );  
+      h_AODCaloJetPartonFlavour                  [selbin][jetbin].Fill( aodcalojet_matchedPartonFlavour_list      .at( aodcalojetindex ), weight );  
       h_AODCaloJetAbsEta                         [selbin][jetbin].Fill( fabs(AODCaloJetEta                       ->at( aodcalojetindex )), weight );
       h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin].Fill( AODCaloJetPt->at(aodcalojetindex), fabs(AODCaloJetEta->at(aodcalojetindex)), weight );  
     }
@@ -622,6 +630,8 @@ Bool_t analyzer_histograms::writeAODCaloJetBasicHistograms(int selbin, int jetbi
   h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin].Write(); 
   h_AODCaloJetTotalTrackAngle                [selbin][jetbin].Write(); 
   h_AODCaloJetMinDR                          [selbin][jetbin].Write(); 
+  h_AODCaloJetCSV                            [selbin][jetbin].Write(); 
+  h_AODCaloJetPartonFlavour                  [selbin][jetbin].Write(); 
   h_AODCaloJetAbsEta                         [selbin][jetbin].Write();
   h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin].Write(); 
  return kTRUE;
@@ -659,6 +669,8 @@ Bool_t analyzer_histograms::deleteAODCaloJetBasicHistograms(int selbin, int jetb
   h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin].Delete(); 
   h_AODCaloJetTotalTrackAngle                [selbin][jetbin].Delete(); 
   h_AODCaloJetMinDR                          [selbin][jetbin].Delete(); 
+  h_AODCaloJetCSV                            [selbin][jetbin].Delete(); 
+  h_AODCaloJetPartonFlavour                  [selbin][jetbin].Delete(); 
   h_AODCaloJetAbsEta                         [selbin][jetbin].Delete();
   h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin].Delete(); 
  return kTRUE;
@@ -882,12 +894,16 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms( TString uncbin )
    TString hname_AODCaloJetPt_Tag0                      = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPt_Tag0"                  + uncbin ;
    TString hname_AODCaloJetPtVar_Tag0                   = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPtVar_Tag0"               + uncbin ;
    TString hname_AODCaloJetMinDR_Tag0                   = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetMinDR_Tag0"               + uncbin ;
+   TString hname_AODCaloJetCSV_Tag0                     = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetCSV_Tag0"                 + uncbin ;
+   TString hname_AODCaloJetPartonFlavour_Tag0           = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPartonFlavour_Tag0"       + uncbin ;
    TString hname_AODCaloJetAbsEta_Tag0                  = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetAbsEta_Tag0"              + uncbin ;
    TString hname_AODCaloJetNCleanMatchedTracks_Tag0     = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetNCleanMatchedTracks_Tag0" + uncbin ;
    TString hname_AODCaloJetPtVarAbsEtaVar_Tag0          = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPtVarAbsEtaVar_Tag0"      + uncbin ;
 
    h_AODCaloJetPt_Tag0                       [i][j] = initSingleHistogramTH1F( hname_AODCaloJetPt_Tag0                       , "AODCaloJetPt_Tag0                      ", 50, 0, 500); 
    h_AODCaloJetMinDR_Tag0                    [i][j] = initSingleHistogramTH1F( hname_AODCaloJetMinDR_Tag0                    , "AODCaloJetMinDR_Tag0                   ", 30, 0, 5); 
+   h_AODCaloJetCSV_Tag0                      [i][j] = initSingleHistogramTH1F( hname_AODCaloJetCSV_Tag0                      , "AODCaloJetCSV_Tag0                     ", 24, -.1, 1.1); 
+   h_AODCaloJetPartonFlavour_Tag0            [i][j] = initSingleHistogramTH1F( hname_AODCaloJetPartonFlavour_Tag0            , "AODCaloJetPartonFlavour_Tag0           ", 35, -10, 25); 
    h_AODCaloJetAbsEta_Tag0                   [i][j] = initSingleHistogramTH1F( hname_AODCaloJetAbsEta_Tag0                   , "AODCaloJetAbsEta_Tag0                  ", 4, 0, 3);
    h_AODCaloJetNCleanMatchedTracks_Tag0      [i][j] = initSingleHistogramTH1F( hname_AODCaloJetNCleanMatchedTracks_Tag0      , "AODCaloJetNCleanMatchedTracks_Tag0     ", 20, 0, 20); 
 
@@ -913,23 +929,27 @@ Bool_t analyzer_histograms::fillAODCaloJetTagHistograms(Double_t weight, int sel
   if(tagmultnames.at(tagbin) == "AllTags"){
     for(unsigned int i =0; i<taggedjet_list.size(); i++){
       int tagindex = taggedjet_list[i];
-      h_AODCaloJetPt_Tag0   [selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetPtVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetMinDR_Tag0[selbin][tagbin].Fill( aodcalojet_minDR_list.at( tagindex ), weight );  
-      h_AODCaloJetAbsEta_Tag0[selbin][tagbin].Fill( fabs(AODCaloJetEta->at( tagindex )), weight );
-      h_AODCaloJetNCleanMatchedTracks_Tag0[selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at( tagindex ), weight );  
-      h_AODCaloJetPtVarAbsEtaVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
+      h_AODCaloJetPt_Tag0                            [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetPtVar_Tag0                         [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetMinDR_Tag0                         [selbin][tagbin].Fill( aodcalojet_minDR_list.at(                tagindex ), weight );  
+      h_AODCaloJetCSV_Tag0                           [selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at(           tagindex ), weight );  
+      h_AODCaloJetPartonFlavour_Tag0                 [selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
+      h_AODCaloJetAbsEta_Tag0                        [selbin][tagbin].Fill( fabs(AODCaloJetEta->at(                  tagindex )), weight );
+      h_AODCaloJetNCleanMatchedTracks_Tag0           [selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at(       tagindex ), weight );  
+      h_AODCaloJetPtVarAbsEtaVar_Tag0                [selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
     }
   }
   else {
     if( tagbin < (int)taggedjet_list.size() ){
       int tagindex = taggedjet_list[tagbin];
-      h_AODCaloJetPt_Tag0   [selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetPtVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at( tagindex ), weight );  
-      h_AODCaloJetMinDR_Tag0[selbin][tagbin].Fill( aodcalojet_minDR_list.at( tagindex ), weight );  
-      h_AODCaloJetAbsEta_Tag0[selbin][tagbin].Fill( fabs( AODCaloJetEta->at( tagindex ) ), weight );
-      h_AODCaloJetNCleanMatchedTracks_Tag0[selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at( tagindex ), weight );  
-      h_AODCaloJetPtVarAbsEtaVar_Tag0[selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
+      h_AODCaloJetPt_Tag0                            [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetPtVar_Tag0                         [selbin][tagbin].Fill( AODCaloJetPt->at(                        tagindex ), weight );  
+      h_AODCaloJetMinDR_Tag0                         [selbin][tagbin].Fill( aodcalojet_minDR_list.at(                tagindex ), weight );  
+      h_AODCaloJetCSV_Tag0                           [selbin][tagbin].Fill( aodcalojet_matchedCSV_list.at(           tagindex ), weight );  
+      h_AODCaloJetPartonFlavour_Tag0                 [selbin][tagbin].Fill( aodcalojet_matchedPartonFlavour_list.at( tagindex ), weight );  
+      h_AODCaloJetAbsEta_Tag0                        [selbin][tagbin].Fill( fabs( AODCaloJetEta->at(                 tagindex ) ), weight );
+      h_AODCaloJetNCleanMatchedTracks_Tag0           [selbin][tagbin].Fill( AODCaloJetNCleanMatchedTracks->at(       tagindex ), weight );  
+      h_AODCaloJetPtVarAbsEtaVar_Tag0                [selbin][tagbin].Fill( AODCaloJetPt->at(tagindex), fabs(AODCaloJetEta->at( tagindex )), weight );  
     }
   }
   
@@ -944,6 +964,8 @@ Bool_t analyzer_histograms::writeAODCaloJetTagHistograms(int selbin, int tagbin)
   h_AODCaloJetPt_Tag0                       [selbin][tagbin].Write(); 
   h_AODCaloJetPtVar_Tag0                    [selbin][tagbin].Write(); 
   h_AODCaloJetMinDR_Tag0                    [selbin][tagbin].Write(); 
+  h_AODCaloJetCSV_Tag0                      [selbin][tagbin].Write(); 
+  h_AODCaloJetPartonFlavour_Tag0            [selbin][tagbin].Write(); 
   h_AODCaloJetAbsEta_Tag0                   [selbin][tagbin].Write(); 
   h_AODCaloJetNCleanMatchedTracks_Tag0      [selbin][tagbin].Write(); 
   h_AODCaloJetPtVarAbsEtaVar_Tag0           [selbin][tagbin].Write(); 
@@ -959,6 +981,8 @@ Bool_t analyzer_histograms::deleteAODCaloJetTagHistograms(int selbin, int tagbin
   h_AODCaloJetPt_Tag0                       [selbin][tagbin].Delete(); 
   h_AODCaloJetPtVar_Tag0                    [selbin][tagbin].Delete(); 
   h_AODCaloJetMinDR_Tag0                    [selbin][tagbin].Delete(); 
+  h_AODCaloJetCSV_Tag0                      [selbin][tagbin].Delete(); 
+  h_AODCaloJetPartonFlavour_Tag0            [selbin][tagbin].Delete(); 
   h_AODCaloJetAbsEta_Tag0                   [selbin][tagbin].Delete(); 
   h_AODCaloJetNCleanMatchedTracks_Tag0      [selbin][tagbin].Delete(); 
   h_AODCaloJetPtVarAbsEtaVar_Tag0           [selbin][tagbin].Delete(); 

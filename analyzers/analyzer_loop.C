@@ -85,6 +85,8 @@ void analyzer_loop::Loop(TString outfilename,
   n_matchedPFchsCalo += calomatchedPFchs_list.size() ; 
 
   aodcalojet_minDR_list = jet_minDR();
+  aodcalojet_matchedCSV_list = jet_matchCSV();
+  aodcalojet_matchedPartonFlavour_list = jet_matchPartonFlavour();
 
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data

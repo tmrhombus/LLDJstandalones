@@ -7,4 +7,4 @@ dir="${CMSSW_BASE}/src/LLDJstandalones/lists"
 #sed '/161018_171029_1326.root/d' ${listdir}/TTbar.list > temp && mv temp ${listdir}/TTbar.list
 
 #sed '/TTtoLfromTbar_1/180318_205811/0001/lldjntuple_mc_AOD_1401.root/d' ${listdir}/TTbar.list > temp && mv temp ${listdir}/TTbar.list
-sed -i '/TTtoLfromTbar_2\/180318_205834\/0001\/lldjntuple_mc_AOD_1401.root/d' ${dir}/allfiles.masterlist
+#sed -i '/TTtoLfromTbar_2\/180318_205834\/0001\/lldjntuple_mc_AOD_1401.root/d' ${dir}/allfiles.masterlist

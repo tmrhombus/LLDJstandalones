@@ -113,6 +113,15 @@ samples=(  \
 # ZH
  "ggZH_HToBB_ZToLL"  \
  "ZH_HToBB_ZToLL"    \
+## QCD
+ "QCD_HT100to200"    \
+ "QCD_HT200to300"    \
+ "QCD_HT300to500"    \
+ "QCD_HT500to700"    \
+ "QCD_HT700to1000"    \
+ "QCD_HT1000to1500"    \
+ "QCD_HT1500to2000"    \
+ "QCD_HT2000toInf"    \
 # Signal Samples
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \

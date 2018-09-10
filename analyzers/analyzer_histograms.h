@@ -200,6 +200,8 @@ public :
  TH1F  h_AODCaloJetMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F  h_AODCaloJetTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F  h_AODCaloJetMinDR                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJetCSV                            [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJetPartonFlavour                  [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH2F  h_AODCaloJetPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
 
@@ -235,6 +237,8 @@ public :
  TH1F  h_AODCaloJetPt_Tag0                       [SELBINNAMESIZE][TAGMULTNAMESIZE];
  TH1F  h_AODCaloJetPtVar_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE];
  TH1F  h_AODCaloJetMinDR_Tag0                    [SELBINNAMESIZE][TAGMULTNAMESIZE];
+ TH1F  h_AODCaloJetCSV_Tag0                      [SELBINNAMESIZE][TAGMULTNAMESIZE];
+ TH1F  h_AODCaloJetPartonFlavour_Tag0            [SELBINNAMESIZE][TAGMULTNAMESIZE];
  TH1F  h_AODCaloJetAbsEta_Tag0                   [SELBINNAMESIZE][TAGMULTNAMESIZE];
  TH1F  h_AODCaloJetNCleanMatchedTracks_Tag0      [SELBINNAMESIZE][TAGMULTNAMESIZE];
  TH2F  h_AODCaloJetPtVarAbsEtaVar_Tag0           [SELBINNAMESIZE][TAGMULTNAMESIZE];

@@ -19,7 +19,9 @@ public :
  std::vector<int>     jet_passID        ( int bitnr, TString jettype, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname="");
  std::vector<int>     jet_passTagger    ();
 
- std::vector<float>     jet_minDR    ();
+ std::vector<float>     jet_minDR              ();
+ std::vector<float>     jet_matchCSV           ();
+ std::vector<int>       jet_matchPartonFlavour ();
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
