@@ -25,9 +25,9 @@
 #root -l -b -q  'plotter_stackedRegion.C("OffZ", kFALSE, kFALSE)'
 ##
 ###root -l -b -q  'plotter_stackedRegion.C("CRHeavy", kTRUE, kTRUE)'
-root -l -b -q  'plotter_stackedRegion.C("CRHeavy", kTRUE, kFALSE)'
+#root -l -b -q  'plotter_stackedRegion.C("CRHeavy", kTRUE, kFALSE)'
 ###root -l -b -q  'plotter_stackedRegion.C("CRHeavy", kFALSE, kTRUE)'
-root -l -b -q  'plotter_stackedRegion.C("CRHeavy", kFALSE, kFALSE)'
+root -l -b -q  'plotter_stackedRegion.C("CRLight", kFALSE, kFALSE)'
 ##
 ###root -l -b -q  'plotter_stackedRegion.C("CRLight", kTRUE, kTRUE)'
 #root -l -b -q  'plotter_stackedRegion.C("CRLight", kTRUE, kFALSE)'

@@ -85,26 +85,26 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  //variables.push_back("phoE");                   
  //variables.push_back("phoEt");                  
- variables.push_back("AOD_phoPt");                 
- variables.push_back("AOD_phoEta");                 
- variables.push_back("AOD_phoPhi");                 
+// variables.push_back("AOD_phoPt");                 
+// variables.push_back("AOD_phoEta");                 
+// variables.push_back("AOD_phoPhi");                 
  //variables.push_back("nEle");                   
- variables.push_back("AOD_elePt");                  
- variables.push_back("AOD_eleEta");                 
- variables.push_back("AOD_elePhi");                 
+// variables.push_back("AOD_elePt");                  
+// variables.push_back("AOD_eleEta");                 
+// variables.push_back("AOD_elePhi");                 
  //variables.push_back("nMu");                    
- variables.push_back("AOD_muPt");                   
+// variables.push_back("AOD_muPt");                   
  //variables.push_back("muEn");                   
- variables.push_back("AOD_muEta");                  
- variables.push_back("AOD_muPhi");                  
+// variables.push_back("AOD_muEta");                  
+// variables.push_back("AOD_muPhi");                  
  //variables.push_back("nJet");                   
- variables.push_back("htall"); 
+// variables.push_back("htall"); 
 // variables.push_back("htaodcalojets");
  //variables.push_back("nSelectedPho");
 // variables.push_back("AOD_nSelectedEle");
 // variables.push_back("AOD_nSelectedMu");
- variables.push_back("nSelectedAODCaloJet");
- variables.push_back("nSelectedAODCaloJetTag");
+// variables.push_back("nSelectedAODCaloJet");
+// variables.push_back("nSelectedAODCaloJetTag");
  //variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
  //variables.push_back("LeadingJet_AODCaloJetEta");                     
@@ -120,8 +120,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  variables.push_back("AllJets_AODCaloJetAlphaMax");
  variables.push_back("AllJets_AODCaloJetPt");                      
  //variables.push_back("AllJets_AODCaloJetEn");                      
- variables.push_back("AllJets_AODCaloJetEta");                     
- variables.push_back("AllJets_AODCaloJetPhi");                     
+// variables.push_back("AllJets_AODCaloJetEta");                     
+// variables.push_back("AllJets_AODCaloJetPhi");                     
 
  // canvas and text attributes
  int canx = 1100;
@@ -458,9 +458,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_STbar_tW                = new TFile( inpath + "ST_tW_antitop_5f_NoFullyHadronicDecays_"+region+"_histograms.root"     ) ;
  file_ST_tW                   = new TFile( inpath + "ST_tW_top_5f_NoFullyHadronicDecays_"+region+"_histograms.root"         ) ;
  file_TTJets                  = new TFile( inpath + "TTJets_"+region+"_histograms.root"           ) ;
- file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
- file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
- file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
+ //file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
+ //file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
+ //file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
  file_WJetsToLNu              = new TFile( inpath + "WJetsToLNu_"+region+"_histograms.root"       ) ;
  file_WG                      = new TFile( inpath + "WGToLNuG_"+region+"_histograms.root"         ) ;
  file_ZGTo2LG                 = new TFile( inpath + "ZGTo2LG_"+region+"_histograms.root"          ) ;
@@ -529,16 +529,16 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //file_Data_SinglePhoton_D           =  new TFile( inpath + "Data_SinglePhoton_D_"+region+"_histograms.root"   ) ; 
  //file_Data_SinglePhoton_C           =  new TFile( inpath + "Data_SinglePhoton_C_"+region+"_histograms.root"   ) ; 
  //file_Data_SinglePhoton_B_2         =  new TFile( inpath + "Data_SinglePhoton_B_2_"+region+"_histograms.root" ) ; 
- file_Data_MuonEG_H_3               =  new TFile( inpath + "Data_MuonEG_H_3_"+region+"_histograms.root" ) ; 
- file_Data_MuonEG_H_2               =  new TFile( inpath + "Data_MuonEG_H_2_"+region+"_histograms.root" ) ; 
- file_Data_MuonEG_G                 =  new TFile( inpath + "Data_MuonEG_G_"+region+"_histograms.root" ) ; 
+ //file_Data_MuonEG_H_3               =  new TFile( inpath + "Data_MuonEG_H_3_"+region+"_histograms.root" ) ; 
+ //file_Data_MuonEG_H_2               =  new TFile( inpath + "Data_MuonEG_H_2_"+region+"_histograms.root" ) ; 
+ //file_Data_MuonEG_G                 =  new TFile( inpath + "Data_MuonEG_G_"+region+"_histograms.root" ) ; 
  //file_Data_MuonEG_F                 =  new TFile( inpath + "Data_MuonEG_F_"+region+"_histograms.root" ) ; 
  //file_Data_MuonEG_E                 =  new TFile( inpath + "Data_MuonEG_E_"+region+"_histograms.root"   ) ; 
  //file_Data_MuonEG_D                 =  new TFile( inpath + "Data_MuonEG_D_"+region+"_histograms.root"   ) ; 
  //file_Data_MuonEG_c                 =  new TFile( inpath + "Data_MuonEG_C_"+region+"_histograms.root"   ) ; 
  //file_Data_MuonEG_B_2               =  new TFile( inpath + "Data_MuonEG_B_2_"+region+"_histograms.root"   ) ; 
 
- file_Data_DoubleMu_H_3             =  new TFile( inpath + "Data_DoubleMu_H_3_"+region+"_histograms.root"     ) ; 
+/* file_Data_DoubleMu_H_3             =  new TFile( inpath + "Data_DoubleMu_H_3_"+region+"_histograms.root"     ) ; 
  file_Data_DoubleMu_H_2             =  new TFile( inpath + "Data_DoubleMu_H_2_"+region+"_histograms.root"     ) ; 
  file_Data_DoubleMu_G               =  new TFile( inpath + "Data_DoubleMu_G_"+region+"_histograms.root"       ) ; 
  file_Data_DoubleMu_F               =  new TFile( inpath + "Data_DoubleMu_F_"+region+"_histograms.root"       ) ; 
@@ -554,13 +554,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_Data_DoubleEG_D               =  new TFile( inpath + "Data_DoubleEG_D_"+region+"_histograms.root"       ) ; 
  file_Data_DoubleEG_C               =  new TFile( inpath + "Data_DoubleEG_C_"+region+"_histograms.root"       ) ; 
  file_Data_DoubleEG_B_2             =  new TFile( inpath + "Data_DoubleEG_B_2_"+region+"_histograms.root"     ) ; 
-
+*/
  // Start looping over variables, leptons, make plots / tables / root files
+  
   for(unsigned int j=0; j<variables.size(); ++j){
    TString variable = variables[j];
 
    //Blind
-   drawData=true;
+   drawData=false;
    if(region=="ZH" && 
       (variable=="nSelectedAODCaloJetTag" || 
        variable.Contains("Log10IPSig") || 
@@ -611,9 +612,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_ST_tW                           = (TH1F*)file_ST_tW                            ->Get("h_"+varname)->Clone( "ST_tW"                            ) ;
 
     h_TTJets                          = (TH1F*)file_TTJets                           ->Get("h_"+varname)->Clone( "TTJets"                           ) ;
-    h_TTtoLL                          = (TH1F*)file_TTtoLL                           ->Get("h_"+varname)->Clone( "TTtoLL"                           ) ;
-    h_TTtoLfromTbar                   = (TH1F*)file_TTtoLfromTbar                    ->Get("h_"+varname)->Clone( "TTtoLfromTbar"                    ) ;
-    h_TTtoLfromT                      = (TH1F*)file_TTtoLfromT                       ->Get("h_"+varname)->Clone( "TTtoLfromT"                       ) ;
+  //  h_TTtoLL                          = (TH1F*)file_TTtoLL                           ->Get("h_"+varname)->Clone( "TTtoLL"                           ) ;
+  //  h_TTtoLfromTbar                   = (TH1F*)file_TTtoLfromTbar                    ->Get("h_"+varname)->Clone( "TTtoLfromTbar"                    ) ;
+  //  h_TTtoLfromT                      = (TH1F*)file_TTtoLfromT                       ->Get("h_"+varname)->Clone( "TTtoLfromT"                       ) ;
     h_WJetsToLNu                      = (TH1F*)file_WJetsToLNu                       ->Get("h_"+varname)->Clone( "WJetsToLNu"                       ) ;
     h_WG                              = (TH1F*)file_WG                               ->Get("h_"+varname)->Clone( "WG"                               ) ;
     h_ZG                              = (TH1F*)file_ZGTo2LG                          ->Get("h_"+varname)->Clone( "ZG"                               ) ;
@@ -681,16 +682,16 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //h_Data_SinglePhoton_D   = (TH1F*) file_Data_SinglePhoton_D   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_D"    ) ; 
     //h_Data_SinglePhoton_C   = (TH1F*) file_Data_SinglePhoton_C   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_C"    ) ; 
     //h_Data_SinglePhoton_B_2 = (TH1F*) file_Data_SinglePhoton_B_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_B_2"  ) ; 
-    h_Data_MuonEG_H_3       = (TH1F*) file_Data_MuonEG_H_3       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_3"  ) ; 
-    h_Data_MuonEG_H_2       = (TH1F*) file_Data_MuonEG_H_2       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_2"  ) ; 
-    h_Data_MuonEG_G         = (TH1F*) file_Data_MuonEG_G         -> Get("h_"+varname)->Clone( "Data_MuonEG_G"    ) ; 
+    //h_Data_MuonEG_H_3       = (TH1F*) file_Data_MuonEG_H_3       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_3"  ) ; 
+    //h_Data_MuonEG_H_2       = (TH1F*) file_Data_MuonEG_H_2       -> Get("h_"+varname)->Clone( "Data_MuonEG_H_2"  ) ; 
+    //h_Data_MuonEG_G         = (TH1F*) file_Data_MuonEG_G         -> Get("h_"+varname)->Clone( "Data_MuonEG_G"    ) ; 
     //h_Data_MuonEG_F         = (TH1F*) file_Data_MuonEG_F         -> Get("h_"+varname)->Clone( "Data_MuonEG_F"    ) ; 
     //h_Data_MuonEG_E         = (TH1F*) file_Data_MuonEG_E         -> Get("h_"+varname)->Clone( "Data_MuonEG_E"    ) ; 
     //h_Data_MuonEG_D         = (TH1F*) file_Data_MuonEG_D         -> Get("h_"+varname)->Clone( "Data_MuonEG_D"    ) ; 
     //h_Data_MuonEG_C         = (TH1F*) file_Data_MuonEG_C         -> Get("h_"+varname)->Clone( "Data_MuonEG_C"    ) ; 
     //h_Data_MuonEG_B_2       = (TH1F*) file_Data_MuonEG_B_2       -> Get("h_"+varname)->Clone( "Data_MuonEG_B_2"  ) ; 
     
-    h_Data_DoubleMu_H_3     = (TH1F*) file_Data_DoubleMu_H_3     -> Get("h_"+varname)->Clone( "Data_DoubleMu_H_3"      ) ; 
+  /*  h_Data_DoubleMu_H_3     = (TH1F*) file_Data_DoubleMu_H_3     -> Get("h_"+varname)->Clone( "Data_DoubleMu_H_3"      ) ; 
     h_Data_DoubleMu_H_2     = (TH1F*) file_Data_DoubleMu_H_2     -> Get("h_"+varname)->Clone( "Data_DoubleMu_H_2"      ) ; 
     h_Data_DoubleMu_G       = (TH1F*) file_Data_DoubleMu_G       -> Get("h_"+varname)->Clone( "Data_DoubleMu_G"        ) ; 
     h_Data_DoubleMu_F       = (TH1F*) file_Data_DoubleMu_F       -> Get("h_"+varname)->Clone( "Data_DoubleMu_F"        ) ; 
@@ -706,7 +707,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     h_Data_DoubleEG_D       = (TH1F*) file_Data_DoubleEG_D       -> Get("h_"+varname)->Clone( "Data_DoubleEG_D"        ) ; 
     h_Data_DoubleEG_C       = (TH1F*) file_Data_DoubleEG_C       -> Get("h_"+varname)->Clone( "Data_DoubleEG_C"        ) ; 
     h_Data_DoubleEG_B_2     = (TH1F*) file_Data_DoubleEG_B_2     -> Get("h_"+varname)->Clone( "Data_DoubleEG_B_2"      ) ; 
-
+*/
     // merge histograms
     h_DY = (TH1F*)h_DY50->Clone("DY");
      h_DY->Add(h_DY10to50           ); 
@@ -748,9 +749,10 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
     h_TT = (TH1F*)h_TTJets->Clone("TT");
 
-    h_altTT = (TH1F*)h_TTtoLfromTbar->Clone("altTT");
-     h_altTT->Add(h_TTtoLfromT    );
-     h_altTT->Add(h_TTtoLL        );
+    h_altTT = (TH1F*)h_TTJets->Clone("altTT");//h_TTtoLfromTbar->Clone("altTT");
+     //h_altTT->Add(h_TTtoLfromT    );
+     //h_altTT->Add(h_TTtoLL        );
+cout <<"test" <<endl;
    
     h_VG = (TH1F*)h_WG->Clone("VG");
      h_VG->Add(h_ZG);
@@ -955,9 +957,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Float_t  int_ST_tW                    = h_ST_tW                           ->Integral(0,-1); 
 
     Float_t  int_TTJets                   = h_TTJets                          ->Integral(0,-1); 
-    Float_t  int_TTtoLL                   = h_TTtoLL                          ->Integral(0,-1); 
-    Float_t  int_TTtoLfromTbar            = h_TTtoLfromTbar                   ->Integral(0,-1); 
-    Float_t  int_TTtoLfromT               = h_TTtoLfromT                      ->Integral(0,-1); 
+    //Float_t  int_TTtoLL                   = h_TTtoLL                          ->Integral(0,-1); 
+    //Float_t  int_TTtoLfromTbar            = h_TTtoLfromTbar                   ->Integral(0,-1); 
+    //Float_t  int_TTtoLfromT               = h_TTtoLfromT                      ->Integral(0,-1); 
     Float_t  int_WJetsToLNu               = h_WJetsToLNu                      ->Integral(0,-1); 
     Float_t  int_WG                       = h_WG                              ->Integral(0,-1); 
     Float_t  int_ZG                       = h_ZG                              ->Integral(0,-1); 
@@ -1051,7 +1053,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     // Float_t  int_Data_SinglePhoton_D      = h_Data_SinglePhoton_D             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_C      = h_Data_SinglePhoton_C             ->Integral(0,-1);                     
     // Float_t  int_Data_SinglePhoton_B_2    = h_Data_SinglePhoton_B_2           ->Integral(0,-1);                     
-     Float_t  int_Data_MuonEG_H_3          = h_Data_MuonEG_H_3                 ->Integral(0,-1);                     
+ /*    Float_t  int_Data_MuonEG_H_3          = h_Data_MuonEG_H_3                 ->Integral(0,-1);                     
      Float_t  int_Data_MuonEG_H_2          = h_Data_MuonEG_H_2                 ->Integral(0,-1);                     
      Float_t  int_Data_MuonEG_G            = h_Data_MuonEG_G                   ->Integral(0,-1);                     
 
@@ -1071,7 +1073,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     Float_t  int_Data_DoubleEG_D          = h_Data_DoubleEG_D                 ->Integral(0,-1);                     
     Float_t  int_Data_DoubleEG_C          = h_Data_DoubleEG_C                 ->Integral(0,-1);                     
     Float_t  int_Data_DoubleEG_B_2        = h_Data_DoubleEG_B_2               ->Integral(0,-1);                 
-    
+ */   
     // Math
 
     // Float_t int_Data_SingleEleBCDEF =
@@ -1098,7 +1100,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
     //          int_Data_SingleMu_H_2 +
     //          int_Data_SingleMu_H_3 ;
 
-    Float_t int_Data_DoubleEGBCDEF =
+/*    Float_t int_Data_DoubleEGBCDEF =
              int_Data_DoubleEG_B_2 +
              int_Data_DoubleEG_C   +
              int_Data_DoubleEG_D   +
@@ -1122,12 +1124,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
              int_Data_DoubleMu_H_2 +
              int_Data_DoubleMu_H_3 ;
 
-
+*/
     // output tables
     if(domaketable){
      FILE * outfulltable;
      outfulltable = fopen (fulllogname+".tex","w");
-      fprintf (outfulltable, "\\documentclass{standalone}\n\n");
+  /*    fprintf (outfulltable, "\\documentclass{standalone}\n\n");
       fprintf (outfulltable, "\\begin{document}\n\n");
       fprintf (outfulltable, "\\begin{tabular}{rl}\n\n");
       fprintf (outfulltable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
@@ -1263,11 +1265,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
       //fprintf (outfulltable, "ggZH\\_HToSSTobbbb\\_MS40\\_ctauS10000  & %3.1f  \\\\\n", int_ggZH_HToSSTobbbb_MS40_ctauS10000 ) ;
       fprintf (outfulltable, "\\end{tabular}\n\n");
       fprintf (outfulltable, "\\end{document}\n\n");
-     fclose (outfulltable);
+    */ fclose (outfulltable);
 
      FILE * summarytable;
      summarytable = fopen (smalllogname+".tex","w");
-      fprintf (summarytable, "\\documentclass{standalone}\n\n");
+   /*   fprintf (summarytable, "\\documentclass{standalone}\n\n");
       fprintf (summarytable, "\\begin{document}\n\n");
       fprintf (summarytable, "\\begin{tabular}{rl}\n\n");
       fprintf (summarytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
@@ -1303,12 +1305,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
       fprintf (summarytable, " \\hline \n");
       fprintf (summarytable, "Backgrounds / Data   & %3.4f  \\\\\n", int_bkgOnData   ) ;
       fprintf (summarytable, "\\end{tabular}\n\n");
-      fprintf (summarytable, "\\end{document}\n\n");
+     */ fprintf (summarytable, "\\end{document}\n\n");
      fclose (summarytable);
 
      FILE * tinytable;
      tinytable = fopen (tinylogname+".tex","w");
-      fprintf (tinytable, "\\documentclass{standalone}\n\n");
+     /* fprintf (tinytable, "\\documentclass{standalone}\n\n");
       fprintf (tinytable, "\\begin{document}\n\n");
       fprintf (tinytable, "\\begin{tabular}{rl}\n\n");
       fprintf (tinytable, " \\Huge %s & \\Huge %s   \\\\\n", lepton.Data(), region.Data()); 
@@ -1329,7 +1331,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
       fprintf (tinytable, " \\hline \n");
       fprintf (tinytable, "Backgrounds / Data   & %3.4f  \\\\\n", int_bkgOnData   ) ;
       fprintf (tinytable, "\\end{tabular}\n\n");
-      fprintf (tinytable, "\\end{document}\n\n");
+      */fprintf (tinytable, "\\end{document}\n\n");
      fclose (tinytable);
     }
 
