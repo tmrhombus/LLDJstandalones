@@ -104,7 +104,6 @@ xcWJetsToLNu="74447.3"
 #xcWJetsToLNu="61526.7" * 1.21  
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
 
-
 #xcQCD_HT50to100 can't find value on McM or SummaryTable1G25ns twiki
 xcQCD_HT100to200="27990000"
 xcQCD_HT200to300="1712000"
@@ -245,13 +244,13 @@ countalist () {
 
 # QCD
 countalist "QCD_HT100to200"       ${xcQCD_HT100to200}
-#countalist "QCD_HT200to300"       ${xcQCD_HT200to300}
-#countalist "QCD_HT300to500"       ${xcQCD_HT300to500}
-#countalist "QCD_HT500to700"       ${xcQCD_HT500to700}
-#countalist "QCD_HT700to1000"      ${xcQCD_HT700to1000}
-#countalist "QCD_HT1000to1500"     ${xcQCD_HT1000to1500}
-#countalist "QCD_HT1500to2000"     ${xcQCD_HT1500to2000}
-#countalist "QCD_HT2000toInf"      ${xcQCD_HT2000toInf}
+countalist "QCD_HT200to300"       ${xcQCD_HT200to300}
+countalist "QCD_HT300to500"       ${xcQCD_HT300to500}
+countalist "QCD_HT500to700"       ${xcQCD_HT500to700}
+countalist "QCD_HT700to1000"      ${xcQCD_HT700to1000}
+countalist "QCD_HT1000to1500"     ${xcQCD_HT1000to1500}
+countalist "QCD_HT1500to2000"     ${xcQCD_HT1500to2000}
+countalist "QCD_HT2000toInf"      ${xcQCD_HT2000toInf}
 
 # Signal Samples
 #countalist "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"     ${xcZH_HToSSTobbbb}
