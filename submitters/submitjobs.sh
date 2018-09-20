@@ -6,162 +6,68 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=16226.445 #20000   #20000     #35870
+lumi=16226.445
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
+samples=(  \
 ### Data
-# "Data_SingleMu_H_3"      \
-# "Data_SingleMu_H_2"      \
-# "Data_SingleMu_G"        \
+# SingleMu
+ "Data_SingleMu_H_3"      \
+ "Data_SingleMu_H_2"      \
+ "Data_SingleMu_G"        \
 # "Data_SingleMu_F"        \
 # "Data_SingleMu_E"        \
 # "Data_SingleMu_D"        \
 # "Data_SingleMu_C"        \
 # "Data_SingleMu_B_2"      \
-#
-# "Data_SingleEle_H_3"     \
-# "Data_SingleEle_H_2"     \
-# "Data_SingleEle_G"       \
+# SingleEle
+ "Data_SingleEle_H_3"     \
+ "Data_SingleEle_H_2"     \
+ "Data_SingleEle_G"       \
 # "Data_SingleEle_F"       \
 # "Data_SingleEle_E"       \
 # "Data_SingleEle_D"       \
 # "Data_SingleEle_C"       \
 # "Data_SingleEle_B_2"     \
-#
-# "Data_DoubleMu_H_3"      \
-# "Data_DoubleMu_H_2"      \
-# "Data_DoubleMu_G"        \
+# DoubleMu
+ "Data_DoubleMu_H_3"      \
+ "Data_DoubleMu_H_2"      \
+ "Data_DoubleMu_G"        \
 # "Data_DoubleMu_F"        \
 # "Data_DoubleMu_E"        \
 # "Data_DoubleMu_D"        \
 # "Data_DoubleMu_C"        \
 # "Data_DoubleMu_B_2"      \
-#
-# "Data_DoubleEG_H_3"      \
-# "Data_DoubleEG_H_2"      \
-# "Data_DoubleEG_G"        \
+# DoubleEG
+ "Data_DoubleEG_H_3"      \
+ "Data_DoubleEG_H_2"      \
+ "Data_DoubleEG_G"        \
 # "Data_DoubleEG_F"        \
 # "Data_DoubleEG_E"        \
 # "Data_DoubleEG_D"        \
 # "Data_DoubleEG_C"        \
 # "Data_DoubleEG_B_2"      \
-#
-# "Data_MuonEG_B_2"        \
-# "Data_MuonEG_C"          \
-# "Data_MuonEG_D"          \
-# "Data_MuonEG_E"          \
+# MuonEG
+ "Data_MuonEG_H_3"        \
+ "Data_MuonEG_H_2"        \
+ "Data_MuonEG_G"          \
 # "Data_MuonEG_F"          \
-# "Data_MuonEG_G"          \
-# "Data_MuonEG_H_2"        \
-# "Data_MuonEG_H_3"        \
-#
-# "Data_SinglePhoton_H_3"  \
-# "Data_SinglePhoton_H_2"  \
-# "Data_SinglePhoton_G"    \
+# "Data_MuonEG_E"          \
+# "Data_MuonEG_D"          \
+# "Data_MuonEG_C"          \
+# "Data_MuonEG_B_2"        \
+# SinglePhoton
+ "Data_SinglePhoton_H_3"  \
+ "Data_SinglePhoton_H_2"  \
+ "Data_SinglePhoton_G"    \
 # "Data_SinglePhoton_F"    \
 # "Data_SinglePhoton_E"    \
 # "Data_SinglePhoton_D"    \
 # "Data_SinglePhoton_C"    \
 # "Data_SinglePhoton_B_2"  \
-#
-### MC backgrounds
-#
-## DY
-# "DYJetsToLL_M-5to50_HT-70to100"   \
-# "DYJetsToLL_M-5to50_HT-100to200"  \
-# "DYJetsToLL_M-5to50_HT-200to400"  \
-# "DYJetsToLL_M-5to50_HT-400to600"  \
-# "DYJetsToLL_M-5to50_HT-600toInf"  \
-# "DYJetsToLL_M-10to50"             \
-# "DYJetsToLL_M-50"                 \
-#
-## WJets
-# "WJetsToLNu"     \
-#
-## TTbar
-# "TTJets"         \
-# "TTtoLL"         \
-# "TTtoLfromTbar"  \
-# "TTtoLfromT"     \
-#
-## Single Top
-# "ST_s-channel_4f_leptonDecays"             \
-# "ST_t-channel_antitop_4f_inclusiveDecays"  \
-# "ST_t-channel_top_4f_inclusiveDecays"      \
-# "ST_tW_antitop_5f_NoFullyHadronicDecays"   \
-# "ST_tW_top_5f_NoFullyHadronicDecays"       \
-#
-## GJets
-# "GJets_HT-40To100"   \
-# "GJets_HT-100To200"  \
-# "GJets_HT-200To400"  \
-# "GJets_HT-400To600"  \
-# "GJets_HT-600ToInf"  \
-#
-## Diboson
-# "WW"               \
-# "WZ"               \
-# "ZZ"               \
-# "WWTo2L2Nu"        \
-# "WWToLNuQQ"        \
-# "WZTo1L3Nu"        \
-# "WZTo3LNu"         \
-# "WZToLNu2QorQQ2L"  \
-# "ZZTo2L2Nu"        \
-# "ZZTo2L2Q"         \
-# "ZZTo2Q2Nu"        \
-# "ZZTo4L"           \
-#
-## VGamma
-# "ZGTo2LG"  \
-# "WGToLNuG" \
-#
-## QCD
-# "QCD_HT1000to1500" \
-# "QCD_HT100to200"   \
-# "QCD_HT1500to2000" \
-# "QCD_HT2000toInf"  \
-# "QCD_HT200to300"   \
-# "QCD_HT300to500"   \
-# "QCD_HT500to700"   \
-# "QCD_HT700to1000"  \
-#
-## ZH
-# "ggZH_HToBB_ZToLL"  \
-# "ZH_HToBB_ZToLL"    \
-#
-## Signal Samples
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"    \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"   \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"        \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"       \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"      \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"     \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"      \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"     \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"    \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"   \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"        \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"       \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"      \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"     \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"      \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"     \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"    \
-# "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"   \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"        \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"       \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"      \
-# "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"     \
-
-samples=(  \
-# samples go here
- "Data_SinglePhoton_H_3"  \
- "Data_SinglePhoton_H_2"  \
- "Data_SinglePhoton_G"    \
+## MC backgrounds
+# DY
  "DYJetsToLL_M-5to50_HT-70to100"   \
  "DYJetsToLL_M-5to50_HT-100to200"  \
  "DYJetsToLL_M-5to50_HT-200to400"  \
@@ -169,18 +75,26 @@ samples=(  \
  "DYJetsToLL_M-5to50_HT-600toInf"  \
  "DYJetsToLL_M-10to50"             \
  "DYJetsToLL_M-50"                 \
+# WJets
  "WJetsToLNu"     \
+# TTbar
  "TTJets"         \
+ "TTtoLL"         \
+ "TTtoLfromTbar"  \
+ "TTtoLfromT"     \
+# Single Top
  "ST_s-channel_4f_leptonDecays"             \
  "ST_t-channel_antitop_4f_inclusiveDecays"  \
  "ST_t-channel_top_4f_inclusiveDecays"      \
  "ST_tW_antitop_5f_NoFullyHadronicDecays"   \
  "ST_tW_top_5f_NoFullyHadronicDecays"       \
+# GJets
  "GJets_HT-40To100"   \
  "GJets_HT-100To200"  \
  "GJets_HT-200To400"  \
  "GJets_HT-400To600"  \
  "GJets_HT-600ToInf"  \
+# Diboson
  "WW"               \
  "WZ"               \
  "ZZ"               \
@@ -193,18 +107,22 @@ samples=(  \
  "ZZTo2L2Q"         \
  "ZZTo2Q2Nu"        \
  "ZZTo4L"           \
+# VGamma
  "ZGTo2LG"  \
  "WGToLNuG" \
+# ZH
  "ggZH_HToBB_ZToLL"  \
  "ZH_HToBB_ZToLL"    \
- "QCD_HT1000to1500" \
- "QCD_HT100to200"   \
- "QCD_HT1500to2000" \
- "QCD_HT2000toInf"  \
- "QCD_HT200to300"   \
- "QCD_HT300to500"   \
- "QCD_HT500to700"   \
- "QCD_HT700to1000"  \
+## QCD
+ "QCD_HT100to200"    \
+ "QCD_HT200to300"    \
+ "QCD_HT300to500"    \
+ "QCD_HT500to700"    \
+ "QCD_HT700to1000"    \
+ "QCD_HT1000to1500"    \
+ "QCD_HT1500to2000"    \
+ "QCD_HT2000toInf"    \
+# Signal Samples
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"    \
@@ -260,28 +178,55 @@ makeasubmitdir () {
  printf "\n" >> submitfile
  
  # make haddfile (make now for merging expected results)
- haddfile_NoSel_histograms="./haddit_NoSel_histograms.sh"
- haddfile_Sig_histograms="./haddit_Sig_histograms.sh"
- haddfile_ZH_histograms="./haddit_ZH_histograms.sh"
- haddfile_DY_histograms="./haddit_DY_histograms.sh"
- haddfile_OffZ_histograms="./haddit_OffZ_histograms.sh"
- haddfile_NoPair_histograms="./haddit_NoPair_histograms.sh"
- haddfile_CRHeavy_histograms="./haddit_CRHeavy_histograms.sh"
- haddfile_CRLight_histograms="./haddit_CRLight_histograms.sh"
  haddfile_OPTtree="./haddit_OPTtree.sh"
+ haddfile_NM1trees="./haddit_NM1trees.sh"
  haddfile_BkgEst="./haddit_BkgEst.sh"
+ haddfile_OneEleSig_histograms="./haddit_OneEleSig_histograms.sh"                           
+ haddfile_TwoEleSig_histograms="./haddit_TwoEleSig_histograms.sh"                           
+ haddfile_OneMuSig_histograms="./haddit_OneMuSig_histograms.sh"                           
+ haddfile_TwoMuSig_histograms="./haddit_TwoMuSig_histograms.sh"                           
+ haddfile_OneEleDY_histograms="./haddit_OneEleDY_histograms.sh"                           
+ haddfile_TwoEleDY_histograms="./haddit_TwoEleDY_histograms.sh"                           
+ haddfile_OneMuDY_histograms="./haddit_OneMuDY_histograms.sh"                           
+ haddfile_TwoMuDY_histograms="./haddit_TwoMuDY_histograms.sh"                           
+ haddfile_OneEleZH_histograms="./haddit_OneEleZH_histograms.sh"                           
+ haddfile_TwoEleZH_histograms="./haddit_TwoEleZH_histograms.sh"                           
+ haddfile_OneMuZH_histograms="./haddit_OneMuZH_histograms.sh"                           
+ haddfile_TwoMuZH_histograms="./haddit_TwoMuZH_histograms.sh"                           
+ haddfile_OneEleOffZ_histograms="./haddit_OneEleOffZ_histograms.sh"                           
+ haddfile_TwoEleOffZ_histograms="./haddit_TwoEleOffZ_histograms.sh"                           
+ haddfile_OneMuOffZ_histograms="./haddit_OneMuOffZ_histograms.sh"                           
+ haddfile_TwoMuOffZ_histograms="./haddit_TwoMuOffZ_histograms.sh"                           
+ haddfile_OneEleNoPair_histograms="./haddit_OneEleNoPair_histograms.sh"                           
+ haddfile_OneMuNoPair_histograms="./haddit_OneMuNoPair_histograms.sh"                           
+ haddfile_EleMuOSOF_histograms="./haddit_EleMuOSOF_histograms.sh"                           
+ haddfile_OnePho_histograms="./haddit_OnePho_histograms.sh"                           
+
 
  hadddir="${rootdir}/${aversion}"
  mkdir -p ${hadddir}
- printf "#!/bin/bash\n\n" > ${haddfile_NoSel_histograms} 
- printf "#!/bin/bash\n\n" > ${haddfile_Sig_histograms}   
- printf "#!/bin/bash\n\n" > ${haddfile_ZH_histograms}    
- printf "#!/bin/bash\n\n" > ${haddfile_DY_histograms}    
- printf "#!/bin/bash\n\n" > ${haddfile_OffZ_histograms}  
- printf "#!/bin/bash\n\n" > ${haddfile_NoPair_histograms}
- printf "#!/bin/bash\n\n" > ${haddfile_CRHeavy_histograms}
- printf "#!/bin/bash\n\n" > ${haddfile_CRLight_histograms}
+ printf "#!/bin/bash\n\n" > ${haddfile_OneEleSig_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoEleSig_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_OneMuSig_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoMuSig_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_OneEleDY_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoEleDY_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_OneMuDY_histograms}      
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoMuDY_histograms}      
+ printf "#!/bin/bash\n\n" > ${haddfile_OneEleZH_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoEleZH_histograms}     
+ printf "#!/bin/bash\n\n" > ${haddfile_OneMuZH_histograms}      
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoMuZH_histograms}      
+ printf "#!/bin/bash\n\n" > ${haddfile_OneEleOffZ_histograms}   
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoEleOffZ_histograms}   
+ printf "#!/bin/bash\n\n" > ${haddfile_OneMuOffZ_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_TwoMuOffZ_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_OneEleNoPair_histograms} 
+ printf "#!/bin/bash\n\n" > ${haddfile_OneMuNoPair_histograms}  
+ printf "#!/bin/bash\n\n" > ${haddfile_EleMuOSOF_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_OnePho_histograms}       
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
+ printf "#!/bin/bash\n\n" > ${haddfile_NM1trees}          
  printf "#!/bin/bash\n\n" > ${haddfile_BkgEst}
 
  # make checker
@@ -290,16 +235,29 @@ makeasubmitdir () {
 
  # hadd command to go in haddfile
   # name of final merged file
- printf "hadd ${hadddir}/$1_NoSel_histograms.root"  >> ${haddfile_NoSel_histograms}  
- printf "hadd ${hadddir}/$1_Sig_histograms.root"    >> ${haddfile_Sig_histograms}    
- printf "hadd ${hadddir}/$1_ZH_histograms.root"     >> ${haddfile_ZH_histograms}     
- printf "hadd ${hadddir}/$1_DY_histograms.root"     >> ${haddfile_DY_histograms}     
- printf "hadd ${hadddir}/$1_OffZ_histograms.root"   >> ${haddfile_OffZ_histograms}   
- printf "hadd ${hadddir}/$1_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
- printf "hadd ${hadddir}/$1_CRHeavy_histograms.root">> ${haddfile_CRHeavy_histograms} 
- printf "hadd ${hadddir}/$1_CRLight_histograms.root">> ${haddfile_CRLight_histograms} 
- printf "hadd ${hadddir}/$1_OPTtree.root"           >> ${haddfile_OPTtree}           
- printf "hadd ${hadddir}/$1_BkgEst.root"            >> ${haddfile_BkgEst}           
+ printf "hadd ${hadddir}/$1_OneEleSig_histograms.root"     >>       ${haddfile_OneEleSig_histograms}    
+ printf "hadd ${hadddir}/$1_TwoEleSig_histograms.root"     >>       ${haddfile_TwoEleSig_histograms}    
+ printf "hadd ${hadddir}/$1_OneMuSig_histograms.root"      >>       ${haddfile_OneMuSig_histograms}     
+ printf "hadd ${hadddir}/$1_TwoMuSig_histograms.root"      >>       ${haddfile_TwoMuSig_histograms}     
+ printf "hadd ${hadddir}/$1_OneEleDY_histograms.root"      >>       ${haddfile_OneEleDY_histograms}     
+ printf "hadd ${hadddir}/$1_TwoEleDY_histograms.root"      >>       ${haddfile_TwoEleDY_histograms}     
+ printf "hadd ${hadddir}/$1_OneMuDY_histograms.root"       >>       ${haddfile_OneMuDY_histograms}      
+ printf "hadd ${hadddir}/$1_TwoMuDY_histograms.root"       >>       ${haddfile_TwoMuDY_histograms}      
+ printf "hadd ${hadddir}/$1_OneEleZH_histograms.root"      >>       ${haddfile_OneEleZH_histograms}     
+ printf "hadd ${hadddir}/$1_TwoEleZH_histograms.root"      >>       ${haddfile_TwoEleZH_histograms}     
+ printf "hadd ${hadddir}/$1_OneMuZH_histograms.root"       >>       ${haddfile_OneMuZH_histograms}      
+ printf "hadd ${hadddir}/$1_TwoMuZH_histograms.root"       >>       ${haddfile_TwoMuZH_histograms}      
+ printf "hadd ${hadddir}/$1_OneEleOffZ_histograms.root"    >>       ${haddfile_OneEleOffZ_histograms}   
+ printf "hadd ${hadddir}/$1_TwoEleOffZ_histograms.root"    >>       ${haddfile_TwoEleOffZ_histograms}   
+ printf "hadd ${hadddir}/$1_OneMuOffZ_histograms.root"     >>       ${haddfile_OneMuOffZ_histograms}    
+ printf "hadd ${hadddir}/$1_TwoMuOffZ_histograms.root"     >>       ${haddfile_TwoMuOffZ_histograms}    
+ printf "hadd ${hadddir}/$1_OneEleNoPair_histograms.root"  >>       ${haddfile_OneEleNoPair_histograms} 
+ printf "hadd ${hadddir}/$1_OneMuNoPair_histograms.root"   >>       ${haddfile_OneMuNoPair_histograms}  
+ printf "hadd ${hadddir}/$1_EleMuOSOF_histograms.root"     >>       ${haddfile_EleMuOSOF_histograms}    
+ printf "hadd ${hadddir}/$1_OnePho_histograms.root"        >>       ${haddfile_OnePho_histograms}       
+ printf "hadd ${hadddir}/$1_OPTtree.root"                  >>       ${haddfile_OPTtree}           
+ printf "hadd ${hadddir}/$1_NM1tree.root"                  >>       ${haddfile_NM1trees}           
+ printf "hadd ${hadddir}/$1_BkgEst.root"                   >>       ${haddfile_BkgEst}           
 
  # breaking up input file list
  nfilesinlist=$( wc -l < "${CMSSW_BASE}/src/LLDJstandalones/lists/$1.list" )
@@ -316,30 +274,57 @@ makeasubmitdir () {
   printf "\n" >> submitfile
 
   # add files to be produced to haddfiles
-  printf "\\" >> ${haddfile_NoSel_histograms}  
-  printf "\\" >> ${haddfile_Sig_histograms}    
-  printf "\\" >> ${haddfile_ZH_histograms}     
-  printf "\\" >> ${haddfile_DY_histograms}     
-  printf "\\" >> ${haddfile_OffZ_histograms}   
-  printf "\\" >> ${haddfile_NoPair_histograms} 
-  printf "\\" >> ${haddfile_CRHeavy_histograms} 
-  printf "\\" >> ${haddfile_CRLight_histograms} 
-  printf "\\" >> ${haddfile_OPTtree}           
-  printf "\\" >> ${haddfile_BkgEst}
+  printf "\\"  >> ${haddfile_OneEleSig_histograms}    
+  printf "\\"  >> ${haddfile_TwoEleSig_histograms}    
+  printf "\\"  >> ${haddfile_OneMuSig_histograms}     
+  printf "\\"  >> ${haddfile_TwoMuSig_histograms}     
+  printf "\\"  >> ${haddfile_OneEleDY_histograms}     
+  printf "\\"  >> ${haddfile_TwoEleDY_histograms}     
+  printf "\\"  >> ${haddfile_OneMuDY_histograms}      
+  printf "\\"  >> ${haddfile_TwoMuDY_histograms}      
+  printf "\\"  >> ${haddfile_OneEleZH_histograms}     
+  printf "\\"  >> ${haddfile_TwoEleZH_histograms}     
+  printf "\\"  >> ${haddfile_OneMuZH_histograms}      
+  printf "\\"  >> ${haddfile_TwoMuZH_histograms}      
+  printf "\\"  >> ${haddfile_OneEleOffZ_histograms}   
+  printf "\\"  >> ${haddfile_TwoEleOffZ_histograms}   
+  printf "\\"  >> ${haddfile_OneMuOffZ_histograms}    
+  printf "\\"  >> ${haddfile_TwoMuOffZ_histograms}    
+  printf "\\"  >> ${haddfile_OneEleNoPair_histograms} 
+  printf "\\"  >> ${haddfile_OneMuNoPair_histograms}  
+  printf "\\"  >> ${haddfile_EleMuOSOF_histograms}    
+  printf "\\"  >> ${haddfile_OnePho_histograms}       
+  printf "\\"  >> ${haddfile_OPTtree}           
+  printf "\\"  >> ${haddfile_NM1trees}           
+  printf "\\"  >> ${haddfile_BkgEst}           
 
-  printf "\n $(pwd)/$1_${jobfilenr}_NoSel_histograms.root" >> ${haddfile_NoSel_histograms}  
-  printf "\n $(pwd)/$1_${jobfilenr}_Sig_histograms.root" >> ${haddfile_Sig_histograms}    
-  printf "\n $(pwd)/$1_${jobfilenr}_ZH_histograms.root" >> ${haddfile_ZH_histograms}     
-  printf "\n $(pwd)/$1_${jobfilenr}_DY_histograms.root" >> ${haddfile_DY_histograms}     
-  printf "\n $(pwd)/$1_${jobfilenr}_OffZ_histograms.root" >> ${haddfile_OffZ_histograms}   
-  printf "\n $(pwd)/$1_${jobfilenr}_NoPair_histograms.root" >> ${haddfile_NoPair_histograms} 
-  printf "\n $(pwd)/$1_${jobfilenr}_CRHeavy_histograms.root" >> ${haddfile_CRHeavy_histograms} 
-  printf "\n $(pwd)/$1_${jobfilenr}_CRLight_histograms.root" >> ${haddfile_CRLight_histograms} 
-  printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root" >> ${haddfile_OPTtree}           
-  printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root" >> ${haddfile_BkgEst}
+  printf "\n $(pwd)/$1_${jobfilenr}_OneEleSig_histograms.root"     >> ${haddfile_OneEleSig_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoEleSig_histograms.root"     >> ${haddfile_TwoEleSig_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_OneMuSig_histograms.root"      >> ${haddfile_OneMuSig_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoMuSig_histograms.root"      >> ${haddfile_TwoMuSig_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_OneEleDY_histograms.root"      >> ${haddfile_OneEleDY_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoEleDY_histograms.root"      >> ${haddfile_TwoEleDY_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_OneMuDY_histograms.root"       >> ${haddfile_OneMuDY_histograms}      
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoMuDY_histograms.root"       >> ${haddfile_TwoMuDY_histograms}      
+  printf "\n $(pwd)/$1_${jobfilenr}_OneEleZH_histograms.root"      >> ${haddfile_OneEleZH_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoEleZH_histograms.root"      >> ${haddfile_TwoEleZH_histograms}     
+  printf "\n $(pwd)/$1_${jobfilenr}_OneMuZH_histograms.root"       >> ${haddfile_OneMuZH_histograms}      
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoMuZH_histograms.root"       >> ${haddfile_TwoMuZH_histograms}      
+  printf "\n $(pwd)/$1_${jobfilenr}_OneEleOffZ_histograms.root"    >> ${haddfile_OneEleOffZ_histograms}   
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoEleOffZ_histograms.root"    >> ${haddfile_TwoEleOffZ_histograms}   
+  printf "\n $(pwd)/$1_${jobfilenr}_OneMuOffZ_histograms.root"     >> ${haddfile_OneMuOffZ_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_TwoMuOffZ_histograms.root"     >> ${haddfile_TwoMuOffZ_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_OneEleNoPair_histograms.root"  >> ${haddfile_OneEleNoPair_histograms} 
+  printf "\n $(pwd)/$1_${jobfilenr}_OneMuNoPair_histograms.root"   >> ${haddfile_OneMuNoPair_histograms}  
+  printf "\n $(pwd)/$1_${jobfilenr}_EleMuOSOF_histograms.root"     >> ${haddfile_EleMuOSOF_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_OnePho_histograms.root"        >> ${haddfile_OnePho_histograms}       
+  printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root"                  >> ${haddfile_OPTtree}           
+  printf "\n $(pwd)/$1_${jobfilenr}_NM1tree.root"                  >> ${haddfile_NM1trees}           
+  printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root"                   >> ${haddfile_BkgEst}
 
   # add file to checker, all histos are made at the same time, so only check one
   printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_OPTtree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_OPTtree.root \\n\"; fi " >> ${checkfile}
+  printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_NM1tree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_NM1tree.root \\n\"; fi " >> ${checkfile}
 
   # increment filenumber counters
   #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
@@ -348,15 +333,28 @@ makeasubmitdir () {
 
  done # until filenrlow > nfilesinlist
 
- printf "\n\n" >> ${haddfile_NoSel_histograms}  
- printf "\n\n" >> ${haddfile_Sig_histograms}    
- printf "\n\n" >> ${haddfile_ZH_histograms}     
- printf "\n\n" >> ${haddfile_DY_histograms}     
- printf "\n\n" >> ${haddfile_OffZ_histograms}   
- printf "\n\n" >> ${haddfile_NoPair_histograms} 
- printf "\n\n" >> ${haddfile_CRHeavy_histograms} 
- printf "\n\n" >> ${haddfile_CRLight_histograms} 
+ printf "\n\n" >> ${haddfile_OneEleSig_histograms}    
+ printf "\n\n" >> ${haddfile_TwoEleSig_histograms}    
+ printf "\n\n" >> ${haddfile_OneMuSig_histograms}     
+ printf "\n\n" >> ${haddfile_TwoMuSig_histograms}     
+ printf "\n\n" >> ${haddfile_OneEleDY_histograms}     
+ printf "\n\n" >> ${haddfile_TwoEleDY_histograms}     
+ printf "\n\n" >> ${haddfile_OneMuDY_histograms}      
+ printf "\n\n" >> ${haddfile_TwoMuDY_histograms}      
+ printf "\n\n" >> ${haddfile_OneEleZH_histograms}     
+ printf "\n\n" >> ${haddfile_TwoEleZH_histograms}     
+ printf "\n\n" >> ${haddfile_OneMuZH_histograms}      
+ printf "\n\n" >> ${haddfile_TwoMuZH_histograms}      
+ printf "\n\n" >> ${haddfile_OneEleOffZ_histograms}   
+ printf "\n\n" >> ${haddfile_TwoEleOffZ_histograms}   
+ printf "\n\n" >> ${haddfile_OneMuOffZ_histograms}    
+ printf "\n\n" >> ${haddfile_TwoMuOffZ_histograms}    
+ printf "\n\n" >> ${haddfile_OneEleNoPair_histograms} 
+ printf "\n\n" >> ${haddfile_OneMuNoPair_histograms}  
+ printf "\n\n" >> ${haddfile_EleMuOSOF_histograms}    
+ printf "\n\n" >> ${haddfile_OnePho_histograms}       
  printf "\n\n" >> ${haddfile_OPTtree}           
+ printf "\n\n" >> ${haddfile_NM1trees}           
  printf "\n\n" >> ${haddfile_BkgEst}
 
  if [ ${doSubmit} = true ]

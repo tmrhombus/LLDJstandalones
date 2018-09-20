@@ -52,26 +52,60 @@ public :
    std::vector<float>   *llpDaughterEta;
    std::vector<float>   *llpDaughterPhi;
    std::vector<float>   *llpDaughterMass;
+   //single ele
    ULong64_t       AOD_HLT_Ele23Loose;
    ULong64_t       AOD_HLT_Ele27Tight;
+   ULong64_t       AOD_HLT_Ele23Loose_isPS;
+   ULong64_t       AOD_HLT_Ele27Tight_isPS;
+   //ele ele
    ULong64_t       AOD_HLT_Ele17Ele12;
    ULong64_t       AOD_HLT_Ele23Ele12;
+   ULong64_t       AOD_HLT_Ele17Ele12_isPS;
+   ULong64_t       AOD_HLT_Ele23Ele12_isPS;
+   //single mu
    ULong64_t       AOD_HLT_IsoMu22;
    ULong64_t       AOD_HLT_IsoTkMu22;
+   ULong64_t       AOD_HLT_IsoMu24;
+   ULong64_t       AOD_HLT_IsoTkMu24;
+   ULong64_t       AOD_HLT_IsoMu22_isPS;
+   ULong64_t       AOD_HLT_IsoTkMu22_isPS;
+   ULong64_t       AOD_HLT_IsoMu24_isPS;
+   ULong64_t       AOD_HLT_IsoTkMu24_isPS;
+   //mu mu
    ULong64_t       AOD_HLT_Mu17Mu8;
    ULong64_t       AOD_HLT_Mu17TkMu8;
    ULong64_t       AOD_HLT_Mu17Mu8_noDZ;
    ULong64_t       AOD_HLT_Mu17TkMu8_noDZ;
-   ULong64_t       AOD_HLT_IsoMu24;
-   ULong64_t       AOD_HLT_IsoTkMu24;
-   ULong64_t       AOD_HLT_Photon90;
-   ULong64_t       AOD_HLT_Photon120;
-   ULong64_t       AOD_HLT_Photon175;
-   ULong64_t       AOD_HLT_Photon165_HE10;
+   ULong64_t       AOD_HLT_Mu17Mu8_isPS;
+   ULong64_t       AOD_HLT_Mu17TkMu8_isPS;
+   ULong64_t       AOD_HLT_Mu17Mu8_noDZ_isPS;
+   ULong64_t       AOD_HLT_Mu17TkMu8_noDZ_isPS;
+   //mu ele
+   ULong64_t       AOD_HLT_Mu8Ele23_isPS;
+   ULong64_t       AOD_HLT_Mu23Ele12_isPS;
+   ULong64_t       AOD_HLT_Mu12Ele23_DZ_isPS;
+   ULong64_t       AOD_HLT_Mu23Ele12_DZ_isPS;
    ULong64_t       AOD_HLT_Mu8Ele23;
    ULong64_t       AOD_HLT_Mu23Ele12;
    ULong64_t       AOD_HLT_Mu12Ele23_DZ;
    ULong64_t       AOD_HLT_Mu23Ele12_DZ;
+   //pho
+   ULong64_t       AOD_HLT_Photon90;
+   ULong64_t       AOD_HLT_Photon120;
+   ULong64_t       AOD_HLT_Photon175;
+   ULong64_t       AOD_HLT_Photon165_HE10;
+   ULong64_t       AOD_HLT_Photon90_isPS;
+   ULong64_t       AOD_HLT_Photon120_isPS;
+   ULong64_t       AOD_HLT_Photon175_isPS;
+   ULong64_t       AOD_HLT_Photon165_HE10_isPS;
+   //
+   Int_t           AODnPATJet;
+   std::vector<int>     *AODPATJetPartonFlavour;
+   std::vector<float>   *AODPATJetPt;
+   std::vector<float>   *AODPATJetEta;
+   std::vector<float>   *AODPATJetPhi;
+   std::vector<float>   *AODPATJetCSV;
+   std::vector<float>   *AODPATJetMVA;
    Int_t           AODnCaloJet;
    std::vector<float>   *AODCaloJetPt;
    std::vector<float>   *AODCaloJetEta;
@@ -201,6 +235,8 @@ public :
    std::vector<int>     *AOD_eleChargeConsistent;
    std::vector<unsigned short> *AOD_eleIDbit;
    std::vector<int>     *AOD_elePassConversionVeto;
+   std::vector<float>        *AOD_eled0;
+   std::vector<float>        *AOD_eledz;
    Float_t         AOD_CaloMET_pt;
    Float_t         AOD_pfChMET_pt;
    Float_t         AOD_pfMET_pt;
@@ -230,26 +266,61 @@ public :
    TBranch        *b_llpDaughterEta;   //!
    TBranch        *b_llpDaughterPhi;   //!
    TBranch        *b_llpDaughterMass;   //!
+   //single ele
    TBranch        *b_AOD_HLT_Ele23Loose;   //!
    TBranch        *b_AOD_HLT_Ele27Tight;   //!
+   TBranch        *b_AOD_HLT_Ele23Loose_isPS;   //!
+   TBranch        *b_AOD_HLT_Ele27Tight_isPS;   //!
+   //ele ele
    TBranch        *b_AOD_HLT_Ele17Ele12;   //!
    TBranch        *b_AOD_HLT_Ele23Ele12;   //!
+   TBranch        *b_AOD_HLT_Ele17Ele12_isPS;   //!
+   TBranch        *b_AOD_HLT_Ele23Ele12_isPS;   //!
+   //single mu
    TBranch        *b_AOD_HLT_IsoMu22;   //!
    TBranch        *b_AOD_HLT_IsoTkMu22;   //!
+   TBranch        *b_AOD_HLT_IsoMu24;   //!
+   TBranch        *b_AOD_HLT_IsoTkMu24;   //!
+   TBranch        *b_AOD_HLT_IsoMu22_isPS;   //!
+   TBranch        *b_AOD_HLT_IsoTkMu22_isPS;   //!
+   TBranch        *b_AOD_HLT_IsoMu24_isPS;   //!
+   TBranch        *b_AOD_HLT_IsoTkMu24_isPS;   //!
+   //mu mu
    TBranch        *b_AOD_HLT_Mu17Mu8;   //!
    TBranch        *b_AOD_HLT_Mu17TkMu8;   //!
    TBranch        *b_AOD_HLT_Mu17Mu8_noDZ;   //!
    TBranch        *b_AOD_HLT_Mu17TkMu8_noDZ;   //!
-   TBranch        *b_AOD_HLT_IsoMu24;   //!
-   TBranch        *b_AOD_HLT_IsoTkMu24;   //!
+   TBranch        *b_AOD_HLT_Mu17Mu8_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu17TkMu8_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu17Mu8_noDZ_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu17TkMu8_noDZ_isPS;   //!
+   //mu ele
+   TBranch        *b_AOD_HLT_Mu8Ele23;   //!
+   TBranch        *b_AOD_HLT_Mu23Ele12;   //!
+   TBranch        *b_AOD_HLT_Mu12Ele23_DZ;   //!
+   TBranch        *b_AOD_HLT_Mu23Ele12_DZ;   //!   
+   TBranch        *b_AOD_HLT_Mu8Ele23_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu23Ele12_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu12Ele23_DZ_isPS;   //!
+   TBranch        *b_AOD_HLT_Mu23Ele12_DZ_isPS;   //!
+   //photon
    TBranch        *b_AOD_HLT_Photon90;   //!
    TBranch        *b_AOD_HLT_Photon120;   //!
    TBranch        *b_AOD_HLT_Photon175;   //!
    TBranch        *b_AOD_HLT_Photon165_HE10;   //!
-   TBranch        *b_AOD_HLT_Mu8Ele23;   //!
-   TBranch        *b_AOD_HLT_Mu23Ele12;   //!
-   TBranch        *b_AOD_HLT_Mu12Ele23_DZ;   //!
-   TBranch        *b_AOD_HLT_Mu23Ele12_DZ;   //!
+   TBranch        *b_AOD_HLT_Photon90_isPS;   //!
+   TBranch        *b_AOD_HLT_Photon120_isPS;   //!
+   TBranch        *b_AOD_HLT_Photon175_isPS;   //!
+   TBranch        *b_AOD_HLT_Photon165_HE10_isPS;   //!
+   //
+   TBranch        *b_AODnPATJet;   //!
+   TBranch        *b_AODPATJetPartonFlavour;   //!
+   TBranch        *b_AODPATJetPt;   //!
+   TBranch        *b_AODPATJetEta;   //!
+   TBranch        *b_AODPATJetPhi;   //!
+   TBranch        *b_AODPATJetCSV;   //!
+   TBranch        *b_AODPATJetMVA;   //!
+   //
    TBranch        *b_AODnCaloJet;   //!
    TBranch        *b_AODCaloJetPt;   //!
    TBranch        *b_AODCaloJetEta;   //!
@@ -379,6 +450,8 @@ public :
    TBranch        *b_AOD_eleChargeConsistent;   //!
    TBranch        *b_AOD_eleIDbit;   //!
    TBranch        *b_AOD_elePassConversionVeto;   //!
+   TBranch        *b_AOD_eled0;   //!
+   TBranch        *b_AOD_eledz;   //!
    TBranch        *b_AOD_CaloMET_pt;   //!
    TBranch        *b_AOD_pfChMET_pt;   //!
    TBranch        *b_AOD_pfMET_pt;   //!
