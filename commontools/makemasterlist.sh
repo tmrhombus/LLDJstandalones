@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # define output directory where lists will end up
 outdir="${CMSSW_BASE}/src/LLDJstandalones/lists"
 
@@ -41,4 +40,3 @@ mv templayer1.out ${outdir}/dir.out
 rm templayer2.out
 rm templayer3.out
 rm templayer4.out
-

@@ -68,7 +68,6 @@ void analyzer_config::initSelectionCategories( ){
   // Make sure that the numbers in here  match
   // static const int SELBINNAMESIZE  = 20;
   // static const int JETMULTNAMESIZE = 5; 
-  //static const int NM1TAGMULTNAMESIZE = 9;  
   // static const int LEPBINNAMESIZE  = 3;
   // initialize names
   jetmultnames.clear();
@@ -84,17 +83,6 @@ void analyzer_config::initSelectionCategories( ){
   tagmultnames.push_back("ThirdTag");
   tagmultnames.push_back("FourthTag");
   tagmultnames.push_back("AllTags");
-
-  NM1tagmultnames.clear();
-  NM1tagmultnames.push_back("AlphaMaxNM1TA");
-  NM1tagmultnames.push_back("AlphaMaxNM1IP");
-  NM1tagmultnames.push_back("AlphMaxNM");
-  NM1tagmultnames.push_back("IPNM1TA");
-  NM1tagmultnames.push_back("IPNM1AL");
-  NM1tagmultnames.push_back("IPNM");
-  NM1tagmultnames.push_back("TANM1AL");
-  NM1tagmultnames.push_back("TANM1IP");
-  NM1tagmultnames.push_back("TANM");
 
   selbinnames.clear();
   selbinnames.push_back("OneEleSig");

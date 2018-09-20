@@ -19,16 +19,14 @@ public :
    std::vector<TString> selbinnames;
    std::vector<TString> jetmultnames;
    std::vector<TString> tagmultnames;
-   std::vector<TString> NM1tagmultnames;
    std::vector<TString> uncbinnames;
    //std::vector<TString> lepnames;
    // jetmultnames = Leading, Subleading, Third, Fourth, All
    //static const int SELBINNAMESIZE  = 8;        
-   static const int SELBINNAMESIZE     = 20;  
-   static const int JETMULTNAMESIZE    = 5;  
-   static const int TAGMULTNAMESIZE    = 5;  
-   static const int NM1TAGMULTNAMESIZE = 9;  
-   static const int UNCBINNAMESIZE     = 3;
+   static const int SELBINNAMESIZE  = 20;  
+   static const int JETMULTNAMESIZE = 5;  
+   static const int TAGMULTNAMESIZE = 5;  
+   static const int UNCBINNAMESIZE  = 3;
 
    Float_t pho_minPt;
    Float_t pho_maxEta;

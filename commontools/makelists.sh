@@ -16,7 +16,7 @@ makealist() {
  sed -i -e "s@/eos/uscms@@" ${listdir}/$1.list
 }
 
-## Data
+# Data
 makealist "Data_SingleMu_H_3"        "/SingleMuon/crab_Data_SingleMu_H_3"
 makealist "Data_SingleMu_H_2"        "/SingleMuon/crab_Data_SingleMu_H_2"
 makealist "Data_SingleMu_G"          "/SingleMuon/crab_Data_SingleMu_G"
@@ -25,7 +25,7 @@ makealist "Data_SingleMu_G"          "/SingleMuon/crab_Data_SingleMu_G"
 #makealist "Data_SingleMu_D"          "/SingleMuon/crab_Data_SingleMu_D"
 #makealist "Data_SingleMu_C"          "/SingleMuon/crab_Data_SingleMu_C"
 #makealist "Data_SingleMu_B_2"        "/SingleMuon/crab_Data_SingleMu_B_2"
-
+#
 makealist "Data_SingleEle_H_3"       "/SingleElectron/crab_Data_SingleEle_H_3"
 makealist "Data_SingleEle_H_2"       "/SingleElectron/crab_Data_SingleEle_H_2"
 makealist "Data_SingleEle_G"         "/SingleElectron/crab_Data_SingleEle_G"
@@ -34,7 +34,7 @@ makealist "Data_SingleEle_G"         "/SingleElectron/crab_Data_SingleEle_G"
 #makealist "Data_SingleEle_D"         "/SingleElectron/crab_Data_SingleEle_D"
 #makealist "Data_SingleEle_C"         "/SingleElectron/crab_Data_SingleEle_C"
 #makealist "Data_SingleEle_B_2"       "/SingleElectron/crab_Data_SingleEle_B_2"
-
+#
 makealist "Data_DoubleMu_H_3"        "/DoubleMuon/crab_Data_DoubleMu_H_3"
 makealist "Data_DoubleMu_H_2"        "/DoubleMuon/crab_Data_DoubleMu_H_2"
 makealist "Data_DoubleMu_G"          "/DoubleMuon/crab_Data_DoubleMu_G"
@@ -43,7 +43,7 @@ makealist "Data_DoubleMu_G"          "/DoubleMuon/crab_Data_DoubleMu_G"
 #makealist "Data_DoubleMu_D"          "/DoubleMuon/crab_Data_DoubleMu_D"
 #makealist "Data_DoubleMu_C"          "/DoubleMuon/crab_Data_DoubleMu_C"
 #makealist "Data_DoubleMu_B_2"        "/DoubleMuon/crab_Data_DoubleMu_B_2"
-
+#
 makealist "Data_DoubleEG_H_3"        "/DoubleEG/crab_Data_DoubleEG_H_3"
 makealist "Data_DoubleEG_H_2"        "/DoubleEG/crab_Data_DoubleEG_H_2"
 makealist "Data_DoubleEG_G"          "/DoubleEG/crab_Data_DoubleEG_G"
@@ -52,26 +52,25 @@ makealist "Data_DoubleEG_G"          "/DoubleEG/crab_Data_DoubleEG_G"
 #makealist "Data_DoubleEG_D"          "/DoubleEG/crab_Data_DoubleEG_D"
 #makealist "Data_DoubleEG_C"          "/DoubleEG/crab_Data_DoubleEG_C"
 #makealist "Data_DoubleEG_B_2"        "/DoubleEG/crab_Data_DoubleEG_B_2"
-
-#makealist "Data_MuonEG_B_2"          "/MuonEG/Run2016B-23Sep2016-v3/AOD"
-#makealist "Data_MuonEG_C"            "/MuonEG/Run2016C-23Sep2016-v1/AOD"
-#makealist "Data_MuonEG_D"            "/MuonEG/Run2016D-23Sep2016-v1/AOD"
-#makealist "Data_MuonEG_E"            "/MuonEG/Run2016E-23Sep2016-v1/AOD"
-#makealist "Data_MuonEG_F"            "/MuonEG/Run2016F-23Sep2016-v1/AOD"
-makealist "MuonEG"                   "/MuonEG"
-makealist "Data_MuonEG_G"            "/MuonEG/crab_Data_MuonEG_G"
-makealist "Data_MuonEG_H_2"          "/MuonEG/crab_Data_MuonEG_H_2"
-makealist "Data_MuonEG_H_3"          "/MuonEG/crab_Data_MuonEG_H_3"
-
+#
+makealist "Data_MuonEG_H_3"        "/MuonEG/crab_Data_MuonEG_H_3"
+makealist "Data_MuonEG_H_2"        "/MuonEG/crab_Data_MuonEG_H_2"
+makealist "Data_MuonEG_G"          "/MuonEG/crab_Data_MuonEG_G"
+#makealist "Data_MuonEG_F"          "/MuonEG/crab_Data_MuonEG_F"
+#makealist "Data_MuonEG_E"          "/MuonEG/crab_Data_MuonEG_E"
+#makealist "Data_MuonEG_D"          "/MuonEG/crab_Data_MuonEG_D"
+#makealist "Data_MuonEG_C"          "/MuonEG/crab_Data_MuonEG_C"
+#makealist "Data_MuonEG_B_2"        "/MuonEG/crab_Data_MuonEG_B_2"
+#
 makealist "Data_SinglePhoton_H_3"    "/SinglePhoton/crab_Data_SinglePhoton_H_3"
 makealist "Data_SinglePhoton_H_2"    "/SinglePhoton/crab_Data_SinglePhoton_H_2"
 makealist "Data_SinglePhoton_G"      "/SinglePhoton/crab_Data_SinglePhoton_G"
-makealist "SinglePhoton"             "/SinglePhoton"
 #makealist "Data_SinglePhoton_F"      "/SinglePhoton/crab_Data_SinglePhoton_F"
 #makealist "Data_SinglePhoton_E"      "/SinglePhoton/crab_Data_SinglePhoton_E"
 #makealist "Data_SinglePhoton_D"      "/SinglePhoton/crab_Data_SinglePhoton_D"
 #makealist "Data_SinglePhoton_C"      "/SinglePhoton/crab_Data_SinglePhoton_C"
 #makealist "Data_SinglePhoton_B_2"    "/SinglePhoton/crab_Data_SinglePhoton_B_2"
+ 
 
 ## MC backgrounds
 
@@ -128,16 +127,6 @@ makealist "WGToLNuG"               "/WGToLNuG_"
 # ZH
 makealist "ggZH_HToBB_ZToLL"       "/ggZH_HToBB_ZToLL_"
 makealist "ZH_HToBB_ZToLL"         "/ZH_HToBB_ZToLL_M125_"
-
-#QCD 
-makealist "QCD_HT100to200"      "/QCD_HT100to200_"
-makealist "QCD_HT200to300"      "/QCD_HT200to300_"
-makealist "QCD_HT300to500"      "/QCD_HT300to500_"
-makealist "QCD_HT500to700"      "/QCD_HT500to700_"
-makealist "QCD_HT700to1000"     "/QCD_HT700to1000_"
-makealist "QCD_HT1000to1500"    "/QCD_HT1000to1500_"
-makealist "QCD_HT1500to2000"    "/QCD_HT1500to2000_"
-makealist "QCD_HT2000toInf"     "/QCD_HT2000toInf_"
 
 #QCD 
 makealist "QCD_HT100to200"      "/QCD_HT100to200_"

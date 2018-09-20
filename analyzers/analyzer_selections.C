@@ -172,7 +172,7 @@ void analyzer_selections::setSelections()
   selvecOneMuNoPair    .push_back( selvecBaseNoPair.at(b) ) ;   
  }
  // EleMu OSOF
- selvecEleMuOSOF .push_back( (passMuEG) );
+ selvecEleMuOSOF .push_back( (passSingleEle && passSingleMu) );
  selvecEleMuOSOF .push_back( passGoodVtx  );
  selvecEleMuOSOF .push_back( passOneJet   );
  selvecEleMuOSOF .push_back( passOSOF     );

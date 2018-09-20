@@ -15,7 +15,7 @@
 
 //using namespace std;
 
-void plotter_singleMerged(TString region, TString lepname, TString varname, Bool_t dolog, Bool_t HIP )
+void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t HIP )
 {
 
 // // Draw signal as lines
@@ -24,6 +24,8 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
 
  // Setup running configuration: IO, naming, SFs, ..
  /////////////////////////////////////////////////////
+
+ Bool_t drawuncs = kTRUE;
 
  TString inpath  = TString("../plots/");
  TString outpath = TString("../plots/");
@@ -47,9 +49,9 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
   eraname+="_GH";
  }
 
- TString infilename = lepname+"_"+region+"_"+varname+eraname;
- TString outname = "sp_"+lepname+"_"+region+"_"+varname+eraname;
-  outname = outpath + outname;
+ TString infilename = region+"_"+varname+eraname;
+ TString outname = "sp_"+region+"_"+varname+eraname;
+ outname = outpath + outname;
  // std::cout<<"name: "<<inpath<<" "<<infilename<<std::endl;
 
  // canvas and text attributes
@@ -147,6 +149,19 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
  TH1F* h_Data   ;
  THStack* bgstack;
 
+ TH1F* h_bkgtotal_EGSUp      ;
+ TH1F* h_bkgtotal_EGSDown    ;
+ TH1F* h_bkgtotal_MESUp      ;
+ TH1F* h_bkgtotal_MESDown    ;
+ TH1F* h_bkgtotal_AMaxUp     ;
+ TH1F* h_bkgtotal_AMaxDown   ;
+ TH1F* h_bkgtotal_IPSigUp    ;
+ TH1F* h_bkgtotal_IPSigDown  ;
+ TH1F* h_bkgtotal_TAUp       ;
+ TH1F* h_bkgtotal_TADown     ;
+ TH1F* h_bkgtotal_TagVarsUp  ;
+ TH1F* h_bkgtotal_TagVarsDown;
+
  // load histogram file / histograms
  file_input = new TFile( inpath + infilename + ".root"               ) ; 
  h_DY             = (TH1F*)file_input->Get("DY"            )->Clone("DY"            )  ;
@@ -178,131 +193,228 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
  h_Sig_MS55ct1    = (TH1F*)file_input->Get("Sig_MS55ct1"   )->Clone("Sig_MS55ct1"   )  ;
  h_Data           = (TH1F*)file_input->Get("Data"          )->Clone("Data"          )  ;
 
+ file_input_EGSUp       = new TFile( inpath + infilename + "_EGSUp.root"      ) ; 
+ file_input_EGSDown     = new TFile( inpath + infilename + "_EGSDown.root"    ) ; 
+ file_input_MESUp       = new TFile( inpath + infilename + "_MESUp.root"      ) ; 
+ file_input_MESDown     = new TFile( inpath + infilename + "_MESDown.root"    ) ; 
+ file_input_AMaxUp      = new TFile( inpath + infilename + "_AMaxUp.root"     ) ; 
+ file_input_AMaxDown    = new TFile( inpath + infilename + "_AMaxDown.root"   ) ; 
+ file_input_IPSigUp     = new TFile( inpath + infilename + "_IPSigUp.root"    ) ; 
+ file_input_IPSigDown   = new TFile( inpath + infilename + "_IPSigDown.root"  ) ; 
+ file_input_TAUp        = new TFile( inpath + infilename + "_TAUp.root"       ) ; 
+ file_input_TADown      = new TFile( inpath + infilename + "_TADown.root"     ) ; 
+ file_input_TagVarsUp   = new TFile( inpath + infilename + "_TagVarsUp.root"  ) ; 
+ file_input_TagVarsDown = new TFile( inpath + infilename + "_TagVarsDown.root") ; 
+ h_bkgtotal_EGSUp       = (TH1F*)file_input_EGSUp      ->Get("bkgtotal")->Clone("bkgtotal_EGSUp      " )  ;
+ h_bkgtotal_EGSDown     = (TH1F*)file_input_EGSDown    ->Get("bkgtotal")->Clone("bkgtotal_EGSDown    " )  ;
+ h_bkgtotal_MESUp       = (TH1F*)file_input_MESUp      ->Get("bkgtotal")->Clone("bkgtotal_MESUp      " )  ;
+ h_bkgtotal_MESDown     = (TH1F*)file_input_MESDown    ->Get("bkgtotal")->Clone("bkgtotal_MESDown    " )  ;
+ h_bkgtotal_AMaxUp      = (TH1F*)file_input_AMaxUp     ->Get("bkgtotal")->Clone("bkgtotal_AMaxUp     " )  ;
+ h_bkgtotal_AMaxDown    = (TH1F*)file_input_AMaxDown   ->Get("bkgtotal")->Clone("bkgtotal_AMaxDown   " )  ;
+ h_bkgtotal_IPSigUp     = (TH1F*)file_input_IPSigUp    ->Get("bkgtotal")->Clone("bkgtotal_IPSigUp    " )  ;
+ h_bkgtotal_IPSigDown   = (TH1F*)file_input_IPSigDown  ->Get("bkgtotal")->Clone("bkgtotal_IPSigDown  " )  ;
+ h_bkgtotal_TAUp        = (TH1F*)file_input_TAUp       ->Get("bkgtotal")->Clone("bkgtotal_TAUp       " )  ;
+ h_bkgtotal_TADown      = (TH1F*)file_input_TADown     ->Get("bkgtotal")->Clone("bkgtotal_TADown     " )  ;
+ h_bkgtotal_TagVarsUp   = (TH1F*)file_input_TagVarsUp  ->Get("bkgtotal")->Clone("bkgtotal_TagVarsUp  " )  ;
+ h_bkgtotal_TagVarsDown = (TH1F*)file_input_TagVarsDown->Get("bkgtotal")->Clone("bkgtotal_TagVarsDown" )  ;
 
-    // set attributes
-    h_DY         -> SetLineColor(kBlack); 
-    h_GJets      -> SetLineColor(kBlack);
-    h_ST         -> SetLineColor(kBlack); 
-    h_TT         -> SetLineColor(kBlack); 
-    h_WJetsToLNu -> SetLineColor(kBlack); 
-    h_VV         -> SetLineColor(kBlack); 
-    h_VG         -> SetLineColor(kBlack); 
-    h_ZH         -> SetLineColor(kBlack);
+ // set attributes
+ h_DY         -> SetLineColor(kBlack); 
+ h_GJets      -> SetLineColor(kBlack);
+ h_ST         -> SetLineColor(kBlack); 
+ h_TT         -> SetLineColor(kBlack); 
+ h_WJetsToLNu -> SetLineColor(kBlack); 
+ h_VV         -> SetLineColor(kBlack); 
+ h_VG         -> SetLineColor(kBlack); 
+ h_ZH         -> SetLineColor(kBlack);
 
-    //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
+ h_bkgtotal_EGSUp       ->SetLineColor(632);
+ h_bkgtotal_EGSDown     ->SetLineColor(632);
+ h_bkgtotal_MESUp       ->SetLineColor(807);
+ h_bkgtotal_MESDown     ->SetLineColor(807);
+ h_bkgtotal_AMaxUp      ->SetLineColor(798);
+ h_bkgtotal_AMaxDown    ->SetLineColor(798);
+ h_bkgtotal_IPSigUp     ->SetLineColor(418);
+ h_bkgtotal_IPSigDown   ->SetLineColor(418);
+ h_bkgtotal_TAUp        ->SetLineColor(601);
+ h_bkgtotal_TADown      ->SetLineColor(601);
+ h_bkgtotal_TagVarsUp   ->SetLineColor(599);
+ h_bkgtotal_TagVarsDown ->SetLineColor(599);
 
-    //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
-    //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
+ h_bkgtotal_EGSUp       ->SetLineWidth(2);
+ h_bkgtotal_EGSDown     ->SetLineWidth(2);
+ h_bkgtotal_MESUp       ->SetLineWidth(2);
+ h_bkgtotal_MESDown     ->SetLineWidth(2);
+ h_bkgtotal_AMaxUp      ->SetLineWidth(2);
+ h_bkgtotal_AMaxDown    ->SetLineWidth(2);
+ h_bkgtotal_IPSigUp     ->SetLineWidth(2);
+ h_bkgtotal_IPSigDown   ->SetLineWidth(2);
+ h_bkgtotal_TAUp        ->SetLineWidth(2);
+ h_bkgtotal_TADown      ->SetLineWidth(2);
+ h_bkgtotal_TagVarsUp   ->SetLineWidth(2);
+ h_bkgtotal_TagVarsDown ->SetLineWidth(2);
 
-    h_Data  -> SetLineColor(kBlack);
-    h_Data  -> SetMarkerStyle(8);
-    h_Data  -> SetMarkerSize(1);
-    h_Data  -> SetLineWidth(3);
+ h_bkgtotal_EGSUp       ->SetFillStyle(0);
+ h_bkgtotal_EGSDown     ->SetFillStyle(0);
+ h_bkgtotal_MESUp       ->SetFillStyle(0);
+ h_bkgtotal_MESDown     ->SetFillStyle(0);
+ h_bkgtotal_AMaxUp      ->SetFillStyle(0);
+ h_bkgtotal_AMaxDown    ->SetFillStyle(0);
+ h_bkgtotal_IPSigUp     ->SetFillStyle(0);
+ h_bkgtotal_IPSigDown   ->SetFillStyle(0);
+ h_bkgtotal_TAUp        ->SetFillStyle(0);
+ h_bkgtotal_TADown      ->SetFillStyle(0);
+ h_bkgtotal_TagVarsUp   ->SetFillStyle(0);
+ h_bkgtotal_TagVarsDown ->SetFillStyle(0);
 
-    h_DY        ->SetFillStyle(1001);
-    h_GJets     ->SetFillStyle(1001);
-    h_ST        ->SetFillStyle(1001);
-    h_TT        ->SetFillStyle(1001);
-    h_WJetsToLNu->SetFillStyle(1001);
-    h_VV        ->SetFillStyle(1001);
-    h_VG        ->SetFillStyle(1001);
-    h_ZH        ->SetFillStyle(1001);
+ //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineColor(798) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineColor(418) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineColor(601) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineColor(599) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineColor(618) ;
 
-    h_DY        ->SetFillColor(kAzure-3);
-    h_GJets     ->SetFillColor(kViolet+3);
-    h_ST        ->SetFillColor(kOrange+8);
-    h_TT        ->SetFillColor(kGreen+1);
-    h_WJetsToLNu->SetFillColor(kViolet-3);
-    h_VV        ->SetFillColor(kRed);
-    h_VG        ->SetFillColor(kPink+9);
-    h_ZH        ->SetFillColor(kCyan);
+ //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS1     -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS10    -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS100   -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS1000  -> SetLineWidth(2) ;
+ //h_ggZH_HToSSTobbbb_MS40_ctauS10000 -> SetLineWidth(2) ;
 
-    h_DY        ->SetLineColor(kBlack); 
-    h_GJets     ->SetLineColor(kBlack); 
-    h_ST        ->SetLineColor(kBlack); 
-    h_TT        ->SetLineColor(kBlack); 
-    h_WJetsToLNu->SetLineColor(kBlack); 
-    h_VV        ->SetLineColor(kBlack); 
-    h_VG        ->SetLineColor(kBlack); 
-    h_ZH        ->SetLineColor(kBlack); 
-    h_bkgtotal  ->SetLineColor(kBlack);
+ h_Data  -> SetLineColor(kBlack);
+ h_Data  -> SetMarkerStyle(8);
+ h_Data  -> SetMarkerSize(1);
+ h_Data  -> SetLineWidth(3);
 
-    h_DY        ->SetLineWidth(2);
-    h_GJets     ->SetLineWidth(2);
-    h_ST        ->SetLineWidth(2);
-    h_TT        ->SetLineWidth(2);
-    h_WJetsToLNu->SetLineWidth(2);
-    h_VV        ->SetLineWidth(2);
-    h_VG        ->SetLineWidth(2);
-    h_ZH        ->SetLineWidth(2);
-    h_bkgtotal  ->SetLineWidth(2);
+ h_DY        ->SetFillStyle(1001);
+ h_GJets     ->SetFillStyle(1001);
+ h_ST        ->SetFillStyle(1001);
+ h_TT        ->SetFillStyle(1001);
+ h_WJetsToLNu->SetFillStyle(1001);
+ h_VV        ->SetFillStyle(1001);
+ h_VG        ->SetFillStyle(1001);
+ h_ZH        ->SetFillStyle(1001);
 
-    h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
-    h_bkgtotal->SetFillStyle(1001);
+ h_DY        ->SetFillColor(kAzure-3);
+ h_GJets     ->SetFillColor(kViolet+3);
+ h_ST        ->SetFillColor(kOrange+8);
+ h_TT        ->SetFillColor(kGreen+1);
+ h_WJetsToLNu->SetFillColor(kViolet-3);
+ h_VV        ->SetFillColor(kRed);
+ h_VG        ->SetFillColor(kPink+9);
+ h_ZH        ->SetFillColor(kCyan);
 
-    // make legend
-    TLegend *leg;
-    leg = new TLegend(0.2,0.7,0.88,0.88);
-    leg->SetBorderSize(0);
-    leg->SetNColumns(2);
-    leg->SetFillColor(kWhite);
-    leg->AddEntry(h_Data         , "Data", "lpe"); 
-    leg->AddEntry(h_DY           , "Drell-Yan", "f"); 
-    leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
-    leg->AddEntry(h_ST           , "Single Top", "f"); 
-    leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
-    leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
-    leg->AddEntry(h_VV           , "Diboson", "f"); 
-    leg->AddEntry(h_VG           , "V#gamma", "f");
-    leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
-    leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
+ h_DY        ->SetLineColor(kBlack); 
+ h_GJets     ->SetLineColor(kBlack); 
+ h_ST        ->SetLineColor(kBlack); 
+ h_TT        ->SetLineColor(kBlack); 
+ h_WJetsToLNu->SetLineColor(kBlack); 
+ h_VV        ->SetLineColor(kBlack); 
+ h_VG        ->SetLineColor(kBlack); 
+ h_ZH        ->SetLineColor(kBlack); 
+ h_bkgtotal  ->SetLineColor(kBlack);
 
-     TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
-   //if(drawSignal){
-     //sigleg->SetBorderSize(0);
-     //sigleg->SetFillColor(kWhite);
-     //sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
-     //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
-    //}
+ h_DY        ->SetLineWidth(2);
+ h_GJets     ->SetLineWidth(2);
+ h_ST        ->SetLineWidth(2);
+ h_TT        ->SetLineWidth(2);
+ h_WJetsToLNu->SetLineWidth(2);
+ h_VV        ->SetLineWidth(2);
+ h_VG        ->SetLineWidth(2);
+ h_ZH        ->SetLineWidth(2);
+ h_bkgtotal  ->SetLineWidth(2);
 
-    // set max and draw
-    Double_t ymax;
-    ymax = std::max(h_Data->GetMaximum(), h_bkgtotal->GetMaximum() );
-    
-    if(dolog){
-     bgstack->SetMaximum(500*ymax); 
-     bgstack->SetMinimum(1.0);
-    } 
-    else {
-     bgstack->SetMaximum(ymax*1.4);
-    }
-     
-    plotpad->cd();
-    bgstack->Draw("hist");
-    //bgstack->Draw("hist e");
-    bgstack->GetYaxis()->SetTitle("Events");
-    bgstack->GetYaxis()->SetTitleSize(40);
-    bgstack->GetYaxis()->SetTitleFont(43);
-    bgstack->GetYaxis()->SetTitleOffset(1.55);
-    h_bkgtotal->Draw("e2 sames");
-    h_Data->Draw("sames E"); 
+ h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
+ h_bkgtotal->SetFillStyle(1001);
+
+ // make legend
+ TLegend *leg;
+ leg = new TLegend(0.2,0.7,0.88,0.88);
+ leg->SetBorderSize(0);
+ leg->SetNColumns(2);
+ leg->SetFillColor(kWhite);
+ leg->AddEntry(h_Data         , "Data", "lpe"); 
+ leg->AddEntry(h_DY           , "Drell-Yan", "f"); 
+ leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
+ leg->AddEntry(h_ST           , "Single Top", "f"); 
+ leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
+ leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
+ leg->AddEntry(h_VV           , "Diboson", "f"); 
+ leg->AddEntry(h_VG           , "V#gamma", "f");
+ leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
+ leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
+
+ TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
+ //if(drawSignal){
+ //  //sigleg->SetBorderSize(0);
+ //  //sigleg->SetFillColor(kWhite);
+ //  //sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
+ //  //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
+ // }
+
+ TLegend *uncleg = new TLegend(0.5,0.3,0.85,0.65);
+  uncleg->SetBorderSize(0);
+  uncleg->SetFillColor(kWhite);
+  //uncleg->AddEntry(h_bkgtotal_EGSUp      , "EGSUp      " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_EGSDown    , "EGSDown    " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_MESUp      , "MESUp      " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_MESDown    , "MESDown    " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_AMaxUp     , "AMaxUp     " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_AMaxDown   , "AMaxDown   " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_IPSigUp    , "IPSigUp    " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_IPSigDown  , "IPSigDown  " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_TAUp       , "TAUp       " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_TADown     , "TADown     " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_TagVarsUp  , "TagVarsUp  " , "l" ); 
+  //uncleg->AddEntry(h_bkgtotal_TagVarsDown, "TagVarsDown" , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_EGSUp      , "E/#gamma energy scale" , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_MESUp      , "muon energy scale   " , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_AMaxUp     , "Alpha Max            " , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_IPSigUp    , "IPSig                " , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_TAUp       , "Track Angle          " , "l" ); 
+  uncleg->AddEntry(h_bkgtotal_TagVarsUp  , "All TagVars          " , "l" ); 
+
+  // set max and draw
+  Double_t ymax;
+  ymax = std::max(h_Data->GetMaximum(), h_bkgtotal->GetMaximum() );
+  
+  if(dolog){
+   bgstack->SetMaximum(500*ymax); 
+   bgstack->SetMinimum(1.0);
+  } 
+  else {
+   bgstack->SetMaximum(ymax*1.4);
+  }
+   
+  plotpad->cd();
+  bgstack->Draw("hist");
+  //bgstack->Draw("hist e");
+  bgstack->GetYaxis()->SetTitle("Events");
+  bgstack->GetYaxis()->SetTitleSize(40);
+  bgstack->GetYaxis()->SetTitleFont(43);
+  bgstack->GetYaxis()->SetTitleOffset(1.55);
+  h_bkgtotal_EGSUp       ->Draw("hist sames");
+  h_bkgtotal_EGSDown     ->Draw("hist sames");
+  h_bkgtotal_MESUp       ->Draw("hist sames");
+  h_bkgtotal_MESDown     ->Draw("hist sames");
+  h_bkgtotal_AMaxUp      ->Draw("hist sames");
+  h_bkgtotal_AMaxDown    ->Draw("hist sames");
+  h_bkgtotal_IPSigUp     ->Draw("hist sames");
+  h_bkgtotal_IPSigDown   ->Draw("hist sames");
+  h_bkgtotal_TAUp        ->Draw("hist sames");
+  h_bkgtotal_TADown      ->Draw("hist sames");
+  h_bkgtotal_TagVarsUp   ->Draw("hist sames");
+  h_bkgtotal_TagVarsDown ->Draw("hist sames");
+  h_bkgtotal->Draw("e2 sames");
+  h_Data->Draw("sames E"); 
 
 //    if(drawSignal){
 //     h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
@@ -315,6 +427,7 @@ void plotter_singleMerged(TString region, TString lepname, TString varname, Bool
 //     sigleg->Draw();
 //    }
     leg->Draw();
+    uncleg->Draw();
 
     char lumistring [50];
     int dummy; 
