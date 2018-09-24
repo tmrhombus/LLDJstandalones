@@ -788,19 +788,19 @@ void analyzer_createobjects::matchPFCalojets( TString pftype )
       }
      }
      
-     if ( pftype.EqualTo("PF") ){
-      calomatchedPF_list = tempcalo_list;
-      PFmatchedCalo_list = temppf_list;
-     }
-     if ( pftype.EqualTo("PFchs") ){
-      calomatchedPFchs_list = tempcalo_list;
-      PFchsmatchedCalo_list = temppf_list;  
-     }
-     
     } // for(int j=0; j<pfjet_list.size(); ++j)
    } // if( pfjet_list.size()>1 )
   } // for(int i=0; i<aodcalojet_list.size(); ++i)
  } // if( aodcalojet_list.size()>1 ){    
+     
+ if ( pftype.EqualTo("PF") ){
+  calomatchedPF_list = tempcalo_list;
+  PFmatchedCalo_list = temppf_list;
+ }
+ if ( pftype.EqualTo("PFchs") ){
+  calomatchedPFchs_list = tempcalo_list;
+  PFchsmatchedCalo_list = temppf_list;  
+ }
 
  return;
 }
