@@ -179,6 +179,7 @@ makeasubmitdir () {
  
  # make haddfile (make now for merging expected results)
  haddfile_OPTtree="./haddit_OPTtree.sh"
+ haddfile_NM1trees="./haddit_NM1trees.sh"
  haddfile_BkgEst="./haddit_BkgEst.sh"
  haddfile_OneEleSig_histograms="./haddit_OneEleSig_histograms.sh"                           
  haddfile_TwoEleSig_histograms="./haddit_TwoEleSig_histograms.sh"                           
@@ -225,6 +226,7 @@ makeasubmitdir () {
  printf "#!/bin/bash\n\n" > ${haddfile_EleMuOSOF_histograms}    
  printf "#!/bin/bash\n\n" > ${haddfile_OnePho_histograms}       
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
+ printf "#!/bin/bash\n\n" > ${haddfile_NM1trees}          
  printf "#!/bin/bash\n\n" > ${haddfile_BkgEst}
 
  # make checker
@@ -254,6 +256,7 @@ makeasubmitdir () {
  printf "hadd ${hadddir}/$1_EleMuOSOF_histograms.root"     >>       ${haddfile_EleMuOSOF_histograms}    
  printf "hadd ${hadddir}/$1_OnePho_histograms.root"        >>       ${haddfile_OnePho_histograms}       
  printf "hadd ${hadddir}/$1_OPTtree.root"                  >>       ${haddfile_OPTtree}           
+ printf "hadd ${hadddir}/$1_NM1tree.root"                  >>       ${haddfile_NM1trees}           
  printf "hadd ${hadddir}/$1_BkgEst.root"                   >>       ${haddfile_BkgEst}           
 
  # breaking up input file list
@@ -292,6 +295,7 @@ makeasubmitdir () {
   printf "\\"  >> ${haddfile_EleMuOSOF_histograms}    
   printf "\\"  >> ${haddfile_OnePho_histograms}       
   printf "\\"  >> ${haddfile_OPTtree}           
+  printf "\\"  >> ${haddfile_NM1trees}           
   printf "\\"  >> ${haddfile_BkgEst}           
 
   printf "\n $(pwd)/$1_${jobfilenr}_OneEleSig_histograms.root"     >> ${haddfile_OneEleSig_histograms}    
@@ -315,10 +319,12 @@ makeasubmitdir () {
   printf "\n $(pwd)/$1_${jobfilenr}_EleMuOSOF_histograms.root"     >> ${haddfile_EleMuOSOF_histograms}    
   printf "\n $(pwd)/$1_${jobfilenr}_OnePho_histograms.root"        >> ${haddfile_OnePho_histograms}       
   printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root"                  >> ${haddfile_OPTtree}           
+  printf "\n $(pwd)/$1_${jobfilenr}_NM1tree.root"                  >> ${haddfile_NM1trees}           
   printf "\n $(pwd)/$1_${jobfilenr}_BkgEst.root"                   >> ${haddfile_BkgEst}
 
   # add file to checker, all histos are made at the same time, so only check one
   printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_OPTtree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_OPTtree.root \\n\"; fi " >> ${checkfile}
+  printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_NM1tree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_NM1tree.root \\n\"; fi " >> ${checkfile}
 
   # increment filenumber counters
   #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
@@ -348,6 +354,7 @@ makeasubmitdir () {
  printf "\n\n" >> ${haddfile_EleMuOSOF_histograms}    
  printf "\n\n" >> ${haddfile_OnePho_histograms}       
  printf "\n\n" >> ${haddfile_OPTtree}           
+ printf "\n\n" >> ${haddfile_NM1trees}           
  printf "\n\n" >> ${haddfile_BkgEst}
 
  if [ ${doSubmit} = true ]

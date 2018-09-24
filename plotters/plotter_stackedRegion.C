@@ -95,9 +95,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  //variables.push_back("phoE");                   
  //variables.push_back("phoEt");                  
- variables.push_back("AOD_phoPt");                 
- variables.push_back("AOD_phoEta");                 
- variables.push_back("AOD_phoPhi");                 
+// variables.push_back("AOD_phoPt");                 
+// variables.push_back("AOD_phoEta");                 
+// variables.push_back("AOD_phoPhi");                 
  //variables.push_back("nEle");                   
  // variables.push_back("AOD_elePt");                  
  // variables.push_back("AOD_eleEta");                 
@@ -488,9 +488,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_STbar_tW                = new TFile( inpath + "ST_tW_antitop_5f_NoFullyHadronicDecays_"+region+"_histograms.root"     ) ;
  file_ST_tW                   = new TFile( inpath + "ST_tW_top_5f_NoFullyHadronicDecays_"+region+"_histograms.root"         ) ;
  file_TTJets                  = new TFile( inpath + "TTJets_"+region+"_histograms.root"           ) ;
- file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
- file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
- file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
+ //file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
+ //file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
+ //file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
  file_WJetsToLNu              = new TFile( inpath + "WJetsToLNu_"+region+"_histograms.root"       ) ;
  file_WG                      = new TFile( inpath + "WGToLNuG_"+region+"_histograms.root"         ) ;
  file_ZGTo2LG                 = new TFile( inpath + "ZGTo2LG_"+region+"_histograms.root"          ) ;

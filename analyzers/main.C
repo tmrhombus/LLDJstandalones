@@ -253,6 +253,7 @@ int main(int argc, char **argv){
  // file to be filled with slimmed tree
  // must be created before TTree, put here to get name aligned
  TFile* optfile = new TFile(outfilename+"_OPTtree.root", "RECREATE");
+ TFile* NM1file = new TFile(outfilename+"_NM1tree.root", "RECREATE");
 
  TString outfilenamebase = outfilename;
  for(unsigned int i=0; i<unccategories.size(); ++i){
@@ -275,7 +276,7 @@ int main(int argc, char **argv){
   analyzer.init2DHistograms( unccategory );
   analyzer.initBackgroundEstimateHistograms();	
 
-  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile, unccategory);
+  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile, NM1file, unccategory);
  }
 
  // end stopwatch

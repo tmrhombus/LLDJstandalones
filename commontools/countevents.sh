@@ -115,8 +115,6 @@ xcQCD_HT1500to2000="119.9"
 xcQCD_HT2000toInf="25.24"
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#QCD
 
-
-
 countalist () {
  printf "Making %s\n" $1
  if [[ $1 == "Data"* ]]

@@ -21,7 +21,7 @@ public :
  virtual void  Loop(TString outfilename, 
                     Double_t lumi, Double_t nrEvents,
                     Double_t crossSec, Int_t nevts,
-                    TFile *optfile, TString uncbin);
+                    TFile *optfile, TFile *NM1file, TString uncbin);
  static const int  width = 8;
  // debug options, printouts
  virtual void debug_printobjects();
