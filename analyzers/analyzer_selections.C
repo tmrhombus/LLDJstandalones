@@ -172,7 +172,7 @@ void analyzer_selections::setSelections()
   selvecOneMuNoPair    .push_back( selvecBaseNoPair.at(b) ) ;   
  }
  // EleMu OSOF
- selvecEleMuOSOF .push_back( (passSingleEle && passSingleMu) );
+ selvecEleMuOSOF .push_back( passMuEG     );
  selvecEleMuOSOF .push_back( passGoodVtx  );
  selvecEleMuOSOF .push_back( passOneJet   );
  selvecEleMuOSOF .push_back( passOSOF     );
@@ -283,11 +283,14 @@ Bool_t analyzer_selections::askPassMuEG()
 
   ///based on http://cms.cern.ch/iCMS/jsp/analysis/admin/analysismanagement.jsp?ancode=HIG-16-042
   //should double check
+   if( isMC ){
+    doespass =  (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
+   }
    if(run>=273158 && run<=278272){
-     doespass =  (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12 > 0) );
+    doespass =  (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12 > 0) );
    }
    else if(run>=278273 && run<=284044){
-     doespass = (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
+    doespass = (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
    }
    
  } 
