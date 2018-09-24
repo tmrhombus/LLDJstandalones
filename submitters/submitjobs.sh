@@ -6,7 +6,7 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=16226.445
+lumi=16226.2 # 7.57582+8.43466+0.2156965 
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
@@ -68,7 +68,7 @@ samples=(  \
 # "Data_SinglePhoton_B_2"  \
 ## MC backgrounds
 # DY
- "DYJetsToLL_M-5to50_HT-70to100"   \
+# "DYJetsToLL_M-5to50_HT-70to100"   \
  "DYJetsToLL_M-5to50_HT-100to200"  \
  "DYJetsToLL_M-5to50_HT-200to400"  \
  "DYJetsToLL_M-5to50_HT-400to600"  \

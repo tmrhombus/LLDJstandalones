@@ -3,7 +3,7 @@
 # just calls the checker scripts automatically generated
 # submission time in ${basedir}/submitters/gitignore/${aversion}/${sample}/checker.sh
 
-printf "Files that are not done in condor: \n"
+printf "Files checked for completion after condor submition : \n"
 printf "%50s %4s %4s \n" Sample Tot  Left
 
 samples=( \
@@ -62,9 +62,10 @@ samples=( \
 # "Data_SinglePhoton_D"    \
 # "Data_SinglePhoton_C"    \
 # "Data_SinglePhoton_B_2"  \
+#
 ## MC backgrounds
 # DY
- "DYJetsToLL_M-5to50_HT-70to100"   \
+# "DYJetsToLL_M-5to50_HT-70to100"   \
  "DYJetsToLL_M-5to50_HT-100to200"  \
  "DYJetsToLL_M-5to50_HT-200to400"  \
  "DYJetsToLL_M-5to50_HT-400to600"  \
@@ -109,6 +110,15 @@ samples=( \
 # ZH
  "ggZH_HToBB_ZToLL"  \
  "ZH_HToBB_ZToLL"    \
+# QCD 
+ "QCD_HT100to200"    \
+ "QCD_HT200to300"    \
+ "QCD_HT300to500"    \
+ "QCD_HT500to700"    \
+ "QCD_HT700to1000"   \
+ "QCD_HT1000to1500"  \
+ "QCD_HT1500to2000"  \
+ "QCD_HT2000toInf"   \
 # Signal Samples
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
  "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
