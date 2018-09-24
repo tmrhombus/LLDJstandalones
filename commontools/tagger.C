@@ -8,6 +8,8 @@
 #include "TStyle.h"
 #include "TText.h"
 #include "TFile.h"
+#include <fstream>
+#include <iomanip>
 #include <stdio.h>
 #include <cstdlib> /* mkdir */
 #include <stdlib.h>     /* getenv */
@@ -16,13 +18,15 @@
 ///can do variable cuts or specified cuts
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime, TString mass){
 
-bool variable_cut = false;
+bool variable_cut = true;
 bool plot         = true; //plots scanning result/ntags
+bool prntTable    = false;
 TString plots = TString(getenv("plotdir"));
 //TString aversion = TString(getenv("aversion"));
-TString aversion = "CRLightOPT";
-//TString DataName = "MuonEG";
-TString DataName = "SinglePhoton";
+TString aversion = "CRTriggers";
+//TString aversion = "CRHeavyOPT";
+TString DataName = "MuonEG";
+//TString DataName = "SinglePhoton";
 //TString outpath = "/uscms/home/ddiaz/nobackup/LLDJ_slc6_530_CMSSW_8_0_26_patch1/src/LLDJstandalones/plots/tagger/BarrelVEndcap/"+lifetime;
 TString outpath = plots+"/"+aversion+"/tagger/"+lifetime;
 TString inpath  = "../roots/";
@@ -68,10 +72,20 @@ BkgFileList.push_back( inpath+"GJets_HT-100To200_OPTtree.root"                  
 BkgFileList.push_back( inpath+"GJets_HT-200To400_OPTtree.root"                      ); //kk=18
 BkgFileList.push_back( inpath+"GJets_HT-400To600_OPTtree.root"                      ); //kk=19
 BkgFileList.push_back( inpath+"GJets_HT-600ToInf_OPTtree.root"                      ); //kk=20
+//QCD
+//BkgFileList.push_back( inpath+"QCD_HT100to200_OPTtree.root"                         ); //kk=21
+//BkgFileList.push_back( inpath+"QCD_HT200to300_OPTtree.root"                         ); //kk=22
+//BkgFileList.push_back( inpath+"QCD_HT300to500_OPTtree.root"                         ); //kk=23
+//BkgFileList.push_back( inpath+"QCD_HT500to700_OPTtree.root"                         ); //kk=24
+//BkgFileList.push_back( inpath+"QCD_HT700to1000_OPTtree.root"                        ); //kk=25
+//BkgFileList.push_back( inpath+"QCD_HT1000to1500_OPTtree.root"                       ); //kk=26
+//BkgFileList.push_back( inpath+"QCD_HT1500to2000_OPTtree.root"                       ); //kk=27
+
+
 //Data
-BkgFileList.push_back( inpath+"Data_"+DataName+"_G_OPTtree.root"                          ); //kk=21
-BkgFileList.push_back( inpath+"Data_"+DataName+"_H_2_OPTtree.root"                        ); //kk=22
-BkgFileList.push_back( inpath+"Data_"+DataName+"_H_3_OPTtree.root"                        ); //kk=23
+BkgFileList.push_back( inpath+"Data_"+DataName+"_G_OPTtree.root"                    ); //kk=28
+BkgFileList.push_back( inpath+"Data_"+DataName+"_H_2_OPTtree.root"                  ); //kk=29
+BkgFileList.push_back( inpath+"Data_"+DataName+"_H_3_OPTtree.root"                  ); //kk=30
 int nData = 3; //number of data files to avoind counting as background
 TString nt, s_c_ip, s_c_ta, s_c_al, xx;
 nt    .Form("%1d",ntags);
@@ -82,7 +96,9 @@ xx    .Form("%1.2f",x);
 
 bool prnt         = false;
 bool prnt2        = false;
-
+ofstream slides;
+slides.open (outpath+"/tags"+"_"+mass+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".txt");
+//slides.open ("testSlides.txt");
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 if(variable_cut){
 const int NC = 100;
@@ -308,7 +324,10 @@ if(plot){
   eff->GetXaxis()->SetLimits(cv[0],cv[NC-1]);
   eff->GetYaxis()->SetTitle("#frac{S}{#sqrt{S+B+"+xx+"*B}}");
   eff->GetXaxis()->SetTitle("Cut Value");
-  gPad->SetLeftMargin(0.15);
+  //gPad->SetLeftMargin(0.15);
+  //gPad->SetLeftMargin(0.15);
+  pad1->SetLeftMargin(0.15);
+  pad1->SetLeftMargin(0.15);
   eff->GetYaxis()->SetTitleOffset(2.0);
   eff->GetXaxis()->CenterTitle();
   eff->GetYaxis()->CenterTitle();
@@ -318,12 +337,13 @@ if(plot){
   title->DrawTextNDC(0.06,0.91,"CMS");
   extra->DrawTextNDC(0.23,0.91,"Preliminary");
   lumi->DrawTextNDC(0.9,0.91,"xx /fb (13 TeV)");
-  gPad->Update();
-  gPad->RedrawAxis();
-  gPad->Update();
-  gPad->RedrawAxis();
-  canvas->SaveAs(outpath+"/"+nt+"_tags_"+var+"_"+lifetime+"_sys"+xx+".png");
-  canvas->Clear();
+  //gPad->Update();
+  //gPad->RedrawAxis();
+  pad1->Update();
+  pad1->RedrawAxis();
+  //canvas->SaveAs(outpath+"/Ntags_"+nt+"_"+var+"_"+lifetime+"_sys"+xx+".png");
+  canvas->SaveAs("test.jpg");
+//  canvas->Clear();
 }
 
 }//end variable cut
@@ -345,24 +365,25 @@ else{
 //float tags; 
 //ntDY, ntTTL_T, ntTTL_Tbar, ntWJ, ntTTtoLL, ntDiboson, ntST;
 //float nt
-float tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntData;
+float tags, ntDY, ntTTJets, ntWJ, ntST, ntVV, ntVG, ntZH, ntGJets, ntQCD, ntData;
 float num_sig = 0.0;
 float num_bkg = 0.0;
 
 int Nbins = 6;
-TH1F* h_ntags      = new TH1F("h_ntags"      , "h_ntags"      , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntDY       = new TH1F("h_ntDY"       , "h_ntDY"       , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntTTJets   = new TH1F("h_ntTTJets"   , "h_ntTTJets"   , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntWJ       = new TH1F("h_ntWJ"       , "h_ntWJ"       , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntST       = new TH1F("h_ntSingleTop", "h_ntSingleTop", Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntVV       = new TH1F("h_ntDiboson"  , "h_ntDiboson"  , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntVG       = new TH1F("h_ntVG"       , "h_ntVG"       , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntZH       = new TH1F("h_ntZH"       , "h_ntZH"       , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntGJets    = new TH1F("h_ntGJets"    , "h_ntGJets"    , Nbins, -0.5, (float)(Nbins)-0.5);
-TH1F* h_ntData     = new TH1F("h_ntData"     , "h_ntData"     , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntags      = new TH1F("h_ntags"      , "ags"      , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntDY       = new TH1F("h_ntDY"       , "DY"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntTTJets   = new TH1F("h_ntTTJets"   , "TTJets"   , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntWJ       = new TH1F("h_ntWJ"       , "WJ"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntST       = new TH1F("h_ntSingleTop", "SingleTop", Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntVV       = new TH1F("h_ntDiboson"  , "Diboson"  , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntVG       = new TH1F("h_ntVG"       , "VG"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntZH       = new TH1F("h_ntZH"       , "ZH"       , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntGJets    = new TH1F("h_ntGJets"    , "GJets"    , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntQCD      = new TH1F("h_ntQCD"      , "QCD"      , Nbins, -0.5, (float)(Nbins)-0.5);
+TH1F* h_ntData     = new TH1F("h_ntData"     , "Data"     , Nbins, -0.5, (float)(Nbins)-0.5);
 
 TH1F* h_Test       = new TH1F("h_Test", "h_Test", 50, 0, 500);
-std::vector<TH1F *> v = {h_ntDY, h_ntTTJets, h_ntWJ, h_ntST, h_ntVV, h_ntVG, h_ntZH, h_ntGJets};
+std::vector<TH1F *> v = {h_ntDY, h_ntTTJets, h_ntWJ, h_ntST, h_ntVV, h_ntVG, h_ntZH, h_ntGJets, h_ntQCD};
 for (int p =0; p<v.size(); p++){ v[p]->Sumw2();}
 h_ntags->Sumw2();
 h_ntData->Sumw2();
@@ -428,6 +449,7 @@ while (reader.Next()) {
     ntVG       = 0;
     ntZH       = 0;
     ntGJets    = 0;
+    ntQCD      = 0;
     ntData     = 0;
     			if(prnt)cout<<"Event: "<<Event->at(i)<< " EventWeight: " << EventWeight->at(i)<<std::endl;
     			if(prnt)cout<<"IP,TA,Alpha: "<<endl;
@@ -444,7 +466,8 @@ while (reader.Next()) {
       else if   (kk>=12 && kk<=13){ntVG     = ntVG     + 1;}
       else if   (kk>=14 && kk<=15){ntZH     = ntZH     + 1;}
       else if   (kk>=16 && kk<=20){ntGJets  = ntGJets  + 1;}
-      else if   (kk>=21 && kk<=23){ntData   = ntData   + 1;}
+      else if   (kk>=21 && kk<=27){ntQCD    = ntQCD    + 1;}
+      else if   (kk>=28 && kk<=30){ntData   = ntData   + 1;}
       else      {i=i;}
       }
     }
@@ -459,7 +482,8 @@ while (reader.Next()) {
     else if(kk>=12 && kk<=13){h_ntVG    ->Fill(ntVG    , EventWeight->at(i)); }
     else if(kk>=14 && kk<=15){h_ntZH    ->Fill(ntZH    , EventWeight->at(i)); }
     else if(kk>=16 && kk<=20){h_ntGJets ->Fill(ntGJets , EventWeight->at(i)); }
-    else if(kk>=21 && kk<=23){h_ntData  ->Fill(ntData  , EventWeight->at(i)); }
+    else if(kk>=21 && kk<=27){h_ntQCD   ->Fill(ntQCD   , EventWeight->at(i)); }
+    else if(kk>=28 && kk<=30){h_ntData  ->Fill(ntData  , EventWeight->at(i)); }
     else {h_ntDY->Fill(-3);if(prnt){cout <<"ErrorFile: "<<BkgFileList[kk]<< " weight(check): "<<EventWeight->at(i)<<", "<<EventWeight->at(i)<<endl;}}
   }
 if(prnt)cout<<"Event Size: "          <<Event->size()<<endl;
@@ -480,7 +504,8 @@ if(plot){
   canvas2->Clear();
   canvas2->cd();
   canvas2->SetGrid();
-  TPad *pad2  = new TPad("pad2", "pad2", 0, 0.25, 1, 1);
+  //TPad *pad2  = new TPad("pad2", "pad2", 0, 0.25, 1, 1);
+  TPad *pad2  = new TPad("pad2", "pad2", 0, 0, 1, 1);
   gStyle->SetOptStat(0);
   pad2->SetLogy(dolog);
   pad2->SetTickx();
@@ -495,7 +520,7 @@ if(plot){
   canvas2->cd();
   TPad *rpad = new TPad("ratiopad","ratiopad", 0, 0 ,1, 0.25);
   rpad->SetGrid();
-  rpad->Draw(); 
+  //rpad->Draw(); 
   canvas2->cd();
  
   TText* title2 = new TText(1,1,"") ; 
@@ -557,6 +582,7 @@ if(plot){
   h_ntVG      ->SetFillStyle(1001);
   h_ntZH      ->SetFillStyle(1001);
   h_ntGJets   ->SetFillStyle(1001);
+  h_ntQCD     ->SetFillStyle(1001);
   
   h_ntDY      ->SetFillColor(kAzure-3);
   h_ntTTJets  ->SetFillColor(kGreen+1);
@@ -566,6 +592,7 @@ if(plot){
   h_ntVG      ->SetFillColor(kPink+9);
   h_ntZH      ->SetFillColor(kCyan);
   h_ntGJets   ->SetFillColor(kViolet+3);
+  h_ntQCD     ->SetFillColor(kGray+1);
   //h_ntData    ->SetFillColor(1);
 
   h_ntDY      ->SetLineColor(kAzure-3);
@@ -576,6 +603,7 @@ if(plot){
   h_ntVG      ->SetLineColor(kPink+9);
   h_ntZH      ->SetLineColor(kCyan);
   h_ntGJets   ->SetLineColor(kViolet+3);
+  h_ntQCD     ->SetLineColor(kGray+1);
   //h_ntData    ->SetLineColor(1);
 
   h_ntDY      ->SetLineWidth(3);
@@ -586,6 +614,7 @@ if(plot){
   h_ntVG      ->SetLineWidth(3);
   h_ntZH      ->SetLineWidth(3);
   h_ntGJets   ->SetLineWidth(3);
+  h_ntQCD     ->SetLineWidth(3);
   //h_ntData    ->SetLineWidth(4);
   h_ntDY      ->SetLineColor(kBlack);
   h_ntTTJets  ->SetLineColor(kBlack);
@@ -595,20 +624,123 @@ if(plot){
   h_ntVG      ->SetLineColor(kBlack);
   h_ntZH      ->SetLineColor(kBlack);
   h_ntGJets   ->SetLineColor(kBlack);
+  h_ntQCD     ->SetLineColor(kBlack);
  
   h_ntTotBkg->SetFillColorAlpha(kYellow, 0.99);
-  h_ntTotBkg->SetFillStyle(3001);
+  h_ntTotBkg->SetFillStyle(3690);
 
   //h_ntTotBkg->SetBinError(2, 100000);
   //h_ntTotBkg->SetBinError(3, 1000);
-  //for(int o = 0; o <7; o++){cout<<h_ntTTJets->GetBinContent(o)<<"     "<<h_ntTotBkg->GetBinError(o)<<endl;}
+  /*
+  for(int o = 1; o <7; o++){ 
+  cout <<"Ntags: "<<o-1<<endl;
+  cout<<"Histogram: "<<h_ntData->GetTitle()<<"   Entries: "<<h_ntData->GetBinContent(o)<<"     "<<endl;
+  cout<<"Histogram: "<<"ntTotBkg"<<"   Entries: "<<h_ntags->GetBinContent(o)<<"     "<<endl;
+  cout<<"Histogram: "<<h_ntTotBkg->GetTitle()<<"   Entries: "<<h_ntTotBkg->GetBinContent(o)<<"     "<<endl;
+  for(int p = 0; p<v.size(); p++ ){
+  cout<<"Histogram: "<<v[p]->GetTitle()<<"   Entries: "<<v[p]->GetBinContent(o)<<"     "<<endl;}}
+  int ntest = 4;
+  if(h_ntTotBkg->GetBinContent(ntest)>0 || h_ntData->GetBinContent(ntest)>0 || h_ntags->GetBinContent(ntest)>0) {cout<< "Passed" <<endl;}
+  */  
+ if(prntTable){
+ slides<<"\\begin{wframe}{Ntags    cip: " +s_c_ip+ ",  cta: " +s_c_ta+",  cal: "+s_c_al+"}"<<endl;
+ slides<<"    \\begin{minipage}{0.5\\textwidth}"<<endl; 
+ slides<<"        \\begin{figure}"<<endl;
+ slides<<"            \\centering"<<endl;
+ slides<<"            \\includegraphics[width=\\textwidth]{{tags_" +mass+ "_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"}.png}"<<endl;
+ slides<<"        \\end{figure}"<<endl;
+ slides<<"    \\end{minipage}%"<<endl;
+ slides<<"    \\begin{minipage}{0.5\\textwidth}"<<endl;
+ slides<<"    \\begin{minipage}{\\textwidth}"<<endl;
+ slides<<"    \\begin{itemize}"<<endl;
+ slides<<"        \\item MS: Scalar Particle Mass"<<endl;
+ slides<<"        \\item ctauS: Proper lifetime"<<endl;
+ slides<<"        \\item cip: ImpactParameter cut"<<endl;
+ slides<<"        \\item cta: TrackAngle var. cut"<<endl;
+ slides<<"        \\item cal: alphaMax var. cut"<<endl;
+ slides<<"        \\end{itemize}"<<endl;
+ slides<<"        \\vspace{0.5em}"<<endl;
+ slides<<"    \\end{minipage}"<<endl;
+ slides<<"    \\begin{minipage}{\\textwidth}"<<endl;
+ slides<<"        \\begin{table}"<<endl;
+ slides<<"            \\centering"<<endl;
+ slides<<"            \\resizebox{\\textwidth}{!}{ "<<endl;
+ slides<<"            \\begin{tabular}{c|c|c|c|c|c|c}"<<endl;
+  for(int o = 0; o < v.size()+1 ; o++){
+    if(o==0){slides<<"Name  & ";}
+    //if(o==1){slides<<"Signal  & ";}
+    //if(o==2){slides<<"Data  & ";}
+    else{
+    slides<<v[o-1]->GetTitle()<<" &    ";}
+    for(int p =1 ; p <5 ; p++){
+      if(o==0){
+        slides<<p-1;
+        if(p<4){
+          slides<<" &     ";
+        }
+        else{
+          slides<<" \\\\  \\hline";
+        }
+      }
+      /*else if(o==1){
+        slides<< std::setprecision(5)<<h_ntags->GetBinContent(p);
+        if(p<4){
+          slides<<" &   ";
+        }
+        else{
+          slides<<" \\\\";
+        }
+      }
+      else if(o==2){
+        slides<< std::setprecision(5)<<h_ntData->GetBinContent(p);
+        if(p<4){
+          slides<<" &   ";
+        }
+        else{
+          slides<<" \\\\";
+        }
+      }
+      */
+      else{
+        slides<< std::setprecision(5)<<v[o-1]->GetBinContent(p);
+        if(p<4){
+          slides<<" &   ";
+        }
+        else{
+          slides<<" \\\\";
+        }
+      }
+
+
+    }
+    slides <<endl;
+  }
+  
+ slides<<"            \\end{tabular}"<<endl;
+ slides<<"            }"<<endl;
+ slides<<"        \\end{table}"<<endl;
+ slides<<"    \\end{minipage}"<<endl;
+ slides<<"    \\end{minipage}"<<endl;
+ slides<<"\\end{wframe}"<<endl;
+ slides<<endl;
+ }
+/*
+  cout <<"Ntags: ";
+  for(int o = 1; o <7; o++){ 
+  cout<<o-1<<endl;
+  cout<<"Histogram: "<<h_ntData->GetTitle()<<"   Entries: "<<h_ntData->GetBinContent(o)<<"     "<<endl;
+  cout<<"Histogram: "<<"ntTotBkg"<<"   Entries: "<<h_ntags->GetBinContent(o)<<"     "<<endl;
+  cout<<"Histogram: "<<h_ntTotBkg->GetTitle()<<"   Entries: "<<h_ntTotBkg->GetBinContent(o)<<"     "<<endl;
+  for(int p = 0; p<v.size(); p++ ){
+  cout<<"Histogram: "<<v[p]->GetTitle()<<"   Entries: "<<v[p]->GetBinContent(o)<<"     "<<endl;}}
+*/
   pad2->cd();
   //h_Test->Draw("hist");
   hs->SetMinimum(0.001);
   //hs->SetMaximum(1000000);//0.001);
   hs          ->Draw("hist");
   h_ntTotBkg  ->Draw("E2 same");
-  h_ntData    ->Draw("E same");
+//  h_ntData    ->Draw("E same");
   h_ntags     ->Draw("hist same");
   hs->SetTitle("N tags   cip:"+s_c_ip+" cta:"+s_c_ta+" cal:"+s_c_al+", "+lifetime+", "+mass);
   hs->GetXaxis()->SetTitle("Number of Tags");
@@ -620,7 +752,7 @@ if(plot){
   extra2->DrawTextNDC(0.23,0.91,"Preliminary");
   lumi2->DrawTextNDC(0.9,0.91,"16.23/fb (13 TeV)");
   
-  TLegend *leg2 = new TLegend(0.48,0.6,0.88,0.85);
+  TLegend *leg2 = new TLegend(0.4,0.6,0.88,0.85);
   leg2->SetNColumns(2);
   leg2->SetBorderSize(1);
   leg2->SetTextSize(.03);
@@ -636,7 +768,8 @@ if(plot){
   leg2->AddEntry(h_ntVG,    "V#gamma"          , "f");
   leg2->AddEntry(h_ntZH,    "ZH#rightarrowLLbb", "f");
   leg2->AddEntry(h_ntGJets, "#gamma+Jets"      , "f");
-  leg2->AddEntry(h_ntData,  DataName           , "lpe");
+  //leg2->AddEntry(h_ntQCD,   "QCD"              , "f");
+ // leg2->AddEntry(h_ntData,  DataName           , "lpe");
   leg2->AddEntry(h_ntTotBkg, "MC bkg. stat. err." , "f" );
   leg2->Draw();
   //gStyle->SetOptStat(11);
@@ -675,22 +808,22 @@ if(plot){
 
   h_ntRatiostaterr = (TH1F*)h_ntTotBkg->Clone("ntRatiostaterr");
   h_ntRatiostaterr->Divide(h_ntTotBkg);
-  h_ntRatio->Draw("ep"); 
+//  h_ntRatio->Draw("ep"); 
   rpad->Update();
   TLine *line = new TLine(rpad->GetUxmin(), 1, rpad->GetUxmax(), 1);
   line->SetLineWidth(3);
   line->SetLineStyle(9);
   line->SetLineColor(kBlue);
-  line->Draw("sames");
-  h_ntRatiostaterr->Draw("e2 same");
+//  line->Draw("sames");
+//  h_ntRatiostaterr->Draw("e2 same");
   
   rpad->Update();
-
   //canvas2->SaveAs(outpath+"h_Test.pdf"); 
  //canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
   canvas2->SaveAs(outpath+"/tags"+"_"+mass+"_"+lifetime+"__cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+".png");
 }// canvas2->SaveAs(outpath+"/"+nt+"tags"+"_"+lifetime+"_cip"+s_c_ip+"cta"+s_c_ta+"cal"+s_c_al+"_sys"+xx+".pdf");
 }//bkg non-var
+  slides.close();
 
 }
 

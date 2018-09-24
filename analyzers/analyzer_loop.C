@@ -18,7 +18,7 @@ analyzer_loop::~analyzer_loop()
 
 void analyzer_loop::Loop(TString outfilename, 
                        Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts, TFile *optfile, TString uncbin)
+                       Double_t crossSec, Int_t nevts, TFile *optfile, TFile *NM1file, TString uncbin)
 {
 
  if(makelog){
@@ -54,6 +54,14 @@ void analyzer_loop::Loop(TString outfilename,
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
+  }
+  if( uncbin.EqualTo("") ){
+   NM1file->cd();
+   clearNM1tree(); 
+   clearNM1CRHeavytree(); 
+   clearNM1CRLighttree(); 
+   clearNM1MuZHtree(); 
+   clearNM1EleZHtree(); 
   }
 
   //printf(" Event %lld\n", event);
@@ -106,7 +114,7 @@ void analyzer_loop::Loop(TString outfilename,
 
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
-  passOSOF = (OSOF_mass>0.);
+  passOSOF = (OSOF_mass>20.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
   passPTOSSF  = (dilep_pt>100.);
@@ -249,6 +257,32 @@ void analyzer_loop::Loop(TString outfilename,
    OPTtree->Fill();
   }
   
+  // tagging variable NMinus1 tree
+  if( dofillselbin[7] && uncbin.EqualTo("") ){// General Purpose: TwoMuDY
+   NM1file->cd();
+   setNM1tree(); 
+   NM1tree->Fill();
+  }
+  if( dofillselbin[18] && uncbin.EqualTo("") ){// CRHeavy
+   NM1file->cd();
+   setNM1CRHeavytree(); 
+   NM1CRHeavytree->Fill();
+  }
+  if( dofillselbin[19] && uncbin.EqualTo("") ){// CRLight
+   NM1file->cd();
+   setNM1CRLighttree(); 
+   NM1CRLighttree->Fill();
+  }
+  if( dofillselbin[11] && uncbin.EqualTo("") ){// TwoMuZH
+   NM1file->cd();
+   setNM1MuZHtree(); 
+   NM1MuZHtree->Fill();
+  }
+  if( dofillselbin[9] && uncbin.EqualTo("") ){// TwoEleZH
+   NM1file->cd();
+   setNM1EleZHtree(); 
+   NM1EleZHtree->Fill();
+  }
 
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
@@ -323,6 +357,15 @@ void analyzer_loop::Loop(TString outfilename,
   optfile->Close();
  }
 
+ if( uncbin.EqualTo("") ){
+  NM1file->cd();
+  NM1tree->CloneTree()->Write();
+  NM1CRHeavytree->CloneTree()->Write();
+  NM1CRLighttree->CloneTree()->Write();
+  NM1MuZHtree->CloneTree()->Write();
+  NM1EleZHtree->CloneTree()->Write();
+  NM1file->Close();
+ }
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
