@@ -120,14 +120,12 @@ lldjNtuple::lldjNtuple(const edm::ParameterSet& ps) :
   AODTriggerEventLabel_           =                                                     ps.getParameter<InputTag>("AODTriggerEventInputTag");
   AODTriggerEventToken_           = consumes<trigger::TriggerEvent>(AODTriggerEventLabel_);
 
-
-
   // gen
   genParticlesCollection_    = consumes<vector<reco::GenParticle> >    (ps.getParameter<InputTag>("genParticleSrc"));
-  
 
   Service<TFileService> fs;
   tree_    = fs->make<TTree>("EventTree", "Event data");
+  hTTSF_   = fs->make<TH1F>("hTTSF",      "TTbar scalefactors",   200,  0,   2);
   hEvents_ = fs->make<TH1F>("hEvents",    "total processed events",   1,  0,   2);
 
  if(doMiniAOD_){

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
-export nversion="addTrigFlav"
-export aversion="addTrigFlav"
+export nversion="topRWT"
+export aversion="twofity"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
