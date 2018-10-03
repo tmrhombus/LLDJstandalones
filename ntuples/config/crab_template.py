@@ -28,6 +28,8 @@ if __name__ == '__main__':
     config.Site.storageSite           = STORESITE
 
     #config.Data.useParent             = True
+    config.Data.ignoreLocality         = True
+    config.Site.whitelist = ["T2_US*"]
 
     def submit(config):
         try:
