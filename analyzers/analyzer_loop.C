@@ -17,8 +17,9 @@ analyzer_loop::~analyzer_loop()
 }
 
 void analyzer_loop::Loop(TString outfilename, 
-                       Double_t lumi, Double_t nrEvents,
-                       Double_t crossSec, Int_t nevts, TFile *optfile, TFile *NM1file, TString uncbin)
+                       Float_t lumi, Float_t nrEvents,
+                       Float_t crossSec, Float_t avgTTSF,
+                       Int_t nevts, TFile *optfile, TFile *NM1file, TString uncbin)
 {
 
  if(makelog){
@@ -105,6 +106,7 @@ void analyzer_loop::Loop(TString outfilename,
   if(isMC) event_weight *= makePUWeight(); //<-----need nTruePU
   // electrons also have an associated scale factor for MC 
   if(isMC) event_weight *= makeElectronWeight( electron_list );
+  if(isMC) event_weight *= makeTTWeight( avgTTSF );
 
   getMET();
 

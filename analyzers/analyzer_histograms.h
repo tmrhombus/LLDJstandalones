@@ -31,83 +31,83 @@ public :
 
  // make 1D,2D histograms (helper function)
  TH2F          initSingleHistogramTH2F(TString hnamex, TString htitley,
-                                   Int_t nbinsx, Double_t xmin, Double_t xmax,
-                                   Int_t nbinsy, Double_t ymin, Double_t ymax);
+                                   Int_t nbinsx, Float_t xmin, Float_t xmax,
+                                   Int_t nbinsy, Float_t ymin, Float_t ymax);
  TH2F          initSingleHistogramTH2F(TString hname, TString htitle,
 					int nbinsx, Float_t xbins[],
 					int nbinsy, Float_t ybins[]);
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle,
-                                   Int_t nbins, Double_t xmin,
-                                   Double_t xmax);
+                                   Int_t nbins, Float_t xmin,
+                                   Float_t xmax);
  TH1F          initSingleHistogramTH1F(TString hname, TString htitle, 
 				      int nbins, Float_t xbins[]);
 
  // Cutflow histograms
  Bool_t        initCutflowHistograms( TString uncbin );
- Bool_t        fillCutflowHistograms(Double_t weight, int selbin, Int_t localselint, Int_t localselkey);
+ Bool_t        fillCutflowHistograms(Float_t weight, int selbin, Int_t localselint, Int_t localselkey);
  Bool_t        writeCutflowHistograms(int selbin);
  Bool_t        deleteCutflowHistograms(int selbin);
 
  // 2D Histograms 
  Bool_t        init2DHistograms( TString uncbin );
- Bool_t        fill2DHistograms(Double_t weight, int selbin);
+ Bool_t        fill2DHistograms(Float_t weight, int selbin);
  Bool_t        write2DHistograms(int selbin);
  Bool_t        delete2DHistograms(int selbin);
  // Electron Variables
  Bool_t        initEleHistograms( TString uncbin );
- Bool_t        fillEleHistograms(Double_t weight, int selbin );
+ Bool_t        fillEleHistograms(Float_t weight, int selbin );
  Bool_t        writeEleHistograms(int selbin);
  Bool_t        deleteEleHistograms(int selbin);
  // Muon Variables
  Bool_t        initMuHistograms( TString uncbin );
- Bool_t        fillMuHistograms(Double_t weight, int selbin);
+ Bool_t        fillMuHistograms(Float_t weight, int selbin);
  Bool_t        writeMuHistograms(int selbin);
  Bool_t        deleteMuHistograms(int selbin);
  // Lepton Variables
  Bool_t        initLepHistograms( TString uncbin );
- Bool_t        fillLepHistograms(Double_t weight, int selbin);
+ Bool_t        fillLepHistograms(Float_t weight, int selbin);
  Bool_t        writeLepHistograms(int selbin);
  Bool_t        deleteLepHistograms(int selbin);
  // Photon Variables
  Bool_t        initPhoHistograms( TString uncbin );
- Bool_t        fillPhoHistograms(Double_t weight, int selbin);
+ Bool_t        fillPhoHistograms(Float_t weight, int selbin);
  Bool_t        writePhoHistograms(int selbin);
  Bool_t        deletePhoHistograms(int selbin);
  // MET/HT Variables
  Bool_t        initMETHTHistograms( TString uncbin );
- Bool_t        fillMETHTHistograms(Double_t weight, int selbin);
+ Bool_t        fillMETHTHistograms(Float_t weight, int selbin);
  Bool_t        writeMETHTHistograms(int selbin);
  Bool_t        deleteMETHTHistograms(int selbin);
 
  // AODCaloJet Basic Variables
  Bool_t        initAODCaloJetBasicHistograms( TString uncbin );
- Bool_t        fillAODCaloJetBasicHistograms(Double_t weight, int selbin, int jetbin);
+ Bool_t        fillAODCaloJetBasicHistograms(Float_t weight, int selbin, int jetbin);
  Bool_t        writeAODCaloJetBasicHistograms(int selbin, int jetbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin, int jetbin);
  // AODCaloJet Extra Variables
  Bool_t        initAODCaloJetExtraHistograms( TString uncbin );
- Bool_t        fillAODCaloJetExtraHistograms(Double_t weight, int selbin, int jetbin);
+ Bool_t        fillAODCaloJetExtraHistograms(Float_t weight, int selbin, int jetbin);
  Bool_t        writeAODCaloJetExtraHistograms(int selbin, int jetbin);
  Bool_t        deleteAODCaloJetExtraHistograms(int selbin, int jetbin);
  // AODCaloJetTag Basic Variables
  Bool_t        initAODCaloJetTagHistograms( TString uncbin );
- Bool_t        fillAODCaloJetTagHistograms(Double_t weight, int selbin, int tagbin);
+ Bool_t        fillAODCaloJetTagHistograms(Float_t weight, int selbin, int tagbin);
  Bool_t        writeAODCaloJetTagHistograms(int selbin, int tagbin);
  Bool_t        deleteAODCaloJetTagHistograms(int selbin, int tagbin);
  // Jet Multiplicity
  Bool_t        initAODCaloJetMultHistograms( TString uncbin );
- Bool_t        fillAODCaloJetMultHistograms(Double_t weight, int selbin);
+ Bool_t        fillAODCaloJetMultHistograms(Float_t weight, int selbin);
  Bool_t        writeAODCaloJetMultHistograms(int selbin);
  Bool_t        deleteAODCaloJetMultHistograms(int selbin);
  Bool_t        initAODCaloJetTagMultHistograms( TString uncbin );
- Bool_t        fillAODCaloJetTagMultHistograms(Double_t weight, int selbin);
+ Bool_t        fillAODCaloJetTagMultHistograms(Float_t weight, int selbin);
  Bool_t        writeAODCaloJetTagMultHistograms(int selbin);
  Bool_t        deleteAODCaloJetTagMultHistograms(int selbin);
  
  // Extra histograms
  Bool_t        initExtraHistograms( TString uncbin );
- Bool_t        fillExtraHistograms(Double_t weight, int selbin);
+ Bool_t        fillExtraHistograms(Float_t weight, int selbin);
  Bool_t        writeExtraHistograms(int selbin);
  Bool_t        deleteExtraHistograms(int selbin);
 
@@ -115,9 +115,9 @@ public :
  Bool_t        scaleVariableBinHistograms(int selbin);
 
  // Set up which histograms to fill 
- Bool_t        fillSelectedHistograms(Double_t weight, int selbin);
- Bool_t        fillSelectedJetHistograms(Double_t weight, int selbin, int jetbin);
- Bool_t        fillSelectedTagHistograms(Double_t weight, int selbin, int tagbin);
+ Bool_t        fillSelectedHistograms(Float_t weight, int selbin);
+ Bool_t        fillSelectedJetHistograms(Float_t weight, int selbin, int jetbin);
+ Bool_t        fillSelectedTagHistograms(Float_t weight, int selbin, int tagbin);
  Bool_t        writeSelectedHistograms(int selbin);
  Bool_t        writeSelectedJetHistograms(int selbin, int jetbin);
  Bool_t        writeSelectedTagHistograms(int selbin, int tagbin);
@@ -312,11 +312,11 @@ public :
  float getMistagRateByBin(int j, TString mistag_name);
  float getMistagRate(int j, TString mistag_name);
  float computeTerm(int b, std::vector<int> mistagBins_tagged, std::vector<int> mistagBins_untagged, TString mistag_name);
- void comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name);
+ void comb(int n, int r, int *arr, int sz, Float_t weight, TString mistag_name);
  TH1F h_bkgest_pt;
  TH1F h_bkgest_pteta;
  Bool_t initBackgroundEstimateHistograms();
- Bool_t fillBackgroundEstimateHistograms(Double_t weight);
+ Bool_t fillBackgroundEstimateHistograms(Float_t weight);
  Bool_t writeBackgroundEstimateHistograms(TFile* outfile);
 
 };

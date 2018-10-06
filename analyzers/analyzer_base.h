@@ -25,7 +25,7 @@ public :
    Bool_t isMC;
    FILE * logfile;
    FILE * edmfile;
-   Double_t event_weight;
+   Float_t event_weight;
 
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // MC and Data
@@ -52,6 +52,7 @@ public :
    std::vector<float>   *llpDaughterEta;
    std::vector<float>   *llpDaughterPhi;
    std::vector<float>   *llpDaughterMass;
+   std::vector<float>   *toppts;
    //single ele
    ULong64_t       AOD_HLT_Ele23Loose;
    ULong64_t       AOD_HLT_Ele27Tight;
@@ -266,6 +267,7 @@ public :
    TBranch        *b_llpDaughterEta;   //!
    TBranch        *b_llpDaughterPhi;   //!
    TBranch        *b_llpDaughterMass;   //!
+   TBranch        *b_toppts;   //!
    //single ele
    TBranch        *b_AOD_HLT_Ele23Loose;   //!
    TBranch        *b_AOD_HLT_Ele27Tight;   //!
@@ -464,8 +466,6 @@ public :
    virtual ~analyzer_base();
    virtual void     Init(TChain *tree, Bool_t isitMC, Bool_t domakelog);
    virtual Long64_t LoadTree(Long64_t entry);
-  // Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
-  //                                  Double_t nrEvents);
    
 };
 

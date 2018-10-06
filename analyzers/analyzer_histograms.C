@@ -13,7 +13,7 @@ analyzer_histograms::~analyzer_histograms()
 
 
 //----------------------------fillSelectedHistograms
-Bool_t analyzer_histograms::fillSelectedHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillSelectedHistograms(Float_t weight, int selbin)
 {
  /// Decide here which histograms to get filled
  fillEleHistograms               ( weight, selbin );
@@ -41,7 +41,7 @@ Bool_t analyzer_histograms::writeSelectedHistograms(int selbin)
 }
 
 //----------------------------fillSelectedJetHistograms
-Bool_t analyzer_histograms::fillSelectedJetHistograms(Double_t weight, int selbin, int jetbin )
+Bool_t analyzer_histograms::fillSelectedJetHistograms(Float_t weight, int selbin, int jetbin )
 {
  /// Decide here which jet histograms to get filled
  fillAODCaloJetBasicHistograms( weight, selbin, jetbin );
@@ -57,7 +57,7 @@ Bool_t analyzer_histograms::writeSelectedJetHistograms(int selbin, int jetbin)
 }
 
 //----------------------------fillSelectedTagHistograms
-Bool_t analyzer_histograms::fillSelectedTagHistograms(Double_t weight, int selbin, int tagbin )
+Bool_t analyzer_histograms::fillSelectedTagHistograms(Float_t weight, int selbin, int tagbin )
 {
  /// Decide here which tag histograms to get filled
  fillAODCaloJetTagHistograms( weight, selbin, tagbin );
@@ -71,7 +71,7 @@ Bool_t analyzer_histograms::writeSelectedTagHistograms(int selbin, int tagbin)
 }
 
 //----------------------------initSingleHistogramTH1F
-TH1F analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle, Int_t nbins, Double_t xmin, Double_t xmax)
+TH1F analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle, Int_t nbins, Float_t xmin, Float_t xmax)
 {
 
  histoTH1F.Clear();
@@ -98,8 +98,8 @@ TH1F analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle,
 
 //----------------------------initSingleHistogramTH2F
 TH2F analyzer_histograms::initSingleHistogramTH2F(TString hname, TString htitle,
-                                   Int_t nbinsx, Double_t xmin, Double_t xmax,
-                                   Int_t nbinsy, Double_t ymin, Double_t ymax)
+                                   Int_t nbinsx, Float_t xmin, Float_t xmax,
+                                   Int_t nbinsy, Float_t ymin, Float_t ymax)
 {
 
  histoTH2F.Clear();
@@ -145,7 +145,7 @@ Bool_t analyzer_histograms::init2DHistograms( TString uncbin )
 
 
 //----------------------------fill2DHistograms
-Bool_t analyzer_histograms::fill2DHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fill2DHistograms(Float_t weight, int selbin)
 {
   // //printf("fill2DHistograms\n");
   //
@@ -194,7 +194,7 @@ Bool_t analyzer_histograms::initEleHistograms( TString uncbin ){
 }
 
 //----------------------------fillEleHistograms
-Bool_t analyzer_histograms::fillEleHistograms(Double_t weight, int selbin )
+Bool_t analyzer_histograms::fillEleHistograms(Float_t weight, int selbin )
 {
   h_AOD_nEle            [selbin] .Fill( float(nAODEle), weight );
   h_AOD_nSelectedEle    [selbin] .Fill( float(electron_list.size()), weight );
@@ -265,7 +265,7 @@ Bool_t analyzer_histograms::initMuHistograms( TString uncbin ){
 }
 
 //----------------------------fillMuHistograms
-Bool_t analyzer_histograms::fillMuHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillMuHistograms(Float_t weight, int selbin)
 {
   h_AOD_nMu            [selbin] .Fill( float(nAODMu), weight );
   h_AOD_nSelectedMu    [selbin] .Fill( float(muon_list.size()), weight );
@@ -326,7 +326,7 @@ Bool_t analyzer_histograms::initLepHistograms( TString uncbin ){
 }
 
 //----------------------------fillLepHistograms
-Bool_t analyzer_histograms::fillLepHistograms(Double_t weight, int selbin )
+Bool_t analyzer_histograms::fillLepHistograms(Float_t weight, int selbin )
 {
   h_AOD_dilepton_Mass  [selbin].Fill( dilep_mass, weight );
   h_AOD_dilepton_Pt    [selbin].Fill( dilep_pt, weight );
@@ -373,7 +373,7 @@ Bool_t analyzer_histograms::initPhoHistograms( TString uncbin ){
 }
 
 //----------------------------fillPhoHistograms
-Bool_t analyzer_histograms::fillPhoHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillPhoHistograms(Float_t weight, int selbin)
 {
  // fill leading photon in vector
   h_AOD_nPho              [selbin].Fill( float(nAODPho), weight );
@@ -433,7 +433,7 @@ Bool_t analyzer_histograms::initMETHTHistograms( TString uncbin ){
 }
 
 //----------------------------fillMETHTHistograms
-Bool_t analyzer_histograms::fillMETHTHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillMETHTHistograms(Float_t weight, int selbin)
 {
  h_AOD_MET_phi             [selbin].Fill( themephi       , weight);  
  h_AOD_MET_pt              [selbin].Fill( themet         , weight);  
@@ -539,7 +539,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 }
 
 //----------------------------fillAODCaloJetBasicHistograms
-Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Double_t weight, int selbin, int jetbin)
+Bool_t analyzer_histograms::fillAODCaloJetBasicHistograms(Float_t weight, int selbin, int jetbin)
 {
 
   if(jetmultnames.at(jetbin) == "AllJets"){
@@ -745,7 +745,7 @@ Bool_t analyzer_histograms::initAODCaloJetExtraHistograms( TString uncbin )
 } //initAODCaloJetHistograms
 
 //----------------------------fillAODCaloJetExtraHistograms
-Bool_t analyzer_histograms::fillAODCaloJetExtraHistograms(Double_t weight, int selbin, int jetbin)
+Bool_t analyzer_histograms::fillAODCaloJetExtraHistograms(Float_t weight, int selbin, int jetbin)
 {
 
   if(jetmultnames.at(jetbin) == "AllJets"){
@@ -923,7 +923,7 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms( TString uncbin )
 
 
 //----------------------------fillAODCaloJetTagHistograms
-Bool_t analyzer_histograms::fillAODCaloJetTagHistograms(Double_t weight, int selbin, int tagbin)
+Bool_t analyzer_histograms::fillAODCaloJetTagHistograms(Float_t weight, int selbin, int tagbin)
 {
   
   if(tagmultnames.at(tagbin) == "AllTags"){
@@ -1016,7 +1016,7 @@ Bool_t analyzer_histograms::initCutflowHistograms( TString uncbin ){
 }
 
 //----------------------------fillCutflowHistograms
-Bool_t analyzer_histograms::fillCutflowHistograms(Double_t weight, int selbin, Int_t localselint, Int_t localselkey)
+Bool_t analyzer_histograms::fillCutflowHistograms(Float_t weight, int selbin, Int_t localselint, Int_t localselkey)
 {
  
  h_Cutflow[selbin] .Fill( 1, weight );
@@ -1234,7 +1234,7 @@ Bool_t analyzer_histograms::initExtraHistograms( TString uncbin ){
 }
 
 //----------------------------fillExtraHistograms
-Bool_t analyzer_histograms::fillExtraHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillExtraHistograms(Float_t weight, int selbin)
 {
 // //For AOD_HLT_Mu17TkMu8
 //   int leadMu;
@@ -1509,7 +1509,7 @@ Bool_t analyzer_histograms::initAODCaloJetMultHistograms( TString uncbin )
 }
 
 //----------------------------fillAODCaloJetMultHistograms
-Bool_t analyzer_histograms::fillAODCaloJetMultHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillAODCaloJetMultHistograms(Float_t weight, int selbin)
 {
   h_nSelectedAODCaloJet    [selbin] .Fill( float(aodcalojet_list.size()), weight );
 }
@@ -1538,7 +1538,7 @@ Bool_t analyzer_histograms::initAODCaloJetTagMultHistograms( TString uncbin )
 }
 
 //----------------------------fillAODCaloJetTagMultHistograms
-Bool_t analyzer_histograms::fillAODCaloJetTagMultHistograms(Double_t weight, int selbin)
+Bool_t analyzer_histograms::fillAODCaloJetTagMultHistograms(Float_t weight, int selbin)
 {
   h_nSelectedAODCaloJetTag    [selbin] .Fill( float(taggedjet_list.size()), weight );
 }
@@ -1660,7 +1660,7 @@ float analyzer_histograms::computeTerm(int b, std::vector<int> mistagBins_tagged
 
 
 //https://helloacm.com/cc-coding-exercise-recursive-combination-algorithm-implementation/
-void analyzer_histograms::comb(int n, int r, int *arr, int sz, Double_t weight, TString mistag_name) {
+void analyzer_histograms::comb(int n, int r, int *arr, int sz, Float_t weight, TString mistag_name) {
 
   for (int i = n; i >= r; i --) {
 
@@ -1783,7 +1783,7 @@ Bool_t analyzer_histograms::initBackgroundEstimateHistograms()
 }
 
 
-Bool_t analyzer_histograms::fillBackgroundEstimateHistograms(Double_t weight)
+Bool_t analyzer_histograms::fillBackgroundEstimateHistograms(Float_t weight)
 {
   bool debug=false;
 
