@@ -99,7 +99,7 @@ int main(int argc, char **argv){
  TString Tsample  = TString(sample);
  TString Txname   = TString(sxname);
  TString TSlumi   = TString(slumi);
- Double_t lumi    = TSlumi.Atof();
+ Float_t lumi    = TSlumi.Atof();
  TString TSevts   = TString(sevts);
  Int_t TIevts     = TSevts.Atoi();
  TString Tinpath   = TString(inpath);  
@@ -190,8 +190,9 @@ int main(int argc, char **argv){
  inputfile.close();
 
  // sample-dependent input variables 
- Double_t nrevents     ;
- Double_t crosssection ;
+ Float_t nrevents     ;
+ Float_t crosssection ;
+ Float_t avgTTSF = 1.    ;
 
  // ---- Get sample information 
  // open <samplename>.info
@@ -220,6 +221,13 @@ int main(int argc, char **argv){
    nrevents = Tinputline.Atof();
    std::cout << "  nrevents: " << nrevents << std::endl;
   }
+
+  // read tt avg SF
+  if( Tinputline.Contains("ttsf: ") ){  
+   Tinputline.ReplaceAll("ttsf: ","");
+   avgTTSF = Tinputline.Atof();
+   std::cout << "  avgTTSF: " << avgTTSF << std::endl;
+  }
   inputline_dump.push_back(inputline);
  } //while !inputfile.eof()
 
@@ -228,22 +236,22 @@ int main(int argc, char **argv){
  std::vector<TString> unccategories;
  //unccategories.push_back("Signal");
  unccategories.push_back("");
- if( isMC ){
-  unccategories.push_back("_EGSUp");
-  unccategories.push_back("_EGSDown");
-  unccategories.push_back("_MESUp");
-  unccategories.push_back("_MESDown");
-  //unccategories.push_back("_JESUp");
-  //unccategories.push_back("_JESDown");
-  unccategories.push_back("_AMaxUp");
-  unccategories.push_back("_AMaxDown");
-  unccategories.push_back("_IPSigUp");
-  unccategories.push_back("_IPSigDown");
-  unccategories.push_back("_TAUp");
-  unccategories.push_back("_TADown");
-  unccategories.push_back("_TagVarsUp");
-  unccategories.push_back("_TagVarsDown");
- }
+// if( isMC ){
+//  unccategories.push_back("_EGSUp");
+//  unccategories.push_back("_EGSDown");
+//  unccategories.push_back("_MESUp");
+//  unccategories.push_back("_MESDown");
+//  //unccategories.push_back("_JESUp");
+//  //unccategories.push_back("_JESDown");
+//  unccategories.push_back("_AMaxUp");
+//  unccategories.push_back("_AMaxDown");
+//  unccategories.push_back("_IPSigUp");
+//  unccategories.push_back("_IPSigDown");
+//  unccategories.push_back("_TAUp");
+//  unccategories.push_back("_TADown");
+//  unccategories.push_back("_TagVarsUp");
+//  unccategories.push_back("_TagVarsDown");
+// }
 
  // make the analyzer, init some stuff
  analyzer_loop analyzer;
@@ -276,7 +284,7 @@ int main(int argc, char **argv){
   analyzer.init2DHistograms( unccategory );
   analyzer.initBackgroundEstimateHistograms();	
 
-  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile, NM1file, unccategory);
+  analyzer.Loop(outfilename, lumi, nrevents, crosssection, avgTTSF, TIevts, optfile, NM1file, unccategory);
  }
 
  // end stopwatch
