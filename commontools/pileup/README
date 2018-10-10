@@ -10,9 +10,5 @@ bash collectjsons.sh
  ## --inputLumiJSON /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/PileUp/pileup_latest.txt
 makeinputhistos.sh
 
-
-
-DoubleEG.json          PU_DoubleEG_66017.root  PU_DoubleMu_69200.root  PU_MuonEG_72383.root        SinglePhoton.json  makeinputhistos.sh
-DoubleMu.json          PU_DoubleEG_69200.root  PU_DoubleMu_72383.root  PU_SinglePhoton_66017.root  collectjsons.sh
-MuonEG.json            PU_DoubleEG_72383.root  PU_MuonEG_66017.root    PU_SinglePhoton_69200.root  data
-PUWeightCalculator.py  PU_DoubleMu_66017.root  PU_MuonEG_69200.root    PU_SinglePhoton_72383.root  makePUweights.C
+# make weight histograms comparing MC to data
+bash runMakePUweights.sh
