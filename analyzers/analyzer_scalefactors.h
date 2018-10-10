@@ -13,14 +13,15 @@ public :
    virtual        ~analyzer_scalefactors(); 
 
  // event based weights
- Double_t         makeEventWeight(Double_t crossSec, Double_t lumi,
-                                  Double_t nrEvents);
- void             loadPUWeight();
- Double_t         makePUWeight();
- TH1F*            PUWeights;
- void             loadElectronWeight( TString eleid );
- Double_t         makeElectronWeight( std::vector<int> &electron_list );
- TH2F*            EleWeights;
+ Float_t         makeEventWeight(Float_t crossSec, Float_t lumi,
+                                  Float_t nrEvents);
+ void            loadPUWeight();
+ Float_t         makePUWeight();
+ TH1F*           PUWeights;
+ void            loadElectronWeight( TString eleid );
+ Float_t         makeElectronWeight( std::vector<int> &electron_list );
+ TH2F*           EleWeights;
+ Float_t         makeTTWeight( Float_t TTavgweight );
 
  void               loadMistagRate();
  TH1F*              h_MistagRate_pt;

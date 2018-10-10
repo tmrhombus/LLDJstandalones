@@ -12,13 +12,13 @@ analyzer_scalefactors::~analyzer_scalefactors()
 }
 
 //----------------------------makeEventWeight
-Double_t analyzer_scalefactors::makeEventWeight(Double_t crossSec,
-                                        Double_t lumi,
-                                        Double_t nrEvents)
+Float_t analyzer_scalefactors::makeEventWeight(Float_t crossSec,
+                                        Float_t lumi,
+                                        Float_t nrEvents)
 {
   // 1.0 for real data
   event_weight=1.0;
-  Double_t crossSecScl = crossSec;
+  Float_t crossSecScl = crossSec;
   if(isMC){ event_weight=lumi*crossSecScl/nrEvents; }
   //printf("isMC: %i lumi: %0.9f crossSec: %0.9f nrEvents: %0.9f",isMC,lumi,crossSecScl,nrEvents);
   //printf("  event_weight: %0.9f\n",event_weight);
@@ -27,17 +27,17 @@ Double_t analyzer_scalefactors::makeEventWeight(Double_t crossSec,
 }
 
 //----------------------------makePUWeight
-Double_t analyzer_scalefactors::makePUWeight(){
+Float_t analyzer_scalefactors::makePUWeight(){
  Int_t tmpbin = PUWeights->GetBin(AODnTruePU);
- Double_t tmpweight = PUWeights->GetBinContent(tmpbin);
+ Float_t tmpweight = PUWeights->GetBinContent(tmpbin);
  //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
  return tmpweight;
 }
 
 //----------------------------makeElectronWeight
-Double_t analyzer_scalefactors::makeElectronWeight( std::vector<int> &electron_list ){
+Float_t analyzer_scalefactors::makeElectronWeight( std::vector<int> &electron_list ){
 
- Double_t tmpsf;
+ Float_t tmpsf;
  tmpsf = 1.;
 
  //check overlap with electrons
@@ -56,7 +56,7 @@ Double_t analyzer_scalefactors::makeElectronWeight( std::vector<int> &electron_l
    Int_t tmpbiny       = EleWeights->GetYaxis()->FindBin( ept  );
    //printf(" bins %i %i\n",tmpbinx,tmpbiny);
    Int_t tmpbin        = EleWeights->GetBin( tmpbinx, tmpbiny );
-   Double_t tmpweight = EleWeights->GetBinContent(tmpbin);
+   Float_t tmpweight = EleWeights->GetBinContent(tmpbin);
    tmpsf *= tmpweight;
   }//end electrons
  } // if electrons
@@ -64,6 +64,16 @@ Double_t analyzer_scalefactors::makeElectronWeight( std::vector<int> &electron_l
  //printf(" done making Electron weight\n");
 
  return tmpsf;
+}
+
+//----------------------------makeTTWeight
+Float_t analyzer_scalefactors::makeTTWeight( Float_t TTavgweight){
+  Float_t TTSF = 1.; 
+  if(toppts->size() == 2){ 
+   TTSF =  ( exp( 0.0615 - 0.0005*toppts->at(0)) * exp( 0.0615 - 0.0005*toppts->at(1)) ) / TTavgweight ;
+   //std::cout<<" doing TTSF: "<<TTSF<<std::endl;
+  }
+ return TTSF;
 }
 
 

@@ -17,13 +17,13 @@ void analyzer_config::setConfiguration()
 
  pho_minPt  = 170.;
  pho_maxEta = 1.4442;
- ele_minPt1 = 25.;
- ele_minPt2 = 15.;
+ ele_minPt1 = 50.;
+ ele_minPt2 = 50.;
  ele_maxEta = 2.5;
- mu_minPt1  = 25.;
- mu_minPt2  = 12.;
+ mu_minPt1  = 50.;
+ mu_minPt2  = 50.;
  mu_maxEta  = 2.4;
- jet_minPt  = 25.;
+ jet_minPt  = 50.;
  jet_maxEta = 2.4;
 
  // tagging variables

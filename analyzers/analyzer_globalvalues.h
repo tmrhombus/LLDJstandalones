@@ -39,14 +39,14 @@ public :
    TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
    TLorentzVector fourVec_l1, fourVec_l2;
    TLorentzVector fourVec_met;
-   Double_t dilep_mass, OSOF_mass;
-   Double_t dilep_pt, OSOF_pt;
+   Float_t dilep_mass, OSOF_mass;
+   Float_t dilep_pt, OSOF_pt;
 
    // personal variables
-   Double_t themet;
-   Double_t themephi;
-   Double_t htall;
-   Double_t htaodcalojets;
+   Float_t themet;
+   Float_t themephi;
+   Float_t htall;
+   Float_t htaodcalojets;
 
    // Uncertainty shifted collections
    std::vector<float>   Shifted_CaloJetPt;

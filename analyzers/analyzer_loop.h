@@ -19,8 +19,8 @@ public :
                analyzer_loop();
  virtual       ~analyzer_loop();
  virtual void  Loop(TString outfilename, 
-                    Double_t lumi, Double_t nrEvents,
-                    Double_t crossSec, Int_t nevts,
+                    Float_t lumi, Float_t nrEvents,
+                    Float_t crossSec, Float_t avgTTSF, Int_t nevts, 
                     TFile *optfile, TFile *NM1file, TString uncbin);
  static const int  width = 8;
  // debug options, printouts

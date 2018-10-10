@@ -99,7 +99,7 @@ int main(int argc, char **argv){
  TString Tsample  = TString(sample);
  TString Txname   = TString(sxname);
  TString TSlumi   = TString(slumi);
- Double_t lumi    = TSlumi.Atof();
+ Float_t lumi    = TSlumi.Atof();
  TString TSevts   = TString(sevts);
  Int_t TIevts     = TSevts.Atoi();
  TString Tinpath   = TString(inpath);  
@@ -190,8 +190,9 @@ int main(int argc, char **argv){
  inputfile.close();
 
  // sample-dependent input variables 
- Double_t nrevents     ;
- Double_t crosssection ;
+ Float_t nrevents     ;
+ Float_t crosssection ;
+ Float_t avgTTSF = 1.    ;
 
  // ---- Get sample information 
  // open <samplename>.info
@@ -219,6 +220,13 @@ int main(int argc, char **argv){
    Tinputline.ReplaceAll("nrevents: ","");
    nrevents = Tinputline.Atof();
    std::cout << "  nrevents: " << nrevents << std::endl;
+  }
+
+  // read tt avg SF
+  if( Tinputline.Contains("ttsf: ") ){  
+   Tinputline.ReplaceAll("ttsf: ","");
+   avgTTSF = Tinputline.Atof();
+   std::cout << "  avgTTSF: " << avgTTSF << std::endl;
   }
   inputline_dump.push_back(inputline);
  } //while !inputfile.eof()
@@ -276,7 +284,7 @@ int main(int argc, char **argv){
   analyzer.init2DHistograms( unccategory );
   analyzer.initBackgroundEstimateHistograms();	
 
-  analyzer.Loop(outfilename, lumi, nrevents, crosssection, TIevts, optfile, NM1file, unccategory);
+  analyzer.Loop(outfilename, lumi, nrevents, crosssection, avgTTSF, TIevts, optfile, NM1file, unccategory);
  }
 
  // end stopwatch
