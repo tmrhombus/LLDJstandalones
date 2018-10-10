@@ -16,8 +16,11 @@ public :
  Float_t         makeEventWeight(Float_t crossSec, Float_t lumi,
                                   Float_t nrEvents);
  void            loadPUWeight();
- Float_t         makePUWeight();
- TH1F*           PUWeights;
+ Float_t         makePUWeight( TString dataset );
+ TH1F*           PUWeights_DoubleEG     ;
+ TH1F*           PUWeights_DoubleMu     ;
+ TH1F*           PUWeights_MuonEG       ;
+ TH1F*           PUWeights_SinglePhoton ;
  void            loadElectronWeight( TString eleid );
  Float_t         makeElectronWeight( std::vector<int> &electron_list );
  TH2F*           EleWeights;
