@@ -2,25 +2,25 @@
 
 regions=( \ 
  "EleMuOSOF"     \
- "OneEleDY"      \
- "OneEleNoPair"  \
- "OneEleOffZ"    \
- "OneEleSig"     \
- "OneEleZH"      \
- "OneMuDY"       \
- "OneMuNoPair"   \
- "OneMuOffZ"     \
- "OneMuSig"      \
- "OneMuZH"       \
+# "OneEleDY"      \
+# "OneEleNoPair"  \
+# "OneEleOffZ"    \
+# "OneEleSig"     \
+# "OneEleZH"      \
+# "OneMuDY"       \
+# "OneMuNoPair"   \
+# "OneMuOffZ"     \
+# "OneMuSig"      \
+# "OneMuZH"       \
  "OnePho"        \
  "TwoEleDY"      \
- "TwoEleOffZ"    \
- "TwoEleSig"     \
- "TwoEleZH"      \
+# "TwoEleOffZ"    \
+# "TwoEleSig"     \
+# "TwoEleZH"      \
  "TwoMuDY"       \
- "TwoMuOffZ"     \
- "TwoMuSig"      \
- "TwoMuZH"       \
+# "TwoMuOffZ"     \
+# "TwoMuSig"      \
+# "TwoMuZH"       \
 ) 
 
 dologs=( \
