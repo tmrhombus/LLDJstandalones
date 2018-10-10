@@ -27,9 +27,25 @@ Float_t analyzer_scalefactors::makeEventWeight(Float_t crossSec,
 }
 
 //----------------------------makePUWeight
-Float_t analyzer_scalefactors::makePUWeight(){
- Int_t tmpbin = PUWeights->GetBin(AODnTruePU);
- Float_t tmpweight = PUWeights->GetBinContent(tmpbin);
+Float_t analyzer_scalefactors::makePUWeight( TString dataset ){
+ Int_t tmpbin;
+ Float_t tmpweight;
+ if( dataset.EqualTo("DoubleEG") ){
+  tmpbin    = PUWeights_DoubleEG->GetBin(AODnTruePU);
+  tmpweight = PUWeights_DoubleEG->GetBinContent(tmpbin);
+ }
+ else if( dataset.EqualTo("DoubleMu") ){
+  tmpbin    = PUWeights_DoubleMu->GetBin(AODnTruePU);
+  tmpweight = PUWeights_DoubleMu->GetBinContent(tmpbin);
+ }
+ else if( dataset.EqualTo("MuonEG") ){
+  tmpbin    = PUWeights_MuonEG->GetBin(AODnTruePU);
+  tmpweight = PUWeights_MuonEG->GetBinContent(tmpbin);
+ }
+ else if( dataset.EqualTo("SinglePhoton") ){
+  tmpbin    = PUWeights_SinglePhoton->GetBin(AODnTruePU);
+  tmpweight = PUWeights_SinglePhoton->GetBinContent(tmpbin);
+ }
  //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
  return tmpweight;
 }
@@ -80,10 +96,19 @@ Float_t analyzer_scalefactors::makeTTWeight( Float_t TTavgweight){
 //----------------------------loadPUWeight
 void analyzer_scalefactors::loadPUWeight(){
  std::cout << "loading PU weight" << std::endl;
- TString filename = "puWeights_69200_24jan2017.root" ;
- TFile* file_puweights = new TFile( filename ) ;
- std::cout <<" filename: " << filename << std::endl;
- PUWeights = (TH1F*)file_puweights->Get("h_PUweight")->Clone("PUWeights");
+ TString filename_DoubleEG     = "puWeights_DoubleEG_69200.root" ;
+ TString filename_DoubleMu     = "puWeights_DoubleMu_69200.root" ;
+ TString filename_MuonEG       = "puWeights_MuonEG_69200.root" ;
+ TString filename_SinglePhoton = "puWeights_SinglePhoton_69200.root" ;
+ TFile* file_puweights_DoubleEG     = new TFile( filename_DoubleEG     ) ;
+ TFile* file_puweights_DoubleMu     = new TFile( filename_DoubleMu     ) ;
+ TFile* file_puweights_MuonEG       = new TFile( filename_MuonEG       ) ;
+ TFile* file_puweights_SinglePhoton = new TFile( filename_SinglePhoton ) ;
+ //std::cout <<" filename: " << filename << std::endl;
+ PUWeights_DoubleEG     = (TH1F*)file_puweights_DoubleEG    ->Get("h_PUweight")->Clone("PUWeights_DoubleEG"    );
+ PUWeights_DoubleMu     = (TH1F*)file_puweights_DoubleMu    ->Get("h_PUweight")->Clone("PUWeights_DoubleMu"    );
+ PUWeights_MuonEG       = (TH1F*)file_puweights_MuonEG      ->Get("h_PUweight")->Clone("PUWeights_MuonEG"      );
+ PUWeights_SinglePhoton = (TH1F*)file_puweights_SinglePhoton->Get("h_PUweight")->Clone("PUWeights_SinglePhoton");
  return ;
 }
 

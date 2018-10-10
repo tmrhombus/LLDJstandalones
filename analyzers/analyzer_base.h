@@ -26,6 +26,11 @@ public :
    FILE * logfile;
    FILE * edmfile;
    Float_t event_weight;
+   Float_t PUweight_DoubleEG;
+   Float_t PUweight_DoubleMu;
+   Float_t PUweight_MuonEG;
+   Float_t PUweight_SinglePhoton;
+   Float_t fullweight;
 
    //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
    // MC and Data
