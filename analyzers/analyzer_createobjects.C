@@ -357,7 +357,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
      //printf(" brgin looping over electrons\n");
      int eleindex = electron_list[d];
      //std::cout << eleindex <<"      size: "<<electron_list.size()<<"     Eta:  "<<AOD_eleEta->size()<<std::endl;
-     if( dR( AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex), AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex) ) < objcleandRcut )
+     if( dR( AOD_phoEta->at(p),AOD_phoPhi->at(p), AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex) ) < objcleandRcut )
      {
       pass_overlap=false; // printf(" OL w electron\n");
      } // if overlap
