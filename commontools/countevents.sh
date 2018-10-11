@@ -19,12 +19,13 @@ xcDY5to50_HT400To600="3.581" # +-0.118
 xcDY5to50_HT600ToInf="1.124" # +-0.038 
 #Ref: LO https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z             
 
-xcGJets_HT40To100="20790"    # +-9                 
-xcGJets_HT100To200="9238"    # +-4              
-xcGJets_HT200To400="2305"    # +-0.7               
-xcGJets_HT400To600="274.4"   # +-0.2               
-xcGJets_HT600ToInf="93.46"   # +-0.06            
+xcGJets_HT40To100="26195.4"    # 1.26*20790+-9                 
+xcGJets_HT100To200="11639.88"  # 1.26*9238+-4              
+xcGJets_HT200To400="2904.3"    # 1.26*2305+-0.7               
+xcGJets_HT400To600="345.744"   # 1.26*274.4+-0.2               
+xcGJets_HT600ToInf="117.7596"  # 1.26*93.46+-0.06            
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#DY_Z
+#1.26 from http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2015_224_v23.pdf
 
 xcST_s="3.36"       #+0.13 -0.12 NLO
 xcSTbar_t="26.38"   # +1.32-1.18
@@ -105,15 +106,16 @@ xcWJetsToLNu="74447.3"
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets                  
 
 #xcQCD_HT50to100 can't find value on McM or SummaryTable1G25ns twiki
-xcQCD_HT100to200="27990000"
-xcQCD_HT200to300="1712000"
-xcQCD_HT300to500="347700"
-xcQCD_HT500to700="32100"
-xcQCD_HT700to1000="6831"
-xcQCD_HT1000to1500="1207"
-xcQCD_HT1500to2000="119.9"
-xcQCD_HT2000toInf="25.24"
+xcQCD_HT100to200="35267400" #1.26*27990000
+xcQCD_HT200to300="2157120" #1.26*1712000
+xcQCD_HT300to500="438102" #1.26*347700
+xcQCD_HT500to700="40446" #1.26*32100
+xcQCD_HT700to1000="8607.06" #1.26*6831
+xcQCD_HT1000to1500="1520.82" #1.26*1207
+xcQCD_HT1500to2000="151.074" #1.26*119.9
+xcQCD_HT2000toInf="31.8024" #1.26*25.24
 #Ref: https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#QCD
+#1.26 from http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2015_224_v23.pdf
 
 countalist () {
  printf "Making %s\n" $1
