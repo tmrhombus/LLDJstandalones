@@ -29,7 +29,7 @@ void analyzer_config::setConfiguration()
  // tagging variables
  tag_minIPsig = 1.15;
  tag_minTA    = -1.75;
- tag_maxAmax  = 0.2;
+ tag_maxAmax  = 0.75;
  // shifted tagging variables
  tag_shiftminIPsig = 1.2;
  tag_shiftminTA    = -1.4;
