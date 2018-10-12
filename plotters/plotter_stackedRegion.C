@@ -565,7 +565,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_Sig_ggZH_MS55ct10    = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
  file_Sig_ggZH_MS55ct1     = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
 
- /*
  file_Data_SingleMu_H_3             =  new TFile( inpath + "Data_SingleMu_H_3_"+region+"_histograms.root"     ) ; 
  file_Data_SingleMu_H_2             =  new TFile( inpath + "Data_SingleMu_H_2_"+region+"_histograms.root"     ) ; 
  file_Data_SingleMu_G               =  new TFile( inpath + "Data_SingleMu_G_"+region+"_histograms.root"       ) ; 
@@ -582,7 +581,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 // file_Data_SingleEle_D              =  new TFile( inpath + "Data_SingleEle_D_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_C              =  new TFile( inpath + "Data_SingleEle_C_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_B_2            =  new TFile( inpath + "Data_SingleEle_B_2_"+region+"_histograms.root"    ) ; 
-*/
  file_Data_SinglePhoton_H_3         =  new TFile( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
  file_Data_SinglePhoton_H_2         =  new TFile( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
  file_Data_SinglePhoton_G           =  new TFile( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
@@ -737,7 +735,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Sig_ggZH_MS55ct10   = (TH1F*)file_Sig_ggZH_MS55ct10   ->Get("h_"+varname+uncbin )->Clone( "Sig_ggZH_MS55ct10"  +uncbin ) ;
      h_Sig_ggZH_MS55ct1    = (TH1F*)file_Sig_ggZH_MS55ct1    ->Get("h_"+varname+uncbin )->Clone( "Sig_ggZH_MS55ct1"   +uncbin ) ;
 
-     /*
      h_Data_SingleMu_H_3     = (TH1F*) file_Data_SingleMu_H_3     -> Get("h_"+varname)->Clone( "Data_SingleMu_H_3"      ) ; 
      h_Data_SingleMu_H_2     = (TH1F*) file_Data_SingleMu_H_2     -> Get("h_"+varname)->Clone( "Data_SingleMu_H_2"      ) ; 
      h_Data_SingleMu_G       = (TH1F*) file_Data_SingleMu_G       -> Get("h_"+varname)->Clone( "Data_SingleMu_G"        ) ; 
@@ -754,7 +751,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      //h_Data_SingleEle_D      = (TH1F*) file_Data_SingleEle_D      -> Get("h_"+varname)->Clone( "Data_SingleEle_D"       ) ; 
      //h_Data_SingleEle_C      = (TH1F*) file_Data_SingleEle_C      -> Get("h_"+varname)->Clone( "Data_SingleEle_C"       ) ; 
      //h_Data_SingleEle_B_2    = (TH1F*) file_Data_SingleEle_B_2    -> Get("h_"+varname)->Clone( "Data_SingleEle_B_2"     ) ; 
-     */
      h_Data_SinglePhoton_H_3 = (TH1F*) file_Data_SinglePhoton_H_3 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_3"  ) ; 
      h_Data_SinglePhoton_H_2 = (TH1F*) file_Data_SinglePhoton_H_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_2"  ) ; 
      h_Data_SinglePhoton_G   = (TH1F*) file_Data_SinglePhoton_G   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_G"    ) ; 
@@ -1067,7 +1063,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Float_t int_Sig_MS55ct100  = h_Sig_MS55ct100  ->Integral(0,-1);
      Float_t int_Sig_MS55ct10   = h_Sig_MS55ct10   ->Integral(0,-1);
      Float_t int_Sig_MS55ct1    = h_Sig_MS55ct1    ->Integral(0,-1);
-     /*
+
      Float_t  int_Data_SingleMu_H_3        = h_Data_SingleMu_H_3               ->Integral(0,-1);                   
      Float_t  int_Data_SingleMu_H_2        = h_Data_SingleMu_H_2               ->Integral(0,-1);                   
      Float_t  int_Data_SingleMu_G          = h_Data_SingleMu_G                 ->Integral(0,-1);                   
@@ -1079,7 +1075,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Float_t  int_Data_SingleEle_H_3       = h_Data_SingleEle_H_3              ->Integral(0,-1);                   
      Float_t  int_Data_SingleEle_H_2       = h_Data_SingleEle_H_2              ->Integral(0,-1);                   
      Float_t  int_Data_SingleEle_G         = h_Data_SingleEle_G                ->Integral(0,-1);                   
-     */
      // Float_t  int_Data_SingleEle_F         = h_Data_SingleEle_F                ->Integral(0,-1);                   
      // Float_t  int_Data_SingleEle_E         = h_Data_SingleEle_E                ->Integral(0,-1);                   
      // Float_t  int_Data_SingleEle_D         = h_Data_SingleEle_D                ->Integral(0,-1);                   
@@ -1125,7 +1120,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      //          int_Data_SingleMu_D   +
      //          int_Data_SingleMu_E   +
      //          int_Data_SingleMu_F   ;
-     /*
+
      Float_t int_Data_SingleEleGH =
               int_Data_SingleEle_G   +
               int_Data_SingleEle_H_2 +
@@ -1135,7 +1130,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
               int_Data_SingleMu_G   +
               int_Data_SingleMu_H_2 +
               int_Data_SingleMu_H_3 ;
-     */
+
      //Float_t int_Data_DoubleEGBCDEF =
      //         int_Data_DoubleEG_B_2 +
      //         int_Data_DoubleEG_C   +
@@ -1252,7 +1247,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        fprintf (outfulltable, "Sig ggZH MS55ct10       & %3.1f \\\\\n", int_Sig_ggZH_MS55ct10      ) ; 
        fprintf (outfulltable, "Sig ggZH MS55ct1        & %3.1f \\\\\n", int_Sig_ggZH_MS55ct1       ) ; 
        fprintf (outfulltable, " \\hline \n");
-       /*
+
        fprintf (outfulltable, "Data SingleMu H 3       & %3.1f \\\\\n", int_Data_SingleMu_H_3      ) ; 
        fprintf (outfulltable, "Data SingleMu H 2       & %3.1f \\\\\n", int_Data_SingleMu_H_2      ) ; 
        fprintf (outfulltable, "Data SingleMu G         & %3.1f \\\\\n", int_Data_SingleMu_G        ) ; 
@@ -1269,7 +1264,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
   //   fprintf (outfulltable, "Data SingleEle D        & %3.1f \\\\\n", int_Data_SingleEle_D       ) ; 
   //   fprintf (outfulltable, "Data SingleEle C        & %3.1f \\\\\n", int_Data_SingleEle_C       ) ; 
   //   fprintf (outfulltable, "Data SingleEle B 2      & %3.1f \\\\\n", int_Data_SingleEle_B_2     ) ; 
-  */
+
        fprintf (outfulltable, "Data SinglePhoton H 3   & %3.1f \\\\\n", int_Data_SinglePhoton_H_3  ) ; 
        fprintf (outfulltable, "Data SinglePhoton H 2   & %3.1f \\\\\n", int_Data_SinglePhoton_H_2  ) ; 
        fprintf (outfulltable, "Data SinglePhoton G     & %3.1f \\\\\n", int_Data_SinglePhoton_G    ) ; 
