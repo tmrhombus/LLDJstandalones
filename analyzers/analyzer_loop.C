@@ -292,11 +292,16 @@ void analyzer_loop::Loop(TString outfilename,
   // fill the histograms
   for(unsigned int i=0; i<selbinnames.size(); ++i){
 
-   // ok I'm sorry, this is terrible
-   if(i==0||i==1||i==4||i==5||i==8||i==9||i==12||i==13||i==15)   fullweight = event_weight * PUweight_DoubleEG;
-   if(i==2||i==3||i==6||i==7||i==10||i==11||i==14||i==15||i==17) fullweight = event_weight * PUweight_DoubleMu;
-   if(i==18) fullweight = event_weight * PUweight_MuonEG;
-   if(i==19) fullweight = event_weight * PUweight_SinglePhoton;
+   if(isMC){
+     // ok I'm sorry, this is terrible
+     if(i==0||i==1||i==4||i==5||i==8||i==9||i==12||i==13||i==15)   fullweight = event_weight * PUweight_DoubleEG;
+     if(i==2||i==3||i==6||i==7||i==10||i==11||i==14||i==15||i==17) fullweight = event_weight * PUweight_DoubleMu;
+     if(i==18) fullweight = event_weight * PUweight_MuonEG;
+     if(i==19) fullweight = event_weight * PUweight_SinglePhoton;
+   }
+   else{
+     fullweight = event_weight;
+   }
 
    fillCutflowHistograms( fullweight, i, selvec[i], selkey[i] );
    if( dofillselbin[i] ){
