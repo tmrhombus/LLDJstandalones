@@ -33,7 +33,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TString aversion = TString(getenv("aversion"));
 
  inpath = inpath+aversion+"/";
- outpath = outpath+aversion+"/"+region+"/";
+ //outpath = outpath+aversion+"/"+region+"/";
+ outpath = outpath+"test/"+region+"/";
 
  TString extraname = "";
  if(HIP){
@@ -95,6 +96,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  ////variables.push_back("phoE");                   
  ////variables.push_back("phoEt");                  
+ variables.push_back("AOD_MET_pt");                 
+ variables.push_back("AOD_MET_phi");                 
  variables.push_back("AOD_phoPt");                 
  variables.push_back("AOD_phoEta");                 
  variables.push_back("AOD_phoPhi");                 
@@ -110,30 +113,28 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
   variables.push_back("htall"); 
   variables.push_back("htaodcalojets");
-  variables.push_back("AOD_nSelectedPho");
-  variables.push_back("AOD_nSelectedEle");
-  variables.push_back("AOD_nSelectedMu");
-  variables.push_back("nSelectedAODCaloJet");
-  variables.push_back("nSelectedAODCaloJetTag");
-  variables.push_back("LeadingJet_AODCaloJetPt");                      
+//  variables.push_back("AOD_nSelectedPho");
+//  variables.push_back("AOD_nSelectedEle");
+//  variables.push_back("AOD_nSelectedMu");
+//  variables.push_back("nSelectedAODCaloJet");
+//  variables.push_back("nSelectedAODCaloJetTag");
+//  variables.push_back("LeadingJet_AODCaloJetPt");                      
  // variables.push_back("LeadingJet_jetEn");                      
-  variables.push_back("LeadingJet_AODCaloJetEta");                     
-  variables.push_back("LeadingJet_AODCaloJetPhi");                     
+ // variables.push_back("LeadingJet_AODCaloJetEta");                     
+ // variables.push_back("LeadingJet_AODCaloJetPhi");                     
  // variables.push_back("AllJets_AODCaloJetPtVar");
  // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
  // variables.push_back("AllJets_AODCaloJetdR");
  // variables.push_back("AllJets_AODCaloJetdR_Tag0");
  // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- // variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- // variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- // variables.push_back("AllJets_AODCaloJetAlphaMax");
-  variables.push_back("AllJets_AODCaloJetPt");                      
- // variables.push_back("AllJets_AODCaloJetEn");                      
-  variables.push_back("AllJets_AODCaloJetEta");                     
-  variables.push_back("AllJets_AODCaloJetPhi");                     
- // variables.push_back("AllJets_AODCaloJetEta");                     
- // variables.push_back("AllJets_AODCaloJetPhi");      
+ variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ variables.push_back("AllJets_AODCaloJetAlphaMax");
+ variables.push_back("AllJets_AODCaloJetPt");                      
+ //variables.push_back("AllJets_AODCaloJetEn");                      
+ variables.push_back("AllJets_AODCaloJetEta");                     
+ variables.push_back("AllJets_AODCaloJetPhi");                     
   //  all variables after NMinus will have dolog=true, sorry
  variables.push_back("NMinus");                   
  variables.push_back("Onecut");                   
@@ -494,9 +495,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_STbar_tW                = new TFile( inpath + "ST_tW_antitop_5f_NoFullyHadronicDecays_"+region+"_histograms.root"     ) ;
  file_ST_tW                   = new TFile( inpath + "ST_tW_top_5f_NoFullyHadronicDecays_"+region+"_histograms.root"         ) ;
  file_TTJets                  = new TFile( inpath + "TTJets_"+region+"_histograms.root"           ) ;
- //file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
- //file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
- //file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
+ file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
+ file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
+ file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
  file_WJetsToLNu              = new TFile( inpath + "WJetsToLNu_"+region+"_histograms.root"       ) ;
  file_WG                      = new TFile( inpath + "WGToLNuG_"+region+"_histograms.root"         ) ;
  file_ZGTo2LG                 = new TFile( inpath + "ZGTo2LG_"+region+"_histograms.root"          ) ;
@@ -852,16 +853,18 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Sig_MS55ct100  ->Add( h_Sig_ggZH_MS55ct100  ) ;
      h_Sig_MS55ct10   ->Add( h_Sig_ggZH_MS55ct10   ) ;
      h_Sig_MS55ct1    ->Add( h_Sig_ggZH_MS55ct1    ) ;
-
+//Change me 1.26 is just a kfactor test
      // rescale MC to match eras used
      h_DY         ->Scale(MCSF); 
      h_GJets      ->Scale(MCSF); 
+     h_GJets      ->Scale(1.26); 
      h_ST         ->Scale(MCSF); 
      h_ZH         ->Scale(MCSF); 
      h_VV         ->Scale(MCSF); 
      h_TT         ->Scale(MCSF); 
      h_VG         ->Scale(MCSF); 
      h_QCD        ->Scale(MCSF); 
+     h_QCD        ->Scale(1.26); 
      h_WJetsToLNu ->Scale(MCSF); 
      h_altDY      ->Scale(MCSF);
      h_altVV      ->Scale(MCSF);
@@ -1538,21 +1541,22 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Double_t ymax;
      ymax = std::max(h_Data->GetMaximum(), h_bkgtotal->GetMaximum() );
      
-     //if(dolog){
-     // //bgstack->SetMaximum(500*ymax); 
-     // //bgstack->SetMinimum(1.0e-6);
-     //} 
-     //else {
-     // bgstack->SetMaximum(ymax*1.4);
-     //}
+     if(dolog){
+      bgstack->SetMaximum(500*ymax); 
+      bgstack->SetMinimum(1.0e-6);
+     } 
+     else {
+      bgstack->SetMaximum(ymax*1.4);
+     }
       
      plotpad->cd();
      bgstack->Draw("hist");
      //bgstack->Draw("hist e");
      bgstack->GetYaxis()->SetTitle("Events");
+     //bgstack->GetYaxis()->SetTitleOffset(1.85);
      bgstack->GetYaxis()->SetTitleSize(40);
      bgstack->GetYaxis()->SetTitleFont(43);
-     bgstack->GetYaxis()->SetTitleOffset(1.55);
+     bgstack->GetYaxis()->SetTitleOffset(1.75);
      //h_bkgtotal->Draw("e2 sames");
      if(drawData){
        h_Data->Draw("sames E"); 
@@ -1635,7 +1639,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
       // save canvas
       //canvas->SaveAs(outname+".png");
-      canvas->SaveAs(outname+".pdf");
+      canvas->SaveAs(outname+"_Pho170k1p26"+".pdf");
 
       // save histograms into single root file
       TFile *outfile = TFile::Open(outname+".root","RECREATE");
