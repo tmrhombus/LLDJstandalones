@@ -46,7 +46,7 @@ Float_t analyzer_scalefactors::makePUWeight( TString dataset ){
   tmpbin    = PUWeights_SinglePhoton->GetBin(AODnTruePU);
   tmpweight = PUWeights_SinglePhoton->GetBinContent(tmpbin);
  }
- //printf("making PU weight for %i , %i, %f \n", nTruePU,tmpbin,tmpweight);
+ //printf("making PU weight for %i , %i, %f \n", AODnTruePU,tmpbin,tmpweight);
  return tmpweight;
 }
 
