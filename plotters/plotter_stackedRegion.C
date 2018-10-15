@@ -15,6 +15,28 @@
 
 //using namespace std;
 
+void print_hist(TH1F* h, TString name, FILE* file){
+
+  fprintf(file, name);
+  for(int i=1; i<=h->GetNbinsX(); i++){
+    TString toprint = ", ";
+    toprint += h->GetBinContent(i);
+    fprintf(file, toprint);
+  }
+  fprintf(file,"\n");
+
+  name += " err";
+  fprintf(file, name);
+  //Error
+  for(int i=1; i<=h->GetNbinsX(); i++){
+    TString toprint = ", ";
+    toprint += h->GetBinError(i);
+    fprintf(file, toprint);
+  }
+  fprintf(file,"\n");
+
+}
+
 void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 {
 
@@ -96,8 +118,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  //variables.push_back("nPho");                   
  ////variables.push_back("phoE");                   
  ////variables.push_back("phoEt");                  
- variables.push_back("AOD_MET_pt");                 
- variables.push_back("AOD_MET_phi");                 
+ //variables.push_back("AOD_MET_pt");                 
+ //variables.push_back("AOD_MET_phi");                 
  variables.push_back("AOD_phoPt");                 
  variables.push_back("AOD_phoEta");                 
  variables.push_back("AOD_phoPhi");                 
@@ -111,13 +133,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  variables.push_back("AOD_muPhi");                  
  // variables.push_back("nJet");                   
 
-  variables.push_back("htall"); 
+ //variables.push_back("htall"); 
   variables.push_back("htaodcalojets");
 //  variables.push_back("AOD_nSelectedPho");
 //  variables.push_back("AOD_nSelectedEle");
 //  variables.push_back("AOD_nSelectedMu");
 //  variables.push_back("nSelectedAODCaloJet");
-//  variables.push_back("nSelectedAODCaloJetTag");
+  variables.push_back("nSelectedAODCaloJetTag");
 //  variables.push_back("LeadingJet_AODCaloJetPt");                      
  // variables.push_back("LeadingJet_jetEn");                      
  // variables.push_back("LeadingJet_AODCaloJetEta");                     
@@ -551,6 +573,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  file_Sig_ggZH_MS55ct10    = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
  file_Sig_ggZH_MS55ct1     = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
 
+ /*
  file_Data_SingleMu_H_3             =  new TFile( inpath + "Data_SingleMu_H_3_"+region+"_histograms.root"     ) ; 
  file_Data_SingleMu_H_2             =  new TFile( inpath + "Data_SingleMu_H_2_"+region+"_histograms.root"     ) ; 
  file_Data_SingleMu_G               =  new TFile( inpath + "Data_SingleMu_G_"+region+"_histograms.root"       ) ; 
@@ -567,6 +590,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 // file_Data_SingleEle_D              =  new TFile( inpath + "Data_SingleEle_D_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_C              =  new TFile( inpath + "Data_SingleEle_C_"+region+"_histograms.root"      ) ; 
 // file_Data_SingleEle_B_2            =  new TFile( inpath + "Data_SingleEle_B_2_"+region+"_histograms.root"    ) ; 
+*/
  file_Data_SinglePhoton_H_3         =  new TFile( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
  file_Data_SinglePhoton_H_2         =  new TFile( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
  file_Data_SinglePhoton_G           =  new TFile( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
@@ -721,7 +745,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Sig_ggZH_MS55ct10   = (TH1F*)file_Sig_ggZH_MS55ct10   ->Get("h_"+varname+uncbin )->Clone( "Sig_ggZH_MS55ct10"  +uncbin ) ;
      h_Sig_ggZH_MS55ct1    = (TH1F*)file_Sig_ggZH_MS55ct1    ->Get("h_"+varname+uncbin )->Clone( "Sig_ggZH_MS55ct1"   +uncbin ) ;
 
-
+     /*
      h_Data_SingleMu_H_3     = (TH1F*) file_Data_SingleMu_H_3     -> Get("h_"+varname)->Clone( "Data_SingleMu_H_3"      ) ; 
      h_Data_SingleMu_H_2     = (TH1F*) file_Data_SingleMu_H_2     -> Get("h_"+varname)->Clone( "Data_SingleMu_H_2"      ) ; 
      h_Data_SingleMu_G       = (TH1F*) file_Data_SingleMu_G       -> Get("h_"+varname)->Clone( "Data_SingleMu_G"        ) ; 
@@ -738,6 +762,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      //h_Data_SingleEle_D      = (TH1F*) file_Data_SingleEle_D      -> Get("h_"+varname)->Clone( "Data_SingleEle_D"       ) ; 
      //h_Data_SingleEle_C      = (TH1F*) file_Data_SingleEle_C      -> Get("h_"+varname)->Clone( "Data_SingleEle_C"       ) ; 
      //h_Data_SingleEle_B_2    = (TH1F*) file_Data_SingleEle_B_2    -> Get("h_"+varname)->Clone( "Data_SingleEle_B_2"     ) ; 
+     */
      h_Data_SinglePhoton_H_3 = (TH1F*) file_Data_SinglePhoton_H_3 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_3"  ) ; 
      h_Data_SinglePhoton_H_2 = (TH1F*) file_Data_SinglePhoton_H_2 -> Get("h_"+varname)->Clone( "Data_SinglePhoton_H_2"  ) ; 
      h_Data_SinglePhoton_G   = (TH1F*) file_Data_SinglePhoton_G   -> Get("h_"+varname)->Clone( "Data_SinglePhoton_G"    ) ; 
@@ -853,18 +878,18 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      h_Sig_MS55ct100  ->Add( h_Sig_ggZH_MS55ct100  ) ;
      h_Sig_MS55ct10   ->Add( h_Sig_ggZH_MS55ct10   ) ;
      h_Sig_MS55ct1    ->Add( h_Sig_ggZH_MS55ct1    ) ;
-//Change me 1.26 is just a kfactor test
+
      // rescale MC to match eras used
      h_DY         ->Scale(MCSF); 
      h_GJets      ->Scale(MCSF); 
-     h_GJets      ->Scale(1.26); 
+     h_GJets      ->Scale(MCSF); 
      h_ST         ->Scale(MCSF); 
      h_ZH         ->Scale(MCSF); 
      h_VV         ->Scale(MCSF); 
      h_TT         ->Scale(MCSF); 
      h_VG         ->Scale(MCSF); 
      h_QCD        ->Scale(MCSF); 
-     h_QCD        ->Scale(1.26); 
+     h_QCD        ->Scale(MCSF); 
      h_WJetsToLNu ->Scale(MCSF); 
      h_altDY      ->Scale(MCSF);
      h_altVV      ->Scale(MCSF);
@@ -933,6 +958,27 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
         h_Data->Add( h_Data_MuonEG_H_3 )     ; 
      }
      
+     //CSV-style printout for Ted
+     if(varname.Contains("nSelectedAODCaloJetTag") && !extraname.Contains("log") && uncbin==""){
+       TString fname = "forTed_"; fname+=varname; fname+=".csv";
+       std::cout << "Writing " << fname<< std::endl;
+       FILE *f = fopen (fname, "w");
+       print_hist(h_DY, "DY", f);
+       print_hist(h_GJets, "GJets", f);
+       print_hist(h_ST, "SingleTop", f);
+       print_hist(h_ZH, "ZH", f);
+       print_hist(h_VV, "VV", f);
+       print_hist(h_TT, "TT", f);
+       print_hist(h_VG, "VG", f);
+       print_hist(h_QCD, "QCD", f);
+       print_hist(h_WJetsToLNu, "WJets", f);
+       print_hist(h_bkgtotal, "Total", f);
+       print_hist(h_altTT, "altTT", f);
+       print_hist(h_altVV, "altVV", f);
+       print_hist(h_altDY, "altDY", f);
+       fclose(f);
+     }
+
      // Integrals
      Float_t  int_DY5to50_HT100To200       = h_DY5to50_HT100To200              ->Integral(0,-1); 
      Float_t  int_DY5to50_HT200To400       = h_DY5to50_HT200To400              ->Integral(0,-1); 
@@ -1029,7 +1075,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Float_t int_Sig_MS55ct100  = h_Sig_MS55ct100  ->Integral(0,-1);
      Float_t int_Sig_MS55ct10   = h_Sig_MS55ct10   ->Integral(0,-1);
      Float_t int_Sig_MS55ct1    = h_Sig_MS55ct1    ->Integral(0,-1);
-
+     /*
      Float_t  int_Data_SingleMu_H_3        = h_Data_SingleMu_H_3               ->Integral(0,-1);                   
      Float_t  int_Data_SingleMu_H_2        = h_Data_SingleMu_H_2               ->Integral(0,-1);                   
      Float_t  int_Data_SingleMu_G          = h_Data_SingleMu_G                 ->Integral(0,-1);                   
@@ -1041,6 +1087,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      Float_t  int_Data_SingleEle_H_3       = h_Data_SingleEle_H_3              ->Integral(0,-1);                   
      Float_t  int_Data_SingleEle_H_2       = h_Data_SingleEle_H_2              ->Integral(0,-1);                   
      Float_t  int_Data_SingleEle_G         = h_Data_SingleEle_G                ->Integral(0,-1);                   
+     */
      // Float_t  int_Data_SingleEle_F         = h_Data_SingleEle_F                ->Integral(0,-1);                   
      // Float_t  int_Data_SingleEle_E         = h_Data_SingleEle_E                ->Integral(0,-1);                   
      // Float_t  int_Data_SingleEle_D         = h_Data_SingleEle_D                ->Integral(0,-1);                   
@@ -1086,7 +1133,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      //          int_Data_SingleMu_D   +
      //          int_Data_SingleMu_E   +
      //          int_Data_SingleMu_F   ;
-
+     /*
      Float_t int_Data_SingleEleGH =
               int_Data_SingleEle_G   +
               int_Data_SingleEle_H_2 +
@@ -1096,7 +1143,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
               int_Data_SingleMu_G   +
               int_Data_SingleMu_H_2 +
               int_Data_SingleMu_H_3 ;
-
+     */
      //Float_t int_Data_DoubleEGBCDEF =
      //         int_Data_DoubleEG_B_2 +
      //         int_Data_DoubleEG_C   +
@@ -1213,7 +1260,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        fprintf (outfulltable, "Sig ggZH MS55ct10       & %3.1f \\\\\n", int_Sig_ggZH_MS55ct10      ) ; 
        fprintf (outfulltable, "Sig ggZH MS55ct1        & %3.1f \\\\\n", int_Sig_ggZH_MS55ct1       ) ; 
        fprintf (outfulltable, " \\hline \n");
-
+       /*
        fprintf (outfulltable, "Data SingleMu H 3       & %3.1f \\\\\n", int_Data_SingleMu_H_3      ) ; 
        fprintf (outfulltable, "Data SingleMu H 2       & %3.1f \\\\\n", int_Data_SingleMu_H_2      ) ; 
        fprintf (outfulltable, "Data SingleMu G         & %3.1f \\\\\n", int_Data_SingleMu_G        ) ; 
@@ -1230,6 +1277,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
   //   fprintf (outfulltable, "Data SingleEle D        & %3.1f \\\\\n", int_Data_SingleEle_D       ) ; 
   //   fprintf (outfulltable, "Data SingleEle C        & %3.1f \\\\\n", int_Data_SingleEle_C       ) ; 
   //   fprintf (outfulltable, "Data SingleEle B 2      & %3.1f \\\\\n", int_Data_SingleEle_B_2     ) ; 
+  */
        fprintf (outfulltable, "Data SinglePhoton H 3   & %3.1f \\\\\n", int_Data_SinglePhoton_H_3  ) ; 
        fprintf (outfulltable, "Data SinglePhoton H 2   & %3.1f \\\\\n", int_Data_SinglePhoton_H_2  ) ; 
        fprintf (outfulltable, "Data SinglePhoton G     & %3.1f \\\\\n", int_Data_SinglePhoton_G    ) ; 
@@ -1557,6 +1605,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      bgstack->GetYaxis()->SetTitleSize(40);
      bgstack->GetYaxis()->SetTitleFont(43);
      bgstack->GetYaxis()->SetTitleOffset(1.75);
+     if(!drawData){
+       bgstack->GetXaxis()->SetTitleSize(40);
+       bgstack->GetXaxis()->SetTitleFont(43);
+       bgstack->GetXaxis()->SetTitle(varname);
+       bgstack->GetXaxis()->SetTitleOffset(4.0);
+       bgstack->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+       bgstack->GetXaxis()->SetLabelSize(20);//20
+     }
      //h_bkgtotal->Draw("e2 sames");
      if(drawData){
        h_Data->Draw("sames E"); 
@@ -1590,93 +1646,92 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      }
      //lumi->DrawTextNDC(0.9,0.91,"35.9 /fb (13 TeV)");
      lumi->DrawTextNDC(0.9,0.91,(TString)lumistring+" /fb (13 TeV)");
+     
+     if(drawData){
+       ratiopad->cd();
+       h_ratio = (TH1F*)h_Data->Clone("ratio");
+       if(h_Data->Integral(-1,-1)>0){
+	 h_ratio->Divide(h_bkgtotal);
+       }
+       h_ratio->SetTitle(" ");
+       // Y axis ratio plot settings
+       h_ratio->GetYaxis()->SetTitleSize(40);
+       h_ratio->GetYaxis()->SetTitleFont(43);
+       h_ratio->GetYaxis()->SetTitleOffset(1.55);
+       h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
+       h_ratio->GetYaxis()->SetLabelSize(20);
+       h_ratio->GetYaxis()->SetNdivisions(-105);
+       h_ratio->GetYaxis()->SetTitle("Data/MC");
+       // X axis ratio plot settings
+       h_ratio->GetXaxis()->SetTitleSize(40);
+       h_ratio->GetXaxis()->SetTitleFont(43);
+       h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+       h_ratio->GetXaxis()->SetTitleOffset(4.0);
+       h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
+       h_ratio->GetXaxis()->SetLabelSize(20);//20
+       h_ratio->SetMarkerStyle(20);
+       h_ratio->SetMarkerColor(kRed);
+       h_ratio->SetMarkerSize(1);
+       h_ratio->GetYaxis()->SetRangeUser(0,2);
+       h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
+              
+       h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
+       h_ratiostaterr->Divide(h_bkgtotal);
+       
+       ratiopad->Update();       // need to update pad to get X min/max
+       TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
+       line->SetLineColor(kBlue);
+       line->SetLineWidth(3);
+       line->SetLineStyle(9);
+       h_ratiostaterr->Draw("e2 same");
 
+       line->Draw();
+       h_ratio->Draw("ep same"); // draw points above line
+     }
+     else{
+       ratiopad->Clear();
+     }
 
-      ratiopad->cd();
-      h_ratio = (TH1F*)h_Data->Clone("ratio");
-      if(h_Data->Integral(-1,-1)>0){
-       h_ratio->Divide(h_bkgtotal);
-      }
-      h_ratio->SetTitle(" ");
-      // Y axis ratio plot settings
-      h_ratio->GetYaxis()->SetTitleSize(40);
-      h_ratio->GetYaxis()->SetTitleFont(43);
-      h_ratio->GetYaxis()->SetTitleOffset(1.55);
-      h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-      h_ratio->GetYaxis()->SetLabelSize(20);
-      h_ratio->GetYaxis()->SetNdivisions(-105);
-      h_ratio->GetYaxis()->SetTitle("Data/MC");
-      // X axis ratio plot settings
-      h_ratio->GetXaxis()->SetTitleSize(40);
-      h_ratio->GetXaxis()->SetTitleFont(43);
-      h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
-      h_ratio->GetXaxis()->SetTitleOffset(4.0);
-      h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-      h_ratio->GetXaxis()->SetLabelSize(20);//20
-      h_ratio->SetMarkerStyle(20);
-      h_ratio->SetMarkerColor(kRed);
-      h_ratio->SetMarkerSize(1);
-      h_ratio->GetYaxis()->SetRangeUser(0,2);
-      if(drawData){
-        h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
-      }
-      
-      h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
-      h_ratiostaterr->Divide(h_bkgtotal);
-
-      ratiopad->Update();       // need to update pad to get X min/max
-      TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
-      line->SetLineColor(kBlue);
-      line->SetLineWidth(3);
-      line->SetLineStyle(9);
-      if(drawData){
-        h_ratiostaterr->Draw("e2 same");
-      }
-      line->Draw();
-      if(drawData){
-        h_ratio->Draw("ep same"); // draw points above line
-      }
-
-      // save canvas
-      //canvas->SaveAs(outname+".png");
-      canvas->SaveAs(outname+"_Pho170k1p26"+".pdf");
-
-      // save histograms into single root file
-      TFile *outfile = TFile::Open(outname+".root","RECREATE");
-      h_Data        ->Write();
-      h_DY          ->Write();
-      h_GJets       ->Write();
-      h_ST          ->Write();
-      h_TT          ->Write();
-      h_WJetsToLNu  ->Write();
-      h_VV          ->Write();
-      h_VG          ->Write();
-      h_QCD         ->Write();
-      h_ZH          ->Write();
-      h_bkgtotal    ->Write();
-      h_ratio       ->Write();
-      h_ratiostaterr->Write();
-      bgstack       ->Write();
-
-      h_altDY          ->Write(); 
-      h_altVV          ->Write(); 
-      h_altTT          ->Write(); 
-      h_Sig_MS15ct1000 ->Write(); 
-      h_Sig_MS15ct100  ->Write(); 
-      h_Sig_MS15ct10   ->Write(); 
-      h_Sig_MS15ct1    ->Write(); 
-      h_Sig_MS40ct1000 ->Write(); 
-      h_Sig_MS40ct100  ->Write(); 
-      h_Sig_MS40ct10   ->Write(); 
-      h_Sig_MS40ct1    ->Write(); 
-      h_Sig_MS55ct1000 ->Write(); 
-      h_Sig_MS55ct100  ->Write(); 
-      h_Sig_MS55ct10   ->Write(); 
-      h_Sig_MS55ct1    ->Write(); 
-
-      outfile->Close();
-   
-    } 
- }
-
+     // save canvas
+     canvas->SaveAs(outname+".png");
+     canvas->SaveAs(outname+".pdf");
+     
+     // save histograms into single root file
+     TFile *outfile = TFile::Open(outname+".root","RECREATE");
+     h_Data        ->Write();
+     h_DY          ->Write();
+     h_GJets       ->Write();
+     h_ST          ->Write();
+     h_TT          ->Write();
+     h_WJetsToLNu  ->Write();
+     h_VV          ->Write();
+     h_VG          ->Write();
+     h_QCD         ->Write();
+     h_ZH          ->Write();
+     h_bkgtotal    ->Write();
+     h_ratio       ->Write();
+     h_ratiostaterr->Write();
+     bgstack       ->Write();
+     
+     h_altDY          ->Write(); 
+     h_altVV          ->Write(); 
+     h_altTT          ->Write(); 
+     h_Sig_MS15ct1000 ->Write(); 
+     h_Sig_MS15ct100  ->Write(); 
+     h_Sig_MS15ct10   ->Write(); 
+     h_Sig_MS15ct1    ->Write(); 
+     h_Sig_MS40ct1000 ->Write(); 
+     h_Sig_MS40ct100  ->Write(); 
+     h_Sig_MS40ct10   ->Write(); 
+     h_Sig_MS40ct1    ->Write(); 
+     h_Sig_MS55ct1000 ->Write(); 
+     h_Sig_MS55ct100  ->Write(); 
+     h_Sig_MS55ct10   ->Write(); 
+     h_Sig_MS55ct1    ->Write(); 
+     
+     outfile->Close();
+     
+   } 
+  }
+  
 }
