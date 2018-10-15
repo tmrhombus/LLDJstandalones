@@ -342,6 +342,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
  pholist.clear();
 
  bool pass_overlap = true;
+ bool pass_noPixelSeed = true;
  ////Loop over photons                   
  for(int p=0;p<Shifted_phoPt.size();p++)//<-----change from nPho until we get it
  {    
@@ -349,8 +350,8 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
   //Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p); doesn't seem to be used unless someone objects, will delete after next PR 5/6/2018
 
   bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
-  //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
-  
+  pass_noPixelSeed = !(bool)AOD_phoHasPixelSeed->at(p);
+   
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
@@ -369,7 +370,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
   bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
   //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-  if( kinematic && pass_bit && pass_overlap ){
+  if( kinematic && pass_bit && pass_overlap /*&& pass_noPixelSeed*/ ){
    nSelectedPho++;
    //printf("selected aphoton\n");
    pholist.push_back(p);
