@@ -25,6 +25,9 @@ public :
    std::vector<int> aodpfjet_list;
    std::vector<int> aodpfchsjet_list;
    std::vector<int> taggedjet_list;
+   std::vector<int> taggedjetSB1_list;
+   std::vector<int> taggedjetSB2_list;
+   std::vector<int> taggedjetSB3_list;
 
    std::vector<int> calomatchedPF_list;
    std::vector<int> PFmatchedCalo_list;
