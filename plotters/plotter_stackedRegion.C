@@ -17,21 +17,25 @@
 
 void print_hist(TH1F* h, TString name, FILE* file){
 
-  fprintf(file, name);
+  //fprintf(file, name);
+  fprintf(file, "%s", name.Data());
   for(int i=1; i<=h->GetNbinsX(); i++){
     TString toprint = ", ";
     toprint += h->GetBinContent(i);
-    fprintf(file, toprint);
+    //fprintf(file, toprint);
+    fprintf(file, "%s", toprint.Data());
   }
   fprintf(file,"\n");
 
   name += " err";
-  fprintf(file, name);
+  //fprintf(file, name);
+  fprintf(file, "%s", name.Data());
   //Error
   for(int i=1; i<=h->GetNbinsX(); i++){
     TString toprint = ", ";
     toprint += h->GetBinError(i);
-    fprintf(file, toprint);
+    //fprintf(file, toprint);
+    fprintf(file, "%s", toprint.Data());
   }
   fprintf(file,"\n");
 
@@ -55,8 +59,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TString aversion = TString(getenv("aversion"));
 
  inpath = inpath+aversion+"/";
- //outpath = outpath+aversion+"/"+region+"/";
- outpath = outpath+"test/"+region+"/";
+ outpath = outpath+aversion+"/"+region+"/";
 
  TString extraname = "";
  if(HIP){
@@ -120,18 +123,18 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  ////variables.push_back("phoEt");                  
  //variables.push_back("AOD_MET_pt");                 
  //variables.push_back("AOD_MET_phi");                 
- variables.push_back("AOD_phoPt");                 
- variables.push_back("AOD_phoEta");                 
- variables.push_back("AOD_phoPhi");                 
- //variables.push_back("nEle");                   
- variables.push_back("AOD_elePt");                  
- variables.push_back("AOD_eleEta");                 
- variables.push_back("AOD_elePhi");                 
- //variables.push_back("nMu");                    
- variables.push_back("AOD_muPt");                   
- variables.push_back("AOD_muEta");                  
- variables.push_back("AOD_muPhi");                  
- // variables.push_back("nJet");                   
+// variables.push_back("AOD_phoPt");                 
+// variables.push_back("AOD_phoEta");                 
+// variables.push_back("AOD_phoPhi");                 
+// //variables.push_back("nEle");                   
+// variables.push_back("AOD_elePt");                  
+// variables.push_back("AOD_eleEta");                 
+// variables.push_back("AOD_elePhi");                 
+// //variables.push_back("nMu");                    
+// variables.push_back("AOD_muPt");                   
+// variables.push_back("AOD_muEta");                  
+// variables.push_back("AOD_muPhi");                  
+// // variables.push_back("nJet");                   
 
  //variables.push_back("htall"); 
   variables.push_back("htaodcalojets");
@@ -140,30 +143,30 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 //  variables.push_back("AOD_nSelectedMu");
 //  variables.push_back("nSelectedAODCaloJet");
   variables.push_back("nSelectedAODCaloJetTag");
-//  variables.push_back("LeadingJet_AODCaloJetPt");                      
- // variables.push_back("LeadingJet_jetEn");                      
- // variables.push_back("LeadingJet_AODCaloJetEta");                     
- // variables.push_back("LeadingJet_AODCaloJetPhi");                     
- // variables.push_back("AllJets_AODCaloJetPtVar");
- // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
- // variables.push_back("AllJets_AODCaloJetdR");
- // variables.push_back("AllJets_AODCaloJetdR_Tag0");
- // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
- // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
- variables.push_back("AllJets_AODCaloJetPt");                      
- //variables.push_back("AllJets_AODCaloJetEn");                      
- variables.push_back("AllJets_AODCaloJetEta");                     
- variables.push_back("AllJets_AODCaloJetPhi");                     
-  //  all variables after NMinus will have dolog=true, sorry
- variables.push_back("NMinus");                   
- variables.push_back("Onecut");                   
- variables.push_back("Cutflow");                   
- variables.push_back("RawNMinus");                   
- variables.push_back("RawOnecut");                   
- variables.push_back("RawCutflow");                   
+////  variables.push_back("LeadingJet_AODCaloJetPt");                      
+// // variables.push_back("LeadingJet_jetEn");                      
+// // variables.push_back("LeadingJet_AODCaloJetEta");                     
+// // variables.push_back("LeadingJet_AODCaloJetPhi");                     
+// // variables.push_back("AllJets_AODCaloJetPtVar");
+// // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+// // variables.push_back("AllJets_AODCaloJetdR");
+// // variables.push_back("AllJets_AODCaloJetdR_Tag0");
+// // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+// // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
+// variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+// variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+// variables.push_back("AllJets_AODCaloJetAlphaMax");
+// variables.push_back("AllJets_AODCaloJetPt");                      
+// //variables.push_back("AllJets_AODCaloJetEn");                      
+// variables.push_back("AllJets_AODCaloJetEta");                     
+// variables.push_back("AllJets_AODCaloJetPhi");                     
+//  //  all variables after NMinus will have dolog=true, sorry
+// variables.push_back("NMinus");                   
+// variables.push_back("Onecut");                   
+// variables.push_back("Cutflow");                   
+// variables.push_back("RawNMinus");                   
+// variables.push_back("RawOnecut");                   
+// variables.push_back("RawCutflow");                   
 
  // canvas and text attributes
  int canx = 1100;
@@ -962,7 +965,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      if(varname.Contains("nSelectedAODCaloJetTag") && !extraname.Contains("log") && uncbin==""){
        TString fname = "forTed_"; fname+=varname; fname+=".csv";
        std::cout << "Writing " << fname<< std::endl;
-       FILE *f = fopen (fname, "w");
+ //outpath = outpath+aversion+"/"+region+"/";
+       FILE *f = fopen (outpath+fname, "w");
        print_hist(h_DY, "DY", f);
        print_hist(h_GJets, "GJets", f);
        print_hist(h_ST, "SingleTop", f);
