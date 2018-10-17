@@ -83,6 +83,9 @@ void analyzer_loop::Loop(TString outfilename,
   aodpfjet_list    = jet_passID       ( aodcalojetidbit, "pf",    jet_minPt, jet_maxEta, ""); 
   aodpfchsjet_list = jet_passID       ( aodcalojetidbit, "pfchs", jet_minPt, jet_maxEta, ""); 
   taggedjet_list   = jet_passTagger   ();
+  taggedjetSB1_list   = jet_passTaggerSB1   ();
+  taggedjetSB2_list   = jet_passTaggerSB2   ();
+  taggedjetSB3_list   = jet_passTaggerSB3   ();
 
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
@@ -120,6 +123,7 @@ void analyzer_loop::Loop(TString outfilename,
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passOSOF = (OSOF_mass>20.);
+  passPTOSOF = (OSOF_mass>100.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
   passPTOSSF  = (dilep_pt>100.);
@@ -321,6 +325,10 @@ void analyzer_loop::Loop(TString outfilename,
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
+  //Print objects in backgroundMC with >=2 tags
+  if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
+
+
   //printf("make log: %0.i\n",makelog);
   
  } // end loop over entries
@@ -426,6 +434,26 @@ void analyzer_loop::debug_printobjects(){
 
   debug_printdilep();
   debug_printjets();
+
+  std::cout << endl;
+  std::cout << "*******************PRE-ID PRINT******************" << std::endl;
+  std::cout << "Electrons pt eta phi charge" << std::endl;
+  for(int i=0; i<AOD_eleEta->size(); i++){
+    std::cout << AOD_elePt->at(i) << " " << AOD_eleEta->at(i) << " " << AOD_elePhi->at(i) << " " << AOD_eleCharge->at(i) << std::endl;
+  }
+  std::cout << "Muon pt eta phi" << std::endl;
+  for(int i=0; i<AOD_muEta->size(); i++){
+    std::cout << AOD_muPt->at(i) << " " << AOD_muEta->at(i) << " " << AOD_muPhi->at(i) << " " << AOD_muCharge->at(i) << std::endl;
+  }
+  std::cout << "Photon pt eta phi" << std::endl;
+  for(int i=0; i<AOD_phoEta->size(); i++){
+    std::cout << AOD_phoPt->at(i) << " " << AOD_phoEta->at(i) << " " << AOD_phoPhi->at(i) << std::endl;
+  }
+  std::cout << "AODCaloJet pt eta phi" << std::endl;
+  for(int i=0; i<AODCaloJetEta->size(); i++){
+    std::cout << AODCaloJetPt->at(i) << " " << AODCaloJetEta->at(i) << " " << AODCaloJetPhi->at(i) << std::endl;
+  }
+
 
   return;
 

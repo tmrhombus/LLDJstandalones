@@ -162,6 +162,55 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
 }
 
 
+std::vector<int> analyzer_createobjects::jet_passTaggerSB1( ) {
+
+  std::vector<int> taglist;
+
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int aodcalojetindex = aodcalojet_list[i];
+    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      <  tag_minIPsig  &&
+	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) >  tag_minTA     &&
+	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
+      {
+	taglist.push_back(aodcalojetindex);
+      }
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB2( ) {
+
+  std::vector<int> taglist;
+
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int aodcalojetindex = aodcalojet_list[i];
+    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      >  tag_minIPsig  &&
+	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) <  tag_minTA     &&
+	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
+      {
+	taglist.push_back(aodcalojetindex);
+      }
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB3( ) {
+
+  std::vector<int> taglist;
+
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int aodcalojetindex = aodcalojet_list[i];
+    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      <1.15  && Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex) >0.5 &&
+	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) <-1.75 && Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) > -2.25 &&
+	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  0.85  )
+      {
+	taglist.push_back(aodcalojetindex);
+      }
+  }
+  return taglist;
+}
+
+
 //-------------------------jet_minDR
 // Finds Delta R of closest "good" jet
 std::vector<float> analyzer_createobjects::jet_minDR( ) {

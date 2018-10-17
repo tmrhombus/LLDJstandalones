@@ -61,6 +61,9 @@ void analyzer_globalvalues::cleareventcounters(){
  aodpfjet_list         .clear(); 
  aodpfchsjet_list      .clear(); 
  taggedjet_list        .clear(); 
+ taggedjetSB1_list     .clear(); 
+ taggedjetSB2_list     .clear(); 
+ taggedjetSB3_list     .clear();
  calomatchedPF_list    .clear();
  PFmatchedCalo_list    .clear();
  calomatchedPFchs_list .clear();

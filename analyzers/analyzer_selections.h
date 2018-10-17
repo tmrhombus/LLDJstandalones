@@ -68,6 +68,7 @@ public :
    Bool_t passZWinOSOF  ;
    Bool_t passGoodVtx   ;   
    Bool_t passPTOSSF    ; 
+   Bool_t passPTOSOF    ;   
    Bool_t passOneJet    ; 
    Bool_t passOneTag    ;
    Bool_t passTwoTag    ;
