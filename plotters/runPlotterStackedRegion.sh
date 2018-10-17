@@ -31,13 +31,16 @@ doHIPs=( \
  "kFALSE" \
 )
 
+#useEOS="kFALSE"
+useEOS="kTRUE"
+
 for region in ${regions[@]}
 do
  for dolog in ${dologs[@]}
  do
   for doHIP in ${doHIPs[@]}
   do
-   root -l -b -q  'plotter_stackedRegion.C('\""${region}"\"', '"${dolog}"', '"${doHIP}"')'
+   root -l -b -q  'plotter_stackedRegion.C('\""${region}"\"', '"${dolog}"', '"${doHIP}"', '"${useEOS}"')'
   done
  done
 done

@@ -17,31 +17,27 @@
 
 void print_hist(TH1F* h, TString name, FILE* file){
 
-  //fprintf(file, name);
   fprintf(file, "%s", name.Data());
   for(int i=1; i<=h->GetNbinsX(); i++){
     TString toprint = ", ";
     toprint += h->GetBinContent(i);
-    //fprintf(file, toprint);
     fprintf(file, "%s", toprint.Data());
   }
   fprintf(file,"\n");
 
   name += " err";
-  //fprintf(file, name);
   fprintf(file, "%s", name.Data());
   //Error
   for(int i=1; i<=h->GetNbinsX(); i++){
     TString toprint = ", ";
     toprint += h->GetBinError(i);
-    //fprintf(file, toprint);
     fprintf(file, "%s", toprint.Data());
   }
   fprintf(file,"\n");
 
 }
 
-void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
+void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useEOS )
 {
 
 // // Draw signal as lines
@@ -54,9 +50,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  bool drawData = true;
  bool useAlt = false; 
 
- TString inpath  = TString("../roots/");
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
+ TString inpath  = TString("../roots/");
+ if(useEOS){
+  inpath = "root://cmsxrootd.fnal.gov//store/group/lpchbb/LLDJntuples/topRWT/analyzed/"; 
+ }
 
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/"+region+"/";
@@ -111,62 +110,62 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  std::vector<TString> variables;
  variables.clear();
 
- //variables.push_back("nVtx");                   
- //variables.push_back("nGoodVtx");               
- //variables.push_back("nTrksPV");                
- //variables.push_back("rho");                    
- //variables.push_back("pfMET");                  
- //variables.push_back("pfMETPhi");               
- //variables.push_back("pfMETsumEt");             
- //variables.push_back("nPho");                   
- ////variables.push_back("phoE");                   
- ////variables.push_back("phoEt");                  
- //variables.push_back("AOD_MET_pt");                 
- //variables.push_back("AOD_MET_phi");                 
-// variables.push_back("AOD_phoPt");                 
-// variables.push_back("AOD_phoEta");                 
-// variables.push_back("AOD_phoPhi");                 
-// //variables.push_back("nEle");                   
-// variables.push_back("AOD_elePt");                  
-// variables.push_back("AOD_eleEta");                 
-// variables.push_back("AOD_elePhi");                 
-// //variables.push_back("nMu");                    
-// variables.push_back("AOD_muPt");                   
-// variables.push_back("AOD_muEta");                  
-// variables.push_back("AOD_muPhi");                  
-// // variables.push_back("nJet");                   
+//variables.push_back("nVtx");                   
+//variables.push_back("nGoodVtx");               
+//variables.push_back("nTrksPV");                
+//variables.push_back("rho");                    
+//variables.push_back("pfMET");                  
+//variables.push_back("pfMETPhi");               
+//variables.push_back("pfMETsumEt");             
+//variables.push_back("nPho");                   
+//variables.push_back("phoE");                   
+//variables.push_back("phoEt");                  
+//variables.push_back("AOD_MET_pt");                 
+//variables.push_back("AOD_MET_phi");                 
+variables.push_back("AOD_phoPt");                 
+variables.push_back("AOD_phoEta");                 
+variables.push_back("AOD_phoPhi");                 
+//variables.push_back("nEle");                   
+variables.push_back("AOD_elePt");                  
+variables.push_back("AOD_eleEta");                 
+variables.push_back("AOD_elePhi");                 
+//variables.push_back("nMu");                    
+variables.push_back("AOD_muPt");                   
+variables.push_back("AOD_muEta");                  
+variables.push_back("AOD_muPhi");                  
+// variables.push_back("nJet");                   
 
  //variables.push_back("htall"); 
   variables.push_back("htaodcalojets");
-//  variables.push_back("AOD_nSelectedPho");
-//  variables.push_back("AOD_nSelectedEle");
-//  variables.push_back("AOD_nSelectedMu");
-//  variables.push_back("nSelectedAODCaloJet");
+  variables.push_back("AOD_nSelectedPho");
+  variables.push_back("AOD_nSelectedEle");
+  variables.push_back("AOD_nSelectedMu");
+  variables.push_back("nSelectedAODCaloJet");
   variables.push_back("nSelectedAODCaloJetTag");
-////  variables.push_back("LeadingJet_AODCaloJetPt");                      
-// // variables.push_back("LeadingJet_jetEn");                      
-// // variables.push_back("LeadingJet_AODCaloJetEta");                     
-// // variables.push_back("LeadingJet_AODCaloJetPhi");                     
-// // variables.push_back("AllJets_AODCaloJetPtVar");
-// // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
-// // variables.push_back("AllJets_AODCaloJetdR");
-// // variables.push_back("AllJets_AODCaloJetdR_Tag0");
-// // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
-// // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
-// variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
-// variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
-// variables.push_back("AllJets_AODCaloJetAlphaMax");
-// variables.push_back("AllJets_AODCaloJetPt");                      
-// //variables.push_back("AllJets_AODCaloJetEn");                      
-// variables.push_back("AllJets_AODCaloJetEta");                     
-// variables.push_back("AllJets_AODCaloJetPhi");                     
-//  //  all variables after NMinus will have dolog=true, sorry
-// variables.push_back("NMinus");                   
-// variables.push_back("Onecut");                   
-// variables.push_back("Cutflow");                   
-// variables.push_back("RawNMinus");                   
-// variables.push_back("RawOnecut");                   
-// variables.push_back("RawCutflow");                   
+//  variables.push_back("LeadingJet_AODCaloJetPt");                      
+ // variables.push_back("LeadingJet_jetEn");                      
+ // variables.push_back("LeadingJet_AODCaloJetEta");                     
+ // variables.push_back("LeadingJet_AODCaloJetPhi");                     
+ // variables.push_back("AllJets_AODCaloJetPtVar");
+ // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+ // variables.push_back("AllJets_AODCaloJetdR");
+ // variables.push_back("AllJets_AODCaloJetdR_Tag0");
+ // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+ // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
+ variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ variables.push_back("AllJets_AODCaloJetAlphaMax");
+ variables.push_back("AllJets_AODCaloJetPt");                      
+ //variables.push_back("AllJets_AODCaloJetEn");                      
+ variables.push_back("AllJets_AODCaloJetEta");                     
+ variables.push_back("AllJets_AODCaloJetPhi");                     
+  //  all variables after NMinus will have dolog=true, sorry
+ variables.push_back("NMinus");                   
+ variables.push_back("Onecut");                   
+ variables.push_back("Cutflow");                   
+ variables.push_back("RawNMinus");                   
+ variables.push_back("RawOnecut");                   
+ variables.push_back("RawCutflow");                   
 
  // canvas and text attributes
  int canx = 1100;
@@ -502,130 +501,128 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 
  TH1F* h_Data   ;
  // load histogram files
- file_DY5to50_HT100To200      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-100to200_"+region+"_histograms.root"  ) ; 
- file_DY5to50_HT200To400      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-200to400_"+region+"_histograms.root"  ) ; 
- file_DY5to50_HT400To600      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-400to600_"+region+"_histograms.root"  ) ; 
- file_DY5to50_HT600ToInf      = new TFile( inpath + "DYJetsToLL_M-5to50_HT-600toInf_"+region+"_histograms.root"  ) ; 
- file_DY10to50                = new TFile( inpath + "DYJetsToLL_M-10to50_"+region+"_histograms.root"             ) ; 
- file_DY50                    = new TFile( inpath + "DYJetsToLL_M-50_"+region+"_histograms.root"                 ) ;
+ file_DY5to50_HT100To200      = TFile::Open( inpath + "DYJetsToLL_M-5to50_HT-100to200_"+region+"_histograms.root"  ) ; 
+ file_DY5to50_HT200To400      = TFile::Open( inpath + "DYJetsToLL_M-5to50_HT-200to400_"+region+"_histograms.root"  ) ; 
+ file_DY5to50_HT400To600      = TFile::Open( inpath + "DYJetsToLL_M-5to50_HT-400to600_"+region+"_histograms.root"  ) ; 
+ file_DY5to50_HT600ToInf      = TFile::Open( inpath + "DYJetsToLL_M-5to50_HT-600toInf_"+region+"_histograms.root"  ) ; 
+ file_DY10to50                = TFile::Open( inpath + "DYJetsToLL_M-10to50_"+region+"_histograms.root"             ) ; 
+ file_DY50                    = TFile::Open( inpath + "DYJetsToLL_M-50_"+region+"_histograms.root"                 ) ;
 
- file_GJets_HT40To100         = new TFile( inpath + "GJets_HT-40To100_"+region+"_histograms.root"    ) ;
- file_GJets_HT100To200        = new TFile( inpath + "GJets_HT-100To200_"+region+"_histograms.root"   ) ;
- file_GJets_HT200To400        = new TFile( inpath + "GJets_HT-200To400_"+region+"_histograms.root"   ) ;
- file_GJets_HT400To600        = new TFile( inpath + "GJets_HT-400To600_"+region+"_histograms.root"   ) ;
- file_GJets_HT600ToInf        = new TFile( inpath + "GJets_HT-600ToInf_"+region+"_histograms.root"   ) ;
- file_ST_s                    = new TFile( inpath + "ST_s-channel_4f_leptonDecays_"+region+"_histograms.root"               ) ;
- file_STbar_t                 = new TFile( inpath + "ST_t-channel_antitop_4f_inclusiveDecays_"+region+"_histograms.root"    ) ;
- file_ST_t                    = new TFile( inpath + "ST_t-channel_top_4f_inclusiveDecays_"+region+"_histograms.root"        ) ;
- file_STbar_tW                = new TFile( inpath + "ST_tW_antitop_5f_NoFullyHadronicDecays_"+region+"_histograms.root"     ) ;
- file_ST_tW                   = new TFile( inpath + "ST_tW_top_5f_NoFullyHadronicDecays_"+region+"_histograms.root"         ) ;
- file_TTJets                  = new TFile( inpath + "TTJets_"+region+"_histograms.root"           ) ;
- file_TTtoLL                  = new TFile( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
- file_TTtoLfromTbar           = new TFile( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
- file_TTtoLfromT              = new TFile( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
- file_WJetsToLNu              = new TFile( inpath + "WJetsToLNu_"+region+"_histograms.root"       ) ;
- file_WG                      = new TFile( inpath + "WGToLNuG_"+region+"_histograms.root"         ) ;
- file_ZGTo2LG                 = new TFile( inpath + "ZGTo2LG_"+region+"_histograms.root"          ) ;
- file_WW                      = new TFile( inpath + "WW_"+region+"_histograms.root"               ) ;
- file_WZ                      = new TFile( inpath + "WZ_"+region+"_histograms.root"               ) ;
- file_ZZ                      = new TFile( inpath + "ZZ_"+region+"_histograms.root"               ) ;
- file_WWTo2L2Nu               = new TFile( inpath + "WWTo2L2Nu_"+region+"_histograms.root"        ) ;
- file_WWToLNuQQ               = new TFile( inpath + "WWToLNuQQ_"+region+"_histograms.root"        ) ;
- file_WZTo1L3Nu               = new TFile( inpath + "WZTo1L3Nu_"+region+"_histograms.root"        ) ;
- file_WZTo3LNu                = new TFile( inpath + "WZTo3LNu_"+region+"_histograms.root"         ) ;
- file_WZToLNu2QorQQ2L         = new TFile( inpath + "WZToLNu2QorQQ2L_"+region+"_histograms.root"  ) ;
- file_ZH_HToBB_ZToLL          = new TFile( inpath + "ZH_HToBB_ZToLL_"+region+"_histograms.root"   ) ;
- file_ggZH_HToBB_ZToLL        = new TFile( inpath + "ggZH_HToBB_ZToLL_"+region+"_histograms.root" ) ;
- file_ZZTo2L2Nu               = new TFile( inpath + "ZZTo2L2Nu_"+region+"_histograms.root"        ) ;
- file_ZZTo2L2Q                = new TFile( inpath + "ZZTo2L2Q_"+region+"_histograms.root"         ) ;
- file_ZZTo2Q2Nu               = new TFile( inpath + "ZZTo2Q2Nu_"+region+"_histograms.root"        ) ;
- file_ZZTo4L                  = new TFile( inpath + "ZZTo4L_"+region+"_histograms.root"           ) ;
+ file_GJets_HT40To100         = TFile::Open( inpath + "GJets_HT-40To100_"+region+"_histograms.root"    ) ;
+ file_GJets_HT100To200        = TFile::Open( inpath + "GJets_HT-100To200_"+region+"_histograms.root"   ) ;
+ file_GJets_HT200To400        = TFile::Open( inpath + "GJets_HT-200To400_"+region+"_histograms.root"   ) ;
+ file_GJets_HT400To600        = TFile::Open( inpath + "GJets_HT-400To600_"+region+"_histograms.root"   ) ;
+ file_GJets_HT600ToInf        = TFile::Open( inpath + "GJets_HT-600ToInf_"+region+"_histograms.root"   ) ;
+ file_ST_s                    = TFile::Open( inpath + "ST_s-channel_4f_leptonDecays_"+region+"_histograms.root"               ) ;
+ file_STbar_t                 = TFile::Open( inpath + "ST_t-channel_antitop_4f_inclusiveDecays_"+region+"_histograms.root"    ) ;
+ file_ST_t                    = TFile::Open( inpath + "ST_t-channel_top_4f_inclusiveDecays_"+region+"_histograms.root"        ) ;
+ file_STbar_tW                = TFile::Open( inpath + "ST_tW_antitop_5f_NoFullyHadronicDecays_"+region+"_histograms.root"     ) ;
+ file_ST_tW                   = TFile::Open( inpath + "ST_tW_top_5f_NoFullyHadronicDecays_"+region+"_histograms.root"         ) ;
+ file_TTJets                  = TFile::Open( inpath + "TTJets_"+region+"_histograms.root"           ) ;
+ file_TTtoLL                  = TFile::Open( inpath + "TTtoLL_"+region+"_histograms.root"           ) ;
+ file_TTtoLfromTbar           = TFile::Open( inpath + "TTtoLfromTbar_"+region+"_histograms.root"    ) ;
+ file_TTtoLfromT              = TFile::Open( inpath + "TTtoLfromT_"+region+"_histograms.root"       ) ;
+ file_WJetsToLNu              = TFile::Open( inpath + "WJetsToLNu_"+region+"_histograms.root"       ) ;
+ file_WG                      = TFile::Open( inpath + "WGToLNuG_"+region+"_histograms.root"         ) ;
+ file_ZGTo2LG                 = TFile::Open( inpath + "ZGTo2LG_"+region+"_histograms.root"          ) ;
+ file_WW                      = TFile::Open( inpath + "WW_"+region+"_histograms.root"               ) ;
+ file_WZ                      = TFile::Open( inpath + "WZ_"+region+"_histograms.root"               ) ;
+ file_ZZ                      = TFile::Open( inpath + "ZZ_"+region+"_histograms.root"               ) ;
+ file_WWTo2L2Nu               = TFile::Open( inpath + "WWTo2L2Nu_"+region+"_histograms.root"        ) ;
+ file_WWToLNuQQ               = TFile::Open( inpath + "WWToLNuQQ_"+region+"_histograms.root"        ) ;
+ file_WZTo1L3Nu               = TFile::Open( inpath + "WZTo1L3Nu_"+region+"_histograms.root"        ) ;
+ file_WZTo3LNu                = TFile::Open( inpath + "WZTo3LNu_"+region+"_histograms.root"         ) ;
+ file_WZToLNu2QorQQ2L         = TFile::Open( inpath + "WZToLNu2QorQQ2L_"+region+"_histograms.root"  ) ;
+ file_ZH_HToBB_ZToLL          = TFile::Open( inpath + "ZH_HToBB_ZToLL_"+region+"_histograms.root"   ) ;
+ file_ggZH_HToBB_ZToLL        = TFile::Open( inpath + "ggZH_HToBB_ZToLL_"+region+"_histograms.root" ) ;
+ file_ZZTo2L2Nu               = TFile::Open( inpath + "ZZTo2L2Nu_"+region+"_histograms.root"        ) ;
+ file_ZZTo2L2Q                = TFile::Open( inpath + "ZZTo2L2Q_"+region+"_histograms.root"         ) ;
+ file_ZZTo2Q2Nu               = TFile::Open( inpath + "ZZTo2Q2Nu_"+region+"_histograms.root"        ) ;
+ file_ZZTo4L                  = TFile::Open( inpath + "ZZTo4L_"+region+"_histograms.root"           ) ;
   
- file_QCD_HT100to200          = new TFile( inpath + "QCD_HT100to200_"+region+"_histograms.root"   ) ;
- file_QCD_HT200to300          = new TFile( inpath + "QCD_HT200to300_"+region+"_histograms.root"   ) ;
- file_QCD_HT300to500          = new TFile( inpath + "QCD_HT300to500_"+region+"_histograms.root"   ) ;
- file_QCD_HT500to700          = new TFile( inpath + "QCD_HT500to700_"+region+"_histograms.root"   ) ;
- file_QCD_HT700to1000         = new TFile( inpath + "QCD_HT700to1000_"+region+"_histograms.root"  ) ;
- file_QCD_HT1000to1500        = new TFile( inpath + "QCD_HT1000to1500_"+region+"_histograms.root" ) ;
- file_QCD_HT1500to2000        = new TFile( inpath + "QCD_HT1500to2000_"+region+"_histograms.root" ) ;
- file_QCD_HT2000toInf         = new TFile( inpath + "QCD_HT2000toInf_"+region+"_histograms.root"  ) ;
+ file_QCD_HT100to200          = TFile::Open( inpath + "QCD_HT100to200_"+region+"_histograms.root"   ) ;
+ file_QCD_HT200to300          = TFile::Open( inpath + "QCD_HT200to300_"+region+"_histograms.root"   ) ;
+ file_QCD_HT300to500          = TFile::Open( inpath + "QCD_HT300to500_"+region+"_histograms.root"   ) ;
+ file_QCD_HT500to700          = TFile::Open( inpath + "QCD_HT500to700_"+region+"_histograms.root"   ) ;
+ file_QCD_HT700to1000         = TFile::Open( inpath + "QCD_HT700to1000_"+region+"_histograms.root"  ) ;
+ file_QCD_HT1000to1500        = TFile::Open( inpath + "QCD_HT1000to1500_"+region+"_histograms.root" ) ;
+ file_QCD_HT1500to2000        = TFile::Open( inpath + "QCD_HT1500to2000_"+region+"_histograms.root" ) ;
+ file_QCD_HT2000toInf         = TFile::Open( inpath + "QCD_HT2000toInf_"+region+"_histograms.root"  ) ;
 
- file_Sig_ZH_MS15ct1000  = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS15ct100   = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS15ct10    = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS15ct1     = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS40ct1000  = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS40ct100   = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS40ct10    = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS40ct1     = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS55ct1000  = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS55ct100   = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS55ct10    = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ZH_MS55ct1     = new TFile( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS15ct1000  = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS15ct100   = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS15ct10    = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS15ct1     = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS40ct1000  = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS40ct100   = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS40ct10    = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS40ct1     = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS55ct1000  = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS55ct100   = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS55ct10    = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ZH_MS55ct1     = TFile::Open( inpath + "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
 
- file_Sig_ggZH_MS15ct1000  = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS15ct100   = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS15ct10    = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS15ct1     = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS40ct1000  = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS40ct100   = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS40ct10    = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS40ct1     = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS55ct1000  = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS55ct100   = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS55ct10    = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
- file_Sig_ggZH_MS55ct1     = new TFile( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS15ct1000  = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS15ct100   = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS15ct10    = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS15ct1     = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS40ct1000  = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS40ct100   = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS40ct10    = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS40ct1     = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS55ct1000  = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS55ct100   = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS55ct10    = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10_"+region+"_histograms.root"   ) ; 
+ file_Sig_ggZH_MS55ct1     = TFile::Open( inpath + "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1_"+region+"_histograms.root"   ) ; 
 
- /*
- file_Data_SingleMu_H_3             =  new TFile( inpath + "Data_SingleMu_H_3_"+region+"_histograms.root"     ) ; 
- file_Data_SingleMu_H_2             =  new TFile( inpath + "Data_SingleMu_H_2_"+region+"_histograms.root"     ) ; 
- file_Data_SingleMu_G               =  new TFile( inpath + "Data_SingleMu_G_"+region+"_histograms.root"       ) ; 
-// file_Data_SingleMu_F               =  new TFile( inpath + "Data_SingleMu_F_"+region+"_histograms.root"       ) ; 
-// file_Data_SingleMu_E               =  new TFile( inpath + "Data_SingleMu_E_"+region+"_histograms.root"       ) ; 
-// file_Data_SingleMu_D               =  new TFile( inpath + "Data_SingleMu_D_"+region+"_histograms.root"       ) ; 
-// file_Data_SingleMu_C               =  new TFile( inpath + "Data_SingleMu_C_"+region+"_histograms.root"       ) ; 
-// file_Data_SingleMu_B_2             =  new TFile( inpath + "Data_SingleMu_B_2_"+region+"_histograms.root"     ) ; 
- file_Data_SingleEle_H_3            =  new TFile( inpath + "Data_SingleEle_H_3_"+region+"_histograms.root"    ) ; 
- file_Data_SingleEle_H_2            =  new TFile( inpath + "Data_SingleEle_H_2_"+region+"_histograms.root"    ) ; 
- file_Data_SingleEle_G            =  new TFile( inpath + "Data_SingleEle_G_"+region+"_histograms.root"    ) ; 
-// file_Data_SingleEle_F              =  new TFile( inpath + "Data_SingleEle_F_"+region+"_histograms.root"      ) ; 
-// file_Data_SingleEle_E              =  new TFile( inpath + "Data_SingleEle_E_"+region+"_histograms.root"      ) ; 
-// file_Data_SingleEle_D              =  new TFile( inpath + "Data_SingleEle_D_"+region+"_histograms.root"      ) ; 
-// file_Data_SingleEle_C              =  new TFile( inpath + "Data_SingleEle_C_"+region+"_histograms.root"      ) ; 
-// file_Data_SingleEle_B_2            =  new TFile( inpath + "Data_SingleEle_B_2_"+region+"_histograms.root"    ) ; 
-*/
- file_Data_SinglePhoton_H_3         =  new TFile( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
- file_Data_SinglePhoton_H_2         =  new TFile( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
- file_Data_SinglePhoton_G           =  new TFile( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_F           =  new TFile( inpath + "Data_SinglePhoton_F_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_E           =  new TFile( inpath + "Data_SinglePhoton_E_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_D           =  new TFile( inpath + "Data_SinglePhoton_D_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_C           =  new TFile( inpath + "Data_SinglePhoton_C_"+region+"_histograms.root"   ) ; 
-// file_Data_SinglePhoton_B_2         =  new TFile( inpath + "Data_SinglePhoton_B_2_"+region+"_histograms.root" ) ; 
- file_Data_DoubleMu_H_3             =  new TFile( inpath + "Data_DoubleMu_H_3_"+region+"_histograms.root"     ) ; 
- file_Data_DoubleMu_H_2             =  new TFile( inpath + "Data_DoubleMu_H_2_"+region+"_histograms.root"     ) ; 
- file_Data_DoubleMu_G               =  new TFile( inpath + "Data_DoubleMu_G_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleMu_F               =  new TFile( inpath + "Data_DoubleMu_F_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleMu_E               =  new TFile( inpath + "Data_DoubleMu_E_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleMu_D               =  new TFile( inpath + "Data_DoubleMu_D_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleMu_C               =  new TFile( inpath + "Data_DoubleMu_C_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleMu_B_2             =  new TFile( inpath + "Data_DoubleMu_B_2_"+region+"_histograms.root"     ) ; 
- file_Data_DoubleEG_H_3             =  new TFile( inpath + "Data_DoubleEG_H_3_"+region+"_histograms.root"     ) ; 
- file_Data_DoubleEG_H_2             =  new TFile( inpath + "Data_DoubleEG_H_2_"+region+"_histograms.root"     ) ; 
- file_Data_DoubleEG_G               =  new TFile( inpath + "Data_DoubleEG_G_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleEG_F               =  new TFile( inpath + "Data_DoubleEG_F_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleEG_E               =  new TFile( inpath + "Data_DoubleEG_E_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleEG_D               =  new TFile( inpath + "Data_DoubleEG_D_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleEG_C               =  new TFile( inpath + "Data_DoubleEG_C_"+region+"_histograms.root"       ) ; 
-// file_Data_DoubleEG_B_2             =  new TFile( inpath + "Data_DoubleEG_B_2_"+region+"_histograms.root"     ) ; 
- file_Data_MuonEG_H_3             =  new TFile( inpath + "Data_MuonEG_H_3_"+region+"_histograms.root"     ) ; 
- file_Data_MuonEG_H_2             =  new TFile( inpath + "Data_MuonEG_H_2_"+region+"_histograms.root"     ) ; 
- file_Data_MuonEG_G               =  new TFile( inpath + "Data_MuonEG_G_"+region+"_histograms.root"       ) ; 
-// file_Data_MuonEG_F               =  new TFile( inpath + "Data_MuonEG_F_"+region+"_histograms.root"       ) ; 
-// file_Data_MuonEG_E               =  new TFile( inpath + "Data_MuonEG_E_"+region+"_histograms.root"       ) ; 
-// file_Data_MuonEG_D               =  new TFile( inpath + "Data_MuonEG_D_"+region+"_histograms.root"       ) ; 
-// file_Data_MuonEG_C               =  new TFile( inpath + "Data_MuonEG_C_"+region+"_histograms.root"       ) ; 
-// file_Data_MuonEG_B_2             =  new TFile( inpath + "Data_MuonEG_B_2_"+region+"_histograms.root"     ) ; 
+// file_Data_SingleMu_H_3             =  TFile::Open( inpath + "Data_SingleMu_H_3_"+region+"_histograms.root"     ) ; 
+// file_Data_SingleMu_H_2             =  TFile::Open( inpath + "Data_SingleMu_H_2_"+region+"_histograms.root"     ) ; 
+// file_Data_SingleMu_G               =  TFile::Open( inpath + "Data_SingleMu_G_"+region+"_histograms.root"       ) ; 
+//// file_Data_SingleMu_F               =  TFile::Open( inpath + "Data_SingleMu_F_"+region+"_histograms.root"       ) ; 
+//// file_Data_SingleMu_E               =  TFile::Open( inpath + "Data_SingleMu_E_"+region+"_histograms.root"       ) ; 
+//// file_Data_SingleMu_D               =  TFile::Open( inpath + "Data_SingleMu_D_"+region+"_histograms.root"       ) ; 
+//// file_Data_SingleMu_C               =  TFile::Open( inpath + "Data_SingleMu_C_"+region+"_histograms.root"       ) ; 
+//// file_Data_SingleMu_B_2             =  TFile::Open( inpath + "Data_SingleMu_B_2_"+region+"_histograms.root"     ) ; 
+// file_Data_SingleEle_H_3            =  TFile::Open( inpath + "Data_SingleEle_H_3_"+region+"_histograms.root"    ) ; 
+// file_Data_SingleEle_H_2            =  TFile::Open( inpath + "Data_SingleEle_H_2_"+region+"_histograms.root"    ) ; 
+// file_Data_SingleEle_G            =  TFile::Open( inpath + "Data_SingleEle_G_"+region+"_histograms.root"    ) ; 
+//// file_Data_SingleEle_F              =  TFile::Open( inpath + "Data_SingleEle_F_"+region+"_histograms.root"      ) ; 
+//// file_Data_SingleEle_E              =  TFile::Open( inpath + "Data_SingleEle_E_"+region+"_histograms.root"      ) ; 
+//// file_Data_SingleEle_D              =  TFile::Open( inpath + "Data_SingleEle_D_"+region+"_histograms.root"      ) ; 
+//// file_Data_SingleEle_C              =  TFile::Open( inpath + "Data_SingleEle_C_"+region+"_histograms.root"      ) ; 
+//// file_Data_SingleEle_B_2            =  TFile::Open( inpath + "Data_SingleEle_B_2_"+region+"_histograms.root"    ) ; 
+ file_Data_SinglePhoton_H_3         =  TFile::Open( inpath + "Data_SinglePhoton_H_3_"+region+"_histograms.root" ) ; 
+ file_Data_SinglePhoton_H_2         =  TFile::Open( inpath + "Data_SinglePhoton_H_2_"+region+"_histograms.root" ) ; 
+ file_Data_SinglePhoton_G           =  TFile::Open( inpath + "Data_SinglePhoton_G_"+region+"_histograms.root"   ) ; 
+// file_Data_SinglePhoton_F           =  TFile::Open( inpath + "Data_SinglePhoton_F_"+region+"_histograms.root"   ) ; 
+// file_Data_SinglePhoton_E           =  TFile::Open( inpath + "Data_SinglePhoton_E_"+region+"_histograms.root"   ) ; 
+// file_Data_SinglePhoton_D           =  TFile::Open( inpath + "Data_SinglePhoton_D_"+region+"_histograms.root"   ) ; 
+// file_Data_SinglePhoton_C           =  TFile::Open( inpath + "Data_SinglePhoton_C_"+region+"_histograms.root"   ) ; 
+// file_Data_SinglePhoton_B_2         =  TFile::Open( inpath + "Data_SinglePhoton_B_2_"+region+"_histograms.root" ) ; 
+ file_Data_DoubleMu_H_3             =  TFile::Open( inpath + "Data_DoubleMu_H_3_"+region+"_histograms.root"     ) ; 
+ file_Data_DoubleMu_H_2             =  TFile::Open( inpath + "Data_DoubleMu_H_2_"+region+"_histograms.root"     ) ; 
+ file_Data_DoubleMu_G               =  TFile::Open( inpath + "Data_DoubleMu_G_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleMu_F               =  TFile::Open( inpath + "Data_DoubleMu_F_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleMu_E               =  TFile::Open( inpath + "Data_DoubleMu_E_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleMu_D               =  TFile::Open( inpath + "Data_DoubleMu_D_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleMu_C               =  TFile::Open( inpath + "Data_DoubleMu_C_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleMu_B_2             =  TFile::Open( inpath + "Data_DoubleMu_B_2_"+region+"_histograms.root"     ) ; 
+ file_Data_DoubleEG_H_3             =  TFile::Open( inpath + "Data_DoubleEG_H_3_"+region+"_histograms.root"     ) ; 
+ file_Data_DoubleEG_H_2             =  TFile::Open( inpath + "Data_DoubleEG_H_2_"+region+"_histograms.root"     ) ; 
+ file_Data_DoubleEG_G               =  TFile::Open( inpath + "Data_DoubleEG_G_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleEG_F               =  TFile::Open( inpath + "Data_DoubleEG_F_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleEG_E               =  TFile::Open( inpath + "Data_DoubleEG_E_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleEG_D               =  TFile::Open( inpath + "Data_DoubleEG_D_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleEG_C               =  TFile::Open( inpath + "Data_DoubleEG_C_"+region+"_histograms.root"       ) ; 
+// file_Data_DoubleEG_B_2             =  TFile::Open( inpath + "Data_DoubleEG_B_2_"+region+"_histograms.root"     ) ; 
+ file_Data_MuonEG_H_3             =  TFile::Open( inpath + "Data_MuonEG_H_3_"+region+"_histograms.root"     ) ; 
+ file_Data_MuonEG_H_2             =  TFile::Open( inpath + "Data_MuonEG_H_2_"+region+"_histograms.root"     ) ; 
+ file_Data_MuonEG_G               =  TFile::Open( inpath + "Data_MuonEG_G_"+region+"_histograms.root"       ) ; 
+// file_Data_MuonEG_F               =  TFile::Open( inpath + "Data_MuonEG_F_"+region+"_histograms.root"       ) ; 
+// file_Data_MuonEG_E               =  TFile::Open( inpath + "Data_MuonEG_E_"+region+"_histograms.root"       ) ; 
+// file_Data_MuonEG_D               =  TFile::Open( inpath + "Data_MuonEG_D_"+region+"_histograms.root"       ) ; 
+// file_Data_MuonEG_C               =  TFile::Open( inpath + "Data_MuonEG_C_"+region+"_histograms.root"       ) ; 
+// file_Data_MuonEG_B_2             =  TFile::Open( inpath + "Data_MuonEG_B_2_"+region+"_histograms.root"     ) ; 
 
  // Start looping over variables, systematic uncertainty bins, make plots / tables / root files
   for(unsigned int j=0; j<variables.size(); ++j){
@@ -965,7 +962,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      if(varname.Contains("nSelectedAODCaloJetTag") && !extraname.Contains("log") && uncbin==""){
        TString fname = "forTed_"; fname+=varname; fname+=".csv";
        std::cout << "Writing " << fname<< std::endl;
- //outpath = outpath+aversion+"/"+region+"/";
        FILE *f = fopen (outpath+fname, "w");
        print_hist(h_DY, "DY", f);
        print_hist(h_GJets, "GJets", f);
