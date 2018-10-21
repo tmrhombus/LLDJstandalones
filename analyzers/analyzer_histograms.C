@@ -1513,7 +1513,7 @@ Bool_t analyzer_histograms::initAODCaloJetMultHistograms( TString uncbin )
   for(unsigned int i=0; i<selbinnames.size(); ++i){
       deleteAODCaloJetMultHistograms(i);
       TString hname_nSelectedAODCaloJet          = "h_"+selbinnames[i]+"_nSelectedAODCaloJet"+uncbin;
-      h_nSelectedAODCaloJet                  [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet         , "nSelectedAODCaloJet"      , 6, -0.5, 5.5);
+      h_nSelectedAODCaloJet                  [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet         , "nSelectedAODCaloJet"      , 10, -0.5, 9.5);
   }//sel                                                                                                                                                                                
 }
 

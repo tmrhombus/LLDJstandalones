@@ -123,7 +123,7 @@ void analyzer_loop::Loop(TString outfilename,
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passOSOF = (OSOF_mass>20.);
-  passPTOSOF = (OSOF_mass>100.);
+  passPTOSOF = (OSOF_pt>100.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
   passPTOSSF  = (dilep_pt>100.);

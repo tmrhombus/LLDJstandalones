@@ -175,11 +175,11 @@ void analyzer_selections::setSelections()
  selvecEleMuOSOF .push_back( passMuEG     );
  selvecEleMuOSOF .push_back( passGoodVtx  );
  selvecEleMuOSOF .push_back( passOneJet   );
- selvecEleMuOSOF .push_back( passOSOF     );
+ selvecEleMuOSOF .push_back( passPTOSOF  && passZWinOSOF );
  // One Photon
  selvecOnePho .push_back( passSinglePho);
  selvecOnePho .push_back( passGoodVtx  );
- selvecOnePho .push_back( passOneJet   );
+ selvecOnePho .push_back( passOneJet && muon_list.size()==0 && electron_list.size()==0 );
 }
 
 Int_t analyzer_selections::setSelKey( std::vector<Bool_t> selvec ) 
