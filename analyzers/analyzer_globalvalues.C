@@ -54,6 +54,8 @@ void analyzer_globalvalues::cleareventcounters(){
  nSelectedMuo=0;
  nSelectedAODCaloJet=0;
 
+ nBPartonFlavour=0;
+
  electron_list         .clear(); 
  photon_list           .clear(); 
  muon_list             .clear(); 

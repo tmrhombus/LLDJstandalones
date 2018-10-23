@@ -38,6 +38,8 @@ public :
    std::vector<float> aodcalojet_matchedCSV_list;
    std::vector<int>   aodcalojet_matchedPartonFlavour_list;
 
+   int nBPartonFlavour;
+
    // for dilepton
    TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
    TLorentzVector fourVec_l1, fourVec_l2;
