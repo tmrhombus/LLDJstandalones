@@ -25,6 +25,9 @@ public :
    std::vector<int> aodpfjet_list;
    std::vector<int> aodpfchsjet_list;
    std::vector<int> taggedjet_list;
+   std::vector<int> taggedjetSB1_list;
+   std::vector<int> taggedjetSB2_list;
+   std::vector<int> taggedjetSB3_list;
 
    std::vector<int> calomatchedPF_list;
    std::vector<int> PFmatchedCalo_list;
@@ -34,6 +37,8 @@ public :
    std::vector<float> aodcalojet_minDR_list;
    std::vector<float> aodcalojet_matchedCSV_list;
    std::vector<int>   aodcalojet_matchedPartonFlavour_list;
+
+   int nBPartonFlavour;
 
    // for dilepton
    TLorentzVector fourVec_ee, fourVec_mm, fourVec_ll, fourVec_em;
