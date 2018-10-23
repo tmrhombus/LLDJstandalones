@@ -40,6 +40,7 @@ void print_hist(TH1F* h, TString name, FILE* file){
 void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
 {
 
+ TString description = "";
 // // Draw signal as lines
 // Bool_t drawSignal = kFALSE; //kTRUE;
 // Bool_t drawRatio = kTRUE;
@@ -55,8 +56,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  TString aversion = TString(getenv("aversion"));
 
  inpath = inpath+aversion+"/";
- //outpath = outpath+aversion+"/"+region+"/";
- outpath = outpath+"test/"+region+"/";
+ outpath = outpath+aversion+"/"+region+"/";
+ //outpath = outpath+"test/"+region+"/";
 
  TString extraname = "";
  if(HIP){
@@ -134,11 +135,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
  // variables.push_back("nJet");                   
 
  //variables.push_back("htall"); 
-  variables.push_back("htaodcalojets");
-//  variables.push_back("AOD_nSelectedPho");
-//  variables.push_back("AOD_nSelectedEle");
+  //variables.push_back("htaodcalojets");
+  //variables.push_back("AOD_nSelectedPho");
+  //variables.push_back("AOD_nSelectedEle");
 //  variables.push_back("AOD_nSelectedMu");
-//  variables.push_back("nSelectedAODCaloJet");
+ // variables.push_back("nSelectedAODCaloJet");
   variables.push_back("nSelectedAODCaloJetTag");
 //  variables.push_back("LeadingJet_AODCaloJetPt");                      
  // variables.push_back("LeadingJet_jetEn");                      
@@ -882,13 +883,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      // rescale MC to match eras used
      h_DY         ->Scale(MCSF); 
      h_GJets      ->Scale(MCSF); 
-     h_GJets      ->Scale(MCSF); 
      h_ST         ->Scale(MCSF); 
      h_ZH         ->Scale(MCSF); 
      h_VV         ->Scale(MCSF); 
      h_TT         ->Scale(MCSF); 
      h_VG         ->Scale(MCSF); 
-     h_QCD        ->Scale(MCSF); 
      h_QCD        ->Scale(MCSF); 
      h_WJetsToLNu ->Scale(MCSF); 
      h_altDY      ->Scale(MCSF);
@@ -1605,10 +1604,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      bgstack->GetYaxis()->SetTitleSize(40);
      bgstack->GetYaxis()->SetTitleFont(43);
      bgstack->GetYaxis()->SetTitleOffset(1.75);
+     bgstack->GetXaxis()->SetTitle(varname + "    "+description);
      if(!drawData){
        bgstack->GetXaxis()->SetTitleSize(40);
        bgstack->GetXaxis()->SetTitleFont(43);
-       bgstack->GetXaxis()->SetTitle(varname);
+       bgstack->GetXaxis()->SetTitle(varname + "    "+description);
        bgstack->GetXaxis()->SetTitleOffset(4.0);
        bgstack->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
        bgstack->GetXaxis()->SetLabelSize(20);//20
@@ -1665,14 +1665,14 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
        // X axis ratio plot settings
        h_ratio->GetXaxis()->SetTitleSize(40);
        h_ratio->GetXaxis()->SetTitleFont(43);
-       h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+       h_ratio->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
        h_ratio->GetXaxis()->SetTitleOffset(4.0);
        h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
        h_ratio->GetXaxis()->SetLabelSize(20);//20
        h_ratio->SetMarkerStyle(20);
        h_ratio->SetMarkerColor(kRed);
        h_ratio->SetMarkerSize(1);
-       h_ratio->GetYaxis()->SetRangeUser(0,2);
+       h_ratio->GetYaxis()->SetRangeUser(0.4,1.6);
        h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
               
        h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
@@ -1693,8 +1693,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      }
 
      // save canvas
-     canvas->SaveAs(outname+".png");
-     canvas->SaveAs(outname+".pdf");
+     canvas->SaveAs(outname+description+".png");
+     canvas->SaveAs(outname+description+".pdf");
      
      // save histograms into single root file
      TFile *outfile = TFile::Open(outname+".root","RECREATE");
