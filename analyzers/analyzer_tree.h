@@ -29,6 +29,14 @@ public :
    virtual void clearNM1EleZHtree();
    virtual void setNM1EleZHtree();
    
+   virtual void clearOPTCRHeavytree();
+   virtual void setOPTCRHeavytree();
+   virtual void clearOPTCRLighttree();
+   virtual void setOPTCRLighttree();
+   virtual void clearOPTMuZHtree();
+   virtual void setOPTMuZHtree();
+   virtual void clearOPTEleZHtree();
+   virtual void setOPTEleZHtree();
 //------------------------------OPT Tree
    // output TTree to be filled (slimmed vars/selections)
    TTree *OPTtree = new TTree("OPTtree","Optimization Variables");
@@ -52,6 +60,99 @@ public :
    TBranch* bAlpha       = OPTtree->Branch("OPT_AODCaloJetAlphaMax"                 , &OPT_AODCaloJetAlphaMax); 
    TBranch* bEta         = OPTtree->Branch("OPT_AODCaloJetEta"                      , &OPT_AODCaloJetEta); 
    TBranch* bPt          = OPTtree->Branch("OPT_AODCaloJetPt"                       , &OPT_AODCaloJetPt); 
+ 
+   // CRHeavy
+   TTree *OPTCRHeavytree = new TTree("OPTCRHeavytree","CRHeavy OPT Vars");
+  
+   // vectors to be filled in optional tree
+   std::vector<int>   OPTCRHeavy_Event;
+   std::vector<float> OPTCRHeavy_EventWeight;
+   std::vector<int>   OPTCRHeavy_nJets;
+   std::vector<float> OPTCRHeavy_AODCaloJetEta;
+   std::vector<float> OPTCRHeavy_AODCaloJetPt;
+   std::vector<float> OPTCRHeavy_AODCaloJetMedianLog10IPSig;
+   std::vector<float> OPTCRHeavy_AODCaloJetMedianLog10TrackAngle;
+   std::vector<float> OPTCRHeavy_AODCaloJetAlphaMax;
+  
+   // link vectors to branches
+   TBranch* bOPTCRHeavyEvent       = OPTCRHeavytree->Branch("OPTCRHeavy_Event"                              , &OPTCRHeavy_Event); 
+   TBranch* bOPTCRHeavyEventWeight = OPTCRHeavytree->Branch("OPTCRHeavy_EventWeight"                        , &OPTCRHeavy_EventWeight); 
+   TBranch* bOPTCRHeavynJets       = OPTCRHeavytree->Branch("OPTCRHeavy_nJets"                              , &OPTCRHeavy_nJets); 
+   TBranch* bOPTCRHeavyEta         = OPTCRHeavytree->Branch("OPTCRHeavy_AODCaloJetEta"                      , &OPTCRHeavy_AODCaloJetEta); 
+   TBranch* bOPTCRHeavyPt          = OPTCRHeavytree->Branch("OPTCRHeavy_AODCaloJetPt"                       , &OPTCRHeavy_AODCaloJetPt); 
+   TBranch* bOPTCRHeavyIP          = OPTCRHeavytree->Branch("OPTCRHeavy_AODCaloJetMedianLog10IPSig"         , &OPTCRHeavy_AODCaloJetMedianLog10IPSig); 
+   TBranch* bOPTCRHeavyTA          = OPTCRHeavytree->Branch("OPTCRHeavy_AODCaloJetMedianLog10TrackAngle"    , &OPTCRHeavy_AODCaloJetMedianLog10TrackAngle); 
+   TBranch* bOPTCRHeavyAlpha       = OPTCRHeavytree->Branch("OPTCRHeavy_AODCaloJetAlphaMax"                 , &OPTCRHeavy_AODCaloJetAlphaMax); 
+   
+   // NMinus1 plot CRLight
+   TTree *OPTCRLighttree = new TTree("OPTCRLighttree","CRLight OPT Vars");
+  
+   // vectors to be filled in optional tree
+   std::vector<int>   OPTCRLight_Event;
+   std::vector<float> OPTCRLight_EventWeight;
+   std::vector<int>   OPTCRLight_nJets;
+   std::vector<float> OPTCRLight_AODCaloJetEta;
+   std::vector<float> OPTCRLight_AODCaloJetPt;
+   std::vector<float> OPTCRLight_AODCaloJetMedianLog10IPSig;
+   std::vector<float> OPTCRLight_AODCaloJetMedianLog10TrackAngle;
+   std::vector<float> OPTCRLight_AODCaloJetAlphaMax;
+  
+   // link vectors to branches
+   TBranch* bOPTCRLightEvent       = OPTCRLighttree->Branch("OPTCRLight_Event"                              , &OPTCRLight_Event); 
+   TBranch* bOPTCRLightEventWeight = OPTCRLighttree->Branch("OPTCRLight_EventWeight"                        , &OPTCRLight_EventWeight); 
+   TBranch* bOPTCRLightnJets       = OPTCRLighttree->Branch("OPTCRLight_nJets"                              , &OPTCRLight_nJets); 
+   TBranch* bOPTCRLightEta         = OPTCRLighttree->Branch("OPTCRLight_AODCaloJetEta"                      , &OPTCRLight_AODCaloJetEta); 
+   TBranch* bOPTCRLightPt          = OPTCRLighttree->Branch("OPTCRLight_AODCaloJetPt"                       , &OPTCRLight_AODCaloJetPt); 
+   TBranch* bOPTCRLightIP          = OPTCRLighttree->Branch("OPTCRLight_AODCaloJetMedianLog10IPSig"         , &OPTCRLight_AODCaloJetMedianLog10IPSig); 
+   TBranch* bOPTCRLightTA          = OPTCRLighttree->Branch("OPTCRLight_AODCaloJetMedianLog10TrackAngle"    , &OPTCRLight_AODCaloJetMedianLog10TrackAngle); 
+   TBranch* bOPTCRLightAlpha       = OPTCRLighttree->Branch("OPTCRLight_AODCaloJetAlphaMax"                 , &OPTCRLight_AODCaloJetAlphaMax); 
+
+   // NMinus1 plot MuZH
+   TTree *OPTMuZHtree = new TTree("OPTMuZHtree","MuZH OPT Vars");
+  
+   // vectors to be filled in optional tree
+   std::vector<int>   OPTMuZH_Event;
+   std::vector<float> OPTMuZH_EventWeight;
+   std::vector<int>   OPTMuZH_nJets;
+   std::vector<float> OPTMuZH_AODCaloJetEta;
+   std::vector<float> OPTMuZH_AODCaloJetPt;
+   std::vector<float> OPTMuZH_AODCaloJetMedianLog10IPSig;
+   std::vector<float> OPTMuZH_AODCaloJetMedianLog10TrackAngle;
+   std::vector<float> OPTMuZH_AODCaloJetAlphaMax;
+  
+   // link vectors to branches
+   TBranch* bOPTMuZHEvent       = OPTMuZHtree->Branch("OPTMuZH_Event"                              , &OPTMuZH_Event); 
+   TBranch* bOPTMuZHEventWeight = OPTMuZHtree->Branch("OPTMuZH_EventWeight"                        , &OPTMuZH_EventWeight); 
+   TBranch* bOPTMuZHnJets       = OPTMuZHtree->Branch("OPTMuZH_nJets"                              , &OPTMuZH_nJets); 
+   TBranch* bOPTMuZHEta         = OPTMuZHtree->Branch("OPTMuZH_AODCaloJetEta"                      , &OPTMuZH_AODCaloJetEta); 
+   TBranch* bOPTMuZHPt          = OPTMuZHtree->Branch("OPTMuZH_AODCaloJetPt"                       , &OPTMuZH_AODCaloJetPt); 
+   TBranch* bOPTMuZHIP          = OPTMuZHtree->Branch("OPTMuZH_AODCaloJetMedianLog10IPSig"         , &OPTMuZH_AODCaloJetMedianLog10IPSig); 
+   TBranch* bOPTMuZHTA          = OPTMuZHtree->Branch("OPTMuZH_AODCaloJetMedianLog10TrackAngle"    , &OPTMuZH_AODCaloJetMedianLog10TrackAngle); 
+   TBranch* bOPTMuZHAlpha       = OPTMuZHtree->Branch("OPTMuZH_AODCaloJetAlphaMax"                 , &OPTMuZH_AODCaloJetAlphaMax); 
+
+   // NMinus1 plot EleZH
+   TTree *OPTEleZHtree = new TTree("OPTEleZHtree","EleZH OPT Vars");
+  
+   // vectors to be filled in optional tree
+   std::vector<int>   OPTEleZH_Event;
+   std::vector<float> OPTEleZH_EventWeight;
+   std::vector<int>   OPTEleZH_nJets;
+   std::vector<float> OPTEleZH_AODCaloJetEta;
+   std::vector<float> OPTEleZH_AODCaloJetPt;
+   std::vector<float> OPTEleZH_AODCaloJetMedianLog10IPSig;
+   std::vector<float> OPTEleZH_AODCaloJetMedianLog10TrackAngle;
+   std::vector<float> OPTEleZH_AODCaloJetAlphaMax;
+  
+   // link vectors to branches
+   TBranch* bOPTEleZHEvent       = OPTEleZHtree->Branch("OPTEleZH_Event"                              , &OPTEleZH_Event); 
+   TBranch* bOPTEleZHEventWeight = OPTEleZHtree->Branch("OPTEleZH_EventWeight"                        , &OPTEleZH_EventWeight); 
+   TBranch* bOPTEleZHnJets       = OPTEleZHtree->Branch("OPTEleZH_nJets"                              , &OPTEleZH_nJets); 
+   TBranch* bOPTEleZHEta         = OPTEleZHtree->Branch("OPTEleZH_AODCaloJetEta"                      , &OPTEleZH_AODCaloJetEta); 
+   TBranch* bOPTEleZHPt          = OPTEleZHtree->Branch("OPTEleZH_AODCaloJetPt"                       , &OPTEleZH_AODCaloJetPt); 
+   TBranch* bOPTEleZHIP          = OPTEleZHtree->Branch("OPTEleZH_AODCaloJetMedianLog10IPSig"         , &OPTEleZH_AODCaloJetMedianLog10IPSig); 
+   TBranch* bOPTEleZHTA          = OPTEleZHtree->Branch("OPTEleZH_AODCaloJetMedianLog10TrackAngle"    , &OPTEleZH_AODCaloJetMedianLog10TrackAngle); 
+   TBranch* bOPTEleZHAlpha       = OPTEleZHtree->Branch("OPTEleZH_AODCaloJetAlphaMax"                 , &OPTEleZH_AODCaloJetAlphaMax); 
+
 
 //---------------------------------NM1 Trees
    // NMinus1 plot gen. purpose
