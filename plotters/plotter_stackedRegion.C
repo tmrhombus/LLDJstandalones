@@ -1695,7 +1695,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP )
      // save canvas
      canvas->SaveAs(outname+description+".png");
      canvas->SaveAs(outname+description+".pdf");
-     
+  
      // save histograms into single root file
      TFile *outfile = TFile::Open(outname+".root","RECREATE");
      h_Data        ->Write();
