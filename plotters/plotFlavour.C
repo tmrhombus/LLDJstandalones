@@ -31,7 +31,7 @@ void one_plotFlavour(TString varname, TString region, TString path){
   h_add->Add(h_mc_1b);
   h_add->Add(h_mc_2b);
   for(int i=1; i<=h_add->GetNbinsX(); i++){
-    std::cout << "Total = " << h_totalmc->GetBinContent(i) << ", Added = " << h_add->GetBinContent(i) << std::endl;
+    std::cout << "Bin " << i << " 0b: " << h_mc_0b->GetBinContent(i) << " 1b: " << h_mc_1b->GetBinContent(i) << " 3b: " << h_mc_2b->GetBinContent(i) << " Total: " << h_totalmc->GetBinContent(i) << ", Added: " << h_add->GetBinContent(i) << std::endl;
   }
 
   
@@ -64,7 +64,7 @@ void one_plotFlavour(TString varname, TString region, TString path){
 
 void plotFlavour(){
 
-  TString varname = "nSelectedAODCaloJetTagSB3";
+  TString varname = "nSelectedAODCaloJetTag";
   TString path = "../plots/PhoPT170_k1p26/";
 
   one_plotFlavour(varname, "OnePho", path);
