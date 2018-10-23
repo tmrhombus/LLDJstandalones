@@ -293,6 +293,26 @@ std::vector<int> analyzer_createobjects::jet_matchPartonFlavour(){
 
 }
 
+//-------------------------coutNBPartonFlavour
+int analyzer_createobjects::coutNBPartonFlavour(){
+
+  int n_b =0;
+  if(isMC){
+
+    for(int j = 0; j < AODnPATJet; j++){//all PAT jets
+      //Really loose cuts 
+      if( fabs(AODPATJetEta->at(j))<3.0 &&  AODPATJetPt->at(j)>15.0 && abs(AODPATJetPartonFlavour->at(j))==5 ) n_b++;
+    }//j
+
+  }//isMC
+  
+  return n_b;
+
+}
+
+
+
+
 
 //-------------------------jet_passID
 std::vector<int> analyzer_createobjects::jet_passID( int bitnr, TString jettype, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname ) {

@@ -176,14 +176,26 @@ public :
  TH1F  h_htaodcalojets            [SELBINNAMESIZE];
 
  // nJets
- TH1F  h_nSelectedAODCaloJet         [SELBINNAMESIZE];
- TH1F  h_nSelectedAODCaloJetTag      [SELBINNAMESIZE];
- TH1F  h_nSelectedAODCaloJetTagSB1   [SELBINNAMESIZE];
- TH1F  h_nSelectedAODCaloJetTagSB2   [SELBINNAMESIZE];
- TH1F  h_nSelectedAODCaloJetTagSB3   [SELBINNAMESIZE];
- TH1F  h_nCaloJet                    [SELBINNAMESIZE]; // AODnCaloJet; 
- TH1F  h_nPFJet                      [SELBINNAMESIZE]; // AODnPFJet; 
- TH1F  h_nPFchsJet                   [SELBINNAMESIZE]; // AODnPFchsJet; 
+ TH1F  h_nSelectedAODCaloJet            [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag         [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_0b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_1b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_2b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_2b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_2b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_2b   [SELBINNAMESIZE];
+ TH1F  h_nCaloJet                       [SELBINNAMESIZE]; // AODnCaloJet; 
+ TH1F  h_nPFJet                         [SELBINNAMESIZE]; // AODnPFJet; 
+ TH1F  h_nPFchsJet                      [SELBINNAMESIZE]; // AODnPFchsJet; 
 
  // AODCaloJetBasicHistograms
  TH1F  h_AODCaloJetPt                             [SELBINNAMESIZE][JETMULTNAMESIZE];

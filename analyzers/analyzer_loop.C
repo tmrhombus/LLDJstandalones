@@ -100,6 +100,8 @@ void analyzer_loop::Loop(TString outfilename,
   aodcalojet_matchedCSV_list = jet_matchCSV();
   aodcalojet_matchedPartonFlavour_list = jet_matchPartonFlavour();
 
+  nBPartonFlavour = coutNBPartonFlavour();
+
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data
   // = lum * cross-section / nrEvents generated

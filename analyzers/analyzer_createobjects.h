@@ -25,6 +25,7 @@ public :
  std::vector<float>     jet_minDR              ();
  std::vector<float>     jet_matchCSV           ();
  std::vector<int>       jet_matchPartonFlavour ();
+ int                    coutNBPartonFlavour    ();
 
  // make dilepton pair, pass by reference
  virtual void     makeDilep(TLorentzVector *fv_1, TLorentzVector *fv_2,
