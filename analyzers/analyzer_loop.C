@@ -332,7 +332,7 @@ void analyzer_loop::Loop(TString outfilename,
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
   //Print objects in backgroundMC with >=2 tags
-  if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
+  //if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
 
 
   //printf("make log: %0.i\n",makelog);
