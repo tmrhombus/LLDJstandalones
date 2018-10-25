@@ -31,7 +31,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
 
- Int_t rebin=5;
+ Int_t rebin=1;
 
  TString eraname = "";
  if(HIP){
@@ -55,6 +55,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  float rmarg = 0.05;
  
  TCanvas* canvas = new TCanvas("canvas","canvas",canx,cany); 
+ TCanvas* canva2 = new TCanvas("canva2","canva2",canx,cany); 
 
  gStyle->SetOptStat(0);
  gPad->SetLogy(dolog);
@@ -147,6 +148,9 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  TH1F* h_DataInt;
  TH1F* h_MCInt;
 
+ TH1F* h_NormDataInt;
+ TH1F* h_NormMCInt;
+
  // load common histogram files / histograms
  file_input = new TFile( inpath + infilename + ".root"               ) ; 
  h_DY             = (TH1F*)file_input->Get("DY"            )->Clone("DY"            )  ;
@@ -232,7 +236,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    bgstack->Add(h_VG         );
    bgstack->Add(h_QCD        );
    bgstack->Add(h_ZH         );
-   //bgstack->Add(h_Sig); 
+   bgstack->Add(h_Sig); 
 
    //h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
    //h_bkgtotal->SetFillStyle(1001);
@@ -306,7 +310,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    // second pad
    ratiopad->cd();
 
-   h_DataInt  = (TH1F*)h_Data->Clone("DataInt"     );
+   h_DataInt  = (TH1F*)h_Data->Clone("h_DataInt"     );
    h_MCInt    = (TH1F*)h_bkgtotal->Clone("h_MCInt" );
 
    int nbins = h_DataInt->GetNbinsX();
@@ -373,24 +377,81 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    // save canvas
    canvas->SaveAs(outname+".png");
    canvas->SaveAs(outname+".pdf");
+
+
+   //// For tagging variables - calculate the shift
+   if( varname.Contains("AllJets_AODCaloJetMedianLog10IPSig"     ) ||      
+       varname.Contains("AllJets_AODCaloJetMedianLog10TrackAngle") ||         
+       varname.Contains("AllJets_AODCaloJetAlphaMax"             ) )
+   {
+
+    // Orignal cut value
+    float origcutval=-99;
+    if( varname.Contains("AllJets_AODCaloJetMedianLog10IPSig"     ) ) { 
+     origcutval = 1.15;
+    }   
+    if( varname.Contains("AllJets_AODCaloJetMedianLog10TrackAngle") ) {    
+     origcutval = -1.75;
+    }   
+    if( varname.Contains("AllJets_AODCaloJetAlphaMax"             ) ) { 
+     origcutval = 0.75;
+    }   
+
+//    h_NormDataInt = (TH1F*)h_DataInt->Clone("h_NormDataInt");
+//    h_NormDataInt->Scale(1.0 / h_DataInt->Integral() );
+//    h_NormMCInt = (TH1F*)h_MCInt->Clone("h_NormMCInt");
+//    h_NormMCInt->Scale(1.0 / h_MCInt->Integral() );
+    int binAtOrigCut = h_DataInt->GetXaxis()->FindBin(origcutval);
+    float dataIntToCut = h_DataInt->Integral(0,binAtOrigCut);
+
+    TLine *lineOCV = new TLine(origcutval,0,origcutval,1);
+    lineOCV->SetLineColor(kBlue);
+    lineOCV->SetLineWidth(2);
+
+    int nbins = h_DataInt->GetNbinsX();
+    int binAtNewCut = 0;
+    for( int j=1; j<nbins+1; ++j){
+     binAtNewCut++;
+     if(h_MCInt->Integral(0,j)>dataIntToCut) break;
+    }
+
+    float newcutval;
+    newcutval = h_MCInt->GetXaxis()->GetBinCenter( binAtNewCut );
+    TLine *lineNCV = new TLine(newcutval,0,newcutval,1);
+    lineNCV->SetLineColor(kRed);
+    lineNCV->SetLineWidth(2);
+
+    //std::cout<<"OCV: "<<origcutval<<" BAC: "<<binAtOrigCut<<" ITC: "<<dataIntToCut<<" BNC: "<<binAtNewCut<<" MIC: "<<h_MCInt->Integral(0,binAtNewCut)<<std::endl;
+    std::cout<<"Original cut: "<<origcutval<<std::endl;
+    std::cout<<"New cut:      "<<newcutval<<std::endl;
+
+    canva2->cd();
+    h_MCInt->Draw("hist");
+    h_DataInt->Draw("hist same");
+    h_DataInt->GetYaxis()->SetTitle("Integral");
+    leg2->Draw();
+    lineOCV->Draw();
+    lineNCV->Draw();
+    canva2->SaveAs(outname+"_int.pdf");
+
+    //// save histograms into single root file
+    //TFile *outfile = TFile::Open(outname+".root","RECREATE");
+    //h_Data        ->Write();
+    //h_DY          ->Write();
+    //h_GJets       ->Write();
+    //h_ST          ->Write();
+    //h_TT          ->Write();
+    //h_WJetsToLNu  ->Write();
+    //h_VV          ->Write();
+    //h_VG          ->Write();
+    //h_ZH          ->Write();
+    //h_bkgtotal    ->Write();
+    //h_ratio       ->Write();
+    //h_ratiostaterr->Write();
+    //bgstack       ->Write();
+    //outfile->Close();
   
-   //// save histograms into single root file
-   //TFile *outfile = TFile::Open(outname+".root","RECREATE");
-   //h_Data        ->Write();
-   //h_DY          ->Write();
-   //h_GJets       ->Write();
-   //h_ST          ->Write();
-   //h_TT          ->Write();
-   //h_WJetsToLNu  ->Write();
-   //h_VV          ->Write();
-   //h_VG          ->Write();
-   //h_ZH          ->Write();
-   //h_bkgtotal    ->Write();
-   //h_ratio       ->Write();
-   //h_ratiostaterr->Write();
-   //bgstack       ->Write();
-   //outfile->Close();
-  
+   }   
 
   }
  }
