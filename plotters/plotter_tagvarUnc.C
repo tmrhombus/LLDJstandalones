@@ -15,7 +15,7 @@
 
 //using namespace std;
 
-void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t dolog, Bool_t HIP )
+void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP )
 {
 
  // Setup running configuration: IO, naming, SFs, ..
@@ -31,6 +31,8 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
 
+ Int_t rebin=5;
+
  TString eraname = "";
  if(HIP){
   eraname+="_BCDEF";
@@ -43,7 +45,7 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
   eraname+="_GH";
  }
 
- TString infilename = lepname+"_"+region+"_"+varname+eraname;
+ TString infilename = region+"_"+varname+eraname;
  // std::cout<<"name: "<<inpath<<" "<<infilename<<std::endl;
 
  // canvas and text attributes
@@ -159,6 +161,19 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
  h_altTT          = (TH1F*)file_input->Get("altTT"         )->Clone("altTT"         )  ;
  h_Data           = (TH1F*)file_input->Get("Data"          )->Clone("Data"          )  ;
 
+ h_DY         ->Rebin(rebin); 
+ h_GJets      ->Rebin(rebin); 
+ h_WJetsToLNu ->Rebin(rebin); 
+ h_ST         ->Rebin(rebin); 
+ h_VV         ->Rebin(rebin); 
+ h_VG         ->Rebin(rebin); 
+ h_ZH         ->Rebin(rebin); 
+ h_TT         ->Rebin(rebin); 
+ h_altDY      ->Rebin(rebin); 
+ h_altVV      ->Rebin(rebin); 
+ h_altTT      ->Rebin(rebin); 
+ h_Data       ->Rebin(rebin); 
+
  std::vector<TString> MSs;
  std::vector<TString> cts;
  MSs.push_back("15");
@@ -176,7 +191,9 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    TString ct = cts.at(i);
    //std::cout<<ct<<std::endl;
 
-   TString outname = "tvuMS"+MS+"ct"+ct+"_"+lepname+"_"+region+"_"+varname+eraname;
+   //TString outname = "tvuMS"+MS+"ct"+ct+"_"+lepname+"_"+region+"_"+varname+eraname;
+   TString outname = "tvuMS"+MS+"ct"+ct+"_"+region+"_"+varname+eraname;
+   //TString infilename = region+"_"+varname+eraname;
    outname = outpath + outname;
    //std::cout<<outname<<std::endl;
 
@@ -191,16 +208,33 @@ void plotter_tagvarUnc(TString region, TString lepname, TString varname, Bool_t 
    h_Sig40->Scale(40000);
    h_Sig40->SetFillStyle(0);
    h_Sig40->SetLineColor(kOrange+8);
-   bgstack          = (THStack*)file_input->Get("bgstack"    )->Clone("bgstack"       )  ;
-   bgstack->Add(h_Sig); 
+   //bgstack          = (THStack*)file_input->Get("bgstack"    )->Clone("bgstack"       )  ;
+
    h_bkgtotal       = (TH1F*)file_input->Get("bkgtotal"      )->Clone("bkgtotal"      )  ;
    h_bkgtotal->Add(h_Sig);
+
+   h_Sig     -> Rebin(rebin); 
+   h_Sig40   -> Rebin(rebin);  
+   //bgstack   -> Rebin(rebin);    
+   h_bkgtotal-> Rebin(rebin);       
+
+   //THStack *bgstack = new THStack("bgstack","");
+   bgstack = new THStack("bgstack","");
+   bgstack->Add(h_DY         );
+   bgstack->Add(h_GJets      );   
+   bgstack->Add(h_ST         );
+   bgstack->Add(h_TT         );
+   bgstack->Add(h_WJetsToLNu ); 
+   bgstack->Add(h_VV         );
+   bgstack->Add(h_VG         );
+   //bgstack->Add(h_QCD        );
+   bgstack->Add(h_ZH         );
+   //bgstack->Add(h_Sig); 
 
    //h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
    //h_bkgtotal->SetFillStyle(1001);
 
 //   printf(" size %10.10f %10.10f \n ", h_Sig->Integral(0,-1), h_bkgtotal->Integral(0,-1));
-
 
    // make legend
    TLegend *leg;
