@@ -2,10 +2,7 @@
 
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export nversion="topRWT"
-#export aversion="topRWTCndrSFNoPixel"
-#export aversion="topRWT_NoPixelVar"
-export aversion="PhoPT170"
-#export aversion="topRWT_PixelVar"
+export aversion="Systematics"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
