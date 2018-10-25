@@ -15,45 +15,18 @@ analyzer_createobjects::~analyzer_createobjects()
 
 //-------------------------muon_passID
 std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut1, Float_t muPtCut2, Float_t muEtaCut, TString sysbinname)
-{
+{//------ btnr depricated can we remove?
  std::vector<int> mulist;
-
- // bool pass_loose  ;
- // bool pass_medium ;
- // bool pass_tight  ;
- // bool pass_soft   ;
- // bool pass_hipt   ;
- //
- // pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
- // pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
- // pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
- // pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
- // pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
- //
- //  printf(" Muon %i    %i %i %i %i %i \n\n",i
- //        , pass_loose  
- //        , pass_medium  
- //        , pass_tight
- //        , pass_soft
- //        , pass_hipt
- //        );       
 
  for(int i = 0; i < Shifted_muPt.size(); i++) 
  {    
-  //  printf(" Muon %i    %i %i %i %i %i \n",i
-  //        ,muIDbit->at(i) >> 0 & 0x1 
-  //        ,muIDbit->at(i) >> 1 & 0x1 
-  //        ,muIDbit->at(i) >> 2 & 0x1 
-  //        ,muIDbit->at(i) >> 3 & 0x1 
-  //        ,muIDbit->at(i) >> 4 & 0x1 
-  //        );       
 
   Float_t muonPt = getMuonPt(i,sysbinname);
   bool pass_kin = false;
   if( i==0 ) pass_kin = (muonPt > muPtCut1) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
   else       pass_kin = (muonPt > muPtCut2) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
 
-  bool pass_bit = AOD_muPassLooseID->at(i);//muIDbit->at(i) >> bitnr & 0x1 == 1;<------need to add      
+  bool pass_bit = AOD_muPassLooseID->at(i);//------should probably make if/else groups for other ID's 
 
   if (muoid = "Loose")  muoisoval = 0.25 ;
   if (muoid = "Medium") muoisoval = 0.25 ;
@@ -62,10 +35,9 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut
 
   if( pass_bit && pass_kin && pass_iso )
   {
-   //printf(" a selected muon\n");
    nSelectedMuo++;
    mulist.push_back(i);
-  } // if pass_bit && pass_kin
+  } // if pass_bit && pass_kin && pass_iso
  } // loop over muons
  return mulist;
 }
