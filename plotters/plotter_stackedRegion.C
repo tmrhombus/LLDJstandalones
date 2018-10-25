@@ -50,10 +50,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
+ TString nversion = TString(getenv("nversion"));
+ TString depot = TString(getenv("depot2"));
  TString inpath  = TString("../roots/");
  if(useEOS){
-  inpath = "root://cmsxrootd.fnal.gov//store/group/lpchbb/LLDJntuples/topRWT/analyzed/"; 
- }
+  inpath = "root://cmsxrootd.fnal.gov/"+depot+"/"+nversion+"/analyzed/"; 
+}
 
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/"+region+"/";
