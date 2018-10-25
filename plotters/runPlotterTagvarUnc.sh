@@ -2,9 +2,9 @@
 
 regions=( \ 
  "TwoEleDY"      \   
- "TwoEleZH"      \   
+ #"TwoEleZH"      \   
  "TwoMuDY"       \
- "TwoMuZH"       \
+ #"TwoMuZH"       \
 ) 
 
 variables=( \
