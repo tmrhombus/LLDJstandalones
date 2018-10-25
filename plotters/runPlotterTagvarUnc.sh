@@ -1,17 +1,11 @@
+#!/bin/bash
 
-
- # region, lepname, varname, dolog, HIP
-
-regions=( \
-# "ZH"   \
- "DY"   \
-# "OffZ" \
-)
-
-leptons=( \
- "ele"  \
- "mu"   \
-)
+regions=( \ 
+ "TwoEleDY"      \   
+ "TwoEleZH"      \   
+ "TwoMuDY"       \
+ "TwoMuZH"       \
+) 
 
 variables=( \
 # "AOD_elePt"                                  \     
@@ -29,8 +23,8 @@ variables=( \
 # "LeadingJet_AODCaloJetPt"                    \     
 # "LeadingJet_AODCaloJetEta"                   \     
 # "LeadingJet_AODCaloJetPhi"                   \     
-# "AllJets_AODCaloJetMedianLog10IPSig"         \
-# "AllJets_AODCaloJetMedianLog10TrackAngle"    \
+ "AllJets_AODCaloJetMedianLog10IPSig"         \
+ "AllJets_AODCaloJetMedianLog10TrackAngle"    \
  "AllJets_AODCaloJetAlphaMax"                 \
 # "AllJets_AODCaloJetPt"                       \     
 # "AllJets_AODCaloJetEta"                      \     
@@ -39,13 +33,10 @@ variables=( \
 
 for region in ${regions[@]}
 do
- for lepton in ${leptons[@]}
+ for variable in ${variables[@]}
  do
-  for variable in ${variables[@]}
-  do
-   root -l -b -q  'plotter_tagvarUnc.C('\""${region}"\"', '\""${lepton}"\"' , '\""${variable}"\"' , kFALSE, kFALSE)'
+  root -l -b -q  'plotter_tagvarUnc.C('\""${region}"\"', '\""${variable}"\"' , kFALSE, kFALSE)'
 
-  done
  done
 done
 
