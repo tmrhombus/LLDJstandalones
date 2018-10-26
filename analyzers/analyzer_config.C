@@ -26,6 +26,17 @@ void analyzer_config::setConfiguration()
  jet_minPt  = 25.;
  jet_maxEta = 2.4;
 
+// pho_minPt  = 1.;
+// pho_maxEta = 3.;
+// ele_minPt1 = 2.;
+// ele_minPt2 = 1.;
+// ele_maxEta = 3.;
+// mu_minPt1  = 2.;
+// mu_minPt2  = 1.;
+// mu_maxEta  = 3.;
+// jet_minPt  = 25.;
+// jet_maxEta = 2.4;
+
  // tagging variables
  tag_minIPsig = 1.15;
  tag_minTA    = -1.75;
