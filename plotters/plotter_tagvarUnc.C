@@ -398,7 +398,8 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
 //    h_NormMCInt = (TH1F*)h_MCInt->Clone("h_NormMCInt");
 //    h_NormMCInt->Scale(1.0 / h_MCInt->Integral() );
     int binAtOrigCut = h_DataInt->GetXaxis()->FindBin(origcutval);
-    float dataIntToCut = h_DataInt->Integral(0,binAtOrigCut);
+    float dataIntToCut = h_DataInt->GetBinContent(binAtOrigCut);
+    //float dataIntToCut = h_DataInt->Integral(0,binAtOrigCut);
 
     TLine *lineOCV = new TLine(origcutval,0,origcutval,1);
     lineOCV->SetLineColor(kBlue);
@@ -408,7 +409,8 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
     int binAtNewCut = 0;
     for( int j=1; j<nbins+1; ++j){
      binAtNewCut++;
-     if(h_MCInt->Integral(0,j)>dataIntToCut) break;
+     if(h_MCInt->GetBinContent(j)>dataIntToCut) break;
+     //if(h_MCInt->Integral(0,j)>dataIntToCut) break;
     }
 
     float newcutval;
