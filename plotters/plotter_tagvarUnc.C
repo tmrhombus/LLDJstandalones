@@ -120,6 +120,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  TH1F* h_ST     ;
  TH1F* h_VV     ;
  TH1F* h_VG     ;
+ TH1F* h_QCD    ;
  TH1F* h_ZH     ;
  TH1F* h_TT     ;
  TH1F* h_WJetsToLNu;
@@ -158,6 +159,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  h_ST             = (TH1F*)file_input->Get("ST"            )->Clone("ST"            )  ;
  h_VV             = (TH1F*)file_input->Get("VV"            )->Clone("VV"            )  ;
  h_VG             = (TH1F*)file_input->Get("VG"            )->Clone("VG"            )  ;
+ h_QCD            = (TH1F*)file_input->Get("QCD"           )->Clone("QCD"           )  ;
  h_ZH             = (TH1F*)file_input->Get("ZH"            )->Clone("ZH"            )  ;
  h_TT             = (TH1F*)file_input->Get("TT"            )->Clone("TT"            )  ;
  h_altDY          = (TH1F*)file_input->Get("altDY"         )->Clone("altDY"         )  ;
@@ -171,6 +173,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  h_ST         ->Rebin(rebin); 
  h_VV         ->Rebin(rebin); 
  h_VG         ->Rebin(rebin); 
+ h_QCD        ->Rebin(rebin);
  h_ZH         ->Rebin(rebin); 
  h_TT         ->Rebin(rebin); 
  h_altDY      ->Rebin(rebin); 
@@ -231,7 +234,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    bgstack->Add(h_WJetsToLNu ); 
    bgstack->Add(h_VV         );
    bgstack->Add(h_VG         );
-   //bgstack->Add(h_QCD        );
+   bgstack->Add(h_QCD        );
    bgstack->Add(h_ZH         );
    bgstack->Add(h_Sig); 
 
@@ -254,6 +257,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
    leg->AddEntry(h_VV           , "Diboson", "f"); 
    leg->AddEntry(h_VG           , "V#gamma", "f");
+   leg->AddEntry(h_QCD          , "QCD", "f");
    leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
    //leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
    leg->AddEntry(h_Sig, "Signal M_{S}"+MS+" c#tau"+ct,"f");
