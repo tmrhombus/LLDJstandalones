@@ -55,6 +55,10 @@ void analyzer_loop::Loop(TString outfilename,
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
+   clearOPTCRHeavytree(); 
+   clearOPTCRLighttree(); 
+   clearOPTMuZHtree(); 
+   clearOPTEleZHtree(); 
   }
   if( uncbin.EqualTo("") ){
    NM1file->cd();
@@ -257,39 +261,55 @@ void analyzer_loop::Loop(TString outfilename,
 
   // fake rate code
   if(doBkgEst && uncbin.EqualTo("")){
-   if( dofillselbin[11] ){// TwoMuZH
+   if( ( ( bitsPassTwoMuZH      >> 0) &1) ){// TwoMuZH
     fillBackgroundEstimateHistograms(event_weight);
    }
   }
   // tagging variable optimization tree
-  if( dofillselbin[11] && uncbin.EqualTo("") ){// TwoMuZH
+  if( ( (( bitsPassTwoMuZH      >> 0) &1) || (( bitsPassTwoEleZH      >> 0) &1))  && uncbin.EqualTo("") ){// TwoMuZH or TwoEleZH 
    optfile->cd();
    setOPTtree(); 
    OPTtree->Fill();
   }
-  
   // tagging variable NMinus1 tree
-  if( dofillselbin[7] && uncbin.EqualTo("") ){// General Purpose: TwoMuDY
+  if( ( ( bitsPassTwoMuDY      >> 0) &1) && uncbin.EqualTo("") ){// General Purpose: TwoMuDY
    NM1file->cd();
    setNM1tree(); 
    NM1tree->Fill();
   }
-  if( dofillselbin[18] && uncbin.EqualTo("") ){// CRHeavy
+  
+  if( ( ( bitsPassEleMuOSOF    >> 0) &1) && uncbin.EqualTo("") ){// CRHeavy
+   optfile->cd();          
+   setOPTCRHeavytree();    
+   OPTCRHeavytree->Fill();
+   
    NM1file->cd();
    setNM1CRHeavytree(); 
    NM1CRHeavytree->Fill();
   }
-  if( dofillselbin[19] && uncbin.EqualTo("") ){// CRLight
+  if( ( ( bitsPassOnePho       >> 0) &1) && uncbin.EqualTo("") ){// CRLight
+   optfile->cd(); 
+   setOPTCRLighttree();   
+   OPTCRLighttree->Fill(); 
+   
    NM1file->cd();
    setNM1CRLighttree(); 
    NM1CRLighttree->Fill();
   }
-  if( dofillselbin[11] && uncbin.EqualTo("") ){// TwoMuZH
+  if( ( ( bitsPassTwoMuZH      >> 0) &1) && uncbin.EqualTo("") ){// TwoMuZH
+   optfile->cd();   
+   setOPTMuZHtree();   
+   OPTMuZHtree->Fill();
+   
    NM1file->cd();
    setNM1MuZHtree(); 
    NM1MuZHtree->Fill();
   }
-  if( dofillselbin[9] && uncbin.EqualTo("") ){// TwoEleZH
+  if( ( ( bitsPassTwoEleZH     >> 0) &1) && uncbin.EqualTo("") ){// TwoEleZH
+   optfile->cd(); 
+   setOPTEleZHtree(); 
+   OPTEleZHtree->Fill();
+   
    NM1file->cd();
    setNM1EleZHtree(); 
    NM1EleZHtree->Fill();
@@ -328,7 +348,7 @@ void analyzer_loop::Loop(TString outfilename,
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
 
   //Print objects in backgroundMC with >=2 tags
-  if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
+  //if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
 
 
   //printf("make log: %0.i\n",makelog);
@@ -381,6 +401,10 @@ void analyzer_loop::Loop(TString outfilename,
  if( uncbin.EqualTo("") ){
   optfile->cd();
   OPTtree->CloneTree()->Write();
+  OPTCRHeavytree->CloneTree()->Write();
+  OPTCRLighttree->CloneTree()->Write();
+  OPTMuZHtree->CloneTree()->Write();
+  OPTEleZHtree->CloneTree()->Write();
   optfile->Close();
  }
 

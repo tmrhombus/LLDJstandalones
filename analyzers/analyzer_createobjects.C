@@ -15,45 +15,18 @@ analyzer_createobjects::~analyzer_createobjects()
 
 //-------------------------muon_passID
 std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut1, Float_t muPtCut2, Float_t muEtaCut, TString sysbinname)
-{
+{//------ btnr depricated can we remove?
  std::vector<int> mulist;
-
- // bool pass_loose  ;
- // bool pass_medium ;
- // bool pass_tight  ;
- // bool pass_soft   ;
- // bool pass_hipt   ;
- //
- // pass_loose  = muIDbit->at(i) >> 0 & 0x1 == 1;      
- // pass_medium = muIDbit->at(i) >> 1 & 0x1 == 1;      
- // pass_tight  = muIDbit->at(i) >> 2 & 0x1 == 1;     
- // pass_soft   = muIDbit->at(i) >> 3 & 0x1 == 1;    
- // pass_hipt   = muIDbit->at(i) >> 4 & 0x1 == 1;    
- //
- //  printf(" Muon %i    %i %i %i %i %i \n\n",i
- //        , pass_loose  
- //        , pass_medium  
- //        , pass_tight
- //        , pass_soft
- //        , pass_hipt
- //        );       
 
  for(int i = 0; i < Shifted_muPt.size(); i++) 
  {    
-  //  printf(" Muon %i    %i %i %i %i %i \n",i
-  //        ,muIDbit->at(i) >> 0 & 0x1 
-  //        ,muIDbit->at(i) >> 1 & 0x1 
-  //        ,muIDbit->at(i) >> 2 & 0x1 
-  //        ,muIDbit->at(i) >> 3 & 0x1 
-  //        ,muIDbit->at(i) >> 4 & 0x1 
-  //        );       
 
   Float_t muonPt = getMuonPt(i,sysbinname);
   bool pass_kin = false;
   if( i==0 ) pass_kin = (muonPt > muPtCut1) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
   else       pass_kin = (muonPt > muPtCut2) && ( fabs(AOD_muEta->at(i)) < muEtaCut ) ;
 
-  bool pass_bit = AOD_muPassLooseID->at(i);//muIDbit->at(i) >> bitnr & 0x1 == 1;<------need to add      
+  bool pass_bit = AOD_muPassLooseID->at(i);//------should probably make if/else groups for other ID's 
 
   if (muoid = "Loose")  muoisoval = 0.25 ;
   if (muoid = "Medium") muoisoval = 0.25 ;
@@ -62,10 +35,9 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut
 
   if( pass_bit && pass_kin && pass_iso )
   {
-   //printf(" a selected muon\n");
    nSelectedMuo++;
    mulist.push_back(i);
-  } // if pass_bit && pass_kin
+  } // if pass_bit && pass_kin && pass_iso
  } // loop over muons
  return mulist;
 }
@@ -411,21 +383,20 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
  pholist.clear();
 
  bool pass_overlap = true;
+ bool pass_noPixelSeed = true;
  ////Loop over photons                   
  for(int p=0;p<Shifted_phoPt.size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
-  //Float_t thephoEta = AOD_phoEta->at(p); //AOD_phoSCEta->at(p); doesn't seem to be used unless someone objects, will delete after next PR 5/6/2018
 
   bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs((*AOD_phoEta)[p])<phoEtaCut;
-  //bool kinematic = theAOD_phoPt > AOD_phoPtCut && fabs(thephoSCEta)<phoEtaCut;
-  
+  pass_noPixelSeed = !(bool)AOD_phoHasPixelSeed->at(p);
+   
    //check overlap with electrons
    if(electron_list.size()>0){
     for(int d=0; d<electron_list.size(); ++d){
-     //printf(" brgin looping over electrons\n");
+     //printf(" begin looping over electrons\n");
      int eleindex = electron_list[d];
-     //std::cout << eleindex <<"      size: "<<electron_list.size()<<"     Eta:  "<<AOD_eleEta->size()<<std::endl;
      if( dR( AOD_phoEta->at(p),AOD_phoPhi->at(p), AOD_eleEta->at(eleindex),AOD_elePhi->at(eleindex) ) < objcleandRcut )
      {
       pass_overlap=false; // printf(" OL w electron\n");
@@ -438,7 +409,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
   bool pass_bit = AOD_phoIDbit->at(p) >> bitnr & 0x1 == 1; //phoIDbit->at(p) >> bitnr & 0x1 == 1; 
   //printf(" photon %i %i %i\n",p,bitnr,pass_bit);
 
-  if( kinematic && pass_bit && pass_overlap ){
+  if( kinematic && pass_bit && pass_overlap && pass_noPixelSeed ){
    nSelectedPho++;
    //printf("selected aphoton\n");
    pholist.push_back(p);
