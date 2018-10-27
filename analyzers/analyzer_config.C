@@ -14,35 +14,35 @@ analyzer_config::~analyzer_config()
 //----------------------------analyzer_config
 void analyzer_config::setConfiguration() 
 {
+ // thresholds                         // loggit
+ pho_minPt  = 175.;                    // loggit
+ pho_maxEta = 1.4442;                  // loggit
+ ele_minPt1 = 25.;                     // loggit
+ ele_minPt2 = 15.;                     // loggit
+ ele_maxEta = 2.5;                     // loggit
+ mu_minPt1  = 25.;                     // loggit
+ mu_minPt2  = 12.;                     // loggit
+ mu_maxEta  = 2.4;                     // loggit
+ jet_minPt  = 25.;                     // loggit
+ jet_maxEta = 2.4;                     // loggit
 
- pho_minPt  = 175.;
- pho_maxEta = 1.4442;
- ele_minPt1 = 25.;
- ele_minPt2 = 15.;
- ele_maxEta = 2.5;
- mu_minPt1  = 25.;
- mu_minPt2  = 12.;
- mu_maxEta  = 2.4;
- jet_minPt  = 25.;
- jet_maxEta = 2.4;
+ // tagging variables                  // loggit
+ tag_minIPsig = 1.15;                  // loggit
+ tag_minTA    = -1.75;                 // loggit
+ tag_maxAmax  = 0.75;                  // loggit
+ // shifted tagging variables          // loggit
+ tag_shiftminIPsig = 1.2;              // loggit
+ tag_shiftminTA    = -1.4;             // loggit
+ tag_shiftmaxAmax  = 0.4;              // loggit
 
- // tagging variables
- tag_minIPsig = 1.15;
- tag_minTA    = -1.75;
- tag_maxAmax  = 0.75;
- // shifted tagging variables
- tag_shiftminIPsig = 1.2;
- tag_shiftminTA    = -1.4;
- tag_shiftmaxAmax  = 0.4;
+ // set which collections                          // loggit 
+ phoid = "Medium"; // "Tight"; "Loose"; //Medium"; // loggit 
+ eleid = "Loose";  // "Tight"; "Loose"; //Medium"; // loggit 
+ muoid = "Loose";  // "Tight"; "Loose"; //Medium"; // loggit 
+ jetid = "Loose";  // "Tight"; "Loose";            // loggit 
 
- // set which collections
- phoid = "Medium"; // "Tight"; "Loose"; //Medium"; 
- eleid = "Loose"; // "Tight"; "Loose"; //Medium"; 
- muoid = "Loose"; // "Tight"; "Loose"; //Medium"; 
- jetid = "Loose"; // "Tight"; "Loose";
-
- jetmatchdRcut = 0.4;
- objcleandRcut = 0.4;
+ jetmatchdRcut = 0.4;                  // loggit
+ objcleandRcut = 0.4;                  // loggit
 
  if (phoid = "Loose")  phoidbit=0;
  if (phoid = "Medium") phoidbit=1;

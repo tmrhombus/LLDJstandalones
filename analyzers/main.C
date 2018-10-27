@@ -99,15 +99,15 @@ int main(int argc, char **argv){
  TString Tsample  = TString(sample);
  TString Txname   = TString(sxname);
  TString TSlumi   = TString(slumi);
- Float_t lumi    = TSlumi.Atof();
+ Float_t lumi     = TSlumi.Atof();
  TString TSevts   = TString(sevts);
- Int_t TIevts     = TSevts.Atoi();
- TString Tinpath   = TString(inpath);  
- TString Toutpath  = TString(outpath); 
- TString TSatfile  = TString(atfile);  
- TString TSnfiles  = TString(nfiles);
- Int_t TIatfile = TSatfile.Atoi();
- Int_t TInfiles = TSnfiles.Atoi();
+ Int_t   TIevts   = TSevts.Atoi();
+ TString Tinpath  = TString(inpath);  
+ TString Toutpath = TString(outpath); 
+ TString TSatfile = TString(atfile);  
+ TString TSnfiles = TString(nfiles);
+ Int_t   TIatfile = TSatfile.Atoi();
+ Int_t   TInfiles = TSnfiles.Atoi();
  // MC vs Data
  Bool_t isMC=bisMC;
 
@@ -235,7 +235,7 @@ int main(int argc, char **argv){
 
  std::vector<TString> unccategories;
  unccategories.push_back("");
- /*if( isMC ){
+if( isMC ){
   unccategories.push_back("_EGSUp");
   unccategories.push_back("_EGSDown");
   unccategories.push_back("_MESUp");
@@ -251,7 +251,6 @@ int main(int argc, char **argv){
   unccategories.push_back("_TagVarsUp");
   unccategories.push_back("_TagVarsDown");
  }
- */
  
  // make the analyzer, init some stuff
  analyzer_loop analyzer;

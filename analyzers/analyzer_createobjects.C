@@ -664,36 +664,54 @@ void analyzer_createobjects::shiftCollections( TString uncbin )
  float deltaAmax  = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
  float deltaIPsig = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
  float deltaTA    = (tag_shiftminTA/tag_minTA) - 1.        ;
- if(uncbin.EqualTo( "_AMaxUp") || uncbin.EqualTo( "_TagVarsUp") ){ 
+ // shift tagging variable central value for "unshifted"
+ // then _Down is unshifted and _Up is shifted 2x
+
+ // unshifted
+ if( ! (
+         uncbin.Contains("TagVars") ||
+         uncbin.Contains("AMax")    ||
+         uncbin.Contains("IPSig")   ||
+         uncbin.Contains("TA")        
+        )  ){ 
   for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
    Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
-  }
- }
- if(uncbin.EqualTo( "_AMaxDown") || uncbin.EqualTo( "_TagVarsDown") ){ 
-  for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-   Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1-deltaAmax) ;
-  }
- }
- if(uncbin.EqualTo( "_IPSigUp")   || uncbin.EqualTo( "_TagVarsUp")    ){ 
-  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
+  //}
+  //for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
    Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
-  }
- }
- if(uncbin.EqualTo( "_IPSigDown") || uncbin.EqualTo( "_TagVarsDown")  ){ 
-  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
-   Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1-deltaIPsig) ;
-  }
- }
- if(uncbin.EqualTo( "_TAUp")      || uncbin.EqualTo( "_TagVarsUp")    ){ 
-  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
+  //}
+  //for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
    Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
   }
  }
- if(uncbin.EqualTo( "_TADown")    || uncbin.EqualTo( "_TagVarsDown")  ){ 
-  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
-   Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1-deltaTA) ;
+
+ // AlphaMax
+ for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+  if(uncbin.Contains("AMaxUp")||uncbin.Contains("TagVarsUp")){  
+   Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+2*deltaAmax) ;
+  }
+  if(uncbin.Contains("TA")||uncbin.Contains("IPSig")){  
+   Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
   }
  }
+ // IPSig
+ for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
+  if(uncbin.Contains("IPSigUp")||uncbin.Contains("TagVarsUp")){  
+   Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+2*deltaIPsig) ;
+  }
+  if(uncbin.Contains("TA")||uncbin.Contains("AMax")){  
+   Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
+  }
+ }
+ // TA
+  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
+   if(uncbin.Contains("TAUp")||uncbin.Contains("TagVarsUp")){  
+    Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+2*deltaTA) ;
+   }
+   if(uncbin.Contains("AMax")||uncbin.Contains("IPSig")){  
+    Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
+   }
+  }
 
  return;
 
