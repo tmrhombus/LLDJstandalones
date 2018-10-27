@@ -273,7 +273,8 @@ if( isMC ){
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
   analyzer.initMETHTHistograms( unccategory );
-  analyzer.initExtraHistograms( unccategory );
+  analyzer.initTTOCHistograms( unccategory );
+  //analyzer.initExtraHistograms( unccategory );
   analyzer.initAODCaloJetBasicHistograms( unccategory );
   analyzer.initAODCaloJetExtraHistograms( unccategory ); 
   analyzer.initAODCaloJetTagHistograms( unccategory ); 
