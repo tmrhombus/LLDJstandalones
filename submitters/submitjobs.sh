@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # script to generate submit files
-# and optionally to submit to condor (@UW)
+# and optionally to submit to condor
 
 # source xx/LLDJ/setup.sh for ${aversion}
 
@@ -151,6 +151,17 @@ samples=(  \
 
 printf "Version: ${aversion}\n"
 
+## compie analyzer
+pushd ${CMSSW_BASE}/src/LLDJstandalones/analyzers
+make clean; make 
+popd
+
+## make info file - put "loggit" on any line you want to keep 
+mkdir -p ${CMSSW_BASE}/src/LLDJstandalones/submitters/gitignore/${aversion}
+about="${CMSSW_BASE}/src/LLDJstandalones/submitters/gitignore/${aversion}/about.txt"
+printf "## you know why you're running this job\n\n\n\n\n\n"   >  ${about}
+grep -h "loggit" ${CMSSW_BASE}/src/LLDJstandalones/analyzers/* >> ${about}
+ 
 makeasubmitdir () {
  printf "Making submits for $1\n"
  
@@ -176,7 +187,7 @@ makeasubmitdir () {
  printf "Error  = logs/runanalyzer_\$(Cluster)_\$(Process).stderr\n" >> submitfile
  printf "Log    = logs/runanalyzer_\$(Cluster)_\$(Process).log\n" >> submitfile
  printf "\n" >> submitfile
- 
+
  # make haddfile (make now for merging expected results)
  haddfile_OPTtree="./haddit_OPTtree.sh"
  haddfile_NM1trees="./haddit_NM1trees.sh"
@@ -380,4 +391,6 @@ do
  makeasubmitdir ${sample} ${mc}
 
 done
+
+printf "Put notes about this job here:\n\n  vim  ${about}\n\n"
 
