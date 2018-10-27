@@ -14,16 +14,22 @@ public :
                   analyzer_histograms();
    virtual        ~analyzer_histograms(); 
 
- static const int MuPtBin      = 33;
- static const int ElePtBin     = 33;
- static const int MuPtBinMax   = 99;
- static const int ElePtBinMax  = 99;
- static const int MuPtBinMin   = 0;
- static const int ElePtBinMin  = 0;
+ static const int PhoPtBin      = 50;
+ static const int MuPtBin       = 33;
+ static const int ElePtBin      = 33;
+ static const int PhoPtBinMax   = 400;
+ static const int MuPtBinMax    = 99;
+ static const int ElePtBinMax   = 99;
+ static const int PhoPtBinMin   = 0;
+ static const int MuPtBinMin    = 0;
+ static const int ElePtBinMin   = 0;
+ static const int PhoEtaBin     = 30;
  static const int MuEtaBin      = 30;
  static const int EleEtaBin     = 30;
+ static const int PhoEtaBinMax  = 5;
  static const int MuEtaBinMax   = 5;
  static const int EleEtaBinMax  = 5;
+ static const int PhoEtaBinMin  = -5;
  static const int MuEtaBinMin   = -5;
  static const int EleEtaBinMin  = -5;
 
@@ -158,6 +164,8 @@ public :
  // Generic Lepton
  TH1F  h_AOD_dilepton_Mass           [SELBINNAMESIZE];
  TH1F  h_AOD_dilepton_Pt             [SELBINNAMESIZE];
+ TH1F  h_AOD_OSOFdilepton_Mass       [SELBINNAMESIZE];
+ TH1F  h_AOD_OSOFdilepton_Pt         [SELBINNAMESIZE];
 
  // Photon
  TH1F  h_AOD_nPho                     [SELBINNAMESIZE];
@@ -174,11 +182,26 @@ public :
  TH1F  h_htaodcalojets            [SELBINNAMESIZE];
 
  // nJets
- TH1F  h_nSelectedAODCaloJet      [SELBINNAMESIZE];
- TH1F  h_nSelectedAODCaloJetTag   [SELBINNAMESIZE];
- TH1F  h_nCaloJet                 [SELBINNAMESIZE]; // AODnCaloJet; 
- TH1F  h_nPFJet                   [SELBINNAMESIZE]; // AODnPFJet; 
- TH1F  h_nPFchsJet                [SELBINNAMESIZE]; // AODnPFchsJet; 
+ TH1F  h_nSelectedAODCaloJet            [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag         [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_0b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_0b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_1b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_1b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTag_2b      [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB1_2b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB2_2b   [SELBINNAMESIZE];
+ TH1F  h_nSelectedAODCaloJetTagSB3_2b   [SELBINNAMESIZE];
+ TH1F  h_nCaloJet                       [SELBINNAMESIZE]; // AODnCaloJet; 
+ TH1F  h_nPFJet                         [SELBINNAMESIZE]; // AODnPFJet; 
+ TH1F  h_nPFchsJet                      [SELBINNAMESIZE]; // AODnPFchsJet; 
 
  // AODCaloJetBasicHistograms
  TH1F  h_AODCaloJetPt                             [SELBINNAMESIZE][JETMULTNAMESIZE];
@@ -257,6 +280,21 @@ public :
  TH1F  h_TTOCEle1Eta              [SELBINNAMESIZE];
  TH1F  h_TTOCEle2Eta              [SELBINNAMESIZE];
  TH2F  h_TTOCEleEta               [SELBINNAMESIZE];
+ //EMu->leadElectronPt>leadMuonPt, MuE->leadMuonPt>leadElectronPt
+ TH1F  h_TTOCEMu_ElePt            [SELBINNAMESIZE];
+ TH1F  h_TTOCEMu_MuPt             [SELBINNAMESIZE];
+ TH2F  h_TTOCEMuPt                [SELBINNAMESIZE];
+ TH1F  h_TTOCEMu_EleEta           [SELBINNAMESIZE];
+ TH1F  h_TTOCEMu_MuEta            [SELBINNAMESIZE];
+ TH2F  h_TTOCEMuEta               [SELBINNAMESIZE];
+ TH1F  h_TTOCMuE_ElePt            [SELBINNAMESIZE];
+ TH1F  h_TTOCMuE_MuPt             [SELBINNAMESIZE];
+ TH2F  h_TTOCMuEPt                [SELBINNAMESIZE];
+ TH1F  h_TTOCMuE_EleEta           [SELBINNAMESIZE];
+ TH1F  h_TTOCMuE_MuEta            [SELBINNAMESIZE];
+ TH2F  h_TTOCMuEEta               [SELBINNAMESIZE];
+ TH1F  h_TTOCPhoPt                [SELBINNAMESIZE];
+ TH1F  h_TTOCPhoEta               [SELBINNAMESIZE];
  //--Double Muon
  TH1F  h_TTOCTriggerDMu1Pt        [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerDMu2Pt        [SELBINNAMESIZE];
@@ -301,7 +339,24 @@ public :
  TH1F  h_TTOCTrigger23ElePt       [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger27EleEta      [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger27ElePt       [SELBINNAMESIZE];
-
+ //Single Photon
+ TH1F  h_TTOCTriggerPhoEta        [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerPhoPt         [SELBINNAMESIZE];
+ //--EMu
+ TH1F  h_TTOCTriggerEMu_ElePt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerEMu_MuPt      [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerEMuPt         [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerEMu_EleEta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerEMu_MuEta     [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerEMuEta        [SELBINNAMESIZE];
+ //--MuE
+ TH1F  h_TTOCTriggerMuE_ElePt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerMuE_MuPt      [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerMuEPt         [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerMuE_EleEta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerMuE_MuEta     [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerMuEEta        [SELBINNAMESIZE];
+ 
  // // 2D
  TH2F h_IpVAlpha                  [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH2F h_IpVjetPt                  [SELBINNAMESIZE][JETMULTNAMESIZE];

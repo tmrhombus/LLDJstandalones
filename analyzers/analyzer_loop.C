@@ -55,6 +55,10 @@ void analyzer_loop::Loop(TString outfilename,
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
+   clearOPTCRHeavytree(); 
+   clearOPTCRLighttree(); 
+   clearOPTMuZHtree(); 
+   clearOPTEleZHtree(); 
   }
   if( uncbin.EqualTo("") ){
    NM1file->cd();
@@ -83,6 +87,9 @@ void analyzer_loop::Loop(TString outfilename,
   aodpfjet_list    = jet_passID       ( aodcalojetidbit, "pf",    jet_minPt, jet_maxEta, ""); 
   aodpfchsjet_list = jet_passID       ( aodcalojetidbit, "pfchs", jet_minPt, jet_maxEta, ""); 
   taggedjet_list   = jet_passTagger   ();
+  taggedjetSB1_list   = jet_passTaggerSB1   ();
+  taggedjetSB2_list   = jet_passTaggerSB2   ();
+  taggedjetSB3_list   = jet_passTaggerSB3   ();
 
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
@@ -96,6 +103,8 @@ void analyzer_loop::Loop(TString outfilename,
   aodcalojet_minDR_list = jet_minDR();
   aodcalojet_matchedCSV_list = jet_matchCSV();
   aodcalojet_matchedPartonFlavour_list = jet_matchPartonFlavour();
+
+  nBPartonFlavour = coutNBPartonFlavour();
 
   // colisions happen @LHC at a given rate, use event_weight
   // to make the simulation match the rate seen in data
@@ -120,6 +129,7 @@ void analyzer_loop::Loop(TString outfilename,
   // set booleans if pass selections 
   passOSSF = (dilep_mass>20.);
   passOSOF = (OSOF_mass>20.);
+  passPTOSOF = (OSOF_pt>100.);
   passZWindow = (dilep_mass>70. && dilep_mass<110.);
   passZWinOSOF= (OSOF_mass>70. && OSOF_mass<110.);
   passPTOSSF  = (dilep_pt>100.);
@@ -251,39 +261,55 @@ void analyzer_loop::Loop(TString outfilename,
 
   // fake rate code
   if(doBkgEst && uncbin.EqualTo("")){
-   if( dofillselbin[11] ){// TwoMuZH
+   if( ( ( bitsPassTwoMuZH      >> 0) &1) ){// TwoMuZH
     fillBackgroundEstimateHistograms(event_weight);
    }
   }
   // tagging variable optimization tree
-  if( dofillselbin[11] && uncbin.EqualTo("") ){// TwoMuZH
+  if( ( (( bitsPassTwoMuZH      >> 0) &1) || (( bitsPassTwoEleZH      >> 0) &1))  && uncbin.EqualTo("") ){// TwoMuZH or TwoEleZH 
    optfile->cd();
    setOPTtree(); 
    OPTtree->Fill();
   }
-  
   // tagging variable NMinus1 tree
-  if( dofillselbin[7] && uncbin.EqualTo("") ){// General Purpose: TwoMuDY
+  if( ( ( bitsPassTwoMuDY      >> 0) &1) && uncbin.EqualTo("") ){// General Purpose: TwoMuDY
    NM1file->cd();
    setNM1tree(); 
    NM1tree->Fill();
   }
-  if( dofillselbin[18] && uncbin.EqualTo("") ){// CRHeavy
+  
+  if( ( ( bitsPassEleMuOSOF    >> 0) &1) && uncbin.EqualTo("") ){// CRHeavy
+   optfile->cd();          
+   setOPTCRHeavytree();    
+   OPTCRHeavytree->Fill();
+   
    NM1file->cd();
    setNM1CRHeavytree(); 
    NM1CRHeavytree->Fill();
   }
-  if( dofillselbin[19] && uncbin.EqualTo("") ){// CRLight
+  if( ( ( bitsPassOnePho       >> 0) &1) && uncbin.EqualTo("") ){// CRLight
+   optfile->cd(); 
+   setOPTCRLighttree();   
+   OPTCRLighttree->Fill(); 
+   
    NM1file->cd();
    setNM1CRLighttree(); 
    NM1CRLighttree->Fill();
   }
-  if( dofillselbin[11] && uncbin.EqualTo("") ){// TwoMuZH
+  if( ( ( bitsPassTwoMuZH      >> 0) &1) && uncbin.EqualTo("") ){// TwoMuZH
+   optfile->cd();   
+   setOPTMuZHtree();   
+   OPTMuZHtree->Fill();
+   
    NM1file->cd();
    setNM1MuZHtree(); 
    NM1MuZHtree->Fill();
   }
-  if( dofillselbin[9] && uncbin.EqualTo("") ){// TwoEleZH
+  if( ( ( bitsPassTwoEleZH     >> 0) &1) && uncbin.EqualTo("") ){// TwoEleZH
+   optfile->cd(); 
+   setOPTEleZHtree(); 
+   OPTEleZHtree->Fill();
+   
    NM1file->cd();
    setNM1EleZHtree(); 
    NM1EleZHtree->Fill();
@@ -320,6 +346,10 @@ void analyzer_loop::Loop(TString outfilename,
   } // for(unsigned int i=0; i<selbinnames.size(); ++i){
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
+
+  //Print objects in backgroundMC with >=2 tags
+  //if(taggedjet_list.size()>=2 && isMC && !outfilename.Contains("HToSS")) debug_printobjects();
+
 
   //printf("make log: %0.i\n",makelog);
   
@@ -371,6 +401,10 @@ void analyzer_loop::Loop(TString outfilename,
  if( uncbin.EqualTo("") ){
   optfile->cd();
   OPTtree->CloneTree()->Write();
+  OPTCRHeavytree->CloneTree()->Write();
+  OPTCRLighttree->CloneTree()->Write();
+  OPTMuZHtree->CloneTree()->Write();
+  OPTEleZHtree->CloneTree()->Write();
   optfile->Close();
  }
 
@@ -426,6 +460,26 @@ void analyzer_loop::debug_printobjects(){
 
   debug_printdilep();
   debug_printjets();
+
+  std::cout << endl;
+  std::cout << "*******************PRE-ID PRINT******************" << std::endl;
+  std::cout << "Electrons pt eta phi charge" << std::endl;
+  for(int i=0; i<AOD_eleEta->size(); i++){
+    std::cout << AOD_elePt->at(i) << " " << AOD_eleEta->at(i) << " " << AOD_elePhi->at(i) << " " << AOD_eleCharge->at(i) << std::endl;
+  }
+  std::cout << "Muon pt eta phi" << std::endl;
+  for(int i=0; i<AOD_muEta->size(); i++){
+    std::cout << AOD_muPt->at(i) << " " << AOD_muEta->at(i) << " " << AOD_muPhi->at(i) << " " << AOD_muCharge->at(i) << std::endl;
+  }
+  std::cout << "Photon pt eta phi" << std::endl;
+  for(int i=0; i<AOD_phoEta->size(); i++){
+    std::cout << AOD_phoPt->at(i) << " " << AOD_phoEta->at(i) << " " << AOD_phoPhi->at(i) << std::endl;
+  }
+  std::cout << "AODCaloJet pt eta phi" << std::endl;
+  for(int i=0; i<AODCaloJetEta->size(); i++){
+    std::cout << AODCaloJetPt->at(i) << " " << AODCaloJetEta->at(i) << " " << AODCaloJetPhi->at(i) << std::endl;
+  }
+
 
   return;
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 regions=( \ 
- "EleMuOSOF"     \
+# "EleMuOSOF"     \
 # "OneEleDY"      \
 # "OneEleNoPair"  \
 # "OneEleOffZ"    \
@@ -12,8 +12,8 @@ regions=( \
 # "OneMuOffZ"     \
 # "OneMuSig"      \
 # "OneMuZH"       \
- "OnePho"        \
- "TwoEleDY"      \
+# "OnePho"        \
+# "TwoEleDY"      \
 # "TwoEleOffZ"    \
 # "TwoEleSig"     \
  "TwoEleZH"      \
@@ -25,14 +25,17 @@ regions=( \
 
 dologs=( \
  "kFALSE" \
+ #"kTRUE" \
 )
 
 doHIPs=( \
  "kFALSE" \
+ #"kTRUE" \
 )
 
 #useEOS="kFALSE"
 useEOS="kTRUE"
+description=""
 
 for region in ${regions[@]}
 do
@@ -40,7 +43,7 @@ do
  do
   for doHIP in ${doHIPs[@]}
   do
-   root -l -b -q  'plotter_stackedRegion.C('\""${region}"\"', '"${dolog}"', '"${doHIP}"', '"${useEOS}"')'
+   root -l -b -q  'plotter_stackedRegion.C('\""${region}"\"', '"${dolog}"', '"${doHIP}"', '"${useEOS}"', '\""${description}"\"')'
   done
  done
 done

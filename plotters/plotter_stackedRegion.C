@@ -13,8 +13,6 @@
 
 #include <stdlib.h>     /* getenv */
 
-//using namespace std;
-
 void print_hist(TH1F* h, TString name, FILE* file){
 
   fprintf(file, "%s", name.Data());
@@ -37,7 +35,7 @@ void print_hist(TH1F* h, TString name, FILE* file){
 
 }
 
-void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useEOS )
+void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useEOS, TString description)
 {
 
 // // Draw signal as lines
@@ -52,10 +50,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
+ TString nversion = TString(getenv("nversion"));
+ TString depot = TString(getenv("depot2"));
  TString inpath  = TString("../roots/");
  if(useEOS){
-  inpath = "root://cmsxrootd.fnal.gov//store/group/lpchbb/LLDJntuples/topRWT/analyzed/"; 
- }
+  inpath = "root://cmsxrootd.fnal.gov/"+depot+"/"+nversion+"/analyzed/"; 
+}
 
  inpath = inpath+aversion+"/";
  outpath = outpath+aversion+"/"+region+"/";
@@ -110,62 +110,62 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  std::vector<TString> variables;
  variables.clear();
 
-//variables.push_back("nVtx");                   
-//variables.push_back("nGoodVtx");               
-//variables.push_back("nTrksPV");                
-//variables.push_back("rho");                    
-//variables.push_back("pfMET");                  
-//variables.push_back("pfMETPhi");               
-//variables.push_back("pfMETsumEt");             
-//variables.push_back("nPho");                   
-//variables.push_back("phoE");                   
-//variables.push_back("phoEt");                  
-//variables.push_back("AOD_MET_pt");                 
-//variables.push_back("AOD_MET_phi");                 
-variables.push_back("AOD_phoPt");                 
-variables.push_back("AOD_phoEta");                 
-variables.push_back("AOD_phoPhi");                 
-//variables.push_back("nEle");                   
-variables.push_back("AOD_elePt");                  
-variables.push_back("AOD_eleEta");                 
-variables.push_back("AOD_elePhi");                 
-//variables.push_back("nMu");                    
-variables.push_back("AOD_muPt");                   
-variables.push_back("AOD_muEta");                  
-variables.push_back("AOD_muPhi");                  
-// variables.push_back("nJet");                   
-
+ //variables.push_back("nVtx");                   
+ //variables.push_back("nGoodVtx");               
+ //variables.push_back("nTrksPV");                
+ //variables.push_back("rho");                    
+ //variables.push_back("pfMET");                  
+ //variables.push_back("pfMETPhi");               
+ //variables.push_back("pfMETsumEt");             
+ //variables.push_back("nPho");                   
+ //variables.push_back("phoE");                   
+ //variables.push_back("phoEt");                  
+ //variables.push_back("AOD_MET_pt");                 
+ //variables.push_back("AOD_MET_phi");                 
+ //variables.push_back("AOD_phoPt");                 
+ //variables.push_back("AOD_phoEta");                 
+ //variables.push_back("AOD_phoPhi");                 
+ //variables.push_back("nEle");                   
+ //variables.push_back("AOD_elePt");                  
+ //variables.push_back("AOD_eleEta");                 
+ //variables.push_back("AOD_elePhi");                 
+ //variables.push_back("nMu");                    
+ //variables.push_back("AOD_muPt");                   
+ //variables.push_back("AOD_muEta");                  
+ //variables.push_back("AOD_muPhi");                  
+ // variables.push_back("nJet");                   
+ 
  //variables.push_back("htall"); 
-  variables.push_back("htaodcalojets");
-  variables.push_back("AOD_nSelectedPho");
-  variables.push_back("AOD_nSelectedEle");
-  variables.push_back("AOD_nSelectedMu");
-  variables.push_back("nSelectedAODCaloJet");
-  variables.push_back("nSelectedAODCaloJetTag");
-//  variables.push_back("LeadingJet_AODCaloJetPt");                      
- // variables.push_back("LeadingJet_jetEn");                      
- // variables.push_back("LeadingJet_AODCaloJetEta");                     
- // variables.push_back("LeadingJet_AODCaloJetPhi");                     
- // variables.push_back("AllJets_AODCaloJetPtVar");
- // variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
- // variables.push_back("AllJets_AODCaloJetdR");
- // variables.push_back("AllJets_AODCaloJetdR_Tag0");
- // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
- // variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ //variables.push_back("htaodcalojets");
+ //variables.push_back("AOD_nSelectedPho");
+ //variables.push_back("AOD_nSelectedEle");
+ //variables.push_back("AOD_nSelectedMu");
+ //variables.push_back("nSelectedAODCaloJet");
+ //variables.push_back("nSelectedAODCaloJetTag");
+ //variables.push_back("LeadingJet_AODCaloJetPt");                      
+ //variables.push_back("LeadingJet_jetEn");                      
+ //variables.push_back("LeadingJet_AODCaloJetEta");                     
+ //variables.push_back("LeadingJet_AODCaloJetPhi");                     
+ //variables.push_back("AllJets_AODCaloJetPtVar");
+ //variables.push_back("AllJets_AODCaloJetPtVar_Tag0");
+ //variables.push_back("AllJets_AODCaloJetdR");
+ //variables.push_back("AllJets_AODCaloJetdR_Tag0");
+ //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
+ //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
  variables.push_back("AllJets_AODCaloJetAlphaMax");
- variables.push_back("AllJets_AODCaloJetPt");                      
+ //variables.push_back("AllJets_AODCaloJetPt");                      
  //variables.push_back("AllJets_AODCaloJetEn");                      
- variables.push_back("AllJets_AODCaloJetEta");                     
- variables.push_back("AllJets_AODCaloJetPhi");                     
-  //  all variables after NMinus will have dolog=true, sorry
- variables.push_back("NMinus");                   
- variables.push_back("Onecut");                   
- variables.push_back("Cutflow");                   
- variables.push_back("RawNMinus");                   
- variables.push_back("RawOnecut");                   
- variables.push_back("RawCutflow");                   
+ //variables.push_back("AllJets_AODCaloJetEta");                     
+ //variables.push_back("AllJets_AODCaloJetPhi");                     
+ //-----all variables after NMinus will have dolog=true, sorry
+ //variables.push_back("NMinus");                   
+ //variables.push_back("Onecut");                   
+ //variables.push_back("Cutflow");                   
+ //variables.push_back("RawNMinus");                   
+ //variables.push_back("RawOnecut");                   
+ //variables.push_back("RawCutflow");                   
 
  // canvas and text attributes
  int canx = 1100;
@@ -882,13 +882,11 @@ variables.push_back("AOD_muPhi");
      // rescale MC to match eras used
      h_DY         ->Scale(MCSF); 
      h_GJets      ->Scale(MCSF); 
-     h_GJets      ->Scale(MCSF); 
      h_ST         ->Scale(MCSF); 
      h_ZH         ->Scale(MCSF); 
      h_VV         ->Scale(MCSF); 
      h_TT         ->Scale(MCSF); 
      h_VG         ->Scale(MCSF); 
-     h_QCD        ->Scale(MCSF); 
      h_QCD        ->Scale(MCSF); 
      h_WJetsToLNu ->Scale(MCSF); 
      h_altDY      ->Scale(MCSF);
@@ -1605,10 +1603,11 @@ variables.push_back("AOD_muPhi");
      bgstack->GetYaxis()->SetTitleSize(40);
      bgstack->GetYaxis()->SetTitleFont(43);
      bgstack->GetYaxis()->SetTitleOffset(1.75);
+     bgstack->GetXaxis()->SetTitle(varname + "    "+description);
      if(!drawData){
        bgstack->GetXaxis()->SetTitleSize(40);
        bgstack->GetXaxis()->SetTitleFont(43);
-       bgstack->GetXaxis()->SetTitle(varname);
+       bgstack->GetXaxis()->SetTitle(varname + "    "+description);
        bgstack->GetXaxis()->SetTitleOffset(4.0);
        bgstack->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
        bgstack->GetXaxis()->SetLabelSize(20);//20
@@ -1665,14 +1664,14 @@ variables.push_back("AOD_muPhi");
        // X axis ratio plot settings
        h_ratio->GetXaxis()->SetTitleSize(40);
        h_ratio->GetXaxis()->SetTitleFont(43);
-       h_ratio->GetXaxis()->SetTitle(h_Data->GetTitle());
+       h_ratio->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
        h_ratio->GetXaxis()->SetTitleOffset(4.0);
        h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
        h_ratio->GetXaxis()->SetLabelSize(20);//20
        h_ratio->SetMarkerStyle(20);
        h_ratio->SetMarkerColor(kRed);
        h_ratio->SetMarkerSize(1);
-       h_ratio->GetYaxis()->SetRangeUser(0,2);
+       h_ratio->GetYaxis()->SetRangeUser(0.4,1.6);
        h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
               
        h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("ratiostaterr");
@@ -1693,9 +1692,9 @@ variables.push_back("AOD_muPhi");
      }
 
      // save canvas
-     canvas->SaveAs(outname+".png");
-     canvas->SaveAs(outname+".pdf");
-     
+     canvas->SaveAs(outname+description+".png");
+     canvas->SaveAs(outname+description+".pdf");
+  
      // save histograms into single root file
      TFile *outfile = TFile::Open(outname+".root","RECREATE");
      h_Data        ->Write();

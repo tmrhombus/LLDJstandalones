@@ -375,7 +375,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    h_DataInt->Draw("hist same"); // draw points above line
   
    // save canvas
-   //canvas->SaveAs(outname+".png");
+   canvas->SaveAs(outname+".png");
    canvas->SaveAs(outname+".pdf");
 
 
