@@ -183,13 +183,13 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
 
  std::vector<TString> MSs;
  std::vector<TString> cts;
- MSs.push_back("15");
+ //MSs.push_back("15");
  MSs.push_back("40");
- MSs.push_back("55");
- cts.push_back("1");
+ //MSs.push_back("55");
+ //cts.push_back("1");
  cts.push_back("10");
- cts.push_back("100");
- cts.push_back("1000");
+ //cts.push_back("100");
+ //cts.push_back("1000");
 
  for(unsigned int i=0; i<MSs.size(); ++i){
   TString MS = MSs.at(i);
