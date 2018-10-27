@@ -16,11 +16,11 @@ regions=( \
  "TwoEleDY"      \
 # "TwoEleOffZ"    \
 # "TwoEleSig"     \
-# "TwoEleZH"      \
+ "TwoEleZH"      \
  "TwoMuDY"       \
 # "TwoMuOffZ"     \
 # "TwoMuSig"      \
-# "TwoMuZH"       \
+ "TwoMuZH"       \
 ) 
 
 dologs=( \
