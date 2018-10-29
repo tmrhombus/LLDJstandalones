@@ -31,9 +31,9 @@ void analyzer_config::setConfiguration()
  tag_minTA    = -1.75;                 // loggit
  tag_maxAmax  = 0.75;                  // loggit
  // shifted tagging variables          // loggit
- tag_shiftminIPsig = 1.2;              // loggit
- tag_shiftminTA    = -1.4;             // loggit
- tag_shiftmaxAmax  = 0.4;              // loggit
+ tag_shiftminIPsig = 1.21;             // loggit
+ tag_shiftminTA    = -1.772;           // loggit
+ tag_shiftmaxAmax  = 0.762;            // loggit
 
  // set which collections                          // loggit 
  phoid = "Medium"; // "Tight"; "Loose"; //Medium"; // loggit 
