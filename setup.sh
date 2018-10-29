@@ -3,7 +3,7 @@
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export depot2="/store/group/lpchbb/LLDJntuples"
 export nversion="topRWT"
-export aversion="betrshft"
+export aversion="morbins"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
