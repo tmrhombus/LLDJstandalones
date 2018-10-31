@@ -687,14 +687,14 @@ void analyzer_createobjects::shiftCollections( TString uncbin )
   Shifted_CaloJetMedianLog10TrackAngle.push_back( AODCaloJetMedianLog10TrackAngle->at(i));
  }
 
- //std::cout<<" preshift"<<std::endl;
- //for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
- // //std::cout<<" AOD_elePt->at(i) "<< AOD_elePt->at(i)<<" Shifted_elePt.at(i) "<< Shifted_elePt.at(i) <<std::endl;
- // std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
- //            " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
- //            " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
- // std::endl;
- //}
+// std::cout<<" preshift"<<std::endl;
+// for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+//  //std::cout<<" AOD_elePt->at(i) "<< AOD_elePt->at(i)<<" Shifted_elePt.at(i) "<< Shifted_elePt.at(i) <<std::endl;
+//  std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
+//             " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
+//             " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
+//  std::endl;
+// }
 
  if(isMC){
   for(unsigned int i=0; i<Shifted_elePt.size(); ++i){
@@ -707,9 +707,9 @@ void analyzer_createobjects::shiftCollections( TString uncbin )
    Shifted_muPt.at(i) = getMuonPt(i,uncbin);
   }
 
-  float deltaAmax  = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
-  float deltaIPsig = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
-  float deltaTA    = (tag_shiftminTA/tag_minTA) - 1.        ;
+  float deltaAmax  = ( tag_maxAmax  / tag_shiftmaxAmax  ) - 1.    ;
+  float deltaIPsig = ( tag_minIPsig / tag_shiftminIPsig ) - 1.  ;
+  float deltaTA    = ( tag_minTA    / tag_shiftminTA    ) - 1.        ;
   // shift tagging variable central value for "unshifted"
   // then _Down is unshifted and _Up is shifted 2x
 
@@ -755,16 +755,16 @@ void analyzer_createobjects::shiftCollections( TString uncbin )
     }
    }
 
-   //std::cout<<" shifted"<<std::endl;
-   //for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-   // std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
-   //            " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
-   //            " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
-   // std::endl;
-   //}
-   //std::cout<<" deltaAmax  "<< deltaAmax  <<std::endl; // = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
-   //std::cout<<" deltaIPsig "<< deltaIPsig <<std::endl; // = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
-   //std::cout<<" deltaTA    "<< deltaTA    <<std::endl; // = (tag_shiftminTA/tag_minTA) - 1.        ;
+//   std::cout<<" shifted"<<std::endl;
+//   for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+//    std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
+//               " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
+//               " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
+//    std::endl;
+//   }
+//   std::cout<<" deltaAmax  "<< deltaAmax  <<std::endl; // = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
+//   std::cout<<" deltaIPsig "<< deltaIPsig <<std::endl; // = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
+//   std::cout<<" deltaTA    "<< deltaTA    <<std::endl; // = (tag_shiftminTA/tag_minTA) - 1.        ;
   }
 
  return;
