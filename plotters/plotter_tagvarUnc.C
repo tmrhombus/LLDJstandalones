@@ -31,9 +31,10 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
 
- Int_t rebin=1;
+ Int_t rebin=5;
 
  TString eraname = "";
+
  if(HIP){
   eraname+="_BCDEF";
   outpath = outpath+"BCDEF/";
@@ -43,6 +44,11 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
   outpath = outpath+"GH/";
   inpath = inpath+"GH/";
   eraname+="_GH";
+ }
+
+ TString extraname = "";
+ if(dolog){
+  extraname+="_log";
  }
 
  TString infilename = region+"_"+varname+eraname;
@@ -199,7 +205,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    //std::cout<<ct<<std::endl;
 
    //TString outname = "tvuMS"+MS+"ct"+ct+"_"+lepname+"_"+region+"_"+varname+eraname;
-   TString outname = "tvuMS"+MS+"ct"+ct+"_"+region+"_"+varname+eraname;
+   TString outname = "tvuMS"+MS+"ct"+ct+"_"+region+"_"+varname+eraname+extraname;
    //TString infilename = region+"_"+varname+eraname;
    outname = outpath + outname;
    //std::cout<<outname<<std::endl;
