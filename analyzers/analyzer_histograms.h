@@ -112,7 +112,7 @@ public :
  Bool_t        deleteAODCaloJetTagMultHistograms(int selbin);
  
  // Extra histograms
- Bool_t        initExtraHistograms( TString uncbin );
+ Bool_t        initExtraHistograms();// TString uncbin );
  Bool_t        fillExtraHistograms(Float_t weight, int selbin);
  Bool_t        writeExtraHistograms(int selbin);
  Bool_t        deleteExtraHistograms(int selbin);

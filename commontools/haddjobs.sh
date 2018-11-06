@@ -7,8 +7,8 @@ mkdir -p "${plotdir}/${aversion}"
 mkdir -p "${plotdir}/${aversion}/logs"
 
 samples=( \
-### Data
-## SingleMu
+## Data
+# SingleMu
  "Data_SingleMu_H_3"      \
  "Data_SingleMu_H_2"      \
  "Data_SingleMu_G"        \

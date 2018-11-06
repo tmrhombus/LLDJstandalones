@@ -1122,7 +1122,7 @@ Bool_t analyzer_histograms::deleteCutflowHistograms(int selbin)
 ////////////////////////////
 
 //----------------------------initExtraHistograms
-Bool_t analyzer_histograms::initExtraHistograms( TString uncbin ){
+Bool_t analyzer_histograms::initExtraHistograms(){// TString uncbin ){
 
  for(unsigned int i=0; i<selbinnames.size(); ++i){
    //Basic histograms
