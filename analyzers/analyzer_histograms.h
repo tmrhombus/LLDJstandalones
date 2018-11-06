@@ -301,7 +301,7 @@ public :
  TH2F  h_TTOCTriggerDMuPt         [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerDMu1Eta       [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerDMu2Eta       [SELBINNAMESIZE];
- TH2F  h_TTOCTriggerDMuEta        [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerDMuEta        [SELBINNAMESIZE];//here
  //TH1F  h_TTOCTriggerDTkMu1Eta     [SELBINNAMESIZE];
  //TH1F  h_TTOCTriggerDTkMu2Eta     [SELBINNAMESIZE];
  //TH1F  h_TTOCTriggerDTkMu1Pt      [SELBINNAMESIZE];
@@ -314,31 +314,31 @@ public :
  //TH1F  h_TTOCTriggerNoDZTkMu2Eta  [SELBINNAMESIZE];
  //TH1F  h_TTOCTriggerNoDZTkMu1Pt   [SELBINNAMESIZE];
  //TH1F  h_TTOCTriggerNoDZTkMu2Pt   [SELBINNAMESIZE];
- //--Single Muon
- TH1F  h_TTOCTrigger22MuEta       [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger22MuPt        [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger22TkMuEta     [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger22TkMuPt      [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger24MuEta       [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger24MuPt        [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger24TkMuEta     [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger24TkMuPt      [SELBINNAMESIZE];
+ // //--Single Muon
+ // TH1F  h_TTOCTrigger22MuEta       [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger22MuPt        [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger22TkMuEta     [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger22TkMuPt      [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger24MuEta       [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger24MuPt        [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger24TkMuEta     [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger24TkMuPt      [SELBINNAMESIZE];
  //Double Electron
  TH1F  h_TTOCTrigger23DEle1Eta       [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger23DEle2Eta       [SELBINNAMESIZE];
  TH2F  h_TTOCTrigger23DEleEta        [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger23DEle1Pt        [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger23DEle2Pt        [SELBINNAMESIZE];
- TH2F  h_TTOCTrigger23DElePt         [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle1Eta       [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle2Eta       [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle1Pt        [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle2Pt        [SELBINNAMESIZE];
- //Single Electron
- TH1F  h_TTOCTrigger23EleEta      [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger23ElePt       [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger27EleEta      [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger27ElePt       [SELBINNAMESIZE];
+ TH2F  h_TTOCTrigger23DElePt         [SELBINNAMESIZE];//here
+ TH1F  h_TTOCTrigger17DEle1Eta       [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle2Eta       [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle1Pt        [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle2Pt        [SELBINNAMESIZE];
+ // //Single Electron
+ // TH1F  h_TTOCTrigger23EleEta      [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger23ElePt       [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger27EleEta      [SELBINNAMESIZE];
+ // TH1F  h_TTOCTrigger27ElePt       [SELBINNAMESIZE];
  //Single Photon
  TH1F  h_TTOCTriggerPhoEta        [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerPhoPt         [SELBINNAMESIZE];
