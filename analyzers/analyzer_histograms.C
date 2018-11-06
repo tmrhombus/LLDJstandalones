@@ -1484,9 +1484,11 @@ Bool_t analyzer_histograms::fillExtraHistograms(Float_t weight, int selbin)
     h_TTOCTrigger23DEleEta               [selbin] .Fill( AOD_eleEta->at(leadEle), AOD_eleEta->at(subLeadEle), weight );  
    } 
    // fill for passing all Single photon triggers used in analyzer_selections.C def of OnePho
+   //if (photon_list.size()>0)std::cout<<"***************NoPassPhotonPt: "<<AOD_phoPt->at(leadPho)<<std::endl;
    if( (Bool_t)AOD_HLT_Photon165_HE10 && photon_list.size() > 0){
     h_TTOCTriggerPhoPt             [selbin] .Fill( AOD_phoPt               ->at(leadPho), weight );  
     h_TTOCTriggerPhoEta            [selbin] .Fill( AOD_phoEta              ->at(leadPho), weight );  
+    //std::cout<<"PhotonPt: "<<AOD_phoPt->at(leadPho)<<std::endl;
    }
    // fill for passing all MuonEG triggers used in analyzer_selections.C def of EleMuOSOF
    if(doesPassMuE && muon_list.size() > 0 && electron_list.size() > 0){

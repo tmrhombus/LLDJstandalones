@@ -234,7 +234,8 @@ Bool_t analyzer_selections::askPassDoubleEle()
  if(electron_list.size()>1){ 
   //if(isMC) doespass = kTRUE;
   //else doespass = (Bool_t)((AOD_HLT_Ele23Ele12 > 0) );
-  doespass = (Bool_t)( (AOD_HLT_Ele23Ele12 > 0) ); 
+  if(TTOC) doespass = kTRUE;
+  else doespass = (Bool_t)( (AOD_HLT_Ele23Ele12 > 0) ); 
  } 
  return doespass;
 }
@@ -256,7 +257,8 @@ Bool_t analyzer_selections::askPassDoubleMu()
  if(muon_list.size()>1){ 
   //if(isMC) doespass = kTRUE;
   //else doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
-  doespass = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
+  if(TTOC) doespass = kTRUE;
+  else doespass     = (Bool_t)( (AOD_HLT_Mu17Mu8 > 0) || (AOD_HLT_Mu17TkMu8 > 0) || (AOD_HLT_Mu17Mu8_noDZ > 0) || (AOD_HLT_Mu17TkMu8_noDZ > 0)) ; 
  } 
  return doespass;
 }
@@ -268,7 +270,8 @@ Bool_t analyzer_selections::askPassSinglePho()
   //doespass = kTRUE;
   //if(isMC) doespass = kTRUE;
   //else doespass = (Bool_t)( (AOD_HLT_Photon165_HE10) );
-  doespass = (Bool_t)(AOD_HLT_Photon165_HE10 > 0);
+  if(TTOC) doespass = kTRUE;
+  else     doespass = (Bool_t)(AOD_HLT_Photon165_HE10 > 0);
  } 
  return doespass;
 }
@@ -280,7 +283,20 @@ Bool_t analyzer_selections::askPassMuEG()
   //doespass = kTRUE;
   //if(isMC) doespass = kTRUE;
   //else doespass = (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12)  || (AOD_HLT_Mu12Ele23_DZ)  || (AOD_HLT_Mu23Ele12_DZ) );
-
+  if(TTOC){
+  ///based on http://cms.cern.ch/iCMS/jsp/analysis/admin/analysismanagement.jsp?ancode=HIG-16-042
+  //should double check
+   if( isMC ){
+    doespass = kTRUE;
+   }
+   if(run>=273158 && run<=278272){
+    doespass =  (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12 > 0) );
+   }
+   else if(run>=278273 && run<=284044){
+    doespass = (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
+   }
+  }
+  else{
   ///based on http://cms.cern.ch/iCMS/jsp/analysis/admin/analysismanagement.jsp?ancode=HIG-16-042
   //should double check
    if( isMC ){
@@ -292,7 +308,7 @@ Bool_t analyzer_selections::askPassMuEG()
    else if(run>=278273 && run<=284044){
     doespass = (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
    }
-   
+  }
  } 
  return doespass;
 }

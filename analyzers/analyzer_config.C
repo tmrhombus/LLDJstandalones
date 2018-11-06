@@ -15,17 +15,7 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setConfiguration() 
 {
 
-// pho_minPt  = 175.;
-// pho_maxEta = 1.4442;
-// ele_minPt1 = 25.;
-// ele_minPt2 = 15.;
-// ele_maxEta = 2.5;
-// mu_minPt1  = 25.;
-// mu_minPt2  = 12.;
-// mu_maxEta  = 2.4;
-// jet_minPt  = 25.;
-// jet_maxEta = 2.4;
-
+ if(TTOC){
  pho_minPt  = 1.;
  pho_maxEta = 3.;
  ele_minPt1 = 2.;
@@ -36,7 +26,20 @@ void analyzer_config::setConfiguration()
  mu_maxEta  = 3.;
  jet_minPt  = 25.;
  jet_maxEta = 2.4;
-
+ }
+ else{
+ pho_minPt  = 175.;
+ pho_maxEta = 1.4442;
+ ele_minPt1 = 25.;
+ ele_minPt2 = 15.;
+ ele_maxEta = 2.5;
+ mu_minPt1  = 25.;
+ mu_minPt2  = 12.;
+ mu_maxEta  = 2.4;
+ jet_minPt  = 25.;
+ jet_maxEta = 2.4;
+ }
+ 
  // tagging variables
  tag_minIPsig = 1.15;
  tag_minTA    = -1.75;
