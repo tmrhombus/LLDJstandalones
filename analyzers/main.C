@@ -264,7 +264,6 @@ int main(int argc, char **argv){
  TFile* NM1file = new TFile(outfilename+"_NM1tree.root", "RECREATE");
 
  TString outfilenamebase = outfilename;
- analyzer.initExtraHistograms();//unccategory );
  for(unsigned int i=0; i<unccategories.size(); ++i){
   TString unccategory = unccategories.at(i);
   //outfilename = outfilenamebase + unccategory;
@@ -275,6 +274,7 @@ int main(int argc, char **argv){
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
   analyzer.initMETHTHistograms( unccategory );
+  analyzer.initExtraHistograms(unccategory );
   analyzer.initAODCaloJetBasicHistograms( unccategory );
   analyzer.initAODCaloJetExtraHistograms( unccategory ); 
   analyzer.initAODCaloJetTagHistograms( unccategory ); 
