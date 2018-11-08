@@ -101,4 +101,11 @@ While jobs are running / finished
 ### make plots
 First thing to do is merge the histograms from the analyzer, do this with `bash runPlotterStackedRegion` then take it from there
 
+#### tagging variable uncertainty calculation
+1. run `bash runPlotterStackedRegion` over the unshifted analyzer output. 
+2. run `bash runPlotterTagvarUnc.sh` to get plots starting with `tvu` and values of shifted cuts based on integral
+3. put new shift cut values in `analyzers/analyzer_config.C` as the variables like `tag_shiftXXXX` and rerun analyzer
+
+
+
 
