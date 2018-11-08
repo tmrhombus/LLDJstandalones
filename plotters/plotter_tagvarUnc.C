@@ -31,7 +31,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
 
- Int_t rebin=5;
+ Int_t rebin=1;
 
  TString eraname = "";
 
@@ -430,8 +430,8 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
     lineNCV->SetLineWidth(2);
 
     //std::cout<<"OCV: "<<origcutval<<" BAC: "<<binAtOrigCut<<" ITC: "<<dataIntToCut<<" BNC: "<<binAtNewCut<<" MIC: "<<h_MCInt->Integral(0,binAtNewCut)<<std::endl;
-    std::cout<<"Original cut: "<<origcutval<<std::endl;
-    std::cout<<"New cut:      "<<newcutval<<std::endl;
+    printf(" Original cut: %1.3f \n",origcutval); 
+    printf(" New cut:      %1.3f \n",newcutval ); 
 
     canva2->cd();
     h_MCInt->Draw("hist");

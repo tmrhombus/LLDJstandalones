@@ -25,7 +25,7 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  // Setup running configuration: IO, naming, SFs, ..
  /////////////////////////////////////////////////////
 
- Bool_t drawuncs = kTRUE;
+ Bool_t drawuncs = kFALSE;  //kTRUE;
 
  TString inpath  = TString("../plots/");
  TString outpath = TString("../plots/");
@@ -37,7 +37,7 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
 
- Int_t rebin = 5;
+ Int_t rebin = 1;  //5; //25; //10; //
 
  TString eraname = "";
  if(HIP){
@@ -50,10 +50,14 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
   inpath = inpath+"GH/";
   eraname+="_GH";
  }
+ TString TSrebin;
+ TSrebin.Form("_r%d",rebin);
 
  TString infilename = region+"_"+varname+eraname;
  TString outname = "sp_"+region+"_"+varname+eraname;
+ outname += TSrebin;
  outname = outpath + outname;
+ //outname.Form("%s_r%d",outname.Data(),rebin);
 
  if(dolog){
   outname+="_log";
@@ -529,32 +533,34 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
   ymax = std::max(h_Data->GetMaximum(), h_mctotal->GetMaximum() );
   
   if(dolog){
-   bgstack->SetMaximum(500*ymax); 
-   bgstack->SetMinimum(1.0);
+   mcstack->SetMaximum(500*ymax); 
+   mcstack->SetMinimum(1.0);
   } 
   else {
-   bgstack->SetMaximum(ymax*1.4);
+   mcstack->SetMaximum(ymax*1.4);
   }
    
   plotpad->cd();
-  bgstack->Draw("hist");
-  //bgstack->Draw("hist e");
-  bgstack->GetYaxis()->SetTitle("Events");
-  bgstack->GetYaxis()->SetTitleSize(40);
-  bgstack->GetYaxis()->SetTitleFont(43);
-  bgstack->GetYaxis()->SetTitleOffset(1.55);
-  h_mctotal_EGSUp       ->Draw("hist sames");
-  h_mctotal_EGSDown     ->Draw("hist sames");
-  h_mctotal_MESUp       ->Draw("hist sames");
-  h_mctotal_MESDown     ->Draw("hist sames");
-  h_mctotal_AMaxUp      ->Draw("hist sames");
-  h_mctotal_AMaxDown    ->Draw("hist sames");
-  h_mctotal_IPSigUp     ->Draw("hist sames");
-  h_mctotal_IPSigDown   ->Draw("hist sames");
-  h_mctotal_TAUp        ->Draw("hist sames");
-  h_mctotal_TADown      ->Draw("hist sames");
-  //h_mctotal_TagVarsUp   ->Draw("hist sames");
-  //h_mctotal_TagVarsDown ->Draw("hist sames");
+  mcstack->Draw("hist");
+  //mcstack->Draw("hist e");
+  mcstack->GetYaxis()->SetTitle("Events");
+  mcstack->GetYaxis()->SetTitleSize(40);
+  mcstack->GetYaxis()->SetTitleFont(43);
+  mcstack->GetYaxis()->SetTitleOffset(1.55);
+  if(drawuncs){
+   h_mctotal_EGSUp       ->Draw("hist sames");
+   h_mctotal_EGSDown     ->Draw("hist sames");
+   h_mctotal_MESUp       ->Draw("hist sames");
+   h_mctotal_MESDown     ->Draw("hist sames");
+   h_mctotal_AMaxUp      ->Draw("hist sames");
+   h_mctotal_AMaxDown    ->Draw("hist sames");
+   h_mctotal_IPSigUp     ->Draw("hist sames");
+   h_mctotal_IPSigDown   ->Draw("hist sames");
+   h_mctotal_TAUp        ->Draw("hist sames");
+   h_mctotal_TADown      ->Draw("hist sames");
+   //h_mctotal_TagVarsUp   ->Draw("hist sames");
+   //h_mctotal_TagVarsDown ->Draw("hist sames");
+  }
   h_mctotal->Draw("e2 sames");
   h_Data->Draw("sames E"); 
 
@@ -569,7 +575,9 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
 //     sigleg->Draw();
 //    }
     leg->Draw();
-    uncleg->Draw();
+  if(drawuncs){
+   uncleg->Draw();
+  }
 
     char lumistring [50];
     int dummy; 
@@ -654,21 +662,10 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      h_mctotal_TagVarsUp   ->SetLineColor(599);
      h_mctotal_TagVarsDown ->SetLineColor(599);
 
-     TLegend *uncleg2 = new TLegend(0.5,0.3,0.85,0.65);
+     TLegend *uncleg2 = new TLegend(0.12,0.7,0.80,0.85);
      uncleg2->SetBorderSize(0);
      uncleg2->SetFillColor(kWhite);
-     //uncleg2->AddEntry(h_mctotal_EGSUp      , "EGSUp      " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_EGSDown    , "EGSDown    " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_MESUp      , "MESUp      " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_MESDown    , "MESDown    " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_AMaxUp     , "AMaxUp     " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_AMaxDown   , "AMaxDown   " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_IPSigUp    , "IPSigUp    " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_IPSigDown  , "IPSigDown  " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_TAUp       , "TAUp       " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_TADown     , "TADown     " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_TagVarsUp  , "TagVarsUp  " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_TagVarsDown, "TagVarsDown" , "l" ); 
+     uncleg2->SetNColumns(2);
      uncleg2->AddEntry(h_Data               , "data" , "lpe" );
      uncleg2->AddEntry(h_mctotal_line       , "Total MC"              , "l" );
      uncleg2->AddEntry(h_mctotal_EGSUp      , "E/#gamma energy scale" , "l" ); 
@@ -676,14 +673,16 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      uncleg2->AddEntry(h_mctotal_AMaxUp     , "Alpha Max            " , "l" ); 
      uncleg2->AddEntry(h_mctotal_IPSigUp    , "IPSig                " , "l" ); 
      uncleg2->AddEntry(h_mctotal_TAUp       , "Track Angle          " , "l" ); 
-     //uncleg2->AddEntry(h_mctotal_TagVarsUp  , "All TagVars          " , "l" ); 
+     uncleg2->AddEntry(h_mctotal_TagVarsUp  , "All TagVars          " , "l" ); 
 
      h_mctotal_line->Draw("hist");
-     //bgstack->Draw("hist e");
+     h_mctotal_line->SetMaximum(h_mctotal_line->GetMaximum()*1.4);
+     //mcstack->Draw("hist e");
      h_mctotal_line->GetYaxis()->SetTitle("Events");
      h_mctotal_line->GetYaxis()->SetTitleSize(40);
      h_mctotal_line->GetYaxis()->SetTitleFont(43);
      h_mctotal_line->GetYaxis()->SetTitleOffset(1.55);
+     h_mctotal_line->Draw("hist");
      h_mctotal_EGSUp       ->Draw("hist sames");
      h_mctotal_EGSDown     ->Draw("hist sames");
      h_mctotal_MESUp       ->Draw("hist sames");
@@ -694,8 +693,8 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      h_mctotal_IPSigDown   ->Draw("hist sames");
      h_mctotal_TAUp        ->Draw("hist sames");
      h_mctotal_TADown      ->Draw("hist sames");
-     //h_mctotal_TagVarsUp   ->Draw("hist sames");
-     //h_mctotal_TagVarsDown ->Draw("hist sames");
+     h_mctotal_TagVarsUp   ->Draw("hist sames");
+     h_mctotal_TagVarsDown ->Draw("hist sames");
      h_mctotal->Draw("e2 sames");
      h_Data->Draw("sames E"); 
      uncleg2->Draw();
@@ -720,7 +719,7 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      //h_mctotal    ->Write();
      //h_ratio       ->Write();
      //h_ratiostaterr->Write();
-     //bgstack       ->Write();
+     //mcstack       ->Write();
      //outfile->Close();
   
 }

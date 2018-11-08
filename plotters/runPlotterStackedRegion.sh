@@ -1,31 +1,31 @@
 #!/bin/bash
 
 regions=( \ 
-# "EleMuOSOF"     \
-# "OneEleDY"      \
-# "OneEleNoPair"  \
-# "OneEleOffZ"    \
-# "OneEleSig"     \
-# "OneEleZH"      \
-# "OneMuDY"       \
-# "OneMuNoPair"   \
-# "OneMuOffZ"     \
-# "OneMuSig"      \
-# "OneMuZH"       \
-# "OnePho"        \
-# "TwoEleDY"      \
-# "TwoEleOffZ"    \
-# "TwoEleSig"     \
- "TwoEleZH"      \
+ "EleMuOSOF"     \
+ "OnePho"        \
+ "TwoEleDY"      \
  "TwoMuDY"       \
-# "TwoMuOffZ"     \
-# "TwoMuSig"      \
- "TwoMuZH"       \
+# # "OneEleDY"      \
+# # "OneEleNoPair"  \
+# # "OneEleOffZ"    \
+# # "OneEleSig"     \
+# # "OneEleZH"      \
+# # "OneMuDY"       \
+# # "OneMuNoPair"   \
+# # "OneMuOffZ"     \
+# # "OneMuSig"      \
+# # "OneMuZH"       \
+# # "TwoEleOffZ"    \
+# # "TwoEleSig"     \
+#  "TwoEleZH"      \
+# # "TwoMuOffZ"     \
+# # "TwoMuSig"      \
+#  "TwoMuZH"       \
 ) 
 
 dologs=( \
  "kFALSE" \
- #"kTRUE" \
+# "kTRUE" \
 )
 
 doHIPs=( \
