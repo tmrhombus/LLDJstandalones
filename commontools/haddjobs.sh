@@ -7,8 +7,8 @@ mkdir -p "${plotdir}/${aversion}"
 mkdir -p "${plotdir}/${aversion}/logs"
 
 samples=( \
-### Data
-## SingleMu
+## Data
+# SingleMu
  "Data_SingleMu_H_3"      \
  "Data_SingleMu_H_2"      \
  "Data_SingleMu_G"        \
@@ -63,7 +63,32 @@ samples=( \
 # "Data_SinglePhoton_C"    \
 # "Data_SinglePhoton_B_2"  \
 
-## MC backgrounds
+## Monte Carlo Samples
+# Signal
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"    \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"   \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"        \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"       \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"      \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"     \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"      \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"     \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"    \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"   \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"        \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"       \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"      \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"     \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"      \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"     \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"    \
+ "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"   \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"        \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"       \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"      \
+ "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"     \
 # DY
 # "DYJetsToLL_M-5to50_HT-70to100"   \
  "DYJetsToLL_M-5to50_HT-100to200"  \
@@ -119,31 +144,6 @@ samples=( \
  "QCD_HT1000to1500"  \
  "QCD_HT1500to2000"  \
  "QCD_HT2000toInf"   \
-# Signal Samples
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"      \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"     \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"    \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"   \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1"        \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-10"       \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100"      \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000"     \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"      \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"     \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"    \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"   \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1"        \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10"       \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-100"      \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-1000"     \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"      \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"     \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"    \
- "ggZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"   \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1"        \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-10"       \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-100"      \
- "ZH_HToSSTobbbb_ZToLL_MH-125_MS-55_ctauS-1000"     \
 )
 
 for sample in ${samples[@]}
