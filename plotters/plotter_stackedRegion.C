@@ -1709,8 +1709,10 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_QCD         ->Write();
      h_ZH          ->Write();
      h_bkgtotal    ->Write();
-     h_ratio       ->Write();
-     h_ratiostaterr->Write();
+     if( drawData ){
+      h_ratio       ->Write();
+      h_ratiostaterr->Write();
+     }
      bgstack       ->Write();
      
      h_altDY          ->Write(); 
