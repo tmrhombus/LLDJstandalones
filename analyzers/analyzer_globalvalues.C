@@ -60,6 +60,7 @@ void analyzer_globalvalues::cleareventcounters(){
  photon_list           .clear(); 
  muon_list             .clear(); 
  aodcalojet_list       .clear(); 
+ aodcalojet_L1PF_list  .clear(); 
  aodpfjet_list         .clear(); 
  aodpfchsjet_list      .clear(); 
  taggedjet_list        .clear(); 

@@ -276,6 +276,7 @@ int main(int argc, char **argv){
   analyzer.initMETHTHistograms( unccategory );
   analyzer.initExtraHistograms(unccategory );
   analyzer.initAODCaloJetBasicHistograms( unccategory );
+  analyzer.initAODCaloJet_L1PFHistograms( unccategory );
   analyzer.initAODCaloJetExtraHistograms( unccategory ); 
   analyzer.initAODCaloJetTagHistograms( unccategory ); 
   analyzer.initAODCaloJetTagMultHistograms( unccategory );

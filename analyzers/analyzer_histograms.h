@@ -91,6 +91,12 @@ public :
  Bool_t        writeAODCaloJetBasicHistograms(int selbin, int jetbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin, int jetbin);
+ // AODCaloJet _L1PF Variables
+ Bool_t        initAODCaloJet_L1PFHistograms( TString uncbin );
+ Bool_t        fillAODCaloJet_L1PFHistograms(Float_t weight, int selbin, int jetbin);
+ Bool_t        writeAODCaloJet_L1PFHistograms(int selbin, int jetbin);
+ Bool_t        deleteAODCaloJet_L1PFHistograms(int selbin);
+ Bool_t        deleteAODCaloJet_L1PFHistograms(int selbin, int jetbin);
  // AODCaloJet Extra Variables
  Bool_t        initAODCaloJetExtraHistograms( TString uncbin );
  Bool_t        fillAODCaloJetExtraHistograms(Float_t weight, int selbin, int jetbin);
@@ -178,7 +184,7 @@ public :
  // MET / HT
  TH1F  h_AOD_MET_phi              [SELBINNAMESIZE];
  TH1F  h_AOD_MET_pt               [SELBINNAMESIZE];
- TH1F  h_htall                    [SELBINNAMESIZE];
+TH1F  h_htall                    [SELBINNAMESIZE];
  TH1F  h_htaodcalojets            [SELBINNAMESIZE];
 
  // nJets
@@ -200,6 +206,7 @@ public :
  TH1F  h_nSelectedAODCaloJetTagSB2_2b   [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTagSB3_2b   [SELBINNAMESIZE];
  TH1F  h_nCaloJet                       [SELBINNAMESIZE]; // AODnCaloJet; 
+ TH1F  h_nCaloJet_L1PF                  [SELBINNAMESIZE]; // AODnCaloJet_L1PF; 
  TH1F  h_nPFJet                         [SELBINNAMESIZE]; // AODnPFJet; 
  TH1F  h_nPFchsJet                      [SELBINNAMESIZE]; // AODnPFchsJet; 
 
@@ -227,6 +234,28 @@ public :
  TH1F  h_AODCaloJetPartonFlavour                  [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH2F  h_AODCaloJetPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+ 
+ // AODCaloJetL1PFHistograms
+ TH1F  h_AODCaloJet_L1PFPt                             [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFEta                            [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFPhi                            [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAlphaMax                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAlphaMax2                      [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAlphaMaxPrime                  [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAlphaMaxPrime2                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFBeta                           [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFBeta2                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFSumIP                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFSumIPSig                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFMedianIP                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFMedianLog10IPSig               [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFTrackAngle                     [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFLogTrackAngle                  [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F  h_AODCaloJet_L1PFPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
 
  // AODCaloJetExtraHistograms
  TH1F  h_AODCaloJetAvfVx                          [SELBINNAMESIZE][JETMULTNAMESIZE];

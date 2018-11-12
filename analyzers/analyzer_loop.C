@@ -90,7 +90,18 @@ void analyzer_loop::Loop(TString outfilename,
   taggedjetSB1_list   = jet_passTaggerSB1   ();
   taggedjetSB2_list   = jet_passTaggerSB2   ();
   taggedjetSB3_list   = jet_passTaggerSB3   ();
-
+ 
+  aodcalojet_L1PF_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
+  bool pass_L1PF = true;
+  for(int i=0; i<aodcalojet_list.size(); i++){
+    int jetindex = aodcalojet_list[i];
+    if(AODCaloJetPt->at(jetindex)>100.0 && AODCaloJetEta->at(jetindex)<3.0 && AODCaloJetEta->at(jetindex)>-2.25) pass_L1PF = false;
+  }
+  for(int i=0; i<photon_list.size(); i++){
+    int phoindex = photon_list[i];
+    if(AOD_phoPt->at(phoindex)>50.0 && AOD_phoEta->at(phoindex)<3.0 && AOD_phoEta->at(phoindex)>-2.25) pass_L1PF = false;
+  }
+  if(!pass_L1PF) aodcalojet_L1PF_list.clear();
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
   matchPFCalojets( "PFchs" );
