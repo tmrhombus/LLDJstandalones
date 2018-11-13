@@ -169,6 +169,7 @@ void analyzer_loop::Loop(TString outfilename,
   bitsPassOneEleNoPair = setSelBits( selvecOneEleNoPair , n_passOneEleNoPair ); 
   bitsPassOneMuNoPair  = setSelBits( selvecOneMuNoPair  , n_passOneMuNoPair  );   
   bitsPassEleMuOSOF    = setSelBits( selvecEleMuOSOF    , n_passEleMuOSOF    );   
+  bitsPassEleMuOSOFL   = setSelBits( selvecEleMuOSOFL   , n_passEleMuOSOF    );   
   bitsPassOnePho       = setSelBits( selvecOnePho       , n_passOnePho       );
 
   keyPassOneEleSig    = setSelKey( selvecOneEleSig    ); 
@@ -190,6 +191,7 @@ void analyzer_loop::Loop(TString outfilename,
   keyPassOneEleNoPair = setSelKey( selvecOneEleNoPair ); 
   keyPassOneMuNoPair  = setSelKey( selvecOneMuNoPair  ); 
   keyPassEleMuOSOF    = setSelKey( selvecEleMuOSOF    ); 
+  keyPassEleMuOSOFL   = setSelKey( selvecEleMuOSOFL   ); 
   keyPassOnePho       = setSelKey( selvecOnePho       ); 
 
   //debug_printbitset(); // this is a big printout
@@ -215,6 +217,7 @@ void analyzer_loop::Loop(TString outfilename,
   selvec[16] = bitsPassOneEleNoPair ; 
   selvec[17] = bitsPassOneMuNoPair  ; 
   selvec[18] = bitsPassEleMuOSOF    ; 
+  selvec[18] = bitsPassEleMuOSOFL   ; 
   selvec[19] = bitsPassOnePho       ; 
 
   selkey[0]  = keyPassOneEleSig    ; 
@@ -236,6 +239,7 @@ void analyzer_loop::Loop(TString outfilename,
   selkey[16] = keyPassOneEleNoPair ; 
   selkey[17] = keyPassOneMuNoPair  ; 
   selkey[18] = keyPassEleMuOSOF    ; 
+  selkey[18] = keyPassEleMuOSOFL   ; 
   selkey[19] = keyPassOnePho       ; 
 
   dofillselbin[0]  = ( ( bitsPassOneEleSig    >> 0) &1) ; 
@@ -257,6 +261,7 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[16] = ( ( bitsPassOneEleNoPair >> 0) &1) ; 
   dofillselbin[17] = ( ( bitsPassOneMuNoPair  >> 0) &1) ; 
   dofillselbin[18] = ( ( bitsPassEleMuOSOF    >> 0) &1) ; 
+  dofillselbin[18] = ( ( bitsPassEleMuOSOFL   >> 0) &1) ; 
   dofillselbin[19] = ( ( bitsPassOnePho       >> 0) &1) ; 
 
   // fake rate code
@@ -380,6 +385,7 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout<<" n_passOneEleNoPair " << setw(width) << left << n_passOneEleNoPair << setw(width) << left << (float) n_passOneEleNoPair/ (float) n_tot << std::endl;   
  std::cout<<" n_passOneMuNoPair  " << setw(width) << left << n_passOneMuNoPair  << setw(width) << left << (float) n_passOneMuNoPair / (float) n_tot << std::endl;   
  std::cout<<" n_passEleMuOSOF    " << setw(width) << left << n_passEleMuOSOF    << setw(width) << left << (float) n_passEleMuOSOF   / (float) n_tot << std::endl;   
+ std::cout<<" n_passEleMuOSOFL   " << setw(width) << left << n_passEleMuOSOFL   << setw(width) << left << (float) n_passEleMuOSOFL  / (float) n_tot << std::endl;   
  std::cout<<" n_passOnePho       " << setw(width) << left << n_passOnePho       << setw(width) << left << (float) n_passOnePho      / (float) n_tot << std::endl;   
  std::cout<<std::endl;
 
@@ -672,6 +678,8 @@ void analyzer_loop::debug_printbitset()
  std::cout<<std::endl;
  std::cout<<" bitsPassEleMuOSOF    "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassEleMuOSOF    >>i)&1 ); } 
  std::cout<<std::endl;
+ std::cout<<" bitsPassEleMuOSOFL   "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassEleMuOSOFL   >>i)&1 ); } 
+ std::cout<<std::endl;
  std::cout<<" bitsPassOnePho       "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassOnePho       >>i)&1 ); } 
  std::cout<<std::endl;
 
@@ -720,6 +728,8 @@ void analyzer_loop::debug_printbitkeys()
  std::cout<<" keyPassOneMuNoPair  "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassOneMuNoPair  >>i)&1 ); } 
  std::cout<<std::endl;
  std::cout<<" keyPassEleMuOSOF    "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassEleMuOSOF    >>i)&1 ); } 
+ std::cout<<std::endl;
+ std::cout<<" keyPassEleMuOSOFL   "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassEleMuOSOFL   >>i)&1 ); } 
  std::cout<<std::endl;
  std::cout<<" keyPassOnePho       "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassOnePho       >>i)&1 ); } 
  std::cout<<std::endl;

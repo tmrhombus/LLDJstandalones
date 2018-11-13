@@ -211,6 +211,7 @@ makeasubmitdir () {
  haddfile_OneEleNoPair_histograms="./haddit_OneEleNoPair_histograms.sh"                           
  haddfile_OneMuNoPair_histograms="./haddit_OneMuNoPair_histograms.sh"                           
  haddfile_EleMuOSOF_histograms="./haddit_EleMuOSOF_histograms.sh"                           
+ haddfile_EleMuOSOFL_histograms="./haddit_EleMuOSOFL_histograms.sh"                           
  haddfile_OnePho_histograms="./haddit_OnePho_histograms.sh"                           
 
 
@@ -235,6 +236,7 @@ makeasubmitdir () {
  printf "#!/bin/bash\n\n" > ${haddfile_OneEleNoPair_histograms} 
  printf "#!/bin/bash\n\n" > ${haddfile_OneMuNoPair_histograms}  
  printf "#!/bin/bash\n\n" > ${haddfile_EleMuOSOF_histograms}    
+ printf "#!/bin/bash\n\n" > ${haddfile_EleMuOSOFL_histograms}    
  printf "#!/bin/bash\n\n" > ${haddfile_OnePho_histograms}       
  printf "#!/bin/bash\n\n" > ${haddfile_OPTtree}          
  printf "#!/bin/bash\n\n" > ${haddfile_NM1trees}          
@@ -265,6 +267,7 @@ makeasubmitdir () {
  printf "hadd ${hadddir}/$1_OneEleNoPair_histograms.root"  >>       ${haddfile_OneEleNoPair_histograms} 
  printf "hadd ${hadddir}/$1_OneMuNoPair_histograms.root"   >>       ${haddfile_OneMuNoPair_histograms}  
  printf "hadd ${hadddir}/$1_EleMuOSOF_histograms.root"     >>       ${haddfile_EleMuOSOF_histograms}    
+ printf "hadd ${hadddir}/$1_EleMuOSOFL_histograms.root"    >>       ${haddfile_EleMuOSOFL_histograms}    
  printf "hadd ${hadddir}/$1_OnePho_histograms.root"        >>       ${haddfile_OnePho_histograms}       
  printf "hadd ${hadddir}/$1_OPTtree.root"                  >>       ${haddfile_OPTtree}           
  printf "hadd ${hadddir}/$1_NM1tree.root"                  >>       ${haddfile_NM1trees}           
@@ -304,6 +307,7 @@ makeasubmitdir () {
   printf "\\"  >> ${haddfile_OneEleNoPair_histograms} 
   printf "\\"  >> ${haddfile_OneMuNoPair_histograms}  
   printf "\\"  >> ${haddfile_EleMuOSOF_histograms}    
+  printf "\\"  >> ${haddfile_EleMuOSOFL_histograms}    
   printf "\\"  >> ${haddfile_OnePho_histograms}       
   printf "\\"  >> ${haddfile_OPTtree}           
   printf "\\"  >> ${haddfile_NM1trees}           
@@ -328,6 +332,7 @@ makeasubmitdir () {
   printf "\n $(pwd)/$1_${jobfilenr}_OneEleNoPair_histograms.root"  >> ${haddfile_OneEleNoPair_histograms} 
   printf "\n $(pwd)/$1_${jobfilenr}_OneMuNoPair_histograms.root"   >> ${haddfile_OneMuNoPair_histograms}  
   printf "\n $(pwd)/$1_${jobfilenr}_EleMuOSOF_histograms.root"     >> ${haddfile_EleMuOSOF_histograms}    
+  printf "\n $(pwd)/$1_${jobfilenr}_EleMuOSOFL_histograms.root"    >> ${haddfile_EleMuOSOFL_histograms}    
   printf "\n $(pwd)/$1_${jobfilenr}_OnePho_histograms.root"        >> ${haddfile_OnePho_histograms}       
   printf "\n $(pwd)/$1_${jobfilenr}_OPTtree.root"                  >> ${haddfile_OPTtree}           
   printf "\n $(pwd)/$1_${jobfilenr}_NM1tree.root"                  >> ${haddfile_NM1trees}           
@@ -363,6 +368,7 @@ makeasubmitdir () {
  printf "\n\n" >> ${haddfile_OneEleNoPair_histograms} 
  printf "\n\n" >> ${haddfile_OneMuNoPair_histograms}  
  printf "\n\n" >> ${haddfile_EleMuOSOF_histograms}    
+ printf "\n\n" >> ${haddfile_EleMuOSOFL_histograms}    
  printf "\n\n" >> ${haddfile_OnePho_histograms}       
  printf "\n\n" >> ${haddfile_OPTtree}           
  printf "\n\n" >> ${haddfile_NM1trees}           

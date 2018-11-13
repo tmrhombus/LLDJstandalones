@@ -98,6 +98,7 @@ public :
    Int_t bitsPassOneEleNoPair;
    Int_t bitsPassOneMuNoPair ;
    Int_t bitsPassEleMuOSOF   ;
+   Int_t bitsPassEleMuOSOFL  ;
    Int_t bitsPassOnePho      ;
 
    // key all pass bitsets
@@ -120,6 +121,7 @@ public :
    Int_t keyPassOneEleNoPair;
    Int_t keyPassOneMuNoPair ;
    Int_t keyPassEleMuOSOF   ;
+   Int_t keyPassEleMuOSOFL  ;
    Int_t keyPassOnePho      ;
 
    // selection counters (how many events pass)
@@ -144,6 +146,7 @@ public :
    Int_t n_passOneEleNoPair;
    Int_t n_passOneMuNoPair ;
    Int_t n_passEleMuOSOF   ;
+   Int_t n_passEleMuOSOFL  ;
    Int_t n_passOnePho      ;
 
    Int_t nSelectedPho;
