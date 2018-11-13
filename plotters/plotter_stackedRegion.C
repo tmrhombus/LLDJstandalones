@@ -92,23 +92,28 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  std::vector<TString> uncbins;
  uncbins.clear();
  uncbins.push_back(""             ); 
- //uncbins.push_back("_EGSUp"       ); 
- //uncbins.push_back("_EGSDown"     );    
- //uncbins.push_back("_MESUp"       );    
- //uncbins.push_back("_MESDown"     );    
- //uncbins.push_back("_AMaxUp"      );    
- //uncbins.push_back("_AMaxDown"    );    
- //uncbins.push_back("_IPSigUp"     );    
- //uncbins.push_back("_IPSigDown"   );    
- //uncbins.push_back("_TAUp"        );    
- //uncbins.push_back("_TADown"      );    
- //uncbins.push_back("_TagVarsUp"   ); 
- //uncbins.push_back("_TagVarsDown" );  
+ uncbins.push_back("_EGSUp"       ); 
+ uncbins.push_back("_EGSDown"     );    
+ uncbins.push_back("_MESUp"       );    
+ uncbins.push_back("_MESDown"     );    
+ uncbins.push_back("_AMaxUp"      );    
+ uncbins.push_back("_AMaxDown"    );    
+ uncbins.push_back("_IPSigUp"     );    
+ uncbins.push_back("_IPSigDown"   );    
+ uncbins.push_back("_TAUp"        );    
+ uncbins.push_back("_TADown"      );    
+ uncbins.push_back("_TagVarsUp"   ); 
+ uncbins.push_back("_TagVarsDown" );  
 
  //if(drawSignal){extraname+="_wsig";}
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
+
+ variables.push_back("nSelectedAODCaloJetTag");
+ variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ variables.push_back("AllJets_AODCaloJetAlphaMax");
 
  //variables.push_back("nVtx");                   
  //variables.push_back("nGoodVtx");               
@@ -141,7 +146,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  //variables.push_back("AOD_nSelectedEle");
  //variables.push_back("AOD_nSelectedMu");
  //variables.push_back("nSelectedAODCaloJet");
- //variables.push_back("nSelectedAODCaloJetTag");
  //variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
  //variables.push_back("LeadingJet_AODCaloJetEta");                     
@@ -152,9 +156,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
  //variables.push_back("AllJets_AODCaloJetPt");                      
  //variables.push_back("AllJets_AODCaloJetEn");                      
  //variables.push_back("AllJets_AODCaloJetEta");                     
@@ -1708,8 +1709,10 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_QCD         ->Write();
      h_ZH          ->Write();
      h_bkgtotal    ->Write();
-     h_ratio       ->Write();
-     h_ratiostaterr->Write();
+     if( drawData ){
+      h_ratio       ->Write();
+      h_ratiostaterr->Write();
+     }
      bgstack       ->Write();
      
      h_altDY          ->Write(); 
@@ -1729,6 +1732,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_Sig_MS55ct1    ->Write(); 
      
      outfile->Close();
+     std::cout<<" closed writing:\n  "<<outname<<std::endl;
      
    } 
   }
