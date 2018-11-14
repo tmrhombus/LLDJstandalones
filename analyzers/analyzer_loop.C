@@ -90,18 +90,33 @@ void analyzer_loop::Loop(TString outfilename,
   taggedjetSB1_list   = jet_passTaggerSB1   ();
   taggedjetSB2_list   = jet_passTaggerSB2   ();
   taggedjetSB3_list   = jet_passTaggerSB3   ();
- 
+  
+  //save jets list for L1PF test clear list if does not pass
   aodcalojet_L1PF_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
   bool pass_L1PF = true;
+  //checks for L1PF test
   for(int i=0; i<aodcalojet_list.size(); i++){
     int jetindex = aodcalojet_list[i];
-    if(AODCaloJetPt->at(jetindex)>100.0 && AODCaloJetEta->at(jetindex)<3.0 && AODCaloJetEta->at(jetindex)>-2.25) pass_L1PF = false;
+    if(AODCaloJetPt->at(jetindex)>100.0 && (fabs(AODCaloJetEta->at(jetindex))<3.0 && fabs(AODCaloJetEta->at(jetindex))>2.25)) pass_L1PF = false;
   }
   for(int i=0; i<photon_list.size(); i++){
     int phoindex = photon_list[i];
-    if(AOD_phoPt->at(phoindex)>50.0 && AOD_phoEta->at(phoindex)<3.0 && AOD_phoEta->at(phoindex)>-2.25) pass_L1PF = false;
+    if(AOD_phoPt->at(phoindex)>50.0 && (fabs(AOD_phoEta->at(phoindex))<3.0 && fabs(AOD_phoEta->at(phoindex))>2.25)) pass_L1PF = false;
   }
-  if(!pass_L1PF) aodcalojet_L1PF_list.clear();
+  //effectively remove event by bringing all object lists to size 0
+  if(!pass_L1PF){
+     electron_list    .clear();    
+     photon_list      .clear();      
+     muon_list        .clear();         
+     aodcalojet_list  .clear();
+     aodpfjet_list    .clear();
+     aodpfchsjet_list .clear();
+     taggedjet_list   .clear();
+     taggedjetSB1_list.clear();
+     taggedjetSB2_list.clear();
+     taggedjetSB3_list.clear();
+     aodcalojet_L1PF_list.clear();//
+  }
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
   matchPFCalojets( "PFchs" );
