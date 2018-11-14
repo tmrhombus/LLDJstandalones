@@ -46,8 +46,8 @@ public :
    Float_t tag_shiftminTA;
    Float_t tag_shiftmaxAmax;
    
-   static const Bool_t TTOC = kTRUE;
-   //static const Bool_t TTOC = kFALSE;
+   //static const Bool_t TTOC = kTRUE;
+   static const Bool_t TTOC = kFALSE;
 };
 
 #endif

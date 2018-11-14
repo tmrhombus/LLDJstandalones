@@ -14,7 +14,7 @@ analyzer_config::~analyzer_config()
 //----------------------------analyzer_config
 void analyzer_config::setConfiguration() 
 {
-
+ //set TTOC in config.h
  if(TTOC){
  pho_minPt  = 1.;
  pho_maxEta = 3.;
@@ -39,7 +39,7 @@ void analyzer_config::setConfiguration()
  jet_minPt  = 25.;
  jet_maxEta = 2.4;
  }
- 
+
  // tagging variables
  tag_minIPsig = 1.15;
  tag_minTA    = -1.75;
