@@ -9,18 +9,18 @@ mkdir -p "${plotdir}/${aversion}/logs"
 samples=( \
 ## Data
 # SingleMu
- "Data_SingleMu_H_3"      \
- "Data_SingleMu_H_2"      \
- "Data_SingleMu_G"        \
+# "Data_SingleMu_H_3"      \
+# "Data_SingleMu_H_2"      \
+# "Data_SingleMu_G"        \
 # "Data_SingleMu_F"        \
 # "Data_SingleMu_E"        \
 # "Data_SingleMu_D"        \
 # "Data_SingleMu_C"        \
 # "Data_SingleMu_B_2"      \
 # SingleEle
- "Data_SingleEle_H_3"     \
- "Data_SingleEle_H_2"     \
- "Data_SingleEle_G"       \
+# "Data_SingleEle_H_3"     \
+# "Data_SingleEle_H_2"     \
+# "Data_SingleEle_G"       \
 # "Data_SingleEle_F"       \
 # "Data_SingleEle_E"       \
 # "Data_SingleEle_D"       \
