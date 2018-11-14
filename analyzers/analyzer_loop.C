@@ -103,20 +103,9 @@ void analyzer_loop::Loop(TString outfilename,
     int phoindex = photon_list[i];
     if(AOD_phoPt->at(phoindex)>50.0 && (fabs(AOD_phoEta->at(phoindex))<3.0 && fabs(AOD_phoEta->at(phoindex))>2.25)) pass_L1PF = false;
   }
-  //effectively remove event by bringing all object lists to size 0
-  if(!pass_L1PF){
-     electron_list    .clear();    
-     photon_list      .clear();      
-     muon_list        .clear();         
-     aodcalojet_list  .clear();
-     aodpfjet_list    .clear();
-     aodpfchsjet_list .clear();
-     taggedjet_list   .clear();
-     taggedjetSB1_list.clear();
-     taggedjetSB2_list.clear();
-     taggedjetSB3_list.clear();
-     aodcalojet_L1PF_list.clear();//
-  }
+  // remove event from jet based tagging variables for comparisons
+  if(!pass_L1PF){aodcalojet_L1PF_list.clear();}
+
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
   matchPFCalojets( "PFchs" );
