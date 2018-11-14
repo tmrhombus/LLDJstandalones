@@ -217,8 +217,8 @@ void analyzer_loop::Loop(TString outfilename,
   selvec[16] = bitsPassOneEleNoPair ; 
   selvec[17] = bitsPassOneMuNoPair  ; 
   selvec[18] = bitsPassEleMuOSOF    ; 
-  selvec[18] = bitsPassEleMuOSOFL   ; 
   selvec[19] = bitsPassOnePho       ; 
+  selvec[20] = bitsPassEleMuOSOFL   ; 
 
   selkey[0]  = keyPassOneEleSig    ; 
   selkey[1]  = keyPassTwoEleSig    ; 
@@ -239,8 +239,8 @@ void analyzer_loop::Loop(TString outfilename,
   selkey[16] = keyPassOneEleNoPair ; 
   selkey[17] = keyPassOneMuNoPair  ; 
   selkey[18] = keyPassEleMuOSOF    ; 
-  selkey[18] = keyPassEleMuOSOFL   ; 
   selkey[19] = keyPassOnePho       ; 
+  selkey[20] = keyPassEleMuOSOFL   ; 
 
   dofillselbin[0]  = ( ( bitsPassOneEleSig    >> 0) &1) ; 
   dofillselbin[1]  = ( ( bitsPassTwoEleSig    >> 0) &1) ; 
@@ -261,8 +261,8 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[16] = ( ( bitsPassOneEleNoPair >> 0) &1) ; 
   dofillselbin[17] = ( ( bitsPassOneMuNoPair  >> 0) &1) ; 
   dofillselbin[18] = ( ( bitsPassEleMuOSOF    >> 0) &1) ; 
-  dofillselbin[18] = ( ( bitsPassEleMuOSOFL   >> 0) &1) ; 
   dofillselbin[19] = ( ( bitsPassOnePho       >> 0) &1) ; 
+  dofillselbin[20] = ( ( bitsPassEleMuOSOFL   >> 0) &1) ; 
 
   // fake rate code
   if(doBkgEst && uncbin.EqualTo("")){
@@ -328,6 +328,7 @@ void analyzer_loop::Loop(TString outfilename,
      if(i==0||i==1||i==4||i==5||i==8||i==9||i==12||i==13||i==15)   fullweight = event_weight * PUweight_DoubleEG;
      if(i==2||i==3||i==6||i==7||i==10||i==11||i==14||i==15||i==17) fullweight = event_weight * PUweight_DoubleMu;
      if(i==18) fullweight = event_weight * PUweight_MuonEG;
+     if(i==20) fullweight = event_weight * PUweight_MuonEG;
      if(i==19) fullweight = event_weight * PUweight_SinglePhoton;
    }
    else{
