@@ -175,7 +175,7 @@ void analyzer_selections::setSelections()
  selvecEleMuOSOF .push_back( passMuEG     );
  selvecEleMuOSOF .push_back( passGoodVtx  );
  selvecEleMuOSOF .push_back( passOneJet   );
- selvecEleMuOSOF .push_back( passPTOSOF  && passZWinOSOF );
+ if(!TTOC) selvecEleMuOSOF .push_back( passPTOSOF  && passZWinOSOF );
  // One Photon
  selvecOnePho .push_back( passSinglePho);
  selvecOnePho .push_back( passGoodVtx  );
