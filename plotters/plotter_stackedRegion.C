@@ -122,16 +122,10 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  //variables.push_back("phoEt");                  
  //variables.push_back("AOD_MET_pt");                 
  //variables.push_back("AOD_MET_phi");                 
- //variables.push_back("AOD_phoPt");                 
- //variables.push_back("AOD_phoEta");                 
  //variables.push_back("AOD_phoPhi");                 
  //variables.push_back("nEle");                   
- //variables.push_back("AOD_elePt");                  
- //variables.push_back("AOD_eleEta");                 
  //variables.push_back("AOD_elePhi");                 
  //variables.push_back("nMu");                    
- //variables.push_back("AOD_muPt");                   
- //variables.push_back("AOD_muEta");                  
  //variables.push_back("AOD_muPhi");                  
  // variables.push_back("nJet");                   
  
@@ -141,7 +135,6 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  //variables.push_back("AOD_nSelectedEle");
  //variables.push_back("AOD_nSelectedMu");
  //variables.push_back("nSelectedAODCaloJet");
- //variables.push_back("nSelectedAODCaloJetTag");
  //variables.push_back("LeadingJet_AODCaloJetPt");                      
  //variables.push_back("LeadingJet_jetEn");                      
  //variables.push_back("LeadingJet_AODCaloJetEta");                     
@@ -152,13 +145,20 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
- //variables.push_back("AllJets_AODCaloJetPt");                      
+/// variables.push_back("AOD_muPt");                   
+/// variables.push_back("AOD_phoPt");                 
+/// variables.push_back("AOD_phoEta");                 
+/// variables.push_back("AOD_elePt");                  
+/// variables.push_back("AOD_eleEta");                 
+/// variables.push_back("AOD_muEta");                  
+/// //variables.push_back("nSelectedAODCaloJetTag");
+ variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+/// variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+/// variables.push_back("AllJets_AODCaloJetAlphaMax");
+/// variables.push_back("AllJets_AODCaloJetPt");                      
+/// variables.push_back("AllJets_AODCaloJetEta");                     
+/// variables.push_back("AllJets_AODCaloJetPhi");                     
  //variables.push_back("AllJets_AODCaloJetEn");                      
- //variables.push_back("AllJets_AODCaloJetEta");                     
- //variables.push_back("AllJets_AODCaloJetPhi");                     
  //-----all variables after NMinus will have dolog=true, sorry
  //variables.push_back("NMinus");                   
  //variables.push_back("Onecut");                   
@@ -628,8 +628,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
   for(unsigned int j=0; j<variables.size(); ++j){
    TString variable = variables[j];
 
-   for(unsigned int j=0; j<uncbins.size(); ++j){
-    TString uncbin = uncbins[j];
+   for(unsigned int k=0; k<uncbins.size(); ++k){
+    TString uncbin = uncbins[k];
 
     //Blind
     drawData=true;
@@ -650,7 +650,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
     }
 
     Bool_t domaketable = kFALSE;
-    if(j==0){
+    if(k==0){
      domaketable = kTRUE;
     }
 //    for(unsigned int k=0; k<leptons.size(); ++k){
@@ -1486,7 +1486,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
       for(int zz=0; zz<v.size(); zz++)
       {
        bgstack->Add(v[zz]);
-       //cout <<v[zz]->Integral()<<std::endl;
+       //cout <<v[zz]->GetTitle()<<":  "<<v[zz]->Integral()<<std::endl;
       }
      }
      else{
@@ -1513,12 +1513,16 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
          bgstack->Add(h_ZH         );
        }
      }
+      //for(int zz=0; zz<v.size(); zz++)
+      //{
+      // cout <<v[zz]->GetName()<<":  "<<v[zz]->Integral()<<std::endl;
+      //}
 
 //     if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
 //        h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
 //     }                                     
 //     if( h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1) > 0.1){ ;
-//        h_ggZH_HToSSTobbbb_MS40_ctauS0p05   ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
+//        h_ggZH_HToSSTobbbb_MS40_ctauSodcalojet_L1PF_list.clear();0p05   ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Integral(0,-1));  
 //     }                                     
 //     if( h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1) > 0.1){ ;
 //        h_ggZH_HToSSTobbbb_MS40_ctauS1      ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Integral(0,-1)); 
@@ -1540,8 +1544,9 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      TLegend *leg;
      leg = new TLegend(0.2,0.7,0.88,0.88);
      leg->SetBorderSize(0);
-     leg->SetNColumns(2);
+     leg->SetNColumns(3);
      leg->SetFillColor(kWhite);
+     leg->SetTextSize(0.043);
      if(useAlt){
        leg->AddEntry(h_Data         , "Data", "lpe"); 
        leg->AddEntry(h_altDY        , "(Alt.) Drell-Yan", "f"); 
@@ -1568,8 +1573,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
-
-      TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
+     //leg->SetTextSize(12);
+      //TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
     //if(drawSignal){
       //sigleg->SetBorderSize(0);
       //sigleg->SetFillColor(kWhite);
@@ -1658,11 +1663,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        h_ratio->GetYaxis()->SetTitleFont(43);
        h_ratio->GetYaxis()->SetTitleOffset(1.55);
        h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-       h_ratio->GetYaxis()->SetLabelSize(20);
+       h_ratio->GetYaxis()->SetLabelSize(35);
        h_ratio->GetYaxis()->SetNdivisions(-105);
        h_ratio->GetYaxis()->SetTitle("Data/MC");
        // X axis ratio plot settings
-       h_ratio->GetXaxis()->SetTitleSize(40);
+       h_ratio->GetXaxis()->SetTitleSize(55);
        h_ratio->GetXaxis()->SetTitleFont(43);
        h_ratio->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
        h_ratio->GetXaxis()->SetTitleOffset(4.0);
