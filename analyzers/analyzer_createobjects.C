@@ -18,7 +18,7 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut
 {//------ btnr depricated can we remove?
  std::vector<int> mulist;
 
- for(int i = 0; i < Shifted_muPt.size(); i++) 
+ for(int i = 0; i < AOD_muPt->size(); i++) 
  {    
 
   Float_t muonPt = getMuonPt(i,sysbinname);
@@ -385,7 +385,7 @@ std::vector<int> analyzer_createobjects::photon_passID( int bitnr, Float_t AOD_p
  bool pass_overlap = true;
  bool pass_noPixelSeed = true;
  ////Loop over photons                   
- for(int p=0;p<Shifted_phoPt.size();p++)//<-----change from nPho until we get it
+ for(int p=0;p<AOD_phoPt->size();p++)//<-----change from nPho until we get it
  {    
   Float_t theAOD_phoPt = getPhotonPt(p,sysbinname);
 
@@ -444,44 +444,50 @@ double analyzer_createobjects::DeltaPhi(double phi1, double phi2)
 
 //-------------------------getMuonPt
 Float_t analyzer_createobjects::getMuonPt(int i, TString sysbinname){
-
-      //Muon passes pt cut 
-      Float_t muonPt = Shifted_muPt.at(i);
-      Float_t muonEnergy = muonPt*TMath::CosH( AOD_muEta->at(i) );
-      if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.020); }
-      if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.020); }
-
-      muonPt = muonEnergy/TMath::CosH( AOD_muEta->at(i) );
-  return muonPt;
-
+   
+  if(!isMC){ return AOD_muPt->at(i); }  
+  else{
+    //Muon passes pt cut 
+    Float_t muonPt = AOD_muPt->at(i);
+    Float_t muonEnergy = muonPt*TMath::CosH( AOD_muEta->at(i) );
+    if(sysbinname=="_MESUp"  ){ muonEnergy*=(1.0 + 0.020); }
+    if(sysbinname=="_MESDown"){ muonEnergy*=(1.0 - 0.020); }
+    
+    muonPt = muonEnergy/TMath::CosH( AOD_muEta->at(i) );
+    return muonPt;
+  }
 }
 
 //-------------------------getElectronPt
 Float_t analyzer_createobjects::getElectronPt(int i, TString sysbinname){
-
-      //Electron passes pt cut 
-      Float_t electronPt = Shifted_elePt.at(i);
-      Float_t electronEnergy = electronPt*TMath::CosH( AOD_eleEta->at(i) );
-      if(sysbinname=="_EGSUp"  ){ electronEnergy*=(1.0 + 0.020); }
-      if(sysbinname=="_EGSDown"){ electronEnergy*=(1.0 - 0.020); }
-
-      electronPt = electronEnergy/TMath::CosH( AOD_eleEta->at(i) );
-
-  return electronPt;
-
+  
+  if(!isMC){ return AOD_elePt->at(i); }       
+  else{
+    //Electron passes pt cut 
+    Float_t electronPt = AOD_elePt->at(i);
+    Float_t electronEnergy = electronPt*TMath::CosH( AOD_eleEta->at(i) );
+    if(sysbinname=="_EGSUp"  ){ electronEnergy*=(1.0 + 0.020); }
+    if(sysbinname=="_EGSDown"){ electronEnergy*=(1.0 - 0.020); }
+    
+    electronPt = electronEnergy/TMath::CosH( AOD_eleEta->at(i) );
+    return electronPt;
+  }
 }
 
 //-------------------------getPhotonPt
 Float_t analyzer_createobjects::getPhotonPt(int idnr, TString sysbinname){
+  
+  //BEN: Why not use standard pt and eta?
 
-      Float_t photonenergy = AOD_phoSCEn->at(idnr);
-      if(sysbinname=="_EGSUp"  ){ photonenergy*=(1. + 0.020); }
-      if(sysbinname=="_EGSDown"){ photonenergy*=(1. - 0.020); }
-
-      Float_t AOD_phoPt = photonenergy/TMath::CosH( (*AOD_phoSCEta)[idnr] );
-
-  return AOD_phoPt;
-
+  if(!isMC){ return AOD_phoSCEn->at(idnr)/TMath::CosH( (*AOD_phoSCEta)[idnr] ); }
+  else{
+    Float_t photonenergy = AOD_phoSCEn->at(idnr);
+    if(sysbinname=="_EGSUp"  ){ photonenergy*=(1. + 0.020); }
+    if(sysbinname=="_EGSDown"){ photonenergy*=(1. - 0.020); }
+    
+    Float_t AOD_phoPt = photonenergy/TMath::CosH( (*AOD_phoSCEta)[idnr] );
+    return AOD_phoPt;
+  }
 }
 
 
@@ -664,111 +670,100 @@ void analyzer_createobjects::shiftCollections( TString uncbin )
   Shifted_CaloJetAlphaMax             .clear();  
   Shifted_CaloJetMedianLog10IPSig     .clear();  
   Shifted_CaloJetMedianLog10TrackAngle.clear();  
-
- for(unsigned int i=0; i<AOD_elePt->size(); ++i){
-  Shifted_elePt.push_back( AOD_elePt->at(i));
- }
- for(unsigned int i=0; i<AOD_phoPt->size(); ++i){
-  Shifted_phoPt.push_back( AOD_phoPt->at(i));
- }
- for(unsigned int i=0; i<AOD_muPt->size(); ++i){
-  Shifted_muPt.push_back( AOD_muPt->at(i));
- }
- for(unsigned int i=0; i<AODCaloJetPt->size(); ++i){
-  Shifted_CaloJetPt.push_back( AODCaloJetPt->at(i));
- }
- for(unsigned int i=0; i<AODCaloJetAlphaMax->size(); ++i){
-  Shifted_CaloJetAlphaMax.push_back( AODCaloJetAlphaMax->at(i));
- }
- for(unsigned int i=0; i<AODCaloJetMedianLog10IPSig->size(); ++i){
-  Shifted_CaloJetMedianLog10IPSig.push_back( AODCaloJetMedianLog10IPSig->at(i));
- }
- for(unsigned int i=0; i<AODCaloJetMedianLog10TrackAngle->size(); ++i){
-  Shifted_CaloJetMedianLog10TrackAngle.push_back( AODCaloJetMedianLog10TrackAngle->at(i));
- }
-
-// std::cout<<" preshift"<<std::endl;
-// for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-//  //std::cout<<" AOD_elePt->at(i) "<< AOD_elePt->at(i)<<" Shifted_elePt.at(i) "<< Shifted_elePt.at(i) <<std::endl;
-//  std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
-//             " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
-//             " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
-//  std::endl;
-// }
-
- if(isMC){
-  for(unsigned int i=0; i<Shifted_elePt.size(); ++i){
-   Shifted_elePt.at(i) = getElectronPt(i,uncbin);
+  
+  //Objects: do shift inside get function
+  for(unsigned int i=0; i<AOD_elePt->size(); ++i){
+    Shifted_elePt.push_back( getElectronPt(i,uncbin) );
   }
-  for(unsigned int i=0; i<Shifted_phoPt.size(); ++i){
-   Shifted_phoPt.at(i) = getPhotonPt(i,uncbin);
+  for(unsigned int i=0; i<AOD_phoPt->size(); ++i){
+    Shifted_phoPt.push_back( getPhotonPt(i,uncbin) );
   }
-  for(unsigned int i=0; i<Shifted_muPt.size(); ++i){
-   Shifted_muPt.at(i) = getMuonPt(i,uncbin);
+  for(unsigned int i=0; i<AOD_muPt->size(); ++i){
+    Shifted_muPt.push_back( getMuonPt(i,uncbin) );
   }
+  for(unsigned int i=0; i<AODCaloJetPt->size(); ++i){
+    Shifted_CaloJetPt.push_back( AODCaloJetPt->at(i));//no correction yet
+  }
+  
+  ///////////////
+  //  Tag Vars
+  ///////////////
 
-  float deltaAmax  = ( tag_maxAmax  / tag_shiftmaxAmax  ) - 1.    ;
-  float deltaIPsig = ( tag_minIPsig / tag_shiftminIPsig ) - 1.  ;
-  float deltaTA    = ( tag_minTA    / tag_shiftminTA    ) - 1.        ;
-  // shift tagging variable central value for "unshifted"
-  // then _Down is unshifted and _Up is shifted 2x
+  for(unsigned int i=0; i<AODCaloJetAlphaMax->size(); ++i){
+    Shifted_CaloJetAlphaMax.push_back( AODCaloJetAlphaMax->at(i));
+  }
+  for(unsigned int i=0; i<AODCaloJetMedianLog10IPSig->size(); ++i){
+    Shifted_CaloJetMedianLog10IPSig.push_back( AODCaloJetMedianLog10IPSig->at(i));
+  }
+  for(unsigned int i=0; i<AODCaloJetMedianLog10TrackAngle->size(); ++i){
+    Shifted_CaloJetMedianLog10TrackAngle.push_back( AODCaloJetMedianLog10TrackAngle->at(i));
+  }
+  
 
-  // unshifted
-  if( ! (
-          uncbin.Contains("TagVars") ||
-          uncbin.Contains("AMax")    ||
-          uncbin.Contains("IPSig")   ||
-          uncbin.Contains("TA")        
-         )  ){ 
-   for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-    Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
-    Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
-    Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
-   }
-  }
-
-  // AlphaMax
-  for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-   if(uncbin.Contains("AMaxUp")||uncbin.Contains("TagVarsUp")){  
-    Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+2*deltaAmax) ;
-   }
-   if(uncbin.Contains("TA")||uncbin.Contains("IPSig")){  
-    Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
-   }
-  }
-  // IPSig
-  for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
-   if(uncbin.Contains("IPSigUp")||uncbin.Contains("TagVarsUp")){  
-    Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+2*deltaIPsig) ;
-   }
-   if(uncbin.Contains("TA")||uncbin.Contains("AMax")){  
-    Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
-   }
-  }
-  // TA
-   for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
-    if(uncbin.Contains("TAUp")||uncbin.Contains("TagVarsUp")){  
-     Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+2*deltaTA) ;
+  if(isMC){
+      
+    float deltaAmax  = ( tag_maxAmax  / tag_shiftmaxAmax  ) - 1.    ;
+    float deltaIPsig = ( tag_minIPsig / tag_shiftminIPsig ) - 1.  ;
+    float deltaTA    = ( tag_minTA    / tag_shiftminTA    ) - 1.        ;
+    // shift tagging variable central value for "unshifted"
+    // then _Down is unshifted and _Up is shifted 2x
+    
+    // unshifted
+    if( ! (
+	   uncbin.Contains("TagVars") ||
+	   uncbin.Contains("AMax")    ||
+	   uncbin.Contains("IPSig")   ||
+	   uncbin.Contains("TA")        
+	   )  ){ 
+      for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+	Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
+	Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
+	Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
+      }
     }
-    if(uncbin.Contains("AMax")||uncbin.Contains("IPSig")){  
-     Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
+    
+    // AlphaMax
+    for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+      if(uncbin.Contains("AMaxUp")||uncbin.Contains("TagVarsUp")){  
+	Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+2*deltaAmax) ;
+      }
+      if(uncbin.Contains("TA")||uncbin.Contains("IPSig")){  
+	Shifted_CaloJetAlphaMax.at(i) = Shifted_CaloJetAlphaMax.at(i) * (1+deltaAmax) ;
+      }
     }
-   }
-
-//   std::cout<<" shifted"<<std::endl;
-//   for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
-//    std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
-//               " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
-//               " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
-//    std::endl;
-//   }
-//   std::cout<<" deltaAmax  "<< deltaAmax  <<std::endl; // = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
-//   std::cout<<" deltaIPsig "<< deltaIPsig <<std::endl; // = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
-//   std::cout<<" deltaTA    "<< deltaTA    <<std::endl; // = (tag_shiftminTA/tag_minTA) - 1.        ;
+    // IPSig
+    for(unsigned int i=0; i<Shifted_CaloJetMedianLog10IPSig.size(); ++i){
+      if(uncbin.Contains("IPSigUp")||uncbin.Contains("TagVarsUp")){  
+	Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+2*deltaIPsig) ;
+      }
+      if(uncbin.Contains("TA")||uncbin.Contains("AMax")){  
+	Shifted_CaloJetMedianLog10IPSig.at(i) = Shifted_CaloJetMedianLog10IPSig.at(i) * (1+deltaIPsig) ;
+      }
+    }
+    // TA
+    for(unsigned int i=0; i<Shifted_CaloJetMedianLog10TrackAngle.size(); ++i){
+      if(uncbin.Contains("TAUp")||uncbin.Contains("TagVarsUp")){  
+	Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+2*deltaTA) ;
+      }
+      if(uncbin.Contains("AMax")||uncbin.Contains("IPSig")){  
+	Shifted_CaloJetMedianLog10TrackAngle.at(i) = Shifted_CaloJetMedianLog10TrackAngle.at(i) * (1+deltaTA) ;
+      }
+    }
+    
+    //   std::cout<<" shifted"<<std::endl;
+    //   for(unsigned int i=0; i<Shifted_CaloJetAlphaMax.size(); ++i){
+    //    std::cout<<" Amax:  "<<Shifted_CaloJetAlphaMax.at(i)<<
+    //               " IPsig: "<<Shifted_CaloJetMedianLog10IPSig.at(i)<<
+    //               " TA:    "<<Shifted_CaloJetMedianLog10TrackAngle.at(i)<<
+    //    std::endl;
+    //   }
+    //   std::cout<<" deltaAmax  "<< deltaAmax  <<std::endl; // = (tag_shiftmaxAmax/tag_maxAmax) - 1.    ;
+    //   std::cout<<" deltaIPsig "<< deltaIPsig <<std::endl; // = (tag_shiftminIPsig/tag_minIPsig) - 1.  ;
+    //   std::cout<<" deltaTA    "<< deltaTA    <<std::endl; // = (tag_shiftminTA/tag_minTA) - 1.        ;
   }
-
- return;
-
+  
+  return;
+  
 }
 
 void analyzer_createobjects::matchPFCalojets( TString pftype )

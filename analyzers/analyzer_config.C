@@ -41,10 +41,10 @@ void analyzer_config::setConfiguration()
  //TA In     | -1.750    | -1.750 | -1.750    | -1.750    |  //loggit   
  //TA Out    | -1.759    | -1.773 | -1.773    | -1.773    |  //loggit
 
- // shifted tagging variables          // loggit
- tag_shiftmaxAmax   = 0.758;  // = 0.75;  // = 0.758;  // = 0.762;   //loggit
- tag_shiftminIPsig  = 1.137;  // = 1.15;  / = 1.249;  // = 1.109;   //loggit
- tag_shiftminTA     = -1.773; // = -1.75; /// = -1.759; // = -1.773;  //loggit
+ // shifted tagging variables             // loggit
+ tag_shiftmaxAmax   = 0.758;  // = 0.75;  // loggit
+ tag_shiftminIPsig  = 1.137;  // = 1.15;  // loggit
+ tag_shiftminTA     = -1.773; // = -1.75; // loggit
 
  // set which collections                          // loggit 
  phoid = "Medium"; // "Tight"; "Loose"; //Medium"; // loggit 
@@ -115,6 +115,7 @@ void analyzer_config::initSelectionCategories( ){
   selbinnames.push_back("OneEleNoPair");
   selbinnames.push_back("OneMuNoPair");
   selbinnames.push_back("EleMuOSOF");
+  selbinnames.push_back("EleMuOSOFL");
   selbinnames.push_back("OnePho");
 
   //std::cout<<" Selection category: "<<selcategory<<"\n";

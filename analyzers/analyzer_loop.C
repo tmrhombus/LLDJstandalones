@@ -169,6 +169,7 @@ void analyzer_loop::Loop(TString outfilename,
   bitsPassOneEleNoPair = setSelBits( selvecOneEleNoPair , n_passOneEleNoPair ); 
   bitsPassOneMuNoPair  = setSelBits( selvecOneMuNoPair  , n_passOneMuNoPair  );   
   bitsPassEleMuOSOF    = setSelBits( selvecEleMuOSOF    , n_passEleMuOSOF    );   
+  bitsPassEleMuOSOFL   = setSelBits( selvecEleMuOSOFL   , n_passEleMuOSOFL   );   
   bitsPassOnePho       = setSelBits( selvecOnePho       , n_passOnePho       );
 
   keyPassOneEleSig    = setSelKey( selvecOneEleSig    ); 
@@ -190,6 +191,7 @@ void analyzer_loop::Loop(TString outfilename,
   keyPassOneEleNoPair = setSelKey( selvecOneEleNoPair ); 
   keyPassOneMuNoPair  = setSelKey( selvecOneMuNoPair  ); 
   keyPassEleMuOSOF    = setSelKey( selvecEleMuOSOF    ); 
+  keyPassEleMuOSOFL   = setSelKey( selvecEleMuOSOFL   ); 
   keyPassOnePho       = setSelKey( selvecOnePho       ); 
 
   //debug_printbitset(); // this is a big printout
@@ -216,6 +218,7 @@ void analyzer_loop::Loop(TString outfilename,
   selvec[17] = bitsPassOneMuNoPair  ; 
   selvec[18] = bitsPassEleMuOSOF    ; 
   selvec[19] = bitsPassOnePho       ; 
+  selvec[20] = bitsPassEleMuOSOFL   ; 
 
   selkey[0]  = keyPassOneEleSig    ; 
   selkey[1]  = keyPassTwoEleSig    ; 
@@ -237,6 +240,7 @@ void analyzer_loop::Loop(TString outfilename,
   selkey[17] = keyPassOneMuNoPair  ; 
   selkey[18] = keyPassEleMuOSOF    ; 
   selkey[19] = keyPassOnePho       ; 
+  selkey[20] = keyPassEleMuOSOFL   ; 
 
   dofillselbin[0]  = ( ( bitsPassOneEleSig    >> 0) &1) ; 
   dofillselbin[1]  = ( ( bitsPassTwoEleSig    >> 0) &1) ; 
@@ -258,6 +262,7 @@ void analyzer_loop::Loop(TString outfilename,
   dofillselbin[17] = ( ( bitsPassOneMuNoPair  >> 0) &1) ; 
   dofillselbin[18] = ( ( bitsPassEleMuOSOF    >> 0) &1) ; 
   dofillselbin[19] = ( ( bitsPassOnePho       >> 0) &1) ; 
+  dofillselbin[20] = ( ( bitsPassEleMuOSOFL   >> 0) &1) ; 
 
   // fake rate code
   if(doBkgEst && uncbin.EqualTo("")){
@@ -323,26 +328,30 @@ void analyzer_loop::Loop(TString outfilename,
      if(i==0||i==1||i==4||i==5||i==8||i==9||i==12||i==13||i==15)   fullweight = event_weight * PUweight_DoubleEG;
      if(i==2||i==3||i==6||i==7||i==10||i==11||i==14||i==15||i==17) fullweight = event_weight * PUweight_DoubleMu;
      if(i==18) fullweight = event_weight * PUweight_MuonEG;
+     if(i==20) fullweight = event_weight * PUweight_MuonEG;
      if(i==19) fullweight = event_weight * PUweight_SinglePhoton;
    }
    else{
      fullweight = event_weight;
    }
 
-   fillCutflowHistograms( fullweight, i, selvec[i], selkey[i] );
-   if( dofillselbin[i] ){
-    fillSelectedHistograms( fullweight, i );
+   /// quick hack to only write phase spaces we care about
+   if(i==1 || i==3 || i==5 || i==7 || i==9 || i==11 || i==18 || i==19 || i==20  ){
+    fillCutflowHistograms( fullweight, i, selvec[i], selkey[i] );
+    if( dofillselbin[i] ){
+     fillSelectedHistograms( fullweight, i );
 
-    //jets
-    for( unsigned int k=0; k<jetmultnames.size(); ++k){
-     fillSelectedJetHistograms( fullweight, i, k );
-    }  
+     //jets
+     for( unsigned int k=0; k<jetmultnames.size(); ++k){
+      fillSelectedJetHistograms( fullweight, i, k );
+     }  
 
-    //tagged jets
-    for( unsigned int k=0; k<tagmultnames.size(); ++k){
-     fillSelectedTagHistograms( fullweight, i, k );
-    }  
-   } // if( dofillselbin[i] ){
+     //tagged jets
+     for( unsigned int k=0; k<tagmultnames.size(); ++k){
+      fillSelectedTagHistograms( fullweight, i, k );
+     }  
+    } // if( dofillselbin[i] ){
+   } // if i== one of the phase spaces we want to write
   } // for(unsigned int i=0; i<selbinnames.size(); ++i){
 
   //debug_printobjects();   // helpful printout (turn off when submitting!!!)
@@ -380,6 +389,7 @@ void analyzer_loop::Loop(TString outfilename,
  std::cout<<" n_passOneEleNoPair " << setw(width) << left << n_passOneEleNoPair << setw(width) << left << (float) n_passOneEleNoPair/ (float) n_tot << std::endl;   
  std::cout<<" n_passOneMuNoPair  " << setw(width) << left << n_passOneMuNoPair  << setw(width) << left << (float) n_passOneMuNoPair / (float) n_tot << std::endl;   
  std::cout<<" n_passEleMuOSOF    " << setw(width) << left << n_passEleMuOSOF    << setw(width) << left << (float) n_passEleMuOSOF   / (float) n_tot << std::endl;   
+ std::cout<<" n_passEleMuOSOFL   " << setw(width) << left << n_passEleMuOSOFL   << setw(width) << left << (float) n_passEleMuOSOFL  / (float) n_tot << std::endl;   
  std::cout<<" n_passOnePho       " << setw(width) << left << n_passOnePho       << setw(width) << left << (float) n_passOnePho      / (float) n_tot << std::endl;   
  std::cout<<std::endl;
 
@@ -421,29 +431,30 @@ void analyzer_loop::Loop(TString outfilename,
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
-  TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","UPDATE");
-  outfile->cd();
+  if(i==1 || i==3 || i==5 || i==7 || i==9 || i==11 || i==18 || i==19 || i==20  ){
+   TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","UPDATE");
+   outfile->cd();
 
-    //Normalize variable binned histograms by bin width
-    //Could put this in its own loop for clarity
-    scaleVariableBinHistograms( i );
-    
-    writeSelectedHistograms( i );
-    writeCutflowHistograms( i );
+     //Normalize variable binned histograms by bin width
+     //Could put this in its own loop for clarity
+     scaleVariableBinHistograms( i );
+     
+     writeSelectedHistograms( i );
+     writeCutflowHistograms( i );
 
-    //jet
-    for( unsigned int k=0; k<jetmultnames.size(); ++k){
-      writeSelectedJetHistograms( i, k );
-    }
+     //jet
+     for( unsigned int k=0; k<jetmultnames.size(); ++k){
+       writeSelectedJetHistograms( i, k );
+     }
 
-    //tag
-    for( unsigned int k=0; k<tagmultnames.size(); ++k){
-      writeSelectedTagHistograms( i, k );
-    }
+     //tag
+     for( unsigned int k=0; k<tagmultnames.size(); ++k){
+       writeSelectedTagHistograms( i, k );
+     }
 
-  outfile->Close();
- }
-
+   outfile->Close();
+  } 
+ } // if i== one of the phase spaces we want to write
 } // end analyzer_loop::Loop()
 
 
@@ -672,6 +683,8 @@ void analyzer_loop::debug_printbitset()
  std::cout<<std::endl;
  std::cout<<" bitsPassEleMuOSOF    "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassEleMuOSOF    >>i)&1 ); } 
  std::cout<<std::endl;
+ std::cout<<" bitsPassEleMuOSOFL   "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassEleMuOSOFL   >>i)&1 ); } 
+ std::cout<<std::endl;
  std::cout<<" bitsPassOnePho       "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( bitsPassOnePho       >>i)&1 ); } 
  std::cout<<std::endl;
 
@@ -720,6 +733,8 @@ void analyzer_loop::debug_printbitkeys()
  std::cout<<" keyPassOneMuNoPair  "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassOneMuNoPair  >>i)&1 ); } 
  std::cout<<std::endl;
  std::cout<<" keyPassEleMuOSOF    "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassEleMuOSOF    >>i)&1 ); } 
+ std::cout<<std::endl;
+ std::cout<<" keyPassEleMuOSOFL   "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassEleMuOSOFL   >>i)&1 ); } 
  std::cout<<std::endl;
  std::cout<<" keyPassOnePho       "; for(unsigned int i=0; i<8; ++i){ std::cout<<( ( keyPassOnePho       >>i)&1 ); } 
  std::cout<<std::endl;

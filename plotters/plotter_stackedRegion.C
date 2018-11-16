@@ -233,22 +233,22 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  lumi->SetTextFont(42);
 
  // initialize histogram files
- TFile* file_Data_SingleMu_H_3       ; 
- TFile* file_Data_SingleMu_H_2       ; 
- TFile* file_Data_SingleMu_G         ; 
- //TFile* file_Data_SingleMu_F         ; 
- //TFile* file_Data_SingleMu_E         ; 
- //TFile* file_Data_SingleMu_D         ; 
- //TFile* file_Data_SingleMu_C         ; 
- //TFile* file_Data_SingleMu_B_2       ; 
- TFile* file_Data_SingleEle_H_3      ; 
- TFile* file_Data_SingleEle_H_2      ; 
- TFile* file_Data_SingleEle_G        ; 
- //TFile* file_Data_SingleEle_F        ; 
- //TFile* file_Data_SingleEle_E        ; 
- //TFile* file_Data_SingleEle_D        ; 
- //TFile* file_Data_SingleEle_C        ; 
- //TFile* file_Data_SingleEle_B_2      ; 
+// TFile* file_Data_SingleMu_H_3       ; 
+// TFile* file_Data_SingleMu_H_2       ; 
+// TFile* file_Data_SingleMu_G         ; 
+// //TFile* file_Data_SingleMu_F         ; 
+// //TFile* file_Data_SingleMu_E         ; 
+// //TFile* file_Data_SingleMu_D         ; 
+// //TFile* file_Data_SingleMu_C         ; 
+// //TFile* file_Data_SingleMu_B_2       ; 
+// TFile* file_Data_SingleEle_H_3      ; 
+// TFile* file_Data_SingleEle_H_2      ; 
+// TFile* file_Data_SingleEle_G        ; 
+// //TFile* file_Data_SingleEle_F        ; 
+// //TFile* file_Data_SingleEle_E        ; 
+// //TFile* file_Data_SingleEle_D        ; 
+// //TFile* file_Data_SingleEle_C        ; 
+// //TFile* file_Data_SingleEle_B_2      ; 
  TFile* file_Data_MuonEG_H_3         ; 
  TFile* file_Data_MuonEG_H_2         ; 
  TFile* file_Data_MuonEG_G           ; 
@@ -421,22 +421,22 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  TH1F* h_Sig_ggZH_MS55ct100    ;
  TH1F* h_Sig_ggZH_MS55ct10     ;
  TH1F* h_Sig_ggZH_MS55ct1      ;
- TH1F* h_Data_SingleMu_H_3     ;
- TH1F* h_Data_SingleMu_H_2     ;
- TH1F* h_Data_SingleMu_G       ;
- //TH1F* h_Data_SingleMu_F       ;
- //TH1F* h_Data_SingleMu_E       ;
- //TH1F* h_Data_SingleMu_D       ;
- //TH1F* h_Data_SingleMu_C       ;
- //TH1F* h_Data_SingleMu_B_2     ;
- TH1F* h_Data_SingleEle_H_3    ;
- TH1F* h_Data_SingleEle_H_2    ;
- TH1F* h_Data_SingleEle_G      ;
- //TH1F* h_Data_SingleEle_F      ;
- //TH1F* h_Data_SingleEle_E      ;
- //TH1F* h_Data_SingleEle_D      ;
- //TH1F* h_Data_SingleEle_C      ;
- //TH1F* h_Data_SingleEle_B_2    ;
+ //TH1F* h_Data_SingleMu_H_3     ;
+ //TH1F* h_Data_SingleMu_H_2     ;
+ //TH1F* h_Data_SingleMu_G       ;
+ ////TH1F* h_Data_SingleMu_F       ;
+ ////TH1F* h_Data_SingleMu_E       ;
+ ////TH1F* h_Data_SingleMu_D       ;
+ ////TH1F* h_Data_SingleMu_C       ;
+ ////TH1F* h_Data_SingleMu_B_2     ;
+ //TH1F* h_Data_SingleEle_H_3    ;
+ //TH1F* h_Data_SingleEle_H_2    ;
+ //TH1F* h_Data_SingleEle_G      ;
+ ////TH1F* h_Data_SingleEle_F      ;
+ ////TH1F* h_Data_SingleEle_E      ;
+ ////TH1F* h_Data_SingleEle_D      ;
+ ////TH1F* h_Data_SingleEle_C      ;
+ ////TH1F* h_Data_SingleEle_B_2    ;
  TH1F* h_Data_MuonEG_H_3       ;
  TH1F* h_Data_MuonEG_H_2       ;
  TH1F* h_Data_MuonEG_G         ;
@@ -482,6 +482,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  TH1F* h_TT     ;
  TH1F* h_QCD    ;
  TH1F* h_bkgtotal ;
+ TH1F* h_light ;
+ TH1F* h_heavy ;
+ TH1F* h_other ;
+ TH1F* h_light_alt ;
+ TH1F* h_heavy_alt ;
+ TH1F* h_other_alt ;
 
  TH1F* h_altDY ;
  TH1F* h_altVV ;
@@ -917,30 +923,54 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
       h_bkgtotal->Add(h_QCD   ) ;
       h_bkgtotal->Add(h_WJetsToLNu      ) ;
 
-     if( region.Contains("OneEle") ){
-       //if(HIP){
-       // h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("Data");
-       // h_Data->Add( h_Data_DoubleEG_F   )     ; 
-       // h_Data->Add( h_Data_DoubleEG_E   )     ; 
-       // h_Data->Add( h_Data_DoubleEG_D   )     ; 
-       // h_Data->Add( h_Data_DoubleEG_C   )     ; 
-       //}
-       //else{
-        h_Data = (TH1F*)h_Data_SingleEle_G->Clone("Data");
-        h_Data->Add( h_Data_SingleEle_H_2 )     ; 
-        h_Data->Add( h_Data_SingleEle_H_3 )     ; 
-       //}
-     }
+     h_light= (TH1F*)h_DY->Clone("light");
+      h_light->Add(h_GJets ) ;
+
+     h_light_alt= (TH1F*)h_DY->Clone("light_alt");
+      h_light_alt->Add(h_GJets ) ;
+
+     h_other=(TH1F*)h_VV->Clone("other");
+      h_other->Add(h_VG);
+      h_other->Add(h_QCD);
+      h_other->Add(h_WJetsToLNu);
+      h_other->Add(h_ZH    ) ;
+
+     h_other_alt=(TH1F*)h_altVV->Clone("other_alt");
+      h_other_alt->Add(h_VG);
+      h_other_alt->Add(h_QCD);
+      h_other_alt->Add(h_WJetsToLNu);
+      h_other_alt->Add(h_ZH    ) ;
+
+     h_heavy= (TH1F*)h_TT->Clone("heavy");
+      h_heavy->Add(h_ST    ) ;
+
+     h_heavy_alt= (TH1F*)h_altTT->Clone("heavy_alt");
+      h_heavy_alt->Add(h_ST    ) ;
+
+     //if( region.Contains("OneEle") ){
+     //  //if(HIP){
+     //  // h_Data = (TH1F*)h_Data_DoubleEG_B_2->Clone("Data");
+     //  // h_Data->Add( h_Data_DoubleEG_F   )     ; 
+     //  // h_Data->Add( h_Data_DoubleEG_E   )     ; 
+     //  // h_Data->Add( h_Data_DoubleEG_D   )     ; 
+     //  // h_Data->Add( h_Data_DoubleEG_C   )     ; 
+     //  //}
+     //  //else{
+     //   h_Data = (TH1F*)h_Data_SingleEle_G->Clone("Data");
+     //   h_Data->Add( h_Data_SingleEle_H_2 )     ; 
+     //   h_Data->Add( h_Data_SingleEle_H_3 )     ; 
+     //  //}
+     //}
      if( region.Contains("TwoEle") ){
         h_Data = (TH1F*)h_Data_DoubleEG_G->Clone("Data");
         h_Data->Add( h_Data_DoubleEG_H_2 )     ; 
         h_Data->Add( h_Data_DoubleEG_H_3 )     ; 
      }
-     if( region.Contains("OneMu") ){
-        h_Data = (TH1F*)h_Data_SingleMu_G->Clone("Data");
-        h_Data->Add( h_Data_SingleMu_H_2 )     ; 
-        h_Data->Add( h_Data_SingleMu_H_3 )     ; 
-     }
+     //if( region.Contains("OneMu") ){
+     //   h_Data = (TH1F*)h_Data_SingleMu_G->Clone("Data");
+     //   h_Data->Add( h_Data_SingleMu_H_2 )     ; 
+     //   h_Data->Add( h_Data_SingleMu_H_3 )     ; 
+     //}
      if( region.Contains("TwoMu") ){
         h_Data = (TH1F*)h_Data_DoubleMu_G->Clone("Data");
         h_Data->Add( h_Data_DoubleMu_H_2 )     ; 
@@ -961,7 +991,8 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      if(varname.Contains("nSelectedAODCaloJetTag") && !extraname.Contains("log") && uncbin==""){
        TString fname = "forTed_"; fname+=varname; fname+=".csv";
        std::cout << "Writing " << fname<< std::endl;
-       FILE *f = fopen (outpath+fname, "w");
+       FILE *f = fopen (fname, "w");
+       if(!region.Contains("ZH")) print_hist(h_Data, "Data", f);
        print_hist(h_DY, "DY", f);
        print_hist(h_GJets, "GJets", f);
        print_hist(h_ST, "SingleTop", f);
@@ -975,8 +1006,42 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        print_hist(h_altTT, "altTT", f);
        print_hist(h_altVV, "altVV", f);
        print_hist(h_altDY, "altDY", f);
+       print_hist(h_light, "light", f);
+       print_hist(h_light_alt, "light_alt", f);
+       print_hist(h_heavy, "heavy", f);
+       print_hist(h_heavy_alt, "heavy_alt", f);
+       print_hist(h_other, "other", f);
+       print_hist(h_other_alt, "other_alt", f);
+       print_hist(h_ZZ, "ZZ", f);
+       print_hist(h_WZ, "WZ", f);
+       print_hist(h_WW, "WW", f);
+       //sig                                                                                                                                      //print_hist(h_Sig_ZH_MS15ct1000, "h_Sig_ZH_MS15ct1000", f);
+       print_hist(h_Sig_ZH_MS15ct100      ,"h_Sig_ZH_MS15ct100", f);
+       print_hist(h_Sig_ZH_MS15ct10       ,"h_Sig_ZH_MS15ct10", f);
+       //print_hist(h_Sig_ZH_MS15ct1        ,"h_Sig_ZH_MS15ct1", f);
+       //print_hist(h_Sig_ZH_MS40ct1000     ,"h_Sig_ZH_MS40ct1000", f);
+       print_hist(h_Sig_ZH_MS40ct100      ,"h_Sig_ZH_MS40ct100", f);
+       print_hist(h_Sig_ZH_MS40ct10       ,"h_Sig_ZH_MS40ct10", f);
+       //print_hist(h_Sig_ZH_MS40ct1        ,"h_Sig_ZH_MS40ct1", f);
+       //print_hist(h_Sig_ZH_MS55ct1000     ,"h_Sig_ZH_MS55ct1000", f);
+       print_hist(h_Sig_ZH_MS55ct100      ,"h_Sig_ZH_MS55ct100", f);
+       print_hist(h_Sig_ZH_MS55ct10       ,"h_Sig_ZH_MS55ct10", f);
+       //print_hist(h_Sig_ZH_MS55ct1        ,"h_Sig_ZH_MS55ct1", f);
+       //print_hist(h_Sig_ggZH_MS15ct1000   ,"h_Sig_ggZH_MS15ct1000", f);
+       print_hist(h_Sig_ggZH_MS15ct100    ,"h_Sig_ggZH_MS15ct100", f);
+       print_hist(h_Sig_ggZH_MS15ct10     ,"h_Sig_ggZH_MS15ct10", f);
+       //print_hist(h_Sig_ggZH_MS15ct1      ,"h_Sig_ggZH_MS15ct1", f);
+       //print_hist(h_Sig_ggZH_MS40ct1000   ,"h_Sig_ggZH_MS40ct1000", f);
+       print_hist(h_Sig_ggZH_MS40ct100    ,"h_Sig_ggZH_MS40ct100", f);
+       print_hist(h_Sig_ggZH_MS40ct10     ,"h_Sig_ggZH_MS40ct10", f);
+       //print_hist(h_Sig_ggZH_MS40ct1      ,"h_Sig_ggZH_MS40ct1", f);
+       //print_hist(h_Sig_ggZH_MS55ct1000   ,"h_Sig_ggZH_MS55ct1000", f);
+       print_hist(h_Sig_ggZH_MS55ct100    ,"h_Sig_ggZH_MS55ct100", f);
+       print_hist(h_Sig_ggZH_MS55ct10     ,"h_Sig_ggZH_MS55ct10", f);
+       //print_hist(h_Sig_ggZH_MS55ct1      ,"h_Sig_ggZH_MS55ct1", f);
        fclose(f);
      }
+
 
      // Integrals
      Float_t  int_DY5to50_HT100To200       = h_DY5to50_HT100To200              ->Integral(0,-1); 
@@ -1709,6 +1774,12 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_QCD         ->Write();
      h_ZH          ->Write();
      h_bkgtotal    ->Write();
+     h_light       ->Write();
+     h_light_alt   ->Write();
+     h_heavy       ->Write();
+     h_heavy_alt   ->Write();
+     h_other       ->Write();
+     h_other_alt   ->Write();
      if( drawData ){
       h_ratio       ->Write();
       h_ratiostaterr->Write();
