@@ -50,7 +50,8 @@ void analyzer_loop::Loop(TString outfilename,
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
-
+  
+  removed=kFALSE;
   cleareventcounters();
   if( uncbin.EqualTo("") ){
    optfile->cd();
@@ -104,7 +105,8 @@ void analyzer_loop::Loop(TString outfilename,
     if(AOD_phoPt->at(phoindex)>50.0 && (fabs(AOD_phoEta->at(phoindex))<3.0 && fabs(AOD_phoEta->at(phoindex))>2.25)) pass_L1PF = false;
   }
   // remove event from jet based tagging variables for comparisons
-  if(!pass_L1PF){aodcalojet_L1PF_list.clear();}
+  if(!pass_L1PF){aodcalojet_L1PF_list.clear(); removed = kTRUE;}
+  taggedjet_list_L1PF = jet_passTagger_L1PF ();
 
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );

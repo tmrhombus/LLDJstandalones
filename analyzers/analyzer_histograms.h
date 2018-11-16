@@ -184,10 +184,11 @@ public :
  // MET / HT
  TH1F  h_AOD_MET_phi              [SELBINNAMESIZE];
  TH1F  h_AOD_MET_pt               [SELBINNAMESIZE];
-TH1F  h_htall                    [SELBINNAMESIZE];
+ TH1F  h_htall                    [SELBINNAMESIZE];
  TH1F  h_htaodcalojets            [SELBINNAMESIZE];
 
  // nJets
+ TH1F  h_nSelectedAODCaloJet_L1PFTag    [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJet            [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTag         [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTagSB1      [SELBINNAMESIZE];

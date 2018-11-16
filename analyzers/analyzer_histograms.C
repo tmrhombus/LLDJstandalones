@@ -701,8 +701,11 @@ Bool_t analyzer_histograms::initAODCaloJet_L1PFHistograms( TString uncbin )
   // loop through jets and selections to initialize histograms in parllel (series)
   for(unsigned int i=0; i<selbinnames.size(); ++i){
       deleteAODCaloJet_L1PFHistograms(i);
-      TString hname_nCaloJet_L1PF                 = "h_"+selbinnames[i]+"_nCaloJet_L1PF" +uncbin;
-      h_nCaloJet_L1PF                 [i] = initSingleHistogramTH1F( hname_nCaloJet_L1PF  , "nCaloJet_L1PF",  10,0,10);
+      TString hname_nCaloJet_L1PF = "h_"+selbinnames[i]+"_nCaloJet_L1PF" +uncbin;
+       h_nCaloJet_L1PF        [i] = initSingleHistogramTH1F( hname_nCaloJet_L1PF, "nCaloJet_L1PF",  10,0,10);
+      
+      TString hname_nSelectedAODCaloJet_L1PFTag  = "h_"+selbinnames[i]+"_nSelectedAODCaloJet_L1PFTag"+uncbin;
+       h_nSelectedAODCaloJet_L1PFTag         [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet_L1PFTag, "nSelectedAODCaloJet_L1PFTag", 6, -0.5, 5.5);
 
       for(unsigned int k=0; k<jetmultnames.size(); ++k){
         deleteAODCaloJet_L1PFHistograms(i,k);
@@ -766,6 +769,7 @@ Bool_t analyzer_histograms::fillAODCaloJet_L1PFHistograms(Float_t weight, int se
   if(jetmultnames.at(jetbin) == "AllJets"){
     // only fill these once (no jet multiplicity)
     h_nCaloJet_L1PF                 [selbin].Fill ( aodcalojet_L1PF_list.size() , weight );
+    if(!removed)  h_nSelectedAODCaloJet_L1PFTag       [selbin] .Fill( float(taggedjet_list_L1PF.size()), weight );
     for(unsigned int i =0; i<aodcalojet_L1PF_list.size(); i++){
       int aodcalojet_L1PFindex = aodcalojet_L1PF_list[i];
       h_AODCaloJet_L1PFPt                             [selbin][jetbin].Fill( AODCaloJetPt                             ->at( aodcalojet_L1PFindex ), weight );  
@@ -820,6 +824,7 @@ Bool_t analyzer_histograms::writeAODCaloJet_L1PFHistograms(int selbin, int jetbi
   //printf("writeAODCaloJet_L1PFHistograms\n");
   if(jetbin==0){
    h_nCaloJet_L1PF                 [selbin].Write();
+   h_nSelectedAODCaloJet_L1PFTag   [selbin].Write();
   }
   h_AODCaloJet_L1PFPt                             [selbin][jetbin].Write(); 
   //h_AODCaloJet_L1PFPtVar                          [selbin][jetbin].Write(); 
@@ -848,6 +853,7 @@ Bool_t analyzer_histograms::writeAODCaloJet_L1PFHistograms(int selbin, int jetbi
 Bool_t analyzer_histograms::deleteAODCaloJet_L1PFHistograms(int selbin)
 {
   h_nCaloJet_L1PF                 [selbin].Delete();
+  h_nSelectedAODCaloJet_L1PFTag   [selbin] .Delete();
  return kTRUE;
 }
 
@@ -877,6 +883,7 @@ Bool_t analyzer_histograms::deleteAODCaloJet_L1PFHistograms(int selbin, int jetb
   //h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin].Delete(); 
  return kTRUE;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///                         For L1 Pre-firing test    END                                          ////
