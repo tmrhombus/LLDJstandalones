@@ -340,7 +340,6 @@ makeasubmitdir () {
 
   # add file to checker, all histos are made at the same time, so only check one
   printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_OPTtree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_OPTtree.root \\n\"; fi " >> ${checkfile}
-  printf "\n if [ ! -f $(pwd)/$1_${jobfilenr}_NM1tree.root ]; then printf \" $(pwd)/$1_${jobfilenr}_NM1tree.root \\n\"; fi " >> ${checkfile}
 
   # increment filenumber counters
   #printf "NFILES: %s %s %s\n" $nfilesinlist $filenrlow $jobfilenr
