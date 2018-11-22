@@ -50,6 +50,7 @@ public :
    std::vector<Bool_t> selvecOneEleNoPair ; 
    std::vector<Bool_t> selvecOneMuNoPair  ; 
    std::vector<Bool_t> selvecEleMuOSOF    ; 
+   std::vector<Bool_t> selvecEleMuOSOFL   ; 
    std::vector<Bool_t> selvecOnePho       ; 
    Int_t selvec[SELBINNAMESIZE];
    Int_t selkey[SELBINNAMESIZE];

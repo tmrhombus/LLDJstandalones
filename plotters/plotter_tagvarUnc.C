@@ -34,6 +34,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
  Int_t rebin=1;
 
  TString eraname = "";
+
  if(HIP){
   eraname+="_BCDEF";
   outpath = outpath+"BCDEF/";
@@ -43,6 +44,11 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
   outpath = outpath+"GH/";
   inpath = inpath+"GH/";
   eraname+="_GH";
+ }
+
+ TString extraname = "";
+ if(dolog){
+  extraname+="_log";
  }
 
  TString infilename = region+"_"+varname+eraname;
@@ -183,13 +189,13 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
 
  std::vector<TString> MSs;
  std::vector<TString> cts;
- MSs.push_back("15");
+ //MSs.push_back("15");
  MSs.push_back("40");
- MSs.push_back("55");
- cts.push_back("1");
+ //MSs.push_back("55");
+ //cts.push_back("1");
  cts.push_back("10");
- cts.push_back("100");
- cts.push_back("1000");
+ //cts.push_back("100");
+ //cts.push_back("1000");
 
  for(unsigned int i=0; i<MSs.size(); ++i){
   TString MS = MSs.at(i);
@@ -199,7 +205,7 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
    //std::cout<<ct<<std::endl;
 
    //TString outname = "tvuMS"+MS+"ct"+ct+"_"+lepname+"_"+region+"_"+varname+eraname;
-   TString outname = "tvuMS"+MS+"ct"+ct+"_"+region+"_"+varname+eraname;
+   TString outname = "tvuMS"+MS+"ct"+ct+"_"+region+"_"+varname+eraname+extraname;
    //TString infilename = region+"_"+varname+eraname;
    outname = outpath + outname;
    //std::cout<<outname<<std::endl;
@@ -424,8 +430,8 @@ void plotter_tagvarUnc(TString region, TString varname, Bool_t dolog, Bool_t HIP
     lineNCV->SetLineWidth(2);
 
     //std::cout<<"OCV: "<<origcutval<<" BAC: "<<binAtOrigCut<<" ITC: "<<dataIntToCut<<" BNC: "<<binAtNewCut<<" MIC: "<<h_MCInt->Integral(0,binAtNewCut)<<std::endl;
-    std::cout<<"Original cut: "<<origcutval<<std::endl;
-    std::cout<<"New cut:      "<<newcutval<<std::endl;
+    printf(" Original cut: %1.3f \n",origcutval); 
+    printf(" New cut:      %1.3f \n",newcutval ); 
 
     canva2->cd();
     h_MCInt->Draw("hist");

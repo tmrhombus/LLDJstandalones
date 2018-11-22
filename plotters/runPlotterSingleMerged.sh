@@ -1,10 +1,11 @@
 
 
- # region, lepname, varname, dolog, HIP
+ # region, varname, dolog, HIP
 
 regions=( \ 
-# "EleMuOSOF"     \
- "OneEleDY"      \
+ "OnePho"        \
+ "EleMuOSOF"     \
+# "OneEleDY"      \
 # "OneEleNoPair"  \
 # "OneEleOffZ"    \
 # "OneEleSig"     \
@@ -14,7 +15,6 @@ regions=( \
 # "OneMuOffZ"     \
 # "OneMuSig"      \
 # "OneMuZH"       \
-# "OnePho"        \
 # "TwoEleDY"      \
 # "TwoEleOffZ"    \
 # "TwoEleSig"     \
@@ -26,7 +26,11 @@ regions=( \
 ) 
 
 variables=( \
- "AOD_elePt"                                  \     
+ "nSelectedAODCaloJetTag"                     \
+ "AllJets_AODCaloJetMedianLog10IPSig"         \
+ "AllJets_AODCaloJetMedianLog10TrackAngle"    \
+ "AllJets_AODCaloJetAlphaMax"                 \
+# "AOD_elePt"                                  \     
 # "AOD_eleEta"                                 \     
 # "AOD_elePhi"                                 \     
 # "AOD_muPt"                                   \     
@@ -37,13 +41,9 @@ variables=( \
 # "AOD_nSelectedEle"                           \
 # "AOD_nSelectedMu"                            \
 # "nSelectedAODCaloJet"                        \
-# "nSelectedAODCaloJetTag"                     \
 # "LeadingJet_AODCaloJetPt"                    \     
 # "LeadingJet_AODCaloJetEta"                   \     
 # "LeadingJet_AODCaloJetPhi"                   \     
-# "AllJets_AODCaloJetMedianLog10IPSig"         \
-# "AllJets_AODCaloJetMedianLog10TrackAngle"    \
-# "AllJets_AODCaloJetAlphaMax"                 \
 # "AllJets_AODCaloJetPt"                       \     
 # "AllJets_AODCaloJetEta"                      \     
 # "AllJets_AODCaloJetPhi"                      \  
@@ -53,6 +53,7 @@ for region in ${regions[@]}
 do
   for variable in ${variables[@]}
   do
+   root -l -b -q  'plotter_singleMerged.C('\""${region}"\"', '\""${variable}"\"' , kTRUE, kFALSE)'
    root -l -b -q  'plotter_singleMerged.C('\""${region}"\"', '\""${variable}"\"' , kFALSE, kFALSE)'
   done
 done

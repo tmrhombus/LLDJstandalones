@@ -23,7 +23,7 @@ public :
    //std::vector<TString> lepnames;
    // jetmultnames = Leading, Subleading, Third, Fourth, All
    //static const int SELBINNAMESIZE  = 8;        
-   static const int SELBINNAMESIZE  = 20;  
+   static const int SELBINNAMESIZE  = 21;  
    static const int JETMULTNAMESIZE = 5;  
    static const int TAGMULTNAMESIZE = 5;  
    static const int UNCBINNAMESIZE  = 3;

@@ -25,7 +25,7 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  // Setup running configuration: IO, naming, SFs, ..
  /////////////////////////////////////////////////////
 
- Bool_t drawuncs = kTRUE;
+ Bool_t drawuncs = kFALSE;  //kTRUE;
 
  TString inpath  = TString("../plots/");
  TString outpath = TString("../plots/");
@@ -36,6 +36,8 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
 
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
+
+ Int_t rebin = 1;  //5; //25; //10; //
 
  TString eraname = "";
  if(HIP){
@@ -48,10 +50,19 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
   inpath = inpath+"GH/";
   eraname+="_GH";
  }
+ TString TSrebin;
+ TSrebin.Form("_r%d",rebin);
 
  TString infilename = region+"_"+varname+eraname;
  TString outname = "sp_"+region+"_"+varname+eraname;
+ outname += TSrebin;
  outname = outpath + outname;
+ //outname.Form("%s_r%d",outname.Data(),rebin);
+
+ if(dolog){
+  outname+="_log";
+  //outpath = outpath+"log/";
+ }
  // std::cout<<"name: "<<inpath<<" "<<infilename<<std::endl;
 
  // canvas and text attributes
@@ -128,7 +139,9 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  TH1F* h_ZH     ;
  TH1F* h_TT     ;
  TH1F* h_WJetsToLNu;
- TH1F* h_bkgtotal ;
+ TH1F* h_QCD;
+ TH1F* h_mctotal ;
+ TH1F* h_mctotal_line ;
  TH1F* h_ratio ;
  TH1F* h_ratiostaterr ;
  TH1F* h_altDY ;
@@ -149,18 +162,31 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  TH1F* h_Data   ;
  THStack* bgstack;
 
- TH1F* h_bkgtotal_EGSUp      ;
- TH1F* h_bkgtotal_EGSDown    ;
- TH1F* h_bkgtotal_MESUp      ;
- TH1F* h_bkgtotal_MESDown    ;
- TH1F* h_bkgtotal_AMaxUp     ;
- TH1F* h_bkgtotal_AMaxDown   ;
- TH1F* h_bkgtotal_IPSigUp    ;
- TH1F* h_bkgtotal_IPSigDown  ;
- TH1F* h_bkgtotal_TAUp       ;
- TH1F* h_bkgtotal_TADown     ;
- TH1F* h_bkgtotal_TagVarsUp  ;
- TH1F* h_bkgtotal_TagVarsDown;
+ TH1F* h_mctotal_EGSUp      ;
+ TH1F* h_mctotal_EGSDown    ;
+ TH1F* h_mctotal_MESUp      ;
+ TH1F* h_mctotal_MESDown    ;
+ TH1F* h_mctotal_AMaxUp     ;
+ TH1F* h_mctotal_AMaxDown   ;
+ TH1F* h_mctotal_IPSigUp    ;
+ TH1F* h_mctotal_IPSigDown  ;
+ TH1F* h_mctotal_TAUp       ;
+ TH1F* h_mctotal_TADown     ;
+ TH1F* h_mctotal_TagVarsUp  ;
+ TH1F* h_mctotal_TagVarsDown;
+ TH1F* h_Sig_MS40ct10_EGSUp       ;
+ TH1F* h_Sig_MS40ct10_EGSDown     ;   
+ TH1F* h_Sig_MS40ct10_MESUp       ;
+ TH1F* h_Sig_MS40ct10_MESDown     ;   
+ TH1F* h_Sig_MS40ct10_AMaxUp      ;   
+ TH1F* h_Sig_MS40ct10_AMaxDown    ;   
+ TH1F* h_Sig_MS40ct10_IPSigUp     ;   
+ TH1F* h_Sig_MS40ct10_IPSigDown   ;   
+ TH1F* h_Sig_MS40ct10_TAUp        ;
+ TH1F* h_Sig_MS40ct10_TADown      ;   
+ TH1F* h_Sig_MS40ct10_TagVarsUp   ;   
+ TH1F* h_Sig_MS40ct10_TagVarsDown ;
+
 
  // load histogram file / histograms
  file_input = new TFile( inpath + infilename + ".root"               ) ; 
@@ -172,8 +198,8 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  h_VG             = (TH1F*)file_input->Get("VG"            )->Clone("VG"            )  ;
  h_ZH             = (TH1F*)file_input->Get("ZH"            )->Clone("ZH"            )  ;
  h_TT             = (TH1F*)file_input->Get("TT"            )->Clone("TT"            )  ;
- h_bkgtotal       = (TH1F*)file_input->Get("bkgtotal"      )->Clone("bkgtotal"      )  ;
- bgstack       = (THStack*)file_input->Get("bgstack"      )->Clone("bgstack"      )  ;
+ h_QCD            = (TH1F*)file_input->Get("QCD"           )->Clone("QCD"           )  ;
+ bgstack          = (THStack*)file_input->Get("bgstack"    )->Clone("bgstack"       )  ;
  h_ratio          = (TH1F*)file_input->Get("ratio"         )->Clone("ratio"         )  ;
  h_ratiostaterr   = (TH1F*)file_input->Get("ratiostaterr"  )->Clone("ratiostaterr"  )  ;
  h_altDY          = (TH1F*)file_input->Get("altDY"         )->Clone("altDY"         )  ;
@@ -205,67 +231,177 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  file_input_TADown      = new TFile( inpath + infilename + "_TADown.root"     ) ; 
  file_input_TagVarsUp   = new TFile( inpath + infilename + "_TagVarsUp.root"  ) ; 
  file_input_TagVarsDown = new TFile( inpath + infilename + "_TagVarsDown.root") ; 
- h_bkgtotal_EGSUp       = (TH1F*)file_input_EGSUp      ->Get("bkgtotal")->Clone("bkgtotal_EGSUp      " )  ;
- h_bkgtotal_EGSDown     = (TH1F*)file_input_EGSDown    ->Get("bkgtotal")->Clone("bkgtotal_EGSDown    " )  ;
- h_bkgtotal_MESUp       = (TH1F*)file_input_MESUp      ->Get("bkgtotal")->Clone("bkgtotal_MESUp      " )  ;
- h_bkgtotal_MESDown     = (TH1F*)file_input_MESDown    ->Get("bkgtotal")->Clone("bkgtotal_MESDown    " )  ;
- h_bkgtotal_AMaxUp      = (TH1F*)file_input_AMaxUp     ->Get("bkgtotal")->Clone("bkgtotal_AMaxUp     " )  ;
- h_bkgtotal_AMaxDown    = (TH1F*)file_input_AMaxDown   ->Get("bkgtotal")->Clone("bkgtotal_AMaxDown   " )  ;
- h_bkgtotal_IPSigUp     = (TH1F*)file_input_IPSigUp    ->Get("bkgtotal")->Clone("bkgtotal_IPSigUp    " )  ;
- h_bkgtotal_IPSigDown   = (TH1F*)file_input_IPSigDown  ->Get("bkgtotal")->Clone("bkgtotal_IPSigDown  " )  ;
- h_bkgtotal_TAUp        = (TH1F*)file_input_TAUp       ->Get("bkgtotal")->Clone("bkgtotal_TAUp       " )  ;
- h_bkgtotal_TADown      = (TH1F*)file_input_TADown     ->Get("bkgtotal")->Clone("bkgtotal_TADown     " )  ;
- h_bkgtotal_TagVarsUp   = (TH1F*)file_input_TagVarsUp  ->Get("bkgtotal")->Clone("bkgtotal_TagVarsUp  " )  ;
- h_bkgtotal_TagVarsDown = (TH1F*)file_input_TagVarsDown->Get("bkgtotal")->Clone("bkgtotal_TagVarsDown" )  ;
+ h_mctotal        = (TH1F*)file_input->Get("bkgtotal"      )->Clone("bkgtotal"      )  ;
+ h_mctotal_EGSUp       = (TH1F*)file_input_EGSUp      ->Get("bkgtotal")->Clone("bkgtotal_EGSUp      " )  ;
+ h_mctotal_EGSDown     = (TH1F*)file_input_EGSDown    ->Get("bkgtotal")->Clone("bkgtotal_EGSDown    " )  ;
+ h_mctotal_MESUp       = (TH1F*)file_input_MESUp      ->Get("bkgtotal")->Clone("bkgtotal_MESUp      " )  ;
+ h_mctotal_MESDown     = (TH1F*)file_input_MESDown    ->Get("bkgtotal")->Clone("bkgtotal_MESDown    " )  ;
+ h_mctotal_AMaxUp      = (TH1F*)file_input_AMaxUp     ->Get("bkgtotal")->Clone("bkgtotal_AMaxUp     " )  ;
+ h_mctotal_AMaxDown    = (TH1F*)file_input_AMaxDown   ->Get("bkgtotal")->Clone("bkgtotal_AMaxDown   " )  ;
+ h_mctotal_IPSigUp     = (TH1F*)file_input_IPSigUp    ->Get("bkgtotal")->Clone("bkgtotal_IPSigUp    " )  ;
+ h_mctotal_IPSigDown   = (TH1F*)file_input_IPSigDown  ->Get("bkgtotal")->Clone("bkgtotal_IPSigDown  " )  ;
+ h_mctotal_TAUp        = (TH1F*)file_input_TAUp       ->Get("bkgtotal")->Clone("bkgtotal_TAUp       " )  ;
+ h_mctotal_TADown      = (TH1F*)file_input_TADown     ->Get("bkgtotal")->Clone("bkgtotal_TADown     " )  ;
+ h_mctotal_TagVarsUp   = (TH1F*)file_input_TagVarsUp  ->Get("bkgtotal")->Clone("bkgtotal_TagVarsUp  " )  ;
+ h_mctotal_TagVarsDown = (TH1F*)file_input_TagVarsDown->Get("bkgtotal")->Clone("bkgtotal_TagVarsDown" )  ;
+ h_Sig_MS40ct10_EGSUp      = (TH1F*)file_input_EGSUp      ->Get("Sig_MS40ct10")->Clone("Sig_EGSUp      " ) ;
+ h_Sig_MS40ct10_EGSDown    = (TH1F*)file_input_EGSDown    ->Get("Sig_MS40ct10")->Clone("Sig_EGSDown    " ) ;
+ h_Sig_MS40ct10_MESUp      = (TH1F*)file_input_MESUp      ->Get("Sig_MS40ct10")->Clone("Sig_MESUp      " ) ;
+ h_Sig_MS40ct10_MESDown    = (TH1F*)file_input_MESDown    ->Get("Sig_MS40ct10")->Clone("Sig_MESDown    " ) ;
+ h_Sig_MS40ct10_AMaxUp     = (TH1F*)file_input_AMaxUp     ->Get("Sig_MS40ct10")->Clone("Sig_AMaxUp     " ) ;
+ h_Sig_MS40ct10_AMaxDown   = (TH1F*)file_input_AMaxDown   ->Get("Sig_MS40ct10")->Clone("Sig_AMaxDown   " ) ;
+ h_Sig_MS40ct10_IPSigUp    = (TH1F*)file_input_IPSigUp    ->Get("Sig_MS40ct10")->Clone("Sig_IPSigUp    " ) ;
+ h_Sig_MS40ct10_IPSigDown  = (TH1F*)file_input_IPSigDown  ->Get("Sig_MS40ct10")->Clone("Sig_IPSigDown  " ) ;
+ h_Sig_MS40ct10_TAUp       = (TH1F*)file_input_TAUp       ->Get("Sig_MS40ct10")->Clone("Sig_TAUp       " ) ;
+ h_Sig_MS40ct10_TADown     = (TH1F*)file_input_TADown     ->Get("Sig_MS40ct10")->Clone("Sig_TADown     " ) ;
+ h_Sig_MS40ct10_TagVarsUp  = (TH1F*)file_input_TagVarsUp  ->Get("Sig_MS40ct10")->Clone("Sig_TagVarsUp  " ) ;
+ h_Sig_MS40ct10_TagVarsDown= (TH1F*)file_input_TagVarsDown->Get("Sig_MS40ct10")->Clone("Sig_TagVarsDown" ) ;
+
+ h_mctotal_EGSUp      -> Add( h_Sig_MS40ct10_EGSUp       )  ;
+ h_mctotal_EGSDown    -> Add( h_Sig_MS40ct10_EGSDown     )  ;
+ h_mctotal_MESUp      -> Add( h_Sig_MS40ct10_MESUp       )  ;
+ h_mctotal_MESDown    -> Add( h_Sig_MS40ct10_MESDown     )  ;
+ h_mctotal_AMaxUp     -> Add( h_Sig_MS40ct10_AMaxUp      )  ;
+ h_mctotal_AMaxDown   -> Add( h_Sig_MS40ct10_AMaxDown    )  ;
+ h_mctotal_IPSigUp    -> Add( h_Sig_MS40ct10_IPSigUp     )  ;
+ h_mctotal_IPSigDown  -> Add( h_Sig_MS40ct10_IPSigDown   )  ;
+ h_mctotal_TAUp       -> Add( h_Sig_MS40ct10_TAUp        )  ;
+ h_mctotal_TADown     -> Add( h_Sig_MS40ct10_TADown      )  ;
+ h_mctotal_TagVarsUp  -> Add( h_Sig_MS40ct10_TagVarsUp   )  ;
+ h_mctotal_TagVarsDown-> Add( h_Sig_MS40ct10_TagVarsDown )  ;
+
+ // rebin
+ h_DY             ->Rebin(rebin); 
+ h_GJets          ->Rebin(rebin); 
+ h_WJetsToLNu     ->Rebin(rebin); 
+ h_ST             ->Rebin(rebin); 
+ h_VV             ->Rebin(rebin); 
+ h_VG             ->Rebin(rebin); 
+ h_ZH             ->Rebin(rebin); 
+ h_TT             ->Rebin(rebin); 
+ h_QCD            ->Rebin(rebin); 
+ h_ratio          ->Rebin(rebin); 
+ h_ratiostaterr   ->Rebin(rebin); 
+ h_altDY          ->Rebin(rebin); 
+ h_altVV          ->Rebin(rebin); 
+ h_altTT          ->Rebin(rebin); 
+ h_Sig_MS15ct1000 ->Rebin(rebin); 
+ h_Sig_MS15ct100  ->Rebin(rebin); 
+ h_Sig_MS15ct10   ->Rebin(rebin); 
+ h_Sig_MS15ct1    ->Rebin(rebin); 
+ h_Sig_MS40ct1000 ->Rebin(rebin); 
+ h_Sig_MS40ct100  ->Rebin(rebin); 
+ h_Sig_MS40ct10   ->Rebin(rebin); 
+ h_Sig_MS40ct1    ->Rebin(rebin); 
+ h_Sig_MS55ct1000 ->Rebin(rebin); 
+ h_Sig_MS55ct100  ->Rebin(rebin); 
+ h_Sig_MS55ct10   ->Rebin(rebin); 
+ h_Sig_MS55ct1    ->Rebin(rebin); 
+ h_Data           ->Rebin(rebin); 
+
+ h_mctotal                  ->Rebin(rebin); 
+ h_mctotal_EGSUp            ->Rebin(rebin); 
+ h_mctotal_EGSDown          ->Rebin(rebin); 
+ h_mctotal_MESUp            ->Rebin(rebin); 
+ h_mctotal_MESDown          ->Rebin(rebin); 
+ h_mctotal_AMaxUp           ->Rebin(rebin); 
+ h_mctotal_AMaxDown         ->Rebin(rebin); 
+ h_mctotal_IPSigUp          ->Rebin(rebin); 
+ h_mctotal_IPSigDown        ->Rebin(rebin); 
+ h_mctotal_TAUp             ->Rebin(rebin); 
+ h_mctotal_TADown           ->Rebin(rebin); 
+ h_mctotal_TagVarsUp        ->Rebin(rebin); 
+ h_mctotal_TagVarsDown      ->Rebin(rebin); 
+ h_Sig_MS40ct10_EGSUp       ->Rebin(rebin); 
+ h_Sig_MS40ct10_EGSDown     ->Rebin(rebin); 
+ h_Sig_MS40ct10_MESUp       ->Rebin(rebin); 
+ h_Sig_MS40ct10_MESDown     ->Rebin(rebin); 
+ h_Sig_MS40ct10_AMaxUp      ->Rebin(rebin); 
+ h_Sig_MS40ct10_AMaxDown    ->Rebin(rebin); 
+ h_Sig_MS40ct10_IPSigUp     ->Rebin(rebin); 
+ h_Sig_MS40ct10_IPSigDown   ->Rebin(rebin); 
+ h_Sig_MS40ct10_TAUp        ->Rebin(rebin); 
+ h_Sig_MS40ct10_TADown      ->Rebin(rebin); 
+ h_Sig_MS40ct10_TagVarsUp   ->Rebin(rebin); 
+ h_Sig_MS40ct10_TagVarsDown ->Rebin(rebin); 
+
+ // make stack
+ std::vector<TH1F *> v;
+ v.push_back(h_DY);
+ v.push_back(h_GJets);
+ v.push_back(h_ST);
+ v.push_back(h_TT);
+ v.push_back(h_WJetsToLNu);
+ v.push_back(h_VV);
+ v.push_back(h_VG);
+ v.push_back(h_QCD);
+ v.push_back(h_ZH);
+ v.push_back(h_Sig_MS40ct10);
+
+ THStack *mcstack = new THStack("mcstack","");
+ if(dolog){
+  std::sort(v.begin(), v.end(),
+            [](TH1F *a, TH1F *b) { return a->Integral() < b->Integral(); });
+  for(int zz=0; zz<v.size(); zz++)
+  {
+   mcstack->Add(v[zz]);
+   //cout <<v[zz]->Integral()<<std::endl;
+  }
+ }
+ else{
+  mcstack->Add(h_DY         );
+  mcstack->Add(h_GJets      );
+  mcstack->Add(h_ST         );
+  mcstack->Add(h_TT         );
+  mcstack->Add(h_WJetsToLNu );
+  mcstack->Add(h_VV         );
+  mcstack->Add(h_VG         );
+  mcstack->Add(h_QCD        );
+  mcstack->Add(h_ZH         );
+  mcstack->Add(h_Sig_MS40ct10         );
+ }
+
 
  // set attributes
- h_DY         -> SetLineColor(kBlack); 
- h_GJets      -> SetLineColor(kBlack);
- h_ST         -> SetLineColor(kBlack); 
- h_TT         -> SetLineColor(kBlack); 
- h_WJetsToLNu -> SetLineColor(kBlack); 
- h_VV         -> SetLineColor(kBlack); 
- h_VG         -> SetLineColor(kBlack); 
- h_ZH         -> SetLineColor(kBlack);
 
- h_bkgtotal_EGSUp       ->SetLineColor(632);
- h_bkgtotal_EGSDown     ->SetLineColor(632);
- h_bkgtotal_MESUp       ->SetLineColor(807);
- h_bkgtotal_MESDown     ->SetLineColor(807);
- h_bkgtotal_AMaxUp      ->SetLineColor(798);
- h_bkgtotal_AMaxDown    ->SetLineColor(798);
- h_bkgtotal_IPSigUp     ->SetLineColor(418);
- h_bkgtotal_IPSigDown   ->SetLineColor(418);
- h_bkgtotal_TAUp        ->SetLineColor(601);
- h_bkgtotal_TADown      ->SetLineColor(601);
- h_bkgtotal_TagVarsUp   ->SetLineColor(599);
- h_bkgtotal_TagVarsDown ->SetLineColor(599);
+ h_mctotal_EGSUp       ->SetLineColor(632);
+ h_mctotal_EGSDown     ->SetLineColor(632);
+ h_mctotal_MESUp       ->SetLineColor(807);
+ h_mctotal_MESDown     ->SetLineColor(807);
+ h_mctotal_AMaxUp      ->SetLineColor(798);
+ h_mctotal_AMaxDown    ->SetLineColor(798);
+ h_mctotal_IPSigUp     ->SetLineColor(418);
+ h_mctotal_IPSigDown   ->SetLineColor(418);
+ h_mctotal_TAUp        ->SetLineColor(601);
+ h_mctotal_TADown      ->SetLineColor(601);
+ h_mctotal_TagVarsUp   ->SetLineColor(599);
+ h_mctotal_TagVarsDown ->SetLineColor(599);
 
- h_bkgtotal_EGSUp       ->SetLineWidth(2);
- h_bkgtotal_EGSDown     ->SetLineWidth(2);
- h_bkgtotal_MESUp       ->SetLineWidth(2);
- h_bkgtotal_MESDown     ->SetLineWidth(2);
- h_bkgtotal_AMaxUp      ->SetLineWidth(2);
- h_bkgtotal_AMaxDown    ->SetLineWidth(2);
- h_bkgtotal_IPSigUp     ->SetLineWidth(2);
- h_bkgtotal_IPSigDown   ->SetLineWidth(2);
- h_bkgtotal_TAUp        ->SetLineWidth(2);
- h_bkgtotal_TADown      ->SetLineWidth(2);
- h_bkgtotal_TagVarsUp   ->SetLineWidth(2);
- h_bkgtotal_TagVarsDown ->SetLineWidth(2);
+ h_mctotal_EGSUp       ->SetLineWidth(2);
+ h_mctotal_EGSDown     ->SetLineWidth(2);
+ h_mctotal_MESUp       ->SetLineWidth(2);
+ h_mctotal_MESDown     ->SetLineWidth(2);
+ h_mctotal_AMaxUp      ->SetLineWidth(2);
+ h_mctotal_AMaxDown    ->SetLineWidth(2);
+ h_mctotal_IPSigUp     ->SetLineWidth(2);
+ h_mctotal_IPSigDown   ->SetLineWidth(2);
+ h_mctotal_TAUp        ->SetLineWidth(2);
+ h_mctotal_TADown      ->SetLineWidth(2);
+ h_mctotal_TagVarsUp   ->SetLineWidth(2);
+ h_mctotal_TagVarsDown ->SetLineWidth(2);
 
- h_bkgtotal_EGSUp       ->SetFillStyle(0);
- h_bkgtotal_EGSDown     ->SetFillStyle(0);
- h_bkgtotal_MESUp       ->SetFillStyle(0);
- h_bkgtotal_MESDown     ->SetFillStyle(0);
- h_bkgtotal_AMaxUp      ->SetFillStyle(0);
- h_bkgtotal_AMaxDown    ->SetFillStyle(0);
- h_bkgtotal_IPSigUp     ->SetFillStyle(0);
- h_bkgtotal_IPSigDown   ->SetFillStyle(0);
- h_bkgtotal_TAUp        ->SetFillStyle(0);
- h_bkgtotal_TADown      ->SetFillStyle(0);
- h_bkgtotal_TagVarsUp   ->SetFillStyle(0);
- h_bkgtotal_TagVarsDown ->SetFillStyle(0);
+ h_mctotal_EGSUp       ->SetFillStyle(0);
+ h_mctotal_EGSDown     ->SetFillStyle(0);
+ h_mctotal_MESUp       ->SetFillStyle(0);
+ h_mctotal_MESDown     ->SetFillStyle(0);
+ h_mctotal_AMaxUp      ->SetFillStyle(0);
+ h_mctotal_AMaxDown    ->SetFillStyle(0);
+ h_mctotal_IPSigUp     ->SetFillStyle(0);
+ h_mctotal_IPSigDown   ->SetFillStyle(0);
+ h_mctotal_TAUp        ->SetFillStyle(0);
+ h_mctotal_TADown      ->SetFillStyle(0);
+ h_mctotal_TagVarsUp   ->SetFillStyle(0);
+ h_mctotal_TagVarsDown ->SetFillStyle(0);
 
  //h_ggZH_HToSSTobbbb_MS40_ctauS0     -> SetLineColor(632) ;
  //h_ggZH_HToSSTobbbb_MS40_ctauS0p05  -> SetLineColor(807) ;
@@ -288,46 +424,54 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  h_Data  -> SetMarkerSize(1);
  h_Data  -> SetLineWidth(3);
 
- h_DY        ->SetFillStyle(1001);
- h_GJets     ->SetFillStyle(1001);
- h_ST        ->SetFillStyle(1001);
- h_TT        ->SetFillStyle(1001);
- h_WJetsToLNu->SetFillStyle(1001);
- h_VV        ->SetFillStyle(1001);
- h_VG        ->SetFillStyle(1001);
- h_ZH        ->SetFillStyle(1001);
+ h_DY           ->SetFillStyle(1001);
+ h_GJets        ->SetFillStyle(1001);
+ h_ST           ->SetFillStyle(1001);
+ h_TT           ->SetFillStyle(1001);
+ h_WJetsToLNu   ->SetFillStyle(1001);
+ h_VV           ->SetFillStyle(1001);
+ h_VG           ->SetFillStyle(1001);
+ h_ZH           ->SetFillStyle(1001);
+ h_QCD          ->SetFillStyle(1001);
+ h_Sig_MS40ct10 ->SetFillStyle(1001);
 
- h_DY        ->SetFillColor(kAzure-3);
- h_GJets     ->SetFillColor(kViolet+3);
- h_ST        ->SetFillColor(kOrange+8);
- h_TT        ->SetFillColor(kGreen+1);
- h_WJetsToLNu->SetFillColor(kViolet-3);
- h_VV        ->SetFillColor(kRed);
- h_VG        ->SetFillColor(kPink+9);
- h_ZH        ->SetFillColor(kCyan);
+ h_DY           ->SetFillColor(kAzure-3);
+ h_GJets        ->SetFillColor(kViolet+3);
+ h_ST           ->SetFillColor(kOrange+8);
+ h_TT           ->SetFillColor(kGreen+1);
+ h_WJetsToLNu   ->SetFillColor(kViolet-3);
+ h_VV           ->SetFillColor(kRed);
+ h_VG           ->SetFillColor(kPink+9);
+ h_ZH           ->SetFillColor(kCyan);
+ h_QCD          ->SetFillColor(kGray+1);
+ h_Sig_MS40ct10 ->SetFillColor(kGreen);
 
- h_DY        ->SetLineColor(kBlack); 
- h_GJets     ->SetLineColor(kBlack); 
- h_ST        ->SetLineColor(kBlack); 
- h_TT        ->SetLineColor(kBlack); 
- h_WJetsToLNu->SetLineColor(kBlack); 
- h_VV        ->SetLineColor(kBlack); 
- h_VG        ->SetLineColor(kBlack); 
- h_ZH        ->SetLineColor(kBlack); 
- h_bkgtotal  ->SetLineColor(kBlack);
+ h_DY           ->SetLineColor(kBlack); 
+ h_GJets        ->SetLineColor(kBlack); 
+ h_ST           ->SetLineColor(kBlack); 
+ h_TT           ->SetLineColor(kBlack); 
+ h_WJetsToLNu   ->SetLineColor(kBlack); 
+ h_VV           ->SetLineColor(kBlack); 
+ h_VG           ->SetLineColor(kBlack); 
+ h_ZH           ->SetLineColor(kBlack); 
+ h_Sig_MS40ct10 ->SetLineColor(kBlack); 
+ h_QCD          ->SetLineColor(kBlack); 
+ h_mctotal      ->SetLineColor(kBlack);
 
- h_DY        ->SetLineWidth(2);
- h_GJets     ->SetLineWidth(2);
- h_ST        ->SetLineWidth(2);
- h_TT        ->SetLineWidth(2);
- h_WJetsToLNu->SetLineWidth(2);
- h_VV        ->SetLineWidth(2);
- h_VG        ->SetLineWidth(2);
- h_ZH        ->SetLineWidth(2);
- h_bkgtotal  ->SetLineWidth(2);
+ h_DY           ->SetLineWidth(2);
+ h_GJets        ->SetLineWidth(2);
+ h_ST           ->SetLineWidth(2);
+ h_TT           ->SetLineWidth(2);
+ h_WJetsToLNu   ->SetLineWidth(2);
+ h_VV           ->SetLineWidth(2);
+ h_VG           ->SetLineWidth(2);
+ h_ZH           ->SetLineWidth(2);
+ h_Sig_MS40ct10 ->SetLineWidth(2);
+ h_QCD          ->SetLineWidth(2);
+ h_mctotal      ->SetLineWidth(2);
 
- h_bkgtotal->SetFillColorAlpha(kYellow+1, 0.7);
- h_bkgtotal->SetFillStyle(1001);
+ h_mctotal->SetFillColorAlpha(kYellow+1, 0.7);
+ h_mctotal->SetFillStyle(1001);
 
  // make legend
  TLegend *leg;
@@ -344,7 +488,9 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  leg->AddEntry(h_VV           , "Diboson", "f"); 
  leg->AddEntry(h_VG           , "V#gamma", "f");
  leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
- leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
+ leg->AddEntry(h_QCD          , "QCD", "f"); 
+ leg->AddEntry(h_Sig_MS40ct10 , "Signal M_{S}40 c#tau 10", "f");
+ leg->AddEntry(h_mctotal      , "MC bkg. stat. err.", "f");
 
  TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
  //if(drawSignal){
@@ -363,57 +509,59 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
  TLegend *uncleg = new TLegend(0.5,0.3,0.85,0.65);
   uncleg->SetBorderSize(0);
   uncleg->SetFillColor(kWhite);
-  //uncleg->AddEntry(h_bkgtotal_EGSUp      , "EGSUp      " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_EGSDown    , "EGSDown    " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_MESUp      , "MESUp      " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_MESDown    , "MESDown    " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_AMaxUp     , "AMaxUp     " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_AMaxDown   , "AMaxDown   " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_IPSigUp    , "IPSigUp    " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_IPSigDown  , "IPSigDown  " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_TAUp       , "TAUp       " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_TADown     , "TADown     " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_TagVarsUp  , "TagVarsUp  " , "l" ); 
-  //uncleg->AddEntry(h_bkgtotal_TagVarsDown, "TagVarsDown" , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_EGSUp      , "E/#gamma energy scale" , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_MESUp      , "muon energy scale   " , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_AMaxUp     , "Alpha Max            " , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_IPSigUp    , "IPSig                " , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_TAUp       , "Track Angle          " , "l" ); 
-  uncleg->AddEntry(h_bkgtotal_TagVarsUp  , "All TagVars          " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_EGSUp      , "EGSUp      " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_EGSDown    , "EGSDown    " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_MESUp      , "MESUp      " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_MESDown    , "MESDown    " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_AMaxUp     , "AMaxUp     " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_AMaxDown   , "AMaxDown   " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_IPSigUp    , "IPSigUp    " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_IPSigDown  , "IPSigDown  " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_TAUp       , "TAUp       " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_TADown     , "TADown     " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_TagVarsUp  , "TagVarsUp  " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_TagVarsDown, "TagVarsDown" , "l" ); 
+  uncleg->AddEntry(h_mctotal_EGSUp      , "E/#gamma energy scale" , "l" ); 
+  uncleg->AddEntry(h_mctotal_MESUp      , "muon energy scale   " , "l" ); 
+  uncleg->AddEntry(h_mctotal_AMaxUp     , "Alpha Max            " , "l" ); 
+  uncleg->AddEntry(h_mctotal_IPSigUp    , "IPSig                " , "l" ); 
+  uncleg->AddEntry(h_mctotal_TAUp       , "Track Angle          " , "l" ); 
+  //uncleg->AddEntry(h_mctotal_TagVarsUp  , "All TagVars          " , "l" ); 
 
   // set max and draw
   Double_t ymax;
-  ymax = std::max(h_Data->GetMaximum(), h_bkgtotal->GetMaximum() );
+  ymax = std::max(h_Data->GetMaximum(), h_mctotal->GetMaximum() );
   
   if(dolog){
-   bgstack->SetMaximum(500*ymax); 
-   bgstack->SetMinimum(1.0);
+   mcstack->SetMaximum(500*ymax); 
+   mcstack->SetMinimum(1.0);
   } 
   else {
-   bgstack->SetMaximum(ymax*1.4);
+   mcstack->SetMaximum(ymax*1.4);
   }
    
   plotpad->cd();
-  bgstack->Draw("hist");
-  //bgstack->Draw("hist e");
-  bgstack->GetYaxis()->SetTitle("Events");
-  bgstack->GetYaxis()->SetTitleSize(40);
-  bgstack->GetYaxis()->SetTitleFont(43);
-  bgstack->GetYaxis()->SetTitleOffset(1.55);
-  h_bkgtotal_EGSUp       ->Draw("hist sames");
-  h_bkgtotal_EGSDown     ->Draw("hist sames");
-  h_bkgtotal_MESUp       ->Draw("hist sames");
-  h_bkgtotal_MESDown     ->Draw("hist sames");
-  h_bkgtotal_AMaxUp      ->Draw("hist sames");
-  h_bkgtotal_AMaxDown    ->Draw("hist sames");
-  h_bkgtotal_IPSigUp     ->Draw("hist sames");
-  h_bkgtotal_IPSigDown   ->Draw("hist sames");
-  h_bkgtotal_TAUp        ->Draw("hist sames");
-  h_bkgtotal_TADown      ->Draw("hist sames");
-  h_bkgtotal_TagVarsUp   ->Draw("hist sames");
-  h_bkgtotal_TagVarsDown ->Draw("hist sames");
-  h_bkgtotal->Draw("e2 sames");
+  mcstack->Draw("hist");
+  //mcstack->Draw("hist e");
+  mcstack->GetYaxis()->SetTitle("Events");
+  mcstack->GetYaxis()->SetTitleSize(40);
+  mcstack->GetYaxis()->SetTitleFont(43);
+  mcstack->GetYaxis()->SetTitleOffset(1.55);
+  if(drawuncs){
+   h_mctotal_EGSUp       ->Draw("hist sames");
+   h_mctotal_EGSDown     ->Draw("hist sames");
+   h_mctotal_MESUp       ->Draw("hist sames");
+   h_mctotal_MESDown     ->Draw("hist sames");
+   h_mctotal_AMaxUp      ->Draw("hist sames");
+   h_mctotal_AMaxDown    ->Draw("hist sames");
+   h_mctotal_IPSigUp     ->Draw("hist sames");
+   h_mctotal_IPSigDown   ->Draw("hist sames");
+   h_mctotal_TAUp        ->Draw("hist sames");
+   h_mctotal_TADown      ->Draw("hist sames");
+   //h_mctotal_TagVarsUp   ->Draw("hist sames");
+   //h_mctotal_TagVarsDown ->Draw("hist sames");
+  }
+  h_mctotal->Draw("e2 sames");
   h_Data->Draw("sames E"); 
 
 //    if(drawSignal){
@@ -427,7 +575,9 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
 //     sigleg->Draw();
 //    }
     leg->Draw();
-    uncleg->Draw();
+  if(drawuncs){
+   uncleg->Draw();
+  }
 
     char lumistring [50];
     int dummy; 
@@ -450,7 +600,7 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      ratiopad->cd();
      h_ratio = (TH1F*)h_Data->Clone("h_ratio");
      if(h_Data->Integral(-1,-1)>0){
-      h_ratio->Divide(h_bkgtotal);
+      h_ratio->Divide(h_mctotal);
      }
      h_ratio->SetTitle(" ");
      // Y axis ratio plot settings
@@ -474,8 +624,8 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      h_ratio->GetYaxis()->SetRangeUser(0,2);
      h_ratio->Draw("ep");  // draw first to get ranges set internally inside root
 
-     h_ratiostaterr = (TH1F*)h_bkgtotal->Clone("h_ratiostaterr");
-     h_ratiostaterr->Divide(h_bkgtotal);
+     h_ratiostaterr = (TH1F*)h_mctotal->Clone("h_ratiostaterr");
+     h_ratiostaterr->Divide(h_mctotal);
 
      ratiopad->Update();       // need to update pad to get X min/max
      TLine *line = new TLine(ratiopad->GetUxmin(),1,ratiopad->GetUxmax(),1);
@@ -487,8 +637,73 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      h_ratio->Draw("ep same"); // draw points above line
  
      // save canvas
-     //canvas->SaveAs(outname+".png");
+     canvas->SaveAs(outname+".png");
      canvas->SaveAs(outname+".pdf");
+
+
+     // Uncertainties and central value only
+     canvas->Clear(); 
+
+     h_mctotal_line = (TH1F*)h_mctotal->Clone("h_mctotal_line");
+     h_mctotal_line->SetFillColor(0);
+     h_mctotal_line->SetLineWidth(4);
+     h_mctotal_line->SetLineColor(kBlack);
+
+     h_mctotal_EGSUp       ->SetLineColor(632);
+     h_mctotal_EGSDown     ->SetLineColor(632);
+     h_mctotal_MESUp       ->SetLineColor(807);
+     h_mctotal_MESDown     ->SetLineColor(807);
+     h_mctotal_AMaxUp      ->SetLineColor(798);
+     h_mctotal_AMaxDown    ->SetLineColor(798);
+     h_mctotal_IPSigUp     ->SetLineColor(418);
+     h_mctotal_IPSigDown   ->SetLineColor(418);
+     h_mctotal_TAUp        ->SetLineColor(601);
+     h_mctotal_TADown      ->SetLineColor(601);
+     h_mctotal_TagVarsUp   ->SetLineColor(599);
+     h_mctotal_TagVarsDown ->SetLineColor(599);
+
+     TLegend *uncleg2 = new TLegend(0.12,0.7,0.80,0.85);
+     uncleg2->SetBorderSize(0);
+     uncleg2->SetFillColor(kWhite);
+     uncleg2->SetNColumns(2);
+     uncleg2->AddEntry(h_Data               , "data" , "lpe" );
+     uncleg2->AddEntry(h_mctotal_line       , "Total MC"              , "l" );
+     uncleg2->AddEntry(h_mctotal_EGSUp      , "E/#gamma energy scale" , "l" ); 
+     uncleg2->AddEntry(h_mctotal_MESUp      , "muon energy scale    " , "l" ); 
+     uncleg2->AddEntry(h_mctotal_AMaxUp     , "Alpha Max            " , "l" ); 
+     uncleg2->AddEntry(h_mctotal_IPSigUp    , "IPSig                " , "l" ); 
+     uncleg2->AddEntry(h_mctotal_TAUp       , "Track Angle          " , "l" ); 
+     uncleg2->AddEntry(h_mctotal_TagVarsUp  , "All TagVars          " , "l" ); 
+
+     h_mctotal_line->Draw("hist");
+     h_mctotal_line->SetMaximum(h_mctotal_line->GetMaximum()*1.4);
+     //mcstack->Draw("hist e");
+     h_mctotal_line->GetYaxis()->SetTitle("Events");
+     h_mctotal_line->GetYaxis()->SetTitleSize(40);
+     h_mctotal_line->GetYaxis()->SetTitleFont(43);
+     h_mctotal_line->GetYaxis()->SetTitleOffset(1.55);
+     h_mctotal_line->Draw("hist");
+     h_mctotal_EGSUp       ->Draw("hist sames");
+     h_mctotal_EGSDown     ->Draw("hist sames");
+     h_mctotal_MESUp       ->Draw("hist sames");
+     h_mctotal_MESDown     ->Draw("hist sames");
+     h_mctotal_AMaxUp      ->Draw("hist sames");
+     h_mctotal_AMaxDown    ->Draw("hist sames");
+     h_mctotal_IPSigUp     ->Draw("hist sames");
+     h_mctotal_IPSigDown   ->Draw("hist sames");
+     h_mctotal_TAUp        ->Draw("hist sames");
+     h_mctotal_TADown      ->Draw("hist sames");
+     h_mctotal_TagVarsUp   ->Draw("hist sames");
+     h_mctotal_TagVarsDown ->Draw("hist sames");
+     h_mctotal->Draw("e2 sames");
+     h_Data->Draw("sames E"); 
+     uncleg2->Draw();
+
+     // save canvas
+     canvas->SaveAs(outname+"_unconly.png");
+     canvas->SaveAs(outname+"_unconly.pdf");
+     
+
 
      //// save histograms into single root file
      //TFile *outfile = TFile::Open(outname+".root","RECREATE");
@@ -501,10 +716,10 @@ void plotter_singleMerged(TString region, TString varname, Bool_t dolog, Bool_t 
      //h_VV          ->Write();
      //h_VG          ->Write();
      //h_ZH          ->Write();
-     //h_bkgtotal    ->Write();
+     //h_mctotal    ->Write();
      //h_ratio       ->Write();
      //h_ratiostaterr->Write();
-     //bgstack       ->Write();
+     //mcstack       ->Write();
      //outfile->Close();
   
 }

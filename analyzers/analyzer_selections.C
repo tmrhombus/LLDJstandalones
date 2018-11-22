@@ -38,6 +38,7 @@ void analyzer_selections::clearSelections()
  selvecOneEleNoPair.clear() ; 
  selvecOneMuNoPair .clear() ;   
  selvecEleMuOSOF   .clear() ;   
+ selvecEleMuOSOFL  .clear() ;   
  selvecOnePho      .clear() ;
 
  bitsPassOneEleSig   = 0;
@@ -59,6 +60,7 @@ void analyzer_selections::clearSelections()
  bitsPassOneEleNoPair= 0;
  bitsPassOneMuNoPair = 0;
  bitsPassEleMuOSOF   = 0;
+ bitsPassEleMuOSOFL  = 0;
  bitsPassOnePho      = 0;
 
  keyPassOneEleSig   = 0;
@@ -80,6 +82,7 @@ void analyzer_selections::clearSelections()
  keyPassOneEleNoPair= 0;
  keyPassOneMuNoPair = 0;
  keyPassEleMuOSOF   = 0;
+ keyPassEleMuOSOFL  = 0;
  keyPassOnePho      = 0;
 
 
@@ -176,6 +179,11 @@ void analyzer_selections::setSelections()
  selvecEleMuOSOF .push_back( passGoodVtx  );
  selvecEleMuOSOF .push_back( passOneJet   );
  if(!TTOC) selvecEleMuOSOF .push_back( passPTOSOF  && passZWinOSOF );
+ // EleMu OSOF LowPt
+ selvecEleMuOSOFL .push_back( passMuEG     );
+ selvecEleMuOSOFL .push_back( passGoodVtx  );
+ selvecEleMuOSOFL .push_back( passOneJet   );
+ if(!TTOC) selvecEleMuOSOFL .push_back( (!passPTOSOF)  && passZWinOSOF );
  // One Photon
  selvecOnePho .push_back( passSinglePho);
  selvecOnePho .push_back( passGoodVtx  );

@@ -84,6 +84,11 @@ public :
  Bool_t        fillMETHTHistograms(Float_t weight, int selbin);
  Bool_t        writeMETHTHistograms(int selbin);
  Bool_t        deleteMETHTHistograms(int selbin);
+ // Trigger Turn On Curves
+ Bool_t        initTTOCHistograms( TString uncbin );
+ Bool_t        fillTTOCHistograms(Float_t weight, int selbin);
+ Bool_t        writeTTOCHistograms(int selbin);
+ Bool_t        deleteTTOCHistograms(int selbin);
 
  // AODCaloJet Basic Variables
  Bool_t        initAODCaloJetBasicHistograms( TString uncbin );

@@ -25,7 +25,7 @@ regions=( \
 
 dologs=( \
  "kFALSE" \
- "kTRUE" \
+# "kTRUE" \
 )
 
 doHIPs=( \

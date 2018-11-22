@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
- #'ggZH_HToSSTobbbb_ZToLL_MH-125_MS-40_ctauS-10'
 for sample in \
  "TTJets"  \
  "WJetsToLNu"
