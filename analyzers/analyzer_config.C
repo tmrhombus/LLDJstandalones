@@ -15,30 +15,30 @@ analyzer_config::~analyzer_config()
 void analyzer_config::setConfiguration() 
 {
  //set TTOC in config.h
- if(TTOC){
- pho_minPt  = 1.; // loggit
- pho_maxEta = 3.; // loggit
- ele_minPt1 = 2.; // loggit
- ele_minPt2 = 1.; // loggit
- ele_maxEta = 3.; // loggit
- mu_minPt1  = 2.; // loggit
- mu_minPt2  = 1.; // loggit
- mu_maxEta  = 3.; // loggit
- jet_minPt  = 25.; // loggit
- jet_maxEta = 2.4; // loggit
- }
- else{
- pho_minPt  = 175.; // loggit
+ if(TTOC){            // loggit
+ pho_minPt  = 1.;     // loggit
+ pho_maxEta = 3.;     // loggit
+ ele_minPt1 = 2.;     // loggit
+ ele_minPt2 = 1.;     // loggit
+ ele_maxEta = 3.;     // loggit
+ mu_minPt1  = 2.;     // loggit
+ mu_minPt2  = 1.;     // loggit
+ mu_maxEta  = 3.;     // loggit
+ jet_minPt  = 25.;    // loggit
+ jet_maxEta = 2.4;    // loggit
+ }                    // loggit
+ else{                // loggit
+ pho_minPt  = 175.;   // loggit
  pho_maxEta = 1.4442; // loggit
- ele_minPt1 = 25.; // loggit
- ele_minPt2 = 15.; // loggit
- ele_maxEta = 2.5; // loggit
- mu_minPt1  = 25.; // loggit
- mu_minPt2  = 12.; // loggit
- mu_maxEta  = 2.4; // loggit
- jet_minPt  = 25.; // loggit
- jet_maxEta = 2.4; // loggit    
- }
+ ele_minPt1 = 25.;    // loggit
+ ele_minPt2 = 15.;    // loggit
+ ele_maxEta = 2.5;    // loggit
+ mu_minPt1  = 25.;    // loggit
+ mu_minPt2  = 12.;    // loggit
+ mu_maxEta  = 2.4;    // loggit
+ jet_minPt  = 25.;    // loggit
+ jet_maxEta = 2.4;    // loggit    
+ }                    // loggit
 
 
  // tagging variables                  // loggit

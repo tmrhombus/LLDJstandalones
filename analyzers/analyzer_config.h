@@ -46,13 +46,13 @@ public :
    Float_t tag_shiftminTA;
    Float_t tag_shiftmaxAmax;
    
-   static const Bool_t TTOC = kTRUE;
-   //static const Bool_t TTOC = kFALSE;
+   static const Bool_t TTOC = kTRUE;        // loggit
+   //static const Bool_t TTOC = kFALSE;     // loggit
    
    Bool_t doTTOC(); 
    
-   //static const Bool_t jetMultOn = kTRUE;
-   static const Bool_t jetMultOn = kFALSE;
+   //static const Bool_t jetMultOn = kTRUE; // loggit
+   static const Bool_t jetMultOn = kFALSE;  // loggit
 };
 
 #endif
