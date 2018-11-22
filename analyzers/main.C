@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include "analyzer_loop.h"
+#include "analyzer_config.h"
 #include "TROOT.h"
 #include <TChain.h>
 #include <TString.h>
@@ -273,7 +274,6 @@ if( isMC ){
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
   analyzer.initMETHTHistograms( unccategory );
-  analyzer.initTTOCHistograms( unccategory );
   //analyzer.initExtraHistograms( unccategory );
   analyzer.initAODCaloJetBasicHistograms( unccategory );
   analyzer.initAODCaloJet_L1PFHistograms( unccategory );
@@ -284,6 +284,7 @@ if( isMC ){
   analyzer.initCutflowHistograms( unccategory );
   analyzer.init2DHistograms( unccategory );
   analyzer.initBackgroundEstimateHistograms();	
+  if(analyzer.doTTOC())analyzer.initTTOCHistograms( unccategory );
 
   analyzer.Loop(outfilename, lumi, nrevents, crosssection, avgTTSF, TIevts, optfile, NM1file, unccategory);
  }

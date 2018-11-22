@@ -162,3 +162,7 @@ void analyzer_config::initSelectionCategories( ){
   //} 
 
 }
+
+Bool_t analyzer_config::doTTOC(){
+  return TTOC;
+}
