@@ -490,8 +490,8 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
       h_nCaloJet                 [i] = initSingleHistogramTH1F( hname_nCaloJet  , "nCaloJet",  10,0,10);
       h_nPFJet                   [i] = initSingleHistogramTH1F( hname_nPFJet    , "nPFJet",    10,0,10);
       h_nPFchsJet                [i] = initSingleHistogramTH1F( hname_nPFchsJet , "nPFchsJet", 10,0,10);
-
-      for(unsigned int k=0; k<jetmultnames.size(); ++k){
+      unsigned int k; if(jetMultOn) k=0; else k=jetmultnames.size()-1;
+      for(k; k<jetmultnames.size(); ++k){
         deleteAODCaloJetBasicHistograms(i,k);
 	TString hname_AODCaloJetPt                            = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPt"                   +uncbin; 
 	TString hname_AODCaloJetPtVar                         = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPtVar"                +uncbin; 
@@ -708,8 +708,8 @@ Bool_t analyzer_histograms::initAODCaloJet_L1PFHistograms( TString uncbin )
       
       TString hname_nSelectedAODCaloJet_L1PFTag  = "h_"+selbinnames[i]+"_nSelectedAODCaloJet_L1PFTag"+uncbin;
        h_nSelectedAODCaloJet_L1PFTag         [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet_L1PFTag, "nSelectedAODCaloJet_L1PFTag", 6, -0.5, 5.5);
-
-      for(unsigned int k=0; k<jetmultnames.size(); ++k){
+      unsigned int k; if(jetMultOn) k=0; else k=jetmultnames.size()-1;
+      for(k; k<jetmultnames.size(); ++k){
         deleteAODCaloJet_L1PFHistograms(i,k);
         TString hname_AODCaloJet_L1PFPt                            = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_L1PFPt"                   +uncbin;                                  
         //TString hname_AODCaloJet_L1PFPtVar                         = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_L1PFPtVar"                +uncbin;                                                            
@@ -900,7 +900,8 @@ Bool_t analyzer_histograms::initAODCaloJetExtraHistograms( TString uncbin )
 
  // loop through jets and selections to initialize histograms in parllel (series)
  for(unsigned int i=0; i<selbinnames.size(); ++i){
-  for(unsigned int j=0; j<jetmultnames.size(); ++j){
+  unsigned int j; if(jetMultOn) j=0; else j=jetmultnames.size()-1;
+  for(j; j<jetmultnames.size(); ++j){
     deleteAODCaloJetExtraHistograms(i,j);
     TString hname_AODCaloJetAvfVx                         = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVx"                          + uncbin ;                          
     TString hname_AODCaloJetAvfVy                         = "h_"+selbinnames[i]+"_"+jetmultnames[j]+"_AODCaloJetAvfVy"                          + uncbin ;                          

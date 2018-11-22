@@ -48,6 +48,9 @@ public :
    
    //static const Bool_t TTOC = kTRUE;
    static const Bool_t TTOC = kFALSE;
+   
+   //static const Bool_t jetMultOn = kTRUE;
+   static const Bool_t jetMultOn = kFALSE;
 };
 
 #endif

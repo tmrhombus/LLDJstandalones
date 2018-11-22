@@ -359,9 +359,14 @@ void analyzer_loop::Loop(TString outfilename,
      fillSelectedHistograms( fullweight, i );
 
      //jets
+     if(jetMultOn){
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
       fillSelectedJetHistograms( fullweight, i, k );
-     }  
+     }  }
+     else{
+     for( unsigned int k=(jetmultnames.size()-1); k<jetmultnames.size(); ++k){
+      fillSelectedJetHistograms( fullweight, i, k );
+     }  }
 
      //tagged jets
      for( unsigned int k=0; k<tagmultnames.size(); ++k){
@@ -460,9 +465,14 @@ void analyzer_loop::Loop(TString outfilename,
      writeCutflowHistograms( i );
 
      //jet
+     if(jetMultOn){
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
        writeSelectedJetHistograms( i, k );
-     }
+     } }
+     else{
+     for( unsigned int k=(jetmultnames.size()-1); k<jetmultnames.size(); ++k){
+       writeSelectedJetHistograms( i, k );
+     } }
 
      //tag
      for( unsigned int k=0; k<tagmultnames.size(); ++k){
