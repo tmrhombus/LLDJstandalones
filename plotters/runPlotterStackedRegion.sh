@@ -16,16 +16,16 @@ regions=( \
 # "TwoEleDY"      \
 # "TwoEleOffZ"    \
 # "TwoEleSig"     \
-# "TwoEleZH"      \
+ "TwoEleZH"      \
 # "TwoMuDY"       \
- "TwoMuOffZ"     \
+# "TwoMuOffZ"     \
 # "TwoMuSig"      \
-# "TwoMuZH"       \
+ "TwoMuZH"       \
 ) 
 
 dologs=( \
  "kFALSE" \
- #"kTRUE" \
+ "kTRUE" \
 )
 
 doHIPs=( \
@@ -33,8 +33,8 @@ doHIPs=( \
  #"kTRUE" \
 )
 
-#useEOS="kFALSE"
-useEOS="kTRUE"
+useEOS="kFALSE"
+#useEOS="kTRUE"
 description=""
 
 for region in ${regions[@]}

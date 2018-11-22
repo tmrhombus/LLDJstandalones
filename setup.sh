@@ -3,7 +3,11 @@
 export depot="/eos/uscms/store/group/lpchbb/LLDJntuples"
 export depot2="/store/group/lpchbb/LLDJntuples"
 export nversion="topRWT"
-export aversion="Systematics"
+#export aversion="Systematics"
+export aversion="L1PF_3"
+#export aversion="CRTTOC_4"
+#export aversion="PhoPT170"
+#export aversion="topRWT_PixelVar"
 
 pushd `dirname ${BASH_SOURCE[0]}` > /dev/null
 export basedir=`pwd`
