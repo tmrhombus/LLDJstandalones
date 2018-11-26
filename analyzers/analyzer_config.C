@@ -115,8 +115,8 @@ void analyzer_config::initSelectionCategories( ){
   selbinnames.push_back("OneEleNoPair");
   selbinnames.push_back("OneMuNoPair");
   selbinnames.push_back("EleMuOSOF");
-  selbinnames.push_back("EleMuOSOFL");
   selbinnames.push_back("OnePho");
+  selbinnames.push_back("EleMuOSOFL");
 
   //std::cout<<" Selection category: "<<selcategory<<"\n";
   //if ( selcategory.EqualTo("Signal") ){
