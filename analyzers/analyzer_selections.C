@@ -288,22 +288,8 @@ Bool_t analyzer_selections::askPassMuEG()
 {
  Bool_t doespass = kFALSE;
  if(muon_list.size()>0 && electron_list.size()>0){ 
-  //doespass = kTRUE;
-  //if(isMC) doespass = kTRUE;
   //else doespass = (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12)  || (AOD_HLT_Mu12Ele23_DZ)  || (AOD_HLT_Mu23Ele12_DZ) );
-  if(TTOC){
-  ///based on http://cms.cern.ch/iCMS/jsp/analysis/admin/analysismanagement.jsp?ancode=HIG-16-042
-  //should double check
-   if( isMC ){
-    doespass = kTRUE;
-   }
-   if(run>=273158 && run<=278272){
-    doespass =  (Bool_t)( (AOD_HLT_Mu8Ele23 > 0) || (AOD_HLT_Mu23Ele12 > 0) );
-   }
-   else if(run>=278273 && run<=284044){
-    doespass = (Bool_t)( (AOD_HLT_Mu12Ele23_DZ > 0) || (AOD_HLT_Mu23Ele12_DZ > 0) );
-   }
-  }
+  if(TTOC) doespass = kTRUE;
   else{
   ///based on http://cms.cern.ch/iCMS/jsp/analysis/admin/analysismanagement.jsp?ancode=HIG-16-042
   //should double check
