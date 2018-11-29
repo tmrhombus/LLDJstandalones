@@ -109,63 +109,117 @@
  ZH_HToSSTobbbb_MS-15_ctauS-100    /ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-100_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/AODSIM
  ZH_HToSSTobbbb_MS-15_ctauS-1000    /ZH_HToSSTobbbb_ZToLL_MH-125_MS-15_ctauS-1000_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/AODSIM
 
- Data_SingleMu_H_3    /SingleMuon/Run2016H-PromptReco-v3/AOD
- Data_SingleMu_H_2    /SingleMuon/Run2016H-PromptReco-v2/AOD
- Data_SingleMu_G    /SingleMuon/Run2016G-23Sep2016-v1/AOD
- Data_SingleMu_F    /SingleMuon/Run2016F-23Sep2016-v1/AOD
- Data_SingleMu_E    /SingleMuon/Run2016E-23Sep2016-v1/AOD
- Data_SingleMu_D    /SingleMuon/Run2016D-23Sep2016-v1/AOD
- Data_SingleMu_C    /SingleMuon/Run2016C-23Sep2016-v1/AOD
- Data_SingleMu_B_2    /SingleMuon/Run2016B-23Sep2016-v3/AOD
- Data_SingleMu_B_1    /SingleMuon/Run2016B-23Sep2016-v1/AOD
+# Data_SingleMu_H_3    /SingleMuon/Run2016H-PromptReco-v3/AOD
+# Data_SingleMu_H_2    /SingleMuon/Run2016H-PromptReco-v2/AOD
+# Data_SingleMu_G    /SingleMuon/Run2016G-23Sep2016-v1/AOD
+# Data_SingleMu_F    /SingleMuon/Run2016F-23Sep2016-v1/AOD
+# Data_SingleMu_E    /SingleMuon/Run2016E-23Sep2016-v1/AOD
+# Data_SingleMu_D    /SingleMuon/Run2016D-23Sep2016-v1/AOD
+# Data_SingleMu_C    /SingleMuon/Run2016C-23Sep2016-v1/AOD
+# Data_SingleMu_B_2    /SingleMuon/Run2016B-23Sep2016-v3/AOD
+# Data_SingleMu_B_1    /SingleMuon/Run2016B-23Sep2016-v1/AOD
+#
+# Data_SingleEle_H_3    /SingleElectron/Run2016H-PromptReco-v3/AOD
+# Data_SingleEle_H_2    /SingleElectron/Run2016H-PromptReco-v2/AOD
+# Data_SingleEle_G    /SingleElectron/Run2016G-23Sep2016-v1/AOD
+# Data_SingleEle_F    /SingleElectron/Run2016F-23Sep2016-v1/AOD
+# Data_SingleEle_E    /SingleElectron/Run2016E-23Sep2016-v1/AOD
+# Data_SingleEle_D    /SingleElectron/Run2016D-23Sep2016-v1/AOD
+# Data_SingleEle_C    /SingleElectron/Run2016C-23Sep2016-v1/AOD
+# Data_SingleEle_B_2    /SingleElectron/Run2016B-23Sep2016-v3/AOD
+# Data_SingleEle_B_1    /SingleElectron/Run2016B-23Sep2016-v2/AOD
+#
+# Data_DoubleMu_H_3    /DoubleMuon/Run2016H-PromptReco-v3/AOD
+# Data_DoubleMu_H_2    /DoubleMuon/Run2016H-PromptReco-v2/AOD
+# Data_DoubleMu_G    /DoubleMuon/Run2016G-23Sep2016-v1/AOD
+# Data_DoubleMu_F    /DoubleMuon/Run2016F-23Sep2016-v1/AOD
+# Data_DoubleMu_E    /DoubleMuon/Run2016E-23Sep2016-v1/AOD
+# Data_DoubleMu_D    /DoubleMuon/Run2016D-23Sep2016-v1/AOD
+# Data_DoubleMu_C    /DoubleMuon/Run2016C-23Sep2016-v1/AOD
+# Data_DoubleMu_B_2    /DoubleMuon/Run2016B-23Sep2016-v3/AOD
+# Data_DoubleMu_B_1    /DoubleMuon/Run2016B-23Sep2016-v1/AOD
+#
+# Data_DoubleEG_H_3    /DoubleEG/Run2016H-PromptReco-v3/AOD
+# Data_DoubleEG_H_2    /DoubleEG/Run2016H-PromptReco-v2/AOD
+# Data_DoubleEG_G    /DoubleEG/Run2016G-23Sep2016-v1/AOD
+# Data_DoubleEG_F    /DoubleEG/Run2016F-23Sep2016-v1/AOD
+# Data_DoubleEG_E    /DoubleEG/Run2016E-23Sep2016-v1/AOD
+# Data_DoubleEG_D    /DoubleEG/Run2016D-23Sep2016-v1/AOD
+# Data_DoubleEG_C    /DoubleEG/Run2016C-23Sep2016-v1/AOD
+# Data_DoubleEG_B_2    /DoubleEG/Run2016B-23Sep2016-v3/AOD
+# Data_DoubleEG_B_1    /DoubleEG/Run2016B-23Sep2016-v2/AOD
+#
+# Data_MuonEG_B_1    /MuonEG/Run2016B-23Sep2016-v2/AOD
+# Data_MuonEG_B_2    /MuonEG/Run2016B-23Sep2016-v3/AOD
+# Data_MuonEG_C    /MuonEG/Run2016C-23Sep2016-v1/AOD
+# Data_MuonEG_D    /MuonEG/Run2016D-23Sep2016-v1/AOD
+# Data_MuonEG_E    /MuonEG/Run2016E-23Sep2016-v1/AOD
+# Data_MuonEG_F    /MuonEG/Run2016F-23Sep2016-v1/AOD
+# Data_MuonEG_G    /MuonEG/Run2016G-23Sep2016-v1/AOD
+# Data_MuonEG_H_2    /MuonEG/Run2016H-PromptReco-v2/AOD
+# Data_MuonEG_H_3    /MuonEG/Run2016H-PromptReco-v3/AOD
+#
+# Data_SinglePhoton_B_1    /SinglePhoton/Run2016B-23Sep2016-v1/AOD
+# Data_SinglePhoton_B_2    /SinglePhoton/Run2016B-23Sep2016-v3/AOD
+# Data_SinglePhoton_C    /SinglePhoton/Run2016C-23Sep2016-v1/AOD
+# Data_SinglePhoton_D    /SinglePhoton/Run2016D-23Sep2016-v1/AOD
+# Data_SinglePhoton_E    /SinglePhoton/Run2016E-23Sep2016-v1/AOD
+# Data_SinglePhoton_F    /SinglePhoton/Run2016F-23Sep2016-v1/AOD
+# Data_SinglePhoton_G    /SinglePhoton/Run2016G-23Sep2016-v1/AOD
+# Data_SinglePhoton_H_3    /SinglePhoton/Run2016H-PromptReco-v3/AOD
+# Data_SinglePhoton_H_2    /SinglePhoton/Run2016H-PromptReco-v2/AOD
 
- Data_SingleEle_H_3    /SingleElectron/Run2016H-PromptReco-v3/AOD
- Data_SingleEle_H_2    /SingleElectron/Run2016H-PromptReco-v2/AOD
- Data_SingleEle_G    /SingleElectron/Run2016G-23Sep2016-v1/AOD
- Data_SingleEle_F    /SingleElectron/Run2016F-23Sep2016-v1/AOD
- Data_SingleEle_E    /SingleElectron/Run2016E-23Sep2016-v1/AOD
- Data_SingleEle_D    /SingleElectron/Run2016D-23Sep2016-v1/AOD
- Data_SingleEle_C    /SingleElectron/Run2016C-23Sep2016-v1/AOD
- Data_SingleEle_B_2    /SingleElectron/Run2016B-23Sep2016-v3/AOD
- Data_SingleEle_B_1    /SingleElectron/Run2016B-23Sep2016-v2/AOD
-
- Data_DoubleMu_H_3    /DoubleMuon/Run2016H-PromptReco-v3/AOD
- Data_DoubleMu_H_2    /DoubleMuon/Run2016H-PromptReco-v2/AOD
- Data_DoubleMu_G    /DoubleMuon/Run2016G-23Sep2016-v1/AOD
- Data_DoubleMu_F    /DoubleMuon/Run2016F-23Sep2016-v1/AOD
- Data_DoubleMu_E    /DoubleMuon/Run2016E-23Sep2016-v1/AOD
- Data_DoubleMu_D    /DoubleMuon/Run2016D-23Sep2016-v1/AOD
- Data_DoubleMu_C    /DoubleMuon/Run2016C-23Sep2016-v1/AOD
- Data_DoubleMu_B_2    /DoubleMuon/Run2016B-23Sep2016-v3/AOD
- Data_DoubleMu_B_1    /DoubleMuon/Run2016B-23Sep2016-v1/AOD
-
- Data_DoubleEG_H_3    /DoubleEG/Run2016H-PromptReco-v3/AOD
- Data_DoubleEG_H_2    /DoubleEG/Run2016H-PromptReco-v2/AOD
- Data_DoubleEG_G    /DoubleEG/Run2016G-23Sep2016-v1/AOD
- Data_DoubleEG_F    /DoubleEG/Run2016F-23Sep2016-v1/AOD
- Data_DoubleEG_E    /DoubleEG/Run2016E-23Sep2016-v1/AOD
- Data_DoubleEG_D    /DoubleEG/Run2016D-23Sep2016-v1/AOD
- Data_DoubleEG_C    /DoubleEG/Run2016C-23Sep2016-v1/AOD
- Data_DoubleEG_B_2    /DoubleEG/Run2016B-23Sep2016-v3/AOD
- Data_DoubleEG_B_1    /DoubleEG/Run2016B-23Sep2016-v2/AOD
-
- Data_MuonEG_B_1    /MuonEG/Run2016B-23Sep2016-v2/AOD
- Data_MuonEG_B_2    /MuonEG/Run2016B-23Sep2016-v3/AOD
- Data_MuonEG_C    /MuonEG/Run2016C-23Sep2016-v1/AOD
- Data_MuonEG_D    /MuonEG/Run2016D-23Sep2016-v1/AOD
- Data_MuonEG_E    /MuonEG/Run2016E-23Sep2016-v1/AOD
- Data_MuonEG_F    /MuonEG/Run2016F-23Sep2016-v1/AOD
- Data_MuonEG_G    /MuonEG/Run2016G-23Sep2016-v1/AOD
- Data_MuonEG_H_2    /MuonEG/Run2016H-PromptReco-v2/AOD
- Data_MuonEG_H_3    /MuonEG/Run2016H-PromptReco-v3/AOD
-
- Data_SinglePhoton_B_1    /SinglePhoton/Run2016B-23Sep2016-v1/AOD
- Data_SinglePhoton_B_2    /SinglePhoton/Run2016B-23Sep2016-v3/AOD
- Data_SinglePhoton_C    /SinglePhoton/Run2016C-23Sep2016-v1/AOD
- Data_SinglePhoton_D    /SinglePhoton/Run2016D-23Sep2016-v1/AOD
- Data_SinglePhoton_E    /SinglePhoton/Run2016E-23Sep2016-v1/AOD
- Data_SinglePhoton_F    /SinglePhoton/Run2016F-23Sep2016-v1/AOD
- Data_SinglePhoton_G    /SinglePhoton/Run2016G-23Sep2016-v1/AOD
- Data_SinglePhoton_H_3    /SinglePhoton/Run2016H-PromptReco-v3/AOD
- Data_SinglePhoton_H_2    /SinglePhoton/Run2016H-PromptReco-v2/AOD
-
+###  Legacy Data Aug 07 2017
+ Data_SingleMuon_B_1 /SingleMuon/Run2016B-07Aug17_ver1-v1/AOD
+ Data_SingleMuon_B_2 /SingleMuon/Run2016B-07Aug17_ver2-v1/AOD
+ Data_SingleMuon_C   /SingleMuon/Run2016C-07Aug17-v1/AOD
+ Data_SingleMuon_D   /SingleMuon/Run2016D-07Aug17-v1/AOD
+ Data_SingleMuon_E   /SingleMuon/Run2016E-07Aug17-v1/AOD
+ Data_SingleMuon_F   /SingleMuon/Run2016F-07Aug17-v1/AOD
+ Data_SingleMuon_G   /SingleMuon/Run2016G-07Aug17-v1/AOD
+ Data_SingleMuon_H   /SingleMuon/Run2016H-07Aug17-v1/AOD
+ 
+ Data_SingleElectron_B_1 /SingleElectron/Run2016B-07Aug17_ver1-v1/AOD
+ Data_SingleElectron_B_2 /SingleElectron/Run2016B-07Aug17_ver2-v2/AOD
+ Data_SingleElectron_C   /SingleElectron/Run2016C-07Aug17-v1/AOD
+ Data_SingleElectron_D   /SingleElectron/Run2016D-07Aug17-v1/AOD
+ Data_SingleElectron_E   /SingleElectron/Run2016E-07Aug17-v1/AOD
+ Data_SingleElectron_F   /SingleElectron/Run2016F-07Aug17-v1/AOD
+ Data_SingleElectron_G   /SingleElectron/Run2016G-07Aug17-v1/AOD
+ Data_SingleElectron_H   /SingleElectron/Run2016H-07Aug17-v1/AOD
+ 
+ Data_DoubleMuon_B_1 /DoubleMuon/Run2016B-07Aug17_ver1-v1/AOD
+ Data_DoubleMuon_B_2 /DoubleMuon/Run2016B-07Aug17_ver2-v1/AOD
+ Data_DoubleMuon_C   /DoubleMuon/Run2016C-07Aug17-v1/AOD
+ Data_DoubleMuon_D   /DoubleMuon/Run2016D-07Aug17-v1/AOD
+ Data_DoubleMuon_E   /DoubleMuon/Run2016E-07Aug17-v1/AOD
+ Data_DoubleMuon_F   /DoubleMuon/Run2016F-07Aug17-v1/AOD
+ Data_DoubleMuon_G   /DoubleMuon/Run2016G-07Aug17-v1/AOD
+ Data_DoubleMuon_H   /DoubleMuon/Run2016H-07Aug17-v1/AOD
+ 
+ Data_DoubleEG_B_1 /DoubleEG/Run2016B-07Aug17_ver1-v1/AOD
+ Data_DoubleEG_B_2 /DoubleEG/Run2016B-07Aug17_ver2-v2/AOD
+ Data_DoubleEG_C   /DoubleEG/Run2016C-07Aug17-v1/AOD
+ Data_DoubleEG_D   /DoubleEG/Run2016D-07Aug17-v1/AOD
+ Data_DoubleEG_E   /DoubleEG/Run2016E-07Aug17-v1/AOD
+ Data_DoubleEG_F   /DoubleEG/Run2016F-07Aug17-v1/AOD
+ Data_DoubleEG_G   /DoubleEG/Run2016G-07Aug17-v1/AOD
+ Data_DoubleEG_H   /DoubleEG/Run2016H-07Aug17-v1/AOD
+ 
+ Data_MuonEG_B_1 /MuonEG/Run2016B-07Aug17_ver1-v1/AOD
+ Data_MuonEG_B_2 /MuonEG/Run2016B-07Aug17_ver2-v1/AOD
+ Data_MuonEG_C   /MuonEG/Run2016C-07Aug17-v1/AOD
+ Data_MuonEG_D   /MuonEG/Run2016D-07Aug17-v1/AOD
+ Data_MuonEG_E   /MuonEG/Run2016E-07Aug17-v1/AOD
+ Data_MuonEG_F   /MuonEG/Run2016F-07Aug17-v1/AOD
+ Data_MuonEG_G   /MuonEG/Run2016G-07Aug17-v1/AOD
+ Data_MuonEG_H   /MuonEG/Run2016H-07Aug17-v1/AOD
+ 
+ Data_SinglePhoton_B_1 /SinglePhoton/Run2016B-07Aug17_ver1-v1/AOD
+ Data_SinglePhoton_B_2 /SinglePhoton/Run2016B-07Aug17_ver2-v1/AOD
+ Data_SinglePhoton_C   /SinglePhoton/Run2016C-07Aug17-v1/AOD
+ Data_SinglePhoton_D   /SinglePhoton/Run2016D-07Aug17-v1/AOD
+ Data_SinglePhoton_E   /SinglePhoton/Run2016E-07Aug17-v1/AOD
+ Data_SinglePhoton_F   /SinglePhoton/Run2016F-07Aug17-v1/AOD
+ Data_SinglePhoton_G   /SinglePhoton/Run2016G-07Aug17-v1/AOD
+ Data_SinglePhoton_H   /SinglePhoton/Run2016H-07Aug17-v1/AOD

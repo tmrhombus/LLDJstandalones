@@ -18,6 +18,7 @@ public :
  std::vector<int>     muon_passID       ( int bitnr, Float_t muPtCut1 , Float_t muPtCut2 , Float_t muEtaCut , TString sysbinname="");
  std::vector<int>     jet_passID        ( int bitnr, TString jettype, Float_t jetPtCut, Float_t jetEtaCut, TString sysbinname="");
  std::vector<int>     jet_passTagger       ();
+ std::vector<int>     jet_passTagger_L1PF  ();
  std::vector<int>     jet_passTaggerSB1    ();
  std::vector<int>     jet_passTaggerSB2    ();
  std::vector<int>     jet_passTaggerSB3    ();

@@ -182,6 +182,22 @@ std::vector<int> analyzer_createobjects::jet_passTaggerSB3( ) {
   return taglist;
 }
 
+std::vector<int> analyzer_createobjects::jet_passTagger_L1PF( ) {
+
+  std::vector<int> taglist;
+
+  for(int i=0; i<aodcalojet_L1PF_list.size(); ++i){
+   int aodcalojetindex = aodcalojet_L1PF_list[i];
+   if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      >  tag_minIPsig  &&
+       Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) >  tag_minTA     &&
+       Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
+    {
+     taglist.push_back(aodcalojetindex);
+    }
+  }
+  if(aodcalojet_L1PF_list.size()>0) return taglist;
+  else {taglist.push_back(-1);      return taglist;}
+}
 
 //-------------------------jet_minDR
 // Finds Delta R of closest "good" jet

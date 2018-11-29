@@ -1,26 +1,26 @@
 #!/bin/bash
 
 regions=( \ 
- "EleMuOSOF"     \
- "OnePho"        \
- "TwoEleDY"      \
- "TwoMuDY"       \
-# # "OneEleDY"      \
-# # "OneEleNoPair"  \
-# # "OneEleOffZ"    \
-# # "OneEleSig"     \
-# # "OneEleZH"      \
-# # "OneMuDY"       \
-# # "OneMuNoPair"   \
-# # "OneMuOffZ"     \
-# # "OneMuSig"      \
-# # "OneMuZH"       \
-# # "TwoEleOffZ"    \
-# # "TwoEleSig"     \
-#  "TwoEleZH"      \
-# # "TwoMuOffZ"     \
-# # "TwoMuSig"      \
-#  "TwoMuZH"       \
+# "EleMuOSOF"     \
+# "OneEleDY"      \
+# "OneEleNoPair"  \
+# "OneEleOffZ"    \
+# "OneEleSig"     \
+# "OneEleZH"      \
+# "OneMuDY"       \
+# "OneMuNoPair"   \
+# "OneMuOffZ"     \
+# "OneMuSig"      \
+# "OneMuZH"       \
+# "OnePho"        \
+# "TwoEleDY"      \
+# "TwoEleOffZ"    \
+# "TwoEleSig"     \
+ "TwoEleZH"      \
+# "TwoMuDY"       \
+# "TwoMuOffZ"     \
+# "TwoMuSig"      \
+ "TwoMuZH"       \
 ) 
 
 dologs=( \
@@ -33,8 +33,8 @@ doHIPs=( \
  #"kTRUE" \
 )
 
-#useEOS="kFALSE"
-useEOS="kTRUE"
+useEOS="kFALSE"
+#useEOS="kTRUE"
 description=""
 
 for region in ${regions[@]}
