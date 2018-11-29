@@ -22,9 +22,11 @@ public :
    std::vector<int> electron_list;
    std::vector<int> muon_list ;
    std::vector<int> aodcalojet_list;
+   std::vector<int> aodcalojet_L1PF_list;
    std::vector<int> aodpfjet_list;
    std::vector<int> aodpfchsjet_list;
    std::vector<int> taggedjet_list;
+   std::vector<int> taggedjet_list_L1PF;
    std::vector<int> taggedjetSB1_list;
    std::vector<int> taggedjetSB2_list;
    std::vector<int> taggedjetSB3_list;
@@ -154,6 +156,7 @@ public :
    Int_t nSelectedMuo;
    Int_t nSelectedSlimmedJet;
    Int_t nSelectedAODCaloJet;
+   Int_t nSelectedAODCaloJet_L1PF;
 
    Int_t n_totalPF;
    Int_t n_totalPFchs;
@@ -161,6 +164,7 @@ public :
    Int_t n_matchedPFCalo;
    Int_t n_matchedPFchsCalo;
 
+   Bool_t removed;
 };
 
 #endif

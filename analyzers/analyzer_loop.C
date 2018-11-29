@@ -50,7 +50,8 @@ void analyzer_loop::Loop(TString outfilename,
  // start looping over entries
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
-
+  
+  removed=kFALSE;
   cleareventcounters();
   if( uncbin.EqualTo("") ){
    optfile->cd();
@@ -90,6 +91,22 @@ void analyzer_loop::Loop(TString outfilename,
   taggedjetSB1_list   = jet_passTaggerSB1   ();
   taggedjetSB2_list   = jet_passTaggerSB2   ();
   taggedjetSB3_list   = jet_passTaggerSB3   ();
+  
+  //save jets list for L1PF test clear list if does not pass
+  aodcalojet_L1PF_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
+  bool pass_L1PF = true;
+  //checks for L1PF test
+  for(int i=0; i<aodcalojet_list.size(); i++){
+    int jetindex = aodcalojet_list[i];
+    if(AODCaloJetPt->at(jetindex)>100.0 && (fabs(AODCaloJetEta->at(jetindex))<3.0 && fabs(AODCaloJetEta->at(jetindex))>2.25)) pass_L1PF = false;
+  }
+  for(int i=0; i<photon_list.size(); i++){
+    int phoindex = photon_list[i];
+    if(AOD_phoPt->at(phoindex)>50.0 && (fabs(AOD_phoEta->at(phoindex))<3.0 && fabs(AOD_phoEta->at(phoindex))>2.25)) pass_L1PF = false;
+  }
+  // remove event from jet based tagging variables for comparisons
+  if(!pass_L1PF){aodcalojet_L1PF_list.clear(); removed = kTRUE;}
+  taggedjet_list_L1PF = jet_passTagger_L1PF ();
 
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
   matchPFCalojets( "PF" );
@@ -342,9 +359,13 @@ void analyzer_loop::Loop(TString outfilename,
      fillSelectedHistograms( fullweight, i );
 
      //jets
+     if(jetMultOn){
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
       fillSelectedJetHistograms( fullweight, i, k );
-     }  
+     }  }
+     else{
+      fillSelectedJetHistograms( fullweight, i, (jetmultnames.size()-1) );
+     }
 
      //tagged jets
      for( unsigned int k=0; k<tagmultnames.size(); ++k){
@@ -443,8 +464,12 @@ void analyzer_loop::Loop(TString outfilename,
      writeCutflowHistograms( i );
 
      //jet
+     if(jetMultOn){
      for( unsigned int k=0; k<jetmultnames.size(); ++k){
        writeSelectedJetHistograms( i, k );
+     } }
+     else{
+       writeSelectedJetHistograms( i, (jetmultnames.size()-1));
      }
 
      //tag
