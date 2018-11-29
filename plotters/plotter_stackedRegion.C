@@ -92,18 +92,18 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  std::vector<TString> uncbins;
  uncbins.clear();
  uncbins.push_back(""             ); 
-// uncbins.push_back("_EGSUp"       ); 
-// uncbins.push_back("_EGSDown"     );    
-// uncbins.push_back("_MESUp"       );    
-// uncbins.push_back("_MESDown"     );    
-// uncbins.push_back("_AMaxUp"      );    
-// uncbins.push_back("_AMaxDown"    );    
-// uncbins.push_back("_IPSigUp"     );    
-// uncbins.push_back("_IPSigDown"   );    
-// uncbins.push_back("_TAUp"        );    
-// uncbins.push_back("_TADown"      );    
-// uncbins.push_back("_TagVarsUp"   ); 
-// uncbins.push_back("_TagVarsDown" );  
+ uncbins.push_back("_EGSUp"       ); 
+ uncbins.push_back("_EGSDown"     );    
+ uncbins.push_back("_MESUp"       );    
+ uncbins.push_back("_MESDown"     );    
+ uncbins.push_back("_AMaxUp"      );    
+ uncbins.push_back("_AMaxDown"    );    
+ uncbins.push_back("_IPSigUp"     );    
+ uncbins.push_back("_IPSigDown"   );    
+ uncbins.push_back("_TAUp"        );    
+ uncbins.push_back("_TADown"      );    
+ uncbins.push_back("_TagVarsUp"   ); 
+ uncbins.push_back("_TagVarsDown" );  
 
  //if(drawSignal){extraname+="_wsig";}
  // variables to plot
@@ -111,12 +111,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  variables.clear();
 
  variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("nSelectedAODCaloJet_L1PFTag");
  variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
  variables.push_back("AllJets_AODCaloJetAlphaMax");
+
+ variables.push_back("nSelectedAODCaloJet_L1PFTag");
+ variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
+ variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
  variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
 
  //variables.push_back("nVtx");                   
