@@ -164,7 +164,7 @@ public :
    Int_t n_matchedPFCalo;
    Int_t n_matchedPFchsCalo;
 
-   Bool_t removed;
+   Bool_t L1PFremoved;
 };
 
 #endif

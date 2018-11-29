@@ -772,7 +772,7 @@ Bool_t analyzer_histograms::fillAODCaloJet_L1PFHistograms(Float_t weight, int se
   if(jetmultnames.at(jetbin) == "AllJets"){
     // only fill these once (no jet multiplicity)
     h_nCaloJet_L1PF                 [selbin].Fill ( aodcalojet_L1PF_list.size() , weight );
-    if(!removed)  h_nSelectedAODCaloJet_L1PFTag       [selbin] .Fill( float(taggedjet_list_L1PF.size()), weight );
+    if(!L1PFremoved)  h_nSelectedAODCaloJet_L1PFTag       [selbin] .Fill( float(taggedjet_list_L1PF.size()), weight );
     for(unsigned int i =0; i<aodcalojet_L1PF_list.size(); i++){
       int aodcalojet_L1PFindex = aodcalojet_L1PF_list[i];
       h_AODCaloJet_L1PFPt                             [selbin][jetbin].Fill( AODCaloJetPt                             ->at( aodcalojet_L1PFindex ), weight );  
