@@ -54,6 +54,7 @@ void analyzer_globalvalues::cleareventcounters(){
  nSelectedEle=0;
  nSelectedMuo=0;
  nSelectedAODCaloJet=0;
+ nSelectedAODCaloJet_L1PF=0;
 
  nBPartonFlavour=0;
 
@@ -61,9 +62,11 @@ void analyzer_globalvalues::cleareventcounters(){
  photon_list           .clear(); 
  muon_list             .clear(); 
  aodcalojet_list       .clear(); 
+ aodcalojet_L1PF_list  .clear(); 
  aodpfjet_list         .clear(); 
  aodpfchsjet_list      .clear(); 
  taggedjet_list        .clear(); 
+ taggedjet_list_L1PF   .clear(); 
  taggedjetSB1_list     .clear(); 
  taggedjetSB2_list     .clear(); 
  taggedjetSB3_list     .clear();

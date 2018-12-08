@@ -4,23 +4,11 @@ regions=( \
  "EleMuOSOF"     \
  "OnePho"        \
  "TwoEleDY"      \
+# "TwoEleSig"     \
+ "TwoEleZH"      \
  "TwoMuDY"       \
-# # "OneEleDY"      \
-# # "OneEleNoPair"  \
-# # "OneEleOffZ"    \
-# # "OneEleSig"     \
-# # "OneEleZH"      \
-# # "OneMuDY"       \
-# # "OneMuNoPair"   \
-# # "OneMuOffZ"     \
-# # "OneMuSig"      \
-# # "OneMuZH"       \
-# # "TwoEleOffZ"    \
-# # "TwoEleSig"     \
-#  "TwoEleZH"      \
-# # "TwoMuOffZ"     \
-# # "TwoMuSig"      \
-#  "TwoMuZH"       \
+# "TwoMuSig"      \
+ "TwoMuZH"       \
 ) 
 
 dologs=( \

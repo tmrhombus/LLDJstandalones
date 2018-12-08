@@ -96,6 +96,12 @@ public :
  Bool_t        writeAODCaloJetBasicHistograms(int selbin, int jetbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin, int jetbin);
+ // AODCaloJet _L1PF Variables
+ Bool_t        initAODCaloJet_L1PFHistograms( TString uncbin );
+ Bool_t        fillAODCaloJet_L1PFHistograms(Float_t weight, int selbin, int jetbin);
+ Bool_t        writeAODCaloJet_L1PFHistograms(int selbin, int jetbin);
+ Bool_t        deleteAODCaloJet_L1PFHistograms(int selbin);
+ Bool_t        deleteAODCaloJet_L1PFHistograms(int selbin, int jetbin);
  // AODCaloJet Extra Variables
  Bool_t        initAODCaloJetExtraHistograms( TString uncbin );
  Bool_t        fillAODCaloJetExtraHistograms(Float_t weight, int selbin, int jetbin);
@@ -117,7 +123,7 @@ public :
  Bool_t        deleteAODCaloJetTagMultHistograms(int selbin);
  
  // Extra histograms
- Bool_t        initExtraHistograms( TString uncbin );
+ Bool_t        initExtraHistograms(TString uncbin );
  Bool_t        fillExtraHistograms(Float_t weight, int selbin);
  Bool_t        writeExtraHistograms(int selbin);
  Bool_t        deleteExtraHistograms(int selbin);
@@ -187,6 +193,7 @@ public :
  TH1F  h_htaodcalojets            [SELBINNAMESIZE];
 
  // nJets
+ TH1F  h_nSelectedAODCaloJet_L1PFTag    [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJet            [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTag         [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTagSB1      [SELBINNAMESIZE];
@@ -205,6 +212,7 @@ public :
  TH1F  h_nSelectedAODCaloJetTagSB2_2b   [SELBINNAMESIZE];
  TH1F  h_nSelectedAODCaloJetTagSB3_2b   [SELBINNAMESIZE];
  TH1F  h_nCaloJet                       [SELBINNAMESIZE]; // AODnCaloJet; 
+ TH1F  h_nCaloJet_L1PF                  [SELBINNAMESIZE]; // AODnCaloJet_L1PF; 
  TH1F  h_nPFJet                         [SELBINNAMESIZE]; // AODnPFJet; 
  TH1F  h_nPFchsJet                      [SELBINNAMESIZE]; // AODnPFchsJet; 
 
@@ -232,6 +240,28 @@ public :
  TH1F  h_AODCaloJetPartonFlavour                  [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH2F  h_AODCaloJetPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+ 
+ // AODCaloJetL1PFHistograms
+ TH1F  h_AODCaloJet_L1PFPt                             [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFPtVar                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFEta                            [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFPhi                            [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFAlphaMax                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFAlphaMax2                      [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFAlphaMaxPrime                  [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFAlphaMaxPrime2                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFBeta                           [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFBeta2                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFSumIP                          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFSumIPSig                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFMedianIP                       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFMedianLog10IPSig               [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFTrackAngle                     [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFLogTrackAngle                  [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F  h_AODCaloJet_L1PFMedianLog10TrackAngle          [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFTotalTrackAngle                [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH1F  h_AODCaloJet_L1PFAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
+ //TH2F  h_AODCaloJet_L1PFPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
 
  // AODCaloJetExtraHistograms
  TH1F  h_AODCaloJetAvfVx                          [SELBINNAMESIZE][JETMULTNAMESIZE];
@@ -306,19 +336,19 @@ public :
  TH2F  h_TTOCTriggerDMuPt         [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerDMu1Eta       [SELBINNAMESIZE];
  TH1F  h_TTOCTriggerDMu2Eta       [SELBINNAMESIZE];
- TH2F  h_TTOCTriggerDMuEta        [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerDTkMu1Eta     [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerDTkMu2Eta     [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerDTkMu1Pt      [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerDTkMu2Pt      [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZMu1Eta    [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZMu2Eta    [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZMu1Pt     [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZMu2Pt     [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZTkMu1Eta  [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZTkMu2Eta  [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZTkMu1Pt   [SELBINNAMESIZE];
- //TH1F  h_TTOCTriggerNoDZTkMu2Pt   [SELBINNAMESIZE];
+ TH2F  h_TTOCTriggerDMuEta        [SELBINNAMESIZE];//here
+ TH1F  h_TTOCTriggerDTkMu1Eta     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerDTkMu2Eta     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerDTkMu1Pt      [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerDTkMu2Pt      [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZMu1Eta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZMu2Eta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZMu1Pt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZMu2Pt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZTkMu1Eta  [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZTkMu2Eta  [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZTkMu1Pt   [SELBINNAMESIZE];
+ TH1F  h_TTOCTriggerNoDZTkMu2Pt   [SELBINNAMESIZE];
  //--Single Muon
  TH1F  h_TTOCTrigger22MuEta       [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger22MuPt        [SELBINNAMESIZE];
@@ -329,16 +359,16 @@ public :
  TH1F  h_TTOCTrigger24TkMuEta     [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger24TkMuPt      [SELBINNAMESIZE];
  //Double Electron
- TH1F  h_TTOCTrigger23DEle1Eta       [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger23DEle2Eta       [SELBINNAMESIZE];
- TH2F  h_TTOCTrigger23DEleEta        [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger23DEle1Pt        [SELBINNAMESIZE];
- TH1F  h_TTOCTrigger23DEle2Pt        [SELBINNAMESIZE];
- TH2F  h_TTOCTrigger23DElePt         [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle1Eta       [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle2Eta       [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle1Pt        [SELBINNAMESIZE];
- //TH1F  h_TTOCTrigger17DEle2Pt        [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle1Eta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle2Eta    [SELBINNAMESIZE];
+ TH2F  h_TTOCTrigger23DEleEta     [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle1Pt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger23DEle2Pt     [SELBINNAMESIZE];
+ TH2F  h_TTOCTrigger23DElePt      [SELBINNAMESIZE];//here
+ TH1F  h_TTOCTrigger17DEle1Eta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle2Eta    [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle1Pt     [SELBINNAMESIZE];
+ TH1F  h_TTOCTrigger17DEle2Pt     [SELBINNAMESIZE];
  //Single Electron
  TH1F  h_TTOCTrigger23EleEta      [SELBINNAMESIZE];
  TH1F  h_TTOCTrigger23ElePt       [SELBINNAMESIZE];

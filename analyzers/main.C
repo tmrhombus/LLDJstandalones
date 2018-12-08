@@ -3,6 +3,7 @@
 #include <unistd.h>
 
 #include "analyzer_loop.h"
+#include "analyzer_config.h"
 #include "TROOT.h"
 #include <TChain.h>
 #include <TString.h>
@@ -235,22 +236,22 @@ int main(int argc, char **argv){
 
  std::vector<TString> unccategories;
  unccategories.push_back("");
-if( isMC ){
-  unccategories.push_back("_EGSUp");
-  unccategories.push_back("_EGSDown");
-  unccategories.push_back("_MESUp");
-  unccategories.push_back("_MESDown");
-  //unccategories.push_back("_JESUp");
-  //unccategories.push_back("_JESDown");
-  unccategories.push_back("_AMaxUp");
-  unccategories.push_back("_AMaxDown");
-  unccategories.push_back("_IPSigUp");
-  unccategories.push_back("_IPSigDown");
-  unccategories.push_back("_TAUp");
-  unccategories.push_back("_TADown");
-  unccategories.push_back("_TagVarsUp");
-  unccategories.push_back("_TagVarsDown");
- }
+ if( isMC ){
+   unccategories.push_back("_EGSUp");
+   unccategories.push_back("_EGSDown");
+   unccategories.push_back("_MESUp");
+   unccategories.push_back("_MESDown");
+   //unccategories.push_back("_JESUp");
+   //unccategories.push_back("_JESDown");
+   unccategories.push_back("_AMaxUp");
+   unccategories.push_back("_AMaxDown");
+   unccategories.push_back("_IPSigUp");
+   unccategories.push_back("_IPSigDown");
+   unccategories.push_back("_TAUp");
+   unccategories.push_back("_TADown");
+   unccategories.push_back("_TagVarsUp");
+   unccategories.push_back("_TagVarsDown");
+  }
  
  // make the analyzer, init some stuff
  analyzer_loop analyzer;
@@ -273,9 +274,9 @@ if( isMC ){
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
   analyzer.initMETHTHistograms( unccategory );
-  analyzer.initTTOCHistograms( unccategory );
   //analyzer.initExtraHistograms( unccategory );
   analyzer.initAODCaloJetBasicHistograms( unccategory );
+  analyzer.initAODCaloJet_L1PFHistograms( unccategory );
   analyzer.initAODCaloJetExtraHistograms( unccategory ); 
   analyzer.initAODCaloJetTagHistograms( unccategory ); 
   analyzer.initAODCaloJetTagMultHistograms( unccategory );
@@ -283,6 +284,7 @@ if( isMC ){
   analyzer.initCutflowHistograms( unccategory );
   analyzer.init2DHistograms( unccategory );
   analyzer.initBackgroundEstimateHistograms();	
+  if(analyzer.doTTOC())analyzer.initTTOCHistograms( unccategory );
 
   analyzer.Loop(outfilename, lumi, nrevents, crosssection, avgTTSF, TIevts, optfile, NM1file, unccategory);
  }

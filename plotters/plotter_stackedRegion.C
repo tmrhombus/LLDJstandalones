@@ -115,6 +115,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
  variables.push_back("AllJets_AODCaloJetAlphaMax");
 
+ variables.push_back("nSelectedAODCaloJet_L1PFTag");
+ variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
+ variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
+ variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
+
  //variables.push_back("nVtx");                   
  //variables.push_back("nGoodVtx");               
  //variables.push_back("nTrksPV");                
@@ -1579,6 +1584,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
          bgstack->Add(h_ZH         );
        }
      }
+      double tot = 0.0; 
+      for(int zz=0; zz<v.size(); zz++)
+      {    
+       tot +=v[zz]->Integral();
+       cout <<v[zz]->GetName()<<":  "<<v[zz]->Integral()<<std::endl;
+      }    
+      cout << "***************************** total: "<<tot<<endl;
 
 //     if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
 //        h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));

@@ -14,22 +14,36 @@ analyzer_config::~analyzer_config()
 //----------------------------analyzer_config
 void analyzer_config::setConfiguration() 
 {
- // thresholds                         // loggit
- pho_minPt  = 175.;                    // loggit
- pho_maxEta = 1.4442;                  // loggit
- ele_minPt1 = 25.;                     // loggit
- ele_minPt2 = 15.;                     // loggit
- ele_maxEta = 2.5;                     // loggit
- mu_minPt1  = 25.;                     // loggit
- mu_minPt2  = 12.;                     // loggit
- mu_maxEta  = 2.4;                     // loggit
- jet_minPt  = 25.;                     // loggit
- jet_maxEta = 2.4;                     // loggit
+ //set TTOC in config.h
+ if(TTOC){            // loggit
+  pho_minPt  = 1.;    // loggit
+  pho_maxEta = 3.;    // loggit
+  ele_minPt1 = 2.;    // loggit
+  ele_minPt2 = 1.;    // loggit
+  ele_maxEta = 3.;    // loggit
+  mu_minPt1  = 2.;    // loggit
+  mu_minPt2  = 1.;    // loggit
+  mu_maxEta  = 3.;    // loggit
+  jet_minPt  = 25.;   // loggit
+  jet_maxEta = 2.4;   // loggit
+ }                    // loggit
+ else{                // loggit
+  pho_minPt  = 175.;  // loggit
+  pho_maxEta = 1.4442;// loggit
+  ele_minPt1 = 25.;   // loggit
+  ele_minPt2 = 15.;   // loggit
+  ele_maxEta = 2.5;   // loggit
+  mu_minPt1  = 25.;   // loggit
+  mu_minPt2  = 12.;   // loggit
+  mu_maxEta  = 2.4;   // loggit
+  jet_minPt  = 25.;   // loggit
+  jet_maxEta = 2.4;   // loggit    
+ }                    // loggit
 
- // tagging variables                  // loggit
- tag_maxAmax  = 0.75;                  // loggit
- tag_minIPsig = 1.15;                  // loggit
- tag_minTA    = -1.75;                 // loggit
+ // tagging variables   // loggit
+ tag_maxAmax  = 0.75;   // loggit
+ tag_minIPsig = 1.15;   // loggit
+ tag_minTA    = -1.75;  // loggit
 
  // Table from "mrtusOrig" $aversion                         //loggit
  //          | EleMuOSOF | OnePho | TwoMuDY   | TwoEleDY     //loggit
@@ -52,8 +66,8 @@ void analyzer_config::setConfiguration()
  muoid = "Loose";  // "Tight"; "Loose"; //Medium"; // loggit 
  jetid = "Loose";  // "Tight"; "Loose";            // loggit 
 
- jetmatchdRcut = 0.4;                  // loggit
- objcleandRcut = 0.4;                  // loggit
+ jetmatchdRcut = 0.4; // loggit
+ objcleandRcut = 0.4; // loggit
 
  if (phoid = "Loose")  phoidbit=0;
  if (phoid = "Medium") phoidbit=1;
@@ -118,32 +132,8 @@ void analyzer_config::initSelectionCategories( ){
   selbinnames.push_back("OnePho");
   selbinnames.push_back("EleMuOSOFL");
 
-  //std::cout<<" Selection category: "<<selcategory<<"\n";
-  //if ( selcategory.EqualTo("Signal") ){
-  // selbinnames.push_back("OneEleSig");
-  // selbinnames.push_back("TwoEleSig");
-  // selbinnames.push_back("OneMuSig");
-  // selbinnames.push_back("TwoMuSig");
-  //} else if ( selcategory.EqualTo("DY") ){
-  // selbinnames.push_back("OneEleDY");
-  // selbinnames.push_back("TwoEleDY");
-  // selbinnames.push_back("OneMuDY");
-  // selbinnames.push_back("TwoMuDY");
-  //} else if ( selcategory.EqualTo("ZH") ){
-  // selbinnames.push_back("OneEleZH");
-  // selbinnames.push_back("TwoEleZH");
-  // selbinnames.push_back("OneMuZH");
-  // selbinnames.push_back("TwoMuZH");
-  //} else if ( selcategory.EqualTo("OffZ") ){
-  // selbinnames.push_back("OneEleOffZ");
-  // selbinnames.push_back("TwoEleOffZ");
-  // selbinnames.push_back("OneMuOffZ");
-  // selbinnames.push_back("TwoMuOffZ");
-  //} else if ( selcategory.EqualTo("MiscCR") ){
-  // selbinnames.push_back("OneEleNoPair");
-  // selbinnames.push_back("OneMuNoPair");
-  // selbinnames.push_back("EleMuOSOF");
-  // selbinnames.push_back("OnePho");
-  //} 
+}
 
+Bool_t analyzer_config::doTTOC(){
+  return TTOC;
 }
