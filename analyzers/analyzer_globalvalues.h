@@ -30,6 +30,24 @@ public :
    std::vector<int> taggedjetSB1_list;
    std::vector<int> taggedjetSB2_list;
    std::vector<int> taggedjetSB3_list;
+   std::vector<int> taggedjetSB4_list;
+   std::vector<int> taggedjetSB5_list;
+   std::vector<int> taggedjetSB6_list;
+   std::vector<int> taggedjetSB7_list;
+   std::vector<int> taggedjetSBL1_list;
+   std::vector<int> taggedjetSBL2_list;
+   std::vector<int> taggedjetSBL3_list;
+   std::vector<int> taggedjetSBL4_list;
+   std::vector<int> taggedjetSBL5_list;
+   std::vector<int> taggedjetSBL6_list;
+   std::vector<int> taggedjetSBL7_list;
+   std::vector<int> taggedjetSB2a_list;
+   std::vector<int> taggedjetSB2b_list;
+   std::vector<int> taggedjetSB2c_list;
+   std::vector<int> taggedjetIP_list;
+   std::vector<int> taggedjetSBIPa_list;
+   std::vector<int> taggedjetSBIPb_list;
+   std::vector<int> taggedjetSBIPc_list;
 
    std::vector<int> calomatchedPF_list;
    std::vector<int> PFmatchedCalo_list;

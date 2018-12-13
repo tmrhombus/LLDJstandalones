@@ -39,7 +39,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 {
 
 // // Draw signal as lines
-// Bool_t drawSignal = kFALSE; //kTRUE;
+Bool_t drawSignal = kFALSE; //kTRUE;
 // Bool_t drawRatio = kTRUE;
 
  // Setup running configuration: IO, naming, SFs, ..
@@ -833,25 +833,25 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("ZH");
       h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
-     h_VV = (TH1F*)h_WW->Clone("VV");
-      h_VV->Add(h_WZ             ) ;
-      h_VV->Add(h_ZZ             ) ;
+     h_altVV = (TH1F*)h_WW->Clone("altVV");
+      h_altVV->Add(h_WZ             ) ;
+      h_altVV->Add(h_ZZ             ) ;
 
-     h_altVV = (TH1F*)h_WWTo2L2Nu->Clone("altVV");
-      h_altVV->Add(h_WWToLNuQQ       ) ;
-      h_altVV->Add(h_WZTo1L3Nu       ) ;
-      h_altVV->Add(h_WZTo3LNu        ) ;
-      h_altVV->Add(h_WZToLNu2QorQQ2L ) ;
-      h_altVV->Add(h_ZZTo2L2Nu       ) ;
-      h_altVV->Add(h_ZZTo2L2Q        ) ;
-      h_altVV->Add(h_ZZTo2Q2Nu       ) ;
-      h_altVV->Add(h_ZZTo4L          ) ;
+     h_VV = (TH1F*)h_WWTo2L2Nu->Clone("VV");
+      h_VV->Add(h_WWToLNuQQ       ) ;
+      h_VV->Add(h_WZTo1L3Nu       ) ;
+      h_VV->Add(h_WZTo3LNu        ) ;
+      h_VV->Add(h_WZToLNu2QorQQ2L ) ;
+      h_VV->Add(h_ZZTo2L2Nu       ) ;
+      h_VV->Add(h_ZZTo2L2Q        ) ;
+      h_VV->Add(h_ZZTo2Q2Nu       ) ;
+      h_VV->Add(h_ZZTo4L          ) ;
 
-     h_TT = (TH1F*)h_TTJets->Clone("TT");
+     h_altTT = (TH1F*)h_TTJets->Clone("altTT");
 
-     h_altTT = (TH1F*)h_TTtoLfromTbar->Clone("altTT");
-      h_altTT->Add(h_TTtoLfromT    );
-      h_altTT->Add(h_TTtoLL        );
+     h_TT = (TH1F*)h_TTtoLfromTbar->Clone("TT");
+      h_TT->Add(h_TTtoLfromT    );
+      h_TT->Add(h_TTtoLL        );
     
      h_VG = (TH1F*)h_WG->Clone("VG");
       h_VG->Add(h_ZG);
@@ -1647,19 +1647,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
 
-      TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
-    //if(drawSignal){
-      //sigleg->SetBorderSize(0);
-      //sigleg->SetFillColor(kWhite);
-      //sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
-     //}
+     TLegend *sigleg = new TLegend(0.54,0.5,0.88,0.7);
+     if(drawSignal){
+       sigleg->SetBorderSize(0);
+       sigleg->SetFillColor(kWhite);
+       sigleg->AddEntry(h_Sig_MS40ct10    , "Z(H#rightarrow SS#rightarrow bbbb) M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+       sigleg->AddEntry(h_Sig_MS15ct100   , "Z(H#rightarrow SS#rightarrow bbbb) M_{S}=15 c#tau_{S}=100  ", "l" ) ;
+     }
 
      // set max and draw
      Double_t ymax;
@@ -1695,16 +1689,15 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        h_Data->Draw("sames E"); 
      }
 
-//     if(drawSignal){
-//      h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Draw("hist sames") ;
-//      sigleg->Draw();
-//     }
+     if(drawSignal){
+       h_Sig_MS40ct10->SetLineWidth(4);
+       h_Sig_MS15ct100->SetLineWidth(4);
+       h_Sig_MS40ct10->SetLineStyle(9);
+       h_Sig_MS15ct100->SetLineStyle(2);
+       h_Sig_MS40ct10->Draw("hist sames") ;
+       h_Sig_MS15ct100->Draw("hist sames") ;
+       sigleg->Draw();
+     }
      leg->Draw();
 
      char lumistring [50];
