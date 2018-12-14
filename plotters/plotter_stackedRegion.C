@@ -39,7 +39,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 {
 
 // // Draw signal as lines
-Bool_t drawSignal = kFALSE; //kTRUE;
+Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 // Bool_t drawRatio = kTRUE;
 
  // Setup running configuration: IO, naming, SFs, ..
@@ -111,14 +111,15 @@ Bool_t drawSignal = kFALSE; //kTRUE;
  variables.clear();
 
  variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
+ variables.push_back("AOD_dilepton_Pt");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ //variables.push_back("AllJets_AODCaloJetAlphaMax");
 
- variables.push_back("nSelectedAODCaloJet_L1PFTag");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
+ //variables.push_back("nSelectedAODCaloJet_L1PFTag");
+ //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
+ //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
+ //variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
 
  //variables.push_back("nVtx");                   
  //variables.push_back("nGoodVtx");               
@@ -175,10 +176,11 @@ Bool_t drawSignal = kFALSE; //kTRUE;
 
  // canvas and text attributes
  int canx = 1100;
- int cany = 1200;
+ int cany = 900;
  float lmarg = 0.12;
  float rmarg = 0.05;
- 
+ if(drawData) cany = 1200;
+
  TCanvas* canvas = new TCanvas("canvas","canvas",canx,cany); 
 
  gStyle->SetOptStat(0);
@@ -191,8 +193,11 @@ Bool_t drawSignal = kFALSE; //kTRUE;
  canvas->Clear();
  canvas->cd();
 
- TPad *plotpad  = new TPad("plotpad", "plotpad", 0, 0.25, 1, 1);
- plotpad->SetBottomMargin(0.04);
+ float pad_bottom = 0;
+ if(drawData) pad_bottom = 0.25;
+ TPad *plotpad  = new TPad("plotpad", "plotpad", 0, pad_bottom, 1, 1);
+ plotpad->SetBottomMargin(0.12);
+ if(drawData) plotpad->SetBottomMargin(0.04);
  plotpad->SetLeftMargin(lmarg);
  plotpad->SetRightMargin(rmarg);
  plotpad->SetFrameLineWidth(3);
@@ -208,7 +213,7 @@ Bool_t drawSignal = kFALSE; //kTRUE;
  ratiopad->SetRightMargin(rmarg);
  ratiopad->SetLogy(0);
  ratiopad->SetGrid();
- ratiopad->Draw();
+ if(drawData) ratiopad->Draw();
  canvas->cd();
 
  TText* title = new TText(1,1,"") ;
@@ -643,8 +648,7 @@ Bool_t drawSignal = kFALSE; //kTRUE;
    for(unsigned int j=0; j<uncbins.size(); ++j){
     TString uncbin = uncbins[j];
 
-    //Blind
-    drawData=true;
+    //Override drawData for nTag signal region
     if(region.Contains("ZH") && 
        (variable=="nSelectedAODCaloJetTag" || 
         variable.Contains("Log10IPSig") || 
@@ -929,22 +933,24 @@ Bool_t drawSignal = kFALSE; //kTRUE;
       h_bkgtotal->Add(h_WJetsToLNu      ) ;
 
      h_light= (TH1F*)h_DY->Clone("light");
-      h_light->Add(h_GJets ) ;
+      h_light->Add(h_ZG ) ;
 
      h_light_alt= (TH1F*)h_DY->Clone("light_alt");
-      h_light_alt->Add(h_GJets ) ;
+      h_light_alt->Add(h_ZG ) ;
 
      h_other=(TH1F*)h_VV->Clone("other");
-      h_other->Add(h_VG);
+      h_other->Add(h_WG);
       h_other->Add(h_QCD);
       h_other->Add(h_WJetsToLNu);
       h_other->Add(h_ZH    ) ;
+      h_other->Add(h_GJets ) ;
 
      h_other_alt=(TH1F*)h_altVV->Clone("other_alt");
-      h_other_alt->Add(h_VG);
+      h_other_alt->Add(h_WG);
       h_other_alt->Add(h_QCD);
       h_other_alt->Add(h_WJetsToLNu);
       h_other_alt->Add(h_ZH    ) ;
+      h_other_alt->Add(h_GJets ) ;
 
      h_heavy= (TH1F*)h_TT->Clone("heavy");
       h_heavy->Add(h_ST    ) ;
@@ -1647,7 +1653,7 @@ Bool_t drawSignal = kFALSE; //kTRUE;
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
 
-     TLegend *sigleg = new TLegend(0.54,0.5,0.88,0.7);
+     TLegend *sigleg = new TLegend(0.54,0.6,0.88,0.7);
      if(drawSignal){
        sigleg->SetBorderSize(0);
        sigleg->SetFillColor(kWhite);
@@ -1679,10 +1685,12 @@ Bool_t drawSignal = kFALSE; //kTRUE;
      if(!drawData){
        bgstack->GetXaxis()->SetTitleSize(40);
        bgstack->GetXaxis()->SetTitleFont(43);
-       bgstack->GetXaxis()->SetTitle(varname + "    "+description);
-       bgstack->GetXaxis()->SetTitleOffset(4.0);
+       //bgstack->GetXaxis()->SetTitle(varname + "    "+description);
+       bgstack->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
+       bgstack->GetXaxis()->SetTitleOffset(1);
        bgstack->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-       bgstack->GetXaxis()->SetLabelSize(20);//20
+       bgstack->GetXaxis()->SetLabelSize(40);//20
+       bgstack->GetYaxis()->SetTitleOffset(1);
      }
      //h_bkgtotal->Draw("e2 sames");
      if(drawData){
@@ -1690,6 +1698,8 @@ Bool_t drawSignal = kFALSE; //kTRUE;
      }
 
      if(drawSignal){
+       h_Sig_MS40ct10->SetLineColor(kBlack);
+       h_Sig_MS15ct100->SetLineColor(kBlack);
        h_Sig_MS40ct10->SetLineWidth(4);
        h_Sig_MS15ct100->SetLineWidth(4);
        h_Sig_MS40ct10->SetLineStyle(9);
@@ -1729,7 +1739,7 @@ Bool_t drawSignal = kFALSE; //kTRUE;
        h_ratio->GetYaxis()->SetTitleFont(43);
        h_ratio->GetYaxis()->SetTitleOffset(1.55);
        h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-       h_ratio->GetYaxis()->SetLabelSize(20);
+       h_ratio->GetYaxis()->SetLabelSize(30);
        h_ratio->GetYaxis()->SetNdivisions(-105);
        h_ratio->GetYaxis()->SetTitle("Data/MC");
        // X axis ratio plot settings
@@ -1738,7 +1748,7 @@ Bool_t drawSignal = kFALSE; //kTRUE;
        h_ratio->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
        h_ratio->GetXaxis()->SetTitleOffset(4.0);
        h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-       h_ratio->GetXaxis()->SetLabelSize(20);//20
+       h_ratio->GetXaxis()->SetLabelSize(30);//20
        h_ratio->SetMarkerStyle(20);
        h_ratio->SetMarkerColor(kRed);
        h_ratio->SetMarkerSize(1);
