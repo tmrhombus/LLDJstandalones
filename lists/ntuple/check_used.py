@@ -1,7 +1,3 @@
-
-
-
-
 def get_samples():
     my_sample_list = []
     submitfile = open("../../submitters/submitjobs.sh", "r")
@@ -21,7 +17,7 @@ def get_samples():
             line = line.replace('\\', '')
             line = line.rstrip()
             
-            print(line)
+            #print(line)
             my_sample_list.append(line)
 
         if "samples=(" in line:
@@ -32,7 +28,7 @@ def get_samples():
 
 
 sample_list = get_samples()
-print(sample_list)
+#print(sample_list)
 
 for sample in sample_list:
     samplefile = open('../../lists/' + sample + '.list', 'r')
@@ -49,8 +45,17 @@ for sample in sample_list:
         if category not in category_list:
             category_list.append(category)
     
-    print(category_list)
+    #print(category_list)
 
     for category in category_list:
-        
+        dasmapAODfile = open('dasmapAOD.list', 'r')
+        for line in dasmapAODfile:
+            if category in line:
+                values = line.split()
+                for value in values:
+                    if "/AOD" in value:
+                        print value
     
+
+
+
