@@ -57,6 +57,12 @@ for sample in sample_list:
                     match = True
 
                 if "/AOD" in value and match:
+                    
+                    #enable the following three lines to print for latex
+                    value = value.replace('RunIISummer16DR80Premix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV','*')
+                    value = value.replace('_', '\_')
+                    value = value + ' \\\\'
+                    
                     print value
     
 
