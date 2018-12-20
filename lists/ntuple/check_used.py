@@ -50,11 +50,14 @@ for sample in sample_list:
     for category in category_list:
         dasmapAODfile = open('dasmapAOD.list', 'r')
         for line in dasmapAODfile:
-            if category in line:
-                values = line.split()
-                for value in values:
-                    if "/AOD" in value:
-                        print value
+            match = False
+            values = line.split()
+            for value in values:
+                if category == value:
+                    match = True
+
+                if "/AOD" in value and match:
+                    print value
     
 
 
