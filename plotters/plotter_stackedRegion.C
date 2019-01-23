@@ -39,7 +39,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 {
 
 // // Draw signal as lines
-// Bool_t drawSignal = kFALSE; //kTRUE;
+Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 // Bool_t drawRatio = kTRUE;
 
  // Setup running configuration: IO, naming, SFs, ..
@@ -111,14 +111,15 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  variables.clear();
 
  variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJetAlphaMax");
+ variables.push_back("AOD_dilepton_Pt");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+ //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+ //variables.push_back("AllJets_AODCaloJetAlphaMax");
 
- variables.push_back("nSelectedAODCaloJet_L1PFTag");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
- variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
- variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
+ //variables.push_back("nSelectedAODCaloJet_L1PFTag");
+ //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
+ //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10TrackAngle");
+ //variables.push_back("AllJets_AODCaloJet_L1PFAlphaMax");
 
  //variables.push_back("nVtx");                   
  //variables.push_back("nGoodVtx");               
@@ -175,10 +176,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
 
  // canvas and text attributes
  int canx = 1100;
- int cany = 1200;
+ int cany = 900;
  float lmarg = 0.12;
  float rmarg = 0.05;
- 
+ if(drawData) cany = 1200;
+
  TCanvas* canvas = new TCanvas("canvas","canvas",canx,cany); 
 
  gStyle->SetOptStat(0);
@@ -191,8 +193,11 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  canvas->Clear();
  canvas->cd();
 
- TPad *plotpad  = new TPad("plotpad", "plotpad", 0, 0.25, 1, 1);
- plotpad->SetBottomMargin(0.04);
+ float pad_bottom = 0;
+ if(drawData) pad_bottom = 0.25;
+ TPad *plotpad  = new TPad("plotpad", "plotpad", 0, pad_bottom, 1, 1);
+ plotpad->SetBottomMargin(0.12);
+ if(drawData) plotpad->SetBottomMargin(0.04);
  plotpad->SetLeftMargin(lmarg);
  plotpad->SetRightMargin(rmarg);
  plotpad->SetFrameLineWidth(3);
@@ -208,7 +213,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
  ratiopad->SetRightMargin(rmarg);
  ratiopad->SetLogy(0);
  ratiopad->SetGrid();
- ratiopad->Draw();
+ if(drawData) ratiopad->Draw();
  canvas->cd();
 
  TText* title = new TText(1,1,"") ;
@@ -643,8 +648,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
    for(unsigned int j=0; j<uncbins.size(); ++j){
     TString uncbin = uncbins[j];
 
-    //Blind
-    drawData=true;
+    //Override drawData for nTag signal region
     if(region.Contains("ZH") && 
        (variable=="nSelectedAODCaloJetTag" || 
         variable.Contains("Log10IPSig") || 
@@ -833,25 +837,25 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("ZH");
       h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
-     h_VV = (TH1F*)h_WW->Clone("VV");
-      h_VV->Add(h_WZ             ) ;
-      h_VV->Add(h_ZZ             ) ;
+     h_altVV = (TH1F*)h_WW->Clone("altVV");
+      h_altVV->Add(h_WZ             ) ;
+      h_altVV->Add(h_ZZ             ) ;
 
-     h_altVV = (TH1F*)h_WWTo2L2Nu->Clone("altVV");
-      h_altVV->Add(h_WWToLNuQQ       ) ;
-      h_altVV->Add(h_WZTo1L3Nu       ) ;
-      h_altVV->Add(h_WZTo3LNu        ) ;
-      h_altVV->Add(h_WZToLNu2QorQQ2L ) ;
-      h_altVV->Add(h_ZZTo2L2Nu       ) ;
-      h_altVV->Add(h_ZZTo2L2Q        ) ;
-      h_altVV->Add(h_ZZTo2Q2Nu       ) ;
-      h_altVV->Add(h_ZZTo4L          ) ;
+     h_VV = (TH1F*)h_WWTo2L2Nu->Clone("VV");
+      h_VV->Add(h_WWToLNuQQ       ) ;
+      h_VV->Add(h_WZTo1L3Nu       ) ;
+      h_VV->Add(h_WZTo3LNu        ) ;
+      h_VV->Add(h_WZToLNu2QorQQ2L ) ;
+      h_VV->Add(h_ZZTo2L2Nu       ) ;
+      h_VV->Add(h_ZZTo2L2Q        ) ;
+      h_VV->Add(h_ZZTo2Q2Nu       ) ;
+      h_VV->Add(h_ZZTo4L          ) ;
 
-     h_TT = (TH1F*)h_TTJets->Clone("TT");
+     h_altTT = (TH1F*)h_TTJets->Clone("altTT");
 
-     h_altTT = (TH1F*)h_TTtoLfromTbar->Clone("altTT");
-      h_altTT->Add(h_TTtoLfromT    );
-      h_altTT->Add(h_TTtoLL        );
+     h_TT = (TH1F*)h_TTtoLfromTbar->Clone("TT");
+      h_TT->Add(h_TTtoLfromT    );
+      h_TT->Add(h_TTtoLL        );
     
      h_VG = (TH1F*)h_WG->Clone("VG");
       h_VG->Add(h_ZG);
@@ -929,22 +933,24 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
       h_bkgtotal->Add(h_WJetsToLNu      ) ;
 
      h_light= (TH1F*)h_DY->Clone("light");
-      h_light->Add(h_GJets ) ;
+      h_light->Add(h_ZG ) ;
 
      h_light_alt= (TH1F*)h_DY->Clone("light_alt");
-      h_light_alt->Add(h_GJets ) ;
+      h_light_alt->Add(h_ZG ) ;
 
      h_other=(TH1F*)h_VV->Clone("other");
-      h_other->Add(h_VG);
+      h_other->Add(h_WG);
       h_other->Add(h_QCD);
       h_other->Add(h_WJetsToLNu);
       h_other->Add(h_ZH    ) ;
+      h_other->Add(h_GJets ) ;
 
      h_other_alt=(TH1F*)h_altVV->Clone("other_alt");
-      h_other_alt->Add(h_VG);
+      h_other_alt->Add(h_WG);
       h_other_alt->Add(h_QCD);
       h_other_alt->Add(h_WJetsToLNu);
       h_other_alt->Add(h_ZH    ) ;
+      h_other_alt->Add(h_GJets ) ;
 
      h_heavy= (TH1F*)h_TT->Clone("heavy");
       h_heavy->Add(h_ST    ) ;
@@ -1647,19 +1653,13 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
 
-      TLegend *sigleg = new TLegend(0.15,0.6,0.65,0.85);
-    //if(drawSignal){
-      //sigleg->SetBorderSize(0);
-      //sigleg->SetFillColor(kWhite);
-      //sigleg->SetHeader("Z(H#rightarrow SS#rightarrow bbbb)","C");
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0     , "M_{S}=40 c#tau_{S}=0    ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS0p05  , "M_{S}=40 c#tau_{S}=0p05 ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1     , "M_{S}=40 c#tau_{S}=1    ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10    , "M_{S}=40 c#tau_{S}=10   ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS100   , "M_{S}=40 c#tau_{S}=100  ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS1000  , "M_{S}=40 c#tau_{S}=1000 ", "l" ) ;
-      //sigleg->AddEntry(h_ggZH_HToSSTobbbb_MS40_ctauS10000 , "M_{S}=40 c#tau_{S}=10000", "l" ) ;
-     //}
+     TLegend *sigleg = new TLegend(0.54,0.6,0.88,0.7);
+     if(drawSignal){
+       sigleg->SetBorderSize(0);
+       sigleg->SetFillColor(kWhite);
+       sigleg->AddEntry(h_Sig_MS40ct10    , "Z(H#rightarrow SS#rightarrow bbbb) M_{S}=40 c#tau_{S}=10   ", "l" ) ;
+       sigleg->AddEntry(h_Sig_MS15ct100   , "Z(H#rightarrow SS#rightarrow bbbb) M_{S}=15 c#tau_{S}=100  ", "l" ) ;
+     }
 
      // set max and draw
      Double_t ymax;
@@ -1685,26 +1685,29 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
      if(!drawData){
        bgstack->GetXaxis()->SetTitleSize(40);
        bgstack->GetXaxis()->SetTitleFont(43);
-       bgstack->GetXaxis()->SetTitle(varname + "    "+description);
-       bgstack->GetXaxis()->SetTitleOffset(4.0);
+       //bgstack->GetXaxis()->SetTitle(varname + "    "+description);
+       bgstack->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
+       bgstack->GetXaxis()->SetTitleOffset(1);
        bgstack->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-       bgstack->GetXaxis()->SetLabelSize(20);//20
+       bgstack->GetXaxis()->SetLabelSize(40);//20
+       bgstack->GetYaxis()->SetTitleOffset(1);
      }
      //h_bkgtotal->Draw("e2 sames");
      if(drawData){
        h_Data->Draw("sames E"); 
      }
 
-//     if(drawSignal){
-//      h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS0p05  ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS1     ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS10    ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS100   ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS1000  ->Draw("hist sames") ;
-//      h_ggZH_HToSSTobbbb_MS40_ctauS10000 ->Draw("hist sames") ;
-//      sigleg->Draw();
-//     }
+     if(drawSignal){
+       h_Sig_MS40ct10->SetLineColor(kBlack);
+       h_Sig_MS15ct100->SetLineColor(kBlack);
+       h_Sig_MS40ct10->SetLineWidth(4);
+       h_Sig_MS15ct100->SetLineWidth(4);
+       h_Sig_MS40ct10->SetLineStyle(9);
+       h_Sig_MS15ct100->SetLineStyle(2);
+       h_Sig_MS40ct10->Draw("hist sames") ;
+       h_Sig_MS15ct100->Draw("hist sames") ;
+       sigleg->Draw();
+     }
      leg->Draw();
 
      char lumistring [50];
@@ -1736,7 +1739,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        h_ratio->GetYaxis()->SetTitleFont(43);
        h_ratio->GetYaxis()->SetTitleOffset(1.55);
        h_ratio->GetYaxis()->SetLabelFont(43); // Absolute font size in pixel (precision 3)
-       h_ratio->GetYaxis()->SetLabelSize(20);
+       h_ratio->GetYaxis()->SetLabelSize(30);
        h_ratio->GetYaxis()->SetNdivisions(-105);
        h_ratio->GetYaxis()->SetTitle("Data/MC");
        // X axis ratio plot settings
@@ -1745,7 +1748,7 @@ void plotter_stackedRegion(TString region, Bool_t dolog, Bool_t HIP, Bool_t useE
        h_ratio->GetXaxis()->SetTitle((TString)h_Data->GetTitle()+description);
        h_ratio->GetXaxis()->SetTitleOffset(4.0);
        h_ratio->GetXaxis()->SetLabelFont(43); //43 Absolute font size in pixel (precision 3)
-       h_ratio->GetXaxis()->SetLabelSize(20);//20
+       h_ratio->GetXaxis()->SetLabelSize(30);//20
        h_ratio->SetMarkerStyle(20);
        h_ratio->SetMarkerColor(kRed);
        h_ratio->SetMarkerSize(1);

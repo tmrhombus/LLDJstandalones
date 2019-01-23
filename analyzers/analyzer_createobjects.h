@@ -22,6 +22,38 @@ public :
  std::vector<int>     jet_passTaggerSB1    ();
  std::vector<int>     jet_passTaggerSB2    ();
  std::vector<int>     jet_passTaggerSB3    ();
+ std::vector<int>     jet_passTaggerSB4    ();
+ std::vector<int>     jet_passTaggerSB5    ();
+ std::vector<int>     jet_passTaggerSB6    ();
+ std::vector<int>     jet_passTaggerSB7    ();
+ std::vector<int>     jet_passTaggerSBL1    ();
+ std::vector<int>     jet_passTaggerSBL2    ();
+ std::vector<int>     jet_passTaggerSBL3    ();
+ std::vector<int>     jet_passTaggerSBL4    ();
+ std::vector<int>     jet_passTaggerSBL5    ();
+ std::vector<int>     jet_passTaggerSBL6    ();
+ std::vector<int>     jet_passTaggerSBL7    ();
+
+ std::vector<int>     jet_passTaggerSB2a    ();
+ std::vector<int>     jet_passTaggerSB2b    ();
+ std::vector<int>     jet_passTaggerSB2c    ();
+ std::vector<int>     jet_passTaggerIP      ();
+ std::vector<int>     jet_passTaggerSBIPa    ();
+ std::vector<int>     jet_passTaggerSBIPb    ();
+ std::vector<int>     jet_passTaggerSBIPc    ();
+
+ bool AL_SB(int i);
+ bool IP_SB(int i);
+ bool IP_SBa(int i);
+ bool IP_SBb(int i);
+ bool IP_SBc(int i);
+ bool TA_SB(int i);
+ bool AL_SBL(int i);
+ bool IP_SBL(int i);
+ bool TA_SBL(int i);
+ bool AL_SG(int i);
+ bool IP_SG(int i);
+ bool TA_SG(int i);
 
  std::vector<float>     jet_minDR              ();
  std::vector<float>     jet_matchCSV           ();

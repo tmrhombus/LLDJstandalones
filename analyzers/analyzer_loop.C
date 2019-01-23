@@ -91,7 +91,26 @@ void analyzer_loop::Loop(TString outfilename,
   taggedjetSB1_list   = jet_passTaggerSB1   ();
   taggedjetSB2_list   = jet_passTaggerSB2   ();
   taggedjetSB3_list   = jet_passTaggerSB3   ();
-  
+  taggedjetSB4_list   = jet_passTaggerSB4   ();
+  taggedjetSB5_list   = jet_passTaggerSB5   ();
+  taggedjetSB6_list   = jet_passTaggerSB6   ();
+  taggedjetSB7_list   = jet_passTaggerSB7   ();
+  taggedjetSBL1_list   = jet_passTaggerSBL1   ();
+  taggedjetSBL2_list   = jet_passTaggerSBL2   ();
+  taggedjetSBL3_list   = jet_passTaggerSBL3   ();
+  taggedjetSBL4_list   = jet_passTaggerSBL4   ();
+  taggedjetSBL5_list   = jet_passTaggerSBL5   ();
+  taggedjetSBL6_list   = jet_passTaggerSBL6   ();
+  taggedjetSBL7_list   = jet_passTaggerSBL7   ();
+  taggedjetSB2a_list   = jet_passTaggerSB2a   ();
+  taggedjetSB2b_list   = jet_passTaggerSB2b   ();
+  taggedjetSB2c_list   = jet_passTaggerSB2c   ();
+  taggedjetIP_list   = jet_passTaggerIP   ();
+  taggedjetSBIPa_list   = jet_passTaggerSBIPa   ();
+  taggedjetSBIPb_list   = jet_passTaggerSBIPb   ();
+  taggedjetSBIPc_list   = jet_passTaggerSBIPc   ();  
+
+
   //save jets list for L1PF test clear list if does not pass
   aodcalojet_L1PF_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
   bool pass_L1PF = true;
