@@ -269,7 +269,13 @@ int main(int argc, char **argv){
   //outfilename = outfilenamebase + unccategory;
 
   analyzer.initSelectionCategories( );
+  if(i==0){
+    for(unsigned int i=0; i<analyzer.selbinnames.size(); ++i){
+      analyzer.hist_file_out.push_back(new TFile(outfilename+"_"+analyzer.selbinnames[i]+"_histograms.root","RECREATE"));
+    }
+  }
   analyzer.initEleHistograms( unccategory );
+  std::cout << "NAME ELE " << analyzer.h_AOD_nEle[0]->GetName() << std::endl;
   analyzer.initMuHistograms( unccategory );
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
@@ -286,7 +292,16 @@ int main(int argc, char **argv){
   analyzer.initBackgroundEstimateHistograms();	
   if(analyzer.doTTOC())analyzer.initTTOCHistograms( unccategory );
 
+  //std::cout << "NAME ELE " << analyzer.h_AOD_nEle[0]->GetName() << std::endl;//doesn't work
+
+
   analyzer.Loop(outfilename, lumi, nrevents, crosssection, avgTTSF, TIevts, optfile, NM1file, unccategory);
+ }
+
+ //Close histogram output files
+ for(unsigned int i=0; i<analyzer.selbinnames.size(); ++i){
+   std::cout << "Closing histogram file for " << analyzer.selbinnames[i] << std::endl;
+   analyzer.hist_file_out[i]->Close();
  }
 
  // end stopwatch
