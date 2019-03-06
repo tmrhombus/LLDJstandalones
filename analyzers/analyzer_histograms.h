@@ -152,13 +152,6 @@ public :
 
  Bool_t dofillselbin    [SELBINNAMESIZE];
 
- // initialize histograms as global
-
- TH1F* histoTH1F;
- TH2F* histoTH2F;
-
-
-
  
  //------------------Trigger turn on curve
  

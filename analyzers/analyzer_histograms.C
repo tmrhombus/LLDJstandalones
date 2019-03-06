@@ -85,11 +85,8 @@ Bool_t analyzer_histograms::writeSelectedTagHistograms(int selbin, int tagbin)
 TH1F* analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle, Int_t nbins, Float_t xmin, Float_t xmax)
 {
 
-  if(histoTH1F!=NULL)histoTH1F->Clear();
- histoTH1F = new TH1F( hname , htitle , nbins , xmin , xmax );
+ TH1F* histoTH1F = new TH1F( hname , htitle , nbins , xmin , xmax );
  histoTH1F->Sumw2();
-
- std::cout << "NAME " <<histoTH1F->GetName() << std::endl;
 
  return histoTH1F;
 
@@ -99,11 +96,8 @@ TH1F* analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle
 TH1F* analyzer_histograms::initSingleHistogramTH1F(TString hname, TString htitle, int nbins, Float_t xbins[])
 {
 
-  if(histoTH1F!=NULL)histoTH1F->Clear();
-  histoTH1F = new TH1F( hname , htitle , nbins , xbins );
+  TH1F* histoTH1F = new TH1F( hname , htitle , nbins , xbins );
   histoTH1F->Sumw2();
-
- std::cout << "NAME " <<histoTH1F->GetName() << std::endl;
 
   return histoTH1F;
 
@@ -117,8 +111,7 @@ TH2F* analyzer_histograms::initSingleHistogramTH2F(TString hname, TString htitle
                                    Int_t nbinsy, Float_t ymin, Float_t ymax)
 {
 
-  if(histoTH2F!=NULL) histoTH2F->Clear();
- histoTH2F = new TH2F( hname , htitle , nbinsx , xmin , xmax  , nbinsy , ymin , ymax );
+ TH2F* histoTH2F = new TH2F( hname , htitle , nbinsx , xmin , xmax  , nbinsy , ymin , ymax );
  histoTH2F->Sumw2();
 
  return histoTH2F;
@@ -131,8 +124,7 @@ TH2F* analyzer_histograms::initSingleHistogramTH2F(TString hname, TString htitle
 						  int nbinsy, Float_t ybins[])
 {
 
-  if(histoTH2F!=NULL) histoTH2F->Clear();
- histoTH2F = new TH2F( hname , htitle , nbinsx , xbins , nbinsy , ybins );
+ TH2F* histoTH2F = new TH2F( hname , htitle , nbinsx , xbins , nbinsy , ybins );
  histoTH2F->Sumw2();
 
  return histoTH2F;
@@ -189,7 +181,7 @@ Bool_t analyzer_histograms::initEleHistograms( TString uncbin ){
  for(unsigned int i=0; i<selbinnames.size(); ++i){
    hist_file_out[i]->cd();
    deleteEleHistograms(i);
-
+   
    TString hname_AOD_nEle                    = "h_"+selbinnames[i]+"_AOD_nEle"        +uncbin; 
    TString hname_AOD_nSelectedEle            = "h_"+selbinnames[i]+"_AOD_nSelectedEle"+uncbin;
    TString hname_AOD_elePt                   = "h_"+selbinnames[i]+"_AOD_elePt"       +uncbin; 
@@ -214,7 +206,7 @@ Bool_t analyzer_histograms::initEleHistograms( TString uncbin ){
 Bool_t analyzer_histograms::fillEleHistograms(Float_t weight, int selbin )
 {
   hist_file_out[selbin]->cd();
-  std::cout << "NAME FILL " << h_AOD_nEle[selbin]->GetName() << std::endl;
+
   h_AOD_nEle            [selbin] ->Fill( float(nAODEle), weight );
   h_AOD_nSelectedEle    [selbin] ->Fill( float(electron_list.size()), weight );
 

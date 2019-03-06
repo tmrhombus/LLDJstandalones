@@ -40,7 +40,8 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadElectronWeight( eleid );
 
  std::cout<<"uncbin: "<<uncbin<<std::endl;
- TFile *outfile_bkgest = 0;
+
+TFile *outfile_bkgest = 0;
  bool doBkgEst = true;
  if( doBkgEst && uncbin.EqualTo("") ){
    std::cout<<"doBkgEst"<<std::endl;
@@ -54,6 +55,7 @@ void analyzer_loop::Loop(TString outfilename,
   
   L1PFremoved=kFALSE;
   cleareventcounters();
+
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
@@ -469,6 +471,7 @@ void analyzer_loop::Loop(TString outfilename,
   NM1EleZHtree->CloneTree()->Write();
   NM1file->Close();
  }
+
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){

@@ -275,7 +275,6 @@ int main(int argc, char **argv){
     }
   }
   analyzer.initEleHistograms( unccategory );
-  std::cout << "NAME ELE " << analyzer.h_AOD_nEle[0]->GetName() << std::endl;
   analyzer.initMuHistograms( unccategory );
   analyzer.initLepHistograms( unccategory );
   analyzer.initPhoHistograms( unccategory );
@@ -289,7 +288,7 @@ int main(int argc, char **argv){
   analyzer.initAODCaloJetMultHistograms( unccategory );
   analyzer.initCutflowHistograms( unccategory );
   analyzer.init2DHistograms( unccategory );
-  analyzer.initBackgroundEstimateHistograms();	
+  if(unccategory=="") analyzer.initBackgroundEstimateHistograms(); //if we end up using this, need to think about unccategory
   if(analyzer.doTTOC())analyzer.initTTOCHistograms( unccategory );
 
   //std::cout << "NAME ELE " << analyzer.h_AOD_nEle[0]->GetName() << std::endl;//doesn't work
