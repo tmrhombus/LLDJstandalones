@@ -180,7 +180,7 @@ Bool_t analyzer_histograms::write2DHistograms(int selbin)
 Bool_t analyzer_histograms::initEleHistograms( TString uncbin ){
  for(unsigned int i=0; i<selbinnames.size(); ++i){
    hist_file_out[i]->cd();
-   deleteEleHistograms(i);
+   //deleteEleHistograms(i);
    
    TString hname_AOD_nEle                    = "h_"+selbinnames[i]+"_AOD_nEle"        +uncbin; 
    TString hname_AOD_nSelectedEle            = "h_"+selbinnames[i]+"_AOD_nSelectedEle"+uncbin;
@@ -240,6 +240,7 @@ Bool_t analyzer_histograms::writeEleHistograms(int selbin)
 //----------------------------deleteEleHistograms
 Bool_t analyzer_histograms::deleteEleHistograms(int selbin)
 {
+  //printf("deleteEleHistograms\n");
   hist_file_out[selbin]->cd();
   if(h_AOD_nEle[selbin]!=NULL)            h_AOD_nEle            [selbin] ->Delete();
   if(h_AOD_nSelectedEle[selbin]!=NULL)    h_AOD_nSelectedEle    [selbin] ->Delete();
@@ -316,16 +317,17 @@ Bool_t analyzer_histograms::writeMuHistograms(int selbin)
 //----------------------------deleteMuHistograms
 Bool_t analyzer_histograms::deleteMuHistograms(int selbin)
 {
+  //printf("deleteMuHistograms\n");
   hist_file_out[selbin]->cd();
-  h_AOD_nMu                     [selbin]->Delete();
-  h_AOD_nSelectedMu             [selbin]->Delete();
-  h_AOD_muPt                    [selbin]->Delete();
-  h_AOD_muEn                    [selbin]->Delete();
-  h_AOD_muEta                   [selbin]->Delete();
-  h_AOD_muPhi                   [selbin]->Delete(); 
-  h_AOD_muCharge                [selbin]->Delete(); 
-  h_AOD_muPFdBetaIsolation      [selbin]->Delete(); 
- return kTRUE;
+  if(h_AOD_nMu[selbin]!=NULL)                 h_AOD_nMu                     [selbin]->Delete();
+  if(h_AOD_nSelectedMu[selbin]!=NULL)         h_AOD_nSelectedMu             [selbin]->Delete();
+  if(h_AOD_muPt[selbin]!=NULL)                h_AOD_muPt                    [selbin]->Delete();
+  if(h_AOD_muEn[selbin]!=NULL)                h_AOD_muEn                    [selbin]->Delete();
+  if(h_AOD_muEta[selbin]!=NULL)               h_AOD_muEta                   [selbin]->Delete();
+  if(h_AOD_muPhi[selbin]!=NULL)               h_AOD_muPhi                   [selbin]->Delete(); 
+  if(h_AOD_muCharge[selbin]!=NULL)            h_AOD_muCharge                [selbin]->Delete(); 
+  if(h_AOD_muPFdBetaIsolation[selbin]!=NULL)  h_AOD_muPFdBetaIsolation      [selbin]->Delete(); 
+  return kTRUE;
 }
 
 
@@ -334,7 +336,7 @@ Bool_t analyzer_histograms::initLepHistograms( TString uncbin ){
 
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   hist_file_out[i]->cd();
-   //deleteLepHistograms(i);
+  //deleteLepHistograms(i);
   TString hname_AOD_dilepton_Mass = "h_"+selbinnames[i]+"_AOD_dilepton_Mass"+uncbin; 
   TString hname_AOD_dilepton_Pt   = "h_"+selbinnames[i]+"_AOD_dilepton_Pt"  +uncbin; 
   TString hname_AOD_OSOFdilepton_Mass = "h_"+selbinnames[i]+"_AOD_OSOFdilepton_Mass"+uncbin; 
@@ -373,12 +375,13 @@ Bool_t analyzer_histograms::writeLepHistograms(int selbin)
 //----------------------------deleteLepHistograms
 Bool_t analyzer_histograms::deleteLepHistograms(int selbin)
 {
+  //printf("deleteLepHistograms\n");
   hist_file_out[selbin]->cd();
- h_AOD_dilepton_Mass           [selbin]->Delete();
- h_AOD_dilepton_Pt             [selbin]->Delete();
- h_AOD_OSOFdilepton_Mass       [selbin]->Delete();
- h_AOD_OSOFdilepton_Pt         [selbin]->Delete();
- return kTRUE;
+  if(h_AOD_dilepton_Mass    [selbin]!=NULL)   h_AOD_dilepton_Mass           [selbin]->Delete();
+  if(h_AOD_dilepton_Pt      [selbin]!=NULL)   h_AOD_dilepton_Pt             [selbin]->Delete();
+  if(h_AOD_OSOFdilepton_Mass[selbin]!=NULL)   h_AOD_OSOFdilepton_Mass       [selbin]->Delete();
+  if(h_AOD_OSOFdilepton_Pt  [selbin]!=NULL)   h_AOD_OSOFdilepton_Pt         [selbin]->Delete();  
+  return kTRUE;
 }
 
 
@@ -387,7 +390,7 @@ Bool_t analyzer_histograms::initPhoHistograms( TString uncbin ){
 
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   hist_file_out[i]->cd();
-   //deletePhoHistograms(i);
+  //deletePhoHistograms(i);
   TString hname_AOD_nPho                     = "h_"+selbinnames[i]+"_AOD_nPho"        +uncbin;
   TString hname_AOD_nSelectedPho             = "h_"+selbinnames[i]+"_AOD_nSelectedPho"+uncbin;
   TString hname_AOD_phoEn                    = "h_"+selbinnames[i]+"_AOD_phoEn"       +uncbin; 
@@ -439,13 +442,14 @@ Bool_t analyzer_histograms::writePhoHistograms(int selbin)
 //----------------------------deletePhoHistograms
 Bool_t analyzer_histograms::deletePhoHistograms(int selbin)
 {
+  //printf("deletePhoHistograms\n");
   hist_file_out[selbin]->cd();
-  h_AOD_nPho              [selbin]->Delete();
-  h_AOD_nSelectedPho      [selbin]->Delete();
-  h_AOD_phoEn             [selbin]->Delete(); 
-  h_AOD_phoPt             [selbin]->Delete(); 
-  h_AOD_phoEta            [selbin]->Delete(); 
-  h_AOD_phoPhi            [selbin]->Delete(); 
+  if(h_AOD_nPho        [selbin]!=NULL)  h_AOD_nPho              [selbin]->Delete();
+  if(h_AOD_nSelectedPho[selbin]!=NULL)  h_AOD_nSelectedPho      [selbin]->Delete();
+  if(h_AOD_phoEn       [selbin]!=NULL)  h_AOD_phoEn             [selbin]->Delete(); 
+  if(h_AOD_phoPt       [selbin]!=NULL)  h_AOD_phoPt             [selbin]->Delete(); 
+  if(h_AOD_phoEta      [selbin]!=NULL)  h_AOD_phoEta            [selbin]->Delete(); 
+  if(h_AOD_phoPhi      [selbin]!=NULL)  h_AOD_phoPhi            [selbin]->Delete(); 
   return kTRUE;
 }
 
@@ -494,11 +498,12 @@ Bool_t analyzer_histograms::writeMETHTHistograms(int selbin)
 //----------------------------deleteMETHTHistograms
 Bool_t analyzer_histograms::deleteMETHTHistograms(int selbin)
 {
+  //printf("deleteMETHTHistograms\n");
   hist_file_out[selbin]->cd();
-  h_AOD_MET_phi             [selbin]->Delete(); 
-  h_AOD_MET_pt              [selbin]->Delete(); 
-  h_htall                   [selbin]->Delete(); 
-  h_htaodcalojets           [selbin]->Delete(); 
+  if(h_AOD_MET_phi  [selbin]!=NULL)   h_AOD_MET_phi             [selbin]->Delete(); 
+  if(h_AOD_MET_pt   [selbin]!=NULL)   h_AOD_MET_pt              [selbin]->Delete(); 
+  if(h_htall        [selbin]!=NULL)   h_htall                   [selbin]->Delete(); 
+  if(h_htaodcalojets[selbin]!=NULL)   h_htaodcalojets           [selbin]->Delete(); 
   return kTRUE;
 }
 
@@ -508,11 +513,11 @@ Bool_t analyzer_histograms::deleteMETHTHistograms(int selbin)
 //----------------------------initAODCaloJetBasicHistograms
 Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 {
-  
+
   // loop through jets and selections to initialize histograms in parllel (series)
   for(unsigned int i=0; i<selbinnames.size(); ++i){
   hist_file_out[i]->cd(); 
-   //deleteAODCaloJetBasicHistograms(i);
+  //deleteAODCaloJetBasicHistograms(i);
       TString hname_nCaloJet                 = "h_"+selbinnames[i]+"_nCaloJet" +uncbin;
       TString hname_nPFJet                   = "h_"+selbinnames[i]+"_nPFJet"   +uncbin;
       TString hname_nPFchsJet                = "h_"+selbinnames[i]+"_nPFchsJet"+uncbin;
@@ -570,7 +575,7 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 	const int Pt_n_xbins = 10;
 	float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
 	h_AODCaloJetPtVar  [i][k] = initSingleHistogramTH1F( hname_AODCaloJetPtVar , "AODCaloJetPtVar",  Pt_n_xbins, Pt_xbins );
-	
+
 	const int AbsEta_n_bins = 2;
 	float AbsEta_bins[AbsEta_n_bins+1] = {0, 1.5, 2.4};
 	h_AODCaloJetPtVarAbsEtaVar [i][k] = initSingleHistogramTH2F( hname_AODCaloJetPtVarAbsEtaVar, "AODCaloJetPtVarAbsEtaVar", Pt_n_xbins, Pt_xbins, AbsEta_n_bins, AbsEta_bins );
@@ -680,13 +685,13 @@ Bool_t analyzer_histograms::writeAODCaloJetBasicHistograms(int selbin, int jetbi
  return kTRUE;
 }
 
-//----------------------------deleteAODCaloJetHistograms
 Bool_t analyzer_histograms::deleteAODCaloJetBasicHistograms(int selbin)
 {
+  //printf("deleteAODCaloJetBasicHistograms\n");
   hist_file_out[selbin]->cd();
-  h_nCaloJet                 [selbin]->Delete();
-  h_nPFJet                   [selbin]->Delete();
-  h_nPFchsJet                [selbin]->Delete();
+  if(h_nCaloJet  [selbin]!=NULL)    h_nCaloJet                 [selbin]->Delete();
+  if(h_nPFJet    [selbin]!=NULL)    h_nPFJet                   [selbin]->Delete();
+  if(h_nPFchsJet [selbin]!=NULL)    h_nPFchsJet                [selbin]->Delete();
  return kTRUE;
 }
 
@@ -695,31 +700,32 @@ Bool_t analyzer_histograms::deleteAODCaloJetBasicHistograms(int selbin, int jetb
 {
   hist_file_out[selbin]->cd();
   //printf("deleteAODCaloJetHistograms\n");
-  h_AODCaloJetPt                             [selbin][jetbin]->Delete(); 
-  h_AODCaloJetPtVar                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetEta                            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetPhi                            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAlphaMax                       [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAlphaMax2                      [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAlphaMaxPrime                  [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAlphaMaxPrime2                 [selbin][jetbin]->Delete(); 
-  h_AODCaloJetBeta                           [selbin][jetbin]->Delete(); 
-  h_AODCaloJetBeta2                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetSumIP                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetSumIPSig                       [selbin][jetbin]->Delete(); 
-  h_AODCaloJetMedianIP                       [selbin][jetbin]->Delete(); 
-  h_AODCaloJetMedianLog10IPSig               [selbin][jetbin]->Delete(); 
-  h_AODCaloJetTrackAngle                     [selbin][jetbin]->Delete(); 
-  h_AODCaloJetLogTrackAngle                  [selbin][jetbin]->Delete(); 
-  h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetTotalTrackAngle                [selbin][jetbin]->Delete(); 
-  h_AODCaloJetMinDR                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetCSV                            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetPartonFlavour                  [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAbsEta                         [selbin][jetbin]->Delete();
-  h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetPt                   [selbin][jetbin]!=NULL)    h_AODCaloJetPt                             [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetPtVar                [selbin][jetbin]!=NULL)    h_AODCaloJetPtVar                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetEta                  [selbin][jetbin]!=NULL)    h_AODCaloJetEta                            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetPhi                  [selbin][jetbin]!=NULL)    h_AODCaloJetPhi                            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAlphaMax             [selbin][jetbin]!=NULL)    h_AODCaloJetAlphaMax                       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAlphaMax2            [selbin][jetbin]!=NULL)    h_AODCaloJetAlphaMax2                      [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAlphaMaxPrime        [selbin][jetbin]!=NULL)    h_AODCaloJetAlphaMaxPrime                  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAlphaMaxPrime2       [selbin][jetbin]!=NULL)    h_AODCaloJetAlphaMaxPrime2                 [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetBeta                 [selbin][jetbin]!=NULL)    h_AODCaloJetBeta                           [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetBeta2                [selbin][jetbin]!=NULL)    h_AODCaloJetBeta2                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetSumIP                [selbin][jetbin]!=NULL)    h_AODCaloJetSumIP                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetSumIPSig             [selbin][jetbin]!=NULL)    h_AODCaloJetSumIPSig                       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetMedianIP             [selbin][jetbin]!=NULL)    h_AODCaloJetMedianIP                       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetMedianLog10IPSig     [selbin][jetbin]!=NULL)    h_AODCaloJetMedianLog10IPSig               [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetTrackAngle           [selbin][jetbin]!=NULL)    h_AODCaloJetTrackAngle                     [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetLogTrackAngle        [selbin][jetbin]!=NULL)    h_AODCaloJetLogTrackAngle                  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetMedianLog10TrackAngle[selbin][jetbin]!=NULL)    h_AODCaloJetMedianLog10TrackAngle          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetTotalTrackAngle      [selbin][jetbin]!=NULL)    h_AODCaloJetTotalTrackAngle                [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetMinDR                [selbin][jetbin]!=NULL)    h_AODCaloJetMinDR                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetCSV                  [selbin][jetbin]!=NULL)    h_AODCaloJetCSV                            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetPartonFlavour        [selbin][jetbin]!=NULL)    h_AODCaloJetPartonFlavour                  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAbsEta               [selbin][jetbin]!=NULL)    h_AODCaloJetAbsEta                         [selbin][jetbin]->Delete();
+  if(h_AODCaloJetPtVarAbsEtaVar       [selbin][jetbin]!=NULL)    h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin]->Delete(); 
  return kTRUE;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -733,13 +739,13 @@ Bool_t analyzer_histograms::initAODCaloJet_L1PFHistograms( TString uncbin )
 {
   // loop through jets and selections to initialize histograms in parllel (series)
   for(unsigned int i=0; i<selbinnames.size(); ++i){
-  hist_file_out[i]->cd();
-    //deleteAODCaloJet_L1PFHistograms(i);
+      hist_file_out[i]->cd();
+      //deleteAODCaloJet_L1PFHistograms(i);
       TString hname_nCaloJet_L1PF = "h_"+selbinnames[i]+"_nCaloJet_L1PF" +uncbin;
-       h_nCaloJet_L1PF        [i] = initSingleHistogramTH1F( hname_nCaloJet_L1PF, "nCaloJet_L1PF",  10,0,10);
+      h_nCaloJet_L1PF        [i] = initSingleHistogramTH1F( hname_nCaloJet_L1PF, "nCaloJet_L1PF",  10,0,10);
       
       TString hname_nSelectedAODCaloJet_L1PFTag  = "h_"+selbinnames[i]+"_nSelectedAODCaloJet_L1PFTag"+uncbin;
-       h_nSelectedAODCaloJet_L1PFTag         [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet_L1PFTag, "nSelectedAODCaloJet_L1PFTag", 6, -0.5, 5.5);
+      h_nSelectedAODCaloJet_L1PFTag         [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet_L1PFTag, "nSelectedAODCaloJet_L1PFTag", 6, -0.5, 5.5);
       unsigned int k; if(jetMultOn) k=0; else k=jetmultnames.size()-1;
       for(k; k<jetmultnames.size(); ++k){
         //deleteAODCaloJet_L1PFHistograms(i,k);
@@ -887,40 +893,41 @@ Bool_t analyzer_histograms::writeAODCaloJet_L1PFHistograms(int selbin, int jetbi
 //----------------------------deleteAODCaloJet_L1PFHistograms
 Bool_t analyzer_histograms::deleteAODCaloJet_L1PFHistograms(int selbin)
 {
+  //printf("deleteAODCaloJet_L1PFHistograms\n");
   hist_file_out[selbin]->cd();
-  h_nCaloJet_L1PF                 [selbin]->Delete();
-  h_nSelectedAODCaloJet_L1PFTag   [selbin] ->Delete();
+  if(h_nCaloJet_L1PF              [selbin]!=NULL)   h_nCaloJet_L1PF              [selbin]->Delete();
+  if(h_nSelectedAODCaloJet_L1PFTag[selbin]!=NULL)   h_nSelectedAODCaloJet_L1PFTag[selbin] ->Delete();
   return kTRUE;
 }
 
 //----------------------------deleteAODCaloJet_L1PFHistograms
 Bool_t analyzer_histograms::deleteAODCaloJet_L1PFHistograms(int selbin, int jetbin)
 {
-
+  //printf("deleteAODCaloJet_L1PFHistograms\n");
   hist_file_out[selbin]->cd();
 
-  //printf("deleteAODCaloJet_L1PFHistograms\n");
-  h_AODCaloJet_L1PFPt                             [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFPtVar                          [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFEta                            [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFPhi                            [selbin][jetbin]->Delete(); 
-  h_AODCaloJet_L1PFAlphaMax                       [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFAlphaMax2                      [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFAlphaMaxPrime                  [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFAlphaMaxPrime2                 [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFBeta                           [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFBeta2                          [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFSumIP                          [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFSumIPSig                       [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFMedianIP                       [selbin][jetbin]->Delete(); 
-  h_AODCaloJet_L1PFMedianLog10IPSig               [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFTrackAngle                     [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFLogTrackAngle                  [selbin][jetbin]->Delete(); 
-  h_AODCaloJet_L1PFMedianLog10TrackAngle          [selbin][jetbin]->Delete(); 
-  //h_AODCaloJet_L1PFTotalTrackAngle                [selbin][jetbin]->Delete(); 
-  //h_AODCaloJetAbsEta                         [selbin][jetbin]->Delete();
-  //h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin]->Delete(); 
- return kTRUE;
+  if(h_AODCaloJet_L1PFPt                    [selbin][jetbin]!=NULL)   h_AODCaloJet_L1PFPt                             [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFPtVar               [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFPtVar                          [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFEta                 [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFEta                            [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFPhi                 [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFPhi                            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_L1PFAlphaMax              [selbin][jetbin]!=NULL)   h_AODCaloJet_L1PFAlphaMax                       [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFAlphaMax2           [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFAlphaMax2                      [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFAlphaMaxPrime       [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFAlphaMaxPrime                  [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFAlphaMaxPrime2      [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFAlphaMaxPrime2                 [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFBeta                [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFBeta                           [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFBeta2               [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFBeta2                          [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFSumIP               [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFSumIP                          [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFSumIPSig            [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFSumIPSig                       [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFMedianIP            [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFMedianIP                       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_L1PFMedianLog10IPSig      [selbin][jetbin]!=NULL)   h_AODCaloJet_L1PFMedianLog10IPSig               [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFTrackAngle          [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFTrackAngle                     [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFLogTrackAngle       [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFLogTrackAngle                  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_L1PFMedianLog10TrackAngle [selbin][jetbin]!=NULL)   h_AODCaloJet_L1PFMedianLog10TrackAngle          [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJet_L1PFTotalTrackAngle     [selbin][jetbin]!=NULL)   //h_AODCaloJet_L1PFTotalTrackAngle                [selbin][jetbin]->Delete(); 
+  ///if(h_AODCaloJetAbsEta                   [selbin][jetbin]!=NULL)   //h_AODCaloJetAbsEta                         [selbin][jetbin]->Delete();
+  ///if(h_AODCaloJetPtVarAbsEtaVar           [selbin][jetbin]!=NULL)   //h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin]->Delete(); 
+  
+  return kTRUE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1110,34 +1117,34 @@ Bool_t analyzer_histograms::writeAODCaloJetExtraHistograms(int selbin, int jetbi
 //----------------------------deleteAODCaloJetExtraHistograms
 Bool_t analyzer_histograms::deleteAODCaloJetExtraHistograms(int selbin, int jetbin)
 {
+  std::cout << "selbin " << selbin << " jetbin " << jetbin << std::endl;
+  //printf("deleteAODCaloJetExtraHistograms\n");
   hist_file_out[selbin]->cd();
- //printf("deleteAODCaloJetExtraHistograms\n");
-  h_AODCaloJetAvfVx                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVy                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVz                          [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexTotalChiSquared       [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexChi2NDoF              [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexDistanceToBeam        [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexTransverseError       [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexTransverseSig         [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexDeltaEta              [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexDeltaPhi              [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexRecoilPt              [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexTrackMass             [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexTrackEnergy           [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][jetbin]->Delete(); 
-  h_AODCaloJetNCleanMatchedTracks            [selbin][jetbin]->Delete(); 
-  h_AODCaloJetSumHitsInFrontOfVert           [selbin][jetbin]->Delete(); 
-  h_AODCaloJetSumMissHitsAfterVert           [selbin][jetbin]->Delete(); 
-  h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][jetbin]->Delete(); 
-  h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfDistToPV                    [selbin][jetbin]->Delete(); 
-  h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][jetbin]->Delete(); 
-  
+  if(h_AODCaloJetAvfVx                         [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVx                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVy                         [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVy                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVz                         [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVz                          [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexTotalChiSquared      [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexTotalChiSquared       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexDegreesOfFreedom     [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexDegreesOfFreedom      [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexChi2NDoF             [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexChi2NDoF              [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexDistanceToBeam       [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexDistanceToBeam        [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexTransverseError      [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexTransverseError       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexTransverseSig        [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexTransverseSig         [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexDeltaEta             [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexDeltaEta              [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexDeltaPhi             [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexDeltaPhi              [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexRecoilPt             [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexRecoilPt              [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexTrackMass            [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexTrackMass             [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexTrackEnergy          [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexTrackEnergy           [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfBeamSpotDeltaPhi           [selbin][jetbin]!=NULL)    h_AODCaloJetAvfBeamSpotDeltaPhi            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfBeamSpotRecoilPt           [selbin][jetbin]!=NULL)    h_AODCaloJetAvfBeamSpotRecoilPt            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfBeamSpotMedianDeltaPhi     [selbin][jetbin]!=NULL)    h_AODCaloJetAvfBeamSpotMedianDeltaPhi      [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi[selbin][jetbin]!=NULL)    h_AODCaloJetAvfBeamSpotLog10MedianDeltaPhi [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetNCleanMatchedTracks           [selbin][jetbin]!=NULL)    h_AODCaloJetNCleanMatchedTracks            [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetSumHitsInFrontOfVert          [selbin][jetbin]!=NULL)    h_AODCaloJetSumHitsInFrontOfVert           [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetSumMissHitsAfterVert          [selbin][jetbin]!=NULL)    h_AODCaloJetSumMissHitsAfterVert           [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetHitsInFrontOfVertPerTrack     [selbin][jetbin]!=NULL)    h_AODCaloJetHitsInFrontOfVertPerTrack      [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetMissHitsAfterVertPerTrack     [selbin][jetbin]!=NULL)    h_AODCaloJetMissHitsAfterVertPerTrack      [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfDistToPV                   [selbin][jetbin]!=NULL)    h_AODCaloJetAvfDistToPV                    [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJetAvfVertexDeltaZtoPV           [selbin][jetbin]!=NULL)    h_AODCaloJetAvfVertexDeltaZtoPV            [selbin][jetbin]->Delete(); 
   return kTRUE;
 }
 
@@ -1152,7 +1159,7 @@ Bool_t analyzer_histograms::initAODCaloJetTagHistograms( TString uncbin )
    hist_file_out[i]->cd();
 
   for(unsigned int j=0; j<tagmultnames.size(); ++j){
-    //deleteAODCaloJetTagHistograms(i,j);
+   //deleteAODCaloJetTagHistograms(i,j);
    TString hname_AODCaloJetPt_Tag0                      = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPt_Tag0"                  + uncbin ;
    TString hname_AODCaloJetPtVar_Tag0                   = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetPtVar_Tag0"               + uncbin ;
    TString hname_AODCaloJetMinDR_Tag0                   = "h_"+selbinnames[i]+"_"+tagmultnames[j]+"_AODCaloJetMinDR_Tag0"               + uncbin ;
@@ -1242,18 +1249,18 @@ Bool_t analyzer_histograms::writeAODCaloJetTagHistograms(int selbin, int tagbin)
 //----------------------------deleteAODCaloJetTagHistograms
 Bool_t analyzer_histograms::deleteAODCaloJetTagHistograms(int selbin, int tagbin)
 {
+  std::cout << "selbin " << selbin << " tagbin " << tagbin << std::endl;
   hist_file_out[selbin]->cd();
   //printf("deleteAODCaloJetTagHistograms\n");
-  h_AODCaloJetPt_Tag0                       [selbin][tagbin]->Delete(); 
-  h_AODCaloJetPtVar_Tag0                    [selbin][tagbin]->Delete(); 
-  h_AODCaloJetMinDR_Tag0                    [selbin][tagbin]->Delete(); 
-  h_AODCaloJetCSV_Tag0                      [selbin][tagbin]->Delete(); 
-  h_AODCaloJetPartonFlavour_Tag0            [selbin][tagbin]->Delete(); 
-  h_AODCaloJetAbsEta_Tag0                   [selbin][tagbin]->Delete(); 
-  h_AODCaloJetNCleanMatchedTracks_Tag0      [selbin][tagbin]->Delete(); 
-  h_AODCaloJetPtVarAbsEtaVar_Tag0           [selbin][tagbin]->Delete(); 
-
- return kTRUE;
+  if(h_AODCaloJetPt_Tag0                  [selbin][tagbin]!=NULL)    h_AODCaloJetPt_Tag0                       [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetPtVar_Tag0               [selbin][tagbin]!=NULL)    h_AODCaloJetPtVar_Tag0                    [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetMinDR_Tag0               [selbin][tagbin]!=NULL)    h_AODCaloJetMinDR_Tag0                    [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetCSV_Tag0                 [selbin][tagbin]!=NULL)    h_AODCaloJetCSV_Tag0                      [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetPartonFlavour_Tag0       [selbin][tagbin]!=NULL)    h_AODCaloJetPartonFlavour_Tag0            [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetAbsEta_Tag0              [selbin][tagbin]!=NULL)    h_AODCaloJetAbsEta_Tag0                   [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetNCleanMatchedTracks_Tag0 [selbin][tagbin]!=NULL)    h_AODCaloJetNCleanMatchedTracks_Tag0      [selbin][tagbin]->Delete(); 
+  if(h_AODCaloJetPtVarAbsEtaVar_Tag0      [selbin][tagbin]!=NULL)    h_AODCaloJetPtVarAbsEtaVar_Tag0           [selbin][tagbin]->Delete(); 
+  return kTRUE;
 }
 
 
@@ -1264,7 +1271,7 @@ Bool_t analyzer_histograms::initCutflowHistograms( TString uncbin ){
 
  for(unsigned int i=0; i<selbinnames.size(); ++i){
 
-   //deleteCutflowHistograms(i);
+  //deleteCutflowHistograms(i);
   TString hname_Cutflow    = "h_"+selbinnames[i]+"_Cutflow"   +uncbin; 
   TString hname_Onecut     = "h_"+selbinnames[i]+"_Onecut"    +uncbin; 
   TString hname_NMinus     = "h_"+selbinnames[i]+"_NMinus"    +uncbin; 
@@ -1365,13 +1372,14 @@ Bool_t analyzer_histograms::writeCutflowHistograms(int selbin)
 //----------------------------deleteCutflowHistograms
 Bool_t analyzer_histograms::deleteCutflowHistograms(int selbin)
 {
- h_Cutflow    [selbin]->Delete();
- h_Onecut     [selbin]->Delete();
- h_RawCutflow [selbin]->Delete();
- h_RawOnecut  [selbin]->Delete();
- h_NMinus     [selbin]->Delete();
- h_RawNMinus  [selbin]->Delete();
- return kTRUE;
+  //printf("deleteCutflowHistograms\n");
+  if(h_Cutflow   [selbin]!=NULL)  h_Cutflow    [selbin]->Delete();
+  if(h_Onecut    [selbin]!=NULL)  h_Onecut     [selbin]->Delete();
+  if(h_RawCutflow[selbin]!=NULL)  h_RawCutflow [selbin]->Delete();
+  if(h_RawOnecut [selbin]!=NULL)  h_RawOnecut  [selbin]->Delete();
+  if(h_NMinus    [selbin]!=NULL)  h_NMinus     [selbin]->Delete();
+  if(h_RawNMinus [selbin]!=NULL)  h_RawNMinus  [selbin]->Delete();
+  return kTRUE;
 }
 
 
@@ -1809,101 +1817,101 @@ Bool_t analyzer_histograms::writeTTOCHistograms(int selbin)
 //----------------------------deleteTTOCHistograms
 Bool_t analyzer_histograms::deleteTTOCHistograms(int selbin)
 {
-  h_TTOCMu1Pt           [selbin] ->Delete();
-  h_TTOCMu2Pt           [selbin] ->Delete();
-  h_TTOCMuPt            [selbin] ->Delete();
-  h_TTOCMu1Eta          [selbin] ->Delete();
-  h_TTOCMu2Eta          [selbin] ->Delete();
-  h_TTOCMuEta           [selbin] ->Delete();
-  h_TTOCEle1Pt          [selbin] ->Delete();
-  h_TTOCEle2Pt          [selbin] ->Delete();
-  h_TTOCElePt           [selbin] ->Delete();
-  h_TTOCEle1Eta         [selbin] ->Delete();
-  h_TTOCEle2Eta         [selbin] ->Delete();
-  h_TTOCEleEta          [selbin] ->Delete();
-  h_TTOCEMu_ElePt       [selbin] ->Delete(); 
-  h_TTOCEMu_MuPt        [selbin] ->Delete(); 
-  h_TTOCEMuPt           [selbin] ->Delete(); 
-  h_TTOCEMu_EleEta      [selbin] ->Delete(); 
-  h_TTOCEMu_MuEta       [selbin] ->Delete(); 
-  h_TTOCEMuEta          [selbin] ->Delete(); 
-  h_TTOCMuE_ElePt       [selbin] ->Delete(); 
-  h_TTOCMuE_MuPt        [selbin] ->Delete(); 
-  h_TTOCMuEPt           [selbin] ->Delete(); 
-  h_TTOCMuE_EleEta      [selbin] ->Delete(); 
-  h_TTOCMuE_MuEta       [selbin] ->Delete(); 
-  h_TTOCMuEEta          [selbin] ->Delete();  
-  h_TTOCPhoPt           [selbin] ->Delete();  
-  h_TTOCPhoEta          [selbin] ->Delete();  
+  //printf("deleteTTOCHistograms\n");
+  if(h_TTOCMu1Pt     [selbin]!=NULL)    h_TTOCMu1Pt           [selbin] ->Delete();
+  if(h_TTOCMu2Pt     [selbin]!=NULL)    h_TTOCMu2Pt           [selbin] ->Delete();
+  if(h_TTOCMuPt      [selbin]!=NULL)    h_TTOCMuPt            [selbin] ->Delete();
+  if(h_TTOCMu1Eta    [selbin]!=NULL)    h_TTOCMu1Eta          [selbin] ->Delete();
+  if(h_TTOCMu2Eta    [selbin]!=NULL)    h_TTOCMu2Eta          [selbin] ->Delete();
+  if(h_TTOCMuEta     [selbin]!=NULL)    h_TTOCMuEta           [selbin] ->Delete();
+  if(h_TTOCEle1Pt    [selbin]!=NULL)    h_TTOCEle1Pt          [selbin] ->Delete();
+  if(h_TTOCEle2Pt    [selbin]!=NULL)    h_TTOCEle2Pt          [selbin] ->Delete();
+  if(h_TTOCElePt     [selbin]!=NULL)    h_TTOCElePt           [selbin] ->Delete();
+  if(h_TTOCEle1Eta   [selbin]!=NULL)    h_TTOCEle1Eta         [selbin] ->Delete();
+  if(h_TTOCEle2Eta   [selbin]!=NULL)    h_TTOCEle2Eta         [selbin] ->Delete();
+  if(h_TTOCEleEta    [selbin]!=NULL)    h_TTOCEleEta          [selbin] ->Delete();
+  if(h_TTOCEMu_ElePt [selbin]!=NULL)    h_TTOCEMu_ElePt       [selbin] ->Delete(); 
+  if(h_TTOCEMu_MuPt  [selbin]!=NULL)    h_TTOCEMu_MuPt        [selbin] ->Delete(); 
+  if(h_TTOCEMuPt     [selbin]!=NULL)    h_TTOCEMuPt           [selbin] ->Delete(); 
+  if(h_TTOCEMu_EleEta[selbin]!=NULL)    h_TTOCEMu_EleEta      [selbin] ->Delete(); 
+  if(h_TTOCEMu_MuEta [selbin]!=NULL)    h_TTOCEMu_MuEta       [selbin] ->Delete(); 
+  if(h_TTOCEMuEta    [selbin]!=NULL)    h_TTOCEMuEta          [selbin] ->Delete(); 
+  if(h_TTOCMuE_ElePt [selbin]!=NULL)    h_TTOCMuE_ElePt       [selbin] ->Delete(); 
+  if(h_TTOCMuE_MuPt  [selbin]!=NULL)    h_TTOCMuE_MuPt        [selbin] ->Delete(); 
+  if(h_TTOCMuEPt     [selbin]!=NULL)    h_TTOCMuEPt           [selbin] ->Delete(); 
+  if(h_TTOCMuE_EleEta[selbin]!=NULL)    h_TTOCMuE_EleEta      [selbin] ->Delete(); 
+  if(h_TTOCMuE_MuEta [selbin]!=NULL)    h_TTOCMuE_MuEta       [selbin] ->Delete(); 
+  if(h_TTOCMuEEta    [selbin]!=NULL)    h_TTOCMuEEta          [selbin] ->Delete();  
+  if(h_TTOCPhoPt     [selbin]!=NULL)    h_TTOCPhoPt           [selbin] ->Delete();  
+  if(h_TTOCPhoEta    [selbin]!=NULL)    h_TTOCPhoEta          [selbin] ->Delete(); 
   //Double Mu
-  //h_TTOCTriggerDMu1Pt        [selbin] ->Delete();
-  //h_TTOCTriggerDMu2Pt        [selbin] ->Delete();
-  //h_TTOCTriggerDMuPt         [selbin] ->Delete();
-  //h_TTOCTriggerDMu1Eta       [selbin] ->Delete();
-  //h_TTOCTriggerDMu2Eta       [selbin] ->Delete();
-  //h_TTOCTriggerDMuEta        [selbin] ->Delete();
-  //h_TTOCTriggerDTkMu1Pt      [selbin] ->Delete();
-  //h_TTOCTriggerDTkMu2Pt      [selbin] ->Delete();
-  //h_TTOCTriggerDTkMu1Eta     [selbin] ->Delete();
-  //h_TTOCTriggerDTkMu2Eta     [selbin] ->Delete();
-  //h_TTOCTriggerNoDZMu1Pt     [selbin] ->Delete();
-  //h_TTOCTriggerNoDZMu2Pt     [selbin] ->Delete();
-  //h_TTOCTriggerNoDZMu1Eta    [selbin] ->Delete();
-  //h_TTOCTriggerNoDZMu2Eta    [selbin] ->Delete();
-  //h_TTOCTriggerNoDZTkMu1Pt   [selbin] ->Delete();
-  //h_TTOCTriggerNoDZTkMu2Pt   [selbin] ->Delete();
-  //h_TTOCTriggerNoDZTkMu1Eta  [selbin] ->Delete();
-  //h_TTOCTriggerNoDZTkMu2Eta  [selbin] ->Delete();
+  //if(h_TTOCTriggerDMu1Pt      [selbin]!=NULL)    h_TTOCTriggerDMu1Pt        [selbin] ->Delete();
+  //if(h_TTOCTriggerDMu2Pt      [selbin]!=NULL)    h_TTOCTriggerDMu2Pt        [selbin] ->Delete();
+  //if(h_TTOCTriggerDMuPt       [selbin]!=NULL)    h_TTOCTriggerDMuPt         [selbin] ->Delete();
+  //if(h_TTOCTriggerDMu1Eta     [selbin]!=NULL)    h_TTOCTriggerDMu1Eta       [selbin] ->Delete();
+  //if(h_TTOCTriggerDMu2Eta     [selbin]!=NULL)    h_TTOCTriggerDMu2Eta       [selbin] ->Delete();
+  //if(h_TTOCTriggerDMuEta      [selbin]!=NULL)    h_TTOCTriggerDMuEta        [selbin] ->Delete();
+  //if(h_TTOCTriggerDTkMu1Pt    [selbin]!=NULL)    h_TTOCTriggerDTkMu1Pt      [selbin] ->Delete();
+  //if(h_TTOCTriggerDTkMu2Pt    [selbin]!=NULL)    h_TTOCTriggerDTkMu2Pt      [selbin] ->Delete();
+  //if(h_TTOCTriggerDTkMu1Eta   [selbin]!=NULL)    h_TTOCTriggerDTkMu1Eta     [selbin] ->Delete();
+  //if(h_TTOCTriggerDTkMu2Eta   [selbin]!=NULL)    h_TTOCTriggerDTkMu2Eta     [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZMu1Pt   [selbin]!=NULL)    h_TTOCTriggerNoDZMu1Pt     [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZMu2Pt   [selbin]!=NULL)    h_TTOCTriggerNoDZMu2Pt     [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZMu1Eta  [selbin]!=NULL)    h_TTOCTriggerNoDZMu1Eta    [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZMu2Eta  [selbin]!=NULL)    h_TTOCTriggerNoDZMu2Eta    [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZTkMu1Pt [selbin]!=NULL)    h_TTOCTriggerNoDZTkMu1Pt   [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZTkMu2Pt [selbin]!=NULL)    h_TTOCTriggerNoDZTkMu2Pt   [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZTkMu1Eta[selbin]!=NULL)    h_TTOCTriggerNoDZTkMu1Eta  [selbin] ->Delete();
+  //if(h_TTOCTriggerNoDZTkMu2Eta[selbin]!=NULL)    h_TTOCTriggerNoDZTkMu2Eta  [selbin] ->Delete();
   //--Single Mu
-  h_TTOCTrigger22MuPt          [selbin] ->Delete();
-  h_TTOCTrigger22MuEta         [selbin] ->Delete();
-  h_TTOCTrigger22TkMuPt        [selbin] ->Delete();
-  h_TTOCTrigger22TkMuEta       [selbin] ->Delete();
-  h_TTOCTrigger24MuPt          [selbin] ->Delete();
-  h_TTOCTrigger24MuEta         [selbin] ->Delete();
-  h_TTOCTrigger24TkMuPt        [selbin] ->Delete();
-  h_TTOCTrigger24TkMuEta       [selbin] ->Delete();
+  if(h_TTOCTrigger22MuPt    [selbin]!=NULL)   h_TTOCTrigger22MuPt          [selbin] ->Delete();
+  if(h_TTOCTrigger22MuEta   [selbin]!=NULL)   h_TTOCTrigger22MuEta         [selbin] ->Delete();
+  if(h_TTOCTrigger22TkMuPt  [selbin]!=NULL)   h_TTOCTrigger22TkMuPt        [selbin] ->Delete();
+  if(h_TTOCTrigger22TkMuEta [selbin]!=NULL)   h_TTOCTrigger22TkMuEta       [selbin] ->Delete();
+  if(h_TTOCTrigger24MuPt    [selbin]!=NULL)   h_TTOCTrigger24MuPt          [selbin] ->Delete();
+  if(h_TTOCTrigger24MuEta   [selbin]!=NULL)   h_TTOCTrigger24MuEta         [selbin] ->Delete();
+  if(h_TTOCTrigger24TkMuPt  [selbin]!=NULL)   h_TTOCTrigger24TkMuPt        [selbin] ->Delete();
+  if(h_TTOCTrigger24TkMuEta [selbin]!=NULL)   h_TTOCTrigger24TkMuEta       [selbin] ->Delete();
   //Double Electron
-  h_TTOCTrigger23DEle1Pt       [selbin] ->Delete();
-  h_TTOCTrigger23DEle2Pt       [selbin] ->Delete();
-  h_TTOCTrigger23DElePt        [selbin] ->Delete();
-  h_TTOCTrigger23DEle1Eta      [selbin] ->Delete();
-  h_TTOCTrigger23DEle2Eta      [selbin] ->Delete();
-  h_TTOCTrigger23DEleEta       [selbin] ->Delete();
-  //h_TTOCTrigger17DEle1Pt     [selbin] ->Delete();
-  //h_TTOCTrigger17DEle2Pt     [selbin] ->Delete();
-  //h_TTOCTrigger17DEle1Eta    [selbin] ->Delete();
-  //h_TTOCTrigger17DEle2Eta    [selbin] ->Delete();
+  if(h_TTOCTrigger23DEle1Pt  [selbin]!=NULL)  h_TTOCTrigger23DEle1Pt       [selbin] ->Delete();
+  if(h_TTOCTrigger23DEle2Pt  [selbin]!=NULL)  h_TTOCTrigger23DEle2Pt       [selbin] ->Delete();
+  if(h_TTOCTrigger23DElePt   [selbin]!=NULL)  h_TTOCTrigger23DElePt        [selbin] ->Delete();
+  if(h_TTOCTrigger23DEle1Eta [selbin]!=NULL)  h_TTOCTrigger23DEle1Eta      [selbin] ->Delete();
+  if(h_TTOCTrigger23DEle2Eta [selbin]!=NULL)  h_TTOCTrigger23DEle2Eta      [selbin] ->Delete();
+  if(h_TTOCTrigger23DEleEta  [selbin]!=NULL)  h_TTOCTrigger23DEleEta       [selbin] ->Delete();
+  //if(h_TTOCTrigger17DEle1Pt  [selbin]!=NULL)  h_TTOCTrigger17DEle1Pt     [selbin] ->Delete()
+  //if(h_TTOCTrigger17DEle2Pt  [selbin]!=NULL)  h_TTOCTrigger17DEle2Pt     [selbin] ->Delete();
+  //if(h_TTOCTrigger17DEle1Eta [selbin]!=NULL)  h_TTOCTrigger17DEle1Eta    [selbin] ->Delete();
+  //if(h_TTOCTrigger17DEle2Eta [selbin]!=NULL)  h_TTOCTrigger17DEle2Eta    [selbin] ->Delete();
   //--Single Electron
-  h_TTOCTrigger23ElePt         [selbin] ->Delete();
-  h_TTOCTrigger23EleEta        [selbin] ->Delete();
-  h_TTOCTrigger27ElePt         [selbin] ->Delete();
-  h_TTOCTrigger27EleEta        [selbin] ->Delete();
-  
-  h_TTOCTriggerEMu_ElePt       [selbin] ->Delete(); 
-  h_TTOCTriggerEMu_MuPt        [selbin] ->Delete(); 
-  h_TTOCTriggerEMuPt           [selbin] ->Delete(); 
-  h_TTOCTriggerEMu_EleEta      [selbin] ->Delete(); 
-  h_TTOCTriggerEMu_MuEta       [selbin] ->Delete(); 
-  h_TTOCTriggerEMuEta          [selbin] ->Delete(); 
-  h_TTOCTriggerMuE_ElePt       [selbin] ->Delete(); 
-  h_TTOCTriggerMuE_MuPt        [selbin] ->Delete(); 
-  h_TTOCTriggerMuEPt           [selbin] ->Delete(); 
-  h_TTOCTriggerMuE_EleEta      [selbin] ->Delete(); 
-  h_TTOCTriggerMuE_MuEta       [selbin] ->Delete(); 
-  h_TTOCTriggerMuEEta          [selbin] ->Delete();  
-  h_TTOCTriggerPhoPt           [selbin] ->Delete();  
-  h_TTOCTriggerPhoEta          [selbin] ->Delete();  
- return kTRUE;
+  if(h_TTOCTrigger23ElePt   [selbin]!=NULL)   h_TTOCTrigger23ElePt         [selbin] ->Delete();
+  if(h_TTOCTrigger23EleEta  [selbin]!=NULL)   h_TTOCTrigger23EleEta        [selbin] ->Delete();
+  if(h_TTOCTrigger27ElePt   [selbin]!=NULL)   h_TTOCTrigger27ElePt         [selbin] ->Delete();
+  if(h_TTOCTrigger27EleEta  [selbin]!=NULL)   h_TTOCTrigger27EleEta        [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMu_ElePt [selbin]!=NULL)   h_TTOCTriggerEMu_ElePt       [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMu_MuPt  [selbin]!=NULL)   h_TTOCTriggerEMu_MuPt        [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMuPt     [selbin]!=NULL)   h_TTOCTriggerEMuPt           [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMu_EleEta[selbin]!=NULL)   h_TTOCTriggerEMu_EleEta      [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMu_MuEta [selbin]!=NULL)   h_TTOCTriggerEMu_MuEta       [selbin] ->Delete(); 
+  if(h_TTOCTriggerEMuEta    [selbin]!=NULL)   h_TTOCTriggerEMuEta          [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuE_ElePt [selbin]!=NULL)   h_TTOCTriggerMuE_ElePt       [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuE_MuPt  [selbin]!=NULL)   h_TTOCTriggerMuE_MuPt        [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuEPt     [selbin]!=NULL)   h_TTOCTriggerMuEPt           [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuE_EleEta[selbin]!=NULL)   h_TTOCTriggerMuE_EleEta      [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuE_MuEta [selbin]!=NULL)   h_TTOCTriggerMuE_MuEta       [selbin] ->Delete(); 
+  if(h_TTOCTriggerMuEEta    [selbin]!=NULL)   h_TTOCTriggerMuEEta          [selbin] ->Delete();  
+  if(h_TTOCTriggerPhoPt     [selbin]!=NULL)   h_TTOCTriggerPhoPt           [selbin] ->Delete();  
+  if(h_TTOCTriggerPhoEta    [selbin]!=NULL)   h_TTOCTriggerPhoEta          [selbin] ->Delete();  
+  return kTRUE;
 }
 
 
 //----------------------------initExtraHistograms
 Bool_t analyzer_histograms::initExtraHistograms( TString uncbin ){
 
- for(unsigned int i=0; i<selbinnames.size(); ++i){
-   //deleteExtraHistograms(i);
- }
+  //for(unsigned int i=0; i<selbinnames.size(); ++i){
+  //deleteExtraHistograms(i);
+  //}
  return kTRUE;
 }
 
@@ -1929,15 +1937,11 @@ Bool_t analyzer_histograms::deleteExtraHistograms(int selbin)
 //---------------------------scaleVariableBinHistograms
 Bool_t analyzer_histograms::scaleVariableBinHistograms(int selbin)
 {
-  TDirectory* dir = gROOT->CurrentDirectory();
-  std::cout << "FIRST " << dir->GetPath() << std::endl;
-  hist_file_out[selbin]->cd();
-  dir = gROOT->CurrentDirectory();
-  std::cout << "SECOND " << dir->GetPath() << std::endl;
-  std::cout << h_AODCaloJetPt               [selbin][0]->Integral() << std::endl;
 
-  for(unsigned int j=0; j<jetmultnames.size(); ++j){
-    std::cout << h_AODCaloJetPtVar                      [selbin][j]->Integral() << std::endl;
+  hist_file_out[selbin]->cd();
+
+  unsigned int j; if(jetMultOn) j=0; else j=jetmultnames.size()-1;
+  for(j; j<jetmultnames.size(); ++j){
     h_AODCaloJetPtVar                      [selbin][j]->Scale(1, "width");
   }
   for(unsigned int j=0; j<tagmultnames.size(); ++j){
@@ -1955,8 +1959,8 @@ Bool_t analyzer_histograms::initAODCaloJetMultHistograms( TString uncbin )
     hist_file_out[i]->cd();
 
     //deleteAODCaloJetMultHistograms(i);
-      TString hname_nSelectedAODCaloJet          = "h_"+selbinnames[i]+"_nSelectedAODCaloJet"+uncbin;
-      h_nSelectedAODCaloJet                  [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet         , "nSelectedAODCaloJet"      , 10, -0.5, 9.5);
+    TString hname_nSelectedAODCaloJet          = "h_"+selbinnames[i]+"_nSelectedAODCaloJet"+uncbin;
+    h_nSelectedAODCaloJet                  [i] = initSingleHistogramTH1F( hname_nSelectedAODCaloJet         , "nSelectedAODCaloJet"      , 10, -0.5, 9.5);
   }//sel                                                                                                                                                                                
 }
 
@@ -1978,8 +1982,9 @@ Bool_t analyzer_histograms::writeAODCaloJetMultHistograms(int selbin)
 //----------------------------deleteAODCaloJetMultHistograms
 Bool_t analyzer_histograms::deleteAODCaloJetMultHistograms(int selbin)
 {
+  //printf("deleteAODCaloJetMultHistograms\n");
   hist_file_out[selbin]->cd();
-  h_nSelectedAODCaloJet    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJet[selbin]!=NULL) h_nSelectedAODCaloJet    [selbin] ->Delete();
 }
 
 
@@ -1989,7 +1994,7 @@ Bool_t analyzer_histograms::initAODCaloJetTagMultHistograms( TString uncbin )
   for(unsigned int i=0; i<selbinnames.size(); ++i){
     hist_file_out[i]->cd();
 
-    //deleteAODCaloJetTagMultHistograms(i);
+      //deleteAODCaloJetTagMultHistograms(i);
       TString hname_nSelectedAODCaloJetTag        = "h_"+selbinnames[i]+"_nSelectedAODCaloJetTag"+uncbin;
       TString hname_nSelectedAODCaloJetTagSB1     = "h_"+selbinnames[i]+"_nSelectedAODCaloJetTagSB1"+uncbin;
       TString hname_nSelectedAODCaloJetTagSB2     = "h_"+selbinnames[i]+"_nSelectedAODCaloJetTagSB2"+uncbin;
@@ -2161,44 +2166,45 @@ Bool_t analyzer_histograms::writeAODCaloJetTagMultHistograms(int selbin)
 //----------------------------deleteAODCaloJetTagMultHistograms
 Bool_t analyzer_histograms::deleteAODCaloJetTagMultHistograms(int selbin)
 {
+  //printf("deleteAODCaloJetTagMultHistograms\n");
   hist_file_out[selbin]->cd();
 
-  h_nSelectedAODCaloJetTag       [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB1    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB3    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB4    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB5    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB6    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB7    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL1    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL2    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL3    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL4    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL5    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL6    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBL7    [selbin] ->Delete();
-
-  h_nSelectedAODCaloJetTagSB2a    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2c    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagIP      [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBIPa    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBIPb    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSBIPc    [selbin] ->Delete();
-
-  h_nSelectedAODCaloJetTag_0b       [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB1_0b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2_0b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB3_0b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTag_1b       [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB1_1b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2_1b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB3_1b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTag_2b       [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB1_2b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB2_2b    [selbin] ->Delete();
-  h_nSelectedAODCaloJetTagSB3_2b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTag      [selbin]!=NULL)    h_nSelectedAODCaloJetTag       [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB1   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB1    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB3   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB3    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB4   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB4    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB5   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB5    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB6   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB6    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB7   [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB7    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL1  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL1    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL2  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL2    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL3  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL3    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL4  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL4    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL5  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL5    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL6  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL6    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBL7  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBL7    [selbin] ->Delete();
+  
+  if(h_nSelectedAODCaloJetTagSB2a  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2a    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2b  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2c  [selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2c    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagIP    [selbin]!=NULL)    h_nSelectedAODCaloJetTagIP      [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBIPa [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBIPa    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBIPb [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBIPb    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSBIPc [selbin]!=NULL)    h_nSelectedAODCaloJetTagSBIPc    [selbin] ->Delete();
+  
+  if(h_nSelectedAODCaloJetTag_0b   [selbin]!=NULL)    h_nSelectedAODCaloJetTag_0b       [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB1_0b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB1_0b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2_0b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2_0b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB3_0b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB3_0b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTag_1b   [selbin]!=NULL)    h_nSelectedAODCaloJetTag_1b       [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB1_1b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB1_1b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2_1b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2_1b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB3_1b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB3_1b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTag_2b   [selbin]!=NULL)    h_nSelectedAODCaloJetTag_2b       [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB1_2b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB1_2b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB2_2b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB2_2b    [selbin] ->Delete();
+  if(h_nSelectedAODCaloJetTagSB3_2b[selbin]!=NULL)    h_nSelectedAODCaloJetTagSB3_2b    [selbin] ->Delete();
 }
 
 
