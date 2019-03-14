@@ -15,6 +15,8 @@ public :
    //void           initSelectionCategories( TString selcategory );
    void           initSelectionCategories();
 
+   std::vector<TFile*> hist_file_out;
+
    // bin names
    std::vector<TString> selbinnames;
    std::vector<TString> jetmultnames;

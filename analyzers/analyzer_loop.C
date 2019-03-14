@@ -22,6 +22,7 @@ void analyzer_loop::Loop(TString outfilename,
                        Int_t nevts, TFile *optfile, TFile *NM1file, TString uncbin)
 {
 
+
  if(makelog){
   logfile = fopen( outfilename+".txt", "w"); 
  }
@@ -39,7 +40,8 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadElectronWeight( eleid );
 
  std::cout<<"uncbin: "<<uncbin<<std::endl;
- TFile *outfile_bkgest = 0;
+
+TFile *outfile_bkgest = 0;
  bool doBkgEst = true;
  if( doBkgEst && uncbin.EqualTo("") ){
    std::cout<<"doBkgEst"<<std::endl;
@@ -53,6 +55,7 @@ void analyzer_loop::Loop(TString outfilename,
   
   L1PFremoved=kFALSE;
   cleareventcounters();
+
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
@@ -468,16 +471,15 @@ void analyzer_loop::Loop(TString outfilename,
   NM1EleZHtree->CloneTree()->Write();
   NM1file->Close();
  }
+
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   if(i==1 || i==3 || i==5 || i==7 || i==9 || i==11 || i==18 || i==19 || i==20  ){
-   TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","UPDATE");
-   outfile->cd();
 
      //Normalize variable binned histograms by bin width
      //Could put this in its own loop for clarity
-     scaleVariableBinHistograms( i );
+    //scaleVariableBinHistograms( i ); //broken
      
      writeSelectedHistograms( i );
      writeCutflowHistograms( i );
@@ -496,7 +498,6 @@ void analyzer_loop::Loop(TString outfilename,
        writeSelectedTagHistograms( i, k );
      }
 
-   outfile->Close();
   } 
  } // if i== one of the phase spaces we want to write
 } // end analyzer_loop::Loop()
