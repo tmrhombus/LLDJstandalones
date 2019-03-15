@@ -14,7 +14,7 @@ for line in listfile:
             outputlines = output.splitlines()
             for outputline in outputlines:
                 #Look for T2 or T3
-                if "T2_" in outputline or "T3_" in outputline:
+                if "T2_" in outputline or "T3_" in outputline or "T1_US_FNAL_Disk" in outputline:
                     #Look for 100% presence to filter out original placement
                     if '"block_completion":"100.00%"' in outputline and '"block_fraction":"100.00%"' in outputline and '"dataset_fraction":"100.00%"' in outputline:
                         foundsite = True

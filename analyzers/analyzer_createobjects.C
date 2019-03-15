@@ -134,53 +134,256 @@ std::vector<int> analyzer_createobjects::jet_passTagger( ) {
 }
 
 
+bool analyzer_createobjects::AL_SG(int i){
+  if(Shifted_CaloJetAlphaMax.at(i)<tag_maxAmax) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::AL_SB(int i){
+  if(Shifted_CaloJetAlphaMax.at(i) < 0.95 && Shifted_CaloJetAlphaMax.at(i)>tag_maxAmax) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::AL_SBL(int i){
+  if(Shifted_CaloJetAlphaMax.at(i) < 1.0 && Shifted_CaloJetAlphaMax.at(i)>tag_maxAmax) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SG(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > tag_minIPsig) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SB(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.5 && Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SBa(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.7 && Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SBb(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.4 && Shifted_CaloJetMedianLog10IPSig.at(i) < .7) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SBc(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.1 && Shifted_CaloJetMedianLog10IPSig.at(i) < .4) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::IP_SBL(int i){
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.2 && Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::TA_SG(int i){
+  if(Shifted_CaloJetMedianLog10TrackAngle.at(i) > tag_minTA) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::TA_SB(int i){
+  if(Shifted_CaloJetMedianLog10TrackAngle.at(i) > -2.25 && Shifted_CaloJetMedianLog10TrackAngle.at(i) < tag_minTA) return true;
+  else return false;
+}
+
+bool analyzer_createobjects::TA_SBL(int i){
+  if(Shifted_CaloJetMedianLog10TrackAngle.at(i) > -2.4 && Shifted_CaloJetMedianLog10TrackAngle.at(i) < tag_minTA) return true;
+  else return false;
+}
+
 std::vector<int> analyzer_createobjects::jet_passTaggerSB1( ) {
-
   std::vector<int> taglist;
-
   for(int i=0; i<aodcalojet_list.size(); ++i){
-    int aodcalojetindex = aodcalojet_list[i];
-    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      <  tag_minIPsig  &&
-	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) >  tag_minTA     &&
-	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
-      {
-	taglist.push_back(aodcalojetindex);
-      }
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SG(j) && TA_SB(j) ) taglist.push_back(j);
   }
   return taglist;
 }
 
 std::vector<int> analyzer_createobjects::jet_passTaggerSB2( ) {
-
   std::vector<int> taglist;
-
   for(int i=0; i<aodcalojet_list.size(); ++i){
-    int aodcalojetindex = aodcalojet_list[i];
-    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      >  tag_minIPsig  &&
-	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) <  tag_minTA     &&
-	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  tag_maxAmax  )
-      {
-	taglist.push_back(aodcalojetindex);
-      }
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SB(j) && TA_SG(j) ) taglist.push_back(j);
   }
   return taglist;
 }
 
 std::vector<int> analyzer_createobjects::jet_passTaggerSB3( ) {
-
   std::vector<int> taglist;
-
   for(int i=0; i<aodcalojet_list.size(); ++i){
-    int aodcalojetindex = aodcalojet_list[i];
-    if( Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex)      <1.15  && Shifted_CaloJetMedianLog10IPSig.at(aodcalojetindex) >0.5 &&
-	Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) <-1.75 && Shifted_CaloJetMedianLog10TrackAngle.at(aodcalojetindex) > -2.25 &&
-	Shifted_CaloJetAlphaMax.at(aodcalojetindex)              <  0.85  )
-      {
-	taglist.push_back(aodcalojetindex);
-      }
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SB(j) && TA_SB(j) ) taglist.push_back(j);
   }
   return taglist;
 }
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB4( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SB(j) && IP_SG(j) && TA_SB(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB5( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SB(j) && IP_SB(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB6( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SB(j) && IP_SB(j) && TA_SB(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB7( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SB(j) && IP_SG(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL1( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SG(j) && TA_SBL(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL2( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SBL(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL3( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SBL(j) && TA_SBL(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL4( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SBL(j) && IP_SG(j) && TA_SBL(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL5( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SBL(j) && IP_SBL(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL6( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SBL(j) && IP_SBL(j) && TA_SBL(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBL7( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SBL(j) && IP_SG(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB2a( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SBa(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB2b( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SBb(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSB2c( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( AL_SG(j) && IP_SBc(j) && TA_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerIP( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( IP_SG(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBIPa( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( IP_SBa(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBIPb( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( IP_SBb(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+std::vector<int> analyzer_createobjects::jet_passTaggerSBIPc( ) {
+  std::vector<int> taglist;
+  for(int i=0; i<aodcalojet_list.size(); ++i){
+    int j = aodcalojet_list[i];
+    if( IP_SBc(j) ) taglist.push_back(j);
+  }
+  return taglist;
+}
+
+
 
 std::vector<int> analyzer_createobjects::jet_passTagger_L1PF( ) {
 

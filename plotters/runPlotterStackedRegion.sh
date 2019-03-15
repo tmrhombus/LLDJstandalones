@@ -1,24 +1,12 @@
 #!/bin/bash
 
 regions=( \ 
-# "EleMuOSOF"     \
-# "OneEleDY"      \
-# "OneEleNoPair"  \
-# "OneEleOffZ"    \
-# "OneEleSig"     \
-# "OneEleZH"      \
-# "OneMuDY"       \
-# "OneMuNoPair"   \
-# "OneMuOffZ"     \
-# "OneMuSig"      \
-# "OneMuZH"       \
-# "OnePho"        \
-# "TwoEleDY"      \
-# "TwoEleOffZ"    \
+ "EleMuOSOF"     \
+ "OnePho"        \
+ "TwoEleDY"      \
 # "TwoEleSig"     \
  "TwoEleZH"      \
-# "TwoMuDY"       \
-# "TwoMuOffZ"     \
+ "TwoMuDY"       \
 # "TwoMuSig"      \
  "TwoMuZH"       \
 ) 

@@ -22,6 +22,7 @@ void analyzer_loop::Loop(TString outfilename,
                        Int_t nevts, TFile *optfile, TFile *NM1file, TString uncbin)
 {
 
+
  if(makelog){
   logfile = fopen( outfilename+".txt", "w"); 
  }
@@ -39,7 +40,8 @@ void analyzer_loop::Loop(TString outfilename,
  if(isMC) loadElectronWeight( eleid );
 
  std::cout<<"uncbin: "<<uncbin<<std::endl;
- TFile *outfile_bkgest = 0;
+
+TFile *outfile_bkgest = 0;
  bool doBkgEst = true;
  if( doBkgEst && uncbin.EqualTo("") ){
    std::cout<<"doBkgEst"<<std::endl;
@@ -51,8 +53,9 @@ void analyzer_loop::Loop(TString outfilename,
  Long64_t nbytes = 0, nb = 0;
  for (Long64_t jentry=0; jentry<nentries;jentry++) {
   
-  removed=kFALSE;
+  L1PFremoved=kFALSE;
   cleareventcounters();
+
   if( uncbin.EqualTo("") ){
    optfile->cd();
    clearOPTtree(); 
@@ -91,7 +94,26 @@ void analyzer_loop::Loop(TString outfilename,
   taggedjetSB1_list   = jet_passTaggerSB1   ();
   taggedjetSB2_list   = jet_passTaggerSB2   ();
   taggedjetSB3_list   = jet_passTaggerSB3   ();
-  
+  taggedjetSB4_list   = jet_passTaggerSB4   ();
+  taggedjetSB5_list   = jet_passTaggerSB5   ();
+  taggedjetSB6_list   = jet_passTaggerSB6   ();
+  taggedjetSB7_list   = jet_passTaggerSB7   ();
+  taggedjetSBL1_list   = jet_passTaggerSBL1   ();
+  taggedjetSBL2_list   = jet_passTaggerSBL2   ();
+  taggedjetSBL3_list   = jet_passTaggerSBL3   ();
+  taggedjetSBL4_list   = jet_passTaggerSBL4   ();
+  taggedjetSBL5_list   = jet_passTaggerSBL5   ();
+  taggedjetSBL6_list   = jet_passTaggerSBL6   ();
+  taggedjetSBL7_list   = jet_passTaggerSBL7   ();
+  taggedjetSB2a_list   = jet_passTaggerSB2a   ();
+  taggedjetSB2b_list   = jet_passTaggerSB2b   ();
+  taggedjetSB2c_list   = jet_passTaggerSB2c   ();
+  taggedjetIP_list   = jet_passTaggerIP   ();
+  taggedjetSBIPa_list   = jet_passTaggerSBIPa   ();
+  taggedjetSBIPb_list   = jet_passTaggerSBIPb   ();
+  taggedjetSBIPc_list   = jet_passTaggerSBIPc   ();  
+
+
   //save jets list for L1PF test clear list if does not pass
   aodcalojet_L1PF_list  = jet_passID       ( aodcalojetidbit, "calo",  jet_minPt, jet_maxEta, "" ); 
   bool pass_L1PF = true;
@@ -105,7 +127,7 @@ void analyzer_loop::Loop(TString outfilename,
     if(AOD_phoPt->at(phoindex)>50.0 && (fabs(AOD_phoEta->at(phoindex))<3.0 && fabs(AOD_phoEta->at(phoindex))>2.25)) pass_L1PF = false;
   }
   // remove event from jet based tagging variables for comparisons
-  if(!pass_L1PF){aodcalojet_L1PF_list.clear(); removed = kTRUE;}
+  if(!pass_L1PF){aodcalojet_L1PF_list.clear(); L1PFremoved = kTRUE;}
   taggedjet_list_L1PF = jet_passTagger_L1PF ();
 
   // make calomatchedPF_list PFmatchedCalo_list calomatchedPFchs_list PFchsmatchedCalo_list 
@@ -449,16 +471,15 @@ void analyzer_loop::Loop(TString outfilename,
   NM1EleZHtree->CloneTree()->Write();
   NM1file->Close();
  }
+
  // make outfile and save histograms
  // write the histograms
  for(unsigned int i=0; i<selbinnames.size(); ++i){
   if(i==1 || i==3 || i==5 || i==7 || i==9 || i==11 || i==18 || i==19 || i==20  ){
-   TFile *outfile = new TFile(outfilename+"_"+selbinnames[i]+"_histograms.root","UPDATE");
-   outfile->cd();
 
      //Normalize variable binned histograms by bin width
      //Could put this in its own loop for clarity
-     scaleVariableBinHistograms( i );
+    //scaleVariableBinHistograms( i ); //broken
      
      writeSelectedHistograms( i );
      writeCutflowHistograms( i );
@@ -477,7 +498,6 @@ void analyzer_loop::Loop(TString outfilename,
        writeSelectedTagHistograms( i, k );
      }
 
-   outfile->Close();
   } 
  } // if i== one of the phase spaces we want to write
 } // end analyzer_loop::Loop()
