@@ -1,13 +1,13 @@
 #!/bin/bash
 
 regions=( \ 
- #"EleMuOSOF"     \
- #"EleMuOSOFL"     \
- #"OnePho"        \
- "TwoEleDY"      \
+ "EleMuOSOF"     \
+# "EleMuOSOFL"    \
+# "OnePho"        \
+# "TwoEleDY"      \
 # "TwoEleSig"     \
 # "TwoEleZH"      \
- "TwoMuDY"       \
+# "TwoMuDY"       \
 # "TwoMuSig"      \
 # "TwoMuZH"       \
 ) 

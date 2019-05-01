@@ -47,6 +47,7 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 
  bool drawData = true;
  bool useAlt = false; 
+ bool doUncPlots = false;
 
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
@@ -71,9 +72,9 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  }
 
  // lumi scaling by era
+ Float_t MCSF = 1.;
  Float_t lumiBCDEF = 19691. ;
  Float_t lumiGH = 16226.5 ;
- Float_t MCSF = 16226.5/20000.0;
 
 // if(HIP){ MCSF=lumiBCDEF/10000.; }
 // else{ MCSF=lumiGH/10000.; }
@@ -92,32 +93,31 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  std::vector<TString> uncbins;
  uncbins.clear();
  uncbins.push_back(""             ); 
-// uncbins.push_back("_EGSUp"       ); 
-// uncbins.push_back("_EGSDown"     );    
-// uncbins.push_back("_MESUp"       );    
-// uncbins.push_back("_MESDown"     );    
-// uncbins.push_back("_AMaxUp"      );    
-// uncbins.push_back("_AMaxDown"    );    
-// uncbins.push_back("_IPSigUp"     );    
-// uncbins.push_back("_IPSigDown"   );    
-// uncbins.push_back("_TAUp"        );    
-// uncbins.push_back("_TADown"      );    
-// uncbins.push_back("_TagVarsUp"   ); 
-// uncbins.push_back("_TagVarsDown" );  
+ uncbins.push_back("_EGSUp"       ); 
+ uncbins.push_back("_EGSDown"     );    
+ uncbins.push_back("_MESUp"       );    
+ uncbins.push_back("_MESDown"     );    
+ uncbins.push_back("_AMaxUp"      );    
+ uncbins.push_back("_AMaxDown"    );    
+ uncbins.push_back("_IPSigUp"     );    
+ uncbins.push_back("_IPSigDown"   );    
+ uncbins.push_back("_TAUp"        );    
+ uncbins.push_back("_TADown"      );    
+ uncbins.push_back("_TagVarsUp"   ); 
+ uncbins.push_back("_TagVarsDown" );  
 
+ int loopEnd;
+ if (doUncPlots) loopEnd=uncbins.size(); else loopEnd=1;
  //if(drawSignal){extraname+="_wsig";}
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
 
- //variables.push_back("nSelectedAODCaloJetTag");
- //variables.push_back("AOD_dilepton_Pt");
-// variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
-// variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
-// variables.push_back("AllJets_AODCaloJetAlphaMax");
-// variables.push_back("nSelectedAODCaloJet");
- variables.push_back("htall");
-// variables.push_back("htaodcalojets");
+/////variables.push_back("nSelectedAODCaloJetTag");
+/////variables.push_back("AOD_dilepton_Pt");
+/////variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+/////variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+/////variables.push_back("AllJets_AODCaloJetAlphaMax");
 
  //variables.push_back("nSelectedAODCaloJet_L1PFTag");
  //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
@@ -136,18 +136,18 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  //variables.push_back("phoEt");                  
  //variables.push_back("AOD_MET_pt");                 
  //variables.push_back("AOD_MET_phi");                 
- //variables.push_back("AOD_phoPt");                 
- //variables.push_back("AOD_phoEta");                 
- //variables.push_back("AOD_phoPhi");                 
- //variables.push_back("nEle");                   
- //variables.push_back("AOD_elePt");                  
- //variables.push_back("AOD_eleEta");                 
- //variables.push_back("AOD_elePhi");                 
- //variables.push_back("nMu");                    
- //variables.push_back("AOD_muPt");                   
- //variables.push_back("AOD_muEta");                  
- //variables.push_back("AOD_muPhi");                  
- // variables.push_back("nJet");                   
+///// variables.push_back("AOD_phoPt");                 
+///// variables.push_back("AOD_phoEta");                 
+///// variables.push_back("AOD_phoPhi");                 
+///// variables.push_back("AOD_nEle");                   
+///// variables.push_back("AOD_elePt");                  
+///// variables.push_back("AOD_eleEta");                 
+///// variables.push_back("AOD_elePhi");                 
+///// variables.push_back("AOD_nMu");                    
+///// variables.push_back("AOD_muPt");                   
+///// variables.push_back("AOD_muEta");                  
+///// variables.push_back("AOD_muPhi");                  
+ variables.push_back("AOD_nEle");                  
  
  //variables.push_back("htall"); 
  //variables.push_back("htaodcalojets");
@@ -165,17 +165,17 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- //variables.push_back("AllJets_AODCaloJetPt");                      
- //variables.push_back("AllJets_AODCaloJetEn");                      
- //variables.push_back("AllJets_AODCaloJetEta");                     
- //variables.push_back("AllJets_AODCaloJetPhi");                     
+///// variables.push_back("AllJets_AODCaloJetPt");                      
+///// //variables.push_back("AllJets_AODCaloJetEn");                      
+///// variables.push_back("AllJets_AODCaloJetEta");                     
+///// variables.push_back("AllJets_AODCaloJetPhi");                     
  //-----all variables after NMinus will have dolog=true, sorry
  //variables.push_back("NMinus");                   
  //variables.push_back("Onecut");                   
- variables.push_back("Cutflow");                   
+ //variables.push_back("Cutflow");                   
  //variables.push_back("RawNMinus");                   
  //variables.push_back("RawOnecut");                   
- variables.push_back("RawCutflow");                   
+ //variables.push_back("RawCutflow");                   
 
  // canvas and text attributes
  int canx = 1100;
@@ -648,9 +648,8 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
   for(unsigned int j=0; j<variables.size(); ++j){
    TString variable = variables[j];
 
-   for(unsigned int i=0; i<uncbins.size(); ++i){
-    TString uncbin = uncbins[i];
-
+   for(unsigned int tt=0; tt<loopEnd; ++tt){
+    TString uncbin = uncbins[tt];
     //Override drawData for nTag signal region
     if(region.Contains("ZH") && 
        (variable=="nSelectedAODCaloJetTag" || 
@@ -672,10 +671,6 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
     if(j==0){
      domaketable = kTRUE;
     }
-//    for(unsigned int k=0; k<leptons.size(); ++k){
-//     TString lepton = leptons[k];
-
-//     TString varname = lepton+"_"+region+"_"+variable;
      TString varname = region+"_"+variable;
 
      printf("plotting  h_%s \n",varname.Data());
@@ -685,7 +680,6 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
      TString smalllogname = outpath+"tables/small_"+varname+extraname+uncbin; 
      TString tinylogname = outpath+"tables/tiny_"+varname+extraname+uncbin; 
      //cout << "logname: " << logname << endl;
-
      // get histograms from files
      //h_DY5to50_HT70To100               = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "h_DY5to50_HT70To100"           +uncbin     ) ; 
      h_DY5to50_HT100To200              = (TH1F*)file_DY5to50_HT100To200               ->Get("h_"+varname+uncbin)->Clone( "DY5to50_HT100To200"              +uncbin ) ; 
@@ -817,7 +811,7 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 
      // merge histograms
      h_DY = (TH1F*)h_DY50->Clone("DY");
-      //h_DY->Add(h_DY10to50           ); 
+      h_DY->Add(h_DY10to50           ); 
 
      h_altDY = (TH1F*)h_DY50->Clone("altDY");
       h_altDY->Add(h_DY5to50_HT100To200); 
@@ -831,28 +825,28 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
       h_GJets->Add(h_GJets_HT400To600);
       h_GJets->Add(h_GJets_HT600ToInf);
 
-     h_ST = (TH1F*)h_ST_t->Clone("ST");
-    //  h_ST->Add(h_STbar_t);
-    //  h_ST->Add(h_ST_s);
-    //  h_ST->Add(h_STbar_tW);
-    //  h_ST->Add(h_ST_tW);
+     h_ST = (TH1F*)h_ST_s->Clone("ST");
+      h_ST->Add(h_STbar_t);
+      h_ST->Add(h_ST_t);
+      h_ST->Add(h_STbar_tW);
+      h_ST->Add(h_ST_tW);
 
      h_ZH = (TH1F*)h_ZH_HToBB_ZToLL->Clone("ZH");
       h_ZH->Add(h_ggZH_HToBB_ZToLL);
 
-     h_VV = (TH1F*)h_WZ->Clone("VV");
-      //h_VV->Add(h_WW             ) ;
-      h_VV->Add(h_ZZ             ) ;
+     h_altVV = (TH1F*)h_WW->Clone("altVV");
+      h_altVV->Add(h_WZ             ) ;
+      h_altVV->Add(h_ZZ             ) ;
 
-     h_altVV = (TH1F*)h_WWTo2L2Nu->Clone("altVV");
-      h_altVV->Add(h_WWToLNuQQ       ) ;
-      h_altVV->Add(h_WZTo1L3Nu       ) ;
-      h_altVV->Add(h_WZTo3LNu        ) ;
-      h_altVV->Add(h_WZToLNu2QorQQ2L ) ;
-      h_altVV->Add(h_ZZTo2L2Nu       ) ;
-      h_altVV->Add(h_ZZTo2L2Q        ) ;
-      h_altVV->Add(h_ZZTo2Q2Nu       ) ;
-      h_altVV->Add(h_ZZTo4L          ) ;
+     h_VV = (TH1F*)h_WWTo2L2Nu->Clone("VV");
+      h_VV->Add(h_WWToLNuQQ       ) ;
+      h_VV->Add(h_WZTo1L3Nu       ) ;
+      h_VV->Add(h_WZTo3LNu        ) ;
+      h_VV->Add(h_WZToLNu2QorQQ2L ) ;
+      h_VV->Add(h_ZZTo2L2Nu       ) ;
+      h_VV->Add(h_ZZTo2L2Q        ) ;
+      h_VV->Add(h_ZZTo2Q2Nu       ) ;
+      h_VV->Add(h_ZZTo4L          ) ;
 
      h_altTT = (TH1F*)h_TTJets->Clone("altTT");
 
@@ -861,16 +855,16 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
       h_TT->Add(h_TTtoLL        );
     
      h_VG = (TH1F*)h_WG->Clone("VG");
-     // h_VG->Add(h_ZG);
+      h_VG->Add(h_ZG);
 
      h_QCD = (TH1F*)h_QCD_HT100to200->Clone("QCD");
-     // h_QCD->Add(h_QCD_HT200to300   );
-     // h_QCD->Add(h_QCD_HT300to500   );
+      h_QCD->Add(h_QCD_HT200to300   );
+      h_QCD->Add(h_QCD_HT300to500   );
       h_QCD->Add(h_QCD_HT500to700   );
       h_QCD->Add(h_QCD_HT700to1000  );
-     // h_QCD->Add(h_QCD_HT1000to1500 );
-     // h_QCD->Add(h_QCD_HT1500to2000 );
-     // h_QCD->Add(h_QCD_HT2000toInf  );
+      h_QCD->Add(h_QCD_HT1000to1500 );
+      h_QCD->Add(h_QCD_HT1500to2000 );
+      h_QCD->Add(h_QCD_HT2000toInf  );
 
      h_Sig_MS15ct1000  = (TH1F*) h_Sig_ZH_MS15ct1000   ->Clone( "Sig_MS15ct1000" ) ;
      h_Sig_MS15ct100   = (TH1F*) h_Sig_ZH_MS15ct100    ->Clone( "Sig_MS15ct100 " ) ;
@@ -926,11 +920,11 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 
 
      h_bkgtotal= (TH1F*)h_DY->Clone("bkgtotal");
-      //h_bkgtotal->Add(h_GJets ) ;
+      h_bkgtotal->Add(h_GJets ) ;
       h_bkgtotal->Add(h_ST    ) ;
-      //h_bkgtotal->Add(h_ZH    ) ;
+      h_bkgtotal->Add(h_ZH    ) ;
       h_bkgtotal->Add(h_VV    ) ;
-      //h_bkgtotal->Add(h_TT    ) ;
+      h_bkgtotal->Add(h_TT    ) ;
       h_bkgtotal->Add(h_VG    ) ;
       h_bkgtotal->Add(h_QCD   ) ;
       h_bkgtotal->Add(h_WJetsToLNu      ) ;
@@ -1548,14 +1542,14 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
      }
      else {
        v.push_back(h_DY);
-      // v.push_back(h_GJets);
+       v.push_back(h_GJets);
        v.push_back(h_ST);
-       //v.push_back(h_TT);
+       v.push_back(h_TT);
        v.push_back(h_WJetsToLNu);
        v.push_back(h_VV);
        v.push_back(h_VG); 
        v.push_back(h_QCD); 
-      // v.push_back(h_ZH);
+       v.push_back(h_ZH);
      }
 
      // make stack
@@ -1583,29 +1577,23 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
        }
        else {
          bgstack->Add(h_DY         ); 
-         //bgstack->Add(h_GJets      );
+         bgstack->Add(h_GJets      );
          bgstack->Add(h_ST         ); 
-         //bgstack->Add(h_TT         ); 
+         bgstack->Add(h_TT         ); 
          bgstack->Add(h_WJetsToLNu ); 
          bgstack->Add(h_VV         ); 
          bgstack->Add(h_VG         );
          bgstack->Add(h_QCD        );
-         //bgstack->Add(h_ZH         );
+         bgstack->Add(h_ZH         );
        }
      }
       double tot = 0.0; 
-      double totE = 0.0; 
       for(int zz=0; zz<v.size(); zz++)
       {    
        tot +=v[zz]->Integral();
-       totE +=v[zz]->GetEntries();
-       cout/*<< fixed */<<v[zz]->GetName()<<":  "<<v[zz]->Integral()<<"   Entries: "<<v[zz]->GetEntries()<<std::endl;
+       cout <<v[zz]->GetName()<<":  "<<v[zz]->Integral()<<std::endl;
       }    
       cout << "***************************** total: "<<tot<<endl;
-
-      for(int zzz=2; zzz<8; zzz++){
-        std::cout <<"Entries Bin: "<<zzz-1<<" & = & "<< h_DY->GetBinContent(zzz)<<" \\\\ "<<std::endl; 
-      } 
 
 //     if( h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1) > 0.1){ ;
 //        h_ggZH_HToSSTobbbb_MS40_ctauS0      ->Scale( int_bkgtotal / h_ggZH_HToSSTobbbb_MS40_ctauS0     ->Integral(0,-1));
@@ -1651,14 +1639,14 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
      else {
        leg->AddEntry(h_Data         , "Data", "lpe"); 
        leg->AddEntry(h_DY           , "Drell-Yan", "f"); 
-       //leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
+       leg->AddEntry(h_GJets        , "#gamma+Jets", "f"); 
        leg->AddEntry(h_ST           , "Single Top", "f"); 
-       //leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
+       leg->AddEntry(h_TT           , "t#bar{t}+Jets", "f"); 
        leg->AddEntry(h_WJetsToLNu   , "W+Jets", "f"); 
        leg->AddEntry(h_VV           , "Diboson", "f"); 
        leg->AddEntry(h_VG           , "V#gamma", "f");
        leg->AddEntry(h_QCD          , "QCD", "f");
-       //leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
+       leg->AddEntry(h_ZH           , "ZH#rightarrowLLbb", "f");
        leg->AddEntry(h_bkgtotal     , "MC bkg. stat. err.", "f");
      }
 
