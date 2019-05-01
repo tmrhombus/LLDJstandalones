@@ -41,7 +41,7 @@ void analyzer_config::setConfiguration()
  }                    // loggit
 
  // tagging variables   // loggit
- tag_maxAmax  = 0.75;   // loggit
+ tag_maxAmax  = 0.35;   // loggit
  tag_minIPsig = 1.15;   // loggit
  tag_minTA    = -1.75;  // loggit
 
