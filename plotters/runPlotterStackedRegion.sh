@@ -2,18 +2,19 @@
 
 regions=( \ 
  "EleMuOSOF"     \
- "OnePho"        \
- "TwoEleDY"      \
+# "EleMuOSOFL"    \
+# "OnePho"        \
+# "TwoEleDY"      \
 # "TwoEleSig"     \
- "TwoEleZH"      \
- "TwoMuDY"       \
+# "TwoEleZH"      \
+# "TwoMuDY"       \
 # "TwoMuSig"      \
- "TwoMuZH"       \
+# "TwoMuZH"       \
 ) 
 
 dologs=( \
- "kFALSE" \
-# "kTRUE" \
+# "kFALSE" \
+ "kTRUE" \
 )
 
 doHIPs=( \

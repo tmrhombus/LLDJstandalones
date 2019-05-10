@@ -18,7 +18,7 @@
 ///can do variable cuts or specified cuts
 void tagger(Double_t c_ip, Double_t c_ta, Double_t c_al, Int_t ntags, TString lifetime, TString mass){
 
-bool variable_cut = true;
+bool variable_cut = false;
 bool plot         = true; //plots scanning result/ntags
 bool prntTable    = false;
 TString plots = TString(getenv("plotdir"));
@@ -138,7 +138,7 @@ for(int ii = 0; ii <SigFileList.size(); ii++){
 tags_s.clear();
 TFile file(SigFileList[ii]);
 			if(prnt)cout<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
-///cout <<"Processing file: "<< SigFileList[i]<<endl;
+//cout <<"Processing file: "<< SigFileList[ii]<<endl;
 
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader, "OPT_Event"); // template type must match datatype
@@ -148,7 +148,9 @@ TTreeReaderValue<vector<float>>  IP(reader, "OPT_AODCaloJetMedianLog10IPSig");
 TTreeReaderValue<vector<float>>  TA(reader, "OPT_AODCaloJetMedianLog10TrackAngle");
 TTreeReaderValue<vector<float>>  Alpha(reader, "OPT_AODCaloJetAlphaMax");
 TTreeReaderValue<vector<float>>  Eta(reader, "OPT_AODCaloJetEta");
-
+//cout<<"Print here"<<endl;
+//reader.GetTree()->PrintCacheStats();
+//cout<<(string)reader.GetTree().PrintCacheStats() <<endl;
 while (reader.Next()) {
   for(int i = 0; i<EventWeight->size(); i++){
     //set initial #tags to 0
@@ -392,7 +394,6 @@ for(int jj = 0; jj <SigFileList.size(); jj++){
 TFile file(SigFileList[jj]);
 			if(prnt)cout<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"<<endl;
 cout <<"Processing file: "<< SigFileList[jj]<<endl;
-
 TTreeReader reader("OPTtree", &file);
 TTreeReaderValue<vector<int>>    Event(reader,       "OPT_Event"); // template type must match datatype
 TTreeReaderValue<vector<float>>  EventWeight(reader, "OPT_EventWeight"); // name must match branchname

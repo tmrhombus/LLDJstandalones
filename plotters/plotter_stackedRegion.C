@@ -47,6 +47,7 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
 
  bool drawData = true;
  bool useAlt = false; 
+ bool doUncPlots = false;
 
  TString outpath = TString("../plots/");
  TString aversion = TString(getenv("aversion"));
@@ -105,16 +106,18 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  uncbins.push_back("_TagVarsUp"   ); 
  uncbins.push_back("_TagVarsDown" );  
 
+ int loopEnd;
+ if (doUncPlots) loopEnd=uncbins.size(); else loopEnd=1;
  //if(drawSignal){extraname+="_wsig";}
  // variables to plot
  std::vector<TString> variables;
  variables.clear();
 
- variables.push_back("nSelectedAODCaloJetTag");
- variables.push_back("AOD_dilepton_Pt");
- //variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
- //variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
- //variables.push_back("AllJets_AODCaloJetAlphaMax");
+/////variables.push_back("nSelectedAODCaloJetTag");
+/////variables.push_back("AOD_dilepton_Pt");
+/////variables.push_back("AllJets_AODCaloJetMedianLog10IPSig");
+/////variables.push_back("AllJets_AODCaloJetMedianLog10TrackAngle");
+/////variables.push_back("AllJets_AODCaloJetAlphaMax");
 
  //variables.push_back("nSelectedAODCaloJet_L1PFTag");
  //variables.push_back("AllJets_AODCaloJet_L1PFMedianLog10IPSig");
@@ -133,18 +136,18 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  //variables.push_back("phoEt");                  
  //variables.push_back("AOD_MET_pt");                 
  //variables.push_back("AOD_MET_phi");                 
- //variables.push_back("AOD_phoPt");                 
- //variables.push_back("AOD_phoEta");                 
- //variables.push_back("AOD_phoPhi");                 
- //variables.push_back("nEle");                   
- //variables.push_back("AOD_elePt");                  
- //variables.push_back("AOD_eleEta");                 
- //variables.push_back("AOD_elePhi");                 
- //variables.push_back("nMu");                    
- //variables.push_back("AOD_muPt");                   
- //variables.push_back("AOD_muEta");                  
- //variables.push_back("AOD_muPhi");                  
- // variables.push_back("nJet");                   
+///// variables.push_back("AOD_phoPt");                 
+///// variables.push_back("AOD_phoEta");                 
+///// variables.push_back("AOD_phoPhi");                 
+///// variables.push_back("AOD_nEle");                   
+///// variables.push_back("AOD_elePt");                  
+///// variables.push_back("AOD_eleEta");                 
+///// variables.push_back("AOD_elePhi");                 
+///// variables.push_back("AOD_nMu");                    
+///// variables.push_back("AOD_muPt");                   
+///// variables.push_back("AOD_muEta");                  
+///// variables.push_back("AOD_muPhi");                  
+ variables.push_back("AOD_nEle");                  
  
  //variables.push_back("htall"); 
  //variables.push_back("htaodcalojets");
@@ -162,10 +165,10 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
  //variables.push_back("AllJets_AODCaloJetdR_Tag0");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks");
  //variables.push_back("AllJets_AODCaloJetNCleanMatchedTracks_Tag0");
- //variables.push_back("AllJets_AODCaloJetPt");                      
- //variables.push_back("AllJets_AODCaloJetEn");                      
- //variables.push_back("AllJets_AODCaloJetEta");                     
- //variables.push_back("AllJets_AODCaloJetPhi");                     
+///// variables.push_back("AllJets_AODCaloJetPt");                      
+///// //variables.push_back("AllJets_AODCaloJetEn");                      
+///// variables.push_back("AllJets_AODCaloJetEta");                     
+///// variables.push_back("AllJets_AODCaloJetPhi");                     
  //-----all variables after NMinus will have dolog=true, sorry
  //variables.push_back("NMinus");                   
  //variables.push_back("Onecut");                   
@@ -645,9 +648,8 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
   for(unsigned int j=0; j<variables.size(); ++j){
    TString variable = variables[j];
 
-   for(unsigned int j=0; j<uncbins.size(); ++j){
-    TString uncbin = uncbins[j];
-
+   for(unsigned int tt=0; tt<loopEnd; ++tt){
+    TString uncbin = uncbins[tt];
     //Override drawData for nTag signal region
     if(region.Contains("ZH") && 
        (variable=="nSelectedAODCaloJetTag" || 
@@ -669,10 +671,6 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
     if(j==0){
      domaketable = kTRUE;
     }
-//    for(unsigned int k=0; k<leptons.size(); ++k){
-//     TString lepton = leptons[k];
-
-//     TString varname = lepton+"_"+region+"_"+variable;
      TString varname = region+"_"+variable;
 
      printf("plotting  h_%s \n",varname.Data());
@@ -682,7 +680,6 @@ Bool_t drawSignal = kTRUE; //kTRUE; //kFALSE
      TString smalllogname = outpath+"tables/small_"+varname+extraname+uncbin; 
      TString tinylogname = outpath+"tables/tiny_"+varname+extraname+uncbin; 
      //cout << "logname: " << logname << endl;
-
      // get histograms from files
      //h_DY5to50_HT70To100               = (TH1F*)file_DY5to50_HT70To100                ->Get("h_"+varname)->Clone( "h_DY5to50_HT70To100"           +uncbin     ) ; 
      h_DY5to50_HT100To200              = (TH1F*)file_DY5to50_HT100To200               ->Get("h_"+varname+uncbin)->Clone( "DY5to50_HT100To200"              +uncbin ) ; 

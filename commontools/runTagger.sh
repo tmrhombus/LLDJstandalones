@@ -9,9 +9,12 @@ mkdir -p "${plotdir}"/"${aversion}"/tagger/"taggerResults"
 mkdir -p "${plotdir}"/"${aversion}"/tagger/"taggerResults/"$mass
 mkdir -p "${plotdir}"/"${aversion}"/tagger/$lifetime
 outpath="${plotdir}"/"${aversion}"/tagger/"taggerResults/"$mass
-c_al=(0.01 0.025 0.05 0.075 0.1 0.15 0.175 0.2 0.35 0.5 0.75)
-c_ip=(0.5 0.75 0.9 1.0 1.15 1.25 1.5 1.75 2.0 2.5 2.75)
-c_ta=(-3.0 -2.5 -2.25 -2.10 -2.0 -1.9 -1.75 -1.5 -1.25 -1.0 -0.75)
+#c_al=(0.01 0.025 0.05 0.075 0.1 0.15 0.175 0.2 0.35 0.5 0.75)
+#c_ip=(0.5 0.75 0.9 1.0 1.15 1.25 1.5 1.75 2.0 2.5 2.75)
+#c_ta=(-3.0 -2.5 -2.25 -2.10 -2.0 -1.9 -1.75 -1.5 -1.25 -1.0 -0.75)
+c_al=(0.2 0.75 1.0 0.075 0.1 0.15 0.175 0.2 0.35 0.5 0.75)
+c_ip=(1.15 0.75 0.9 1.0 1.15 1.25 1.5 1.75 2.0 2.5 2.75)
+c_ta=(-1.75 -2.5 -2.25 -2.10 -2.0 -1.9 -1.75 -1.5 -1.25 -1.0 -0.75)
 
 #remove old files if script was interrupted before completeing
 rm -f $name.txt
@@ -30,7 +33,7 @@ for i in {0..0}
 do
    for j in {0..0}
    do
-      for k in {0..0}
+      for k in {0..2}
       do
          echo ${c_ip[i]} ${c_ta[j]} ${c_al[k]}>>temp2.txt
          root -l -b -q "tagger.C(${c_ip[i]},${c_ta[j]}, ${c_al[k]}, $ntags,  $lifetime2, $mass2 )" >>temp.txt
