@@ -342,9 +342,9 @@ Bool_t analyzer_histograms::initLepHistograms( TString uncbin ){
   TString hname_AOD_OSOFdilepton_Mass = "h_"+selbinnames[i]+"_AOD_OSOFdilepton_Mass"+uncbin; 
   TString hname_AOD_OSOFdilepton_Pt   = "h_"+selbinnames[i]+"_AOD_OSOFdilepton_Pt"  +uncbin; 
 
-  h_AOD_dilepton_Mass[i] = initSingleHistogramTH1F( hname_AOD_dilepton_Mass, "AOD_dilepton_Mass", 30,  30, 150) ;  
+  h_AOD_dilepton_Mass[i] = initSingleHistogramTH1F( hname_AOD_dilepton_Mass, "AOD_dilepton_Mass", 30,  60, 120) ;  
   h_AOD_dilepton_Pt  [i] = initSingleHistogramTH1F( hname_AOD_dilepton_Pt  , "AOD_dilepton_Pt  ", 50,   0, 500) ;  
-  h_AOD_OSOFdilepton_Mass[i] = initSingleHistogramTH1F( hname_AOD_OSOFdilepton_Mass, "AOD_OSOFdilepton_Mass", 30,  30, 150) ;  
+  h_AOD_OSOFdilepton_Mass[i] = initSingleHistogramTH1F( hname_AOD_OSOFdilepton_Mass, "AOD_OSOFdilepton_Mass", 30,  60, 120) ;  
   h_AOD_OSOFdilepton_Pt  [i] = initSingleHistogramTH1F( hname_AOD_OSOFdilepton_Pt  , "AOD_OSOFdilepton_Pt  ", 50,   0, 500) ;  
  }
  return kTRUE;
@@ -465,7 +465,7 @@ Bool_t analyzer_histograms::initMETHTHistograms( TString uncbin ){
     TString hname_htaodcalojets               = "h_"+selbinnames[i]+"_htaodcalojets"+uncbin ;
     
     h_AOD_MET_phi    [i] = initSingleHistogramTH1F( hname_AOD_MET_phi   , "AOD_MET_phi  " , 30, -5, 5); 
-    h_AOD_MET_pt     [i] = initSingleHistogramTH1F( hname_AOD_MET_pt    , "AOD_MET_pt   " , 50, 0, 500); 
+    h_AOD_MET_pt     [i] = initSingleHistogramTH1F( hname_AOD_MET_pt    , "AOD_MET_pt   " , 50, 0, 100); 
     h_htall          [i] = initSingleHistogramTH1F( hname_htall         , "htall        " , 50,0,1000) ; 
     h_htaodcalojets  [i] = initSingleHistogramTH1F( hname_htaodcalojets , "htaodcalojets" , 50,0,1000) ; 
   }
@@ -550,8 +550,6 @@ Bool_t analyzer_histograms::initAODCaloJetBasicHistograms( TString uncbin )
 	TString hname_AODCaloJetPartonFlavour                 = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPartonFlavour"        +uncbin; 
         TString hname_AODCaloJetAbsEta                        = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetAbsEta"               +uncbin; 
 	TString hname_AODCaloJetPtVarAbsEtaVar                = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJetPtVarAbsEtaVar"       +uncbin; 
-        // **--changed binning back to defsault. Previously nbins 500 for all following variables used for uncertainty checks
-        // **--Also changing max bin of alphaMax to 1 from 1.1, which was also used for the uncertainty checks
 	h_AODCaloJetPt                             [i][k] = initSingleHistogramTH1F( hname_AODCaloJetPt                             , "AODCaloJetPt                            ", 50,0,500  ); 
 	h_AODCaloJetEta                            [i][k] = initSingleHistogramTH1F( hname_AODCaloJetEta                            , "AODCaloJetEta                           ", 30,-5,5   ); 
 	h_AODCaloJetPhi                            [i][k] = initSingleHistogramTH1F( hname_AODCaloJetPhi                            , "AODCaloJetPhi                           ", 30,-5,5   ); 

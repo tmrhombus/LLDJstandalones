@@ -28,9 +28,9 @@ std::vector<int> analyzer_createobjects::muon_passID( int bitnr, Float_t muPtCut
 
   bool pass_bit = AOD_muPassLooseID->at(i);//------should probably make if/else groups for other ID's 
 
-  if (muoid = "Loose")  muoisoval = 0.25 ;
-  if (muoid = "Medium") muoisoval = 0.25 ;
-  if (muoid = "Tight")  muoisoval = 0.15 ;
+  if (muoid == "Loose")  muoisoval = 0.25 ;
+  if (muoid == "Medium") muoisoval = 0.25 ;
+  if (muoid == "Tight")  muoisoval = 0.15 ;
   bool pass_iso = AOD_muPFdBetaIsolation->at(i) < muoisoval ;
 
   if( pass_bit && pass_kin && pass_iso )
