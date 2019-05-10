@@ -6,7 +6,7 @@
 # source xx/LLDJ/setup.sh for ${aversion}
 
 doSubmit=true
-lumi=20000.0 #16226.2 # 7.57582+8.43466+0.2156965 
+lumi=16226.2 # 7.57582+8.43466+0.2156965 
 nevents=-1
 maxfilesperjob=200   # 500=6h
 
