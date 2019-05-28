@@ -173,7 +173,8 @@ class lldjNtuple : public edm::EDAnalyzer {
   void deltaVertex3D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dEta, double& dPhi, double& pt, double& m, double& energy);
   void deltaVertex2D(GlobalPoint secVert, std::vector<reco::TransientTrack> tracks, double& dPhi, double& pt, double& mediandPhi);
   vector<reco::TransientTrack> cleanTracks(vector<reco::TransientTrack> tracks, GlobalPoint vertPos);
-
+  //ctauWeight
+  Float_t calculatectauEventWeight(float dist);
   // met
   edm::EDGetTokenT<edm::TriggerResults>            patTrgResultsLabel_;
   // for MET filters

@@ -37,7 +37,13 @@ void analyzer_loop::Loop(TString outfilename,
  clearglobalcounters();
 
  if(isMC) loadPUWeight();
- if(isMC) loadElectronWeight( eleid );
+ 
+if(isMC) loadElectronWeight( eleid );
+ if(isMC) loadEleTriggerEffi();
+
+ if(isMC) loadMuonWeight( muoid );
+ if(isMC) loadMuonIso( muoid);
+ if(isMC) loadMuonTriggerEffi();
 
  std::cout<<"uncbin: "<<uncbin<<std::endl;
 
@@ -156,8 +162,17 @@ TFile *outfile_bkgest = 0;
   if(isMC) PUweight_MuonEG       = makePUWeight("MuonEG"      ) ;
   if(isMC) PUweight_SinglePhoton = makePUWeight("SinglePhoton") ;
   // electrons also have an associated scale factor for MC 
-  if(isMC) event_weight *= makeElectronWeight( electron_list );
-  if(isMC) event_weight *= makeTTWeight( avgTTSF );
+  //if(isMC) event_weight *= makeElectronWeight( electron_list );
+  //if(isMC) event_weight *= makeEleTriggerEffi( electron_list );
+
+  //if(isMC) event_weight *= makeMuonWeight( muon_list );
+  //if(isMC) event_weight *= makeMuonIso( muon_list );
+  //if(isMC) event_weight *= .99;
+  //if(isMC) event_weight *= makeMuonTriggerEffi( muon_list );
+ 
+
+
+ if(isMC) event_weight *= makeTTWeight( avgTTSF );
 
   getMET();
 

@@ -16,14 +16,30 @@ public :
  Float_t         makeEventWeight(Float_t crossSec, Float_t lumi,
                                   Float_t nrEvents);
  void            loadPUWeight();
+ void 		 loadEleTriggerEffi();
+ void 		 loadMuonTriggerEffi();
  Float_t         makePUWeight( TString dataset );
+ Float_t         makeEleTriggerEffi( std::vector<int> &electron_list );
+ Float_t         makeMuonTriggerEffi( std::vector<int> &muon_list );
  TH1F*           PUWeights_DoubleEG     ;
  TH1F*           PUWeights_DoubleMu     ;
  TH1F*           PUWeights_MuonEG       ;
  TH1F*           PUWeights_SinglePhoton ;
  void            loadElectronWeight( TString eleid );
+ void            loadMuonWeight( TString muoid );
+ void            loadMuonIso( TString muoid );
  Float_t         makeElectronWeight( std::vector<int> &electron_list );
+ Float_t         makeMuonWeight( std::vector<int> &muon_list );
+ Float_t         makeMuonIso( std::vector<int> &muon_list );
  TH2F*           EleWeights;
+ TH2F*		 EleTrigEffi; 
+ TH2F*		 EleTrigEffi1; 
+ TH2F*		 EleTrigEffi2; 
+ TH2F*           MuonWeights;
+ TH2F*           MuonIso;
+ TH2F*		 MuonTrigEffi; 
+ TH2F*		 MuonTrigEffi17; 
+ TH2F*		 MuonTrigEffi8; 
  Float_t         makeTTWeight( Float_t TTavgweight );
 
  void               loadMistagRate();
