@@ -1,8 +1,11 @@
 #include "LLDJstandalones/ntuples/interface/lldjNtuple.h"
 #include "LLDJstandalones/ntuples/interface/GenParticleParentage.h"
+#include <TMath.h>
+#include <TLorentzVector.h>
 
 using namespace std;
-
+bool ctauWeight = false; //Determine whether to weight or not weight the SigMC
+float targetdist = 5; //To weight it, determine the target distance
 
 //Variables for branches
 vector<int>   llpId;
@@ -18,6 +21,9 @@ vector<float> llpDaughterEta;
 vector<float> llpDaughterPhi;
 vector<float> llpDaughterMass;
 vector<float> toppts;
+vector<float> Decaydist;
+vector<float> Simweight;
+vector<float> ctauEventWeight;
 
 
 void lldjNtuple::branchesGenPart(TTree* tree) {
@@ -35,7 +41,10 @@ void lldjNtuple::branchesGenPart(TTree* tree) {
   tree->Branch("llpDaughterPhi",    &llpDaughterPhi);
   tree->Branch("llpDaughterMass",   &llpDaughterMass);
   tree->Branch("toppts",            &toppts);
-
+  if (ctauWeight) {tree->Branch("Decaydist",         &Decaydist);
+  tree->Branch("Simweight",         &Simweight);
+  tree->Branch("ctauEventWeight",   &ctauEventWeight);
+}
 }
 
 void lldjNtuple::fillGenPart(const edm::Event& e) {
@@ -54,10 +63,14 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
   llpDaughterPhi.clear();
   llpDaughterMass.clear();
   toppts.clear();
-
+  if (ctauWeight){Decaydist.clear();
+  Simweight.clear();
+  ctauEventWeight.clear();
+}
   //Gen particles handle
   edm::Handle<vector<reco::GenParticle> > genParticlesHandle;
   e.getByToken(genParticlesCollection_, genParticlesHandle);
+  float totEventWeight =1.0;
 
   //Loop over gen particles
   for (vector<reco::GenParticle>::const_iterator ip = genParticlesHandle->begin(); ip != genParticlesHandle->end(); ++ip) {
@@ -79,6 +92,21 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
       llpEta.push_back(     ip->eta()   );
       llpPhi.push_back(     ip->phi()   );
       llpMass.push_back(    ip->mass()  );
+      TVector3 mother,daughter,diff;	
+      for(size_t j=0; j<ip->numberOfDaughters(); ++j){
+	const reco::Candidate* d = ip->daughter(j);
+	  mother.SetXYZ(ip->vx(),ip->vy(),ip->vz());
+	  daughter.SetXYZ(d->vx(),d->vy(),d->vz());
+   	  diff.SetXYZ(mother.X()-daughter.X(),mother.Y()-daughter.Y(),mother.Z()-daughter.Z());	
+	} 
+
+	TLorentzVector scalar;
+	scalar.SetPtEtaPhiM(ip->pt(),ip->eta(),ip->phi(),ip->mass());
+	float dist = diff.Mag()/(scalar.Gamma()*abs(scalar.Beta()));
+        if(ctauWeight){Decaydist.push_back(dist);
+	float weight = calculatectauEventWeight(dist);
+	Simweight.push_back(weight); 
+        totEventWeight *= weight;}
     }
     else if ( particleHistory.hasRealParent() ) {
       reco::GenParticleRef momRef = particleHistory.parent();
@@ -100,6 +128,29 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
    TTSF = TTSF * exp( 0.0615 - 0.0005*toppts.at(0)) * exp( 0.0615 - 0.0005*toppts.at(1));
   }
   hTTSF_->Fill( TTSF );
+  if(ctauWeight) ctauEventWeight.push_back(totEventWeight);
   //std::cout<<"TTSF   "<<TTSF<<std::endl;
 
 }
+
+Float_t lldjNtuple::calculatectauEventWeight( float dist )
+{
+ float weight,norm, norm2;
+ // loop over all selected tracks, dR match to jet
+ if (targetdist==5) {
+        norm2 = 2*exp(-2*dist);
+        norm = exp(-1*dist);	  
+}
+else if (targetdist ==50) {
+        norm2 = 2*exp(-0.2*dist);
+        norm = exp(-0.1*dist);	  
+}
+else {
+        norm2 = 2*exp(-0.02*dist);
+        norm = exp(-0.01*dist);	  
+}
+	weight = norm2/norm;
+ return weight;
+ }
+
+
