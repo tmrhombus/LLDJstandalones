@@ -4,8 +4,12 @@
 #include <TLorentzVector.h>
 
 using namespace std;
-bool ctauWeight = false; //Determine whether to weight or not weight the SigMC
-float targetdist = 5; //To weight it, determine the target distance
+bool ctauWeight = true; //Determine whether to weight or not weight the SigMC
+float targetdist = 300; //To weight it, determine the target distance
+//Recommended targetdist range : 10mm sample->1mm<ct<10mm
+			//	 100mm sample->10mm<ct<100mm
+			//	 1000mm	samplet->100mm<ct<1000mm
+
 
 //Variables for branches
 vector<int>   llpId;
@@ -135,21 +139,24 @@ void lldjNtuple::fillGenPart(const edm::Event& e) {
 
 Float_t lldjNtuple::calculatectauEventWeight( float dist )
 {
- float weight,norm, norm2;
- // loop over all selected tracks, dR match to jet
- if (targetdist==5) {
-        norm2 = 2*exp(-2*dist);
-        norm = exp(-1*dist);	  
+ float weight, factor;
+if (targetdist<10 && 1 < targetdist) {
+	factor = 10./targetdist;
+        weight = factor*exp(-1*(factor-1)*dist);
 }
-else if (targetdist ==50) {
-        norm2 = 2*exp(-0.2*dist);
-        norm = exp(-0.1*dist);	  
+else if (targetdist<100 && 10 < targetdist) {
+	factor = 100./targetdist;
+        weight = factor*exp(-0.1*(factor-1)*dist);
 }
-else {
-        norm2 = 2*exp(-0.02*dist);
-        norm = exp(-0.01*dist);	  
+
+else if (targetdist<1000 && 100< targetdist) {
+	factor = 1000./targetdist;
+        weight = factor*exp(-0.01*(factor-1)*dist);
 }
-	weight = norm2/norm;
+else  {   
+    std::cerr << "Targetdist out of range. Please read insturction for targetdist range for each SigMC sample." <<std::endl;
+   abort(); 	
+	}
  return weight;
  }
 
