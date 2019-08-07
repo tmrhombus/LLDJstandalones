@@ -155,7 +155,8 @@ bool analyzer_createobjects::IP_SG(int i){
 }
 
 bool analyzer_createobjects::IP_SB(int i){
-  if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.5 && Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
+  //if(Shifted_CaloJetMedianLog10IPSig.at(i) > 0.5 && Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
+  if(Shifted_CaloJetMedianLog10IPSig.at(i) < tag_minIPsig) return true;
   else return false;
 }
 
@@ -185,7 +186,8 @@ bool analyzer_createobjects::TA_SG(int i){
 }
 
 bool analyzer_createobjects::TA_SB(int i){
-  if(Shifted_CaloJetMedianLog10TrackAngle.at(i) > -2.25 && Shifted_CaloJetMedianLog10TrackAngle.at(i) < tag_minTA) return true;
+  //if(Shifted_CaloJetMedianLog10TrackAngle.at(i) > -2.25 && Shifted_CaloJetMedianLog10TrackAngle.at(i) < tag_minTA) return true;
+  if(Shifted_CaloJetMedianLog10TrackAngle.at(i) < tag_minTA) return true;
   else return false;
 }
 
