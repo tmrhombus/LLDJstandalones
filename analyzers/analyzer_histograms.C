@@ -794,18 +794,19 @@ Bool_t analyzer_histograms::fillAODCaloJetStudyHistograms(Float_t weight, int se
     // only fill these once (no jet multiplicity)
     for(unsigned int i =0; i<aodcalojet_list.size(); i++){
       int aodcalojetindex = aodcalojet_list[i];
-      //std::cout<<"AODCaloJetAvfVertexTrackEnergy"<<AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)<<" "<<aodcalojetindex<<std::endl;
+      // std::cout<<"AODCaloJetAvfVertexTrackEnergy"<<AODCaloJetAvfVertexTrackEnergy->at(0)<<" "<<aodcalojetindex<<std::endl;
+      // std::cout<<" "<<AODCaloJetAvfVertexTrackEnergy->size()<<" "<<AODCaloJetNCleanMatchedTracks->at( aodcalojetindex )<<std::endl;
       if(aodcalojetindex==0){
        h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
       }
-      if(AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)>0.5){
+      if(AODCaloJetAvfVertexTrackEnergy->at(0)>0.5){
        h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
       }
-      if(AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)>10.){
+      if(AODCaloJetAvfVertexTrackEnergy->at(0)>10.){
        h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
        h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
@@ -814,32 +815,38 @@ Bool_t analyzer_histograms::fillAODCaloJetStudyHistograms(Float_t weight, int se
       h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
       h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
       h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
 
     }    
   }
   else{
     if( jetbin < (int)aodcalojet_list.size() ){
       int aodcalojetindex = aodcalojet_list[jetbin];
-
-      h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
-      h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+  
+      if(aodcalojetindex==0){
+       h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
+      if(AODCaloJetAvfVertexTrackEnergy->at(0)>0.5){
+       h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
+      if(AODCaloJetAvfVertexTrackEnergy->at(0)>10.){
+       h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
                                                                                                                          
       h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
       h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
       h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
-      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( 0 ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
     }
   }
   
