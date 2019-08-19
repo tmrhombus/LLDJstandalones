@@ -53,6 +53,7 @@ Bool_t analyzer_histograms::fillSelectedJetHistograms(Float_t weight, int selbin
 {
  /// Decide here which jet histograms to get filled
   fillAODCaloJetBasicHistograms( weight, selbin, jetbin );
+  fillAODCaloJetStudyHistograms( weight, selbin, jetbin );
   fillAODCaloJet_L1PFHistograms( weight, selbin, jetbin );
   fillAODCaloJetExtraHistograms( weight, selbin, jetbin );
 }
@@ -62,6 +63,7 @@ Bool_t analyzer_histograms::writeSelectedJetHistograms(int selbin, int jetbin)
 {
  /// Decide here which jet histograms to get written
   writeAODCaloJetBasicHistograms( selbin, jetbin );
+  writeAODCaloJetStudyHistograms( selbin, jetbin );
   writeAODCaloJet_L1PFHistograms( selbin, jetbin );
   writeAODCaloJetExtraHistograms( selbin, jetbin );
 }
@@ -723,6 +725,169 @@ Bool_t analyzer_histograms::deleteAODCaloJetBasicHistograms(int selbin, int jetb
   if(h_AODCaloJetPartonFlavour        [selbin][jetbin]!=NULL)    h_AODCaloJetPartonFlavour                  [selbin][jetbin]->Delete(); 
   if(h_AODCaloJetAbsEta               [selbin][jetbin]!=NULL)    h_AODCaloJetAbsEta                         [selbin][jetbin]->Delete();
   if(h_AODCaloJetPtVarAbsEtaVar       [selbin][jetbin]!=NULL)    h_AODCaloJetPtVarAbsEtaVar                 [selbin][jetbin]->Delete(); 
+ return kTRUE;
+}
+
+
+// Study for the reason behind necessity of the tagging variable shift
+//----------------------------initAODCaloJetStudyHistograms
+Bool_t analyzer_histograms::initAODCaloJetStudyHistograms( TString uncbin )
+{
+
+  // loop through jets and selections to initialize histograms in parllel (series)
+  for(unsigned int i=0; i<selbinnames.size(); ++i){
+  hist_file_out[i]->cd(); 
+  //deleteAODCaloJetStudyHistograms(i);
+      unsigned int k; if(jetMultOn) k=0; else k=jetmultnames.size()-1;
+      for(k; k<jetmultnames.size(); ++k){
+        //deleteAODCaloJetStudyHistograms(i,k);
+        TString hname_AODCaloJet_Study_trk0_AlphaMax                = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_trk0_AlphaMax"               +uncbin ;
+        TString hname_AODCaloJet_Study_trk0_MedianLog10IPSig        = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_trk0_MedianLog10IPSig"       +uncbin ;
+        TString hname_AODCaloJet_Study_trk0_MedianLog10TrackAngle   = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_trk0_MedianLog10TrackAngle"  +uncbin ;
+        TString hname_AODCaloJet_Study_ptG0p5_AlphaMax              = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG0p5_AlphaMax"             +uncbin ;
+        TString hname_AODCaloJet_Study_ptG0p5_MedianLog10IPSig      = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG0p5_MedianLog10IPSig"     +uncbin ;
+        TString hname_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle"+uncbin ;
+        TString hname_AODCaloJet_Study_ptG10_AlphaMax              = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG10_AlphaMax"             +uncbin ;
+        TString hname_AODCaloJet_Study_ptG10_MedianLog10IPSig      = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG10_MedianLog10IPSig"     +uncbin ;
+        TString hname_AODCaloJet_Study_ptG10_MedianLog10TrackAngle = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_ptG10_MedianLog10TrackAngle"+uncbin ;
+                                                                                                      
+        TString hname_AODCaloJet_Study_n_v_AlphaMax                = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_n_v_AlphaMax"               +uncbin ;
+        TString hname_AODCaloJet_Study_n_v_MedianLog10IPSig        = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_n_v_MedianLog10IPSig"       +uncbin ;
+        TString hname_AODCaloJet_Study_n_v_MedianLog10TrackAngle   = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_n_v_MedianLog10TrackAngle"  +uncbin ;
+        TString hname_AODCaloJet_Study_pt_v_AlphaMax                = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_pt_v_AlphaMax"               +uncbin ;
+        TString hname_AODCaloJet_Study_pt_v_MedianLog10IPSig        = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_pt_v_MedianLog10IPSig"       +uncbin ;
+        TString hname_AODCaloJet_Study_pt_v_MedianLog10TrackAngle   = "h_"+selbinnames[i]+"_"+jetmultnames[k]+"_AODCaloJet_Study_pt_v_MedianLog10TrackAngle"  +uncbin ;
+
+        h_AODCaloJet_Study_trk0_AlphaMax               [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_trk0_AlphaMax                , "Study_trk0_AlphaMax"               , 50, 0, 1 );
+        h_AODCaloJet_Study_trk0_MedianLog10IPSig       [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_trk0_MedianLog10IPSig        , "Study_trk0_MedianLog10IPSig"       , 50, -3, 4);
+        h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_trk0_MedianLog10TrackAngle   , "Study_trk0_MedianLog10TrackAngle"  , 50, -5, 2);
+        h_AODCaloJet_Study_ptG0p5_AlphaMax             [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG0p5_AlphaMax              , "Study_ptG0p5_AlphaMax"             , 50, 0, 1 );
+        h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG0p5_MedianLog10IPSig      , "Study_ptG0p5_MedianLog10IPSig"     , 50, -3, 4);
+        h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle , "Study_ptG0p5_MedianLog10TrackAngle", 50, -5, 2);
+        h_AODCaloJet_Study_ptG10_AlphaMax             [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG10_AlphaMax              , "Study_ptG10_AlphaMax"             , 50, 0, 1 );
+        h_AODCaloJet_Study_ptG10_MedianLog10IPSig     [i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG10_MedianLog10IPSig      , "Study_ptG10_MedianLog10IPSig"     , 50, -3, 4);
+        h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle[i][k] = initSingleHistogramTH1F( hname_AODCaloJet_Study_ptG10_MedianLog10TrackAngle , "Study_ptG10_MedianLog10TrackAngle", 50, -5, 2);
+
+	const int Pt_n_xbins = 10;
+	float Pt_xbins[Pt_n_xbins+1] = {0, 10, 20, 30, 40, 50, 75, 100, 150, 250, 500};
+
+        //h_AODCaloJet_Study_pt_v_AlphaMax               [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_AlphaMax                ,"Study_pt_v_AlphaMax"               , Pt_n_xbins, Pt_xbins, 50, 0, 1 );
+        //h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_MedianLog10IPSig        ,"Study_pt_v_MedianLog10IPSig"       , Pt_n_xbins, Pt_xbins, 50, -3, 4);
+        //h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_MedianLog10TrackAngle   ,"Study_pt_v_MedianLog10TrackAngle"  , Pt_n_xbins, Pt_xbins, 50, -5, 2);
+        h_AODCaloJet_Study_pt_v_AlphaMax               [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_AlphaMax               , "Study_pt_v_AlphaMax"               , 50, 0, 500, 50, 0, 1 );
+        h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_MedianLog10IPSig       , "Study_pt_v_MedianLog10IPSig"       , 50, 0, 500, 50, -3, 4);
+        h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  , "Study_pt_v_MedianLog10TrackAngle"  , 50, 0, 500, 50, -5, 2);
+        h_AODCaloJet_Study_n_v_AlphaMax               [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_n_v_AlphaMax               , "Study_n_v_AlphaMax"               , 15, 0, 15, 50, 0, 1 );
+        h_AODCaloJet_Study_n_v_MedianLog10IPSig       [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_n_v_MedianLog10IPSig       , "Study_n_v_MedianLog10IPSig"       , 15, 0, 15, 50, -3, 4);
+        h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [i][k] = initSingleHistogramTH2F( hname_AODCaloJet_Study_n_v_MedianLog10TrackAngle  , "Study_n_v_MedianLog10TrackAngle"  , 15, 0, 15, 50, -5, 2);
+
+      }
+  }
+  return kTRUE;
+}
+
+//----------------------------fillAODCaloJetStudyHistograms
+Bool_t analyzer_histograms::fillAODCaloJetStudyHistograms(Float_t weight, int selbin, int jetbin)
+{
+  hist_file_out[selbin]->cd();
+  if(jetmultnames.at(jetbin) == "AllJets"){
+    // only fill these once (no jet multiplicity)
+    for(unsigned int i =0; i<aodcalojet_list.size(); i++){
+      int aodcalojetindex = aodcalojet_list[i];
+      //std::cout<<"AODCaloJetAvfVertexTrackEnergy"<<AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)<<" "<<aodcalojetindex<<std::endl;
+      if(aodcalojetindex==0){
+       h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
+      if(AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)>0.5){
+       h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
+      if(AODCaloJetAvfVertexTrackEnergy->at(aodcalojetindex)>10.){
+       h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+       h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      }
+                                                                                                                         
+      h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetNCleanMatchedTracks->at(aodcalojetindex) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetAvfVertexTrackEnergy->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+
+    }    
+  }
+  else{
+    if( jetbin < (int)aodcalojet_list.size() ){
+      int aodcalojetindex = aodcalojet_list[jetbin];
+
+      h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Fill( AODCaloJetAlphaMax              ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Fill( AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight); 
+      h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Fill( AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight); 
+                                                                                                                         
+      h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetNCleanMatchedTracks->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetAlphaMax              ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetMedianLog10IPSig      ->at(aodcalojetindex), weight);
+      h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Fill(AODCaloJetPt->at( aodcalojetindex ) , AODCaloJetMedianLog10TrackAngle ->at(aodcalojetindex), weight);
+    }
+  }
+  
+  return kTRUE;
+} //end fill histograms
+
+//----------------------------writeAODCaloStudyJetHistograms
+Bool_t analyzer_histograms::writeAODCaloJetStudyHistograms(int selbin, int jetbin)
+{
+  hist_file_out[selbin]->cd();
+  h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Write(); 
+  h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Write(); 
+ return kTRUE;
+}
+
+//----------------------------deleteAODCaloJetStudyHistograms
+Bool_t analyzer_histograms::deleteAODCaloJetStudyHistograms(int selbin, int jetbin)
+{
+  hist_file_out[selbin]->cd();
+  //printf("deleteAODCaloJetHistograms\n");
+  if(h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]!=NULL) h_AODCaloJet_Study_trk0_AlphaMax               [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]!=NULL) h_AODCaloJet_Study_trk0_MedianLog10IPSig       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]!=NULL) h_AODCaloJet_Study_trk0_MedianLog10TrackAngle  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG0p5_AlphaMax             [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig     [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle[selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG10_AlphaMax              [selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG10_AlphaMax             [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG10_MedianLog10IPSig      [selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG10_MedianLog10IPSig     [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle [selbin][jetbin]!=NULL) h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle[selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_n_v_AlphaMax               [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_n_v_MedianLog10IPSig       [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_n_v_MedianLog10TrackAngle  [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_AlphaMax               [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_MedianLog10IPSig       [selbin][jetbin]->Delete(); 
+  if(h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]!=NULL) h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle  [selbin][jetbin]->Delete(); 
  return kTRUE;
 }
 

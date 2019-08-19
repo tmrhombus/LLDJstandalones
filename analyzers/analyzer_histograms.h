@@ -107,6 +107,12 @@ public :
  Bool_t        writeAODCaloJetBasicHistograms(int selbin, int jetbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin);
  Bool_t        deleteAODCaloJetBasicHistograms(int selbin, int jetbin);
+ // AODCaloJet Study Variables
+ Bool_t        initAODCaloJetStudyHistograms( TString uncbin );
+ Bool_t        fillAODCaloJetStudyHistograms(Float_t weight, int selbin, int jetbin);
+ Bool_t        writeAODCaloJetStudyHistograms(int selbin, int jetbin);
+ //Bool_t        deleteAODCaloJetStudyHistograms(int selbin);
+ Bool_t        deleteAODCaloJetStudyHistograms(int selbin, int jetbin);
  // AODCaloJet _L1PF Variables
  Bool_t        initAODCaloJet_L1PFHistograms( TString uncbin );
  Bool_t        fillAODCaloJet_L1PFHistograms(Float_t weight, int selbin, int jetbin);
@@ -363,6 +369,24 @@ public :
  TH1F*  h_AODCaloJetPartonFlavour                  [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH1F*  h_AODCaloJetAbsEta                         [SELBINNAMESIZE][JETMULTNAMESIZE];
  TH2F*  h_AODCaloJetPtVarAbsEtaVar                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+
+ // Study tag var shift necessity
+ TH1F*  h_AODCaloJet_Study_trk0_AlphaMax                [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_trk0_MedianLog10IPSig        [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_trk0_MedianLog10TrackAngle   [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG0p5_AlphaMax              [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG0p5_MedianLog10IPSig      [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG0p5_MedianLog10TrackAngle [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG10_AlphaMax               [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG10_MedianLog10IPSig       [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH1F*  h_AODCaloJet_Study_ptG10_MedianLog10TrackAngle  [SELBINNAMESIZE][JETMULTNAMESIZE];
+
+ TH2F*  h_AODCaloJet_Study_n_v_AlphaMax                 [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F*  h_AODCaloJet_Study_n_v_MedianLog10IPSig         [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F*  h_AODCaloJet_Study_n_v_MedianLog10TrackAngle    [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F*  h_AODCaloJet_Study_pt_v_AlphaMax                [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F*  h_AODCaloJet_Study_pt_v_MedianLog10IPSig        [SELBINNAMESIZE][JETMULTNAMESIZE];
+ TH2F*  h_AODCaloJet_Study_pt_v_MedianLog10TrackAngle   [SELBINNAMESIZE][JETMULTNAMESIZE];
  
  
  // AODCaloJetL1PFHistograms
