@@ -376,14 +376,14 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
   AODCaloJet4TrackPt_  .clear();
   AODCaloJet4TrackEta_ .clear();
   AODCaloJet4TrackPhi_ .clear();
-  AODCaloJet1EMEnergyFrac_ .clear(); 
-  AODCaloJet1HadEnergyFrac_.clear(); 
-  AODCaloJet2EMEnergyFrac_ .clear(); 
-  AODCaloJet2HadEnergyFrac_.clear(); 
-  AODCaloJet3EMEnergyFrac_ .clear(); 
-  AODCaloJet3HadEnergyFrac_.clear(); 
-  AODCaloJet4EMEnergyFrac_ .clear(); 
-  AODCaloJet4HadEnergyFrac_.clear(); 
+  AODCaloJet1EMEnergyFrac_  = -1.; 
+  AODCaloJet1HadEnergyFrac_ = -1.; 
+  AODCaloJet2EMEnergyFrac_  = -1.; 
+  AODCaloJet2HadEnergyFrac_ = -1.; 
+  AODCaloJet3EMEnergyFrac_  = -1.; 
+  AODCaloJet3HadEnergyFrac_ = -1.; 
+  AODCaloJet4EMEnergyFrac_  = -1.; 
+  AODCaloJet4HadEnergyFrac_ = -1.; 
 // TrackPT
 
  AODCaloJetAlphaMax_.clear();                               
