@@ -73,6 +73,24 @@ vector<float>  AODCaloJetPt_;
 vector<float>  AODCaloJetEta_;
 vector<float>  AODCaloJetPhi_;
 
+// TrackPT
+vector<float>  AODCaloJet1TrackPt_;
+vector<float>  AODCaloJet1TrackEta_;
+vector<float>  AODCaloJet1TrackPhi_;
+
+vector<float>  AODCaloJet2TrackPt_;
+vector<float>  AODCaloJet2TrackEta_;
+vector<float>  AODCaloJet2TrackPhi_;
+
+vector<float>  AODCaloJet3TrackPt_;
+vector<float>  AODCaloJet3TrackEta_;
+vector<float>  AODCaloJet3TrackPhi_;
+
+vector<float>  AODCaloJet4TrackPt_;
+vector<float>  AODCaloJet4TrackEta_;
+vector<float>  AODCaloJet4TrackPhi_;
+// TrackPT
+
 vector<float>  AODCaloJetAlphaMax_;
 vector<float>  AODCaloJetAlphaMax2_;
 vector<float>  AODCaloJetAlphaMaxPrime_;
@@ -202,6 +220,21 @@ void lldjNtuple::branchesAODJets(TTree* tree) {
   tree->Branch("AODCaloJetEta"                 , &AODCaloJetEta_);
   tree->Branch("AODCaloJetPhi"                 , &AODCaloJetPhi_);
 
+// TrackPT
+  tree->Branch("AODCaloJet1TrackPt"  , &AODCaloJet1TrackPt_  );
+  tree->Branch("AODCaloJet1TrackEta" , &AODCaloJet1TrackEta_ );
+  tree->Branch("AODCaloJet1TrackPhi" , &AODCaloJet1TrackPhi_ );
+  tree->Branch("AODCaloJet2TrackPt"  , &AODCaloJet2TrackPt_  );
+  tree->Branch("AODCaloJet2TrackEta" , &AODCaloJet2TrackEta_ );
+  tree->Branch("AODCaloJet2TrackPhi" , &AODCaloJet2TrackPhi_ );
+  tree->Branch("AODCaloJet3TrackPt"  , &AODCaloJet3TrackPt_  );
+  tree->Branch("AODCaloJet3TrackEta" , &AODCaloJet3TrackEta_ );
+  tree->Branch("AODCaloJet3TrackPhi" , &AODCaloJet3TrackPhi_ );
+  tree->Branch("AODCaloJet4TrackPt"  , &AODCaloJet4TrackPt_  );
+  tree->Branch("AODCaloJet4TrackEta" , &AODCaloJet4TrackEta_ );
+  tree->Branch("AODCaloJet4TrackPhi" , &AODCaloJet4TrackPhi_ );
+// TrackPT
+
   tree->Branch("AODCaloJetAlphaMax"            , &AODCaloJetAlphaMax_);                               
   tree->Branch("AODCaloJetAlphaMax2"           , &AODCaloJetAlphaMax2_);                               
   tree->Branch("AODCaloJetAlphaMaxPrime"       , &AODCaloJetAlphaMaxPrime_);                               
@@ -310,6 +343,21 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
  AODCaloJetPhi_.clear();
  //AODnTracksToCaloJet_.clear();
  AODCaloJetNMatchedTracks_.clear();
+
+// TrackPT
+  AODCaloJet1TrackPt_  .clear();
+  AODCaloJet1TrackEta_ .clear();
+  AODCaloJet1TrackPhi_ .clear();
+  AODCaloJet2TrackPt_  .clear();
+  AODCaloJet2TrackEta_ .clear();
+  AODCaloJet2TrackPhi_ .clear();
+  AODCaloJet3TrackPt_  .clear();
+  AODCaloJet3TrackEta_ .clear();
+  AODCaloJet3TrackPhi_ .clear();
+  AODCaloJet4TrackPt_  .clear();
+  AODCaloJet4TrackEta_ .clear();
+  AODCaloJet4TrackPhi_ .clear();
+// TrackPT
 
  AODCaloJetAlphaMax_.clear();                               
  AODCaloJetAlphaMax2_.clear();                               
@@ -593,6 +641,9 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
  }
 
 
+//TrackPT
+ int njet = 0;
+//TrackPT
  // AOD Calo Jets -------------------------------------------
  for (edm::View<reco::CaloJet>::const_iterator iJet = AODak4CaloJetsHandle->begin(); iJet != AODak4CaloJetsHandle->end(); ++iJet) {
 
@@ -611,11 +662,53 @@ void lldjNtuple::fillAODJets(const edm::Event& e, const edm::EventSetup& es) {
 
   if(iJet->pt()<20.0 || fabs(iJet->eta())>2.4 || !passID) continue;
 
+//TrackPT
+  njet++;
+//TrackPT
+
   // caloJetTrackIDs is a vector of ints where each int is the 
   // index of a track passing deltaR requirement to this jet
   // out of the master track record of tracks passing basic selections
   vector<int>   caloJetTrackIDs = getJetTrackIndexs( jeteta, jetphi );
   AODCaloJetNMatchedTracks_.push_back( caloJetTrackIDs.size() );
+  
+//TrackPT
+  if(njet==1){
+   for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
+    //printf(" Track %i at %i \n",i,caloJetTrackIDs[i]);
+    //printf("  caloTrack %i=%i %0.1f %0.1f %0.1f \n",i,
+    //caloJetTrackIDs[i],
+    //AODallTrackPt [caloJetTrackIDs[i]] ,
+    //AODallTrackEta[caloJetTrackIDs[i]] ,
+    //AODallTrackPhi[caloJetTrackIDs[i]] );
+
+     AODCaloJet1TrackPt_ .push_back( AODallTrackPt [caloJetTrackIDs[i]] );
+     AODCaloJet1TrackEta_.push_back( AODallTrackEta[caloJetTrackIDs[i]] );
+     AODCaloJet1TrackPhi_.push_back( AODallTrackPhi[caloJetTrackIDs[i]] );
+   }
+  }
+  if(njet==2){
+   for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
+     AODCaloJet2TrackPt_ .push_back( AODallTrackPt [caloJetTrackIDs[i]] );
+     AODCaloJet2TrackEta_.push_back( AODallTrackEta[caloJetTrackIDs[i]] );
+     AODCaloJet2TrackPhi_.push_back( AODallTrackPhi[caloJetTrackIDs[i]] );
+   }
+  }
+  if(njet==3){
+   for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
+     AODCaloJet3TrackPt_ .push_back( AODallTrackPt [caloJetTrackIDs[i]] );
+     AODCaloJet3TrackEta_.push_back( AODallTrackEta[caloJetTrackIDs[i]] );
+     AODCaloJet3TrackPhi_.push_back( AODallTrackPhi[caloJetTrackIDs[i]] );
+   }
+  }
+  if(njet==4){
+   for( int i=0; i<(int)caloJetTrackIDs.size(); i++){
+     AODCaloJet4TrackPt_ .push_back( AODallTrackPt [caloJetTrackIDs[i]] );
+     AODCaloJet4TrackEta_.push_back( AODallTrackEta[caloJetTrackIDs[i]] );
+     AODCaloJet4TrackPhi_.push_back( AODallTrackPhi[caloJetTrackIDs[i]] );
+   }
+  }
+//TrackPT
 
   if(caloJetTrackIDs.size()<1) continue;
 
